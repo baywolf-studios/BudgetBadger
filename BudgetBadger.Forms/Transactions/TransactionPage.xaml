@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="{Binding Title}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection Title="Amount">
+                    <ViewCell>
+                        <Entry Keyboard="Numeric" Text="{Binding Transaction.Amount}" />
+                    </ViewCell> 
+                </TableSection>
+                <TableSection Title="Payee">
+                    <TextCell Command="{Binding PayeeSelectedCommand}" Text="{Binding Transaction.Payee.Description}">
+                    </TextCell>
+                </TableSection>
+                <TableSection Title="Envelope">
+                    <TextCell Command="{Binding EnvelopeSelectedCommand}" Text="{Binding Transaction.Envelope.Description}">
+                    </TextCell>
+                </TableSection>
+                <TableSection Title="Account">
+                    <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
+                    </TextCell>
+                </TableSection>
+                <TableSection Title="Service Date">
+                    <ViewCell>
+                        <DatePicker Date="{Binding Transaction.ServiceDate}" />
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Notes">
+                    <ViewCell>
+                        <Entry Text="{Binding Transaction.Notes}" />
+                    </ViewCell>
+                </TableSection>
+                <TableSection>
+                    <ViewCell>
+                        <Button Text="Delete Transaction" TextColor="Red" />
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

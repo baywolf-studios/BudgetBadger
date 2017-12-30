@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="{Binding Title}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection Title="Details">
+                    <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
+                    <SwitchCell Text="On Budget" On="{Binding Account.Type.OnBudget}" />
+                    <ViewCell>
+                        <StackLayout VerticalOptions="CenterAndExpand" Orientation="Horizontal">
+                            <Label Text="Account Type"/>
+                            <Picker HorizontalOptions="EndAndExpand" ItemDisplayBinding="{Binding Description, Mode=TwoWay}"  ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Account Type">
+                    <ViewCell>
+                        <Picker ItemDisplayBinding="{Binding Description, Mode=TwoWay}"  ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Notes">
+                    <ViewCell>
+                        <Editor Keyboard="Text" Text="{Binding Account.Notes}">
+                        </Editor>
+                    </ViewCell>
+                </TableSection>
+                <TableSection>
+                    <ViewCell>
+                        <Button Text="Close Account" TextColor="Red"/>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

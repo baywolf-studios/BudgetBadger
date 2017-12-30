@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="{Binding Title}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopeEditPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<TableView Intent="Data">
+			<TableRoot>
+				<TableSection Title="Group">
+					<TextCell Command="{Binding GroupSelectedCommand}" Text="{Binding Budget.Envelope.Group.Description}">
+					</TextCell>
+				</TableSection>
+				<TableSection Title="Name">
+					<ViewCell>
+						<Entry Text="{Binding Budget.Envelope.Description}" />
+					</ViewCell>
+				</TableSection>
+				<TableSection Title="Amount">
+                    <ViewCell>
+                        <Entry Keyboard="Numeric" Text="{Binding Budget.Amount}" />
+                    </ViewCell>
+				</TableSection>
+				<TableSection Title="Notes">
+                    <ViewCell Height="100">
+                        <Editor Text="{Binding Budget.Envelope.Notes}" />
+                    </ViewCell>
+				</TableSection>
+			</TableRoot>
+		</TableView>
+	</ContentPage.Content>
+</ContentPage>

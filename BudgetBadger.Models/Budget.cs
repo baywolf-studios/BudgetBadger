@@ -1,0 +1,50 @@
+﻿using System;
+using PropertyChanged;
+
+namespace BudgetBadger.Models
+{
+    [AddINotifyPropertyChangedInterface]
+    public class Budget
+    {
+        public Guid Id { get; set; }
+
+        public BudgetSchedule Schedule { get; set; }
+
+        public Envelope Envelope { get; set; }
+
+        public decimal Amount { get; set; }
+
+        //calculated, not stored
+        public decimal PreviousAmount { get; set; }
+
+        //calculated, not stored
+        public decimal Activity { get; set; }
+
+        //calculated, not stored
+        public decimal PreviousActivity { get; set; }
+
+        public decimal Remaining { get { return Amount + PreviousAmount + Activity + PreviousActivity; } }
+
+        public DateTime? CreatedDateTime { get; set; }
+
+        public DateTime? ModifiedDateTime { get; set; }
+
+        public DateTime? DeletedDateTime { get; set; }
+
+        public Budget()
+        {
+            Id = Guid.NewGuid();
+            Schedule = new BudgetSchedule();
+            Envelope = new Envelope();
+        }
+
+        public Budget DeepCopy()
+        {
+            Budget budget = (Budget)this.MemberwiseClone();
+            budget.Schedule = this.Schedule.DeepCopy();
+            budget.Envelope = this.Envelope.DeepCopy();
+
+            return budget;
+        }
+    }
+}

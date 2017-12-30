@@ -1,0 +1,192 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Models;
+using Microsoft.Data.Sqlite;
+
+namespace BudgetBadger.DataAccess.Sqlite
+{
+    public class PayeeSqliteDataAccess : IPayeeDataAccess
+    {
+        readonly string ConnectionString;
+
+        public PayeeSqliteDataAccess(string connectionString)
+        {
+            ConnectionString = connectionString;
+            CreateTables();
+        }
+
+        void CreateTables()
+        {
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+                //add NOT NULL to Description, CreatedDateTime, ModifiedDateTime
+                command.CommandText = @"CREATE TABLE IF NOT EXISTS Payee 
+                                      ( 
+                                         Id               BLOB PRIMARY KEY NOT NULL, 
+                                         Description      TEXT NOT NULL, 
+                                         Notes            TEXT, 
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT 
+                                      );
+                                    ";
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public async Task CreatePayeeAsync(Payee payee)
+        {
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT INTO Payee 
+                                                    (Id, 
+                                                     Description, 
+                                                     Notes, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @Notes, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", payee.Id);
+                command.Parameters.AddWithValue("@Description", payee.Description);
+                command.Parameters.AddWithValue("@Notes", payee.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", payee.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", payee.DeletedDateTime ?? (object)DBNull.Value);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task DeletePayeeAsync(Guid id)
+        {
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"DELETE Payee WHERE Id = @Id";
+
+                command.Parameters.AddWithValue("@Id", id);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task<Payee> ReadPayeeAsync(Guid id)
+        {
+            var payee = new Payee();
+
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"SELECT Id, 
+                                               Description,
+                                               Notes, 
+                                               CreatedDateTime, 
+                                               ModifiedDateTime, 
+                                               DeletedDateTime
+                                        FROM   Payee 
+                                        WHERE  Id = @Id";
+
+                command.Parameters.AddWithValue("@Id", id);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (reader.Read())
+                    {
+                        payee = new Payee
+                        {
+                            Id = new Guid(reader["Id"] as byte[]),
+                            Description = reader["Description"].ToString(),
+                            Notes = reader["Notes"].ToString(),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                        };
+                    }
+                }
+            }
+
+            return payee;
+        }
+
+        public async Task<IEnumerable<Payee>> ReadPayeesAsync()
+        {
+            var payees = new List<Payee>();
+
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"SELECT Id, 
+                                               Description, 
+                                               Notes, 
+                                               CreatedDateTime, 
+                                               ModifiedDateTime, 
+                                               DeletedDateTime
+                                        FROM   Payee";
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        var payee = new Payee
+                        {
+                            Id = new Guid(reader["Id"] as byte[]),
+                            Description = reader["Description"].ToString(),
+                            Notes = reader["Notes"].ToString(),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                        };
+                        payees.Add(payee);
+                    }
+                }
+            }
+
+            return payees;
+        }
+
+        public async Task UpdatePayeeAsync(Payee payee)
+        {
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"UPDATE Payee 
+                                        SET    Description = @Description,
+                                               Notes = @Notes, 
+                                               CreatedDateTime = @CreatedDateTime, 
+                                               ModifiedDateTime = @ModifiedDateTime, 
+                                               DeletedDateTime = @DeletedDateTime 
+                                        WHERE  Id = @Id ";
+
+                command.Parameters.AddWithValue("@Id", payee.Id);
+                command.Parameters.AddWithValue("@Description", payee.Description);
+                command.Parameters.AddWithValue("@Notes", payee.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", payee.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", payee.DeletedDateTime ?? (object)DBNull.Value);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+}

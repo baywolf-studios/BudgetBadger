@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Envelopes" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Add" Text="Add" Command="{Binding NewCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding NormalMode}">
+                <Button Command="{Binding PreviousCommand}">
+                    <Button.Text>
+                        &lt;
+                    </Button.Text>
+                </Button>
+                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Date, StringFormat='{0:Y}'}" />
+                <Button Command="{Binding NextCommand}">
+                    <Button.Text>
+                        &gt;
+                    </Button.Text>
+                </Button>
+            </StackLayout>
+            <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Envelope.Description}" Detail="{Binding Remaining, StringFormat='{0:C}'}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

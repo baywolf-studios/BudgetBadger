@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PropertyChanged.Fody" Version="2.2.4" />
+    <PackageReference Include="Prism.Core" Version="7.0.0.336-pre" />
+    <PackageReference Include="Prism.Forms" Version="7.0.0.336-pre" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.336-pre" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Navigation\" />
+    <Folder Include="Payees\" />
+    <Folder Include="Accounts\" />
+    <Folder Include="Envelopes\" />
+    <Folder Include="Transactions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
+    <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
+    <ProjectReference Include="..\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
+    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\PayeeInfoPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModels\PayeesPageViewModel.cs" />
+    <Compile Remove="Views\PayeesPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\PayeesPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeEditPage.xaml.cs">
+      <DependentUpon>..\Views\Views\PayeeEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeInfoPage.xaml.cs">
+      <DependentUpon>..\Views\Views\PayeeInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountEditPage.xaml.cs">
+      <DependentUpon>..\Views\Views\AccountEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountInfoPage.xaml.cs">
+      <DependentUpon>..\Views\Views\AccountInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountsPage.xaml.cs">
+      <DependentUpon>..\Views\Views\AccountsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeInfoPage.xaml.cs">
+      <DependentUpon>..\Views\Views\EnvelopeInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopesPage.xaml.cs">
+      <DependentUpon>..\Views\Views\EnvelopesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Transactions\TransactionPage.xaml.cs">
+      <DependentUpon>..\Views\Views\TransactionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupSelectionPage.xaml.cs">
+      <DependentUpon>EnvelopeGroupsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupsPage.xaml.cs">
+      <DependentUpon>EnvelopeGroupsPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>
