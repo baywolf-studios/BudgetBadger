@@ -82,7 +82,7 @@ namespace BudgetBadger.Logic
                 return budgets;
             }
 
-            return budgets.Where(a => a.Envelope.Description.Contains(searchText));
+            return budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower()));
         }
 
         public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeDeleted = false)

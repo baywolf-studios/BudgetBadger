@@ -61,7 +61,7 @@ namespace BudgetBadger.Logic
                 return payees;
             }
 
-            return payees.Where(a => a.Description.Contains(searchText));
+            return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
         public IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees, bool includeDeleted = false)
