@@ -26,8 +26,8 @@ namespace BudgetBadger.Forms.Accounts
         public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
 
-        public decimal PendingTotal { get => Transactions.Where(t => t.Status == TransactionStatus.Pending).Sum(t2 => t2.Amount); }
-        public decimal PostedTotal { get => Transactions.Where(t => t.Status == TransactionStatus.Posted).Sum(t2 => t2.Amount); }
+        public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount); }
+        public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount); }
         public decimal TransactionsTotal { get => Transactions.Sum(t2 => t2.Amount); }
 
         public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)

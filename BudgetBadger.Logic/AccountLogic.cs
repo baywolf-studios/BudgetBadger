@@ -42,11 +42,22 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> DeleteAccountAsync(Account account)
         {
+            var result = new Result();
             var newAccont = account.DeepCopy();
             newAccont.DeletedDateTime = DateTime.Now;
-            await AccountDataAccess.UpdateAccountAsync(newAccont);
 
-            return new Result { Success = true };
+            try
+            {
+                await AccountDataAccess.UpdateAccountAsync(newAccont);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result<Account>> GetAccountAsync(Guid id)

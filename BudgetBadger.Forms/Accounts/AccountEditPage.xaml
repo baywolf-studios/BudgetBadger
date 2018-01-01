@@ -8,7 +8,7 @@
             <TableRoot>
                 <TableSection Title="Details">
                     <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
-                    <SwitchCell Text="On Budget" On="{Binding Account.Type.OnBudget}" />
+                    <SwitchCell Text="On Budget" On="{Binding Account.OnBudget}" />
                     <ViewCell>
                         <StackLayout VerticalOptions="CenterAndExpand" Orientation="Horizontal">
                             <Label Text="Account Type"/>

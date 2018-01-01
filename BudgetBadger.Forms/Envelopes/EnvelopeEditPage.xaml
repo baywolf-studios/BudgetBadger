@@ -21,7 +21,7 @@
                     </ViewCell>
 				</TableSection>
 				<TableSection Title="Notes">
-                    <ViewCell Height="100">
+                    <ViewCell>
                         <Editor Text="{Binding Budget.Envelope.Notes}" />
                     </ViewCell>
 				</TableSection>

@@ -14,7 +14,11 @@ namespace BudgetBadger.Models
 
         public decimal Inflow { get; set; }
 
-        public string Status { get; set; } 
+        public bool Pending { get { return !Posted; }}
+
+        public bool Posted { get; set; }
+
+        public DateTime? ReconciledDateTime { get; set; }
 
         public Account Account { get; set; }
 
@@ -35,7 +39,6 @@ namespace BudgetBadger.Models
         public Transaction()
         {
             Id = Guid.NewGuid();
-            Status = "pending";
             ServiceDate = DateTime.Now;
         }
 

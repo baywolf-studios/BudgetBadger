@@ -26,17 +26,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
                                           ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Amount           TEXT NOT NULL, 
-                                             Status           TEXT NOT NULL, 
-                                             AccountId        BLOB NOT NULL, 
-                                             PayeeId          BLOB NOT NULL, 
-                                             EnvelopeId       BLOB NOT NULL, 
-                                             ServiceDate      TEXT NOT NULL, 
-                                             Notes            TEXT, 
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT 
+                                             Id                 BLOB PRIMARY KEY NOT NULL, 
+                                             Amount             TEXT NOT NULL, 
+                                             Posted             INTEGER NOT NULL,
+                                             ReconciledDateTime TEXT,
+                                             AccountId          BLOB NOT NULL, 
+                                             PayeeId            BLOB NOT NULL, 
+                                             EnvelopeId         BLOB NOT NULL, 
+                                             ServiceDate        TEXT NOT NULL, 
+                                             Notes              TEXT, 
+                                             CreatedDateTime    TEXT NOT NULL, 
+                                             ModifiedDateTime   TEXT NOT NULL, 
+                                             DeletedDateTime    TEXT 
                                           );
                                         ";
 
@@ -54,7 +55,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.CommandText = @"INSERT INTO [Transaction]
                                                     (Id, 
                                                      Amount, 
-                                                     Status, 
+                                                     Posted,
+                                                     ReconciledDateTime, 
                                                      AccountId, 
                                                      PayeeId, 
                                                      EnvelopeId, 
@@ -65,7 +67,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      DeletedDateTime) 
                                         VALUES      (@Id, 
                                                      @Amount, 
-                                                     @Status, 
+                                                     @Posted,
+                                                     @ReconciledDateTime, 
                                                      @AccountId, 
                                                      @PayeeId, 
                                                      @EnvelopeId, 
@@ -77,7 +80,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@Id", transaction.Id);
                 command.Parameters.AddWithValue("@Amount", transaction.Amount);
-                command.Parameters.AddWithValue("@Status", transaction.Status);
+                command.Parameters.AddWithValue("@Posted", transaction.Posted);
+                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
                 command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
@@ -124,14 +128,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
-                            Status = reader["Status"].ToString(),
+                            Posted = Convert.ToBoolean(reader["Posted"]),
+                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = reader["CreatedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = reader["ModifiedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         };
                     }
@@ -174,14 +179,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
-                            Status = reader["Status"].ToString(),
+                            Posted = Convert.ToBoolean(reader["Posted"]),
+                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = reader["CreatedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = reader["ModifiedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         });
                     }
@@ -224,14 +230,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
-                            Status = reader["Status"].ToString(),
+                            Posted = Convert.ToBoolean(reader["Posted"]),
+                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = reader["CreatedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = reader["ModifiedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         });
                     }
@@ -274,14 +281,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
-                            Status = reader["Status"].ToString(),
+                            Posted = Convert.ToBoolean(reader["Posted"]),
+                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = reader["CreatedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = reader["ModifiedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         });
                     }
@@ -321,14 +329,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
-                            Status = reader["Status"].ToString(),
+                            Posted = Convert.ToBoolean(reader["Posted"]),
+                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = reader["CreatedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = reader["ModifiedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         });
                     }
@@ -347,7 +356,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"UPDATE [Transaction]
                                         SET    Amount = @Amount, 
-                                               Status = @Status, 
+                                               Posted = @Posted,
+                                               ReconciledDateTime = @ReconciledDateTime, 
                                                AccountId = @AccountId, 
                                                PayeeId = @PayeeId, 
                                                EnvelopeId = @EnvelopeId, 
@@ -360,7 +370,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@Id", transaction.Id);
                 command.Parameters.AddWithValue("@Amount", transaction.Amount);
-                command.Parameters.AddWithValue("@Status", transaction.Status);
+                command.Parameters.AddWithValue("@Posted", transaction.Posted);
+                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime);
                 command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
                 command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
