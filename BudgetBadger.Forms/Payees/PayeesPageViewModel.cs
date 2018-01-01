@@ -95,7 +95,7 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     Payees = new ObservableCollection<Payee>(result.Data);
-                    GroupedPayees = new ObservableCollection<GroupedList<Payee>>(PayeeLogic.GroupPayees(Payees, true));
+                    GroupedPayees = new ObservableCollection<GroupedList<Payee>>(PayeeLogic.GroupPayees(Payees));
                 }
                 else
                 {

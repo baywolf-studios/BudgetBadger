@@ -24,11 +24,17 @@
                     <Label Text="{Binding Past, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Current" />
-                    <Label Text="{Binding Current, StringFormat='{0:c}'}" />
+                    <Label Text="Income" />
+                    <Label Text="{Binding Income, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Remaining" />
+                    <Label Text="Budgeted" />
+                    <Label Text="{Binding Budgeted, StringFormat='{0:c}'}" />
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Available To Budget" />
                     <Label Text="{Binding AvailableToBudget, StringFormat='{0:c}'}" />
                 </StackLayout>
             </StackLayout>

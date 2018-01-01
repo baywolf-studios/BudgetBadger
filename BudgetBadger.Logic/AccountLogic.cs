@@ -96,7 +96,7 @@ namespace BudgetBadger.Logic
             return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Account>> GroupAccounts(IEnumerable<Account> accounts, bool includeDeleted = false)
+        public IEnumerable<GroupedList<Account>> GroupAccounts(IEnumerable<Account> accounts)
         {
             var groupedAccounts = new List<GroupedList<Account>>();
             var temp = accounts.GroupBy(a => a.Type.Description);
@@ -122,11 +122,6 @@ namespace BudgetBadger.Logic
                 newAccount.ModifiedDateTime = dateTimeNow;
                 await AccountDataAccess.CreateAccountAsync(newAccount);
 
-                var payee = new Payee
-                {
-                    Description = "Starting Balance"
-                };
-
                 var startingBalance = new Transaction
                 {
                     Amount = newAccount.Balance,
@@ -134,8 +129,8 @@ namespace BudgetBadger.Logic
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow,
                     Account = newAccount,
-                    Payee = new Payee { Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}") }, // starting balance guid
-                    Envelope = new Envelope { Id = new Guid("{1bc8c32d-d04d-4079-90b6-c060e3e56e16}") } // income envelope guid                    
+                    Payee = Constants.StartingBalancePayee,
+                    Envelope = Constants.IncomeEnvelope                    
                 };
 
                 await TransactionDataAccess.CreateTransactionAsync(startingBalance);

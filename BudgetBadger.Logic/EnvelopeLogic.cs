@@ -94,9 +94,11 @@ namespace BudgetBadger.Logic
             return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-
-        public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeDeleted = false)
+        public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeIncome = false)
         {
+            // always hide the transfer envelope
+            var newBudgets = budgets.Where(b => b.Id != Constants.TransferEnvelope.Id);
+
             var groupedBudgets = new List<GroupedList<Budget>>();
             var temp = budgets.GroupBy(a => a.Envelope?.Group?.Description);
             foreach (var tempGroup in temp)
@@ -104,6 +106,11 @@ namespace BudgetBadger.Logic
                 var groupedList = new GroupedList<Budget>(tempGroup.Key, tempGroup.Key[0].ToString());
                 groupedList.AddRange(tempGroup);
                 groupedBudgets.Add(groupedList);
+            }
+
+            if (!includeIncome)
+            {
+                groupedBudgets.RemoveAll(g => g.FirstOrDefault()?.Envelope?.Group?.Id == Constants.SystemEnvelopeGroup.Id);
             }
 
             return groupedBudgets;

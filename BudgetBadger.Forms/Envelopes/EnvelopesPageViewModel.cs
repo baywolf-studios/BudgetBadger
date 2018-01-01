@@ -30,8 +30,11 @@ namespace BudgetBadger.Forms.Envelopes
         public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
 
         public decimal Past { get { return Budgets.Sum(b => b.PastAmount + b.PastActivity); }}
-        public decimal Current { get { return Budgets.Sum(b => b.Amount + b.Activity); }}
-        public decimal AvailableToBudget { get { return Budgets.Sum(b => b.Remaining); }}
+        public decimal Budgeted { get { return Budgets
+                    .Where(b => b.Envelope.Id != Constants.IncomeEnvelope.Id && b.Envelope.Id != Constants.BufferEnvelope.Id)
+                    .Sum(b => b.Amount); }}
+        public decimal Income { get { return Budgets.Where(b => b.Envelope.Id == Constants.IncomeEnvelope.Id).Sum(b => b.Activity); }}
+        public decimal AvailableToBudget { get { return Past + Income - Budgeted; }}
 
         public bool SelectorMode { get; set; }
         public bool MainMode { get { return !SelectorMode; }}

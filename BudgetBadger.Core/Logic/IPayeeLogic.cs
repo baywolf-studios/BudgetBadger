@@ -13,6 +13,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Payee>>> GetPayeesAsync();
 
         IEnumerable<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
-        IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees, bool includeDeleted = false);
+        IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees);
     }
 }

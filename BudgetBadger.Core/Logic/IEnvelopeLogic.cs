@@ -23,7 +23,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<EnvelopeGroup>> UpsertEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
 
         IEnumerable<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText);
-        IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeDeleted = false);
+        IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeIncome = false);
 
         IEnumerable<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText);
     }

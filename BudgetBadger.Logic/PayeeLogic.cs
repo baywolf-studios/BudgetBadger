@@ -64,7 +64,7 @@ namespace BudgetBadger.Logic
             return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees, bool includeDeleted = false)
+        public IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees)
         {
             var groupedPayees = new List<GroupedList<Payee>>();
             var deletedPayees = payees.Where(p => p.DeletedDateTime != null);
@@ -80,6 +80,7 @@ namespace BudgetBadger.Logic
 
             var deletedGroupedList = new GroupedList<Payee>("Deleted", "Del");
 
+            var includeDeleted = false; //will get this from settings dataaccess
             if (includeDeleted)
             {
                 deletedGroupedList.AddRange(deletedPayees);
