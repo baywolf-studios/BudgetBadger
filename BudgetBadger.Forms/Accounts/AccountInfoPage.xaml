@@ -31,6 +31,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Command="{Binding NewTransactionCommand}" Text="New Transaction"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

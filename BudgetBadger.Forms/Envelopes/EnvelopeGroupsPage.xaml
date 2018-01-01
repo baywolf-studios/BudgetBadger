@@ -4,8 +4,8 @@
         <StackLayout Orientation="Vertical">
             <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
             </SearchBar>
-            <Button Text="{Binding SearchText, StringFormat='Create {0} Group'}"/>
-            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding EnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
+            <Button IsVisible="{Binding NoSearchResults}" Command="{Binding NewCommand}" Text="{Binding SearchText, StringFormat='Create {0} Group'}"/>
+            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>

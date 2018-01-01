@@ -28,6 +28,9 @@
                         <DatePicker Date="{Binding Transaction.ServiceDate}" />
                     </ViewCell>
                 </TableSection>
+                <TableSection>
+                    <SwitchCell Text="Posted" On="{Binding Transaction.Posted}" />
+                </TableSection>
                 <TableSection Title="Notes">
                     <ViewCell>
                         <Entry Text="{Binding Transaction.Notes}" />

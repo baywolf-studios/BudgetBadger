@@ -4,17 +4,12 @@
         <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form">
+        <TableView Intent="Form" HasUnevenRows="true">
             <TableRoot>
                 <TableSection Title="Details">
                     <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
                     <SwitchCell Text="On Budget" On="{Binding Account.OnBudget}" />
-                    <ViewCell>
-                        <StackLayout VerticalOptions="CenterAndExpand" Orientation="Horizontal">
-                            <Label Text="Account Type"/>
-                            <Picker HorizontalOptions="EndAndExpand" ItemDisplayBinding="{Binding Description, Mode=TwoWay}"  ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}"/>
-                        </StackLayout>
-                    </ViewCell>
+                    <EntryCell IsEnabled="{Binding IsNewAccount}" Label="Starting Balance" Text="{Binding Account.Balance}"/>
                 </TableSection>
                 <TableSection Title="Account Type">
                     <ViewCell>

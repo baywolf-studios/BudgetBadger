@@ -5,8 +5,9 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal">
-                <Label HorizontalOptions="CenterAndExpand" Text="Some Info"/>
+            <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                <Label Text="Lifetime Spent" />
+                <Label Text="{Binding LifetimeSpent, StringFormat='{0:c}'}" />
             </StackLayout>
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>
@@ -18,6 +19,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Command="{Binding NewTransactionCommand}" Text="New Transaction"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

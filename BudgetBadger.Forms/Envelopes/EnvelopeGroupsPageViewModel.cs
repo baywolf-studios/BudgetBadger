@@ -22,10 +22,13 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SelectedCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand NewCommand { get; set; }
 
         public EnvelopeGroup SelectedEnvelopeGroup { get; set; }
         public ObservableCollection<EnvelopeGroup> EnvelopeGroups { get; set; }
-        public ObservableCollection<GroupedList<EnvelopeGroup>> GroupedEnvelopeGroups { get; set; }
+        public ObservableCollection<EnvelopeGroup> FilteredEnvelopeGroups { get; set; }
+
+        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count == 0; } }
         public string SearchText { get; set; }
         public void OnSearchTextChanged()
         {
@@ -42,6 +45,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
         }
 
         public async Task ExecuteRefreshCommand()
@@ -60,7 +64,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (envelopeGroupsResult.Success)
                 {
                     EnvelopeGroups = new ObservableCollection<EnvelopeGroup>(envelopeGroupsResult.Data);
-                    //GroupedEnvelopeGroups = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(Budgets));
+                    FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>(envelopeGroupsResult.Data);
                 }
                 else
                 {
@@ -90,18 +94,33 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelopeGroup = null;
         }
 
-        public void ExecuteSearchCommand()
+        public async Task ExecuteNewCommand()
         {
-            if (string.IsNullOrEmpty(SearchText))
+            var newEnvelopeGroup = new EnvelopeGroup
             {
-                RefreshCommand.Execute(null);
+                Description = SearchText
+            };
+
+            var result = await EnvelopeLogic.UpsertEnvelopeGroupAsync(newEnvelopeGroup);
+
+            if (result.Success)
+            {
+                var parameters = new NavigationParameters
+                {
+                    { NavigationParameterType.EnvelopeGroup, result.Data }
+                };
+
+                await NavigationService.GoBackAsync(parameters);
             }
             else
             {
-                var results = EnvelopeGroups.Where(e => e.Description.Contains(SearchText));
-
-                EnvelopeGroups = new ObservableCollection<EnvelopeGroup>(results);
+                //show error
             }
+        }
+
+        public void ExecuteSearchCommand()
+        {
+            FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>(EnvelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText));
         }
 
         public override async void OnNavigatingTo(NavigationParameters parameters)

@@ -17,6 +17,7 @@ namespace BudgetBadger.Core.DataAccess
         Task<Budget> ReadBudgetAsync(Guid id);
         Task<IEnumerable<Budget>> ReadBudgetsAsync();
         Task<IEnumerable<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId);
+        Task<IEnumerable<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId);
         Task UpdateBudgetAsync(Budget budget);
         Task DeleteBudgetAsync(Guid id);
 

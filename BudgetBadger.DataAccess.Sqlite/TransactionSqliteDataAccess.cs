@@ -106,7 +106,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
-                                               Status, 
+                                               Posted,
+                                               ReconciledDateTime, 
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
@@ -157,7 +158,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
-                                               Status, 
+                                               Posted,
+                                               ReconciledDateTime, 
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
@@ -208,7 +210,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
-                                               Status, 
+                                               Posted,
+                                               ReconciledDateTime,  
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
@@ -259,7 +262,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
-                                               Status, 
+                                               Posted,
+                                               ReconciledDateTime, 
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
@@ -310,7 +314,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
-                                               Status, 
+                                               Posted,
+                                               ReconciledDateTime,  
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
@@ -371,7 +376,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@Id", transaction.Id);
                 command.Parameters.AddWithValue("@Amount", transaction.Amount);
                 command.Parameters.AddWithValue("@Posted", transaction.Posted);
-                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime);
+                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
                 command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);

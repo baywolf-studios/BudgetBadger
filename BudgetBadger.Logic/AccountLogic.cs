@@ -18,26 +18,26 @@ namespace BudgetBadger.Logic
             AccountDataAccess = accountDataAccess;
             TransactionDataAccess = transactionDataAccess;
 
-            //var accountTypes = new List<AccountType>();
-            //accountTypes.Add(new AccountType
-            //{
-            //    Id = new Guid("d4ec0d4e-e8c1-40ec-80d0-efb2071d56bb"),
-            //    Description = "Checking"
-            //});
-            //accountTypes.Add(new AccountType
-            //{
-            //    Id = new Guid("d6eb0a4f-bba5-491a-976b-504a3e15dcce"),
-            //    Description = "Savings"
-            //});
-            //accountTypes.Add(new AccountType
-            //{
-            //    Id = new Guid("c31201e4-b02a-4221-8ab0-03625641a622"),
-            //    Description = "Credit Card"
-            //});
-            //foreach (var type in accountTypes)
-            //{
-            //    accountDataAccess.CreateAccountTypeAsync(type);
-            //}
+            var accountTypes = new List<AccountType>();
+            accountTypes.Add(new AccountType
+            {
+                Id = new Guid("d4ec0d4e-e8c1-40ec-80d0-efb2071d56bb"),
+                Description = "Checking"
+            });
+            accountTypes.Add(new AccountType
+            {
+                Id = new Guid("d6eb0a4f-bba5-491a-976b-504a3e15dcce"),
+                Description = "Savings"
+            });
+            accountTypes.Add(new AccountType
+            {
+                Id = new Guid("c31201e4-b02a-4221-8ab0-03625641a622"),
+                Description = "Credit Card"
+            });
+            foreach (var type in accountTypes)
+            {
+                accountDataAccess.CreateAccountTypeAsync(type);
+            }
         }
 
         public async Task<Result> DeleteAccountAsync(Account account)
@@ -116,9 +116,29 @@ namespace BudgetBadger.Logic
 
             if (newAccount.CreatedDateTime == null)
             {
-                newAccount.CreatedDateTime = DateTime.Now;
-                newAccount.ModifiedDateTime = DateTime.Now;
+                var dateTimeNow = DateTime.Now;
+                
+                newAccount.CreatedDateTime = dateTimeNow;
+                newAccount.ModifiedDateTime = dateTimeNow;
                 await AccountDataAccess.CreateAccountAsync(newAccount);
+
+                var payee = new Payee
+                {
+                    Description = "Starting Balance"
+                };
+
+                var startingBalance = new Transaction
+                {
+                    Amount = newAccount.Balance,
+                    ServiceDate = dateTimeNow,
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow,
+                    Account = newAccount,
+                    Payee = new Payee { Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}") }, // starting balance guid
+                    Envelope = new Envelope { Id = new Guid("{1bc8c32d-d04d-4079-90b6-c060e3e56e16}") } // income envelope guid                    
+                };
+
+                await TransactionDataAccess.CreateTransactionAsync(startingBalance);
             }
             else
             {
@@ -129,7 +149,7 @@ namespace BudgetBadger.Logic
             return new Result<Account> { Success = true, Data = newAccount };
         }
 
-        public async Task<Account> FillAccount(Account account)
+        private async Task<Account> FillAccount(Account account)
         {
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
 

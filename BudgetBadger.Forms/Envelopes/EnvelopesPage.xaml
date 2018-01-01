@@ -11,12 +11,26 @@
                         &lt;
                     </Button.Text>
                 </Button>
-                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Date, StringFormat='{0:Y}'}" />
+                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.BeginDate, StringFormat='{0:Y}'}" />
                 <Button Command="{Binding NextCommand}">
                     <Button.Text>
                         &gt;
                     </Button.Text>
                 </Button>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Previous" />
+                    <Label Text="{Binding Previous, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Current" />
+                    <Label Text="{Binding Current, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Remaining" />
+                    <Label Text="{Binding AvailableToBudget, StringFormat='{0:c}'}" />
+                </StackLayout>
             </StackLayout>
             <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">

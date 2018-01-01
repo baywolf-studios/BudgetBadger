@@ -20,11 +20,14 @@ namespace BudgetBadger.Forms.Payees
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand NewTransactionCommand { get; set; }
 
         public Payee Payee { get; set; }
         public ObservableCollection<Transaction> Transactions { get; set; }
         public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
+
+        public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
 
         public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
         {
@@ -40,6 +43,7 @@ namespace BudgetBadger.Forms.Payees
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
         }
 
         public async Task ExecuteEditCommand()
@@ -90,6 +94,15 @@ namespace BudgetBadger.Forms.Payees
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteNewTransactionCommand()
+        {
+            var parameters = new NavigationParameters
+            {
+                { NavigationParameterType.Payee, Payee }
+            };
+            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
         }
 
         public override async void OnNavigatingTo(NavigationParameters parameters)

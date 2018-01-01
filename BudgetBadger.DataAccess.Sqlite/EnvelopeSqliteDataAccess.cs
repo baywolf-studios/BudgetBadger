@@ -438,7 +438,6 @@ namespace BudgetBadger.DataAccess.Sqlite
         }
 
         public async Task<IEnumerable<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
-
         {
             var budgets = new List<Budget>();
 
@@ -477,6 +476,92 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  BS.Id = @ScheduleId";
 
                 command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        budgets.Add(new Budget()
+                        {
+                            Id = new Guid(reader["Id"] as byte[]),
+                            Amount = Convert.ToDecimal(reader["Amount"]),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
+                            Schedule = new BudgetSchedule
+                            {
+                                Id = new Guid(reader["BudgetScheduleId"] as byte[]),
+                                BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"]),
+                                EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
+                                CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
+                                ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
+                                DeletedDateTime = reader["BudgetScheduleDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BudgetScheduleDeletedDateTime"])
+                            },
+                            Envelope = new Envelope
+                            {
+                                Id = new Guid(reader["EnvelopeId"] as byte[]),
+                                Description = reader["EnvelopeDescription"].ToString(),
+                                Notes = reader["EnvelopeNotes"].ToString(),
+                                CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
+                                ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
+                                DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
+                                Group = new EnvelopeGroup
+                                {
+                                    Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
+                                    Description = reader["EnvelopeGroupDescription"].ToString(),
+                                    Notes = reader["EnvelopeGroupNotes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
+                                    DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            return budgets;
+        }
+
+        public async Task<IEnumerable<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
+        {
+            var budgets = new List<Budget>();
+
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                await db.OpenAsync();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"SELECT B.Id, 
+                                               B.Amount, 
+                                               B.CreatedDateTime, 
+                                               B.ModifiedDateTime, 
+                                               B.DeletedDateTime,  
+                                               B.BudgetScheduleId, 
+                                               BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                               BS.EndDate          AS BudgetScheduleEndDate,
+                                               BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                               BS.DeletedDateTime  AS BudgetScheduleDeletedDateTime,  
+                                               B.EnvelopeId, 
+                                               E.Description       AS EnvelopeDescription, 
+                                               E.Notes             AS EnvelopeNotes, 
+                                               E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                               E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                               E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                               EG.Id               AS EnvelopeGroupId, 
+                                               EG.Description      AS EnvelopeGroupDescription,
+                                               EG.Notes            AS EnvelopeGroupNotes, 
+                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                        FROM   Budget AS B 
+                                        JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
+                                        JOIN   Envelope E ON B.EnvelopeId = E.Id
+                                        JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                        WHERE  E.Id = @EnvelopeId";
+
+                command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {

@@ -24,10 +24,15 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand NewCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
+        public BudgetSchedule Schedule { get; set; }
         public ObservableCollection<Budget> Budgets { get; set; }
         public Budget SelectedBudget { get; set; }
         public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
-        public DateTime Date { get; set; }
+
+        public decimal Previous { get { return Budgets.Sum(b => b.PreviousAmount + b.PreviousActivity); }}
+        public decimal Current { get { return Budgets.Sum(b => b.Amount + b.Activity); }}
+        public decimal AvailableToBudget { get { return Budgets.Sum(b => b.Remaining); }}
+
         public bool SelectorMode { get; set; }
         public bool NormalMode { get { return !SelectorMode; }}
 
@@ -43,7 +48,10 @@ namespace BudgetBadger.Forms.Envelopes
 
             EnvelopeLogic = envelopeLogic;
             NavigationService = navigationService;
-            Date = DateTime.Now;
+
+            var scheduleResult = EnvelopeLogic.GetCurrentBudgetScheduleAsync(DateTime.Now).Result;
+            Schedule = scheduleResult.Data;
+            Budgets = new ObservableCollection<Budget>();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
@@ -64,7 +72,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Date);
+                var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule);
 
                 if (budgetResult.Success)
                 {
@@ -84,14 +92,30 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteNextCommand()
         {
-            Date = Date.AddMonths(1);
-            await ExecuteRefreshCommand();
+            var scheduleResult = await EnvelopeLogic.GetNextBudgetScheduleAsync(Schedule);
+            if (scheduleResult.Success)
+            {
+                Schedule = scheduleResult.Data;
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                //show error
+            }
         }
 
         public async Task ExecutePreviousCommand()
         {
-            Date = Date.AddMonths(-1);
-            await ExecuteRefreshCommand();
+            var scheduleResult = await EnvelopeLogic.GetPreviousBudgetScheduleAsync(Schedule);
+            if (scheduleResult.Success)
+            {
+                Schedule = scheduleResult.Data;
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                //show error
+            }
         }
 
         public async Task ExecuteSelectedCommand()
@@ -123,15 +147,9 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteNewCommand()
         {
-            var budgetSchedule = Budgets.FirstOrDefault()?.Schedule;
-            if (budgetSchedule == null)
-            {
-                return;
-            }
-
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.BudgetSchedule, budgetSchedule }
+                { NavigationParameterType.BudgetSchedule, Schedule }
             };
 
             await NavigationService.NavigateAsync(NavigationPageName.EnvelopeEditPage, parameters);

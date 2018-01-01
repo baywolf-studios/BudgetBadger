@@ -24,7 +24,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public EnvelopeEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
         {
-            Title = "New Payee";
+            Title = "New Envelope";
             NavigationService = navigationService;
             DialogService = dialogService;
             EnvelopeLogic = envelopeLogic;

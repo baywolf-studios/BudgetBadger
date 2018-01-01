@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public Account Account { get; set; }
         public ObservableCollection<AccountType> AccountTypes { get; set; }
+        public bool IsNewAccount { get => Account.CreatedDateTime == null; }
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteAccountCommand { get; set; }

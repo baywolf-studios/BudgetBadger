@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TabbedPage Title="Test" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:BudgetBadger.Forms.Views" xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes" xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts" xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Views.MainPage">
+<TabbedPage Title="Test" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:BudgetBadger.Forms.Views" xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions" xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes" xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts" xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Views.MainPage">
     <TabbedPage.Children>
         <NavigationPage Title="Accounts">
             <x:Arguments>
@@ -16,9 +16,9 @@
                 <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Reports">
+        <NavigationPage Title="New Transaction">
             <x:Arguments>
-                <local:ReportsPage />
+                <transactions:TransactionPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="Settings">
