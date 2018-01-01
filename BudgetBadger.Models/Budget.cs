@@ -15,15 +15,15 @@ namespace BudgetBadger.Models
         public decimal Amount { get; set; }
 
         //calculated, not stored
-        public decimal PreviousAmount { get; set; }
+        public decimal PastAmount { get; set; }
 
         //calculated, not stored
         public decimal Activity { get; set; }
 
         //calculated, not stored
-        public decimal PreviousActivity { get; set; }
+        public decimal PastActivity { get; set; }
 
-        public decimal Remaining { get { return Amount + PreviousAmount + Activity + PreviousActivity; } }
+        public decimal Remaining { get { return Amount + PastAmount + Activity + PastActivity; } }
 
         public DateTime? CreatedDateTime { get; set; }
 

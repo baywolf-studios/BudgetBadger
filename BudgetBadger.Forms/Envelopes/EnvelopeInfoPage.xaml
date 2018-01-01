@@ -7,11 +7,11 @@
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Prev Activity" />
+                    <Label Text="Past Activity" />
                     <Label Text="{Binding Budget.PreviousActivity, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Prev Budget" />
+                    <Label Text="Past Budget" />
                     <Label Text="{Binding Budget.PreviousAmount, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">

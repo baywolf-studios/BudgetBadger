@@ -29,7 +29,7 @@ namespace BudgetBadger.Forms.Envelopes
         public Budget SelectedBudget { get; set; }
         public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
 
-        public decimal Previous { get { return Budgets.Sum(b => b.PreviousAmount + b.PreviousActivity); }}
+        public decimal Previous { get { return Budgets.Sum(b => b.PastAmount + b.PastActivity); }}
         public decimal Current { get { return Budgets.Sum(b => b.Amount + b.Activity); }}
         public decimal AvailableToBudget { get { return Budgets.Sum(b => b.Remaining); }}
 

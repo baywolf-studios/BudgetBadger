@@ -238,11 +238,11 @@ namespace BudgetBadger.Logic
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(budget.Envelope.Id);
             var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budget.Envelope.Id);
 
-            budget.PreviousAmount = budgets
+            budget.PastAmount = budgets
                 .Where(b => b.Schedule.EndDate < budget.Schedule.BeginDate)
                 .Sum(b2 => b2.Amount);
 
-            budget.PreviousActivity = transactions
+            budget.PastActivity = transactions
                 .Where(t => t.ServiceDate < budget.Schedule.BeginDate)
                 .Sum(t2 => t2.Amount);
 
