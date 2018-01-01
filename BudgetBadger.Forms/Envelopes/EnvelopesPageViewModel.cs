@@ -29,12 +29,12 @@ namespace BudgetBadger.Forms.Envelopes
         public Budget SelectedBudget { get; set; }
         public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
 
-        public decimal Previous { get { return Budgets.Sum(b => b.PastAmount + b.PastActivity); }}
+        public decimal Past { get { return Budgets.Sum(b => b.PastAmount + b.PastActivity); }}
         public decimal Current { get { return Budgets.Sum(b => b.Amount + b.Activity); }}
         public decimal AvailableToBudget { get { return Budgets.Sum(b => b.Remaining); }}
 
         public bool SelectorMode { get; set; }
-        public bool NormalMode { get { return !SelectorMode; }}
+        public bool MainMode { get { return !SelectorMode; }}
 
         public string SearchText { get; set; }
         public void OnSearchTextChanged()
@@ -52,6 +52,8 @@ namespace BudgetBadger.Forms.Envelopes
             var scheduleResult = EnvelopeLogic.GetCurrentBudgetScheduleAsync(DateTime.Now).Result;
             Schedule = scheduleResult.Data;
             Budgets = new ObservableCollection<Budget>();
+            SelectedBudget = null;
+            GroupedBudgets = new ObservableCollection<GroupedList<Budget>>();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());

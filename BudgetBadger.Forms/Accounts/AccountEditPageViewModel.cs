@@ -34,11 +34,9 @@ namespace BudgetBadger.Forms.Accounts
             AccountLogic = accountLogic;
             DialogService = dialogService;
 
-            Account = new Account();
-
             var typesResult = AccountLogic.GetAccountTypesAsync().Result;
-
             AccountTypes = new ObservableCollection<AccountType>(typesResult.Data);
+            Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand(), CanExecuteSaveCommand);
         }

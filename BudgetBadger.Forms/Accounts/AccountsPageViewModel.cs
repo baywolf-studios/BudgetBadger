@@ -43,6 +43,10 @@ namespace BudgetBadger.Forms.Accounts
             NavigationService = navigationService;
             DialogService = dialogService;
 
+            Accounts = new ObservableCollection<Account>();
+            SelectedAccount = null;
+            GroupedAccounts = new ObservableCollection<GroupedList<Account>>();
+
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());

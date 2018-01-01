@@ -42,6 +42,10 @@ namespace BudgetBadger.Forms.Envelopes
             DialogService = dialogService;
             EnvelopeLogic = envelopeLogic;
 
+            SelectedEnvelopeGroup = null;
+            EnvelopeGroups = new ObservableCollection<EnvelopeGroup>();
+            FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>();
+
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());

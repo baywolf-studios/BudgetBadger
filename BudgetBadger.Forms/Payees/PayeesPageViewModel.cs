@@ -28,8 +28,9 @@ namespace BudgetBadger.Forms.Payees
         public Payee SelectedPayee { get; set; }
         public ObservableCollection<GroupedList<Payee>> GroupedPayees { get; set; }
         public bool SelectorMode { get; set; }
-        public bool NormalMode { get { return !SelectorMode; }}
+        public bool MainMode { get { return !SelectorMode; }}
 
+        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; } }
         public string SearchText { get; set; }
         public void OnSearchTextChanged()
         {
@@ -42,6 +43,10 @@ namespace BudgetBadger.Forms.Payees
             PayeeLogic = payeeLogic;
             NavigationService = navigationService;
             DialogService = dialogService;
+
+            Payees = new ObservableCollection<Payee>();
+            SelectedPayee = null;
+            GroupedPayees = new ObservableCollection<GroupedList<Payee>>();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());

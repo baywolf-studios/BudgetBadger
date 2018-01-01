@@ -34,6 +34,11 @@ namespace BudgetBadger.Forms.Envelopes
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
 
+            Budget = new Budget();
+            Transactions = new ObservableCollection<Transaction>();
+            GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>();
+            SelectedTransaction = null;
+
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());

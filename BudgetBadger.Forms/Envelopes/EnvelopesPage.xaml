@@ -20,8 +20,8 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Previous" />
-                    <Label Text="{Binding Previous, StringFormat='{0:c}'}" />
+                    <Label Text="Past" />
+                    <Label Text="{Binding Past, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
                     <Label Text="Current" />

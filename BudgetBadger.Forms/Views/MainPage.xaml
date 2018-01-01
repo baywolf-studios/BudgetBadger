@@ -16,9 +16,9 @@
                 <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="New Transaction">
+        <NavigationPage Title="Reports">
             <x:Arguments>
-                <transactions:TransactionPage />
+                <local:ReportsPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="Settings">
