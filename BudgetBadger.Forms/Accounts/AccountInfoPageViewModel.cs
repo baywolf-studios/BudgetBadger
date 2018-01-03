@@ -6,13 +6,14 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountInfoPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class AccountInfoPageViewModel : INavigationAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -21,6 +22,8 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand NewTransactionCommand { get; set; }
+
+        public bool IsBusy { get; set; }
 
         public Account Account { get; set; }
         public ObservableCollection<Transaction> Transactions { get; set; }
@@ -33,7 +36,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
         {
-            Title = "Account Overview";
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
 
@@ -46,6 +48,25 @@ namespace BudgetBadger.Forms.Accounts
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
+        }
+
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            var account = parameters.GetValue<Account>(NavigationParameterType.Account);
+            if (account != null)
+            {
+                Account = account.DeepCopy();
+            }
+
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteEditCommand()
@@ -105,17 +126,6 @@ namespace BudgetBadger.Forms.Accounts
                 { NavigationParameterType.Account, Account }
             };
             await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
-        }
-
-        public override async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            var account = parameters.GetValue<Account>(NavigationParameterType.Account);
-            if (account != null)
-            {
-                Account = account.DeepCopy();
-            }
-
-            await ExecuteRefreshCommand();
         }
     }
 }

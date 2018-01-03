@@ -6,14 +6,15 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BaseViewModel
+    [AddINotifyPropertyChangedInterface]
+    public class EnvelopeGroupsPageViewModel : INavigationAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
@@ -23,6 +24,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand NewCommand { get; set; }
+
+        public bool IsBusy { get; set; }
 
         public EnvelopeGroup SelectedEnvelopeGroup { get; set; }
         public ObservableCollection<EnvelopeGroup> EnvelopeGroups { get; set; }
@@ -37,7 +40,6 @@ namespace BudgetBadger.Forms.Envelopes
 
         public EnvelopeGroupsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
         {
-            Title = "New Envelope Group";
             NavigationService = navigationService;
             DialogService = dialogService;
             EnvelopeLogic = envelopeLogic;
@@ -50,6 +52,19 @@ namespace BudgetBadger.Forms.Envelopes
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
+        }
+
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteRefreshCommand()
@@ -125,11 +140,6 @@ namespace BudgetBadger.Forms.Envelopes
         public void ExecuteSearchCommand()
         {
             FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>(EnvelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText));
-        }
-
-        public override async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
         }
     }
 }

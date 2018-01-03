@@ -6,14 +6,15 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class AccountsPageViewModel : INavigationAware
     {
         readonly IAccountLogic AccountLogic;
         readonly INavigationService NavigationService;
@@ -24,9 +25,12 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand NewCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
+        public bool IsBusy { get; set; }
+
         public ObservableCollection<Account> Accounts { get; set; }
         public Account SelectedAccount { get; set; }
         public ObservableCollection<GroupedList<Account>> GroupedAccounts { get; set; }
+
         public bool SelectorMode { get; set; }
         public bool NormalMode { get { return !SelectorMode; } }
 
@@ -38,7 +42,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {
-            Title = "Accounts";
             AccountLogic = accountLogic;
             NavigationService = navigationService;
             DialogService = dialogService;
@@ -53,6 +56,22 @@ namespace BudgetBadger.Forms.Accounts
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
+        public async void OnNavigatedTo(NavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            // returns default bool if none present
+            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
+
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
 
         public async Task ExecuteSelectedCommand()
         {
@@ -117,19 +136,6 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteSearchCommand()
         {
             GroupedAccounts = new ObservableCollection<GroupedList<Account>>(AccountLogic.GroupAccounts(AccountLogic.SearchAccounts(Accounts, SearchText)));
-        }
-
-        public override async void OnNavigatedTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
-        }
-
-        public override async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
-
-            await ExecuteRefreshCommand();
         }
     }
 }

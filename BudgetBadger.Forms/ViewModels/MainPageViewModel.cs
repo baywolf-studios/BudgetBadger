@@ -1,9 +1,10 @@
 ﻿using System;
-using Prism.DryIoc;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.ViewModels
 {
-    public class MainPageViewModel : BaseViewModel
+    [AddINotifyPropertyChangedInterface]
+    public class MainPageViewModel
     {
         public MainPageViewModel()
         {

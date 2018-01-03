@@ -4,26 +4,30 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class PayeeEditPageViewModel : INavigationAware
     {
         readonly IPayeeLogic PayeeLogic;
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
 
         public Payee Payee { get; set; }
+
+        public bool NewMode { get => Payee.CreatedDateTime == null; }
+        public bool EditMode { get => !NewMode; }
+
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
         public PayeeEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
         {
-            Title = "New Payee";
             NavigationService = navigationService;
             DialogService = dialogService;
             PayeeLogic = payeeLogic;
@@ -34,14 +38,21 @@ namespace BudgetBadger.Forms.Payees
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
-        public override void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
             if (payee != null)
             {
                 Payee = payee.DeepCopy();
-                Title = "Edit Payee";
             }
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteSaveCommand()

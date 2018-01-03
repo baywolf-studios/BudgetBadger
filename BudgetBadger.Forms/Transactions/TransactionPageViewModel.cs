@@ -1,24 +1,27 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class TransactionPageViewModel : INavigationAware
     {
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
         readonly ITransactionLogic TransLogic;
 
         public Transaction Transaction { get; set; }
+
+        public bool NewMode { get => Transaction.CreatedDateTime == null; }
+        public bool EditMode { get => !NewMode; }
 
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
@@ -27,7 +30,6 @@ namespace BudgetBadger.Forms.Transactions
 
         public TransactionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, ITransactionLogic transLogic)
         {
-            Title = "New Transaction";
             NavigationService = navigationService;
             DialogService = dialogService;
             TransLogic = transLogic;
@@ -40,13 +42,12 @@ namespace BudgetBadger.Forms.Transactions
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
         }
 
-        public override void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
             var transaction = parameters.GetValue<Transaction>(NavigationParameterType.Transaction);
             if (transaction != null)
             {
                 Transaction = transaction.DeepCopy();
-                Title = "Edit Transaction";
             }
 
             var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
@@ -66,6 +67,14 @@ namespace BudgetBadger.Forms.Transactions
             {
                 Transaction.Envelope = envelope.DeepCopy();
             }
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteSaveCommand()

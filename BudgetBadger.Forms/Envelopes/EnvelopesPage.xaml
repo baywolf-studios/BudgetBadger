@@ -38,11 +38,13 @@
                     <Label Text="{Binding AvailableToBudget, StringFormat='{0:c}'}" />
                 </StackLayout>
             </StackLayout>
-            <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.Header>
+                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Envelope.Description}" Detail="{Binding Remaining, StringFormat='{0:C}'}" />

@@ -6,13 +6,14 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class EnvelopeInfoPageViewModel : INavigationAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -22,6 +23,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand EditCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
 
+        public bool IsBusy { get; set; }
+
         public Budget Budget { get; set; }
         public ObservableCollection<Transaction> Transactions { get; set; }
         public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
@@ -29,8 +32,6 @@ namespace BudgetBadger.Forms.Envelopes
 
         public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
         {
-            Title = "Envelope Overview";
-
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
 
@@ -43,6 +44,25 @@ namespace BudgetBadger.Forms.Envelopes
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+        }
+
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            var budget = parameters.GetValue<Budget>(NavigationParameterType.Budget);
+            if (budget != null)
+            {
+                Budget = budget.DeepCopy();
+            }
+
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteEditCommand()
@@ -102,17 +122,6 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 IsBusy = false;
             }
-        }
-
-        public override async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            var budget = parameters.GetValue<Budget>(NavigationParameterType.Budget);
-            if (budget != null)
-            {
-                Budget = budget.DeepCopy();
-            }
-
-            await ExecuteRefreshCommand();
         }
     }
 }

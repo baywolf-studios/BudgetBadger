@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="{Binding Title}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage">
+<ContentPage Title="Edit Account" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage" Binding="{Binding NewMode}" Value="True">
+            <Setter Property="Title" Value="New Account" />
+        </DataTrigger>
+    </ContentPage.Triggers>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form" HasUnevenRows="true">
+        <TableView Intent="Form">
             <TableRoot>
                 <TableSection Title="Details">
                     <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
                     <SwitchCell Text="On Budget" On="{Binding Account.OnBudget}" />
-                    <EntryCell IsEnabled="{Binding IsNewAccount}" Label="Starting Balance" Text="{Binding Account.Balance}"/>
+                    <EntryCell IsEnabled="{Binding NewMode}" Label="Starting Balance" Text="{Binding Account.Balance}"/>
                 </TableSection>
                 <TableSection Title="Account Type">
                     <ViewCell>

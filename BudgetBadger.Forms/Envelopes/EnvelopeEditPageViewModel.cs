@@ -4,27 +4,31 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class EnvelopeEditPageViewModel : INavigationAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
 
         public Budget Budget { get; set; }
+
+        public bool NewMode { get => Budget.CreatedDateTime == null; }
+        public bool EditMode { get => !NewMode; }
+
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand GroupSelectedCommand { get; set; }
 
         public EnvelopeEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
         {
-            Title = "New Envelope";
             NavigationService = navigationService;
             DialogService = dialogService;
             EnvelopeLogic = envelopeLogic;
@@ -55,13 +59,12 @@ namespace BudgetBadger.Forms.Envelopes
             await NavigationService.NavigateAsync(NavigationPageName.EnvelopeGroupsPage);
         }
 
-        public override void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(NavigationParameterType.Budget);
             if (budget != null)
             {
                 Budget = budget.DeepCopy();
-                Title = "Edit Budget";
             }
 
             var envelopeGroup = parameters.GetValue<EnvelopeGroup>(NavigationParameterType.EnvelopeGroup);
@@ -75,6 +78,14 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 Budget.Schedule = budgetSchedule.DeepCopy();
             }
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
     }
 }

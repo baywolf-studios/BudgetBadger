@@ -6,14 +6,15 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class AccountEditPageViewModel : INavigationAware
     {
         readonly IAccountLogic AccountLogic;
         readonly INavigationService NavigationService;
@@ -21,7 +22,9 @@ namespace BudgetBadger.Forms.Accounts
 
         public Account Account { get; set; }
         public ObservableCollection<AccountType> AccountTypes { get; set; }
-        public bool IsNewAccount { get => Account.CreatedDateTime == null; }
+
+        public bool NewMode { get => Account.CreatedDateTime == null; }
+        public bool EditMode { get => !NewMode; }
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteAccountCommand { get; set; }
@@ -29,7 +32,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public AccountEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {
-            Title = "New Account";
             NavigationService = navigationService;
             AccountLogic = accountLogic;
             DialogService = dialogService;
@@ -41,15 +43,22 @@ namespace BudgetBadger.Forms.Accounts
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand(), CanExecuteSaveCommand);
         }
 
-        public override void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(NavigationParameterType.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
                 Account.Type = AccountTypes.FirstOrDefault(t => t.Id == Account.Type.Id);
-                Title = "Edit Account";
             }
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteSaveCommand()

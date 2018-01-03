@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Navigation;
-using BudgetBadger.Forms.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BaseViewModel, INavigationAware
+    [AddINotifyPropertyChangedInterface]
+    public class PayeesPageViewModel : INavigationAware
     {
         readonly IPayeeLogic PayeeLogic;
         readonly INavigationService NavigationService;
@@ -24,9 +24,12 @@ namespace BudgetBadger.Forms.Payees
         public ICommand NewCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
+        public bool IsBusy { get; set; }
+
         public ObservableCollection<Payee> Payees { get; set; }
         public Payee SelectedPayee { get; set; }
         public ObservableCollection<GroupedList<Payee>> GroupedPayees { get; set; }
+
         public bool SelectorMode { get; set; }
         public bool MainMode { get { return !SelectorMode; }}
 
@@ -39,7 +42,6 @@ namespace BudgetBadger.Forms.Payees
 
         public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
         {
-            Title = "Payees";
             PayeeLogic = payeeLogic;
             NavigationService = navigationService;
             DialogService = dialogService;
@@ -54,6 +56,22 @@ namespace BudgetBadger.Forms.Payees
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
+        public async void OnNavigatedTo(NavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public async void OnNavigatingTo(NavigationParameters parameters)
+        {
+            // returns default bool if none present
+            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
+
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
 
         public async Task ExecuteSelectedCommand()
         {
@@ -119,19 +137,6 @@ namespace BudgetBadger.Forms.Payees
         public void ExecuteSearchCommand()
         {
             GroupedPayees = new ObservableCollection<GroupedList<Payee>>(PayeeLogic.GroupPayees(PayeeLogic.SearchPayees(Payees, SearchText)));
-        }
-
-        public override  async void OnNavigatedTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
-        }
-
-        public override  async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
-
-            await ExecuteRefreshCommand();
         }
     }
 }

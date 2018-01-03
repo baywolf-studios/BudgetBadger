@@ -1,12 +1,13 @@
 ﻿using System;
+using PropertyChanged;
 
 namespace BudgetBadger.Forms.ViewModels
 {
-    public class ReportsPageViewModel : BaseViewModel
+    [AddINotifyPropertyChangedInterface]
+    public class ReportsPageViewModel
     {
         public ReportsPageViewModel()
         {
-            Title = "Reports";
         }
     }
 }
