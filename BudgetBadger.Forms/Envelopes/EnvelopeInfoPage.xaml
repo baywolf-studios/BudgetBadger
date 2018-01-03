@@ -7,25 +7,25 @@
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Past Activity" />
-                    <Label Text="{Binding Budget.PastActivity, StringFormat='{0:c}'}" />
+                    <Label FontSize="Small" Text="Past Activity" />
+                    <Label FontSize="Small" Text="{Binding Budget.PastActivity, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Past Budget" />
-                    <Label Text="{Binding Budget.PastAmount, StringFormat='{0:c}'}" />
+                    <Label FontSize="Small" Text="Past Budget" />
+                    <Label FontSize="Small" Text="{Binding Budget.PastAmount, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Activity" />
-                    <Label Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
+                    <Label FontSize="Small" Text="Activity" />
+                    <Label FontSize="Small" Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Budget" />
-                    <Label Text="{Binding Budget.Amount, StringFormat='{0:c}'}" />
+                    <Label FontSize="Small" Text="Budget" />
+                    <Label FontSize="Small" Text="{Binding Budget.Amount, StringFormat='{0:c}'}" />
                 </StackLayout>
             </StackLayout>
             <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                <Label Text="Remaining" />
-                <Label Text="{Binding Budget.Remaining, StringFormat='{0:c}'}" />
+                <Label FontSize="Small" Text="Remaining" />
+                <Label FontSize="Small" Text="{Binding Budget.Remaining, StringFormat='{0:c}'}" />
             </StackLayout>
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>

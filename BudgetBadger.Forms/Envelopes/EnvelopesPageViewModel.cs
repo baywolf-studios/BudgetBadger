@@ -32,12 +32,29 @@ namespace BudgetBadger.Forms.Envelopes
         public Budget SelectedBudget { get; set; }
         public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
 
-        public decimal Past { get { return Budgets.Sum(b => b.PastAmount + b.PastActivity); }}
+        public decimal Past
+        {
+            get
+            {
+                var pastBudgeted = Budgets
+                    .Where(b => b.Envelope.Id != Constants.IncomeEnvelope.Id && b.Envelope.Id != Constants.BufferEnvelope.Id)
+                    .Sum(b => b.PastAmount);
+
+                var pastIncome = Budgets
+                    .Where(b => b.Envelope.Id == Constants.IncomeEnvelope.Id)
+                    .Sum(b => b.PastActivity);
+
+                var pastOverSpent = Budgets.Sum(b => Math.Min(b.PastAmount + b.PastActivity, 0));
+
+                return pastIncome + pastOverSpent - pastBudgeted;
+            }
+        }
+        public decimal OverSpent { get { return Budgets.Where(b => b.Remaining < 0).Sum(b => b.Remaining); }}
         public decimal Budgeted { get { return Budgets
                     .Where(b => b.Envelope.Id != Constants.IncomeEnvelope.Id && b.Envelope.Id != Constants.BufferEnvelope.Id)
                     .Sum(b => b.Amount); }}
         public decimal Income { get { return Budgets.Where(b => b.Envelope.Id == Constants.IncomeEnvelope.Id).Sum(b => b.Activity); }}
-        public decimal AvailableToBudget { get { return Past + Income - Budgeted; }}
+        public decimal AvailableToBudget { get { return Past + Income + OverSpent - Budgeted; }}
 
         public bool SelectorMode { get; set; }
         public bool MainMode { get { return !SelectorMode; }}

@@ -244,18 +244,40 @@ namespace BudgetBadger.Logic
         {
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(budget.Envelope.Id);
             var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budget.Envelope.Id);
+            BudgetSchedule schedule = null;
 
-            budget.PastAmount = budgets
-                .Where(b => b.Schedule.EndDate < budget.Schedule.BeginDate)
-                .Sum(b2 => b2.Amount);
+            // will get the previous schedules amounts and activities for the buffer envelope since it lags
+            if (budget.Envelope.Id == Constants.BufferEnvelope.Id)
+            {
+                var scheduleResult = await GetPreviousBudgetScheduleAsync(budget.Schedule);
+                if (scheduleResult.Success)
+                {
+                    schedule = scheduleResult.Data;
+                }
+            }
+            else
+            {
+                schedule = budget.Schedule;
+            }
 
-            budget.PastActivity = transactions
-                .Where(t => t.ServiceDate < budget.Schedule.BeginDate)
-                .Sum(t2 => t2.Amount);
+            if (schedule != null)
+            {
+                budget.PastAmount = budgets
+                    .Where(b => b.Schedule.EndDate < schedule.BeginDate)
+                        .Sum(b2 => b2.Amount);
 
-            budget.Activity = transactions
-                .Where(t => t.ServiceDate >= budget.Schedule.BeginDate && t.ServiceDate <= budget.Schedule.EndDate)
-                .Sum(t2 => t2.Amount);
+                budget.PastActivity = transactions
+                    .Where(t => t.ServiceDate < schedule.BeginDate)
+                    .Sum(t2 => t2.Amount);
+
+                budget.Activity = transactions
+                    .Where(t => t.ServiceDate >= schedule.BeginDate && t.ServiceDate <= schedule.EndDate)
+                    .Sum(t2 => t2.Amount);
+            }
+            else
+            {
+                throw new Exception("couldn't locate schedule");
+            }
 
             return budget;
         }

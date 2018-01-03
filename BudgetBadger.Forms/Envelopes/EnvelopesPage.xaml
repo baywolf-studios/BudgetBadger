@@ -18,32 +18,46 @@
                     </Button.Text>
                 </Button>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Past" />
-                    <Label Text="{Binding Past, StringFormat='{0:c}'}" />
-                </StackLayout>
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Income" />
-                    <Label Text="{Binding Income, StringFormat='{0:c}'}" />
-                </StackLayout>
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Budgeted" />
-                    <Label Text="{Binding Budgeted, StringFormat='{0:c}'}" />
-                </StackLayout>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Available To Budget" />
-                    <Label Text="{Binding AvailableToBudget, StringFormat='{0:c}'}" />
-                </StackLayout>
-            </StackLayout>
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                    <StackLayout Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/> 
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                                <Label FontSize="Small" Text="Past" />
+                                <Label FontSize="Small" Text="{Binding Past, StringFormat='{0:c}'}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                                <Label FontSize="Small" Text="Income" />
+                                <Label FontSize="Small" Text="{Binding Income, StringFormat='{0:c}'}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                                <Label FontSize="Small" Text="Budgeted" />
+                                <Label FontSize="Small" Text="{Binding Budgeted, StringFormat='{0:c}'}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="3" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                                <Label FontSize="Small" Text="Over Spent" />
+                                <Label FontSize="Small" Text="{Binding OverSpent, StringFormat='{0:c}'}" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Grid.ColumnSpan="4" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                                <Label FontSize="Small" Text="Available To Budget" />
+                                <Label FontSize="Small" Text="{Binding AvailableToBudget, StringFormat='{0:c}'}" />
+                            </StackLayout>
+                        </Grid>
+                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                    </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
