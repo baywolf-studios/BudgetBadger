@@ -242,44 +242,73 @@ namespace BudgetBadger.Logic
 
         private async Task<Budget> FillBudget(Budget budget)
         {
-            var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(budget.Envelope.Id);
-            var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budget.Envelope.Id);
-            BudgetSchedule schedule = null;
+            var newBudget = budget.DeepCopy();
+            var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(newBudget.Envelope.Id);
+            var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(newBudget.Envelope.Id);
+            BudgetSchedule schedule = newBudget.Schedule;
 
             // will get the previous schedules amounts and activities for the buffer envelope since it lags
-            if (budget.Envelope.Id == Constants.BufferEnvelope.Id)
+            if (newBudget.Envelope.IsBuffer())
             {
-                var scheduleResult = await GetPreviousBudgetScheduleAsync(budget.Schedule);
+                var scheduleResult = await GetPreviousBudgetScheduleAsync(newBudget.Schedule);
                 if (scheduleResult.Success)
                 {
                     schedule = scheduleResult.Data;
                 }
             }
+
+            newBudget.PastAmount = budgets
+                .Where(b => b.Schedule.EndDate < schedule.BeginDate)
+                    .Sum(b2 => b2.Amount);
+
+            newBudget.PastActivity = transactions
+                .Where(t => t.ServiceDate < schedule.BeginDate)
+                .Sum(t2 => t2.Amount);
+
+            newBudget.Activity = transactions
+                .Where(t => t.ServiceDate >= schedule.BeginDate && t.ServiceDate <= schedule.EndDate)
+                .Sum(t2 => t2.Amount);
+
+            return newBudget;
+        }
+
+        public async Task<Result<EnvelopesOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule)
+        {
+            var result = new Result<EnvelopesOverview>();
+            var budgetResult = await GetBudgetsAsync(budgetSchedule);
+
+            if (budgetResult.Success)
+            {
+                var budgets = budgetResult.Data;
+
+                var pastBudgeted = budgets
+                    .Where(b => !b.Envelope.IsIncome() && !b.Envelope.IsBuffer())
+                    .Sum(b => b.PastAmount);
+
+                var pastIncome = budgets
+                    .Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer())
+                    .Sum(b => b.PastActivity);
+
+                var pastOverSpent = Math.Abs(budgets.Sum(b => Math.Min(b.PastAmount + b.PastActivity, 0)));
+
+                var past = pastIncome - pastOverSpent - pastBudgeted;
+
+                var budgeted = budgets
+                    .Where(b => !b.Envelope.IsIncome() && !b.Envelope.IsBuffer())
+                    .Sum(b => b.Amount);
+
+                var income = budgets.Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer()).Sum(b => b.Activity);
+
+                result.Success = true;
+                result.Data = new EnvelopesOverview(past, income, budgeted);
+            }
             else
             {
-                schedule = budget.Schedule;
+                result.Success = false;
+                result.Message = budgetResult.Message;
             }
 
-            if (schedule != null)
-            {
-                budget.PastAmount = budgets
-                    .Where(b => b.Schedule.EndDate < schedule.BeginDate)
-                        .Sum(b2 => b2.Amount);
-
-                budget.PastActivity = transactions
-                    .Where(t => t.ServiceDate < schedule.BeginDate)
-                    .Sum(t2 => t2.Amount);
-
-                budget.Activity = transactions
-                    .Where(t => t.ServiceDate >= schedule.BeginDate && t.ServiceDate <= schedule.EndDate)
-                    .Sum(t2 => t2.Amount);
-            }
-            else
-            {
-                throw new Exception("couldn't locate schedule");
-            }
-
-            return budget;
+            return result;
         }
 
         public async Task<Result<BudgetSchedule>> GetCurrentBudgetScheduleAsync(DateTime dateTime)
