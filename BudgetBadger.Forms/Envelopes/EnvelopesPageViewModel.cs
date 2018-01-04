@@ -27,7 +27,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public bool IsBusy { get; set; }
 
-        public EnvelopesOverview Overview { get; set; }
+        public BudgetScheduleOverview Overview { get; set; }
         public BudgetSchedule Schedule { get; set; }
         public ObservableCollection<Budget> Budgets { get; set; }
         public Budget SelectedBudget { get; set; }

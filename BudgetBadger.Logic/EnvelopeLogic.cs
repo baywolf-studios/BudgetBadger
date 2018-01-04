@@ -272,9 +272,9 @@ namespace BudgetBadger.Logic
             return newBudget;
         }
 
-        public async Task<Result<EnvelopesOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule)
+        public async Task<Result<BudgetScheduleOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule)
         {
-            var result = new Result<EnvelopesOverview>();
+            var result = new Result<BudgetScheduleOverview>();
             var budgetResult = await GetBudgetsAsync(budgetSchedule);
 
             if (budgetResult.Success)
@@ -289,9 +289,7 @@ namespace BudgetBadger.Logic
                     .Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer())
                     .Sum(b => b.PastActivity);
 
-                var pastOverSpent = Math.Abs(budgets.Sum(b => Math.Min(b.PastAmount + b.PastActivity, 0)));
-
-                var past = pastIncome - pastOverSpent - pastBudgeted;
+                var past = pastIncome - pastBudgeted;
 
                 var budgeted = budgets
                     .Where(b => !b.Envelope.IsIncome() && !b.Envelope.IsBuffer())
@@ -300,7 +298,7 @@ namespace BudgetBadger.Logic
                 var income = budgets.Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer()).Sum(b => b.Activity);
 
                 result.Success = true;
-                result.Data = new EnvelopesOverview(past, income, budgeted);
+                result.Data = new BudgetScheduleOverview(past, income, budgeted);
             }
             else
             {

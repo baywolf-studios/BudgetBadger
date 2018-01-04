@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BudgetBadger.Models
 {
-    public class EnvelopesOverview
+    public class BudgetScheduleOverview
     {
         public decimal Past { get; private set; }
 
@@ -11,7 +11,7 @@ namespace BudgetBadger.Models
 
         public decimal AvailableToBudget { get => Past + Income - Budgeted; }
 
-        public EnvelopesOverview(decimal past, decimal income, decimal budgeted)
+        public BudgetScheduleOverview(decimal past, decimal income, decimal budgeted)
         {
             Past = past;
             Income = income;

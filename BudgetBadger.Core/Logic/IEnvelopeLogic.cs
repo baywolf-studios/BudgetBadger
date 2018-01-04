@@ -11,7 +11,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<BudgetSchedule>> GetNextBudgetScheduleAsync(BudgetSchedule currentSchedule);
         Task<Result<BudgetSchedule>> GetPreviousBudgetScheduleAsync(BudgetSchedule currentSchedule);
 
-        Task<Result<EnvelopesOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule);
+        Task<Result<BudgetScheduleOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule);
 
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync();
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule);
