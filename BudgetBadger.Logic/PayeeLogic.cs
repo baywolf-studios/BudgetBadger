@@ -78,15 +78,13 @@ namespace BudgetBadger.Logic
                 groupedPayees.Add(groupedList);
             }
 
-            var deletedGroupedList = new GroupedList<Payee>("Deleted", "Del");
-
             var includeDeleted = false; //will get this from settings dataaccess
             if (includeDeleted)
             {
+                var deletedGroupedList = new GroupedList<Payee>("Deleted", "Del");
                 deletedGroupedList.AddRange(deletedPayees);
+                groupedPayees.Add(deletedGroupedList);
             }
-
-            groupedPayees.Add(deletedGroupedList);
 
             return groupedPayees;
         }
