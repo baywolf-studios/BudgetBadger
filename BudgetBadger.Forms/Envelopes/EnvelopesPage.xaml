@@ -5,7 +5,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal" IsVisible="{Binding NormalMode}">
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding MainMode}">
                 <Button Command="{Binding PreviousCommand}">
                     <Button.Text>
                         &lt;
@@ -18,55 +18,53 @@
                     </Button.Text>
                 </Button>
             </StackLayout>
+            <Grid IsVisible="{Binding MainMode}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label FontSize="10" Text="Past" />
+                    <Label FontSize="10" Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <Label VerticalOptions="CenterAndExpand" Grid.Column="1" FontSize="Small" Text="+" />
+                <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label FontSize="10" Text="Income" />
+                    <Label FontSize="10" Text="{Binding Schedule.Income, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <Label VerticalOptions="CenterAndExpand" Grid.Column="3" FontSize="Small" Text="-" />
+                <StackLayout Grid.Row="0" Grid.Column="4" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label FontSize="10" Text="Budgeted" />
+                    <Label FontSize="10" Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <Label VerticalOptions="CenterAndExpand" Grid.Column="5" FontSize="Small" Text="-" />
+                <StackLayout Grid.Row="0" Grid.Column="6" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label FontSize="10" Text="Overspend" />
+                    <Label FontSize="10" Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}" />
+                </StackLayout>
+                <Label VerticalOptions="CenterAndExpand" Grid.Column="7" FontSize="Small" Text="=" />
+                <StackLayout Grid.Row="0" Grid.Column="8" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                    <Label FontSize="10" Text="Balance" />
+                    <Label FontSize="10" Text="{Binding Schedule.Balance, StringFormat='{0:c}'}" />
+                </StackLayout>
+            </Grid>
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <StackLayout Orientation="Vertical">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/> 
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/> 
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                                <Label FontSize="10" Text="Past" />
-                                <Label FontSize="10" Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
-                            </StackLayout>
-                            <Label VerticalOptions="CenterAndExpand" Grid.Column="1" FontSize="Small" Text="+"/>
-                            <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                                <Label FontSize="10" Text="Income" />
-                                <Label FontSize="10" Text="{Binding Schedule.Income, StringFormat='{0:c}'}" />
-                            </StackLayout>
-                            <Label VerticalOptions="CenterAndExpand" Grid.Column="3" FontSize="Small" Text="-"/>
-                            <StackLayout Grid.Row="0" Grid.Column="4" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                                <Label FontSize="10" Text="Budgeted" />
-                                <Label FontSize="10" Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}" />
-                            </StackLayout>
-                            <Label VerticalOptions="CenterAndExpand" Grid.Column="5" FontSize="Small" Text="-"/>
-                            <StackLayout Grid.Row="0" Grid.Column="6" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                                <Label FontSize="10" Text="Overspend" />
-                                <Label FontSize="10" Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}" />
-                            </StackLayout>
-                            <Label VerticalOptions="CenterAndExpand" Grid.Column="7" FontSize="Small" Text="="/>
-                            <StackLayout Grid.Row="0" Grid.Column="8" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                                <Label FontSize="10" Text="Balance" />
-                                <Label FontSize="10" Text="{Binding Schedule.Balance, StringFormat='{0:c}'}" />
-                            </StackLayout>
-                        </Grid>
-                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
-                    </StackLayout>
+                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>

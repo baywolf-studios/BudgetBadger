@@ -92,7 +92,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (budgetResult.Success)
                 {
                     Budgets = new ObservableCollection<Budget>(budgetResult.Data);
-                    GroupedBudgets = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(Budgets));
+                    GroupedBudgets = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(Budgets, SelectorMode));
                 }
                 else
                 {

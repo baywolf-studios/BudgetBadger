@@ -9,7 +9,7 @@
                 <ListView.Header>
                     <StackLayout Orientation="Vertical">
                         <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
-                        <Button IsVisible="{Binding NoSearchResults}" Command="{Binding NewCommand}" Text="{Binding SearchText, StringFormat='Create {0} Group'}"/>
+                        <Button IsVisible="{Binding NoSearchResults}" Command="{Binding NewCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>
