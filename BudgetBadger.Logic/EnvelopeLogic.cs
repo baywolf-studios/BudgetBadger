@@ -251,15 +251,17 @@ namespace BudgetBadger.Logic
             var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(newBudget.Envelope.Id);
             BudgetSchedule schedule = newBudget.Schedule;
 
-            // will get the previous schedules amounts and activities for the buffer envelope since it lags
-            if (newBudget.Envelope.IsBuffer())
-            {
-                var scheduleResult = await GetPreviousBudgetScheduleAsync(newBudget.Schedule);
-                if (scheduleResult.Success)
-                {
-                    schedule = scheduleResult.Data;
-                }
-            }
+            // shouldn't need this since all the summing is in teh schedule portion
+            // i'd want to see how much is in the buffer when selecting
+            //// will get the previous schedules amounts and activities for the buffer envelope since it lags
+            //if (newBudget.Envelope.IsBuffer())
+            //{
+            //    var scheduleResult = await GetPreviousBudgetScheduleAsync(newBudget.Schedule);
+            //    if (scheduleResult.Success)
+            //    {
+            //        schedule = scheduleResult.Data;
+            //    }
+            //}
 
             newBudget.PastAmount = budgets
                 .Where(b => b.Schedule.EndDate < schedule.BeginDate)
