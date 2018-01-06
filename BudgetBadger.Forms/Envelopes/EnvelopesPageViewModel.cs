@@ -27,7 +27,6 @@ namespace BudgetBadger.Forms.Envelopes
 
         public bool IsBusy { get; set; }
 
-        public BudgetScheduleOverview Overview { get; set; }
         public BudgetSchedule Schedule { get; set; }
         public ObservableCollection<Budget> Budgets { get; set; }
         public Budget SelectedBudget { get; set; }
@@ -89,16 +88,6 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var overviewResult = await EnvelopeLogic.GetEnvelopesOverview(Schedule);
-                if (overviewResult.Success)
-                {
-                    Overview = overviewResult.Data;
-                }
-                else
-                {
-                    //show error
-                }
-
                 var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule);
                 if (budgetResult.Success)
                 {

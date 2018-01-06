@@ -12,6 +12,22 @@ namespace BudgetBadger.Models
 
         public DateTime EndDate { get; set; }
 
+        //calculated
+        public decimal Past { get; set; }
+
+        //calculated
+        public decimal Income { get; set; }
+
+        //calculated 
+        public decimal Budgeted { get; set; }
+
+        public decimal ToBudget { get => Income - Budgeted; }
+
+        //calculated
+        public decimal Overspend { get; set; }
+
+        public decimal Balance { get => Past + ToBudget - Overspend; }
+
         public DateTime? CreatedDateTime { get; set; }
 
         public DateTime? ModifiedDateTime { get; set; }

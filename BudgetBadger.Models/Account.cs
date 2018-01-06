@@ -14,6 +14,7 @@ namespace BudgetBadger.Models
 
         public string Notes { get; set; }
 
+        //calculated
         public decimal Balance { get; set; }
 
         public bool OnBudget { get; set; }

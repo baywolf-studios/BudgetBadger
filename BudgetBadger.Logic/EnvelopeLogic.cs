@@ -18,6 +18,10 @@ namespace BudgetBadger.Logic
         {
             EnvelopeDataAccess = envelopeDataAccess;
             TransactionDataAccess = transactionDataAccess;
+
+            envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.SystemEnvelopeGroup);
+            envelopeDataAccess.CreateEnvelopeAsync(Constants.IncomeEnvelope);
+            envelopeDataAccess.CreateEnvelopeAsync(Constants.BufferEnvelope);
         }
 
         public Task<Result> DeleteBudgetAsync(Budget budget)
@@ -269,78 +273,151 @@ namespace BudgetBadger.Logic
                 .Where(t => t.ServiceDate >= schedule.BeginDate && t.ServiceDate <= schedule.EndDate)
                 .Sum(t2 => t2.Amount);
 
+            newBudget.Schedule = await FillBudgetSchedule(newBudget.Schedule);
+
             return newBudget;
         }
 
-        public async Task<Result<BudgetScheduleOverview>> GetEnvelopesOverview(BudgetSchedule budgetSchedule)
+        private async Task<BudgetSchedule> FillBudgetSchedule(BudgetSchedule budgetSchedule)
         {
-            var result = new Result<BudgetScheduleOverview>();
-            var budgetResult = await GetBudgetsAsync(budgetSchedule);
+            var allTransactions = await TransactionDataAccess.ReadTransactionsAsync();
+            var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
 
-            if (budgetResult.Success)
+            // get all income
+            var incomeTransactions = allTransactions.Where(t => t.Envelope.IsIncome());
+
+            var pastIncome = incomeTransactions
+                .Where(t => t.ServiceDate < budgetSchedule.BeginDate)
+                .Sum(t => t.Amount);
+            var currentIncome = incomeTransactions
+                .Where(t => t.ServiceDate >= budgetSchedule.BeginDate && t.ServiceDate <= budgetSchedule.EndDate)
+                .Sum(t => t.Amount);
+
+            // get all buffers
+            var bufferTransactions = allTransactions.Where(t => t.Envelope.IsBuffer());
+            var previousScheduleDate = GetPreviousBudgetScheduleDate(budgetSchedule.BeginDate);
+            var previousSchedule = await GetBudgetScheduleFromDate(previousScheduleDate);
+
+            var pastBufferIncome = bufferTransactions
+                .Where(t => t.ServiceDate < previousSchedule.BeginDate)
+                .Sum(t => t.Amount);
+            var currentBufferIncome = bufferTransactions
+                .Where(t => t.ServiceDate >= previousSchedule.BeginDate && t.ServiceDate <= previousSchedule.EndDate)
+                .Sum(t => t.Amount);
+
+            // get all budget amounts
+            var budgets = await EnvelopeDataAccess.ReadBudgetsAsync();
+
+            var currentBudgetAmount = budgets
+                .Where(b => !b.Envelope.IsIncome()
+                       && !b.Envelope.IsBuffer()
+                       && b.Schedule.Id == budgetSchedule.Id)
+                .Sum(b => b.Amount);
+            var pastBudgetAmount = budgets
+                .Where(b => !b.Envelope.IsIncome()
+                       && !b.Envelope.IsBuffer()
+                       && b.Schedule.EndDate < budgetSchedule.BeginDate)
+                .Sum(b => b.Amount);
+
+            // past is all past income + all past budget amounts
+            var past = (pastIncome + pastBufferIncome) - pastBudgetAmount;
+
+            // income is income for this schedule
+            var income = currentIncome + currentBufferIncome;
+
+            // budgeted is amounts for this schedule
+            var budgeted = currentBudgetAmount;
+
+            // overspend is current and past budget amounts + current and past transactions (if negative)
+            decimal overspend = 0;
+            foreach (var envelope in envelopes.Where(e => !e.IsIncome() && !e.IsBuffer()))
             {
-                var budgets = budgetResult.Data;
+                var envelopeTransactionsAmount = allTransactions
+                .Where(t => t.Envelope.Id == envelope.Id
+                       && t.ServiceDate <= budgetSchedule.EndDate)
+                .Sum(t => t.Amount);
 
-                var pastBudgeted = budgets
-                    .Where(b => !b.Envelope.IsIncome() && !b.Envelope.IsBuffer())
-                    .Sum(b => b.PastAmount);
-
-                var pastIncome = budgets
-                    .Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer())
-                    .Sum(b => b.PastActivity);
-
-                var past = pastIncome - pastBudgeted;
-
-                var budgeted = budgets
-                    .Where(b => !b.Envelope.IsIncome() && !b.Envelope.IsBuffer())
+                var envelopeBudgetAmount = budgets
+                    .Where(b => b.Envelope.Id == envelope.Id
+                           && b.Schedule.EndDate <= budgetSchedule.EndDate)
                     .Sum(b => b.Amount);
 
-                var income = budgets.Where(b => b.Envelope.IsIncome() || b.Envelope.IsBuffer()).Sum(b => b.Activity);
+                var envelopeOverspend = envelopeBudgetAmount + envelopeTransactionsAmount;
 
-                result.Success = true;
-                result.Data = new BudgetScheduleOverview(past, income, budgeted);
-            }
-            else
-            {
-                result.Success = false;
-                result.Message = budgetResult.Message;
+                if (envelopeOverspend < 0)
+                {
+                    overspend += Math.Abs(envelopeOverspend);
+                }
             }
 
-            return result;
+            var newBudgetSchedule = budgetSchedule.DeepCopy();
+            newBudgetSchedule.Past = past;
+            newBudgetSchedule.Income = income;
+            newBudgetSchedule.Budgeted = budgeted;
+            newBudgetSchedule.Overspend = overspend;
+
+            return newBudgetSchedule;
         }
 
-        public async Task<Result<BudgetSchedule>> GetCurrentBudgetScheduleAsync(DateTime dateTime)
+        private async Task<BudgetSchedule> GetBudgetScheduleFromDate(DateTime date)
         {
-            var result = new Result<BudgetSchedule>();
             var schedules = await EnvelopeDataAccess.ReadBudgetSchedulesAsync();
 
-            var selectedSchedule = schedules.FirstOrDefault(s => s.BeginDate <= dateTime && s.EndDate >= dateTime);
+            var selectedSchedule = schedules.FirstOrDefault(s => s.BeginDate <= date && s.EndDate >= date);
             if (selectedSchedule == null)
             {
                 selectedSchedule = new BudgetSchedule();
-                selectedSchedule.BeginDate = new DateTime(dateTime.Year, dateTime.Month, 1);
+                selectedSchedule.BeginDate = new DateTime(date.Year, date.Month, 1);
                 selectedSchedule.EndDate = selectedSchedule.BeginDate.AddMonths(1).AddTicks(-1);
                 selectedSchedule.Id = selectedSchedule.BeginDate.ToGuid();
             }
 
-            result.Success = true;
-            result.Data = selectedSchedule;
+            return selectedSchedule;
+        }
+
+        public async Task<Result<BudgetSchedule>> GetCurrentBudgetScheduleAsync(DateTime date)
+        {
+            var result = new Result<BudgetSchedule>();
+
+            try
+            {
+                var schedule = await GetBudgetScheduleFromDate(date);
+
+                result.Success = true;
+                result.Data = await FillBudgetSchedule(schedule);
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Error retrieving current schedule. Try again.";
+                //log
+            }
 
             return result;
         }
 
+        private DateTime GetNextBudgetScheduleDate(DateTime currentEndDate)
+        {
+            return currentEndDate.AddDays(1);
+        }
+
         public async Task<Result<BudgetSchedule>> GetNextBudgetScheduleAsync(BudgetSchedule currentSchedule)
         {
-            var dateTime = currentSchedule.EndDate.AddDays(1);
+            var dateTime = GetNextBudgetScheduleDate(currentSchedule.EndDate);
 
             var schedule = await GetCurrentBudgetScheduleAsync(dateTime);
 
             return schedule;
         }
 
+        private DateTime GetPreviousBudgetScheduleDate(DateTime currentBeginDate)
+        {
+            return currentBeginDate.AddDays(-1);
+        }
+
         public async Task<Result<BudgetSchedule>> GetPreviousBudgetScheduleAsync(BudgetSchedule currentSchedule)
         {
-            var dateTime = currentSchedule.BeginDate.AddDays(-1);
+            var dateTime = GetPreviousBudgetScheduleDate(currentSchedule.BeginDate);
 
             var schedule = await GetCurrentBudgetScheduleAsync(dateTime);
 

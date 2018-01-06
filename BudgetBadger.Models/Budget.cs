@@ -14,6 +14,8 @@ namespace BudgetBadger.Models
 
         public decimal Amount { get; set; }
 
+        public bool CarryOver { get; set; }
+
         //calculated, not stored
         public decimal PastAmount { get; set; }
 
