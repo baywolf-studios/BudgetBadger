@@ -59,7 +59,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CREATE TABLE IF NOT EXISTS Budget 
                                           ( 
                                              Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Amount           TEXT NOT NULL, 
+                                             Amount           TEXT NOT NULL,
+                                             IgnoreOverspend  INTEGER NOT NULL, 
                                              BudgetScheduleId BLOB NOT NULL, 
                                              EnvelopeId       BLOB NOT NULL,
                                              CreatedDateTime  TEXT NOT NULL, 
@@ -84,13 +85,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.CommandText = @"INSERT INTO Budget
                                                     (Id, 
                                                      Amount, 
+                                                     IgnoreOverspend,
                                                      BudgetScheduleId, 
                                                      EnvelopeId, 
                                                      CreatedDateTime, 
                                                      ModifiedDateTime, 
                                                      DeletedDateTime)  
                                         VALUES     (@Id, 
-                                                    @Amount, 
+                                                    @Amount,
+                                                    @IgnoreOverspend, 
                                                     @BudgetScheduleId, 
                                                     @EnvelopeId, 
                                                     @CreatedDateTime, 
@@ -99,6 +102,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@Id", budget.Id);
                 command.Parameters.AddWithValue("@Amount", budget.Amount);
+                command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                 command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                 command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
@@ -279,6 +283,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT B.Id, 
                                                B.Amount, 
+                                               B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
                                                B.DeletedDateTime,  
@@ -316,6 +321,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
@@ -365,6 +371,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT B.Id, 
                                                B.Amount, 
+                                               B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
                                                B.DeletedDateTime,  
@@ -399,6 +406,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
@@ -448,6 +456,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT B.Id, 
                                                B.Amount, 
+                                               B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
                                                B.DeletedDateTime,  
@@ -485,6 +494,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
@@ -534,6 +544,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"SELECT B.Id, 
                                                B.Amount, 
+                                               B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
                                                B.DeletedDateTime,  
@@ -571,6 +582,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             Id = new Guid(reader["Id"] as byte[]),
                             Amount = Convert.ToDecimal(reader["Amount"]),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
                             DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
@@ -881,6 +893,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"UPDATE Budget 
                                         SET    Amount = @Amount, 
+                                               IgnoreOverspend = @IgnoreOverspend,
                                                EnvelopeId = @EnvelopeId, 
                                                BudgetScheduleId = @BudgetScheduleId,
                                                CreatedDateTime = @CreatedDateTime,
@@ -890,6 +903,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@Id", budget.Id);
                 command.Parameters.AddWithValue("@Amount", budget.Amount);
+                command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                 command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                 command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
                 command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);

@@ -25,6 +25,9 @@
                         <Entry Keyboard="Numeric" Text="{Binding Budget.Amount}" />
                     </ViewCell>
 				</TableSection>
+                <TableSection Title="Ignore Overspend">
+                        <SwitchCell Text="Ignore Overspend"  On="{Binding Budget.IgnoreOverspend}" />
+                </TableSection>
 				<TableSection Title="Notes">
                     <ViewCell>
                         <Editor Text="{Binding Budget.Envelope.Notes}" />

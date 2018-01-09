@@ -346,7 +346,11 @@ namespace BudgetBadger.Logic
 
                 var envelopeOverspend = envelopeBudgetAmount + envelopeTransactionsAmount;
 
-                if (envelopeOverspend < 0)
+                var latestBudget = budgets.FirstOrDefault(b => b.Envelope.Id == envelope.Id && b.Schedule.Id == budgetSchedule.Id);
+
+                var ignore = latestBudget?.IgnoreOverspend;
+
+                if (envelopeOverspend < 0 && (ignore == null || ignore == false))
                 {
                     overspend += Math.Abs(envelopeOverspend);
                 }
