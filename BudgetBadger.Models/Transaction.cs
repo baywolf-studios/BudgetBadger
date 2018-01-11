@@ -26,6 +26,8 @@ namespace BudgetBadger.Models
 
         public Envelope Envelope { get; set; }
 
+        public Guid? LinkedId { get; set; }
+
         public DateTime ServiceDate { get; set; }
 
         public string Notes { get; set; }

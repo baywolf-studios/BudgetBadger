@@ -135,6 +135,9 @@ namespace BudgetBadger.Logic
 
                 var startingBalance = new Transaction
                 {
+                    Id = Guid.NewGuid(),
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow,
                     Amount = newAccount.Balance,
                     ServiceDate = dateTimeNow,
                     Account = newAccount,

@@ -24,9 +24,35 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
-        public Task<Result> DeleteTransactionAsync(Transaction transaction)
+        public async Task<Result> DeleteTransactionAsync(Transaction transaction)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+            var transactionsToDelete = new List<Transaction>();
+            transactionsToDelete.Add(transaction.DeepCopy());
+
+            if (!transaction.LinkedId.HasValue)
+            {
+                var linkedTransactions = await TransactionDataAccess.ReadLinkedTransactionsAsync(transaction.LinkedId.Value);
+                transactionsToDelete.AddRange(linkedTransactions);
+            }
+
+            var deletedDateTime = DateTime.Now;
+            foreach (var linkedTransaction in transactionsToDelete)
+            {
+                linkedTransaction.DeletedDateTime = deletedDateTime;
+                try
+                {
+                    await TransactionDataAccess.UpdateTransactionAsync(linkedTransaction);
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    break;
+                }
+            }
+
+            return result;
         }
 
         public async Task<Result<IEnumerable<Transaction>>> GetAccountTransactionsAsync(Account account)
@@ -96,37 +122,98 @@ namespace BudgetBadger.Logic
             return groupedTransactions;
         }
 
-        public async Task<Result<Transaction>> UpsertTransactionAsync(Transaction transaction)
+        public async Task<Result<Transaction>> UpsertTransferTransactionAsync(Transaction transferTransaction)
         {
-            var newTransaction = transaction.DeepCopy();
-            var dateTimeNow = DateTime.Now;
+            var result = new Result<Transaction>();
+            var copiedTransferTransaction = transferTransaction.DeepCopy();
 
-            if (newTransaction.CreatedDateTime == null)
+            if (transferTransaction.CreatedDateTime == null)
             {
-                newTransaction.Id = Guid.NewGuid();
-                newTransaction.CreatedDateTime = dateTimeNow;
-                newTransaction.ModifiedDateTime = dateTimeNow;
+                var dateTimeNow = DateTime.Now;
+                copiedTransferTransaction.Id = Guid.NewGuid();
+                copiedTransferTransaction.CreatedDateTime = dateTimeNow;
+                copiedTransferTransaction.ModifiedDateTime = dateTimeNow;
+                var linkedId = Guid.NewGuid();
+                var accountPayee = await AccountDataAccess.ReadAccountAsync(copiedTransferTransaction.Payee.Id);
+                copiedTransferTransaction.LinkedId = linkedId;
+                var linkedTransferTransaction = copiedTransferTransaction.DeepCopy();
+                linkedTransferTransaction.Id = Guid.NewGuid();
+                linkedTransferTransaction.Amount = -1 * linkedTransferTransaction.Amount;
+                linkedTransferTransaction.Payee = new Payee { Id = copiedTransferTransaction.Account.Id };
+                linkedTransferTransaction.Account = accountPayee;
 
-                if (await IsTransferTransaction(newTransaction))
+                try
                 {
-                    var accountPayee = await AccountDataAccess.ReadAccountAsync(newTransaction.Payee.Id);
-                    var linkedTransferTransaction = newTransaction.DeepCopy();
-                    linkedTransferTransaction.Id = Guid.NewGuid();
-                    linkedTransferTransaction.Amount = -1 * linkedTransferTransaction.Amount;
-                    linkedTransferTransaction.Payee = new Payee { Id = newTransaction.Account.Id };
-                    linkedTransferTransaction.Account = accountPayee;
-                    await TransactionDataAccess.CreateTransactionAsync(linkedTransferTransaction);
+                    using (var scope = new System.Transactions.TransactionScope())
+                    {
+                        await TransactionDataAccess.CreateTransactionAsync(copiedTransferTransaction);
+                        await TransactionDataAccess.CreateTransactionAsync(linkedTransferTransaction);
+                        scope.Complete();
+                    }
                 }
-
-                await TransactionDataAccess.CreateTransactionAsync(newTransaction);
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                }
             }
             else
             {
-                newTransaction.ModifiedDateTime = dateTimeNow;
-                await TransactionDataAccess.UpdateTransactionAsync(newTransaction);
+                //update
+                //get the other transfer transaction
+                //update info on it
             }
 
-            return new Result<Transaction> { Success = true, Data = newTransaction };
+            return result;
+        }
+
+        public async Task<Result<Transaction>> UpsertTransactionAsync(Transaction transaction)
+        {
+            var result = new Result<Transaction>();
+
+            if (await IsTransferTransaction(transaction))
+            {
+                result = await UpsertTransferTransactionAsync(transaction);
+            }
+            else if (transaction.CreatedDateTime == null)
+            {
+                var newTransaction = transaction.DeepCopy();
+                var dateTimeNow = DateTime.Now;
+                newTransaction.CreatedDateTime = dateTimeNow;
+                newTransaction.ModifiedDateTime = dateTimeNow;
+
+                try
+                {
+                    await TransactionDataAccess.CreateTransactionAsync(newTransaction);
+                    result.Success = true;
+                    result.Data = newTransaction;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                }
+            }
+            else
+            {
+                var updateTransaction = transaction.DeepCopy();
+                var dateTimeNow = DateTime.Now;
+                updateTransaction.ModifiedDateTime = dateTimeNow;
+
+                try
+                {
+                    await TransactionDataAccess.UpdateTransactionAsync(updateTransaction);
+                    result.Success = true;
+                    result.Data = updateTransaction;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                }
+            }
+
+            return result;
         }
 
         public async Task<Result<Transaction>> GetPopulatedTransaction(Transaction transaction, Account account = null, Envelope envelope = null, Payee payee = null)
@@ -157,8 +244,6 @@ namespace BudgetBadger.Logic
                         newTransaction.Envelope = Constants.TransferEnvelope;
                     }
                 }
-
-
             }
 
             return new Result<Transaction> { Success = true, Data = newTransaction };
