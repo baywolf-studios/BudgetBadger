@@ -13,7 +13,7 @@
             <TableRoot>
                 <TableSection Title="Details">
                     <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
-                    <SwitchCell Text="On Budget" On="{Binding Account.OnBudget}" />
+                    <SwitchCell IsEnabled="{Binding NewMode}" Text="On Budget" On="{Binding Account.OnBudget}" />
                     <EntryCell IsEnabled="{Binding NewMode}" Label="Starting Balance" Text="{Binding Account.Balance}"/>
                 </TableSection>
                 <TableSection Title="Account Type">

@@ -42,7 +42,7 @@ namespace BudgetBadger.Forms.Transactions
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             var transaction = parameters.GetValue<Transaction>(NavigationParameterType.Transaction);
             if (transaction != null)
@@ -51,21 +51,18 @@ namespace BudgetBadger.Forms.Transactions
             }
 
             var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
-            if (payee != null)
-            {
-                Transaction.Payee = payee.DeepCopy();
-            }
-
             var account = parameters.GetValue<Account>(NavigationParameterType.Account);
-            if (account != null)
-            {
-                Transaction.Account = account.DeepCopy();
-            }
-
             var envelope = parameters.GetValue<Envelope>(NavigationParameterType.Envelope);
-            if (envelope != null)
+
+            var result = await TransLogic.GetPopulatedTransaction(Transaction, account, envelope, payee);
+            if (result.Success)
             {
-                Transaction.Envelope = envelope.DeepCopy();
+                Transaction = result.Data;
+            }
+            else
+            {
+                await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                await NavigationService.GoBackAsync();
             }
         }
 

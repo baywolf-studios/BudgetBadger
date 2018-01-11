@@ -93,11 +93,13 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<Payee>();
             var newPayee = payee.DeepCopy();
+            var dateTimeNow = DateTime.Now;
 
             if (newPayee.CreatedDateTime == null)
             {
-                newPayee.CreatedDateTime = DateTime.Now;
-                newPayee.ModifiedDateTime = DateTime.Now;
+                newPayee.Id = Guid.NewGuid();
+                newPayee.CreatedDateTime = dateTimeNow;
+                newPayee.ModifiedDateTime = dateTimeNow;
                 try
                 {
                     await PayeeDataAccess.CreatePayeeAsync(newPayee);
@@ -112,7 +114,7 @@ namespace BudgetBadger.Logic
             }
             else
             {
-                newPayee.ModifiedDateTime = DateTime.Now;
+                newPayee.ModifiedDateTime = dateTimeNow;
                 try
                 {
                     await PayeeDataAccess.UpdatePayeeAsync(newPayee);

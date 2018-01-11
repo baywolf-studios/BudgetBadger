@@ -124,6 +124,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<Budget>();
             var newBudget = budget.DeepCopy();
+            var dateTimeNow = DateTime.Now;
 
             var envelopeResult = await UpsertEnvelopeAsync(newBudget.Envelope);
             if (envelopeResult.Success)
@@ -139,8 +140,9 @@ namespace BudgetBadger.Logic
 
             if (newBudget.CreatedDateTime == null)
             {
-                newBudget.CreatedDateTime = DateTime.Now;
-                newBudget.ModifiedDateTime = DateTime.Now;
+                newBudget.Id = Guid.NewGuid();
+                newBudget.CreatedDateTime = dateTimeNow;
+                newBudget.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.CreateBudgetAsync(newBudget);
                 result.Success = true;
@@ -148,7 +150,7 @@ namespace BudgetBadger.Logic
             }
             else
             {
-                newBudget.ModifiedDateTime = DateTime.Now;
+                newBudget.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.UpdateBudgetAsync(newBudget);
                 result.Success = true;
@@ -162,11 +164,13 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<EnvelopeGroup>();
             var newGroup = group.DeepCopy();
+            var dateTimeNow = DateTime.Now;
 
             if (newGroup.CreatedDateTime == null)
             {
-                newGroup.CreatedDateTime = DateTime.Now;
-                newGroup.ModifiedDateTime = DateTime.Now;
+                newGroup.Id = Guid.NewGuid();
+                newGroup.CreatedDateTime = dateTimeNow;
+                newGroup.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.CreateEnvelopeGroupAsync(newGroup);
                 result.Success = true;
@@ -174,7 +178,7 @@ namespace BudgetBadger.Logic
             }
             else
             {
-                newGroup.ModifiedDateTime = DateTime.Now;
+                newGroup.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.UpdateEnvelopeGroupAsync(newGroup);
                 result.Success = true;
@@ -188,6 +192,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<Envelope>();
             var newEnvelope = envelope.DeepCopy();
+            var dateTimeNow = DateTime.Now;
 
             var groupResult = await UpsertEnvelopeGroupAsync(newEnvelope.Group);
             if (groupResult.Success)
@@ -198,8 +203,9 @@ namespace BudgetBadger.Logic
 
             if (newEnvelope.CreatedDateTime == null)
             {
-                newEnvelope.CreatedDateTime = DateTime.Now;
-                newEnvelope.ModifiedDateTime = DateTime.Now;
+                newEnvelope.Id = Guid.NewGuid();
+                newEnvelope.CreatedDateTime = dateTimeNow;
+                newEnvelope.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.CreateEnvelopeAsync(newEnvelope);
                 result.Success = true;
@@ -207,7 +213,7 @@ namespace BudgetBadger.Logic
             }
             else
             {
-                newEnvelope.ModifiedDateTime = DateTime.Now;
+                newEnvelope.ModifiedDateTime = dateTimeNow;
 
                 await EnvelopeDataAccess.UpdateEnvelopeAsync(newEnvelope);
                 result.Success = true;

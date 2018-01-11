@@ -16,5 +16,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
 
         IEnumerable<GroupedList<Transaction>> GroupTransactions(IEnumerable<Transaction> transactions);
+        Task<Result<Transaction>> GetPopulatedTransaction(Transaction transaction, Account account = null, Envelope envelope = null, Payee payee = null);
     }
 }

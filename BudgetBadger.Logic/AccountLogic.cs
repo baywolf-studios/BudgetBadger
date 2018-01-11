@@ -12,11 +12,13 @@ namespace BudgetBadger.Logic
     {
         readonly IAccountDataAccess AccountDataAccess;
         readonly ITransactionDataAccess TransactionDataAccess;
+        readonly IPayeeDataAccess PayeeDataAccess;
 
-        public AccountLogic(IAccountDataAccess accountDataAccess, ITransactionDataAccess transactionDataAccess)
+        public AccountLogic(IAccountDataAccess accountDataAccess, ITransactionDataAccess transactionDataAccess, IPayeeDataAccess payeeDataAccess)
         {
             AccountDataAccess = accountDataAccess;
             TransactionDataAccess = transactionDataAccess;
+            PayeeDataAccess = payeeDataAccess;
 
             var accountTypes = new List<AccountType>();
             accountTypes.Add(new AccountType
@@ -113,31 +115,37 @@ namespace BudgetBadger.Logic
         public async Task<Result<Account>> UpsertAccountAsync(Account account)
         {
             var newAccount = account.DeepCopy();
+            var dateTimeNow = DateTime.Now;
 
             if (newAccount.CreatedDateTime == null)
             {
-                var dateTimeNow = DateTime.Now;
-                
+                newAccount.Id = Guid.NewGuid();
                 newAccount.CreatedDateTime = dateTimeNow;
                 newAccount.ModifiedDateTime = dateTimeNow;
                 await AccountDataAccess.CreateAccountAsync(newAccount);
+
+                var accountPayee = new Payee
+                {
+                    Id = newAccount.Id,
+                    Description = newAccount.Description,
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow
+                };
+                await PayeeDataAccess.CreatePayeeAsync(accountPayee);
 
                 var startingBalance = new Transaction
                 {
                     Amount = newAccount.Balance,
                     ServiceDate = dateTimeNow,
-                    CreatedDateTime = dateTimeNow,
-                    ModifiedDateTime = dateTimeNow,
                     Account = newAccount,
                     Payee = Constants.StartingBalancePayee,
                     Envelope = Constants.IncomeEnvelope                    
                 };
-
                 await TransactionDataAccess.CreateTransactionAsync(startingBalance);
             }
             else
             {
-                newAccount.ModifiedDateTime = DateTime.Now;
+                newAccount.ModifiedDateTime = dateTimeNow;
                 await AccountDataAccess.UpdateAccountAsync(newAccount);
             }
 

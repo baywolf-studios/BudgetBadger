@@ -14,5 +14,10 @@ namespace BudgetBadger.Core.Extensions
         {
             return envelope.Id == Constants.BufferEnvelope.Id;
         }
+
+        public static bool IsTransfer(this Envelope envelope)
+        {
+            return envelope.Id == Constants.TransferEnvelope.Id;
+        }
     }
 }
