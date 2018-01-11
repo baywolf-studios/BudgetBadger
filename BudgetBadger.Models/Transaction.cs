@@ -38,8 +38,11 @@ namespace BudgetBadger.Models
 
         public Transaction()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             ServiceDate = DateTime.Now;
+            Account = new Account();
+            Payee = new Payee();
+            Envelope = new Envelope();
         }
 
         public Transaction DeepCopy()

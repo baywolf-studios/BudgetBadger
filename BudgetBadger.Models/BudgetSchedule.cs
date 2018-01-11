@@ -36,7 +36,7 @@ namespace BudgetBadger.Models
 
         public BudgetSchedule()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
         }
 
         public BudgetSchedule DeepCopy()

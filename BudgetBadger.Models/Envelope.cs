@@ -22,7 +22,7 @@ namespace BudgetBadger.Models
 
         public Envelope()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             Group = new EnvelopeGroup();
         }
 

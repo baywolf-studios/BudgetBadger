@@ -12,7 +12,7 @@ namespace BudgetBadger.Models
 
         public AccountType()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
         }
 
         public AccountType DeepCopy()

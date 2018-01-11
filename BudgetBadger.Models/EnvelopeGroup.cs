@@ -20,7 +20,7 @@ namespace BudgetBadger.Models
 
         public EnvelopeGroup()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
         }
 
         public EnvelopeGroup DeepCopy()

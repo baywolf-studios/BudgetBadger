@@ -20,7 +20,7 @@ namespace BudgetBadger.Models
 
         public Payee()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
         }
 
         public Payee DeepCopy()

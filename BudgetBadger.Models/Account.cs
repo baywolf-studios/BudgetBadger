@@ -27,7 +27,7 @@ namespace BudgetBadger.Models
 
         public Account()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             Type = new AccountType();
         }
 

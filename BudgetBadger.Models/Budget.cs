@@ -35,7 +35,7 @@ namespace BudgetBadger.Models
 
         public Budget()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             Schedule = new BudgetSchedule();
             Envelope = new Envelope();
         }
