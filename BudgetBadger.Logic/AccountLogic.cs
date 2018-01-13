@@ -161,6 +161,10 @@ namespace BudgetBadger.Logic
 
             account.Balance = accountTransactions.Sum(t => t.Amount);
 
+            var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
+
+            account.Balance -= payeeTransactions.Sum(t => t.Amount);
+
             return account;
         }
     }
