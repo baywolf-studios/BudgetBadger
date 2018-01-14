@@ -5,7 +5,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+            <StackLayout IsVisible="false" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
                 <Label Text="Lifetime Spent" />
                 <Label Text="{Binding LifetimeSpent, StringFormat='{0:c}'}" />
             </StackLayout>

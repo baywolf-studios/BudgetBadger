@@ -20,9 +20,6 @@ namespace BudgetBadger.Forms.Envelopes
 
         public Budget Budget { get; set; }
 
-        public bool NewMode { get => Budget.CreatedDateTime == null; }
-        public bool EditMode { get => !NewMode; }
-
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand GroupSelectedCommand { get; set; }

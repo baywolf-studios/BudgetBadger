@@ -11,10 +11,12 @@ namespace BudgetBadger.Logic
     public class PayeeLogic : IPayeeLogic
     {
         readonly IPayeeDataAccess PayeeDataAccess;
+        readonly IAccountDataAccess AccountDataAccess;
 
-        public PayeeLogic(IPayeeDataAccess payeeDataAccess)
+        public PayeeLogic(IPayeeDataAccess payeeDataAccess, IAccountDataAccess accountDataAccess)
         {
             PayeeDataAccess = payeeDataAccess;
+            AccountDataAccess = accountDataAccess;
 
             PayeeDataAccess.CreatePayeeAsync(Constants.StartingBalancePayee);
         }
@@ -31,9 +33,24 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<Payee>> GetPayeeAsync(Guid id)
+        public async Task<Result<Payee>> GetPayeeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result<Payee>();
+
+            try
+            {
+                var payee = await PayeeDataAccess.ReadPayeeAsync(id);
+                var populatedPayee = await GetPopulatedPayee(payee);
+                result.Success = true;
+                result.Data = populatedPayee;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result<IEnumerable<Payee>>> GetPayeesAsync()
@@ -44,8 +61,10 @@ namespace BudgetBadger.Logic
             {
                 var payees = await PayeeDataAccess.ReadPayeesAsync();
 
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
+
                 result.Success = true;
-                result.Data = payees;
+                result.Data = await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {
@@ -94,19 +113,19 @@ namespace BudgetBadger.Logic
         public async Task<Result<Payee>> UpsertPayeeAsync(Payee payee)
         {
             var result = new Result<Payee>();
-            var newPayee = payee.DeepCopy();
+            var payeeToUpsert = payee.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
-            if (newPayee.CreatedDateTime == null)
+            if (payeeToUpsert.IsNew)
             {
-                newPayee.Id = Guid.NewGuid();
-                newPayee.CreatedDateTime = dateTimeNow;
-                newPayee.ModifiedDateTime = dateTimeNow;
+                payeeToUpsert.Id = Guid.NewGuid();
+                payeeToUpsert.CreatedDateTime = dateTimeNow;
+                payeeToUpsert.ModifiedDateTime = dateTimeNow;
                 try
                 {
-                    await PayeeDataAccess.CreatePayeeAsync(newPayee);
+                    await PayeeDataAccess.CreatePayeeAsync(payeeToUpsert);
                     result.Success = true;
-                    result.Data = newPayee;
+                    result.Data = payeeToUpsert;
                 }
                 catch (Exception ex)
                 {
@@ -116,12 +135,12 @@ namespace BudgetBadger.Logic
             }
             else
             {
-                newPayee.ModifiedDateTime = dateTimeNow;
+                payeeToUpsert.ModifiedDateTime = dateTimeNow;
                 try
                 {
-                    await PayeeDataAccess.UpdatePayeeAsync(newPayee);
+                    await PayeeDataAccess.UpdatePayeeAsync(payeeToUpsert);
                     result.Success = true;
-                    result.Data = newPayee;
+                    result.Data = payeeToUpsert;
                 }
                 catch (Exception ex)
                 {
@@ -132,6 +151,17 @@ namespace BudgetBadger.Logic
             }
 
             return result;
+        }
+
+        private async Task<Payee> GetPopulatedPayee(Payee payee)
+        {
+            var payeeToPopulate = payee.DeepCopy();
+
+            var payeeAccount = await AccountDataAccess.ReadAccountAsync(payee.Id);
+
+            payeeToPopulate.IsAccount = payeeAccount.Exists;
+
+            return payeeToPopulate;
         }
     }
 }

@@ -19,11 +19,17 @@ namespace BudgetBadger.Models
 
         public bool OnBudget { get; set; }
 
+        public bool OffBudget { get => !OnBudget; }
+
         public DateTime? CreatedDateTime { get; set; }
 
         public DateTime? ModifiedDateTime { get; set; }
 
         public DateTime? DeletedDateTime { get; set; }
+
+        public bool IsNew { get => CreatedDateTime == null; }
+
+        public bool Exists { get => !IsNew; }
 
         public Account()
         {

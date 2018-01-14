@@ -20,9 +20,6 @@ namespace BudgetBadger.Forms.Payees
 
         public Payee Payee { get; set; }
 
-        public bool NewMode { get => Payee.CreatedDateTime == null; }
-        public bool EditMode { get => !NewMode; }
-
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 

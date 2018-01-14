@@ -10,11 +10,31 @@ namespace BudgetBadger.Models
 
         public decimal Amount { get; set; }
 
-        public decimal Outflow { get; set; }
+        public decimal Outflow
+        {
+            get
+            {
+                return Amount < 0 ? Math.Abs(Amount) : 0;
+            }
+            set
+            {
+                Amount = -1 * value;
+            }
+        }
 
-        public decimal Inflow { get; set; }
+        public decimal Inflow
+        {
+            get
+            {
+                return Amount > 0 ? Amount : 0;
+            }
+            set
+            {
+                Amount = value;
+            }
+        }
 
-        public bool Pending { get { return !Posted; }}
+        public bool Pending { get { return !Posted; } }
 
         public bool Posted { get; set; }
 
@@ -37,6 +57,12 @@ namespace BudgetBadger.Models
         public DateTime? ModifiedDateTime { get; set; }
 
         public DateTime? DeletedDateTime { get; set; }
+
+        public bool IsTransfer { get => Payee.IsAccount; }
+
+        public bool IsNew { get => CreatedDateTime == null; }
+
+        public bool Exists { get => !IsNew; }
 
         public Transaction()
         {

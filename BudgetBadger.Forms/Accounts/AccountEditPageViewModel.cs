@@ -23,9 +23,6 @@ namespace BudgetBadger.Forms.Accounts
         public Account Account { get; set; }
         public ObservableCollection<AccountType> AccountTypes { get; set; }
 
-        public bool NewMode { get => Account.CreatedDateTime == null; }
-        public bool EditMode { get => !NewMode; }
-
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteAccountCommand { get; set; }
 
@@ -40,7 +37,7 @@ namespace BudgetBadger.Forms.Accounts
             AccountTypes = new ObservableCollection<AccountType>(typesResult.Data);
             Account = new Account();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand(), CanExecuteSaveCommand);
+            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
@@ -73,11 +70,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
             }
-        }
-
-        public bool CanExecuteSaveCommand()
-        {
-            return true;
         }
     }
 }

@@ -18,6 +18,13 @@ namespace BudgetBadger.Models
 
         public DateTime? DeletedDateTime { get; set; }
 
+        //calculated
+        public bool IsAccount { get; set; }
+
+        public bool IsNew { get => CreatedDateTime == null; }
+
+        public bool Exists { get => !IsNew; }
+
         public Payee()
         {
             Id = Guid.Empty;

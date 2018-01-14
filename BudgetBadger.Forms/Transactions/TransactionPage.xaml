@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionPage">
     <ContentPage.Triggers>
-        <DataTrigger TargetType="ContentPage" Binding="{Binding NewMode}" Value="True">
+        <DataTrigger TargetType="ContentPage" Binding="{Binding Transaction.IsNew}" Value="True">
             <Setter Property="Title" Value="New Transaction" />
         </DataTrigger>
     </ContentPage.Triggers>
@@ -11,21 +11,28 @@
     <ContentPage.Content>
         <TableView Intent="Form">
             <TableRoot>
-                <TableSection Title="Amount">
+                <TableSection Title="Amount (Outflow | Inflow)">
                     <ViewCell>
-                        <Entry Keyboard="Numeric" Text="{Binding Transaction.Amount}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0" HorizontalOptions="FillAndExpand" Placeholder="Outflow" Keyboard="Numeric" Text="{Binding Transaction.Outflow}"/>
+                            <Entry Grid.Column="1" HorizontalOptions="FillAndExpand" Placeholder="Inflow" Keyboard="Numeric" Text="{Binding Transaction.Inflow}" />
+                        </Grid>
                     </ViewCell> 
+                </TableSection>
+                <TableSection Title="Account">
+                    <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
+                    </TextCell>
                 </TableSection>
                 <TableSection Title="Payee">
                     <TextCell Command="{Binding PayeeSelectedCommand}" Text="{Binding Transaction.Payee.Description}">
                     </TextCell>
                 </TableSection>
                 <TableSection Title="Envelope">
-                    <TextCell Command="{Binding EnvelopeSelectedCommand}" Text="{Binding Transaction.Envelope.Description}">
-                    </TextCell>
-                </TableSection>
-                <TableSection Title="Account">
-                    <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
+                    <TextCell Command="{Binding EnvelopeSelectedCommand}" IsEnabled="{Binding Transaction.Envelope.IsReadonly}" Text="{Binding Transaction.Envelope.Description}">
                     </TextCell>
                 </TableSection>
                 <TableSection Title="Service Date">

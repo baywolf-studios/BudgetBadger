@@ -60,7 +60,7 @@ namespace BudgetBadger.Logic
                 transactions.Add(transaction);
             }
 
-            var tasks = transactions.Select(t => FillTransaction(t));
+            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -74,7 +74,7 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
 
-            var tasks = transactions.Select(t => FillTransaction(t));
+            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -88,7 +88,7 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
 
-            var tasks = transactions.Select(t => FillTransaction(t));
+            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -96,14 +96,39 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<Transaction>> GetTransactionAsync(Guid id)
+        public async Task<Result<Transaction>> GetTransactionAsync(Guid id)
         {
-            return Task.FromResult(new Result<Transaction>());
+            var result = new Result<Transaction>();
+
+            try
+            {
+                var transaction = await TransactionDataAccess.ReadTransactionAsync(id);
+                var populatedTransaction = await GetPopulatedTransaction(transaction);
+
+                result.Success = true;
+                result.Data = populatedTransaction;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result<IEnumerable<Transaction>>> GetTransactionsAsync()
+        public async Task<Result<IEnumerable<Transaction>>> GetTransactionsAsync()
         {
-            return Task.FromResult(new Result<IEnumerable<Transaction>>());
+            var result = new Result<IEnumerable<Transaction>>();
+
+            var transactions = await TransactionDataAccess.ReadTransactionsAsync();
+
+            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
+
+            result.Success = true;
+            result.Data = await Task.WhenAll(tasks);
+
+            return result;
         }
 
         public IEnumerable<GroupedList<Transaction>> GroupTransactions(IEnumerable<Transaction> transactions)
@@ -127,13 +152,13 @@ namespace BudgetBadger.Logic
             var transactionToUpsert = transaction.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
-            if(await IsTransferTransaction(transactionToUpsert))
+            if(transactionToUpsert.IsTransfer)
             {
                 // business rule forces account to be the on budget one
                 try
                 {
                     var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToUpsert.Payee.Id);
-                    if (!transactionToUpsert.Account.OnBudget && payeeAccount.OnBudget)
+                    if (transactionToUpsert.Account.OffBudget && payeeAccount.OnBudget)
                     {
                         transactionToUpsert.Payee = await PayeeDataAccess.ReadPayeeAsync(transactionToUpsert.Account.Id);
                         transactionToUpsert.Account = payeeAccount;
@@ -148,7 +173,7 @@ namespace BudgetBadger.Logic
                 }
             }
 
-            if (transactionToUpsert.CreatedDateTime == null)
+            if (transactionToUpsert.IsNew)
             {
                 transactionToUpsert.Id = Guid.NewGuid();
                 transactionToUpsert.CreatedDateTime = dateTimeNow;
@@ -186,75 +211,55 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<Transaction>> GetPopulatedTransaction(Transaction transaction, Account account = null, Envelope envelope = null, Payee payee = null)
+        public async Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction)
         {
-            var newTransaction = transaction.DeepCopy();
+            var transactionToPopulate = transaction.DeepCopy();
 
-            if (account != null)
+            // handle logic to get transaction into usable state
+            bool envelopeNotNeeded = false;
+
+            if (transactionToPopulate.Account.Exists)
             {
-                newTransaction.Account = account.DeepCopy();
-            }
-
-            if (envelope != null)
-            {
-                newTransaction.Envelope = envelope.DeepCopy();
-            }
-
-            if (payee != null)
-            {
-                newTransaction.Payee = payee.DeepCopy();
-
-                if (await IsTransferTransaction(newTransaction))
+                // if it is a transfer (aka account to account)
+                if (transactionToPopulate.IsTransfer)
                 {
-                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(payee.Id);
-                    // determine if both accounts are on budget or not on budget
-                    if ((newTransaction.Account.OnBudget && payeeAccount.OnBudget)
-                       || (!newTransaction.Account.OnBudget && !payeeAccount.OnBudget))
+                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Payee.Id);
+                    // determine if both accounts are the same budget type
+                    if (transactionToPopulate.Account.OnBudget == payeeAccount.OnBudget)
                     {
-                        newTransaction.Envelope = Constants.TransferEnvelope;
+                        envelopeNotNeeded = true;
                     }
+                }
+                else if (transactionToPopulate.Account.OffBudget)
+                {
+                    // if account is offbudget and it's not a transfer then envelope is not needed
+                    envelopeNotNeeded = true;
                 }
             }
 
-            return new Result<Transaction> { Success = true, Data = newTransaction };
+            if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem())
+            {
+                transactionToPopulate.Envelope = Constants.SystemEnvelope;
+            }
+            else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem())
+            {
+                transactionToPopulate.Envelope = new Envelope();
+            }
+
+            return new Result<Transaction> { Success = true, Data = transactionToPopulate };
         }
 
-        public async Task<Transaction> FillTransaction(Transaction transaction)
+        public async Task<Transaction> GetPopulatedTransaction(Transaction transaction)
         {
             transaction.Payee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
+            var payeeAccount = await AccountDataAccess.ReadAccountAsync(transaction.Payee.Id);
+            transaction.Payee.IsAccount = payeeAccount.Exists;
+
             transaction.Envelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
+
             transaction.Account = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
 
             return transaction;
-        }
-
-        public async Task<bool> IsTransferTransaction(Transaction transaction)
-        {
-            //wrap any call to this in a trycatch
-            //or refactor into a result<bool> for reuse
-            var result = false;
-            if (transaction.Envelope.IsTransfer())
-            {
-                result = true;
-            }
-            else if (transaction.Payee != null)
-            {
-                var payeeAccount = await AccountDataAccess.ReadAccountAsync(transaction.Payee.Id);
-                if (payeeAccount.Id != Guid.Empty && payeeAccount.CreatedDateTime != null)
-                {
-                    result = true;
-                }
-                else
-                {
-                    result = false;
-                }
-            }
-            else
-            {
-                result = false;
-            }
-
-            return result;
         }
     }
 }

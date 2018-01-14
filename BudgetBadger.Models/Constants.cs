@@ -3,10 +3,10 @@ namespace BudgetBadger.Models
 {
     public static class Constants
     {
-        public static readonly EnvelopeGroup SystemEnvelopeGroup = new EnvelopeGroup
+        public static readonly EnvelopeGroup IncomeEnvelopeGroup = new EnvelopeGroup
         { 
             Id = new Guid("{b797f2af-bef2-4685-bbd6-73417414e6ce}"), 
-            Description = "System",
+            Description = "Income",
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
@@ -14,7 +14,7 @@ namespace BudgetBadger.Models
         { 
             Id = new Guid("{1bc8c32d-d04d-4079-90b6-c060e3e56e16}"), 
             Description = "Income", 
-            Group = SystemEnvelopeGroup,
+            Group = IncomeEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
@@ -22,14 +22,21 @@ namespace BudgetBadger.Models
         { 
             Id = new Guid("{d9e6e696-72c1-4d89-a1ab-4af24da2c72f}"), 
             Description = "Buffer", 
-            Group = SystemEnvelopeGroup,
+            Group = IncomeEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now 
         };
-        public static readonly Envelope TransferEnvelope = new Envelope 
+        public static readonly EnvelopeGroup SystemEnvelopeGroup = new EnvelopeGroup
+        {
+            Id = new Guid("{7a21e815-e95c-4785-b0a3-d65013a1196b}"),
+            Description = "System",
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now
+        };
+        public static readonly Envelope SystemEnvelope = new Envelope 
         { 
             Id = new Guid("{cdf92e3b-3104-47b9-9a83-ca9e3e097c35}"), 
-            Description = "Transfer", 
+            Description = "Not Needed", 
             Group = SystemEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now 

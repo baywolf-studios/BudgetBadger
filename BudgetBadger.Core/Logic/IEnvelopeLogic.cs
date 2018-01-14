@@ -7,9 +7,9 @@ namespace BudgetBadger.Core.Logic
 {
     public interface IEnvelopeLogic
     {
-        Task<Result<BudgetSchedule>> GetCurrentBudgetScheduleAsync(DateTime date);
-        Task<Result<BudgetSchedule>> GetNextBudgetScheduleAsync(BudgetSchedule currentSchedule);
-        Task<Result<BudgetSchedule>> GetPreviousBudgetScheduleAsync(BudgetSchedule currentSchedule);
+        Task<Result<BudgetSchedule>> GetCurrentBudgetScheduleAsync();
+        Task<Result<BudgetSchedule>> GetPreviousBudgetSchedule(BudgetSchedule currentSchedule);
+        Task<Result<BudgetSchedule>> GetNextBudgetSchedule(BudgetSchedule currentSchedule);
 
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync();
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule);

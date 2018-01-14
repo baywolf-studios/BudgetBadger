@@ -5,6 +5,11 @@ namespace BudgetBadger.Core.Extensions
 {
     public static class EnvelopeExtensions
     {
+        public static bool IsIncome(this EnvelopeGroup envelopeGroup)
+        {
+            return envelopeGroup.Id == Constants.IncomeEnvelopeGroup.Id;
+        }
+
         public static bool IsIncome(this Envelope envelope)
         {
             return envelope.Id == Constants.IncomeEnvelope.Id;
@@ -15,9 +20,14 @@ namespace BudgetBadger.Core.Extensions
             return envelope.Id == Constants.BufferEnvelope.Id;
         }
 
-        public static bool IsTransfer(this Envelope envelope)
+        public static bool IsSystem(this EnvelopeGroup envelopeGroup)
         {
-            return envelope.Id == Constants.TransferEnvelope.Id;
+            return envelopeGroup.Id == Constants.SystemEnvelopeGroup.Id;
+        }
+
+        public static bool IsSystem(this Envelope envelope)
+        {
+            return envelope.Id == Constants.SystemEnvelope.Id;
         }
     }
 }

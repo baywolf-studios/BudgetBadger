@@ -17,6 +17,7 @@ namespace BudgetBadger.Forms.Accounts
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
+        readonly IAccountLogic AccountLogic;
 
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -34,10 +35,11 @@ namespace BudgetBadger.Forms.Accounts
         public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount); }
         public decimal TransactionsTotal { get => Transactions.Sum(t2 => t2.Amount); }
 
-        public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
+        public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic)
         {
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
+            AccountLogic = accountLogic;
 
             Account = new Account();
             Transactions = new ObservableCollection<Transaction>();
@@ -105,12 +107,25 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await TransactionLogic.GetAccountTransactionsAsync(Account);
-                if (result.Success)
+                if (Account.Exists)
                 {
-                    Transactions = new ObservableCollection<Transaction>(result.Data);
-                    GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
-                    SelectedTransaction = null;
+                    var accountResult = await AccountLogic.GetAccountAsync(Account.Id);
+                    if (accountResult.Success)
+                    {
+                        Account = accountResult.Data;
+                    }
+                    else
+                    {
+                        //show alert that account data may be stale
+                    }
+
+                    var result = await TransactionLogic.GetAccountTransactionsAsync(Account);
+                    if (result.Success)
+                    {
+                        Transactions = new ObservableCollection<Transaction>(result.Data);
+                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        SelectedTransaction = null;
+                    }
                 }
             }
             finally

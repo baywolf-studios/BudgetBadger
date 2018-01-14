@@ -7,13 +7,13 @@
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Posted" />
-                    <Label Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
+                    <Label Text="Pending" />
+                    <Label Text="{Binding PendingTotal, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="+" />
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Pending" />
-                    <Label Text="{Binding PendingTotal, StringFormat='{0:c}'}" />
+                    <Label Text="Posted" />
+                    <Label Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
                 </StackLayout>
                 <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="=" />
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">

@@ -18,6 +18,10 @@ namespace BudgetBadger.Models
 
         public DateTime? DeletedDateTime { get; set; }
 
+        public bool IsNew { get => CreatedDateTime == null; }
+
+        public bool Exists { get => !IsNew; }
+
         public EnvelopeGroup()
         {
             Id = Guid.Empty;

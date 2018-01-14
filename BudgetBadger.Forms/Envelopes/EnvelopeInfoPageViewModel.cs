@@ -17,6 +17,7 @@ namespace BudgetBadger.Forms.Envelopes
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
+        readonly IEnvelopeLogic EnvelopeLogic;
 
         public ICommand NewTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -30,10 +31,11 @@ namespace BudgetBadger.Forms.Envelopes
         public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
 
-        public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
+        public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic)
         {
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
+            EnvelopeLogic = envelopeLogic;
 
             Budget = new Budget();
             Transactions = new ObservableCollection<Transaction>();
@@ -61,7 +63,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
         }
 
-        public void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatedTo(NavigationParameters parameters)
         {
         }
 
@@ -110,12 +112,21 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
-                if (result.Success)
+                if (Budget.Exists)
                 {
-                    Transactions = new ObservableCollection<Transaction>(result.Data);
-                    GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
-                    SelectedTransaction = null;
+                    var budgetResult = await EnvelopeLogic.GetBudgetAsync(Budget.Id);
+                    if (budgetResult.Success)
+                    {
+                        Budget = budgetResult.Data;
+                    }
+
+                    var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
+                    if (result.Success)
+                    {
+                        Transactions = new ObservableCollection<Transaction>(result.Data);
+                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        SelectedTransaction = null;
+                    }
                 }
             }
             finally

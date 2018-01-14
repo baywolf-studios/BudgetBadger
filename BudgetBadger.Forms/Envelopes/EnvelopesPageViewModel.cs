@@ -27,6 +27,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public bool IsBusy { get; set; }
 
+        private Guid? CurrentScheduleId { get; set; }
         public BudgetSchedule Schedule { get; set; }
         public ObservableCollection<Budget> Budgets { get; set; }
         public Budget SelectedBudget { get; set; }
@@ -46,8 +47,7 @@ namespace BudgetBadger.Forms.Envelopes
             EnvelopeLogic = envelopeLogic;
             NavigationService = navigationService;
 
-            var scheduleResult = EnvelopeLogic.GetCurrentBudgetScheduleAsync(DateTime.Now).Result;
-            Schedule = scheduleResult.Data;
+            Schedule = null;
             Budgets = new ObservableCollection<Budget>();
             SelectedBudget = null;
             GroupedBudgets = new ObservableCollection<GroupedList<Budget>>();
@@ -88,11 +88,25 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
+                if (Schedule == null)
+                {
+                    var scheduleResult = await EnvelopeLogic.GetCurrentBudgetScheduleAsync();
+                    if (scheduleResult.Success)
+                    {
+                        Schedule = scheduleResult.Data;
+                    }
+                    else
+                    {
+                        //show error
+                    }
+                }
+
                 var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule);
                 if (budgetResult.Success)
                 {
                     Budgets = new ObservableCollection<Budget>(budgetResult.Data);
                     GroupedBudgets = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(Budgets, SelectorMode));
+                    Schedule = Budgets.FirstOrDefault().Schedule.DeepCopy();
                 }
                 else
                 {
@@ -107,7 +121,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteNextCommand()
         {
-            var scheduleResult = await EnvelopeLogic.GetNextBudgetScheduleAsync(Schedule);
+            var scheduleResult = await EnvelopeLogic.GetNextBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
@@ -121,7 +135,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecutePreviousCommand()
         {
-            var scheduleResult = await EnvelopeLogic.GetPreviousBudgetScheduleAsync(Schedule);
+            var scheduleResult = await EnvelopeLogic.GetPreviousBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;

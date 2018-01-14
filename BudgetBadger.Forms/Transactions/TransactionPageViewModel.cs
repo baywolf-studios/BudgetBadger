@@ -8,6 +8,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
+using BudgetBadger.Core.Extensions;
 
 namespace BudgetBadger.Forms.Transactions
 {
@@ -19,9 +20,6 @@ namespace BudgetBadger.Forms.Transactions
         readonly ITransactionLogic TransLogic;
 
         public Transaction Transaction { get; set; }
-
-        public bool NewMode { get => Transaction.CreatedDateTime == null; }
-        public bool EditMode { get => !NewMode; }
 
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
@@ -38,7 +36,7 @@ namespace BudgetBadger.Forms.Transactions
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
-            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand());
+            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
         }
 
@@ -50,11 +48,25 @@ namespace BudgetBadger.Forms.Transactions
                 Transaction = transaction.DeepCopy();
             }
 
-            var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
             var account = parameters.GetValue<Account>(NavigationParameterType.Account);
-            var envelope = parameters.GetValue<Envelope>(NavigationParameterType.Envelope);
+            if (account != null)
+            {
+                Transaction.Account = account.DeepCopy();
+            }
 
-            var result = await TransLogic.GetPopulatedTransaction(Transaction, account, envelope, payee);
+            var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
+            if (payee != null)
+            {
+                Transaction.Payee = payee.DeepCopy();
+            }
+
+            var envelope = parameters.GetValue<Envelope>(NavigationParameterType.Envelope);
+            if (envelope != null)
+            {
+                Transaction.Envelope = envelope.DeepCopy();
+            }
+
+            var result = await TransLogic.GetCorrectedTransaction(Transaction);
             if (result.Success)
             {
                 Transaction = result.Data;
@@ -104,6 +116,11 @@ namespace BudgetBadger.Forms.Transactions
                 { NavigationParameterType.SelectorMode, true }
             };
             await NavigationService.NavigateAsync(NavigationPageName.EnvelopesPage, parameters);
+        }
+
+        public bool CanExecuteEnvelopeSelectedCommand()
+        {
+            return !Transaction.Envelope.IsSystem();
         }
 
         public async Task ExecuteAccountSelectedCommand()

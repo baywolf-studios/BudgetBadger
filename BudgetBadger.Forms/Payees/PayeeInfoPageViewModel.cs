@@ -17,6 +17,7 @@ namespace BudgetBadger.Forms.Payees
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
+        readonly IPayeeLogic PayeeLogic;
 
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -32,10 +33,11 @@ namespace BudgetBadger.Forms.Payees
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
 
-        public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic)
+        public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic)
         {
             TransactionLogic = transactionLogic;
             NavigationService = navigationService;
+            PayeeLogic = payeeLogic;
 
             Payee = new Payee();
             Transactions = new ObservableCollection<Transaction>();
@@ -103,12 +105,25 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await TransactionLogic.GetPayeeTransactionsAsync(Payee);
-                if (result.Success)
+                if (Payee.Exists)
                 {
-                    Transactions = new ObservableCollection<Transaction>(result.Data);
-                    GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
-                    SelectedTransaction = null;
+                    var payeeResult = await PayeeLogic.GetPayeeAsync(Payee.Id);
+                    if (payeeResult.Success)
+                    {
+                        Payee = payeeResult.Data;
+                    }
+                    else
+                    {
+                        //show alert that account data may be stale
+                    }
+
+                    var result = await TransactionLogic.GetPayeeTransactionsAsync(Payee);
+                    if (result.Success)
+                    {
+                        Transactions = new ObservableCollection<Transaction>(result.Data);
+                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        SelectedTransaction = null;
+                    }
                 }
             }
             finally

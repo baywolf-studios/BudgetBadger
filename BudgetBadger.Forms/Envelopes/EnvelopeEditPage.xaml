@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Edit Budget" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopeEditPage">
     <ContentPage.Triggers>
-        <DataTrigger TargetType="ContentPage" Binding="{Binding NewMode}" Value="True">
+        <DataTrigger TargetType="ContentPage" Binding="{Binding Budget.IsNew}" Value="True">
             <Setter Property="Title" Value="New Envelope" />
         </DataTrigger>
     </ContentPage.Triggers>

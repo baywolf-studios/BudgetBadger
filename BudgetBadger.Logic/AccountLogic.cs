@@ -64,9 +64,22 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Account>> GetAccountAsync(Guid id)
         {
-            var account = await AccountDataAccess.ReadAccountAsync(id);
+            var result = new Result<Account>();
 
-            return new Result<Account> { Success = true, Data = account };
+            try
+            {
+                var account = await AccountDataAccess.ReadAccountAsync(id);
+                var populatedAccount = await GetPopulatedAccount(account);
+                result.Success = true;
+                result.Data = populatedAccount;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result<IEnumerable<Account>>> GetAccountsAsync()
@@ -75,7 +88,7 @@ namespace BudgetBadger.Logic
 
             var accounts = await AccountDataAccess.ReadAccountsAsync();
 
-            var tasks = accounts.Select(a => FillAccount(a));
+            var tasks = accounts.Select(a => GetPopulatedAccount(a));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -101,10 +114,11 @@ namespace BudgetBadger.Logic
         public IEnumerable<GroupedList<Account>> GroupAccounts(IEnumerable<Account> accounts)
         {
             var groupedAccounts = new List<GroupedList<Account>>();
-            var temp = accounts.GroupBy(a => a.Type.Description);
+            var temp = accounts.GroupBy(a => a.OnBudget);
             foreach (var tempGroup in temp)
             {
-                var groupedList = new GroupedList<Account>(tempGroup.Key, tempGroup.Key);
+                var description = tempGroup.Key ? "On Budget" : "Off Budget";
+                var groupedList = new GroupedList<Account>(description, description);
                 groupedList.AddRange(tempGroup);
                 groupedAccounts.Add(groupedList);
             }
@@ -114,20 +128,20 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Account>> UpsertAccountAsync(Account account)
         {
-            var newAccount = account.DeepCopy();
+            var accountToUpsert = account.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
-            if (newAccount.CreatedDateTime == null)
+            if (accountToUpsert.IsNew)
             {
-                newAccount.Id = Guid.NewGuid();
-                newAccount.CreatedDateTime = dateTimeNow;
-                newAccount.ModifiedDateTime = dateTimeNow;
-                await AccountDataAccess.CreateAccountAsync(newAccount);
+                accountToUpsert.Id = Guid.NewGuid();
+                accountToUpsert.CreatedDateTime = dateTimeNow;
+                accountToUpsert.ModifiedDateTime = dateTimeNow;
+                await AccountDataAccess.CreateAccountAsync(accountToUpsert);
 
                 var accountPayee = new Payee
                 {
-                    Id = newAccount.Id,
-                    Description = newAccount.Description,
+                    Id = accountToUpsert.Id,
+                    Description = accountToUpsert.Description,
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow
                 };
@@ -138,24 +152,24 @@ namespace BudgetBadger.Logic
                     Id = Guid.NewGuid(),
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow,
-                    Amount = newAccount.Balance,
+                    Amount = accountToUpsert.Balance,
                     ServiceDate = dateTimeNow,
-                    Account = newAccount,
+                    Account = accountToUpsert,
                     Payee = Constants.StartingBalancePayee,
-                    Envelope = Constants.IncomeEnvelope                    
+                    Envelope = accountToUpsert.OnBudget ? Constants.IncomeEnvelope : Constants.SystemEnvelope                 
                 };
                 await TransactionDataAccess.CreateTransactionAsync(startingBalance);
             }
             else
             {
-                newAccount.ModifiedDateTime = dateTimeNow;
-                await AccountDataAccess.UpdateAccountAsync(newAccount);
+                accountToUpsert.ModifiedDateTime = dateTimeNow;
+                await AccountDataAccess.UpdateAccountAsync(accountToUpsert);
             }
 
-            return new Result<Account> { Success = true, Data = newAccount };
+            return new Result<Account> { Success = true, Data = accountToUpsert };
         }
 
-        private async Task<Account> FillAccount(Account account)
+        private async Task<Account> GetPopulatedAccount(Account account)
         {
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
 
