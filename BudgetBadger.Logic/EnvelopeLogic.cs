@@ -26,7 +26,9 @@ namespace BudgetBadger.Logic
             envelopeDataAccess.CreateEnvelopeAsync(Constants.BufferEnvelope);
 
             envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.SystemEnvelopeGroup);
-            envelopeDataAccess.CreateEnvelopeAsync(Constants.SystemEnvelope);
+            envelopeDataAccess.CreateEnvelopeAsync(Constants.IgnoredEnvelope);
+
+            envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.DebtEnvelopeGroup);
         }
 
         public Task<Result> DeleteBudgetAsync(Budget budget)
@@ -134,13 +136,20 @@ namespace BudgetBadger.Logic
             return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool includeIncome = false)
+        public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool selectorMode = false)
         {
             // always hide the hidden envelope
-            var newBudgets = budgets.Where(b => !b.Envelope.IsSystem());
+            var activeBudgets = budgets.Where(b =>
+                                              !b.Envelope.IsSystem()
+                                              && !b.Envelope.Group.IsDebt()
+                                              && !b.Envelope.Group.IsIncome());
+
+            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome());
+            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt());
+
 
             var groupedBudgets = new List<GroupedList<Budget>>();
-            var temp = newBudgets.GroupBy(a => a.Envelope?.Group?.Description);
+            var temp = activeBudgets.GroupBy(a => a.Envelope?.Group?.Description);
             foreach (var tempGroup in temp)
             {
                 var groupedList = new GroupedList<Budget>(tempGroup.Key, tempGroup.Key[0].ToString());
@@ -148,10 +157,20 @@ namespace BudgetBadger.Logic
                 groupedBudgets.Add(groupedList);
             }
 
-            if (!includeIncome)
+
+            if (selectorMode)
             {
-                groupedBudgets.RemoveAll(g => g.FirstOrDefault()?.Envelope?.Group?.Id == Constants.IncomeEnvelopeGroup.Id);
+                var incomeGroupedList = new GroupedList<Budget>("Income", "Income");
+                incomeGroupedList.AddRange(incomeBudgets);
+                groupedBudgets.Add(incomeGroupedList);
+
+                //add a fake selection debt envelope
             }
+
+                var debtGroup = new GroupedList<Budget>("Debt", "Debt");
+                debtGroup.AddRange(debtBudgets);
+                groupedBudgets.Add(debtGroup);
+
 
             return groupedBudgets;
         }
@@ -162,13 +181,13 @@ namespace BudgetBadger.Logic
             var budgetToUpsert = budget.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
-            var envelopeResult = await UpsertEnvelopeAsync(budgetToUpsert.Envelope);
+            var envelopeResult = await SaveEnvelopeAsync(budgetToUpsert.Envelope);
             if (envelopeResult.Success)
             {
                 budgetToUpsert.Envelope = envelopeResult.Data;
             }
 
-            var scheduleResult = await UpsertBudgetScheduleAsync(budgetToUpsert.Schedule);
+            var scheduleResult = await SaveBudgetScheduleAsync(budgetToUpsert.Schedule);
             if (scheduleResult.Success)
             {
                 budgetToUpsert.Schedule = scheduleResult.Data;
@@ -224,7 +243,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Result<Envelope>> UpsertEnvelopeAsync(Envelope envelope)
+        private async Task<Result<Envelope>> SaveEnvelopeAsync(Envelope envelope)
         {
             var result = new Result<Envelope>();
             var envelopeToUpsert = envelope.DeepCopy();
@@ -259,7 +278,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Result<BudgetSchedule>> UpsertBudgetScheduleAsync(BudgetSchedule budgetSchedule)
+        private async Task<Result<BudgetSchedule>> SaveBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
             var result = new Result<BudgetSchedule>();
             var scheduleToUpsert = budgetSchedule.DeepCopy();

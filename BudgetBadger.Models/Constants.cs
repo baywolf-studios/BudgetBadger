@@ -33,13 +33,20 @@ namespace BudgetBadger.Models
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
-        public static readonly Envelope SystemEnvelope = new Envelope 
+        public static readonly Envelope IgnoredEnvelope = new Envelope 
         { 
             Id = new Guid("{cdf92e3b-3104-47b9-9a83-ca9e3e097c35}"), 
             Description = "Not Needed", 
             Group = SystemEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now 
+        };
+        public static readonly EnvelopeGroup DebtEnvelopeGroup = new EnvelopeGroup
+        {
+            Id = new Guid("{6c31199e-a5f8-448a-8af6-fd5bab73bcd7}"),
+            Description = "Debt",
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now
         };
         public static readonly Payee StartingBalancePayee = new Payee 
         { 

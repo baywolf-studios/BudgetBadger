@@ -7,6 +7,7 @@ namespace BudgetBadger.Core.Logic
 {
     public interface IPayeeLogic
     {
+        //Task<Result> ValidatePayeeAsync(Payee payee);
         Task<Result<Payee>> SavePayeeAsync(Payee payee);
         Task<Result> DeletePayeeAsync(Payee payee);
         Task<Result<Payee>> GetPayeeAsync(Guid id);

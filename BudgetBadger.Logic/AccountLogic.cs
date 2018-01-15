@@ -13,12 +13,17 @@ namespace BudgetBadger.Logic
         readonly IAccountDataAccess AccountDataAccess;
         readonly ITransactionDataAccess TransactionDataAccess;
         readonly IPayeeDataAccess PayeeDataAccess;
+        readonly IEnvelopeDataAccess EnvelopeDataAccess;
 
-        public AccountLogic(IAccountDataAccess accountDataAccess, ITransactionDataAccess transactionDataAccess, IPayeeDataAccess payeeDataAccess)
+        public AccountLogic(IAccountDataAccess accountDataAccess,
+                            ITransactionDataAccess transactionDataAccess,
+                            IPayeeDataAccess payeeDataAccess,
+                            IEnvelopeDataAccess envelopeDataAccess)
         {
             AccountDataAccess = accountDataAccess;
             TransactionDataAccess = transactionDataAccess;
             PayeeDataAccess = payeeDataAccess;
+            EnvelopeDataAccess = envelopeDataAccess;
 
             var accountTypes = new List<AccountType>();
             accountTypes.Add(new AccountType
@@ -147,6 +152,32 @@ namespace BudgetBadger.Logic
                 };
                 await PayeeDataAccess.CreatePayeeAsync(accountPayee);
 
+                //create a debt envelope for new accounts
+                var debtEnvelope = new Envelope
+                {
+                    Id = Guid.NewGuid(),
+                    Description = accountToUpsert.Description,
+                    Group = Constants.DebtEnvelopeGroup,
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow
+                };
+                await EnvelopeDataAccess.CreateEnvelopeAsync(debtEnvelope);
+
+                // determine which envelope should be used
+                Envelope startingBalanceEnvelope;
+                if (accountToUpsert.OffBudget)
+                {
+                    startingBalanceEnvelope = Constants.IgnoredEnvelope;
+                }
+                else if (accountToUpsert.Balance < 0) // on budget and negative
+                {
+                    startingBalanceEnvelope = debtEnvelope;
+                }
+                else // on budget and positive
+                {
+                    startingBalanceEnvelope = Constants.IncomeEnvelope;
+                }
+
                 var startingBalance = new Transaction
                 {
                     Id = Guid.NewGuid(),
@@ -156,8 +187,9 @@ namespace BudgetBadger.Logic
                     ServiceDate = dateTimeNow,
                     Account = accountToUpsert,
                     Payee = Constants.StartingBalancePayee,
-                    Envelope = accountToUpsert.OnBudget ? Constants.IncomeEnvelope : Constants.SystemEnvelope                 
+                    Envelope = startingBalanceEnvelope                 
                 };
+
                 await TransactionDataAccess.CreateTransactionAsync(startingBalance);
             }
             else

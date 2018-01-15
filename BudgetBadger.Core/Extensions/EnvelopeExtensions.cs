@@ -27,7 +27,12 @@ namespace BudgetBadger.Core.Extensions
 
         public static bool IsSystem(this Envelope envelope)
         {
-            return envelope.Id == Constants.SystemEnvelope.Id;
+            return envelope.Id == Constants.IgnoredEnvelope.Id;
+        }
+
+        public static bool IsDebt(this EnvelopeGroup envelopeGroup)
+        {
+            return envelopeGroup.Id == Constants.DebtEnvelopeGroup.Id;
         }
     }
 }

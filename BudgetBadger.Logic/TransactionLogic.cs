@@ -239,7 +239,7 @@ namespace BudgetBadger.Logic
 
             if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem())
             {
-                transactionToPopulate.Envelope = Constants.SystemEnvelope;
+                transactionToPopulate.Envelope = Constants.IgnoredEnvelope;
             }
             else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem())
             {

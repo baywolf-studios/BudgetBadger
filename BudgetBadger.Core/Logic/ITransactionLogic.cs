@@ -7,6 +7,7 @@ namespace BudgetBadger.Core.Logic
 {
     public interface ITransactionLogic
     {
+        //Task<Result> ValidateTransactionAsync(Transaction transaction);
         Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction);
         Task<Result> DeleteTransactionAsync(Transaction transaction);
         Task<Result<Transaction>> GetTransactionAsync(Guid id);

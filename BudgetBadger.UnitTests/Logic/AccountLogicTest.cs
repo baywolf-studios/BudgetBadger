@@ -13,7 +13,11 @@ namespace BudgetBadger.UnitTests.Logic
         [Fact]         public async Task DeleteAccountAsync_GivenANonDeletedAccount_UpdatesDeletedDateTime()         {             var accountDataAccessMock = new Mock<IAccountDataAccess>();
             var transactionDataAccessMock = new Mock<ITransactionDataAccess>();
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
-             accountDataAccessMock                 .Setup(x => x.UpdateAccountAsync(It.IsAny<Account>()))                 .Returns(Task.CompletedTask);              var accountLogic = new AccountLogic(accountDataAccessMock.Object, transactionDataAccessMock.Object, payeeDataAccessMock.Object);              var account = new Account             {                 Id = Guid.NewGuid(),                 DeletedDateTime = null             };              var result = await accountLogic.DeleteAccountAsync(account);              accountDataAccessMock.Verify(ms => ms.UpdateAccountAsync(It.Is<Account>(mo => mo.DeletedDateTime != null)), Times.Once());         }
+            var envelopeDataAccessMock = new Mock<IEnvelopeDataAccess>();
+             accountDataAccessMock                 .Setup(x => x.UpdateAccountAsync(It.IsAny<Account>()))                 .Returns(Task.CompletedTask);              var accountLogic = new AccountLogic(accountDataAccessMock.Object,
+                                                transactionDataAccessMock.Object,
+                                                payeeDataAccessMock.Object,
+                                                envelopeDataAccessMock.Object);              var account = new Account             {                 Id = Guid.NewGuid(),                 DeletedDateTime = null             };              var result = await accountLogic.DeleteAccountAsync(account);              accountDataAccessMock.Verify(ms => ms.UpdateAccountAsync(It.Is<Account>(mo => mo.DeletedDateTime != null)), Times.Once());         }
 
         [Fact]
         public async Task DeleteAccountAsync_GivenADataAccessException_ReturnsFalseResult()
@@ -21,12 +25,16 @@ namespace BudgetBadger.UnitTests.Logic
             var accountDataAccessMock = new Mock<IAccountDataAccess>();
             var transactionDataAccessMock = new Mock<ITransactionDataAccess>();
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var envelopeDataAccessMock = new Mock<IEnvelopeDataAccess>();
 
             accountDataAccessMock
                 .Setup(x => x.UpdateAccountAsync(It.IsAny<Account>()))
                 .Throws(new Exception());
 
-            var accountLogic = new AccountLogic(accountDataAccessMock.Object, transactionDataAccessMock.Object, payeeDataAccessMock.Object);
+            var accountLogic = new AccountLogic(accountDataAccessMock.Object,
+                                                transactionDataAccessMock.Object,
+                                                payeeDataAccessMock.Object,
+                                                envelopeDataAccessMock.Object);
 
             var account = new Account
             {
@@ -45,12 +53,16 @@ namespace BudgetBadger.UnitTests.Logic
             var accountDataAccessMock = new Mock<IAccountDataAccess>();
             var transactionDataAccessMock = new Mock<ITransactionDataAccess>();
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var envelopeDataAccessMock = new Mock<IEnvelopeDataAccess>();
 
             accountDataAccessMock
                 .Setup(x => x.CreateAccountAsync(It.IsAny<Account>()))
                 .Returns(Task.CompletedTask);
 
-            var accountLogic = new AccountLogic(accountDataAccessMock.Object, transactionDataAccessMock.Object, payeeDataAccessMock.Object);
+            var accountLogic = new AccountLogic(accountDataAccessMock.Object,
+                                                transactionDataAccessMock.Object,
+                                                payeeDataAccessMock.Object,
+                                                envelopeDataAccessMock.Object);
 
             var account = new Account
             {
@@ -69,12 +81,16 @@ namespace BudgetBadger.UnitTests.Logic
             var accountDataAccessMock = new Mock<IAccountDataAccess>();
             var transactionDataAccessMock = new Mock<ITransactionDataAccess>();
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var envelopeDataAccessMock = new Mock<IEnvelopeDataAccess>();
 
             accountDataAccessMock
                 .Setup(x => x.CreateAccountAsync(It.IsAny<Account>()))
                 .Returns(Task.CompletedTask);
 
-            var accountLogic = new AccountLogic(accountDataAccessMock.Object, transactionDataAccessMock.Object, payeeDataAccessMock.Object);
+            var accountLogic = new AccountLogic(accountDataAccessMock.Object,
+                                                transactionDataAccessMock.Object,
+                                                payeeDataAccessMock.Object,
+                                                envelopeDataAccessMock.Object);
 
             var account = new Account
             {
