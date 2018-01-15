@@ -23,7 +23,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SelectedCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand NewCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public bool IsBusy { get; set; }
 
@@ -51,7 +51,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
+            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -113,14 +113,14 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelopeGroup = null;
         }
 
-        public async Task ExecuteNewCommand()
+        public async Task ExecuteSaveCommand()
         {
             var newEnvelopeGroup = new EnvelopeGroup
             {
                 Description = SearchText
             };
 
-            var result = await EnvelopeLogic.UpsertEnvelopeGroupAsync(newEnvelopeGroup);
+            var result = await EnvelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
 
             if (result.Success)
             {

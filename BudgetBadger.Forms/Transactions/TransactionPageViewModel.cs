@@ -88,7 +88,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await TransLogic.UpsertTransactionAsync(Transaction);
+            var result = await TransLogic.SaveTransactionAsync(Transaction);
 
             if (result.Success)
             {

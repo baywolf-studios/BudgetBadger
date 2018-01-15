@@ -39,7 +39,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await EnvelopeLogic.UpsertBudgetAsync(Budget);
+            var result = await EnvelopeLogic.SaveBudgetAsync(Budget);
 
             if (result.Success)
             {

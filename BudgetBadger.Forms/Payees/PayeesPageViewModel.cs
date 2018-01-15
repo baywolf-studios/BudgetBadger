@@ -21,9 +21,9 @@ namespace BudgetBadger.Forms.Payees
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand NewCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public bool IsBusy { get; set; }
 
@@ -53,9 +53,9 @@ namespace BudgetBadger.Forms.Payees
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
-            NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
+            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatedTo(NavigationParameters parameters)
@@ -129,14 +129,14 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteAddCommand()
+        public async Task ExecuteSaveCommand()
         {
             var newPayee = new Payee
             {
                 Description = SearchText
             };
 
-            var result = await PayeeLogic.UpsertPayeeAsync(newPayee);
+            var result = await PayeeLogic.SavePayeeAsync(newPayee);
 
             if (result.Success)
             {
@@ -153,7 +153,7 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteNewCommand()
+        public async Task ExecuteAddCommand()
         {
             await NavigationService.NavigateAsync(NavigationPageName.PayeeEditPage);
 

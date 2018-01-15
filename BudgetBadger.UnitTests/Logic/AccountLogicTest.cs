@@ -58,7 +58,7 @@ namespace BudgetBadger.UnitTests.Logic
                 CreatedDateTime = null
             };
 
-            var result = await accountLogic.UpsertAccountAsync(account);
+            var result = await accountLogic.SaveAccountAsync(account);
 
             accountDataAccessMock.Verify(x => x.CreateAccountAsync(It.IsAny<Account>()));
         }
@@ -82,7 +82,7 @@ namespace BudgetBadger.UnitTests.Logic
                 CreatedDateTime = DateTime.Now.AddDays(-1)
             };
 
-            var result = await accountLogic.UpsertAccountAsync(account);
+            var result = await accountLogic.SaveAccountAsync(account);
 
             accountDataAccessMock.Verify(x => x.UpdateAccountAsync(It.IsAny<Account>()));
         }

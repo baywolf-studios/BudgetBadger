@@ -60,7 +60,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await AccountLogic.UpsertAccountAsync(Account);
+            var result = await AccountLogic.SaveAccountAsync(Account);
 
             if (result.Success)
             {

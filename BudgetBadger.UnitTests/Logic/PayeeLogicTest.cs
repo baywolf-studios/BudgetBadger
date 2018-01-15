@@ -15,11 +15,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task UpsertPayeeAsync_GivenAPayeeWithoutACreatedDateTime_CallsCreatePayeeOnDataAccess()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.CreatePayeeAsync(It.IsAny<Payee>()))
                 .Returns(Task.CompletedTask);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var payee = new Payee
             {
@@ -27,7 +28,7 @@ namespace BudgetBadger.UnitTests.Logic
                 CreatedDateTime = null
             };
 
-            var result = await payeeLogic.UpsertPayeeAsync(payee);
+            var result = await payeeLogic.SavePayeeAsync(payee);
 
             payeeDataAccessMock.Verify(x => x.CreatePayeeAsync(It.IsAny<Payee>()));
         }
@@ -36,11 +37,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task UpsertPayeeAsync_GivenAPayeeWithoutACreatedDateTimeOrModifiedDateTime_ReturnsAPayeeWithACreatedDateTimeAndModifiedDateTime()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.CreatePayeeAsync(It.IsAny<Payee>()))
                 .Returns(Task.CompletedTask);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var payee = new Payee
             {
@@ -49,7 +51,7 @@ namespace BudgetBadger.UnitTests.Logic
                 ModifiedDateTime = null
             };
 
-            var result = await payeeLogic.UpsertPayeeAsync(payee);
+            var result = await payeeLogic.SavePayeeAsync(payee);
 
             Assert.True(result.Success);
             Assert.NotNull(result.Data.CreatedDateTime);
@@ -60,11 +62,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task UpsertPayeeAsync_GivenAPayeeWithACreatedDateTime_CallsUpdatePayeeOnDataAccess()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.CreatePayeeAsync(It.IsAny<Payee>()))
                 .Returns(Task.CompletedTask);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var payee = new Payee
             {
@@ -72,7 +75,7 @@ namespace BudgetBadger.UnitTests.Logic
                 CreatedDateTime = DateTime.Now.AddDays(-1)
             };
 
-            var result = await payeeLogic.UpsertPayeeAsync(payee);
+            var result = await payeeLogic.SavePayeeAsync(payee);
 
             payeeDataAccessMock.Verify(x => x.UpdatePayeeAsync(It.IsAny<Payee>()));
         }
@@ -81,11 +84,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task UpsertPayeeAsync_GivenAPayeeWithACreatedDateTimeAndModifiedDateTime_ReturnsAPayeeWithAnUpdatedModifiedDateTime()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.CreatePayeeAsync(It.IsAny<Payee>()))
                 .Returns(Task.CompletedTask);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var dateTime = DateTime.Now;
 
@@ -96,7 +100,7 @@ namespace BudgetBadger.UnitTests.Logic
                 ModifiedDateTime = dateTime
             };
 
-            var result = await payeeLogic.UpsertPayeeAsync(payee);
+            var result = await payeeLogic.SavePayeeAsync(payee);
 
             Assert.True(result.Success);
             Assert.NotEqual(dateTime, result.Data.ModifiedDateTime);
@@ -106,18 +110,19 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task UpsertPayeeAsync_GivenADataAccessException_ReturnsFalseResult()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.CreatePayeeAsync(It.IsAny<Payee>()))
                 .Throws(new Exception());
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var payee = new Payee
             {
                 Id = Guid.NewGuid()
             };
 
-            var result = await payeeLogic.UpsertPayeeAsync(payee);
+            var result = await payeeLogic.SavePayeeAsync(payee);
 
             Assert.False(result.Success);
         }
@@ -126,11 +131,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task GetPayeesAsync_GivenADataAccessException_ReturnsFalseResult()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.ReadPayeesAsync())
                 .Throws(new Exception());
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var result = await payeeLogic.GetPayeesAsync();
 
@@ -141,11 +147,12 @@ namespace BudgetBadger.UnitTests.Logic
         public async Task DeletePayeeAsync_GivenAPayeeWithoutADeletedDateTime_ReturnsAPayeeWithADeletedDateTime()
         {
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.UpdatePayeeAsync(It.IsAny<Payee>()))
                 .Returns(Task.CompletedTask);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var payee = new Payee
             {
@@ -171,11 +178,12 @@ namespace BudgetBadger.UnitTests.Logic
             };
 
             var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
+            var accountDataAccessMock = new Mock<IAccountDataAccess>();
             payeeDataAccessMock
                 .Setup(x => x.ReadPayeesAsync())
                 .ReturnsAsync(payees);
 
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object);
+            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
 
             var result = await payeeLogic.GetPayeesAsync();
 

@@ -126,7 +126,7 @@ namespace BudgetBadger.Logic
             return groupedAccounts;
         }
 
-        public async Task<Result<Account>> UpsertAccountAsync(Account account)
+        public async Task<Result<Account>> SaveAccountAsync(Account account)
         {
             var accountToUpsert = account.DeepCopy();
             var dateTimeNow = DateTime.Now;

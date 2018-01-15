@@ -110,7 +110,7 @@ namespace BudgetBadger.Logic
             return groupedPayees;
         }
 
-        public async Task<Result<Payee>> UpsertPayeeAsync(Payee payee)
+        public async Task<Result<Payee>> SavePayeeAsync(Payee payee)
         {
             var result = new Result<Payee>();
             var payeeToUpsert = payee.DeepCopy();

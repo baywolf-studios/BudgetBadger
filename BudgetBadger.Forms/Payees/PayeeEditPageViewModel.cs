@@ -54,7 +54,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await PayeeLogic.UpsertPayeeAsync(Payee);
+            var result = await PayeeLogic.SavePayeeAsync(Payee);
 
             if (result.Success)
             {

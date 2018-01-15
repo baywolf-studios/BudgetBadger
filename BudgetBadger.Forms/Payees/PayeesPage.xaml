@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Payees" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeesPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding NewCommand}" IsEnabled="{Binding MainMode}"/>
+        <ToolbarItem Text="Add" Command="{Binding AddCommand}" IsEnabled="{Binding MainMode}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
@@ -12,7 +12,7 @@
                 <ListView.Header>
                     <StackLayout Orientation="Vertical">
                         <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
-                        <Button IsVisible="{Binding NoSearchResults}" Command="{Binding AddCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
+                        <Button IsVisible="{Binding NoSearchResults}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>

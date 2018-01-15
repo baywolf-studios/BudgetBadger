@@ -156,7 +156,7 @@ namespace BudgetBadger.Logic
             return groupedBudgets;
         }
 
-        public async Task<Result<Budget>> UpsertBudgetAsync(Budget budget)
+        public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)
         {
             var result = new Result<Budget>();
             var budgetToUpsert = budget.DeepCopy();
@@ -196,7 +196,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<EnvelopeGroup>> UpsertEnvelopeGroupAsync(EnvelopeGroup group)
+        public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
         {
             var result = new Result<EnvelopeGroup>();
             var groupToUpsert = group.DeepCopy();
@@ -230,7 +230,7 @@ namespace BudgetBadger.Logic
             var envelopeToUpsert = envelope.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
-            var groupResult = await UpsertEnvelopeGroupAsync(envelopeToUpsert.Group);
+            var groupResult = await SaveEnvelopeGroupAsync(envelopeToUpsert.Group);
             if (groupResult.Success)
             {
                 envelopeToUpsert.Group = groupResult.Data;

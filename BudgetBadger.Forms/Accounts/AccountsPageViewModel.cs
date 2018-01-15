@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand NewCommand { get; set; }
+        public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
         public bool IsBusy { get; set; }
@@ -52,7 +52,7 @@ namespace BudgetBadger.Forms.Accounts
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
+            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
@@ -127,7 +127,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteNewCommand()
+        public async Task ExecuteAddCommand()
         {
             await NavigationService.NavigateAsync(NavigationPageName.AccountEditPage);
             SelectedAccount = null;

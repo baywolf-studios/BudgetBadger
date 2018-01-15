@@ -146,7 +146,7 @@ namespace BudgetBadger.Logic
             return groupedTransactions;
         }
 
-        public async Task<Result<Transaction>> UpsertTransactionAsync(Transaction transaction)
+        public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
         {
             var result = new Result<Transaction>();
             var transactionToUpsert = transaction.DeepCopy();

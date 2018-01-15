@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand PreviousCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
-        public ICommand NewCommand { get; set; }
+        public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
         public bool IsBusy { get; set; }
@@ -56,7 +56,7 @@ namespace BudgetBadger.Forms.Envelopes
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
-            NewCommand = new DelegateCommand(async () => await ExecuteNewCommand());
+            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
@@ -174,7 +174,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedBudget = null;
         }
 
-        public async Task ExecuteNewCommand()
+        public async Task ExecuteAddCommand()
         {
             var parameters = new NavigationParameters
             {
