@@ -165,30 +165,5 @@ namespace BudgetBadger.UnitTests.Logic
             Assert.True(result.Success);
             Assert.NotNull(payee.DeletedDateTime);
         }
-
-        [Fact]
-        public async Task GetPayeesAsync_GivenIncludeDeletedTrue_ReturnsDeletedPayees()
-        {
-            var deletedPayee = new Payee { Id = Guid.NewGuid(), DeletedDateTime = DateTime.Now };
-
-            var payees = new List<Payee>
-            {
-                deletedPayee,
-                new Payee { Id = Guid.NewGuid(), DeletedDateTime = null }
-            };
-
-            var payeeDataAccessMock = new Mock<IPayeeDataAccess>();
-            var accountDataAccessMock = new Mock<IAccountDataAccess>();
-            payeeDataAccessMock
-                .Setup(x => x.ReadPayeesAsync())
-                .ReturnsAsync(payees);
-
-            var payeeLogic = new PayeeLogic(payeeDataAccessMock.Object, accountDataAccessMock.Object);
-
-            var result = await payeeLogic.GetPayeesAsync();
-
-            Assert.True(result.Success);
-            Assert.Contains(deletedPayee, result.Data);
-        }
     }
 }
