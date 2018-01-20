@@ -9,6 +9,7 @@ using BudgetBadger.Forms.Navigation;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -27,8 +28,8 @@ namespace BudgetBadger.Forms.Payees
         public bool IsBusy { get; set; }
 
         public Payee Payee { get; set; }
-        public ObservableCollection<Transaction> Transactions { get; set; }
-        public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
+        public IEnumerable<Transaction> Transactions { get; set; }
+        public ILookup<string, Transaction> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
@@ -40,8 +41,8 @@ namespace BudgetBadger.Forms.Payees
             PayeeLogic = payeeLogic;
 
             Payee = new Payee();
-            Transactions = new ObservableCollection<Transaction>();
-            GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>();
+            Transactions = new List<Transaction>();
+            GroupedTransactions = Transactions.ToLookup(t => "");
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -120,8 +121,8 @@ namespace BudgetBadger.Forms.Payees
                     var result = await TransactionLogic.GetPayeeTransactionsAsync(Payee);
                     if (result.Success)
                     {
-                        Transactions = new ObservableCollection<Transaction>(result.Data);
-                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        Transactions = result.Data;
+                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }

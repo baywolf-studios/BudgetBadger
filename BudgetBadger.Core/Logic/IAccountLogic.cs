@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
 
@@ -16,6 +17,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<AccountType>>> GetAccountTypesAsync();
 
         IEnumerable<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText);
-        IEnumerable<GroupedList<Account>> GroupAccounts(IEnumerable<Account> accounts);
+        ILookup<string, Account> GroupAccounts(IEnumerable<Account> accounts);
     }
 }

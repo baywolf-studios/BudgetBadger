@@ -131,17 +131,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IEnumerable<GroupedList<Transaction>> GroupTransactions(IEnumerable<Transaction> transactions)
+        public ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions)
         {
-            var groupedTransactions = new List<GroupedList<Transaction>>();
-            var tempGroups = transactions.GroupBy(t => String.Format("{0:d}", t.ServiceDate));
-
-            foreach (var tempGroup in tempGroups)
-            {
-                var newTemp = new GroupedList<Transaction>(tempGroup.Key, tempGroup.Key);
-                newTemp.AddRange(tempGroup);
-                groupedTransactions.Add(newTemp);
-            }
+            var groupedTransactions = transactions.ToLookup(t => String.Format("{0:d}", t.ServiceDate));
 
             return groupedTransactions;
         }

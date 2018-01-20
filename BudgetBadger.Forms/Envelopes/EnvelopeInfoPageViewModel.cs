@@ -9,6 +9,7 @@ using BudgetBadger.Forms.Navigation;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -27,8 +28,8 @@ namespace BudgetBadger.Forms.Envelopes
         public bool IsBusy { get; set; }
 
         public Budget Budget { get; set; }
-        public ObservableCollection<Transaction> Transactions { get; set; }
-        public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
+        public IEnumerable<Transaction> Transactions { get; set; }
+        public ILookup<string, Transaction> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
 
         public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic)
@@ -38,8 +39,8 @@ namespace BudgetBadger.Forms.Envelopes
             EnvelopeLogic = envelopeLogic;
 
             Budget = new Budget();
-            Transactions = new ObservableCollection<Transaction>();
-            GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>();
+            Transactions = new List<Transaction>();
+            GroupedTransactions = Transactions.ToLookup(t => "");
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -63,7 +64,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public void OnNavigatedTo(NavigationParameters parameters)
         {
         }
 
@@ -123,8 +124,8 @@ namespace BudgetBadger.Forms.Envelopes
                     var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                     if (result.Success)
                     {
-                        Transactions = new ObservableCollection<Transaction>(result.Data);
-                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        Transactions = result.Data;
+                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }

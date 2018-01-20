@@ -116,17 +116,9 @@ namespace BudgetBadger.Logic
             return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Account>> GroupAccounts(IEnumerable<Account> accounts)
+        public ILookup<string, Account> GroupAccounts(IEnumerable<Account> accounts)
         {
-            var groupedAccounts = new List<GroupedList<Account>>();
-            var temp = accounts.GroupBy(a => a.OnBudget);
-            foreach (var tempGroup in temp)
-            {
-                var description = tempGroup.Key ? "On Budget" : "Off Budget";
-                var groupedList = new GroupedList<Account>(description, description);
-                groupedList.AddRange(tempGroup);
-                groupedAccounts.Add(groupedList);
-            }
+            var groupedAccounts = accounts.ToLookup(a => a.OnBudget ? "On Budget" : "Off Budget");
 
             return groupedAccounts;
         }
@@ -155,7 +147,7 @@ namespace BudgetBadger.Logic
                 //create a debt envelope for new accounts
                 var debtEnvelope = new Envelope
                 {
-                    Id = Guid.NewGuid(),
+                    Id = accountToUpsert.Id,
                     Description = accountToUpsert.Description,
                     Group = Constants.DebtEnvelopeGroup,
                     CreatedDateTime = dateTimeNow,

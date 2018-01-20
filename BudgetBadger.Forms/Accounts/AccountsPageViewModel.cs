@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,6 +9,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -27,9 +27,9 @@ namespace BudgetBadger.Forms.Accounts
 
         public bool IsBusy { get; set; }
 
-        public ObservableCollection<Account> Accounts { get; set; }
+        public IEnumerable<Account> Accounts { get; set; }
         public Account SelectedAccount { get; set; }
-        public ObservableCollection<GroupedList<Account>> GroupedAccounts { get; set; }
+        public ILookup<string, Account> GroupedAccounts { get; set; }
 
         public bool SelectorMode { get; set; }
         public bool NormalMode { get { return !SelectorMode; } }
@@ -46,9 +46,9 @@ namespace BudgetBadger.Forms.Accounts
             NavigationService = navigationService;
             DialogService = dialogService;
 
-            Accounts = new ObservableCollection<Account>();
+            Accounts = new List<Account>();
             SelectedAccount = null;
-            GroupedAccounts = new ObservableCollection<GroupedList<Account>>();
+            GroupedAccounts = Accounts.ToLookup(a => "");
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -112,8 +112,8 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await AccountLogic.GetAccountsAsync();
                 if (result.Success)
                 {
-                    Accounts = new ObservableCollection<Account>(result.Data);
-                    GroupedAccounts = new ObservableCollection<GroupedList<Account>>(AccountLogic.GroupAccounts(Accounts));
+                    Accounts = result.Data;
+                    GroupedAccounts = AccountLogic.GroupAccounts(Accounts);
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void ExecuteSearchCommand()
         {
-            GroupedAccounts = new ObservableCollection<GroupedList<Account>>(AccountLogic.GroupAccounts(AccountLogic.SearchAccounts(Accounts, SearchText)));
+            GroupedAccounts = AccountLogic.GroupAccounts(AccountLogic.SearchAccounts(Accounts, SearchText));
         }
     }
 }

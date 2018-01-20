@@ -104,8 +104,9 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await EnvelopeDataAccess.ReadEnvelopeGroupsAsync();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome()); 
                 result.Success = true;
-                result.Data = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome());
+                result.Data = filteredEnvelopeGroups;
             }
             catch (Exception ex)
             {
@@ -165,11 +166,18 @@ namespace BudgetBadger.Logic
                 groupedBudgets.Add(incomeGroupedList);
 
                 //add a fake selection debt envelope
+                var debtGroup = new GroupedList<Budget>("Debt", "Debt");
+                var debtBudget = debtBudgets.FirstOrDefault();
+                debtBudget.Envelope = Constants.DebtEnvelope;
+                debtGroup.Add(debtBudget);
+                groupedBudgets.Add(debtGroup);
             }
-
+            else
+            {
                 var debtGroup = new GroupedList<Budget>("Debt", "Debt");
                 debtGroup.AddRange(debtBudgets);
                 groupedBudgets.Add(debtGroup);
+            }
 
 
             return groupedBudgets;

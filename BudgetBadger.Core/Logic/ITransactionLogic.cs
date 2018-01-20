@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
 
@@ -16,7 +17,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope);
         Task<Result<IEnumerable<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
 
-        IEnumerable<GroupedList<Transaction>> GroupTransactions(IEnumerable<Transaction> transactions);
+        ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions);
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);
     }
 }

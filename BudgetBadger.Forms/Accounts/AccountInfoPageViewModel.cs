@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -9,6 +8,7 @@ using BudgetBadger.Forms.Navigation;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -27,8 +27,8 @@ namespace BudgetBadger.Forms.Accounts
         public bool IsBusy { get; set; }
 
         public Account Account { get; set; }
-        public ObservableCollection<Transaction> Transactions { get; set; }
-        public ObservableCollection<GroupedList<Transaction>> GroupedTransactions { get; set; }
+        public IEnumerable<Transaction> Transactions { get; set; }
+        public ILookup<string, Transaction> GroupedTransactions { get; set; }
         public Transaction SelectedTransaction { get; set; }
 
         public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount); }
@@ -42,8 +42,8 @@ namespace BudgetBadger.Forms.Accounts
             AccountLogic = accountLogic;
 
             Account = new Account();
-            Transactions = new ObservableCollection<Transaction>();
-            GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>();
+            Transactions = new List<Transaction>();
+            GroupedTransactions = Transactions.ToLookup(t => "");
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -122,8 +122,8 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await TransactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions = new ObservableCollection<Transaction>(result.Data);
-                        GroupedTransactions = new ObservableCollection<GroupedList<Transaction>>(TransactionLogic.GroupTransactions(Transactions));
+                        Transactions = result.Data;
+                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }
