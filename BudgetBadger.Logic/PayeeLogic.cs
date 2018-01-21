@@ -59,7 +59,17 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payees = await PayeeDataAccess.ReadPayeesAsync();
+                var allPayees = await PayeeDataAccess.ReadPayeesAsync();
+
+                // ugly hardcoded to remove the starting balance payee.
+                // may move to a "Payee Group" type setup
+                var payees = allPayees.Where(p => p.DeletedDateTime == null && p.Description != "Starting Balance").ToList();
+
+                var includeDeleted = false; //will get this from settings dataaccess
+                if (includeDeleted)
+                {
+                    payees.AddRange(allPayees.Where(p => p.DeletedDateTime.HasValue));
+                }
 
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
 
@@ -85,27 +95,23 @@ namespace BudgetBadger.Logic
             return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees)
+        public ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees)
         {
-            var groupedPayees = new List<GroupedList<Payee>>();
-            var deletedPayees = payees.Where(p => p.DeletedDateTime != null);
-            var activePayees = payees.Where(p => p.DeletedDateTime == null);
-
-            var temp = activePayees.GroupBy(a => a.Description[0].ToString());
-            foreach (var tempGroup in temp)
+            var groupedPayees = payees.ToLookup(p =>
             {
-                var groupedList = new GroupedList<Payee>(tempGroup.Key, tempGroup.Key);
-                groupedList.AddRange(tempGroup);
-                groupedPayees.Add(groupedList);
-            }
-
-            var includeDeleted = false; //will get this from settings dataaccess
-            if (includeDeleted)
-            {
-                var deletedGroupedList = new GroupedList<Payee>("Deleted", "Del");
-                deletedGroupedList.AddRange(deletedPayees);
-                groupedPayees.Add(deletedGroupedList);
-            }
+                if (p.IsAccount)
+                {
+                    return "Transfer";
+                }
+                else if (p.DeletedDateTime.HasValue)
+                {
+                    return "Deleted";
+                }
+                else
+                {
+                    return p.Description[0].ToString();
+                }
+            });
 
             return groupedPayees;
         }

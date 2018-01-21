@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,6 +9,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -28,10 +28,10 @@ namespace BudgetBadger.Forms.Envelopes
         public bool IsBusy { get; set; }
 
         public EnvelopeGroup SelectedEnvelopeGroup { get; set; }
-        public ObservableCollection<EnvelopeGroup> EnvelopeGroups { get; set; }
-        public ObservableCollection<EnvelopeGroup> FilteredEnvelopeGroups { get; set; }
+        public IEnumerable<EnvelopeGroup> EnvelopeGroups { get; set; }
+        public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups { get; set; }
 
-        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count == 0; } }
+        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }
         public string SearchText { get; set; }
         public void OnSearchTextChanged()
         {
@@ -45,8 +45,8 @@ namespace BudgetBadger.Forms.Envelopes
             EnvelopeLogic = envelopeLogic;
 
             SelectedEnvelopeGroup = null;
-            EnvelopeGroups = new ObservableCollection<EnvelopeGroup>();
-            FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>();
+            EnvelopeGroups = new List<EnvelopeGroup>();
+            FilteredEnvelopeGroups = new List<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
@@ -82,8 +82,8 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (envelopeGroupsResult.Success)
                 {
-                    EnvelopeGroups = new ObservableCollection<EnvelopeGroup>(envelopeGroupsResult.Data);
-                    FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>(envelopeGroupsResult.Data);
+                    EnvelopeGroups = envelopeGroupsResult.Data;
+                    FilteredEnvelopeGroups = envelopeGroupsResult.Data;
                 }
                 else
                 {
@@ -139,7 +139,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void ExecuteSearchCommand()
         {
-            FilteredEnvelopeGroups = new ObservableCollection<EnvelopeGroup>(EnvelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText));
+            FilteredEnvelopeGroups = EnvelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
         }
     }
 }

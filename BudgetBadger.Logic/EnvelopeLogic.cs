@@ -61,18 +61,19 @@ namespace BudgetBadger.Logic
             throw new NotImplementedException();
         }
 
-        public async Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule)
+        public async Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule, bool isSelection = false)
         {
             var result = new Result<IEnumerable<Budget>>();
 
             var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+            var activeEnvelopes = envelopes.Where(e => !e.IsSystem());
 
             var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
-            var newBudgets = budgets.ToList();
+            var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem()).ToList();
 
-            foreach (var envelope in envelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+            foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
             {
-                newBudgets.Add(new Budget
+                activeBudgets.Add(new Budget
                 {
                     Schedule = schedule.DeepCopy(),
                     Envelope = envelope.DeepCopy(),
@@ -80,14 +81,36 @@ namespace BudgetBadger.Logic
                 });
             }
 
-            var schedules = budgets.Select(b => b.Schedule);
-            var distinctSchedules = schedules.GroupBy(s => s.Id).Select(s => s.First());
-            var populatedSchedules = await Task.WhenAll(distinctSchedules.Select(s => GetPopulatedBudgetSchedule(s)));
+            var populatedSchedule = await GetPopulatedBudgetSchedule(schedule);
+            var tasks = activeBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-            var tasks = newBudgets.Select(b => GetPopulatedBudget(b, populatedSchedules.FirstOrDefault(p => p.Id == b.Schedule.Id)));
+            var budgetsToReturnTemp = await Task.WhenAll(tasks);
+            var budgetsToReturn = budgetsToReturnTemp.ToList();
+
+            if (isSelection)
+            {
+                var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt()).ToList();
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt());
+                var genericDebtBudget = new Budget
+                {
+                    Envelope = Constants.DebtEnvelope,
+                    Amount = debtBudgets.Sum(b => b.Amount),
+                    Activity = debtBudgets.Sum(b => b.Activity),
+                    PastAmount = debtBudgets.Sum(b => b.PastAmount),
+                    PastActivity = debtBudgets.Sum(b => b.PastActivity),
+                    IgnoreOverspend = true
+                };
+
+                budgetsToReturn.Add(genericDebtBudget);
+            }
+            else
+            {
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsIncome());
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt() && b.Remaining == 0 && b.Amount == 0);
+            }
 
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = budgetsToReturn;
 
             return result;
         }
@@ -137,48 +160,9 @@ namespace BudgetBadger.Logic
             return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
         }
 
-        public IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool selectorMode = false)
+        public ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets)
         {
-            // always hide the hidden envelope
-            var activeBudgets = budgets.Where(b =>
-                                              !b.Envelope.IsSystem()
-                                              && !b.Envelope.Group.IsDebt()
-                                              && !b.Envelope.Group.IsIncome());
-
-            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome());
-            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt());
-
-
-            var groupedBudgets = new List<GroupedList<Budget>>();
-            var temp = activeBudgets.GroupBy(a => a.Envelope?.Group?.Description);
-            foreach (var tempGroup in temp)
-            {
-                var groupedList = new GroupedList<Budget>(tempGroup.Key, tempGroup.Key[0].ToString());
-                groupedList.AddRange(tempGroup);
-                groupedBudgets.Add(groupedList);
-            }
-
-
-            if (selectorMode)
-            {
-                var incomeGroupedList = new GroupedList<Budget>("Income", "Income");
-                incomeGroupedList.AddRange(incomeBudgets);
-                groupedBudgets.Add(incomeGroupedList);
-
-                //add a fake selection debt envelope
-                var debtGroup = new GroupedList<Budget>("Debt", "Debt");
-                var debtBudget = debtBudgets.FirstOrDefault();
-                debtBudget.Envelope = Constants.DebtEnvelope;
-                debtGroup.Add(debtBudget);
-                groupedBudgets.Add(debtGroup);
-            }
-            else
-            {
-                var debtGroup = new GroupedList<Budget>("Debt", "Debt");
-                debtGroup.AddRange(debtBudgets);
-                groupedBudgets.Add(debtGroup);
-            }
-
+            var groupedBudgets = budgets.ToLookup(b => b.Envelope.Group.Description);
 
             return groupedBudgets;
         }

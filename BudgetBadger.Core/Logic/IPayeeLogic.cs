@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
 
@@ -14,6 +15,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Payee>>> GetPayeesAsync();
 
         IEnumerable<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
-        IEnumerable<GroupedList<Payee>> GroupPayees(IEnumerable<Payee> payees);
+        ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees);
     }
 }

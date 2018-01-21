@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
 
@@ -12,7 +13,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<BudgetSchedule>> GetNextBudgetSchedule(BudgetSchedule currentSchedule);
 
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync();
-        Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule);
+        Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule, bool isSelection = false);
         Task<Result<Budget>> GetBudgetAsync(Guid id);
         //Task<Result> ValidateBudgetAsync(Budget budget);
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
@@ -25,7 +26,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
 
         IEnumerable<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText);
-        IEnumerable<GroupedList<Budget>> GroupBudgets(IEnumerable<Budget> budgets, bool selectorMode = false);
+        ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets);
 
         IEnumerable<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText);
     }

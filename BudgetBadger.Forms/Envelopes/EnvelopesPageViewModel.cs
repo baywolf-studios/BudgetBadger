@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -9,6 +8,7 @@ using BudgetBadger.Forms.Navigation;
 using BudgetBadger.Models;
 using BudgetBadger.Core.Logic;
 using PropertyChanged;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -29,9 +29,9 @@ namespace BudgetBadger.Forms.Envelopes
 
         private Guid? CurrentScheduleId { get; set; }
         public BudgetSchedule Schedule { get; set; }
-        public ObservableCollection<Budget> Budgets { get; set; }
+        public IEnumerable<Budget> Budgets { get; set; }
         public Budget SelectedBudget { get; set; }
-        public ObservableCollection<GroupedList<Budget>> GroupedBudgets { get; set; }
+        public ILookup<string, Budget> GroupedBudgets { get; set; }
 
         public bool SelectorMode { get; set; }
         public bool MainMode { get { return !SelectorMode; }}
@@ -48,9 +48,9 @@ namespace BudgetBadger.Forms.Envelopes
             NavigationService = navigationService;
 
             Schedule = null;
-            Budgets = new ObservableCollection<Budget>();
+            Budgets = new List<Budget>();
             SelectedBudget = null;
-            GroupedBudgets = new ObservableCollection<GroupedList<Budget>>();
+            GroupedBudgets = Budgets.ToLookup(b => "");
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
@@ -101,11 +101,11 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                 }
 
-                var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule);
+                var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule, SelectorMode);
                 if (budgetResult.Success)
                 {
-                    Budgets = new ObservableCollection<Budget>(budgetResult.Data);
-                    GroupedBudgets = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(Budgets, SelectorMode));
+                    Budgets = budgetResult.Data;
+                    GroupedBudgets = EnvelopeLogic.GroupBudgets(Budgets);
                     Schedule = Budgets.FirstOrDefault().Schedule.DeepCopy();
                 }
                 else
@@ -188,7 +188,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void ExecuteSearchCommand()
         {
-            GroupedBudgets = new ObservableCollection<GroupedList<Budget>>(EnvelopeLogic.GroupBudgets(EnvelopeLogic.SearchBudgets(Budgets, SearchText)));
+            GroupedBudgets = EnvelopeLogic.GroupBudgets(EnvelopeLogic.SearchBudgets(Budgets, SearchText));
         }
     }
 }

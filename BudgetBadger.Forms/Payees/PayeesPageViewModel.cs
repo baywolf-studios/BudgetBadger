@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
@@ -9,6 +8,8 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -27,9 +28,9 @@ namespace BudgetBadger.Forms.Payees
 
         public bool IsBusy { get; set; }
 
-        public ObservableCollection<Payee> Payees { get; set; }
+        public IEnumerable<Payee> Payees { get; set; }
         public Payee SelectedPayee { get; set; }
-        public ObservableCollection<GroupedList<Payee>> GroupedPayees { get; set; }
+        public ILookup<string, Payee> GroupedPayees { get; set; }
 
         public bool SelectorMode { get; set; }
         public bool MainMode { get { return !SelectorMode; }}
@@ -47,9 +48,9 @@ namespace BudgetBadger.Forms.Payees
             NavigationService = navigationService;
             DialogService = dialogService;
 
-            Payees = new ObservableCollection<Payee>();
+            Payees = new List<Payee>();
             SelectedPayee = null;
-            GroupedPayees = new ObservableCollection<GroupedList<Payee>>();
+            GroupedPayees = Payees.ToLookup(p => "");
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -114,8 +115,8 @@ namespace BudgetBadger.Forms.Payees
                 var result = await PayeeLogic.GetPayeesAsync();
                 if (result.Success)
                 {
-                    Payees = new ObservableCollection<Payee>(result.Data);
-                    GroupedPayees = new ObservableCollection<GroupedList<Payee>>(PayeeLogic.GroupPayees(Payees));
+                    Payees = result.Data;
+                    GroupedPayees = PayeeLogic.GroupPayees(Payees);
                 }
                 else
                 {
@@ -162,7 +163,7 @@ namespace BudgetBadger.Forms.Payees
 
         public void ExecuteSearchCommand()
         {
-            GroupedPayees = new ObservableCollection<GroupedList<Payee>>(PayeeLogic.GroupPayees(PayeeLogic.SearchPayees(Payees, SearchText)));
+            GroupedPayees = PayeeLogic.GroupPayees(PayeeLogic.SearchPayees(Payees, SearchText));
         }
     }
 }
