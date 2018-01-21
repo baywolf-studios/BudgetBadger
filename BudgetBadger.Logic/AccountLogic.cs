@@ -128,6 +128,7 @@ namespace BudgetBadger.Logic
                 {
                     Id = accountToUpsert.Id,
                     Description = accountToUpsert.Description,
+                    IgnoreOverspend = true,
                     Group = Constants.DebtEnvelopeGroup,
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow
@@ -181,6 +182,8 @@ namespace BudgetBadger.Logic
             var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
 
             account.Balance -= payeeTransactions.Sum(t => t.Amount);
+
+            // get Payment somehow?
 
             return account;
         }

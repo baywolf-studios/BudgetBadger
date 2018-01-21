@@ -40,6 +40,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              Description      TEXT NOT NULL, 
                                              EnvelopeGroupId  BLOB NOT NULL, 
                                              Notes            TEXT, 
+                                             IgnoreOverspend  INTEGER NOT NULL,
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
@@ -157,6 +158,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      Description, 
                                                      EnvelopeGroupId, 
                                                      Notes, 
+                                                     IgnoreOverspend,
                                                      CreatedDateTime, 
                                                      ModifiedDateTime, 
                                                      DeletedDateTime) 
@@ -164,6 +166,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                     @Description, 
                                                     @EnvelopeGroupId,
                                                     @Notes, 
+                                                    @IgnoreOverspend,
                                                     @CreatedDateTime, 
                                                     @ModifiedDateTime, 
                                                     @DeletedDateTime)";
@@ -172,6 +175,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@Description", envelope.Description);
                 command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
                 command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                 command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", envelope.ModifiedDateTime);
                 command.Parameters.AddWithValue("@DeletedDateTime", envelope.DeletedDateTime ?? (object)DBNull.Value);
@@ -296,6 +300,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
+                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                                E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                                E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
                                                E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
@@ -339,6 +344,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 Id = new Guid(reader["EnvelopeId"] as byte[]),
                                 Description = reader["EnvelopeDescription"].ToString(),
                                 Notes = reader["EnvelopeNotes"].ToString(),
+                                IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
                                 DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
@@ -384,6 +390,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
+                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                                E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                                E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
                                                E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
@@ -424,6 +431,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 Id = new Guid(reader["EnvelopeId"] as byte[]),
                                 Description = reader["EnvelopeDescription"].ToString(),
                                 Notes = reader["EnvelopeNotes"].ToString(),
+                                IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
                                 DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
@@ -469,6 +477,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
+                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                                E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                                E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
                                                E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
@@ -512,6 +521,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 Id = new Guid(reader["EnvelopeId"] as byte[]),
                                 Description = reader["EnvelopeDescription"].ToString(),
                                 Notes = reader["EnvelopeNotes"].ToString(),
+                                IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
                                 DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
@@ -557,6 +567,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
+                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                                E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                                E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
                                                E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
@@ -600,6 +611,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 Id = new Guid(reader["EnvelopeId"] as byte[]),
                                 Description = reader["EnvelopeDescription"].ToString(),
                                 Notes = reader["EnvelopeNotes"].ToString(),
+                                IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
                                 DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
@@ -710,6 +722,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.CommandText = @"SELECT E.Id, 
                                                E.Description, 
                                                E.Notes, 
+                                               E.IgnoreOverspend,
                                                E.CreatedDateTime, 
                                                E.ModifiedDateTime, 
                                                E.DeletedDateTime, 
@@ -734,6 +747,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Id = new Guid(reader["Id"] as byte[]),
                             Description = reader["Description"].ToString(),
                             Notes = reader["Notes"].ToString(),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             Group = new EnvelopeGroup
                             {
                                 Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -843,6 +857,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.CommandText = @"SELECT E.Id, 
                                                E.Description, 
                                                E.Notes, 
+                                               E.IgnoreOverspend,
                                                E.CreatedDateTime, 
                                                E.ModifiedDateTime, 
                                                E.DeletedDateTime, 
@@ -864,6 +879,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Id = new Guid(reader["Id"] as byte[]),
                             Description = reader["Description"].ToString(),
                             Notes = reader["Notes"].ToString(),
+                            IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             Group = new EnvelopeGroup
                             {
                                 Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -951,6 +967,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         SET    Description = @Description,
                                                EnvelopeGroupId = @EnvelopeGroupId,
                                                Notes = @Notes,
+                                               IgnoreOverspend = @IgnoreOverspend,
                                                CreatedDateTime = @CreatedDateTime, 
                                                ModifiedDateTime = @ModifiedDateTime, 
                                                DeletedDateTime = @DeletedDateTime 
@@ -960,6 +977,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@Description", envelope.Description);
                 command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
                 command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                 command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", envelope.ModifiedDateTime);
                 command.Parameters.AddWithValue("@DeletedDateTime", envelope.DeletedDateTime ?? (object)DBNull.Value);

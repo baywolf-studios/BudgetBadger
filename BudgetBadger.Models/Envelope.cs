@@ -14,6 +14,8 @@ namespace BudgetBadger.Models
 
         public EnvelopeGroup Group { get; set; }
 
+        public bool IgnoreOverspend { get; set; }
+
         public DateTime? CreatedDateTime { get; set; }
 
         public DateTime? ModifiedDateTime { get; set; }

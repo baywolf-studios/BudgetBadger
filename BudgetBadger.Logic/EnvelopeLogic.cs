@@ -128,7 +128,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await EnvelopeDataAccess.ReadEnvelopeGroupsAsync();
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome()); 
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome() && !e.IsDebt()); 
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
             }
@@ -403,10 +403,11 @@ namespace BudgetBadger.Logic
                 var envelopeOverspend = envelopeBudgetAmount + envelopeTransactionsAmount;
 
                 var latestBudget = budgets.FirstOrDefault(b => b.Envelope.Id == envelope.Id && b.Schedule.Id == budgetSchedule.Id);
+                var latestBudgetIgnoreOverspend = latestBudget?.IgnoreOverspend ?? false;
 
-                var ignore = latestBudget?.IgnoreOverspend;
+                var ignore = latestBudgetIgnoreOverspend || envelope.IgnoreOverspend;
 
-                if (envelopeOverspend < 0 && (ignore == null || ignore == false))
+                if (envelopeOverspend < 0 && !ignore)
                 {
                     overspend += Math.Abs(envelopeOverspend);
                 }

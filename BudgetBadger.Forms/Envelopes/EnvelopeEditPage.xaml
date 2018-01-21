@@ -26,7 +26,8 @@
                     </ViewCell>
 				</TableSection>
                 <TableSection Title="Ignore Overspend">
-                        <SwitchCell Text="Ignore Overspend"  On="{Binding Budget.IgnoreOverspend}" />
+                    <SwitchCell Text="Current Period"  On="{Binding Budget.IgnoreOverspend}" />
+                    <SwitchCell Text="Always"  On="{Binding Budget.Envelope.IgnoreOverspend}" />
                 </TableSection>
 				<TableSection Title="Notes">
                     <ViewCell>
