@@ -21,6 +21,7 @@ namespace BudgetBadger.Logic
             TransactionDataAccess = transactionDataAccess;
             AccountDataAccess = accountDataAccess;
 
+            // move these to the data access
             envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.IncomeEnvelopeGroup);
             envelopeDataAccess.CreateEnvelopeAsync(Constants.IncomeEnvelope);
             envelopeDataAccess.CreateEnvelopeAsync(Constants.BufferEnvelope);
@@ -93,7 +94,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt());
                 var genericDebtBudget = new Budget
                 {
-                    Envelope = Constants.DebtEnvelope,
+                    Envelope = Constants.GenericDebtEnvelope,
                     Amount = debtBudgets.Sum(b => b.Amount),
                     Activity = debtBudgets.Sum(b => b.Activity),
                     PastAmount = debtBudgets.Sum(b => b.PastAmount),
@@ -412,10 +413,18 @@ namespace BudgetBadger.Logic
             }
 
             var newBudgetSchedule = budgetSchedule.DeepCopy();
+            // get existing schedule from data access if exists
+            var schedule = await EnvelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id);
+            if (schedule.Exists)
+            {
+                newBudgetSchedule = schedule.DeepCopy();
+            }
             newBudgetSchedule.Past = past;
             newBudgetSchedule.Income = income;
             newBudgetSchedule.Budgeted = budgeted;
             newBudgetSchedule.Overspend = overspend;
+
+
 
             return newBudgetSchedule;
         }

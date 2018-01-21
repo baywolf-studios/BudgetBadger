@@ -17,8 +17,6 @@ namespace BudgetBadger.Logic
         {
             PayeeDataAccess = payeeDataAccess;
             AccountDataAccess = accountDataAccess;
-
-            PayeeDataAccess.CreatePayeeAsync(Constants.StartingBalancePayee);
         }
 
         public async Task<Result> DeletePayeeAsync(Payee payee)

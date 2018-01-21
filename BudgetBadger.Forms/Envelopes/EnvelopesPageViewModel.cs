@@ -106,7 +106,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     Budgets = budgetResult.Data;
                     GroupedBudgets = EnvelopeLogic.GroupBudgets(Budgets);
-                    Schedule = Budgets.FirstOrDefault().Schedule.DeepCopy();
+                    Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
                 {

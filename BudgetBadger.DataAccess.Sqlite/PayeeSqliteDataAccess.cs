@@ -23,7 +23,6 @@ namespace BudgetBadger.DataAccess.Sqlite
             {
                 db.Open();
                 var command = db.CreateCommand();
-                //add NOT NULL to Description, CreatedDateTime, ModifiedDateTime
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS Payee 
                                       ( 
                                          Id               BLOB PRIMARY KEY NOT NULL, 
@@ -34,6 +33,35 @@ namespace BudgetBadger.DataAccess.Sqlite
                                          DeletedDateTime  TEXT 
                                       );
                                     ";
+                command.ExecuteNonQuery();
+            }
+
+            using (var db = new SqliteConnection(ConnectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO Payee 
+                                                    (Id, 
+                                                     Description, 
+                                                     Notes, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @Notes, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id);
+                command.Parameters.AddWithValue("@Description", Constants.StartingBalancePayee.Description);
+                command.Parameters.AddWithValue("@Notes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.StartingBalancePayee.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.StartingBalancePayee.DeletedDateTime ?? (object)DBNull.Value);
+
                 command.ExecuteNonQuery();
             }
         }

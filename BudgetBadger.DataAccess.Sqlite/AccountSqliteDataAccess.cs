@@ -48,6 +48,44 @@ namespace BudgetBadger.DataAccess.Sqlite
                 
                 command.ExecuteNonQuery();
             }
+
+            var accountTypes = new List<AccountType>
+            {
+                new AccountType
+                {
+                    Id = new Guid("d4ec0d4e-e8c1-40ec-80d0-efb2071d56bb"),
+                    Description = "Checking"
+                },
+                new AccountType
+                {
+                    Id = new Guid("d6eb0a4f-bba5-491a-976b-504a3e15dcce"),
+                    Description = "Savings"
+                },
+                new AccountType
+                {
+                    Id = new Guid("c31201e4-b02a-4221-8ab0-03625641a622"),
+                    Description = "Credit Card"
+                }
+            };
+            foreach (var accountType in accountTypes)
+            {
+                using (var db = new SqliteConnection(ConnectionString))
+                {
+                    db.Open();
+                    var command = db.CreateCommand();
+
+                    command.CommandText = @"INSERT OR IGNORE INTO AccountType 
+                                                    (Id, 
+                                                     Description) 
+                                            VALUES  (@Id, 
+                                                    @Description)";
+
+                    command.Parameters.AddWithValue("@Id", accountType.Id);
+                    command.Parameters.AddWithValue("@Description", accountType.Description);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public async Task CreateAccountAsync(Account account)

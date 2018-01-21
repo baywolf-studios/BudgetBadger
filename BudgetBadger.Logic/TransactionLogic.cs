@@ -165,6 +165,21 @@ namespace BudgetBadger.Logic
                 }
             }
 
+            if (transactionToUpsert.Envelope.IsGenericDebtEnvelope())
+            {
+                try
+                {
+                    var accountDebtEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transactionToUpsert.Account.Id);
+                    transactionToUpsert.Envelope = accountDebtEnvelope;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    return result;
+                }
+            }
+
             if (transactionToUpsert.IsNew)
             {
                 transactionToUpsert.Id = Guid.NewGuid();
@@ -203,13 +218,13 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        // handle logic to get transaction into usable state
         public async Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction)
         {
             var transactionToPopulate = transaction.DeepCopy();
 
-            // handle logic to get transaction into usable state
+            // transfer logic
             bool envelopeNotNeeded = false;
-
             if (transactionToPopulate.Account.Exists)
             {
                 // if it is a transfer (aka account to account)
@@ -236,6 +251,14 @@ namespace BudgetBadger.Logic
             else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem())
             {
                 transactionToPopulate.Envelope = new Envelope();
+            }
+
+            // handle logic to set envelope to the generic debt envelope
+            if (transactionToPopulate.Envelope.Group.IsDebt() && !transactionToPopulate.Envelope.IsGenericDebtEnvelope())
+            {
+                var debtAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Envelope.Id);
+                transactionToPopulate.Account = debtAccount;
+                transactionToPopulate.Envelope = Constants.GenericDebtEnvelope;
             }
 
             return new Result<Transaction> { Success = true, Data = transactionToPopulate };

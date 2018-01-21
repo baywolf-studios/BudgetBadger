@@ -34,5 +34,10 @@ namespace BudgetBadger.Core.Extensions
         {
             return envelopeGroup.Id == Constants.DebtEnvelopeGroup.Id;
         }
+
+        public static bool IsGenericDebtEnvelope(this Envelope envelope)
+        {
+            return envelope.Id == Constants.GenericDebtEnvelope.Id;
+        }
     }
 }

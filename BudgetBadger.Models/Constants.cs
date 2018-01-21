@@ -48,7 +48,7 @@ namespace BudgetBadger.Models
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
-        public static readonly Envelope DebtEnvelope = new Envelope
+        public static readonly Envelope GenericDebtEnvelope = new Envelope
         {
             Id = new Guid("{094d0b91-6e66-42c0-b892-2205e9960fd2}"),
             Description = "Debt",

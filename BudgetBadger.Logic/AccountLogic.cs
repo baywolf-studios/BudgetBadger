@@ -24,27 +24,6 @@ namespace BudgetBadger.Logic
             TransactionDataAccess = transactionDataAccess;
             PayeeDataAccess = payeeDataAccess;
             EnvelopeDataAccess = envelopeDataAccess;
-
-            var accountTypes = new List<AccountType>();
-            accountTypes.Add(new AccountType
-            {
-                Id = new Guid("d4ec0d4e-e8c1-40ec-80d0-efb2071d56bb"),
-                Description = "Checking"
-            });
-            accountTypes.Add(new AccountType
-            {
-                Id = new Guid("d6eb0a4f-bba5-491a-976b-504a3e15dcce"),
-                Description = "Savings"
-            });
-            accountTypes.Add(new AccountType
-            {
-                Id = new Guid("c31201e4-b02a-4221-8ab0-03625641a622"),
-                Description = "Credit Card"
-            });
-            foreach (var type in accountTypes)
-            {
-                accountDataAccess.CreateAccountTypeAsync(type);
-            }
         }
 
         public async Task<Result> DeleteAccountAsync(Account account)
