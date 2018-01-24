@@ -17,6 +17,10 @@ namespace BudgetBadger.Models
         //calculated
         public decimal Balance { get; set; }
 
+        public decimal Payment { get; set; }
+
+        public bool PaymentRequired { get => Payment > 0; }
+
         public bool OnBudget { get; set; }
 
         public bool OffBudget { get => !OnBudget; }

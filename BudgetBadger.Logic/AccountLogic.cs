@@ -175,6 +175,7 @@ namespace BudgetBadger.Logic
 
         private async Task<Account> GetPopulatedAccount(Account account)
         {
+            // balance
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
 
             account.Balance = accountTransactions.Sum(t => t.Amount);
@@ -183,7 +184,24 @@ namespace BudgetBadger.Logic
 
             account.Balance -= payeeTransactions.Sum(t => t.Amount);
 
-            // get Payment somehow?
+            // payment 
+            var dateTimeNow = DateTime.Now;
+
+            var accountDebtBudgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(account.Id);
+
+            var amountBudgetedToPayDownDebt = accountDebtBudgets
+                .Where(a => a.Schedule.BeginDate <= dateTimeNow)
+                .Sum(a => a.Amount);
+
+            var debtTransactions = new List<Transaction>();
+            if (accountDebtBudgets.Any())
+            {
+                debtTransactions.AddRange(await TransactionDataAccess.ReadEnvelopeTransactionsAsync(accountDebtBudgets.FirstOrDefault().Envelope.Id));
+            }
+
+            var debtTransactionAmount = debtTransactions.Where(d => d.ServiceDate <= dateTimeNow).Sum(d => d.Amount);
+
+            account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance;
 
             return account;
         }

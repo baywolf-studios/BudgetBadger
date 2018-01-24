@@ -23,6 +23,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand NewTransactionCommand { get; set; }
+        public ICommand PaymentCommand { get; set; }
 
         public bool IsBusy { get; set; }
 
@@ -50,6 +51,7 @@ namespace BudgetBadger.Forms.Accounts
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
+            PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -139,6 +141,16 @@ namespace BudgetBadger.Forms.Accounts
             var parameters = new NavigationParameters
             {
                 { NavigationParameterType.Account, Account }
+            };
+            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+        }
+
+        public async Task ExecutePaymentCommand()
+        {
+            var parameters = new NavigationParameters
+            {
+                { NavigationParameterType.Account, Account },
+                { NavigationParameterType.TransactionAmount, Account.Payment }
             };
             await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
         }

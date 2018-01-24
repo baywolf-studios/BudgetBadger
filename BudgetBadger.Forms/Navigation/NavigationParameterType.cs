@@ -11,5 +11,6 @@ namespace BudgetBadger.Forms.Navigation
         public static readonly string Envelope = "envelope";
         public static readonly string BudgetSchedule = "budgetSchedule";
         public static readonly string SelectorMode = "selectorMode";
+        public static readonly string TransactionAmount = "transactionAmount";
     }
 }

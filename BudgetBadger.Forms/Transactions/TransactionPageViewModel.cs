@@ -48,6 +48,12 @@ namespace BudgetBadger.Forms.Transactions
                 Transaction = transaction.DeepCopy();
             }
 
+            var transactionAmount = parameters.GetValue<decimal?>(NavigationParameterType.TransactionAmount);
+            if (transactionAmount != null)
+            {
+                Transaction.Amount = transactionAmount.Value;
+            }
+
             var account = parameters.GetValue<Account>(NavigationParameterType.Account);
             if (account != null)
             {
