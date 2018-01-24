@@ -11,7 +11,7 @@
                         &lt;
                     </Button.Text>
                 </Button>
-                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.BeginDate, StringFormat='{0:Y}'}" />
+                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.Description}" />
                 <Button Command="{Binding NextCommand}">
                     <Button.Text>
                         &gt;

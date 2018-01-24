@@ -424,8 +424,8 @@ namespace BudgetBadger.Logic
             newBudgetSchedule.Income = income;
             newBudgetSchedule.Budgeted = budgeted;
             newBudgetSchedule.Overspend = overspend;
-
-
+            // could change this
+            newBudgetSchedule.Description = newBudgetSchedule.BeginDate.ToString("Y");
 
             return newBudgetSchedule;
         }
