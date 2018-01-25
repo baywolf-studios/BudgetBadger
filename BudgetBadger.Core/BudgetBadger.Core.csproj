@@ -10,6 +10,7 @@
     <Folder Include="Logging\" />
     <Folder Include="FileLocator\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Sync\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
