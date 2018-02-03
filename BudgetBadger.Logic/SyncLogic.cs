@@ -73,38 +73,53 @@ namespace BudgetBadger.Logic
             var targetAccountTypes = await targetAccountDataAccess.ReadAccountTypesAsync();
             var targetAccounts = await targetAccountDataAccess.ReadAccountsAsync();
 
-            //var accountTypeIdsToAdd = sourceAccountTypes.Select(a => a.Id).Except(targetAccountTypes.Select(a2 => a2.Id));
+            var sourceAccountTypesDictionary = sourceAccountTypes.ToDictionary(a => a.Id, a2 => a2);
+            var sourceAccountsDictionary = sourceAccounts.ToDictionary(a => a.Id, a2 => a2);
 
-            //switch to using except but I'll have to override equality on all objects
-            var accountTypesToAdd = sourceAccountTypes.Where(p => !targetAccountTypes.Any(p2 => p2.Id == p.Id));
-            foreach(var accountType in accountTypesToAdd)
+            var targetAccountTypesDictionary = targetAccountTypes.ToDictionary(a => a.Id, a2 => a2);
+            var targetAccountsDictionary = targetAccounts.ToDictionary(a => a.Id, a2 => a2);
+
+            //add new account types
+            var accountTypesToAdd = sourceAccountTypesDictionary.Keys.Except(targetAccountTypesDictionary.Keys);
+            foreach(var accountTypeId in accountTypesToAdd)
             {
-                await targetAccountDataAccess.CreateAccountTypeAsync(accountType);
+                var accountTypeToAdd = sourceAccountTypesDictionary[accountTypeId];
+                await targetAccountDataAccess.CreateAccountTypeAsync(accountTypeToAdd);
             }
 
-            //switch to using except but I'll have to override equality on all objects
-            var accountsToAdd = sourceAccounts.Where(p => !targetAccounts.Any(p2 => p2.Id == p.Id));
-            foreach (var account in accountsToAdd)
+            //add new accounts
+            var accountsToAdd = sourceAccountsDictionary.Keys.Except(targetAccountsDictionary.Keys);
+            foreach (var accountId in accountsToAdd)
             {
-                await targetAccountDataAccess.CreateAccountAsync(account);
+                var accountToAdd = sourceAccountsDictionary[accountId];
+                await targetAccountDataAccess.CreateAccountAsync(accountToAdd);
             }
 
-            //update stuff here
-            var accountTypesToUpdate = sourceAccountTypes.Where(a => a.ModifiedDateTime > targetAccountTypes.FirstOrDefault(t => t.Id == a.Id)?.ModifiedDateTime);
-            foreach (var accountType in accountTypesToUpdate)
+            //update account types
+            var accountTypesToUpdate = sourceAccountTypesDictionary.Keys.Intersect(targetAccountTypesDictionary.Keys);
+            foreach(var accountTypeId in accountTypesToUpdate)
             {
-                await targetAccountDataAccess.UpdateAccountTypeAsync(accountType);
+                var sourceAccountType = sourceAccountTypesDictionary[accountTypeId];
+                var targetAccountType = targetAccountTypesDictionary[accountTypeId];
+
+                if (sourceAccountType.ModifiedDateTime > targetAccountType.ModifiedDateTime)
+                {
+                    await targetAccountDataAccess.UpdateAccountTypeAsync(sourceAccountType);
+                }
             }
 
-            //update stuff here
-            var accountsToUpdate = sourceAccounts.Where(a => a.ModifiedDateTime > targetAccounts.FirstOrDefault(t => t.Id == a.Id)?.ModifiedDateTime);
-            foreach(var account in accountsToUpdate)
+            //update accounts
+            var accountsToUpdate = sourceAccountsDictionary.Keys.Intersect(targetAccountsDictionary.Keys);
+            foreach (var accountId in accountsToUpdate)
             {
-                await targetAccountDataAccess.UpdateAccountAsync(account);
-            }
+                var sourceAccount = sourceAccountsDictionary[accountId];
+                var targetAccount = targetAccountsDictionary[accountId];
 
-            //not deleting yet
-            //may do a purge later?
+                if (sourceAccount.ModifiedDateTime > targetAccount.ModifiedDateTime)
+                {
+                    await targetAccountDataAccess.UpdateAccountAsync(sourceAccount);
+                }
+            }
 
             return new Result();
         }
