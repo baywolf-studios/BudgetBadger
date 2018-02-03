@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
@@ -6,29 +8,39 @@ namespace BudgetBadger.Core.Sync
     public class FileSync : ISync
     {
         readonly IFileSyncProvider FileProvider;
+        readonly ISyncLogic SyncLogic;
 
-        public FileSync(IFileSyncProvider fileProvider)
+        public FileSync(IFileSyncProvider fileProvider, ISyncLogic syncLogic)
         {
             FileProvider = fileProvider;
+            SyncLogic = syncLogic;
         }
 
-        public Result Sync()
+        public async Task<Result> Sync()
         {
-            FileProvider.DownloadSyncFolder();
+            var result = await FileProvider.DownloadSyncFolder();
 
-            // do some syncing
+            if (result.Success)
+            {
+                result = await SyncLogic.SyncToRemote();
+            }
 
-            FileProvider.UploadSyncFolder();
+            if (result.Success)
+            {
+                result = await FileProvider.UploadSyncFolder();
+            }
 
-            return new Result();
+            // copy to the local folder?
+
+            return result;
         }
 
-        public Result SyncDown()
+        public Task<Result> SyncDown()
         {
             throw new NotImplementedException();
         }
 
-        public Result SyncUp()
+        public Task<Result> SyncUp()
         {
             throw new NotImplementedException();
         }

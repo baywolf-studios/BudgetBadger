@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
     public interface ISync
     {
-        Result Sync();
-        Result SyncDown();
-        Result SyncUp();
+        Task<Result> Sync();
+        Task<Result> SyncDown();
+        Task<Result> SyncUp();
     }
 }

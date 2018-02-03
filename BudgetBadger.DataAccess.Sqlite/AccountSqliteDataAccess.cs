@@ -28,7 +28,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS AccountType 
                                           ( 
                                              Id          BLOB PRIMARY KEY NOT NULL, 
-                                             Description TEXT NOT NULL
+                                             Description TEXT NOT NULL,
+                                             CreatedDateTime  TEXT NOT NULL, 
+                                             ModifiedDateTime TEXT NOT NULL, 
+                                             DeletedDateTime  TEXT
                                           );
                 
 
@@ -49,22 +52,30 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.ExecuteNonQuery();
             }
 
+            var dateTimeNow = DateTime.Now;
+
             var accountTypes = new List<AccountType>
             {
                 new AccountType
                 {
                     Id = new Guid("d4ec0d4e-e8c1-40ec-80d0-efb2071d56bb"),
-                    Description = "Checking"
+                    Description = "Checking",
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow
                 },
                 new AccountType
                 {
                     Id = new Guid("d6eb0a4f-bba5-491a-976b-504a3e15dcce"),
-                    Description = "Savings"
+                    Description = "Savings",
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow
                 },
                 new AccountType
                 {
                     Id = new Guid("c31201e4-b02a-4221-8ab0-03625641a622"),
-                    Description = "Credit Card"
+                    Description = "Credit Card",
+                    CreatedDateTime = dateTimeNow,
+                    ModifiedDateTime = dateTimeNow
                 }
             };
             foreach (var accountType in accountTypes)
@@ -76,12 +87,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                     command.CommandText = @"INSERT OR IGNORE INTO AccountType 
                                                     (Id, 
-                                                     Description) 
+                                                     Description,
+                                                     CreatedDateTime,
+                                                     ModifiedDateTime) 
                                             VALUES  (@Id, 
-                                                    @Description)";
+                                                    @Description,
+                                                    @CreatedDateTime,
+                                                    @ModifiedDateTime)";
 
                     command.Parameters.AddWithValue("@Id", accountType.Id);
                     command.Parameters.AddWithValue("@Description", accountType.Description);
+                    command.Parameters.AddWithValue("@CreatedDateTime", accountType.CreatedDateTime);
+                    command.Parameters.AddWithValue("@ModifiedDateTime", accountType.ModifiedDateTime);
 
                     command.ExecuteNonQuery();
                 }
@@ -158,8 +175,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AC.CreatedDateTime, 
                                                AC.ModifiedDateTime, 
                                                AC.DeletedDateTime, 
-                                               ACT.Id          AS AccountTypeId, 
-                                               ACT.Description AS AccountTypeDescription 
+                                               ACT.Id               AS AccountTypeId, 
+                                               ACT.Description      AS AccountTypeDescription, 
+                                               ACT.CreatedDateTime  AS AccountTypeCreatedDateTime, 
+                                               ACT.ModifiedDateTime AS AccountTypeModifiedDateTime, 
+                                               ACT.DeletedDateTime  AS AccountTypeDeletedDateTime
                                         FROM   Account AS AC 
                                         JOIN   AccountType AS ACT ON AC.AccountTypeId = ACT.Id
                                         WHERE  AC.Id = @Id";
@@ -177,7 +197,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Type = new AccountType
                             {
                                 Id = new Guid(reader["AccountTypeId"] as byte[]),
-                                Description = reader["AccountTypeDescription"].ToString()
+                                Description = reader["AccountTypeDescription"].ToString(),
+                                CreatedDateTime = Convert.ToDateTime(reader["AccountTypeCreatedDateTime"]),
+                                ModifiedDateTime = Convert.ToDateTime(reader["AccountTypeModifiedDateTime"]),
+                                DeletedDateTime = reader["AccountTypeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["AccountTypeDeletedDateTime"])
                             },
                             OnBudget = Convert.ToBoolean(reader["OnBudget"]),
                             Notes = reader["Notes"].ToString(),
@@ -209,8 +232,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                A.CreatedDateTime, 
                                                A.ModifiedDateTime, 
                                                A.DeletedDateTime, 
-                                               ACT.Id AS AccountTypeId,
-                                               ACT.Description AS AccountTypeDescription
+                                               ACT.Id               AS AccountTypeId, 
+                                               ACT.Description      AS AccountTypeDescription, 
+                                               ACT.CreatedDateTime  AS AccountTypeCreatedDateTime, 
+                                               ACT.ModifiedDateTime AS AccountTypeModifiedDateTime, 
+                                               ACT.DeletedDateTime  AS AccountTypeDeletedDateTime
                                         FROM   Account AS A 
                                         JOIN   AccountType AS ACT ON A.AccountTypeId = ACT.Id";
 
@@ -225,7 +251,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Type = new AccountType
                             {
                                 Id = new Guid(reader["AccountTypeId"] as byte[]),
-                                Description = reader["AccountTypeDescription"].ToString()
+                                Description = reader["AccountTypeDescription"].ToString(),
+                                CreatedDateTime = Convert.ToDateTime(reader["AccountTypeCreatedDateTime"]),
+                                ModifiedDateTime = Convert.ToDateTime(reader["AccountTypeModifiedDateTime"]),
+                                DeletedDateTime = reader["AccountTypeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["AccountTypeDeletedDateTime"])
                             },
                             OnBudget = Convert.ToBoolean(reader["OnBudget"]),
                             Notes = reader["Notes"].ToString(),
@@ -250,7 +279,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
-                                               Description
+                                               Description, 
+                                               CreatedDateTime, 
+                                               ModifiedDateTime, 
+                                               DeletedDateTime
                                         FROM   AccountType";
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -260,7 +292,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                         var account = new AccountType
                         {
                             Id = new Guid(reader["Id"] as byte[]),
-                            Description = reader["Description"].ToString()
+                            Description = reader["Description"].ToString(),
+                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         };
                         accountTypes.Add(account);
                     }
@@ -294,7 +329,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@Notes", account.Notes);
                 command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -309,12 +344,21 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.CommandText = @"INSERT INTO AccountType 
                                                     (Id, 
-                                                     Description) 
+                                                     Description, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime)  
                                         VALUES     (@Id, 
-                                                    @Description)";
+                                                    @Description, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", accountType.Id);
                 command.Parameters.AddWithValue("@Description", accountType.Description);
+                command.Parameters.AddWithValue("@CreatedDateTime", accountType.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", accountType.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", accountType.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -328,11 +372,17 @@ namespace BudgetBadger.DataAccess.Sqlite
                 var command = db.CreateCommand();
 
                 command.CommandText = @"UPDATE Account 
-                                        SET    Description = @Description
+                                        SET    Description = @Description, 
+                                               CreatedDateTime = @CreatedDateTime, 
+                                               ModifiedDateTime = @ModifiedDateTime, 
+                                               DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id ";
 
                 command.Parameters.AddWithValue("@Id", accountType.Id);
                 command.Parameters.AddWithValue("@Description", accountType.Description);
+                command.Parameters.AddWithValue("@CreatedDateTime", accountType.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", accountType.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", accountType.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }

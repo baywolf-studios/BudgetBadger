@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
+using BudgetBadger.Models;
+
 namespace BudgetBadger.Core.Sync
 {
     public interface IFileSyncProvider
     {
-        bool DownloadSyncFolder();
-        bool UploadSyncFolder();
+        Task<Result> DownloadSyncFolder();
+        Task<Result> UploadSyncFolder();
     }
 }

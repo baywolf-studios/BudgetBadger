@@ -10,6 +10,16 @@ namespace BudgetBadger.Models
 
         public string Description { get; set; }
 
+        public DateTime? CreatedDateTime { get; set; }
+
+        public DateTime? ModifiedDateTime { get; set; }
+
+        public DateTime? DeletedDateTime { get; set; }
+
+        public bool IsNew { get => CreatedDateTime == null; }
+
+        public bool Exists { get => !IsNew; }
+
         public AccountType()
         {
             Id = Guid.Empty;
