@@ -22,7 +22,7 @@ namespace BudgetBadger.Core.Sync
 
             if (result.Success)
             {
-                result = await SyncLogic.SyncToRemote();
+                result = await SyncLogic.Sync();
             }
 
             if (result.Success)
@@ -30,19 +30,33 @@ namespace BudgetBadger.Core.Sync
                 result = await FileProvider.UploadSyncFolder();
             }
 
-            // copy to the local folder?
+            return result;
+        }
+
+        public async Task<Result> Pull()
+        {
+            var result = await FileProvider.DownloadSyncFolder();
+
+            if (result.Success)
+            {
+                result = await SyncLogic.SyncToLocal();
+            }
 
             return result;
         }
 
-        public Task<Result> SyncDown()
+        public async Task<Result> Push()
         {
-            throw new NotImplementedException();
-        }
+            //clear sync folder
 
-        public Task<Result> SyncUp()
-        {
-            throw new NotImplementedException();
+            var result = await SyncLogic.SyncToRemote();
+
+            if (result.Success)
+            {
+                result = await FileProvider.UploadSyncFolder();
+            }
+
+            return result;
         }
     }
 }

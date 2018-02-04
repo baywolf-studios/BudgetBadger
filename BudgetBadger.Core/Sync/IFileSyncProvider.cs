@@ -8,5 +8,6 @@ namespace BudgetBadger.Core.Sync
     {
         Task<Result> DownloadSyncFolder();
         Task<Result> UploadSyncFolder();
+        //Task<Result> CleanSyncFolder();
     }
 }

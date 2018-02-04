@@ -12,18 +12,13 @@ namespace BudgetBadger.UnitTests.Logic
     public class SyncLogicTest
     {
         [Fact]
-        public void Test()
+        public void SyncAccountTypes_GivenSourceAccountType_CreatesItOnTarget()
         {
-            var sharedAccountType = new AccountType { Id = Guid.NewGuid(), Description = "Shared", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
-
             var sourceAccountTypes = new List<AccountType>();
             var sourceOnlyAccountType = new AccountType { Id = Guid.NewGuid(), Description = "Test", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
             sourceAccountTypes.Add(sourceOnlyAccountType);
-            sourceAccountTypes.Add(sharedAccountType);
 
             var targetAccountTypes = new List<AccountType>();
-            targetAccountTypes.Add(new AccountType { Id = Guid.NewGuid(), Description = "Test", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now });
-            targetAccountTypes.Add(sharedAccountType);
 
             var sourceAccountDataAccessMock = new Mock<IAccountDataAccess>();
             sourceAccountDataAccessMock
@@ -37,7 +32,35 @@ namespace BudgetBadger.UnitTests.Logic
 
             var result = SyncLogicHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
 
-            Assert.True(true);
+            targetAccountDataAccessMock.Verify(ms => ms.CreateAccountTypeAsync(It.Is<AccountType>(mo => mo.Id == sourceOnlyAccountType.Id)), Times.Once());
+        }
+
+        [Fact]
+        public void SyncAccountTypes_GivenSharedAccountType_UpdatesItOnTarget()
+        {
+            var sharedAccountType = new AccountType { Id = Guid.NewGuid(), Description = "Shared", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
+
+            var targetAccountTypes = new List<AccountType>();
+            targetAccountTypes.Add(sharedAccountType);
+
+            var sourceAccountTypes = new List<AccountType>();
+            var sourceSharedAccountType = sharedAccountType.DeepCopy();
+            sourceSharedAccountType.ModifiedDateTime = DateTime.Now;
+            sourceAccountTypes.Add(sourceSharedAccountType);
+
+            var sourceAccountDataAccessMock = new Mock<IAccountDataAccess>();
+            sourceAccountDataAccessMock
+                .Setup(x => x.ReadAccountTypesAsync())
+                .Returns(Task.FromResult((IEnumerable<AccountType>)sourceAccountTypes));
+
+            var targetAccountDataAccessMock = new Mock<IAccountDataAccess>();
+            targetAccountDataAccessMock
+                .Setup(x => x.ReadAccountTypesAsync())
+                .Returns(Task.FromResult((IEnumerable<AccountType>)targetAccountTypes));
+
+            var result = SyncLogicHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
+
+            targetAccountDataAccessMock.Verify(ms => ms.UpdateAccountTypeAsync(It.Is<AccountType>(mo => mo.Id == sharedAccountType.Id)), Times.Once());
         }
     }
 }

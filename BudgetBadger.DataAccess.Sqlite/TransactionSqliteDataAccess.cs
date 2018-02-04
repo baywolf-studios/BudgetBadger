@@ -11,9 +11,12 @@ namespace BudgetBadger.DataAccess.Sqlite
     {
         readonly string ConnectionString;
 
-        public TransactionSqliteDataAccess(string connectionString)
+        public TransactionSqliteDataAccess(string databaseFilePath)
         {
-            ConnectionString = connectionString;
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = databaseFilePath;
+            ConnectionString = connectionStringBuilder.ConnectionString;
+
             Initialize();
         }
 

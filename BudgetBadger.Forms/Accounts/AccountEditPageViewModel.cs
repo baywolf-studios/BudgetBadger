@@ -10,6 +10,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic AccountLogic;
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
+        readonly ISync SyncService;
 
         public Account Account { get; set; }
         public ObservableCollection<AccountType> AccountTypes { get; set; }
@@ -27,11 +29,15 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand DeleteAccountCommand { get; set; }
 
 
-        public AccountEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
+        public AccountEditPageViewModel(INavigationService navigationService,
+                                        IPageDialogService dialogService,
+                                        IAccountLogic accountLogic,
+                                        ISync syncService)
         {
             NavigationService = navigationService;
             AccountLogic = accountLogic;
             DialogService = dialogService;
+            SyncService = syncService;
 
             var typesResult = AccountLogic.GetAccountTypesAsync().Result;
             AccountTypes = new ObservableCollection<AccountType>(typesResult.Data);
@@ -48,6 +54,8 @@ namespace BudgetBadger.Forms.Accounts
                 Account = account.DeepCopy();
                 Account.Type = AccountTypes.FirstOrDefault(t => t.Id == Account.Type.Id);
             }
+
+            //Task.Run(() => SyncService.Sync());
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)
@@ -64,6 +72,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
+                await SyncService.Sync();
                 await NavigationService.GoBackAsync();
             }
             else

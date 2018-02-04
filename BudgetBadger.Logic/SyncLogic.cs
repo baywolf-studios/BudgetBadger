@@ -69,6 +69,7 @@ namespace BudgetBadger.Logic
                 await SyncLogicHelper.SyncBudgetSchedules(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
                 await SyncLogicHelper.SyncBudgets(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
                 await SyncLogicHelper.SyncTransactions(LocalTransactionDataAccess, RemoteTransactionDataAccess);
+                result.Success = true;
             }
             catch (Exception ex)
             {
@@ -94,6 +95,7 @@ namespace BudgetBadger.Logic
                 await SyncLogicHelper.SyncBudgetSchedules(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
                 await SyncLogicHelper.SyncBudgets(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
                 await SyncLogicHelper.SyncTransactions(RemoteTransactionDataAccess, LocalTransactionDataAccess);
+                result.Success = true;
             }
             catch(Exception ex)
             {
