@@ -17,7 +17,8 @@ namespace BudgetBadger.UnitTests.Logic
             var sharedAccountType = new AccountType { Id = Guid.NewGuid(), Description = "Shared", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
 
             var sourceAccountTypes = new List<AccountType>();
-            sourceAccountTypes.Add(new AccountType { Id = Guid.NewGuid(), Description = "Test", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now });
+            var sourceOnlyAccountType = new AccountType { Id = Guid.NewGuid(), Description = "Test", CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
+            sourceAccountTypes.Add(sourceOnlyAccountType);
             sourceAccountTypes.Add(sharedAccountType);
 
             var targetAccountTypes = new List<AccountType>();
@@ -34,9 +35,7 @@ namespace BudgetBadger.UnitTests.Logic
                 .Setup(x => x.ReadAccountTypesAsync())
                 .Returns(Task.FromResult((IEnumerable<AccountType>)targetAccountTypes));
 
-            var syncLogic = new SyncLogic(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
-
-            var result = syncLogic.SyncAccounts(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
+            var result = SyncLogicHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
 
             Assert.True(true);
         }
