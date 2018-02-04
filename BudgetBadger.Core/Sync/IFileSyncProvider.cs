@@ -6,8 +6,7 @@ namespace BudgetBadger.Core.Sync
 {
     public interface IFileSyncProvider
     {
-        Task<Result> DownloadSyncFolder();
-        Task<Result> UploadSyncFolder();
-        //Task<Result> CleanSyncFolder();
+        Task<Result> GetLatest(string pathToPutLatest);
+        Task<Result> Commit(string pathToCommit);
     }
 }

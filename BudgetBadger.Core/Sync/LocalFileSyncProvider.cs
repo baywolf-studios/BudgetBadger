@@ -8,12 +8,11 @@ namespace BudgetBadger.Core.Sync
     public class LocalFileSyncProvider : IFileSyncProvider
     {
         readonly string LocalDirectory;
-        readonly string SyncDirectory;
 
-        public LocalFileSyncProvider(string localDirectory, string syncDirectory)
+        public LocalFileSyncProvider(string localDirectory)
         {
             LocalDirectory = localDirectory;
-            SyncDirectory = syncDirectory;
+
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
@@ -54,13 +53,15 @@ namespace BudgetBadger.Core.Sync
             }
         }
 
-        public async Task<Result> DownloadSyncFolder()
+
+        public async Task<Result> GetLatest(string pathToPutLatest)
         {
             var result = new Result();
 
             try
             {
-                await Task.Run(() => DirectoryCopy(LocalDirectory, SyncDirectory, true));
+
+                await Task.Run(() => DirectoryCopy(LocalDirectory, pathToPutLatest, true));
                 result.Success = true;
             }
             catch (Exception ex)
@@ -72,13 +73,15 @@ namespace BudgetBadger.Core.Sync
             return result;
         }
 
-        public async Task<Result> UploadSyncFolder()
+
+        public async Task<Result> Commit(string pathToCommit)
         {
             var result = new Result();
 
             try
             {
-                await Task.Run(() => DirectoryCopy(SyncDirectory, LocalDirectory, true));
+                await Task.Run(() => DirectoryCopy(pathToCommit, LocalDirectory, true));
+
                 result.Success = true;
             }
             catch (Exception ex)

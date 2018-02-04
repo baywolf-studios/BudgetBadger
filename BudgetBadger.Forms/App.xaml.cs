@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.FileLocator;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.DataAccess.Sqlite;
 using BudgetBadger.Logic;
@@ -15,8 +14,8 @@ using Prism.Ioc;
 using BudgetBadger.Forms.Accounts;
 using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.Transactions;
-using System.IO;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Core;
 
 namespace BudgetBadger.Forms
 {
@@ -35,31 +34,13 @@ namespace BudgetBadger.Forms
         {
             var timer = Stopwatch.StartNew();
 
-            var localApplicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
-            if (!Directory.Exists(localApplicationDataPath))
-            {
-                Directory.CreateDirectory(localApplicationDataPath);
-            }
-
-            var localPath = Path.Combine(localApplicationDataPath, "local");
-            if (!Directory.Exists(localPath))
-            {
-                Directory.CreateDirectory(localPath);
-            }
-            var localDatabase = Path.Combine(localPath, "database.bb");
-
-            var syncPath = Path.Combine(localApplicationDataPath, "sync");
-            if (!Directory.Exists(syncPath))
-            {
-                Directory.CreateDirectory(syncPath);
-            }
-            var syncDatabase = Path.Combine(syncPath, "database.bb");
-
+            var localDatabase = FileLocator.GetLocalFilePath("database.bb");
             var localAccountDataAccess = new AccountSqliteDataAccess(localDatabase);
             var localPayeeDataAccess = new PayeeSqliteDataAccess(localDatabase);
             var localEnvelopeDatAccess = new EnvelopeSqliteDataAccess(localDatabase);
             var localTransactionDataAccess = new TransactionSqliteDataAccess(localDatabase);
 
+            var syncDatabase = FileLocator.GetSyncFilePath("database.bb");
             var syncAccountDataAccess = new AccountSqliteDataAccess(syncDatabase);
             var syncPayeeDataAccess = new PayeeSqliteDataAccess(syncDatabase);
             var syncEnvelopeDatAccess = new EnvelopeSqliteDataAccess(syncDatabase);
@@ -85,7 +66,7 @@ namespace BudgetBadger.Forms
                 syncTransactionDataAccess);
             containerRegistry.RegisterInstance<ISyncLogic>(syncLogic);
 
-            var fileSyncProvider = new LocalFileSyncProvider(@"/Users/matthewpritchett/BudgetBadger", syncPath);
+            var fileSyncProvider = new LocalFileSyncProvider(@"/Users/matthewpritchett/BudgetBadger");
             containerRegistry.RegisterInstance<IFileSyncProvider>(fileSyncProvider);
             containerRegistry.Register<ISync, FileSync>();
 

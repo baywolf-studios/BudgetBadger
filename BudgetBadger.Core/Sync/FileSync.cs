@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BudgetBadger.Core;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 
@@ -10,15 +11,18 @@ namespace BudgetBadger.Core.Sync
         readonly IFileSyncProvider FileProvider;
         readonly ISyncLogic SyncLogic;
 
+        readonly string SyncFolder;
+
         public FileSync(IFileSyncProvider fileProvider, ISyncLogic syncLogic)
         {
+            SyncFolder = FileLocator.GetSyncPath();
             FileProvider = fileProvider;
             SyncLogic = syncLogic;
         }
 
         public async Task<Result> Sync()
         {
-            var result = await FileProvider.DownloadSyncFolder();
+            var result = await FileProvider.GetLatest(SyncFolder);
 
             if (result.Success)
             {
@@ -27,7 +31,8 @@ namespace BudgetBadger.Core.Sync
 
             if (result.Success)
             {
-                result = await FileProvider.UploadSyncFolder();
+
+                result = await FileProvider.Commit(SyncFolder);
             }
 
             return result;
@@ -35,7 +40,7 @@ namespace BudgetBadger.Core.Sync
 
         public async Task<Result> Pull()
         {
-            var result = await FileProvider.DownloadSyncFolder();
+            var result = await FileProvider.GetLatest(SyncFolder);
 
             if (result.Success)
             {
@@ -53,7 +58,7 @@ namespace BudgetBadger.Core.Sync
 
             if (result.Success)
             {
-                result = await FileProvider.UploadSyncFolder();
+                result = await FileProvider.Commit(SyncFolder);
             }
 
             return result;
