@@ -1,9 +1,7 @@
 ﻿using System;
-using PropertyChanged;
 
 namespace BudgetBadger.Models
 {
-    [AddINotifyPropertyChangedInterface]
     public class Transaction
     {
         public Guid Id { get; set; }

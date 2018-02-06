@@ -16,7 +16,7 @@ namespace BudgetBadger.Core.Sync
 
         }
 
-        public async Task<Result> PushFiles(IDirectoryInfo sourceDirectory)
+        public async Task<Result> PushFilesFrom(IDirectoryInfo sourceDirectory)
         {
             var result = new Result();
 
@@ -44,7 +44,7 @@ namespace BudgetBadger.Core.Sync
             return result;
         }
 
-        public async Task<Result> PullFiles(IDirectoryInfo destinationDirectory)
+        public async Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory)
         {
             var result = new Result();
 

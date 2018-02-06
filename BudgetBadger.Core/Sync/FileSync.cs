@@ -38,7 +38,7 @@ namespace BudgetBadger.Core.Sync
 
         public override async Task<Result> FullSync()
         {
-            var result = await FileProvider.PullFiles(SyncDirectory);
+            var result = await FileProvider.PullFilesTo(SyncDirectory);
 
             if (result.Success)
             {
@@ -47,8 +47,7 @@ namespace BudgetBadger.Core.Sync
 
             if (result.Success)
             {
-
-                result = await FileProvider.PushFiles(SyncDirectory);
+                result = await FileProvider.PushFilesFrom(SyncDirectory);
             }
 
             return result;
@@ -56,7 +55,7 @@ namespace BudgetBadger.Core.Sync
 
         public override async Task<Result> Pull()
         {
-            var result = await FileProvider.PullFiles(SyncDirectory);
+            var result = await FileProvider.PullFilesTo(SyncDirectory);
 
             if (result.Success)
             {
@@ -72,7 +71,7 @@ namespace BudgetBadger.Core.Sync
 
             if (result.Success)
             {
-                result = await FileProvider.PushFiles(SyncDirectory);
+                result = await FileProvider.PushFilesFrom(SyncDirectory);
             }
 
             return result;

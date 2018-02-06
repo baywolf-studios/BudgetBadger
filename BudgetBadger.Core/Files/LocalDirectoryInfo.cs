@@ -21,7 +21,7 @@ namespace BudgetBadger.Core.Files
 
         public Stream CreateFile(string fileName)
         {
-            var filePath = Path.Combine(this.FullName + fileName);
+            var filePath = Path.Combine(this.FullName, fileName);
             return File.Create(filePath);
         }
 

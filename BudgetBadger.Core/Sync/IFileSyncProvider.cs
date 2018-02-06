@@ -7,7 +7,7 @@ namespace BudgetBadger.Core.Sync
 {
     public interface IFileSyncProvider
     {
-        Task<Result> PullFiles(IDirectoryInfo destinationDirectory);
-        Task<Result> PushFiles(IDirectoryInfo sourceDirectory);
+        Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory);
+        Task<Result> PushFilesFrom(IDirectoryInfo sourceDirectory);
     }
 }

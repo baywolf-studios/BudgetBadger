@@ -17,6 +17,7 @@ using BudgetBadger.Forms.Transactions;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core;
 using BudgetBadger.Core.Files;
+using BudgetBadger.FileSyncProvider.Dropbox;
 
 namespace BudgetBadger.Forms
 {
@@ -59,18 +60,17 @@ namespace BudgetBadger.Forms
             containerRegistry.Register<IPayeeLogic, PayeeLogic>();
             containerRegistry.Register<IEnvelopeLogic, EnvelopeLogic>();
 
-            var fileSyncProvider = new LocalFileSyncProvider(@"/Users/matthewpritchett/BudgetBadger");
-            containerRegistry.RegisterInstance<IFileSyncProvider>(fileSyncProvider);
+            var fileSyncProvider = new DropboxFileSyncProvider();
 
             var fileSync = new FileSync(syncAppDirectory,
-                                       fileSyncProvider,
-                                       localAccountDataAccess,
-                                       syncAccountDataAccess,
-                                       localPayeeDataAccess,
-                                       syncPayeeDataAccess,
-                                       localEnvelopeDatAccess,
-                                       syncEnvelopeDatAccess,
-                                       localTransactionDataAccess,
+                                        fileSyncProvider,
+                                        localAccountDataAccess,
+                                        syncAccountDataAccess,
+                                        localPayeeDataAccess,
+                                        syncPayeeDataAccess,
+                                        localEnvelopeDatAccess,
+                                        syncEnvelopeDatAccess,
+                                        localTransactionDataAccess,
                                         syncTransactionDataAccess);
             containerRegistry.RegisterInstance<ISync>(fileSync);
 

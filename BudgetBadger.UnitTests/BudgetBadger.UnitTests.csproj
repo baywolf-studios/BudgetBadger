@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Logic\" />
+    <Folder Include="Sync\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
