@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.Files;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
@@ -11,10 +12,10 @@ namespace BudgetBadger.DataAccess.Sqlite
     {
         readonly string ConnectionString;
 
-        public EnvelopeSqliteDataAccess(string databaseFilePath)
+        public EnvelopeSqliteDataAccess(IFileInfo databaseFile)
         {
             var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = databaseFilePath;
+            connectionStringBuilder.DataSource = databaseFile.FullName;
             ConnectionString = connectionStringBuilder.ConnectionString;
 
             Initialize();

@@ -1,67 +1,38 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using BudgetBadger.Core.Files;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
     public class LocalFileSyncProvider : IFileSyncProvider
     {
-        readonly string LocalDirectory;
+        readonly DirectoryInfo LocalDirectoryInfo;
 
-        public LocalFileSyncProvider(string localDirectory)
+        public LocalFileSyncProvider(string localDirectoryPath)
         {
-            LocalDirectory = localDirectory;
+            LocalDirectoryInfo = new DirectoryInfo(localDirectoryPath);
 
         }
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
-        {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
-
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            // If the destination directory doesn't exist, create it.
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, true);
-            }
-
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
-            }
-        }
-
-
-        public async Task<Result> GetLatest(string pathToPutLatest)
+        public async Task<Result> PushFiles(IDirectoryInfo sourceDirectory)
         {
             var result = new Result();
 
             try
             {
+                foreach(var file in sourceDirectory.GetFiles())
+                {
+                    string outputPath = Path.Combine(LocalDirectoryInfo.FullName, file.Name);
+                    
+                    using (var sourceStream = file.Open())
+                    using (var destinationStream = File.Create(outputPath))
+                    {
+                        await sourceStream.CopyToAsync(destinationStream);
+                    }
+                }
 
-                await Task.Run(() => DirectoryCopy(LocalDirectory, pathToPutLatest, true));
                 result.Success = true;
             }
             catch (Exception ex)
@@ -73,14 +44,20 @@ namespace BudgetBadger.Core.Sync
             return result;
         }
 
-
-        public async Task<Result> Commit(string pathToCommit)
+        public async Task<Result> PullFiles(IDirectoryInfo destinationDirectory)
         {
             var result = new Result();
 
             try
             {
-                await Task.Run(() => DirectoryCopy(pathToCommit, LocalDirectory, true));
+                foreach (var file in LocalDirectoryInfo.GetFiles())
+                {
+                    using (var sourceFile = File.Open(file.FullName, FileMode.Open))
+                    using (var destinationFile = destinationDirectory.CreateFile(file.Name))
+                    {
+                        await sourceFile.CopyToAsync(destinationFile);
+                    }
+                }
 
                 result.Success = true;
             }

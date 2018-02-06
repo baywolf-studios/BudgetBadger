@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Logic;
+using BudgetBadger.Core.Sync;
 using BudgetBadger.Models;
 using Moq;
 using Xunit;
@@ -30,7 +30,7 @@ namespace BudgetBadger.UnitTests.Logic
                 .Setup(x => x.ReadAccountTypesAsync())
                 .Returns(Task.FromResult((IEnumerable<AccountType>)targetAccountTypes));
 
-            var result = SyncLogicHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
+            var result = SyncHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
 
             targetAccountDataAccessMock.Verify(ms => ms.CreateAccountTypeAsync(It.Is<AccountType>(mo => mo.Id == sourceOnlyAccountType.Id)), Times.Once());
         }
@@ -58,7 +58,7 @@ namespace BudgetBadger.UnitTests.Logic
                 .Setup(x => x.ReadAccountTypesAsync())
                 .Returns(Task.FromResult((IEnumerable<AccountType>)targetAccountTypes));
 
-            var result = SyncLogicHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
+            var result = SyncHelper.SyncAccountTypes(sourceAccountDataAccessMock.Object, targetAccountDataAccessMock.Object);
 
             targetAccountDataAccessMock.Verify(ms => ms.UpdateAccountTypeAsync(It.Is<AccountType>(mo => mo.Id == sharedAccountType.Id)), Times.Once());
         }

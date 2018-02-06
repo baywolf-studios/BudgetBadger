@@ -16,6 +16,7 @@ using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.Transactions;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core;
+using BudgetBadger.Core.Files;
 
 namespace BudgetBadger.Forms
 {
@@ -34,13 +35,15 @@ namespace BudgetBadger.Forms
         {
             var timer = Stopwatch.StartNew();
 
-            var localDatabase = FileLocator.GetLocalFilePath("database.bb");
+            var localAppDirectory = new LocalDirectoryInfo(FileLocator.GetLocalPath());
+            var localDatabase = new LocalFileInfo("databse.bb", localAppDirectory);
             var localAccountDataAccess = new AccountSqliteDataAccess(localDatabase);
             var localPayeeDataAccess = new PayeeSqliteDataAccess(localDatabase);
             var localEnvelopeDatAccess = new EnvelopeSqliteDataAccess(localDatabase);
             var localTransactionDataAccess = new TransactionSqliteDataAccess(localDatabase);
 
-            var syncDatabase = FileLocator.GetSyncFilePath("database.bb");
+            var syncAppDirectory = new LocalDirectoryInfo(FileLocator.GetSyncPath());
+            var syncDatabase = new LocalFileInfo("databse.bb", syncAppDirectory);
             var syncAccountDataAccess = new AccountSqliteDataAccess(syncDatabase);
             var syncPayeeDataAccess = new PayeeSqliteDataAccess(syncDatabase);
             var syncEnvelopeDatAccess = new EnvelopeSqliteDataAccess(syncDatabase);
@@ -55,20 +58,21 @@ namespace BudgetBadger.Forms
             containerRegistry.Register<IAccountLogic, AccountLogic>();
             containerRegistry.Register<IPayeeLogic, PayeeLogic>();
             containerRegistry.Register<IEnvelopeLogic, EnvelopeLogic>();
-            var syncLogic = new SyncLogic(
-                localAccountDataAccess,
-                syncAccountDataAccess,
-                localPayeeDataAccess,
-                syncPayeeDataAccess,
-                localEnvelopeDatAccess,
-                syncEnvelopeDatAccess,
-                localTransactionDataAccess,
-                syncTransactionDataAccess);
-            containerRegistry.RegisterInstance<ISyncLogic>(syncLogic);
 
             var fileSyncProvider = new LocalFileSyncProvider(@"/Users/matthewpritchett/BudgetBadger");
             containerRegistry.RegisterInstance<IFileSyncProvider>(fileSyncProvider);
-            containerRegistry.Register<ISync, FileSync>();
+
+            var fileSync = new FileSync(syncAppDirectory,
+                                       fileSyncProvider,
+                                       localAccountDataAccess,
+                                       syncAccountDataAccess,
+                                       localPayeeDataAccess,
+                                       syncPayeeDataAccess,
+                                       localEnvelopeDatAccess,
+                                       syncEnvelopeDatAccess,
+                                       localTransactionDataAccess,
+                                        syncTransactionDataAccess);
+            containerRegistry.RegisterInstance<ISync>(fileSync);
 
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();

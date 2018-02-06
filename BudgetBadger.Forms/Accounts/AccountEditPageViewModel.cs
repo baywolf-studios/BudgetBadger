@@ -72,7 +72,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
-                await SyncService.Sync();
+                await SyncService.FullSync();
                 await NavigationService.GoBackAsync();
             }
             else

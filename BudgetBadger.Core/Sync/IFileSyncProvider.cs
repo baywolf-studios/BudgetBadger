@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BudgetBadger.Core.Files;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
     public interface IFileSyncProvider
     {
-        Task<Result> GetLatest(string pathToPutLatest);
-        Task<Result> Commit(string pathToCommit);
+        Task<Result> PullFiles(IDirectoryInfo destinationDirectory);
+        Task<Result> PushFiles(IDirectoryInfo sourceDirectory);
     }
 }

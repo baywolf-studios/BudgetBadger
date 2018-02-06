@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Models;
 
-namespace BudgetBadger.Logic
+namespace BudgetBadger.Core.Sync
 {
-    public static class SyncLogicHelper
+    public static class SyncHelper
     {
         public async static Task SyncAccountTypes(IAccountDataAccess sourceAccountDataAccess, IAccountDataAccess targetAccountDataAccess)
         {

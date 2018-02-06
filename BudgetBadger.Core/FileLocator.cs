@@ -5,7 +5,7 @@ namespace BudgetBadger.Core
 {
     public static class FileLocator
     {
-        static readonly string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        static readonly string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
         static readonly string applicationPath = Path.Combine(documentsPath, "BudgetBadger");
 

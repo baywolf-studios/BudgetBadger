@@ -1,64 +1,78 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BudgetBadger.Core;
+using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.Files;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
-    public class FileSync : ISync
+    public class FileSync : Sync
     {
         readonly IFileSyncProvider FileProvider;
-        readonly ISyncLogic SyncLogic;
+        readonly IDirectoryInfo SyncDirectory;
 
-        readonly string SyncFolder;
-
-        public FileSync(IFileSyncProvider fileProvider, ISyncLogic syncLogic)
+        public FileSync(IDirectoryInfo syncDirectory,
+                        IFileSyncProvider fileProvider,
+                        IAccountDataAccess localAccountDataAccess,
+                        IAccountDataAccess remoteAccountDataAccess,
+                        IPayeeDataAccess localPayeeDataAccess,
+                        IPayeeDataAccess remotePayeeDataAccess,
+                        IEnvelopeDataAccess localEnvelopeDataAccess,
+                        IEnvelopeDataAccess remoteEnvelopeDataAccess,
+                        ITransactionDataAccess localTransactionDataAccess,
+                        ITransactionDataAccess remoteTransactionDataAccess)
+            : base(localAccountDataAccess,
+                  remoteAccountDataAccess,
+                  localPayeeDataAccess,
+                  remotePayeeDataAccess,
+                  localEnvelopeDataAccess,
+                  remoteEnvelopeDataAccess,
+                  localTransactionDataAccess,
+                  remoteTransactionDataAccess)
         {
-            SyncFolder = FileLocator.GetSyncPath();
+            SyncDirectory = syncDirectory;
             FileProvider = fileProvider;
-            SyncLogic = syncLogic;
         }
 
-        public async Task<Result> Sync()
+        public override async Task<Result> FullSync()
         {
-            var result = await FileProvider.GetLatest(SyncFolder);
+            var result = await FileProvider.PullFiles(SyncDirectory);
 
             if (result.Success)
             {
-                result = await SyncLogic.Sync();
+                result = await base.FullSync();
             }
 
             if (result.Success)
             {
 
-                result = await FileProvider.Commit(SyncFolder);
-            }
-
-            return result;
-        }
-
-        public async Task<Result> Pull()
-        {
-            var result = await FileProvider.GetLatest(SyncFolder);
-
-            if (result.Success)
-            {
-                result = await SyncLogic.SyncToLocal();
+                result = await FileProvider.PushFiles(SyncDirectory);
             }
 
             return result;
         }
 
-        public async Task<Result> Push()
+        public override async Task<Result> Pull()
         {
-            //clear sync folder
-
-            var result = await SyncLogic.SyncToRemote();
+            var result = await FileProvider.PullFiles(SyncDirectory);
 
             if (result.Success)
             {
-                result = await FileProvider.Commit(SyncFolder);
+                result = await base.Pull();
+            }
+
+            return result;
+        }
+
+        public override async Task<Result> Push()
+        {
+            var result = await base.Push();
+
+            if (result.Success)
+            {
+                result = await FileProvider.PushFiles(SyncDirectory);
             }
 
             return result;

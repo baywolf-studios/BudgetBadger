@@ -6,7 +6,7 @@ namespace BudgetBadger.Core.Sync
 {
     public class NullSync : ISync
     {
-        public Task<Result> Sync()
+        public Task<Result> FullSync()
         {
             return Task.FromResult(new Result { Success = true });
         }

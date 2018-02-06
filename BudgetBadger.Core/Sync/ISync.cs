@@ -6,7 +6,7 @@ namespace BudgetBadger.Core.Sync
 {
     public interface ISync
     {
-        Task<Result> Sync();
+        Task<Result> FullSync();
         Task<Result> Pull();
         Task<Result> Push();
     }
