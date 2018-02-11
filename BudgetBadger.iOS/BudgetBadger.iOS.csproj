@@ -152,11 +152,20 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="OAuth2Authenticator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
       <Project>{327130BA-71E2-40EF-867F-0A6AAEBDD44D}</Project>
       <Name>BudgetBadger.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
+      <Project>{C43FB66D-8206-4566-83EA-E200DC5C572A}</Project>
+      <Name>BudgetBadger.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj">
+      <Project>{0D2FC756-AB4A-453F-971E-16F557836C9D}</Project>
+      <Name>BudgetBadger.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -21,7 +21,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
-                using (var dbx = new DropboxClient("accesskey"))
+                using (var dbx = new DropboxClient("access"))
                 {
                     var folderArgs = new ListFolderArg("", recursive:true);
 
@@ -60,7 +60,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
-                    using (var dbx = new DropboxClient("accesskey"))
+                    using (var dbx = new DropboxClient("access"))
                     {
                         var commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
                         var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);

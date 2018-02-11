@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.Forms;
 using Foundation;
+using Prism;
+using Prism.Ioc;
 using UIKit;
 
 namespace BudgetBadger.iOS
@@ -14,9 +17,17 @@ namespace BudgetBadger.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            LoadApplication(new App());
+            LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);
+        }
+
+        public class iOSInitializer : IPlatformInitializer
+        {
+            public void RegisterTypes(IContainerRegistry container)
+            {
+                container.Register<IOAuth2Authenticator, OAuth2Authenticator>();
+            }
         }
     }
 }

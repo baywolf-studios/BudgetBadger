@@ -20,6 +20,7 @@
     <Folder Include="Accounts\" />
     <Folder Include="Envelopes\" />
     <Folder Include="Transactions\" />
+    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
@@ -68,6 +69,9 @@
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupsPage.xaml.cs">
       <DependentUpon>EnvelopeGroupsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Settings\SettingsPage.xaml.cs">
+      <DependentUpon>..\Views\Views\SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

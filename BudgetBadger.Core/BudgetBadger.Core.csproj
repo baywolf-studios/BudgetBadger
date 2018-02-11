@@ -11,6 +11,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Sync\" />
     <Folder Include="Files\" />
+    <Folder Include="Authentication\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />

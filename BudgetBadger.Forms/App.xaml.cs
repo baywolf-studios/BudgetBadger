@@ -18,11 +18,14 @@ using BudgetBadger.Core.Sync;
 using BudgetBadger.Core;
 using BudgetBadger.Core.Files;
 using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.Forms.Settings;
 
 namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
     {
+        public App(IPlatformInitializer initializer = null) : base(initializer) { }
+
         protected override void OnInitialized()
         {
             InitializeComponent();
@@ -86,6 +89,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             timer.Stop();
         }
     }

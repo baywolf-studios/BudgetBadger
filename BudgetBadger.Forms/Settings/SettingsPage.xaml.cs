@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
-namespace BudgetBadger.Forms.Views
+namespace BudgetBadger.Forms.Settings
 {
     public partial class SettingsPage : ContentPage
     {
