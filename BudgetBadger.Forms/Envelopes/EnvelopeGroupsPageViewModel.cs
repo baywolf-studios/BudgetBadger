@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
@@ -105,7 +105,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.EnvelopeGroup, SelectedEnvelopeGroup }
+                { PageParameter.EnvelopeGroup, SelectedEnvelopeGroup }
             };
 
             await NavigationService.GoBackAsync(parameters);
@@ -126,7 +126,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 var parameters = new NavigationParameters
                 {
-                    { NavigationParameterType.EnvelopeGroup, result.Data }
+                    { PageParameter.EnvelopeGroup, result.Data }
                 };
 
                 await NavigationService.GoBackAsync(parameters);

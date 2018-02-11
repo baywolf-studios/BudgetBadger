@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
@@ -37,7 +37,7 @@ namespace BudgetBadger.Forms.Payees
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
+            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
             {
                 Payee = payee.DeepCopy();

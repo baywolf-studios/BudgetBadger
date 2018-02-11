@@ -4,7 +4,7 @@ using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
-    public class NullSync : ISync
+    public class NoSync : ISync
     {
         public Task<Result> FullSync()
         {

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using PropertyChanged;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Forms.Enums;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -48,7 +48,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(NavigationParameterType.Account);
+            var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();

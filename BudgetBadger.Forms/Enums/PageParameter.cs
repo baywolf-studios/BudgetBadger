@@ -1,7 +1,7 @@
 ﻿using System;
-namespace BudgetBadger.Forms.Navigation
+namespace BudgetBadger.Forms.Enums
 {
-    public static class NavigationParameterType
+    public static class PageParameter
     {
         public static readonly string Account = "account";
         public static readonly string Budget = "budget";

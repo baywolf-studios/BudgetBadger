@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>BudgetBadger</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.BudgetBadger</string>
+	<string>com.baywolfstudios.budgetbadger</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -46,10 +46,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.BudgetBadger.urlscheme</string>
+			<string>com.budgetbadger.urlscheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>bb</string>
+				<string>budgetbadger</string>
 			</array>
 		</dict>
 	</array>

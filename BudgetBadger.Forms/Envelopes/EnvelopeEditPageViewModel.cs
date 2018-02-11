@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
@@ -53,24 +53,24 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteGroupSelectedCommand()
         {
-            await NavigationService.NavigateAsync(NavigationPageName.EnvelopeGroupsPage);
+            await NavigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            var budget = parameters.GetValue<Budget>(NavigationParameterType.Budget);
+            var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {
                 Budget = budget.DeepCopy();
             }
 
-            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(NavigationParameterType.EnvelopeGroup);
+            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)
             {
                 Budget.Envelope.Group = envelopeGroup.DeepCopy();
             }
 
-            var budgetSchedule = parameters.GetValue<BudgetSchedule>(NavigationParameterType.BudgetSchedule);
+            var budgetSchedule = parameters.GetValue<BudgetSchedule>(PageParameter.BudgetSchedule);
             if (budgetSchedule != null)
             {
                 Budget.Schedule = budgetSchedule.DeepCopy();

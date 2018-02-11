@@ -11,8 +11,11 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 {
     public class DropboxFileSyncProvider : IFileSyncProvider
     {
-        public DropboxFileSyncProvider()
+        readonly string AccessToken;
+        
+        public DropboxFileSyncProvider(string accessToken)
         {
+            AccessToken = accessToken;
         }
 
         public async Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory)
@@ -21,7 +24,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
-                using (var dbx = new DropboxClient("access"))
+                using (var dbx = new DropboxClient(AccessToken))
                 {
                     var folderArgs = new ListFolderArg("", recursive:true);
 
@@ -60,7 +63,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
-                    using (var dbx = new DropboxClient("access"))
+                    using (var dbx = new DropboxClient(AccessToken))
                     {
                         var commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
                         var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);

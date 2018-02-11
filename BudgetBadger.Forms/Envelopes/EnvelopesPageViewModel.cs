@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Navigation;
 using Prism.Commands;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using BudgetBadger.Core.Logic;
 using PropertyChanged;
@@ -68,7 +68,7 @@ namespace BudgetBadger.Forms.Envelopes
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
+            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
 
             await ExecuteRefreshCommand();
         }
@@ -158,7 +158,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 var parameters = new NavigationParameters
                 {
-                    { NavigationParameterType.Envelope, SelectedBudget.Envelope }
+                    { PageParameter.Envelope, SelectedBudget.Envelope }
                 };
                 await NavigationService.GoBackAsync(parameters);
             }
@@ -166,9 +166,9 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 var parameters = new NavigationParameters
                 {
-                    { NavigationParameterType.Budget, SelectedBudget }
+                    { PageParameter.Budget, SelectedBudget }
                 };
-                await NavigationService.NavigateAsync(NavigationPageName.EnvelopeInfoPage, parameters);
+                await NavigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
             }
 
             SelectedBudget = null;
@@ -178,10 +178,10 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.BudgetSchedule, Schedule }
+                { PageParameter.BudgetSchedule, Schedule }
             };
 
-            await NavigationService.NavigateAsync(NavigationPageName.EnvelopeEditPage, parameters);
+            await NavigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
 
             SelectedBudget = null;
         }

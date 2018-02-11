@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
@@ -51,7 +51,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var budget = parameters.GetValue<Budget>(NavigationParameterType.Budget);
+            var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {
                 Budget = budget.DeepCopy();
@@ -72,9 +72,9 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Budget, Budget }
+                { PageParameter.Budget, Budget }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.EnvelopeEditPage, parameters);
+            await NavigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -86,9 +86,9 @@ namespace BudgetBadger.Forms.Envelopes
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Transaction, SelectedTransaction }
+                { PageParameter.Transaction, SelectedTransaction }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
 
             SelectedTransaction = null;
         }
@@ -97,9 +97,9 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Envelope, Budget.Envelope }
+                { PageParameter.Envelope, Budget.Envelope }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
         }
 
         public async Task ExecuteRefreshCommand()

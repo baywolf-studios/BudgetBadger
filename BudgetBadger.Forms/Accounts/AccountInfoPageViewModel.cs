@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
@@ -56,7 +56,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(NavigationParameterType.Account);
+            var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
@@ -77,9 +77,9 @@ namespace BudgetBadger.Forms.Accounts
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Account, Account }
+                { PageParameter.Account, Account }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.AccountEditPage, parameters);
+            await NavigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -91,9 +91,9 @@ namespace BudgetBadger.Forms.Accounts
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Transaction, SelectedTransaction }
+                { PageParameter.Transaction, SelectedTransaction }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
 
             SelectedTransaction = null;
         }
@@ -140,19 +140,19 @@ namespace BudgetBadger.Forms.Accounts
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Account, Account }
+                { PageParameter.Account, Account }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
         }
 
         public async Task ExecutePaymentCommand()
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Account, Account },
-                { NavigationParameterType.TransactionAmount, Account.Payment }
+                { PageParameter.Account, Account },
+                { PageParameter.TransactionAmount, Account.Payment }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
         }
     }
 }

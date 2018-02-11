@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
@@ -67,7 +67,7 @@ namespace BudgetBadger.Forms.Payees
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
+            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
 
             await ExecuteRefreshCommand();
         }
@@ -85,7 +85,7 @@ namespace BudgetBadger.Forms.Payees
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Payee, SelectedPayee }
+                { PageParameter.Payee, SelectedPayee }
             };
 
             if (SelectorMode)
@@ -94,7 +94,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                await NavigationService.NavigateAsync(NavigationPageName.PayeeInfoPage, parameters);
+                await NavigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
             }
 
 
@@ -143,7 +143,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 var parameters = new NavigationParameters
                 {
-                    { NavigationParameterType.Payee, result.Data }
+                    { PageParameter.Payee, result.Data }
                 };
 
                 await NavigationService.GoBackAsync(parameters);
@@ -156,7 +156,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteAddCommand()
         {
-            await NavigationService.NavigateAsync(NavigationPageName.PayeeEditPage);
+            await NavigationService.NavigateAsync(PageName.PayeeEditPage);
 
             SelectedPayee = null;
         }

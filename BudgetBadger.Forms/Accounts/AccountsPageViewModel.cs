@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
@@ -64,7 +64,7 @@ namespace BudgetBadger.Forms.Accounts
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(NavigationParameterType.SelectorMode);
+            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
 
             await ExecuteRefreshCommand();
         }
@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Accounts
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Account, SelectedAccount }
+                { PageParameter.Account, SelectedAccount }
             };
 
             if (SelectorMode)
@@ -91,7 +91,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await NavigationService.NavigateAsync(NavigationPageName.AccountInfoPage, parameters);
+                await NavigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
             }
 
 
@@ -129,7 +129,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteAddCommand()
         {
-            await NavigationService.NavigateAsync(NavigationPageName.AccountEditPage);
+            await NavigationService.NavigateAsync(PageName.AccountEditPage);
             SelectedAccount = null;
         }
 

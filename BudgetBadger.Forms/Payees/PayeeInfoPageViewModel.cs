@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Forms.Navigation;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using PropertyChanged;
@@ -53,7 +53,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var payee = parameters.GetValue<Payee>(NavigationParameterType.Payee);
+            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
             {
                 Payee = payee.DeepCopy();
@@ -74,9 +74,9 @@ namespace BudgetBadger.Forms.Payees
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Payee, Payee }
+                { PageParameter.Payee, Payee }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.PayeeEditPage, parameters);
+            await NavigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -88,9 +88,9 @@ namespace BudgetBadger.Forms.Payees
 
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Transaction, SelectedTransaction }
+                { PageParameter.Transaction, SelectedTransaction }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
 
             SelectedTransaction = null;
         }
@@ -137,9 +137,9 @@ namespace BudgetBadger.Forms.Payees
         {
             var parameters = new NavigationParameters
             {
-                { NavigationParameterType.Payee, Payee }
+                { PageParameter.Payee, Payee }
             };
-            await NavigationService.NavigateAsync(NavigationPageName.TransactionPage, parameters);
+            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
         }
     }
 }

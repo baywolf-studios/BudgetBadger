@@ -15,11 +15,12 @@
   <ItemGroup>
     <Folder Include="Views\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Navigation\" />
     <Folder Include="Payees\" />
     <Folder Include="Accounts\" />
     <Folder Include="Envelopes\" />
     <Folder Include="Transactions\" />
+    <Folder Include="Sync\" />
+    <Folder Include="Enums\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +73,9 @@
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Settings\SettingsPage.xaml.cs">
       <DependentUpon>..\Views\Views\SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Sync\SyncPage.xaml.cs">
+      <DependentUpon>SyncPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
