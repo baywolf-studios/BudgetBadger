@@ -15,22 +15,14 @@ namespace BudgetBadger.Core.Sync
 
         public FileSync(IDirectoryInfo syncDirectory,
                         IFileSyncProvider fileProvider,
-                        IAccountDataAccess localAccountDataAccess,
-                        IAccountDataAccess remoteAccountDataAccess,
-                        IPayeeDataAccess localPayeeDataAccess,
-                        IPayeeDataAccess remotePayeeDataAccess,
-                        IEnvelopeDataAccess localEnvelopeDataAccess,
-                        IEnvelopeDataAccess remoteEnvelopeDataAccess,
-                        ITransactionDataAccess localTransactionDataAccess,
-                        ITransactionDataAccess remoteTransactionDataAccess)
-            : base(localAccountDataAccess,
-                  remoteAccountDataAccess,
-                  localPayeeDataAccess,
-                  remotePayeeDataAccess,
-                  localEnvelopeDataAccess,
-                  remoteEnvelopeDataAccess,
-                  localTransactionDataAccess,
-                  remoteTransactionDataAccess)
+                        IAccountSyncLogic accountSyncLogic,
+                        IPayeeSyncLogic payeeSyncLogic,
+                        IEnvelopeSyncLogic envelopeSyncLogic,
+                        ITransactionSyncLogic transactionSyncLogic)
+            : base(accountSyncLogic,
+                  payeeSyncLogic,
+                  envelopeSyncLogic,
+                  transactionSyncLogic)
         {
             SyncDirectory = syncDirectory;
             FileProvider = fileProvider;

@@ -10,20 +10,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class PayeeSqliteDataAccess : IPayeeDataAccess
     {
-        readonly string ConnectionString;
+        readonly string _connectionString;
 
-        public PayeeSqliteDataAccess(IFileInfo databaseFile)
+        public PayeeSqliteDataAccess(string connectionString)
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = databaseFile.FullName;
-            ConnectionString = connectionStringBuilder.ConnectionString;
+            _connectionString = connectionString;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 db.Open();
                 var command = db.CreateCommand();
@@ -40,7 +38,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.ExecuteNonQuery();
             }
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 db.Open();
                 var command = db.CreateCommand();
@@ -72,7 +70,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreatePayeeAsync(Payee payee)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -104,7 +102,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeletePayeeAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -121,7 +119,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var payee = new Payee();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -161,7 +159,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var payees = new List<Payee>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -197,7 +195,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdatePayeeAsync(Payee payee)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();

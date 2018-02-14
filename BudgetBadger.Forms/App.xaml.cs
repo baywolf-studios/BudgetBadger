@@ -8,6 +8,7 @@ using BudgetBadger.Logic;
 using BudgetBadger.Forms.Payees;
 using BudgetBadger.Forms.Views;
 using BudgetBadger.Forms.ViewModels;
+using DryIoc;
 using Prism;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -23,6 +24,7 @@ using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Sync;
 using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
+using System.IO;
 
 namespace BudgetBadger.Forms
 {
@@ -43,53 +45,68 @@ namespace BudgetBadger.Forms
         {
             var timer = Stopwatch.StartNew();
 
-            var localAppDirectory = FileLocator.GetBudgetsPath();
-            var localDatabase = FileLocator.GetBudgetFilePath("Default.bb");
-            var localAccountDataAccess = new AccountSqliteDataAccess(localDatabase);
-            var localPayeeDataAccess = new PayeeSqliteDataAccess(localDatabase);
-            var localEnvelopeDatAccess = new EnvelopeSqliteDataAccess(localDatabase);
-            var localTransactionDataAccess = new TransactionSqliteDataAccess(localDatabase);
+            var container = containerRegistry.GetContainer();
 
-            var syncAppDirectory = FileLocator.GetSyncPath();
-            var syncDatabase = FileLocator.GetSyncFilePath("Default.bb");
-            var syncAccountDataAccess = new AccountSqliteDataAccess(syncDatabase);
-            var syncPayeeDataAccess = new PayeeSqliteDataAccess(syncDatabase);
-            var syncEnvelopeDatAccess = new EnvelopeSqliteDataAccess(syncDatabase);
-            var syncTransactionDataAccess = new TransactionSqliteDataAccess(syncDatabase);
 
-            containerRegistry.RegisterInstance<IAccountDataAccess>(localAccountDataAccess);
-            containerRegistry.RegisterInstance<IPayeeDataAccess>(localPayeeDataAccess);
-            containerRegistry.RegisterInstance<IEnvelopeDataAccess>(localEnvelopeDatAccess);
-            containerRegistry.RegisterInstance<ITransactionDataAccess>(localTransactionDataAccess);
+            container.Register<IApplicationStore, ApplicationStore>();
+            container.Register<ISettings, AppSettings>();
 
-            containerRegistry.Register<ITransactionLogic, TransactionLogic>();
-            containerRegistry.Register<IAccountLogic, AccountLogic>();
-            containerRegistry.Register<IPayeeLogic, PayeeLogic>();
-            containerRegistry.Register<IEnvelopeLogic, EnvelopeLogic>();
+            var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBader");
 
-            var settings = new AppSettings(new ApplicationStore());
-            containerRegistry.RegisterInstance<ISettings>(settings);
+            var dataDirectory = Path.Combine(appDataDirectory, "data");
+            Directory.CreateDirectory(dataDirectory);
+            var syncDirectory = Path.Combine(appDataDirectory, "sync");
+            Directory.CreateDirectory(syncDirectory);
 
-            if (settings.GetValueOrDefault(SettingsKeys.FileSyncProvider) == FileSyncProviders.Dropbox)
-            {
-                var fileSyncProvider = new DropboxFileSyncProvider(settings.GetValueOrDefault(SettingsKeys.DropboxAccessToken));
+            var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
+            var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
 
-                var fileSync = new FileSync(syncAppDirectory,
-                                            fileSyncProvider,
-                                            localAccountDataAccess,
-                                            syncAccountDataAccess,
-                                            localPayeeDataAccess,
-                                            syncPayeeDataAccess,
-                                            localEnvelopeDatAccess,
-                                            syncEnvelopeDatAccess,
-                                            localTransactionDataAccess,
-                                            syncTransactionDataAccess);
-                containerRegistry.RegisterInstance<ISync>(fileSync);
-            }
-            else
-            {
-                containerRegistry.Register<ISync, NoSync>();
-            }
+            //default dataaccess
+            container.RegisterInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+
+            //default logic
+            container.Register<ITransactionLogic, TransactionLogic>();
+            container.Register<IAccountLogic, AccountLogic>();
+            container.Register<IPayeeLogic, PayeeLogic>();
+            container.Register<IEnvelopeLogic, EnvelopeLogic>();
+
+            //sync dataaccess
+            container.RegisterInstance(syncConnectionString, serviceKey: "syncConnectionString");
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                   serviceKey: "syncAccountDataAccess");
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                 serviceKey: "syncPayeeDataAccess");
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                    serviceKey: "syncEnvelopeDataAccess");
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                       serviceKey: "syncTransactionDataAccess");
+
+            //sync directory for filesyncproviders
+            container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
+
+            //sync logics
+            container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IAccountDataAccess>(),
+                                                                                           Arg.Of<IAccountDataAccess>("syncAccountDataAccess"))));
+            container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IPayeeDataAccess>(),
+                                                                                       Arg.Of<IPayeeDataAccess>("syncPayeeDataAccess"))));
+            container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IEnvelopeDataAccess>(),
+                                                                                             Arg.Of<IEnvelopeDataAccess>("syncEnvelopeDataAccess"))));
+            container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
+                                                                                                   Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
+
+
+            container.Register<IFileSyncProvider>(made: Made.Of(() => FileSyncProviderFactory.CreateFileSyncProvider(Arg.Of<ISettings>())));
+            container.Register<ISync>(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
+                                                                                 Arg.Of<IFileSyncProvider>(),
+                                                                                 Arg.Of<IDirectoryInfo>(),
+                                                                                 Arg.Of<IAccountSyncLogic>(),
+                                                                                 Arg.Of<IPayeeSyncLogic>(),
+                                                                                 Arg.Of<IEnvelopeSyncLogic>(),
+                                                                                 Arg.Of<ITransactionSyncLogic>())));
 
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
@@ -107,7 +124,6 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<SyncPage, SyncPageViewModel>();
             containerRegistry.RegisterForNavigation<FileSyncProvidersPage, FileSyncProvidersPageViewModel>();
 
-            containerRegistry.RegisterInstance(containerRegistry);
             timer.Stop();
         }
     }

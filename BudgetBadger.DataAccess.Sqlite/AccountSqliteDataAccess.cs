@@ -10,20 +10,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class AccountSqliteDataAccess : IAccountDataAccess
     {
-        readonly string ConnectionString;
+        readonly string _connectionString;
 
-        public AccountSqliteDataAccess(IFileInfo databaseFile)
+        public AccountSqliteDataAccess(string connectionString)
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = databaseFile.FullName;
-            ConnectionString = connectionStringBuilder.ConnectionString;
+            _connectionString = connectionString;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using(var db = new SqliteConnection(ConnectionString))
+            using(var db = new SqliteConnection(_connectionString))
             {
                 db.Open();
                 var command = db.CreateCommand();
@@ -83,7 +81,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             };
             foreach (var accountType in accountTypes)
             {
-                using (var db = new SqliteConnection(ConnectionString))
+                using (var db = new SqliteConnection(_connectionString))
                 {
                     db.Open();
                     var command = db.CreateCommand();
@@ -110,7 +108,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateAccountAsync(Account account)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -148,7 +146,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteAccountAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -165,7 +163,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var account = new Account();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -222,7 +220,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var accounts = new List<Account>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -276,7 +274,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var accountTypes = new List<AccountType>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -310,7 +308,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateAccountAsync(Account account)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -340,7 +338,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateAccountTypeAsync(AccountType accountType)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -369,7 +367,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateAccountTypeAsync(AccountType accountType)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -393,7 +391,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteAccountTypeAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();

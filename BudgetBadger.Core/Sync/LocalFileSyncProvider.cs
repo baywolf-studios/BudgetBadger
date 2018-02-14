@@ -13,7 +13,6 @@ namespace BudgetBadger.Core.Sync
         public LocalFileSyncProvider(string localDirectoryPath)
         {
             LocalDirectoryInfo = new DirectoryInfo(localDirectoryPath);
-
         }
 
         public async Task<Result> PushFilesFrom(IDirectoryInfo sourceDirectory)

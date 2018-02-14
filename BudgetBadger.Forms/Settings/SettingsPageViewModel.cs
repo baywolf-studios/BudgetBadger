@@ -46,7 +46,7 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            SyncMode = Settings.GetValueOrDefault(SettingsKeys.FileSyncProvider);
+            SyncMode = Settings.GetValueOrDefault(SettingsKeys.SyncMode);
         }
     }
 }

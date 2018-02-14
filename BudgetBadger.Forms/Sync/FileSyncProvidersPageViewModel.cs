@@ -29,14 +29,12 @@ namespace BudgetBadger.Forms.Sync
         public FileSyncProvidersPageViewModel(INavigationService navigationService,
                                               IPageDialogService dialogService,
                                               IOAuth2Authenticator authenticator,
-                                              ISettings settings,
-                                              IContainerRegistry containerRegistry)
+                                              ISettings settings)
         {
             NavigationService = navigationService;
             DialogService = dialogService;
             Authenticator = authenticator;
             Settings = settings;
-            ContainerRegistry = containerRegistry;
 
             DropBoxSyncCommand = new DelegateCommand(ExecuteDropBoxSyncCommand);
         }
@@ -54,16 +52,14 @@ namespace BudgetBadger.Forms.Sync
             {
                 var accessToken = DropboxFileSyncHelper.GetAccessToken(result.Data);
 
-                await Settings.AddOrUpdateValueAsync(SettingsKeys.FileSyncProvider, FileSyncProviders.Dropbox);
+                await Settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.DropboxSync);
                 await Settings.AddOrUpdateValueAsync(SettingsKeys.DropboxAccessToken, accessToken);
-
-                var dropboxFileSyncProvider = new DropboxFileSyncProvider(accessToken);
-                ContainerRegistry.RegisterInstance<IFileSyncProvider>(dropboxFileSyncProvider);
 
                 await NavigationService.GoBackAsync();
             }
             else
             {
+                await Settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.NoSync);
                 await DialogService.DisplayAlertAsync("Authentication Failed", "Did not authenticate with Dropbox", "Ok");
             }
         }

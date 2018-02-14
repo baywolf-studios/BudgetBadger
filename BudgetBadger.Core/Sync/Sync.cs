@@ -1,78 +1,48 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Sync
 {
     public class Sync : ISync
     {
-        readonly IAccountDataAccess LocalAccountDataAccess;
-        readonly IAccountDataAccess RemoteAccountDataAccess;
-        readonly IPayeeDataAccess LocalPayeeDataAccess;
-        readonly IPayeeDataAccess RemotePayeeDataAccess;
-        readonly IEnvelopeDataAccess LocalEnvelopeDataAccess;
-        readonly IEnvelopeDataAccess RemoteEnvelopeDataAccess;
-        readonly ITransactionDataAccess LocalTransactionDataAccess;
-        readonly ITransactionDataAccess RemoteTransactionDataAccess;
+        readonly IAccountSyncLogic _accountSyncLogic;
+        readonly IPayeeSyncLogic _payeeSyncLogic;
+        readonly IEnvelopeSyncLogic _envelopeSyncLogic;
+        readonly ITransactionSyncLogic _transactionSyncLogic;
 
-        public Sync(IAccountDataAccess localAccountDataAccess,
-                    IAccountDataAccess remoteAccountDataAccess,
-                    IPayeeDataAccess localPayeeDataAccess,
-                    IPayeeDataAccess remotePayeeDataAccess,
-                    IEnvelopeDataAccess localEnvelopeDataAccess,
-                    IEnvelopeDataAccess remoteEnvelopeDataAccess,
-                    ITransactionDataAccess localTransactionDataAccess,
-                    ITransactionDataAccess remoteTransactionDataAccess)
+        public Sync(IAccountSyncLogic accountSyncLogic,
+                    IPayeeSyncLogic payeeSyncLogic,
+                    IEnvelopeSyncLogic envelopeSyncLogic,
+                    ITransactionSyncLogic transactionSyncLogic)
         {
-            LocalAccountDataAccess = localAccountDataAccess;
-            RemoteAccountDataAccess = remoteAccountDataAccess;
-            LocalPayeeDataAccess = localPayeeDataAccess;
-            RemotePayeeDataAccess = remotePayeeDataAccess;
-            LocalEnvelopeDataAccess = localEnvelopeDataAccess;
-            RemoteEnvelopeDataAccess = remoteEnvelopeDataAccess;
-            LocalTransactionDataAccess = localTransactionDataAccess;
-            RemoteTransactionDataAccess = remoteTransactionDataAccess;
+            _accountSyncLogic = accountSyncLogic;
+            _payeeSyncLogic = payeeSyncLogic;
+            _envelopeSyncLogic = envelopeSyncLogic;
+            _transactionSyncLogic = transactionSyncLogic;
         }
 
         public virtual async Task<Result> FullSync()
         {
             var result = new Result();
 
-            try
-            {
-                await SyncHelper.SyncAccountTypes(LocalAccountDataAccess, RemoteAccountDataAccess);
-                await SyncHelper.SyncAccounts(LocalAccountDataAccess, RemoteAccountDataAccess);
-                await SyncHelper.SyncPayees(LocalPayeeDataAccess, RemotePayeeDataAccess);
-                await SyncHelper.SyncEnvelopeGroups(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncEnvelopes(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncBudgetSchedules(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncBudgets(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncTransactions(LocalTransactionDataAccess, RemoteTransactionDataAccess);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
+            result = await _accountSyncLogic.SyncAsync();
 
-            try
+            if (result.Success)
             {
-                await SyncHelper.SyncAccountTypes(RemoteAccountDataAccess, LocalAccountDataAccess);
-                await SyncHelper.SyncAccounts(RemoteAccountDataAccess, LocalAccountDataAccess);
-                await SyncHelper.SyncPayees(RemotePayeeDataAccess, LocalPayeeDataAccess);
-                await SyncHelper.SyncEnvelopeGroups(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncEnvelopes(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncBudgetSchedules(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncBudgets(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncTransactions(RemoteTransactionDataAccess, LocalTransactionDataAccess);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
+                result = await _payeeSyncLogic.SyncAsync();
+
+                if (result.Success)
+                {
+                    result = await _envelopeSyncLogic.SyncAsync();
+
+                    if (result.Success)
+                    {
+                        result = await _transactionSyncLogic.SyncAsync();
+                    }
+                }
             }
 
             return result;
@@ -82,23 +52,21 @@ namespace BudgetBadger.Core.Sync
         {
             var result = new Result();
 
-            // sync to remote
-            try
+            result = await _accountSyncLogic.PushAsync();
+
+            if (result.Success)
             {
-                await SyncHelper.SyncAccountTypes(LocalAccountDataAccess, RemoteAccountDataAccess);
-                await SyncHelper.SyncAccounts(LocalAccountDataAccess, RemoteAccountDataAccess);
-                await SyncHelper.SyncPayees(LocalPayeeDataAccess, RemotePayeeDataAccess);
-                await SyncHelper.SyncEnvelopeGroups(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncEnvelopes(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncBudgetSchedules(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncBudgets(LocalEnvelopeDataAccess, RemoteEnvelopeDataAccess);
-                await SyncHelper.SyncTransactions(LocalTransactionDataAccess, RemoteTransactionDataAccess);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
+                result = await _payeeSyncLogic.PushAsync();
+
+                if (result.Success)
+                {
+                    result = await _envelopeSyncLogic.PushAsync();
+
+                    if (result.Success)
+                    {
+                        result = await _transactionSyncLogic.PushAsync();
+                    }
+                }
             }
 
             return result;
@@ -108,23 +76,21 @@ namespace BudgetBadger.Core.Sync
         {
             var result = new Result();
 
-            // sync to local
-            try
+            result = await _accountSyncLogic.PullAsync();
+
+            if (result.Success)
             {
-                await SyncHelper.SyncAccountTypes(RemoteAccountDataAccess, LocalAccountDataAccess);
-                await SyncHelper.SyncAccounts(RemoteAccountDataAccess, LocalAccountDataAccess);
-                await SyncHelper.SyncPayees(RemotePayeeDataAccess, LocalPayeeDataAccess);
-                await SyncHelper.SyncEnvelopeGroups(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncEnvelopes(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncBudgetSchedules(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncBudgets(RemoteEnvelopeDataAccess, LocalEnvelopeDataAccess);
-                await SyncHelper.SyncTransactions(RemoteTransactionDataAccess, LocalTransactionDataAccess);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
+                result = await _payeeSyncLogic.PullAsync();
+
+                if (result.Success)
+                {
+                    result = await _envelopeSyncLogic.PullAsync();
+
+                    if (result.Success)
+                    {
+                        result = await _transactionSyncLogic.PullAsync();
+                    }
+                }
             }
 
             return result;

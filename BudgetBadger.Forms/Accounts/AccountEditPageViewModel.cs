@@ -32,7 +32,7 @@ namespace BudgetBadger.Forms.Accounts
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
-                                        ISync syncService)
+                                       ISync syncService)
         {
             NavigationService = navigationService;
             AccountLogic = accountLogic;

@@ -10,20 +10,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class TransactionSqliteDataAccess : ITransactionDataAccess
     {
-        readonly string ConnectionString;
+        readonly string _connectionString;
 
-        public TransactionSqliteDataAccess(IFileInfo databaseFile)
+        public TransactionSqliteDataAccess(string connectionString)
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = databaseFile.FullName;
-            ConnectionString = connectionStringBuilder.ConnectionString;
+            _connectionString = connectionString;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 db.Open();
                 var command = db.CreateCommand();
@@ -52,7 +50,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -107,7 +105,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transaction = new Transaction();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -161,7 +159,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -215,7 +213,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -269,7 +267,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -323,7 +321,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -377,7 +375,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -426,7 +424,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -466,7 +464,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteTransaction(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();

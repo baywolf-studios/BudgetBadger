@@ -10,20 +10,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class EnvelopeSqliteDataAccess : IEnvelopeDataAccess
     {
-        readonly string ConnectionString;
+        readonly string _connectionString;
 
-        public EnvelopeSqliteDataAccess(IFileInfo databaseFile)
+        public EnvelopeSqliteDataAccess(string connectionString)
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = databaseFile.FullName;
-            ConnectionString = connectionStringBuilder.ConnectionString;
+            _connectionString = connectionString;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 db.Open();
                 var command = db.CreateCommand();
@@ -82,7 +80,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetAsync(Budget budget)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -120,7 +118,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -152,7 +150,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeAsync(Envelope envelope)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -190,7 +188,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -222,7 +220,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteBudgetAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -237,7 +235,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteBudgetScheduleAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -252,7 +250,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteEnvelopeAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -267,7 +265,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteEnvelopeGroupAsync(Guid id)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -284,7 +282,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budget = new Budget();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -374,7 +372,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -461,7 +459,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -551,7 +549,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -641,7 +639,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgetSchedule = new BudgetSchedule();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -681,7 +679,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgetSchedules = new List<BudgetSchedule>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -718,7 +716,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelope = new Envelope();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -776,7 +774,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopeGroup = new EnvelopeGroup();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -816,7 +814,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopeGroups = new List<EnvelopeGroup>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -853,7 +851,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopes = new List<Envelope>();
 
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -906,7 +904,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -936,7 +934,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -962,7 +960,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeAsync(Envelope envelope)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
@@ -992,7 +990,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            using (var db = new SqliteConnection(ConnectionString))
+            using (var db = new SqliteConnection(_connectionString))
             {
                 await db.OpenAsync();
                 var command = db.CreateCommand();
