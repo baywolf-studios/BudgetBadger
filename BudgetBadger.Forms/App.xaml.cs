@@ -25,6 +25,7 @@ using BudgetBadger.Forms.Sync;
 using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
+using SimpleAuth.Providers;
 
 namespace BudgetBadger.Forms
 {
@@ -32,13 +33,31 @@ namespace BudgetBadger.Forms
     {
         public App(IPlatformInitializer initializer = null) : base(initializer) { }
 
-        protected override void OnInitialized()
+        protected async override void OnStart()
+        {
+            // refreshing the tokens and stuffs.
+            var settings = Container.Resolve<ISettings>();
+            if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
+            {
+                var dropboxApi = Container.Resolve<DropBoxApi>();
+                try
+                {
+                    var account = await dropboxApi.Authenticate();
+                }
+                catch (Exception ex)
+                {
+                    var test = ex.Message;
+                }
+            }
+        }
+
+        protected async override void OnInitialized()
         {
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
 
-            NavigationService.NavigateAsync("MainPage");
+            await NavigationService.NavigateAsync("MainPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -98,15 +117,26 @@ namespace BudgetBadger.Forms
             container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
                                                                                                    Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
 
+            container.Register(made: Made.Of(() => DropboxFileSyncProviderFactory.CreateFileSyncProvider(Arg.Of<ISettings>())));
 
-            container.Register<IFileSyncProvider>(made: Made.Of(() => FileSyncProviderFactory.CreateFileSyncProvider(Arg.Of<ISettings>())));
-            container.Register<ISync>(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
-                                                                                 Arg.Of<IFileSyncProvider>(),
-                                                                                 Arg.Of<IDirectoryInfo>(),
-                                                                                 Arg.Of<IAccountSyncLogic>(),
-                                                                                 Arg.Of<IPayeeSyncLogic>(),
-                                                                                 Arg.Of<IEnvelopeSyncLogic>(),
-                                                                                 Arg.Of<ITransactionSyncLogic>())));
+            container.Register(made: Made.Of(() => new DropBoxApi(
+                Arg.Index<string>(0),
+                Arg.Index<string>(1),
+                Arg.Index<string>(2),
+                Arg.Index<string>(3),
+                null),
+                                                         _ => SyncMode.DropboxSync,
+                                                         _ => "***REMOVED***",
+                                                         _ => "",
+                                                         _ => "budgetbadger://authorize"));
+
+            container.Register(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
+                                                                          Arg.Of<IDirectoryInfo>(),
+                                                                          Arg.Of<IAccountSyncLogic>(),
+                                                                          Arg.Of<IPayeeSyncLogic>(),
+                                                                          Arg.Of<IEnvelopeSyncLogic>(),
+                                                                          Arg.Of<ITransactionSyncLogic>(),
+                                                                          Arg.Of<DropboxFileSyncProvider>())));
 
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
@@ -122,7 +152,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<SyncPage, SyncPageViewModel>();
-            containerRegistry.RegisterForNavigation<FileSyncProvidersPage, FileSyncProvidersPageViewModel>();
+            containerRegistry.RegisterForNavigation<SyncModesPage, SyncModesPageViewModel>();
 
             timer.Stop();
         }

@@ -11,6 +11,7 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.336-pre" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
     <PackageReference Include="Dropbox.Api" Version="4.7.0" />
+    <PackageReference Include="Clancey.SimpleAuth" Version="1.0.49" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
@@ -76,6 +77,9 @@
     </Compile>
     <Compile Update="Sync\SyncPage.xaml.cs">
       <DependentUpon>SyncPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Sync\SyncModesPage.xaml.cs">
+      <DependentUpon>SyncModesPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

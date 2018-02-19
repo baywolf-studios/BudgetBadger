@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Authentication
@@ -7,6 +8,6 @@ namespace BudgetBadger.Core.Authentication
 
     public interface IOAuth2Authenticator
     {
-        void Authenticate(string url, string callbackUrlScheme, OAuth2AthenticationHandler authenticationCompletedHandler);
+        Task<Uri> AuthenticateAsync(string url, string callbackUrlScheme);
     }
 }
