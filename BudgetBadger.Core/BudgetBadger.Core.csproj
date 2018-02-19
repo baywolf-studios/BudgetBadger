@@ -11,7 +11,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Sync\" />
     <Folder Include="Files\" />
-    <Folder Include="Authentication\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>

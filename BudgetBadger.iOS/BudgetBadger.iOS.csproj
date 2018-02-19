@@ -161,7 +161,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="OAuth2Authenticator.cs" />
     <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
