@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Sync
 {
-    public partial class FileSyncProvidersPage : ContentPage
+    public partial class SyncModesPage : ContentPage
     {
-        public FileSyncProvidersPage()
+        public SyncModesPage()
         {
             InitializeComponent();
         }

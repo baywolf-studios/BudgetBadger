@@ -10,13 +10,13 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string EnvelopeInfoPage = "EnvelopeInfoPage";
         public static readonly string EnvelopeEditPage = "EnvelopeEditPage";
         public static readonly string EnvelopeGroupsPage = "EnvelopeGroupsPage";
-        public static readonly string FileSyncProvidersPage = "FileSyncProvidersPage";
         public static readonly string PayeesPage = "PayeesPage";
         public static readonly string PayeeInfoPage = "PayeeInfoPage";
         public static readonly string PayeeEditPage = "PayeeEditPage";
         public static readonly string ReportsPage = "ReportsPage";
         public static readonly string SettingsPage = "SettingsPage";
         public static readonly string SyncPage = "SyncPage";
+        public static readonly string SyncModesPage = "SyncModesPage";
         public static readonly string TransactionPage = "TransactionPage";
     }
 }

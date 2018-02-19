@@ -8,6 +8,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using BudgetBadger.Forms;
+using Prism;
+using Prism.Ioc;
+using BudgetBadger.Core.Authentication;
 
 namespace BudgetBadger.Droid
 {
@@ -21,9 +24,25 @@ namespace BudgetBadger.Droid
 
             base.OnCreate(bundle);
 
+            SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            LoadApplication(new App());
+            LoadApplication(new App(new DroidInitializer()));
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            SimpleAuth.Native.OnActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public class DroidInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry container)
+        {
+            container.Register<IOAuth2Authenticator, OAuth2Authenticator>();
         }
     }
 }
