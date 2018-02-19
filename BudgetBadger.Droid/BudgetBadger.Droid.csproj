@@ -173,7 +173,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OAuth2Authenticator.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="AuthActivity.cs" />
   </ItemGroup>
