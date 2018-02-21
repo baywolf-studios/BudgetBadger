@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BudgetBadger.Core.Authentication;
 using BudgetBadger.Forms;
 using DryIoc;
 using Foundation;
@@ -19,9 +18,9 @@ namespace BudgetBadger.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            SimpleAuth.NativeSafariAuthenticator.Activate();
-
             LoadApplication(new App(new iOSInitializer()));
+
+            SimpleAuth.NativeSafariAuthenticator.Activate();
 
             return base.FinishedLaunching(app, options);
         }
@@ -30,12 +29,15 @@ namespace BudgetBadger.iOS
         {
             public void RegisterTypes(IContainerRegistry container)
             {
-                container.Register<IOAuth2Authenticator, OAuth2Authenticator>();
             }
         }
 
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
+            if (SimpleAuth.NativeSafariAuthenticator.ResumeAuth(url.AbsoluteString))
+            {
+                return true;
+            }
             if (SimpleAuth.Native.OpenUrl(app, url, options))
             {
                 return true;

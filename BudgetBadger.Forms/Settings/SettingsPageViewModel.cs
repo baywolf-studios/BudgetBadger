@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Dropbox.Api;
+using Prism.AppModel;
 using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
 using PropertyChanged;
 
 namespace BudgetBadger.Forms.Settings
 {
-    [AddINotifyPropertyChangedInterface]
-    public class SettingsPageViewModel : INavigationAware
+    public class SettingsPageViewModel : BindableBase, INavigationAware, IPageLifecycleAware
     {
         readonly INavigationService NavigationService;
         readonly ISettings Settings;
 
         public ICommand SyncCommand { get; set; }
 
-        public string SyncMode { get; set; }
+        string _syncMode;
+        public string SyncMode
+        {
+            get { return _syncMode; }
+            set { SetProperty(ref _syncMode, value); }
+        }
 
         public SettingsPageViewModel(INavigationService navigationService,
                                     ISettings settings)
@@ -46,7 +51,16 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            SyncMode = Settings.GetValueOrDefault(SettingsKeys.SyncMode);
+            SyncMode = Settings.GetValueOrDefault(AppSettings.SyncMode);
+        }
+
+        public void OnAppearing()
+        {
+            SyncMode = Settings.GetValueOrDefault(AppSettings.SyncMode);
+        }
+
+        public void OnDisappearing()
+        {
         }
     }
 }

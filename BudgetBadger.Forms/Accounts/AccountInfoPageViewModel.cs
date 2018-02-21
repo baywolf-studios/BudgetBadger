@@ -7,13 +7,12 @@ using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
-using PropertyChanged;
 using System.Collections.Generic;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    [AddINotifyPropertyChangedInterface]
-    public class AccountInfoPageViewModel : INavigationAware
+    public class AccountInfoPageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -25,12 +24,40 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand NewTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
 
-        public bool IsBusy { get; set; }
+        bool _isBusy;
+        public bool IsBusy 
+        { 
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
 
-        public Account Account { get; set; }
-        public IEnumerable<Transaction> Transactions { get; set; }
-        public ILookup<string, Transaction> GroupedTransactions { get; set; }
-        public Transaction SelectedTransaction { get; set; }
+        Account _account;
+        public Account Account
+        {
+            get { return _account; }
+            set { SetProperty(ref _account, value); }
+        }
+
+        IEnumerable<Transaction> _transactions;
+        public IEnumerable<Transaction> Transactions
+        {
+            get { return _transactions; }
+            set { SetProperty(ref _transactions, value); }
+        }
+
+        ILookup<string, Transaction> _groupedTransactions;
+        public ILookup<string, Transaction> GroupedTransactions
+        {
+            get { return _groupedTransactions; }
+            set { SetProperty(ref _groupedTransactions, value); }
+        }
+
+        Transaction _selectedTransaction;
+        public Transaction SelectedTransaction
+        {
+            get { return _selectedTransaction; }
+            set { SetProperty(ref _selectedTransaction, value); }
+        }
 
         public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount); }
         public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount); }

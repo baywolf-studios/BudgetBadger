@@ -9,5 +9,6 @@ namespace BudgetBadger.Core.Sync
     {
         Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory);
         Task<Result> PushFilesFrom(IDirectoryInfo sourceDirectory);
+        Task<Result> IsValid();
     }
 }

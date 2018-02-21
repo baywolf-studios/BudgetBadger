@@ -8,11 +8,11 @@ namespace BudgetBadger.Core.Sync
 {
     public class LocalFileSyncProvider : IFileSyncProvider
     {
-        readonly DirectoryInfo LocalDirectoryInfo;
+        readonly DirectoryInfo _localDirectoryInfo;
 
         public LocalFileSyncProvider(string localDirectoryPath)
         {
-            LocalDirectoryInfo = new DirectoryInfo(localDirectoryPath);
+            _localDirectoryInfo = new DirectoryInfo(localDirectoryPath);
         }
 
         public async Task<Result> PushFilesFrom(IDirectoryInfo sourceDirectory)
@@ -23,7 +23,7 @@ namespace BudgetBadger.Core.Sync
             {
                 foreach(var file in sourceDirectory.GetFiles())
                 {
-                    string outputPath = Path.Combine(LocalDirectoryInfo.FullName, file.Name);
+                    string outputPath = Path.Combine(_localDirectoryInfo.FullName, file.Name);
                     
                     using (var sourceStream = file.Open())
                     using (var destinationStream = File.Create(outputPath))
@@ -49,7 +49,7 @@ namespace BudgetBadger.Core.Sync
 
             try
             {
-                foreach (var file in LocalDirectoryInfo.GetFiles())
+                foreach (var file in _localDirectoryInfo.GetFiles())
                 {
                     using (var sourceFile = File.Open(file.FullName, FileMode.Open))
                     using (var destinationFile = destinationDirectory.CreateFile(file.Name))
@@ -67,6 +67,22 @@ namespace BudgetBadger.Core.Sync
             }
 
             return result;
+        }
+
+        public Task<Result> IsValid()
+        {
+            var result = new Result();
+
+            if (_localDirectoryInfo == null)
+            {
+                result.Success = false;
+            }
+            else
+            {
+                result.Success = true;
+            }
+
+            return Task.FromResult(result);
         }
     }
 }

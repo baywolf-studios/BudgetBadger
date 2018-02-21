@@ -9,30 +9,33 @@
         <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form">
-            <TableRoot>
-                <TableSection Title="Details">
-                    <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
-                    <SwitchCell IsEnabled="{Binding Account.IsNew}" Text="On Budget" On="{Binding Account.OnBudget}" />
-                    <EntryCell IsEnabled="{Binding Account.IsNew}" Label="Balance" Text="{Binding Account.Balance}"/>
-                </TableSection>
-                <TableSection Title="Account Type">
-                    <ViewCell>
-                        <Picker ItemDisplayBinding="{Binding Description, Mode=TwoWay}"  ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}"/>
-                    </ViewCell>
-                </TableSection>
-                <TableSection Title="Notes">
-                    <ViewCell>
-                        <Editor Keyboard="Text" Text="{Binding Account.Notes}">
-                        </Editor>
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <ViewCell>
-                        <Button Text="Close Account" TextColor="Red"/>
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+        <StackLayout Orientation="Vertical">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+            <TableView Intent="Form">
+                <TableRoot>
+                    <TableSection Title="Details">
+                        <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
+                        <SwitchCell IsEnabled="{Binding Account.IsNew}" Text="On Budget" On="{Binding Account.OnBudget}" />
+                        <EntryCell IsEnabled="{Binding Account.IsNew}" Label="Balance" Text="{Binding Account.Balance}" />
+                    </TableSection>
+                    <TableSection Title="Account Type">
+                        <ViewCell>
+                            <Picker ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection Title="Notes">
+                        <ViewCell>
+                            <Editor Keyboard="Text" Text="{Binding Account.Notes}">
+                            </Editor>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Text="Close Account" TextColor="Red" />
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

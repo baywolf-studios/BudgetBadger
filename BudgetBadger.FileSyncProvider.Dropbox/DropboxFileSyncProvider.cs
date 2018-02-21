@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Files;
+using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models;
 using Dropbox.Api;
@@ -11,11 +12,12 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 {
     public class DropboxFileSyncProvider : IFileSyncProvider
     {
-        readonly string AccessToken;
-        
-        public DropboxFileSyncProvider(string accessToken)
+        readonly ISettings _settings;
+        string _accessToken { get => _settings.GetValueOrDefault(DropboxSettings.AccessToken); }
+
+        public DropboxFileSyncProvider(ISettings settings)
         {
-            AccessToken = accessToken;
+            _settings = settings;
         }
 
         public async Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory)
@@ -24,7 +26,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
-                using (var dbx = new DropboxClient(AccessToken))
+                using (var dbx = new DropboxClient(_accessToken))
                 {
                     var folderArgs = new ListFolderArg("", recursive:true);
 
@@ -46,6 +48,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
             }
             catch (Exception ex)
             {
+                result.Success = false;
                 result.Message = ex.Message;
             }
 
@@ -63,7 +66,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
-                    using (var dbx = new DropboxClient(AccessToken))
+                    using (var dbx = new DropboxClient(_accessToken))
                     {
                         var commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
                         var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);
@@ -74,10 +77,28 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
             }
             catch (Exception ex)
             {
+                result.Success = false;
                 result.Message = ex.Message;
             }
 
             return result;
+        }
+
+        public Task<Result> IsValid()
+        {
+            var result = new Result();
+
+            if (string.IsNullOrEmpty(_accessToken))
+            {
+                result.Success = false;
+                result.Message = "Credentials not setup. Please resetup Dropbox Sync.";
+            }
+            else
+            {
+                result.Success = true;
+            }
+
+            return Task.FromResult(result);
         }
     }
 }
