@@ -10,7 +10,6 @@ using Android.OS;
 using BudgetBadger.Forms;
 using Prism;
 using Prism.Ioc;
-using BudgetBadger.Core.Authentication;
 
 namespace BudgetBadger.Droid
 {
@@ -42,7 +41,6 @@ namespace BudgetBadger.Droid
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-            container.Register<IOAuth2Authenticator, OAuth2Authenticator>();
         }
     }
 }

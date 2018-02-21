@@ -26,6 +26,10 @@ using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
 using SimpleAuth.Providers;
+using System.Linq;
+using Prism.Services;
+using System.Threading.Tasks;
+using SimpleAuth;
 
 namespace BudgetBadger.Forms
 {
@@ -35,20 +39,27 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
+            await VerifySyncValidation();
+
             // refreshing the tokens and stuffs.
-            var settings = Container.Resolve<ISettings>();
-            if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
-            {
-                var dropboxApi = Container.Resolve<DropBoxApi>();
-                try
-                {
-                    var account = await dropboxApi.Authenticate();
-                }
-                catch (Exception ex)
-                {
-                    var test = ex.Message;
-                }
-            }
+            //var settings = Container.Resolve<ISettings>();
+            //if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
+            //{
+            //    var dropboxApi = Container.Resolve<DropBoxApi>();
+            //    try
+            //    {
+            //        var account = await dropboxApi.Authenticate();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var test = ex.Message;
+            //    }
+            //}
+        }
+
+        protected async override void OnResume()
+        {
+            await VerifySyncValidation();
         }
 
         protected async override void OnInitialized()
@@ -68,7 +79,7 @@ namespace BudgetBadger.Forms
 
 
             container.Register<IApplicationStore, ApplicationStore>();
-            container.Register<ISettings, AppSettings>();
+            container.Register<ISettings, AppStoreSettings>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBader");
 
@@ -117,7 +128,7 @@ namespace BudgetBadger.Forms
             container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
                                                                                                    Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
 
-            container.Register(made: Made.Of(() => DropboxFileSyncProviderFactory.CreateFileSyncProvider(Arg.Of<ISettings>())));
+            container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
 
             container.Register(made: Made.Of(() => new DropBoxApi(
                 Arg.Index<string>(0),
@@ -136,7 +147,7 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<IPayeeSyncLogic>(),
                                                                           Arg.Of<IEnvelopeSyncLogic>(),
                                                                           Arg.Of<ITransactionSyncLogic>(),
-                                                                          Arg.Of<DropboxFileSyncProvider>())));
+                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
@@ -155,6 +166,52 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<SyncModesPage, SyncModesPageViewModel>();
 
             timer.Stop();
+        }
+
+        async Task RefreshSyncCredentials()
+        {
+            //works on device, not on simulator right now
+            return;
+
+            //checking current filesyncprovider is valid
+            var settings = Container.Resolve<ISettings>();
+            var currentSyncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+
+            if (currentSyncMode == SyncMode.DropboxSync)
+            {
+                var dropboxApi = Container.Resolve<DropBoxApi>();
+                var account = await dropboxApi.Authenticate() as OAuthAccount;
+                if (account.IsValid())
+                {
+                    await settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
+                }
+                else
+                {
+                    var dialogs = Container.Resolve<IPageDialogService>();
+                    await dialogs.DisplayAlertAsync("Sync Unsucessful", "Could not validate credentials. Please try again.", "OK");
+                }
+            }
+        }
+
+        async Task VerifySyncValidation()
+        {
+            //checking current filesyncprovider is valid
+            var settings = Container.Resolve<ISettings>();
+            var currentSyncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+
+            if (currentSyncMode != SyncMode.NoSync)
+            {
+                var providers = Container.Resolve<KeyValuePair<string, IFileSyncProvider>[]>();
+                var currentProvider = providers.FirstOrDefault(p => p.Key == currentSyncMode).Value;
+
+                var validity = await currentProvider.IsValid();
+
+                if (!validity.Success)
+                {
+                    var dialogService = Container.Resolve<IPageDialogService>();
+                    await dialogService.DisplayAlertAsync("Sync Setup Invalid", validity.Message, "OK");
+                }
+            }
         }
     }
 }

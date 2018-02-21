@@ -7,11 +7,11 @@ using Prism.AppModel;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class AppSettings : ISettings
+    public class AppStoreSettings : ISettings
     {
         readonly IApplicationStore AppStore;
 
-        public AppSettings(IApplicationStore appStore)
+        public AppStoreSettings(IApplicationStore appStore)
         {
             AppStore = appStore;
         }

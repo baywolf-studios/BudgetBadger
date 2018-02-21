@@ -8,13 +8,12 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
 using System.Collections.Generic;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    [AddINotifyPropertyChangedInterface]
-    public class AccountsPageViewModel : INavigationAware
+    public class AccountsPageViewModel : BindableBase, INavigationAware
     {
         readonly IAccountLogic AccountLogic;
         readonly INavigationService NavigationService;
@@ -25,19 +24,48 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
-        public bool IsBusy { get; set; }
-
-        public IEnumerable<Account> Accounts { get; set; }
-        public Account SelectedAccount { get; set; }
-        public ILookup<string, Account> GroupedAccounts { get; set; }
-
-        public bool SelectorMode { get; set; }
-        public bool NormalMode { get { return !SelectorMode; } }
-
-        public string SearchText { get; set; }
-        public void OnSearchTextChanged()
+        bool _isBusy;
+        public bool IsBusy
         {
-            ExecuteSearchCommand();
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        IEnumerable<Account> _accounts;
+        public IEnumerable<Account> Accounts
+        {
+            get { return _accounts; }
+            set { SetProperty(ref _accounts, value); }
+        }
+
+        Account _selectedAccount;
+        public Account SelectedAccount
+        {
+            get { return _selectedAccount; }
+            set { SetProperty(ref _selectedAccount, value); }
+        }
+
+        ILookup<string, Account> _groupedAccounts;
+        public ILookup<string, Account> GroupedAccounts
+        {
+            get { return _groupedAccounts; }
+            set { SetProperty(ref _groupedAccounts, value); }
+        }
+
+        bool _selectorMode;
+        public bool SelectorMode
+        {
+            get { return _selectorMode; }
+            set { SetProperty(ref _selectorMode, value); }
+        }
+
+        public bool NormalMode { get => !SelectorMode; }
+
+        string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 
         public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)

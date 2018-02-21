@@ -19,10 +19,12 @@ namespace BudgetBadger.Forms
                                        IPayeeSyncLogic payeeSyncLogic,
                                        IEnvelopeSyncLogic envelopeSyncLogic,
                                        ITransactionSyncLogic transactionSyncLogic,
-                                       DropboxFileSyncProvider dropboxFileSyncProvider)
+                                       KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders)
         {
-            if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
+            if (settings.GetValueOrDefault(AppSettings.SyncMode) == SyncMode.DropboxSync)
             {
+                var dropboxFileSyncProvider = fileSyncProviders.FirstOrDefault(f => f.Key == SyncMode.DropboxSync).Value;
+
                 return new FileSync(syncDirectory,
                                     dropboxFileSyncProvider,
                                     accountSyncLogic,

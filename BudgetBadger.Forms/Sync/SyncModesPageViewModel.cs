@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.FileSyncProvider.Dropbox;
@@ -14,6 +13,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using SimpleAuth;
 using SimpleAuth.Providers;
 
 namespace BudgetBadger.Forms.Sync
@@ -44,7 +44,7 @@ namespace BudgetBadger.Forms.Sync
 
         public async Task ExecuteDisableSelectedCommand()
         {
-            await _settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.NoSync);
+            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
             await _navigationService.GoBackAsync();
         }
 
@@ -52,24 +52,25 @@ namespace BudgetBadger.Forms.Sync
         {
             try
             {
-                //_dropboxApi.ForceRefresh = true;
+                _dropboxApi.ForceRefresh = true;
 
-                var account = await _dropboxApi.Authenticate();
+                var account = await _dropboxApi.Authenticate() as OAuthAccount;
 
                 if (account.IsValid())
                 {
-                    await _settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.DropboxSync);
+                    await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
+                    await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
                 }
                 else
                 {
-                    await _settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.NoSync);
-                    await _dialogService.DisplayAlertAsync("Authentication Failed", "Did not authenticate with Dropbox. Sync disabled.", "Ok");
+                    await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                    await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", "Did not authenticate with Dropbox. Sync disabled.", "Ok");
                 }
             }
             catch (Exception ex)
             {
-                await _settings.AddOrUpdateValueAsync(SettingsKeys.SyncMode, SyncMode.NoSync);
-                await _dialogService.DisplayAlertAsync("Authentication Failed", ex.Message, "Ok");
+                await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", ex.Message, "Ok");
             }
             finally
             {
