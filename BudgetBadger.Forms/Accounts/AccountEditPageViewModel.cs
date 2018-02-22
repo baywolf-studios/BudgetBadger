@@ -29,6 +29,13 @@ namespace BudgetBadger.Forms.Accounts
             set { SetProperty(ref _isBusy, value); } 
         }
 
+        string _busyText;
+        public string BusyText
+        {
+            get { return _busyText; }
+            set { SetProperty(ref _busyText, value); }
+        }
+
         Account _account;
         public Account Account
         {
@@ -94,10 +101,12 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
+                BusyText = "Saving";
                 var result = await AccountLogic.SaveAccountAsync(Account);
 
                 if (result.Success)
                 {
+                    BusyText = "Syncing";
                     var syncResult = await SyncService.FullSync();
                     if (!syncResult.Success)
                     {
