@@ -7,18 +7,22 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    [AddINotifyPropertyChangedInterface]
-    public class EnvelopeEditPageViewModel : INavigationAware
+    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
 
-        public Budget Budget { get; set; }
+        Budget _budget;
+        public Budget Budget
+        { 
+            get { return _budget; }
+            set { SetProperty(ref _budget, value); }
+        }
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }

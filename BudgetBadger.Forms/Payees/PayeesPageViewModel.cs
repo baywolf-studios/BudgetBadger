@@ -7,14 +7,13 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
 using System.Collections.Generic;
 using System.Linq;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Payees
 {
-    [AddINotifyPropertyChangedInterface]
-    public class PayeesPageViewModel : INavigationAware
+    public class PayeesPageViewModel : BindableBase, INavigationAware
     {
         readonly IPayeeLogic PayeeLogic;
         readonly INavigationService NavigationService;
@@ -26,20 +25,50 @@ namespace BudgetBadger.Forms.Payees
         public ICommand SearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        public bool IsBusy { get; set; }
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
 
-        public IEnumerable<Payee> Payees { get; set; }
-        public Payee SelectedPayee { get; set; }
-        public ILookup<string, Payee> GroupedPayees { get; set; }
+        IEnumerable<Payee> _payees;
+        public IEnumerable<Payee> Payees
+        {
+            get { return _payees; }
+            set { SetProperty(ref _payees, value); }
+        }
 
-        public bool SelectorMode { get; set; }
+        Payee _selectedPayee;
+        public Payee SelectedPayee
+        {
+            get { return _selectedPayee; }
+            set { SetProperty(ref _selectedPayee, value); }
+        }
+
+        ILookup<string, Payee> _groupedPayees;
+        public ILookup<string, Payee> GroupedPayees
+        {
+            get { return _groupedPayees; }
+            set { SetProperty(ref _groupedPayees, value); }
+        }
+
+        bool _selectorMode;
+        public bool SelectorMode
+        {
+            get { return _selectorMode; }
+            set { SetProperty(ref _selectorMode, value); }
+        }
+
         public bool MainMode { get { return !SelectorMode; }}
 
         public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; } }
-        public string SearchText { get; set; }
-        public void OnSearchTextChanged()
+
+        string _searchText;
+        public string SearchText
         {
-            ExecuteSearchCommand();
+            get { return _searchText; }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 
         public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)

@@ -7,19 +7,23 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
 using BudgetBadger.Core.Extensions;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    [AddINotifyPropertyChangedInterface]
-    public class TransactionPageViewModel : INavigationAware
+    public class TransactionPageViewModel : BindableBase, INavigationAware
     {
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
         readonly ITransactionLogic TransLogic;
 
-        public Transaction Transaction { get; set; }
+        Transaction _transaction;
+        public Transaction Transaction
+        {
+            get { return _transaction; }
+            set { SetProperty(ref _transaction, value); }
+        }
 
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }

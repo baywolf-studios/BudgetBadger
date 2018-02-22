@@ -7,18 +7,22 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Payees
 {
-    [AddINotifyPropertyChangedInterface]
-    public class PayeeEditPageViewModel : INavigationAware
+    public class PayeeEditPageViewModel : BindableBase, INavigationAware
     {
         readonly IPayeeLogic PayeeLogic;
         readonly INavigationService NavigationService;
         readonly IPageDialogService DialogService;
 
-        public Payee Payee { get; set; }
+        Payee _payee;
+        public Payee Payee
+        {
+            get { return _payee; }
+            set { SetProperty(ref _payee, value); }
+        }
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
