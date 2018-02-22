@@ -8,14 +8,30 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using Prism.Mvvm;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeEditPageViewModel : BindableBase, INavigationAware
     {
-        readonly IEnvelopeLogic EnvelopeLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
+        readonly IEnvelopeLogic _envelopeLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
+
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get { return _busyText; }
+            set { SetProperty(ref _busyText, value); }
+        }
 
         Budget _budget;
         public Budget Budget
@@ -28,11 +44,15 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand DeleteCommand { get; set; }
         public ICommand GroupSelectedCommand { get; set; }
 
-        public EnvelopeEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
+        public EnvelopeEditPageViewModel(INavigationService navigationService,
+                                         IPageDialogService dialogService,
+                                         IEnvelopeLogic envelopeLogic,
+                                        ISync syncService)
         {
-            NavigationService = navigationService;
-            DialogService = dialogService;
-            EnvelopeLogic = envelopeLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
+            _envelopeLogic = envelopeLogic;
+            _syncService = syncService;
 
             Budget = new Budget();
 
@@ -43,21 +63,37 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await EnvelopeLogic.SaveBudgetAsync(Budget);
+            IsBusy = true;
 
-            if (result.Success)
+            try
             {
-                await NavigationService.GoBackAsync();
+                BusyText = "Saving";
+                var result = await _envelopeLogic.SaveBudgetAsync(Budget);
+
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncResult = await _syncService.FullSync();
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                }
             }
-            else
+            finally
             {
-                await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                IsBusy = false;
             }
         }
 
         public async Task ExecuteGroupSelectedCommand()
         {
-            await NavigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
+            await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
