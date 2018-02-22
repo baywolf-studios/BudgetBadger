@@ -29,6 +29,7 @@ namespace BudgetBadger.macOS
         {
             Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+            SimpleAuth.NativeSafariAuthenticator.Activate();
             base.DidFinishLaunching(notification);
         }
     }

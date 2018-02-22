@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
             }
             finally
