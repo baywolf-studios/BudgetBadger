@@ -30,6 +30,7 @@ using System.Linq;
 using Prism.Services;
 using System.Threading.Tasks;
 using SimpleAuth;
+using BudgetBadger.Models;
 
 namespace BudgetBadger.Forms
 {
@@ -39,8 +40,28 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
-            await VerifySyncValidation();
+            var refreshResult = await RefreshSyncCredentials();
 
+            if (refreshResult.Success)
+            {
+                var verifyResult = await VerifySyncValidation();
+
+                if (verifyResult.Success)
+                {
+                    var syncService = Container.Resolve<ISync>();
+                    await syncService.FullSync();
+                }
+                else
+                {
+                    var dialogService = Container.Resolve<IPageDialogService>();
+                    await dialogService.DisplayAlertAsync("Sync Setup Invalid", verifyResult.Message, "OK");
+                }
+            }
+            else
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
+            }
             // refreshing the tokens and stuffs.
             //var settings = Container.Resolve<ISettings>();
             //if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
@@ -168,10 +189,10 @@ namespace BudgetBadger.Forms
             timer.Stop();
         }
 
-        async Task RefreshSyncCredentials()
+        async Task<Result> RefreshSyncCredentials()
         {
             //works on device, not on simulator right now
-            return;
+            return new Result { Success = true };
 
             //checking current filesyncprovider is valid
             var settings = Container.Resolve<ISettings>();
@@ -193,7 +214,7 @@ namespace BudgetBadger.Forms
             }
         }
 
-        async Task VerifySyncValidation()
+        async Task<Result> VerifySyncValidation()
         {
             //checking current filesyncprovider is valid
             var settings = Container.Resolve<ISettings>();
@@ -204,14 +225,18 @@ namespace BudgetBadger.Forms
                 var providers = Container.Resolve<KeyValuePair<string, IFileSyncProvider>[]>();
                 var currentProvider = providers.FirstOrDefault(p => p.Key == currentSyncMode).Value;
 
-                var validity = await currentProvider.IsValid();
-
-                if (!validity.Success)
+                if (currentProvider != null)
                 {
-                    var dialogService = Container.Resolve<IPageDialogService>();
-                    await dialogService.DisplayAlertAsync("Sync Setup Invalid", validity.Message, "OK");
+                    return await currentProvider.IsValid();
+                }
+                else
+                {
+                    return new Result { Success = false, Message = "Unkown error" }; 
                 }
             }
+
+            return new Result { Success = true };
+
         }
     }
 }
