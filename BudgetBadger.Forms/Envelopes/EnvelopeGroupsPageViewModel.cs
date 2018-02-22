@@ -10,14 +10,16 @@ using Prism.Navigation;
 using Prism.Services;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
     {
-        readonly IEnvelopeLogic EnvelopeLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
+        readonly IEnvelopeLogic _envelopeLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -29,6 +31,13 @@ namespace BudgetBadger.Forms.Envelopes
         {
             get { return _isBusy; }
             set { SetProperty(ref _isBusy, value); }
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get { return _busyText; }
+            set { SetProperty(ref _busyText, value); }
         }
 
         EnvelopeGroup _selectedEnvelopeGroup;
@@ -61,11 +70,15 @@ namespace BudgetBadger.Forms.Envelopes
 
         public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }
 
-        public EnvelopeGroupsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
+        public EnvelopeGroupsPageViewModel(INavigationService navigationService,
+                                           IPageDialogService dialogService,
+                                           IEnvelopeLogic envelopeLogic,
+                                           ISync syncService)
         {
-            NavigationService = navigationService;
-            DialogService = dialogService;
-            EnvelopeLogic = envelopeLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
+            _envelopeLogic = envelopeLogic;
+            _syncService = syncService;
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new List<EnvelopeGroup>();
@@ -101,7 +114,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var envelopeGroupsResult = await EnvelopeLogic.GetEnvelopeGroupsAsync();
+                var envelopeGroupsResult = await _envelopeLogic.GetEnvelopeGroupsAsync();
 
                 if (envelopeGroupsResult.Success)
                 {
@@ -131,7 +144,7 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.EnvelopeGroup, SelectedEnvelopeGroup }
             };
 
-            await NavigationService.GoBackAsync(parameters);
+            await _navigationService.GoBackAsync(parameters);
 
             SelectedEnvelopeGroup = null;
         }
@@ -143,26 +156,34 @@ namespace BudgetBadger.Forms.Envelopes
                 Description = SearchText
             };
 
-            var result = await EnvelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+            BusyText = "Saving";
+            var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
 
             if (result.Success)
             {
+                BusyText = "Syncing";
+                var syncResult = await _syncService.FullSync();
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+
+                }
                 var parameters = new NavigationParameters
                 {
                     { PageParameter.EnvelopeGroup, result.Data }
                 };
 
-                await NavigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
             }
         }
 
         public void ExecuteSearchCommand()
         {
-            FilteredEnvelopeGroups = EnvelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
+            FilteredEnvelopeGroups = _envelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
         }
     }
 }

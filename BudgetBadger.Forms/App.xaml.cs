@@ -199,7 +199,7 @@ namespace BudgetBadger.Forms
             var settings = Container.Resolve<ISettings>();
             var currentSyncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
 
-            if (currentSyncMode != SyncMode.NoSync)
+            if (!string.IsNullOrEmpty(currentSyncMode) && currentSyncMode != SyncMode.NoSync)
             {
                 var providers = Container.Resolve<KeyValuePair<string, IFileSyncProvider>[]>();
                 var currentProvider = providers.FirstOrDefault(p => p.Key == currentSyncMode).Value;

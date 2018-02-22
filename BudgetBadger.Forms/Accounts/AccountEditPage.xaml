@@ -9,7 +9,7 @@
         <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <Grid>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
             <TableView Intent="Form">
                 <TableRoot>
@@ -36,6 +36,6 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

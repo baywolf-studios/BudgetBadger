@@ -9,14 +9,30 @@ using Prism.Navigation;
 using Prism.Services;
 using BudgetBadger.Core.Extensions;
 using Prism.Mvvm;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Transactions
 {
     public class TransactionPageViewModel : BindableBase, INavigationAware
     {
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
-        readonly ITransactionLogic TransLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly ITransactionLogic _transLogic;
+        readonly ISync _syncService;
+
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get { return _busyText; }
+            set { SetProperty(ref _busyText, value); }
+        }
 
         Transaction _transaction;
         public Transaction Transaction
@@ -30,11 +46,15 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand EnvelopeSelectedCommand { get; set; }
         public ICommand AccountSelectedCommand { get; set; }
 
-        public TransactionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, ITransactionLogic transLogic)
+        public TransactionPageViewModel(INavigationService navigationService,
+                                        IPageDialogService dialogService,
+                                        ITransactionLogic transLogic,
+                                        ISync syncService)
         {
-            NavigationService = navigationService;
-            DialogService = dialogService;
-            TransLogic = transLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
+            _transLogic = transLogic;
+            _syncService = syncService;
 
             Transaction = new Transaction();
 
@@ -76,15 +96,15 @@ namespace BudgetBadger.Forms.Transactions
                 Transaction.Envelope = envelope.DeepCopy();
             }
 
-            var result = await TransLogic.GetCorrectedTransaction(Transaction);
+            var result = await _transLogic.GetCorrectedTransaction(Transaction);
             if (result.Success)
             {
                 Transaction = result.Data;
             }
             else
             {
-                await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
-                await NavigationService.GoBackAsync();
+                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                await _navigationService.GoBackAsync();
             }
         }
 
@@ -98,15 +118,31 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await TransLogic.SaveTransactionAsync(Transaction);
+            IsBusy = true;
 
-            if (result.Success)
+            try
             {
-                await NavigationService.GoBackAsync();
+                BusyText = "Saving";
+                var result = await _transLogic.SaveTransactionAsync(Transaction);
+
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncResult = await _syncService.FullSync();
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                }
             }
-            else
+            finally
             {
-                await DialogService.DisplayAlertAsync("Error", result.Message, "Ok");
+                IsBusy = false;
             }
         }
 
@@ -116,7 +152,7 @@ namespace BudgetBadger.Forms.Transactions
             {
                 { PageParameter.SelectorMode, true }
             };
-            await NavigationService.NavigateAsync(PageName.PayeesPage, parameters);
+            await _navigationService.NavigateAsync(PageName.PayeesPage, parameters);
         }
 
         public async Task ExecuteEnvelopeSelectedCommand()
@@ -125,7 +161,7 @@ namespace BudgetBadger.Forms.Transactions
             {
                 { PageParameter.SelectorMode, true }
             };
-            await NavigationService.NavigateAsync(PageName.EnvelopesPage, parameters);
+            await _navigationService.NavigateAsync(PageName.EnvelopesPage, parameters);
         }
 
         public bool CanExecuteEnvelopeSelectedCommand()
@@ -139,7 +175,7 @@ namespace BudgetBadger.Forms.Transactions
             {
                 { PageParameter.SelectorMode, true }
             };
-            await NavigationService.NavigateAsync(PageName.AccountsPage, parameters);
+            await _navigationService.NavigateAsync(PageName.AccountsPage, parameters);
         }
     }
 }

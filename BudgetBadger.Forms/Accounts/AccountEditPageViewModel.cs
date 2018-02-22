@@ -64,21 +64,23 @@ namespace BudgetBadger.Forms.Accounts
             DialogService = dialogService;
             SyncService = syncService;
 
-            AccountTypes = new List<AccountType>();
+            var accountTypes = AccountLogic.GetAccountTypesAsync().Result;
+            if (accountTypes.Success)
+            {
+                AccountTypes = accountTypes.Data;
+            }
+            else
+            {
+                AccountTypes = new List<AccountType>();
+            }
+
             Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(NavigationParameters parameters)
         {
-            // fix this later, null error
-            var accountTypes =  await AccountLogic.GetAccountTypesAsync();
-            if (accountTypes.Success)
-            {
-                AccountTypes = accountTypes.Data;
-            }
-
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {

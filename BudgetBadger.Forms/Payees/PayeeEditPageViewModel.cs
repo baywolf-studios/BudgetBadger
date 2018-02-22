@@ -8,14 +8,30 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using Prism.Mvvm;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class PayeeEditPageViewModel : BindableBase, INavigationAware
     {
-        readonly IPayeeLogic PayeeLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
+        readonly IPayeeLogic _payeeLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
+
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get { return _busyText; }
+            set { SetProperty(ref _busyText, value); }
+        }
 
         Payee _payee;
         public Payee Payee
@@ -27,11 +43,15 @@ namespace BudgetBadger.Forms.Payees
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public PayeeEditPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
+        public PayeeEditPageViewModel(INavigationService navigationService,
+                                      IPageDialogService dialogService,
+                                      IPayeeLogic payeeLogic,
+                                      ISync syncService)
         {
-            NavigationService = navigationService;
-            DialogService = dialogService;
-            PayeeLogic = payeeLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
+            _payeeLogic = payeeLogic;
+            _syncService = syncService;
 
             Payee = new Payee();
 
@@ -58,29 +78,45 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await PayeeLogic.SavePayeeAsync(Payee);
+            IsBusy = true;
 
-            if (result.Success)
+            try
             {
-                await NavigationService.GoBackAsync();
+                BusyText = "Saving";
+                var result = await _payeeLogic.SavePayeeAsync(Payee);
+
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncResult = await _syncService.FullSync();
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                }
             }
-            else
+            finally
             {
-                await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                IsBusy = false;
             }
         }
 
         public async Task ExecuteDeleteCommand()
         {
-            var result = await PayeeLogic.DeletePayeeAsync(Payee);
+            var result = await _payeeLogic.DeletePayeeAsync(Payee);
 
             if (result.Success)
             {
-                await NavigationService.GoBackToRootAsync();
+                await _navigationService.GoBackToRootAsync();
             }
             else
             {
-                await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
             }
         }
     }
