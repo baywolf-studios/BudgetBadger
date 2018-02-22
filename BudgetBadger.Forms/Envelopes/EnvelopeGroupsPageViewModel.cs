@@ -8,13 +8,12 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using PropertyChanged;
 using System.Collections.Generic;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    [AddINotifyPropertyChangedInterface]
-    public class EnvelopeGroupsPageViewModel : INavigationAware
+    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
@@ -25,18 +24,42 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        public bool IsBusy { get; set; }
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
 
-        public EnvelopeGroup SelectedEnvelopeGroup { get; set; }
-        public IEnumerable<EnvelopeGroup> EnvelopeGroups { get; set; }
-        public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups { get; set; }
+        EnvelopeGroup _selectedEnvelopeGroup;
+        public EnvelopeGroup SelectedEnvelopeGroup
+        {
+            get { return _selectedEnvelopeGroup; }
+            set { SetProperty(ref _selectedEnvelopeGroup, value); }
+        }
+
+        IEnumerable<EnvelopeGroup> _envelopeGroups;
+        public IEnumerable<EnvelopeGroup> EnvelopeGroups
+        {
+            get { return _envelopeGroups; }
+            set { SetProperty(ref _envelopeGroups, value); }
+        }
+
+        IEnumerable<EnvelopeGroup> _filteredEnvelopeGroups;
+        public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups
+        {
+            get { return _filteredEnvelopeGroups; }
+            set { SetProperty(ref _filteredEnvelopeGroups, value); }
+        }
+
+        string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
+        }
 
         public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }
-        public string SearchText { get; set; }
-        public void OnSearchTextChanged()
-        {
-            ExecuteSearchCommand();
-        }
 
         public EnvelopeGroupsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IEnvelopeLogic envelopeLogic)
         {

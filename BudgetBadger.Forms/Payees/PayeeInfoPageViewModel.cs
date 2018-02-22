@@ -8,13 +8,12 @@ using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
-using PropertyChanged;
 using System.Collections.Generic;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Payees
 {
-    [AddINotifyPropertyChangedInterface]
-    public class PayeeInfoPageViewModel : INavigationAware
+    public class PayeeInfoPageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -25,12 +24,40 @@ namespace BudgetBadger.Forms.Payees
         public ICommand RefreshCommand { get; set; }
         public ICommand NewTransactionCommand { get; set; }
 
-        public bool IsBusy { get; set; }
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
 
-        public Payee Payee { get; set; }
-        public IEnumerable<Transaction> Transactions { get; set; }
-        public ILookup<string, Transaction> GroupedTransactions { get; set; }
-        public Transaction SelectedTransaction { get; set; }
+        Payee _payee;
+        public Payee Payee
+        {
+            get { return _payee; }
+            set { SetProperty(ref _payee, value); }
+        }
+
+        IEnumerable<Transaction> _transactions;
+        public IEnumerable<Transaction> Transactions
+        {
+            get { return _transactions; }
+            set { SetProperty(ref _transactions, value); }
+        }
+
+        ILookup<string, Transaction> _groupedTransactions;
+        public ILookup<string, Transaction> GroupedTransactions
+        {
+            get { return _groupedTransactions; }
+            set { SetProperty(ref _groupedTransactions, value); }
+        }
+
+        Transaction _selectedTransaction;
+        public Transaction SelectedTransaction
+        {
+            get { return _selectedTransaction; }
+            set { SetProperty(ref _selectedTransaction, value); }
+        }
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
 

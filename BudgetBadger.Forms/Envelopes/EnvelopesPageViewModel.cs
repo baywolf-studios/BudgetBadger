@@ -7,13 +7,12 @@ using Prism.Commands;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using BudgetBadger.Core.Logic;
-using PropertyChanged;
 using System.Collections.Generic;
+using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    [AddINotifyPropertyChangedInterface]
-    public class EnvelopesPageViewModel : INavigationAware
+    public class EnvelopesPageViewModel : BindableBase, INavigationAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
@@ -25,21 +24,57 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
-        public bool IsBusy { get; set; }
-
-        private Guid? CurrentScheduleId { get; set; }
-        public BudgetSchedule Schedule { get; set; }
-        public IEnumerable<Budget> Budgets { get; set; }
-        public Budget SelectedBudget { get; set; }
-        public ILookup<string, Budget> GroupedBudgets { get; set; }
-
-        public bool SelectorMode { get; set; }
-        public bool MainMode { get { return !SelectorMode; }}
-
-        public string SearchText { get; set; }
-        public void OnSearchTextChanged()
+        bool _isBusy;
+        public bool IsBusy
         {
-            ExecuteSearchCommand();
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        Guid? _currentScheduleId { get; set; }
+
+        BudgetSchedule _schedule;
+        public BudgetSchedule Schedule
+        {
+            get { return _schedule; }
+            set { SetProperty(ref _schedule, value); }
+        }
+
+        IEnumerable<Budget> _budgets;
+        public IEnumerable<Budget> Budgets
+        {
+            get { return _budgets; }
+            set { SetProperty(ref _budgets, value); }
+        }
+
+        Budget _selectedBudget;
+        public Budget SelectedBudget
+        {
+            get { return _selectedBudget; }
+            set { SetProperty(ref _selectedBudget, value); }
+        }
+
+        ILookup<string, Budget> _groupedBudgets;
+        public ILookup<string, Budget> GroupedBudgets
+        {
+            get { return _groupedBudgets; }
+            set { SetProperty(ref _groupedBudgets, value); }
+        }
+
+        bool _selectorMode;
+        public bool SelectorMode
+        {
+            get { return _selectorMode; }
+            set { SetProperty(ref _selectorMode, value); }
+        }
+
+        public bool MainMode { get => !SelectorMode; }
+
+        string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 
         public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic)

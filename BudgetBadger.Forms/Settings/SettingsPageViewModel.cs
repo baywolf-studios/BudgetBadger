@@ -9,7 +9,6 @@ using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
-using PropertyChanged;
 
 namespace BudgetBadger.Forms.Settings
 {
