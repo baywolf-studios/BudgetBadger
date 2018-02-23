@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.BusyIndicator" xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters" x:Name="this">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="invertedBool" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
+            <Grid>
+                <ContentPresenter IsVisible="{Binding Source={x:Reference this}, Path=IsBusy, Converter={StaticResource invertedBool}}" />
+                <StackLayout IsVisible="{Binding Source={x:Reference this}, Path=IsBusy}" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" />
+                    <Label HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
+                </StackLayout>
+            </Grid>
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
+</ContentView>

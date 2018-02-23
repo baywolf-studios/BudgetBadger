@@ -17,10 +17,10 @@ namespace BudgetBadger.Forms.Accounts
 {
     public class AccountEditPageViewModel : BindableBase, INavigationAware
     {
-        readonly IAccountLogic AccountLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
-        readonly ISync SyncService;
+        readonly IAccountLogic _accountLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         bool _isBusy;
         public bool IsBusy
@@ -59,12 +59,12 @@ namespace BudgetBadger.Forms.Accounts
                                         IAccountLogic accountLogic,
                                        ISync syncService)
         {
-            NavigationService = navigationService;
-            AccountLogic = accountLogic;
-            DialogService = dialogService;
-            SyncService = syncService;
+            _navigationService = navigationService;
+            _accountLogic = accountLogic;
+            _dialogService = dialogService;
+            _syncService = syncService;
 
-            var accountTypes = AccountLogic.GetAccountTypesAsync().Result;
+            var accountTypes = _accountLogic.GetAccountTypesAsync().Result;
             if (accountTypes.Success)
             {
                 AccountTypes = accountTypes.Data;
@@ -99,26 +99,36 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteSaveCommand()
         {
+            if (IsBusy)
+            {
+                return;
+            }
+
             IsBusy = true;
 
             try
             {
                 BusyText = "Saving";
-                var result = await AccountLogic.SaveAccountAsync(Account);
+                var result = await _accountLogic.SaveAccountAsync(Account);
 
                 if (result.Success)
                 {
+                    
                     BusyText = "Syncing";
-                    var syncResult = await SyncService.FullSync();
+                    var syncTask = _syncService.FullSync();
+                    await _navigationService.GoBackAsync();
+
+                    var syncResult = await syncTask;
                     if (!syncResult.Success)
                     {
-                        await DialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
                     }
-                    await NavigationService.GoBackAsync();
+
+
                 }
                 else
                 {
-                    await DialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
             finally
