@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Edit Account" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage">
+<ContentPage Title="Edit Account" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage" Binding="{Binding Account.IsNew}" Value="True">
             <Setter Property="Title" Value="New Account" />
@@ -9,8 +9,8 @@
         <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            
             <TableView Intent="Form">
                 <TableRoot>
                     <TableSection Title="Details">
@@ -36,6 +36,6 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-        </Grid>
+        </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

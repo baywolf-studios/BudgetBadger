@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms.Envelopes
         public string SearchText
         {
             get { return _searchText; }
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged(); }
         }
 
         public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }
@@ -151,33 +151,51 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteSaveCommand()
         {
-            var newEnvelopeGroup = new EnvelopeGroup
+            if (IsBusy)
             {
-                Description = SearchText
-            };
+                return;
+            }
 
-            BusyText = "Saving";
-            var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+            IsBusy = true;
 
-            if (result.Success)
+            try
             {
-                BusyText = "Syncing";
-                var syncResult = await _syncService.FullSync();
-                if (!syncResult.Success)
+                var newEnvelopeGroup = new EnvelopeGroup
                 {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-
-                }
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.EnvelopeGroup, result.Data }
+                    Description = SearchText
                 };
 
-                await _navigationService.GoBackAsync(parameters);
+                BusyText = "Saving";
+                var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+
+                if (result.Success)
+                {
+
+                    BusyText = "Syncing";
+                    var syncTask = _syncService.FullSync();
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.EnvelopeGroup, result.Data }
+                    };
+
+                    await _navigationService.GoBackAsync(parameters);
+
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+
+
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                }
             }
-            else
+            finally
             {
-                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                IsBusy = false;
             }
         }
 

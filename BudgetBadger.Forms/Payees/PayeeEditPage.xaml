@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Edit Payee" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeeEditPage">
+<ContentPage Title="Edit Payee" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeeEditPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage" Binding="{Binding Payee.IsNew}" Value="True">
             <Setter Property="Title" Value="New Payee" />
@@ -9,23 +9,25 @@
         <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form">
-            <TableRoot>
-                <TableSection Title="Details">
-                    <EntryCell Label="Name" Text="{Binding Payee.Description}" />
-                </TableSection>
-                <TableSection Title="Notes">
-                    <ViewCell>
-                        <Editor Text="{Binding Payee.Notes}">
-                        </Editor>
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <ViewCell>
-                        <Button Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+        <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            <TableView Intent="Form">
+                <TableRoot>
+                    <TableSection Title="Details">
+                        <EntryCell Label="Name" Text="{Binding Payee.Description}" />
+                    </TableSection>
+                    <TableSection Title="Notes">
+                        <ViewCell>
+                            <Editor Text="{Binding Payee.Notes}">
+                            </Editor>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

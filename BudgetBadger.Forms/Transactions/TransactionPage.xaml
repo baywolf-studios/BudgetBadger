@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionPage">
+<ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage" Binding="{Binding Transaction.IsNew}" Value="True">
             <Setter Property="Title" Value="New Transaction" />
@@ -9,51 +9,53 @@
         <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form">
-            <TableRoot>
-                <TableSection Title="Amount (Outflow | Inflow)">
-                    <ViewCell>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Entry Grid.Column="0" HorizontalOptions="FillAndExpand" Placeholder="Outflow" Keyboard="Numeric" Text="{Binding Transaction.Outflow}"/>
-                            <Entry Grid.Column="1" HorizontalOptions="FillAndExpand" Placeholder="Inflow" Keyboard="Numeric" Text="{Binding Transaction.Inflow}" />
-                        </Grid>
-                    </ViewCell> 
-                </TableSection>
-                <TableSection Title="Account">
-                    <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
-                    </TextCell>
-                </TableSection>
-                <TableSection Title="Payee">
-                    <TextCell Command="{Binding PayeeSelectedCommand}" Text="{Binding Transaction.Payee.Description}">
-                    </TextCell>
-                </TableSection>
-                <TableSection Title="Envelope">
-                    <TextCell Command="{Binding EnvelopeSelectedCommand}" IsEnabled="{Binding Transaction.Envelope.IsReadonly}" Text="{Binding Transaction.Envelope.Description}">
-                    </TextCell>
-                </TableSection>
-                <TableSection Title="Service Date">
-                    <ViewCell>
-                        <DatePicker Date="{Binding Transaction.ServiceDate}" />
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <SwitchCell Text="Posted" On="{Binding Transaction.Posted}" />
-                </TableSection>
-                <TableSection Title="Notes">
-                    <ViewCell>
-                        <Entry Text="{Binding Transaction.Notes}" />
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <ViewCell>
-                        <Button Text="Delete Transaction" TextColor="Red" />
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+        <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            <TableView Intent="Form">
+                <TableRoot>
+                    <TableSection Title="Amount (Outflow | Inflow)">
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Entry Grid.Column="0" HorizontalOptions="FillAndExpand" Placeholder="Outflow" Keyboard="Numeric" Text="{Binding Transaction.Outflow}"/>
+                                <Entry Grid.Column="1" HorizontalOptions="FillAndExpand" Placeholder="Inflow" Keyboard="Numeric" Text="{Binding Transaction.Inflow}" />
+                            </Grid>
+                        </ViewCell> 
+                    </TableSection>
+                    <TableSection Title="Account">
+                        <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
+                        </TextCell>
+                    </TableSection>
+                    <TableSection Title="Payee">
+                        <TextCell Command="{Binding PayeeSelectedCommand}" Text="{Binding Transaction.Payee.Description}">
+                        </TextCell>
+                    </TableSection>
+                    <TableSection Title="Envelope">
+                        <TextCell Command="{Binding EnvelopeSelectedCommand}" IsEnabled="{Binding Transaction.Envelope.IsReadonly}" Text="{Binding Transaction.Envelope.Description}">
+                        </TextCell>
+                    </TableSection>
+                    <TableSection Title="Service Date">
+                        <ViewCell>
+                            <DatePicker Date="{Binding Transaction.ServiceDate}" />
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection>
+                        <SwitchCell Text="Posted" On="{Binding Transaction.Posted}" />
+                    </TableSection>
+                    <TableSection Title="Notes">
+                        <ViewCell>
+                            <Entry Text="{Binding Transaction.Notes}" />
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Text="Delete Transaction" TextColor="Red" />
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

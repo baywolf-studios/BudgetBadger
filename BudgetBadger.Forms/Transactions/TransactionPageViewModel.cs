@@ -118,6 +118,11 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
+            if (IsBusy)
+            {
+                return;
+            }
+
             IsBusy = true;
 
             try
@@ -127,17 +132,22 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
+
                     BusyText = "Syncing";
-                    var syncResult = await _syncService.FullSync();
+                    var syncTask = _syncService.FullSync();
+                    await _navigationService.GoBackAsync();
+
+                    var syncResult = await syncTask;
                     if (!syncResult.Success)
                     {
                         await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
                     }
-                    await _navigationService.GoBackAsync();
+
+
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
             finally
