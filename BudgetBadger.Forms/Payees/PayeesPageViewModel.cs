@@ -50,14 +50,14 @@ namespace BudgetBadger.Forms.Payees
         public ILookup<string, Payee> GroupedPayees
         {
             get { return _groupedPayees; }
-            set { SetProperty(ref _groupedPayees, value); }
+            set { SetProperty(ref _groupedPayees, value); RaisePropertyChanged("NoSearchResults"); }
         }
 
         bool _selectorMode;
         public bool SelectorMode
         {
             get { return _selectorMode; }
-            set { SetProperty(ref _selectorMode, value); }
+            set { SetProperty(ref _selectorMode, value); RaisePropertyChanged("MainMode"); }
         }
 
         public bool MainMode { get { return !SelectorMode; }}
@@ -68,7 +68,7 @@ namespace BudgetBadger.Forms.Payees
         public string SearchText
         {
             get { return _searchText; }
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged("NoSearchResults"); }
         }
 
         public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)

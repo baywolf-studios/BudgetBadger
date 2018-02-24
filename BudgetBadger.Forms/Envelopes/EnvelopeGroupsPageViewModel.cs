@@ -58,14 +58,14 @@ namespace BudgetBadger.Forms.Envelopes
         public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups
         {
             get { return _filteredEnvelopeGroups; }
-            set { SetProperty(ref _filteredEnvelopeGroups, value); }
+            set { SetProperty(ref _filteredEnvelopeGroups, value); RaisePropertyChanged("NoSearchResults"); }
         }
 
         string _searchText;
         public string SearchText
         {
             get { return _searchText; }
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged(); }
+            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged("NoSearchResults"); }
         }
 
         public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }

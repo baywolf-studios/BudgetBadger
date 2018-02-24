@@ -16,7 +16,6 @@ using BudgetBadger.Forms.Accounts;
 using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.Transactions;
 using BudgetBadger.Core.Sync;
-using BudgetBadger.Core;
 using BudgetBadger.Core.Files;
 using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.Forms.Settings;
@@ -44,43 +43,30 @@ namespace BudgetBadger.Forms
 
             if (refreshResult.Success)
             {
-                var verifyResult = await VerifySyncValidation();
-
-                if (verifyResult.Success)
-                {
-                    var syncService = Container.Resolve<ISync>();
-                    await syncService.FullSync();
-                }
-                else
-                {
-                    var dialogService = Container.Resolve<IPageDialogService>();
-                    await dialogService.DisplayAlertAsync("Sync Setup Invalid", verifyResult.Message, "OK");
-                }
+                var syncService = Container.Resolve<ISync>();
+                await syncService.FullSync();
             }
             else
             {
                 var dialogService = Container.Resolve<IPageDialogService>();
                 await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
             }
-            // refreshing the tokens and stuffs.
-            //var settings = Container.Resolve<ISettings>();
-            //if (settings.GetValueOrDefault(SettingsKeys.SyncMode) == SyncMode.DropboxSync)
-            //{
-            //    var dropboxApi = Container.Resolve<DropBoxApi>();
-            //    try
-            //    {
-            //        var account = await dropboxApi.Authenticate();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var test = ex.Message;
-            //    }
-            //}
         }
 
         protected async override void OnResume()
         {
-            await VerifySyncValidation();
+            var refreshResult = await RefreshSyncCredentials();
+
+            if (refreshResult.Success)
+            {
+                var syncService = Container.Resolve<ISync>();
+                await syncService.FullSync();
+            }
+            else
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
+            }
         }
 
         protected async override void OnInitialized()
@@ -205,38 +191,13 @@ namespace BudgetBadger.Forms
                 if (account.IsValid())
                 {
                     await settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
+                    return new Result { Success = true }; 
                 }
-                else
-                {
-                    var dialogs = Container.Resolve<IPageDialogService>();
-                    await dialogs.DisplayAlertAsync("Sync Unsucessful", "Could not validate credentials. Please try again.", "OK");
-                }
+
+                return new Result { Success = false, Message = "Could not validate sync credentials. Please try again." }; 
             }
-        }
-
-        async Task<Result> VerifySyncValidation()
-        {
-            //checking current filesyncprovider is valid
-            var settings = Container.Resolve<ISettings>();
-            var currentSyncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
-
-            if (!string.IsNullOrEmpty(currentSyncMode) && currentSyncMode != SyncMode.NoSync)
-            {
-                var providers = Container.Resolve<KeyValuePair<string, IFileSyncProvider>[]>();
-                var currentProvider = providers.FirstOrDefault(p => p.Key == currentSyncMode).Value;
-
-                if (currentProvider != null)
-                {
-                    return await currentProvider.IsValid();
-                }
-                else
-                {
-                    return new Result { Success = false, Message = "Unkown error" }; 
-                }
-            }
-
-            return new Result { Success = true };
-
+               
+            return new Result { Success = true }; 
         }
     }
 }

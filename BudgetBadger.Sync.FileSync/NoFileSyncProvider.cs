@@ -20,10 +20,5 @@ namespace BudgetBadger.Core.Sync
         {
             return Task.FromResult(new Result { Success = true });
         }
-
-        public Task<Result> IsValid()
-        {
-            return Task.FromResult(new Result { Success = true });
-        }
     }
 }

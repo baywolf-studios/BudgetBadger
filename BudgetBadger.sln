@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.FileSyncProvider.Dropbox", "BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj", "{48C27882-CE6A-47F6-99E9-BFA11A23A402}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Sync.FileSync", "BudgetBadger.Sync.FileSync\BudgetBadger.Sync.FileSync.csproj", "{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -156,5 +158,17 @@ Global
 		{48C27882-CE6A-47F6-99E9-BFA11A23A402}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48C27882-CE6A-47F6-99E9-BFA11A23A402}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48C27882-CE6A-47F6-99E9-BFA11A23A402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|iPhone.Build.0 = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{121E3B6A-D4E4-4161-883D-F0B8A005A2EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
