@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BudgetBadger.Sync.FileSync\BudgetBadger.Sync.FileSync.csproj" />
+    <PackageReference Include="Dropbox.Api" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dropbox.Api" Version="4.7.0" />
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
   </ItemGroup>
 </Project>

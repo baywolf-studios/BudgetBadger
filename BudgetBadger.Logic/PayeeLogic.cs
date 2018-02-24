@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Logic
 {
@@ -116,6 +117,11 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Payee>> SavePayeeAsync(Payee payee)
         {
+            if (!payee.IsValid())
+            {
+                return new Result<Payee> { Success = payee.IsValid(), Message = payee.ValidationMessage() };
+            }
+
             var result = new Result<Payee>();
             var payeeToUpsert = payee.DeepCopy();
             var dateTimeNow = DateTime.Now;

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class BudgetSchedule
+    public class BudgetSchedule : IValidatable, IDeepCopy<BudgetSchedule>
     {
         public Guid Id { get; set; }
 
@@ -47,6 +50,18 @@ namespace BudgetBadger.Models
         public BudgetSchedule DeepCopy()
         {
             return (BudgetSchedule)this.MemberwiseClone();
+        }
+
+        public Result Validate()
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(Description))
+            {
+                errors.Add("Budget Schedule Description Required");
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
     }
 }

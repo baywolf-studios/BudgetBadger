@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Logic
 {
@@ -104,6 +105,11 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Account>> SaveAccountAsync(Account account)
         {
+            if (!account.IsValid())
+            {
+                return new Result<Account> { Success = account.IsValid(), Message = account.ValidationMessage() };
+            }
+
             var accountToUpsert = account.DeepCopy();
             var dateTimeNow = DateTime.Now;
 

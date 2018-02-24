@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BudgetBadger.Models.Extensions;
+using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Budget
+    public class Budget : IValidatable, IDeepCopy<Budget>
     {
         public Guid Id { get; set; }
 
@@ -49,6 +53,23 @@ namespace BudgetBadger.Models
             budget.Envelope = this.Envelope.DeepCopy();
 
             return budget;
+        }
+
+        public Result Validate()
+        {
+            var errors = new List<string>();
+
+            if (!Envelope.IsValid())
+            {
+                errors.Add(Envelope.ValidationMessage());
+            }
+
+            if (!Schedule.IsValid())
+            {
+                errors.Add(Schedule.ValidationMessage());
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
     }
 }

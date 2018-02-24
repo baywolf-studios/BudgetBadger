@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BudgetBadger.Models.Extensions;
+using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Transaction
+    public class Transaction : IValidatable, IDeepCopy<Transaction>
     {
         public Guid Id { get; set; }
 
@@ -78,6 +82,28 @@ namespace BudgetBadger.Models
             transaction.Payee = this.Payee.DeepCopy();
             transaction.Envelope = this.Envelope.DeepCopy();
             return transaction;
+        }
+
+        public Result Validate()
+        {
+            var errors = new List<string>();
+
+            if (!Envelope.IsValid())
+            {
+                errors.Add(Envelope.ValidationMessage());
+            }
+
+            if (!Payee.IsValid())
+            {
+                errors.Add(Payee.ValidationMessage());
+            }
+
+            if (!Account.IsValid())
+            {
+                errors.Add(Account.ValidationMessage());
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
     }
 }

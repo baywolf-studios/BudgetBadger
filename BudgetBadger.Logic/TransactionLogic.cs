@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.Extensions;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Logic
 {
@@ -140,6 +140,32 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
         {
+            if (!transaction.IsValid())
+            {
+                return new Result<Transaction> { Success = transaction.IsValid(), Message = transaction.ValidationMessage() };
+            }
+
+            // check for existance of payee
+            var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
+            if (!transactionPayee.Exists)
+            {
+                return new Result<Transaction> { Success = false, Message = "Payee does not exist." };
+            }
+
+            // check for existance of account
+            var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
+            if (!transactionAccount.Exists)
+            {
+                return new Result<Transaction> { Success = false, Message = "Account does not exist." };
+            }
+
+            // check for existance of envelope
+            var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
+            if (!transactionEnvelope.Exists)
+            {
+                return new Result<Transaction> { Success = false, Message = "Envelope does not exist." };
+            }
+
             var result = new Result<Transaction>();
             var transactionToUpsert = transaction.DeepCopy();
             var dateTimeNow = DateTime.Now;

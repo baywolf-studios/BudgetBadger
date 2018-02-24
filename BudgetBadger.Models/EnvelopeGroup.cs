@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class EnvelopeGroup
+    public class EnvelopeGroup : IValidatable, IDeepCopy<EnvelopeGroup>
     {
         public Guid Id { get; set; }
 
@@ -28,6 +31,18 @@ namespace BudgetBadger.Models
         public EnvelopeGroup DeepCopy()
         {
             return (EnvelopeGroup)this.MemberwiseClone();
+        }
+
+        public Result Validate()
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(Description))
+            {
+                errors.Add("Envelope Group Description Required");
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
     }
 }

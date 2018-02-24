@@ -7,7 +7,7 @@ using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using BudgetBadger.Core.Extensions;
+using BudgetBadger.Models.Extensions;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 

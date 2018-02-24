@@ -1,7 +1,7 @@
 ﻿using System;
 using BudgetBadger.Models;
 
-namespace BudgetBadger.Core.Extensions
+namespace BudgetBadger.Models.Extensions
 {
     public static class EnvelopeExtensions
     {

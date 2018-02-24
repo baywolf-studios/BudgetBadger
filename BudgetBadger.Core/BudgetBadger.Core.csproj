@@ -8,7 +8,6 @@
     <Folder Include="DataAccess\" />
     <Folder Include="Logic\" />
     <Folder Include="Logging\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Sync\" />
     <Folder Include="Files\" />
     <Folder Include="Settings\" />

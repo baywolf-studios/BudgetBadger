@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace BudgetBadger.Core.Extensions
+namespace BudgetBadger.Models.Extensions
 {
     public static class DateTimeExtensions
     {
