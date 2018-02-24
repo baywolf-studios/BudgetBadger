@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using BudgetBadger.Core;
 using BudgetBadger.Core.DataAccess;
@@ -10,6 +11,8 @@ namespace BudgetBadger.Core.Sync
 {
     public class FileSync : Sync
     {
+        static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+
         readonly IFileSyncProvider FileProvider;
         readonly IDirectoryInfo SyncDirectory;
 
@@ -30,43 +33,70 @@ namespace BudgetBadger.Core.Sync
 
         public override async Task<Result> FullSync()
         {
-            var result = await FileProvider.PullFilesTo(SyncDirectory);
+            await _semaphoreSlim.WaitAsync();
 
-            if (result.Success)
+            try
             {
-                result = await base.FullSync();
-            }
+                var result = await FileProvider.PullFilesTo(SyncDirectory);
 
-            if (result.Success)
+                if (result.Success)
+                {
+                    result = await base.FullSync();
+                }
+
+                if (result.Success)
+                {
+                    result = await FileProvider.PushFilesFrom(SyncDirectory);
+                }
+
+                return result;
+            }
+            finally
             {
-                result = await FileProvider.PushFilesFrom(SyncDirectory);
+                _semaphoreSlim.Release();
             }
-
-            return result;
         }
 
         public override async Task<Result> Pull()
         {
-            var result = await FileProvider.PullFilesTo(SyncDirectory);
+            await _semaphoreSlim.WaitAsync();
 
-            if (result.Success)
+            try
             {
-                result = await base.Pull();
-            }
+                var result = await FileProvider.PullFilesTo(SyncDirectory);
 
-            return result;
+                if (result.Success)
+                {
+                    result = await base.Pull();
+                }
+
+                return result;
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
 
         public override async Task<Result> Push()
         {
-            var result = await base.Push();
+            await _semaphoreSlim.WaitAsync();
 
-            if (result.Success)
+            try
             {
-                result = await FileProvider.PushFilesFrom(SyncDirectory);
-            }
+                var result = await base.Push();
 
-            return result;
+                if (result.Success)
+                {
+                    result = await FileProvider.PushFilesFrom(SyncDirectory);
+                }
+
+                return result;
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
     }
 }
