@@ -83,22 +83,5 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             return result;
         }
-
-        public Task<Result> IsValid()
-        {
-            var result = new Result();
-
-            if (string.IsNullOrEmpty(_accessToken))
-            {
-                result.Success = false;
-                result.Message = "Credentials not setup. Please resetup Dropbox Sync.";
-            }
-            else
-            {
-                result.Success = true;
-            }
-
-            return Task.FromResult(result);
-        }
     }
 }
