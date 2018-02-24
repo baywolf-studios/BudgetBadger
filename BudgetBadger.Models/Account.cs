@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BudgetBadger.Models.Extensions;
+using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Account
+    public class Account : IValidatable, IDeepCopy<Account>
     { 
         public Guid Id { get; set; }
 
@@ -44,6 +48,23 @@ namespace BudgetBadger.Models
             Account account = (Account)this.MemberwiseClone();
             account.Type = this.Type.DeepCopy();
             return account;
+        }
+
+        public Result Validate()
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(Description))
+            {
+                errors.Add("Account Description Required");
+            }
+
+            if (!Type.IsValid())
+            {
+                errors.Add(Type.ValidationMessage());
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
     }
 }

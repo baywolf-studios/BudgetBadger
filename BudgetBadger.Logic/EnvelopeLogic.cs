@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
-using BudgetBadger.Core.Extensions;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Logic
 {
@@ -170,6 +170,11 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)
         {
+            if (!budget.IsValid())
+            {
+                return new Result<Budget> { Success = budget.IsValid(), Message = budget.ValidationMessage() };
+            }
+
             var result = new Result<Budget>();
             var budgetToUpsert = budget.DeepCopy();
             var dateTimeNow = DateTime.Now;
@@ -210,6 +215,11 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
         {
+            if (!group.IsValid())
+            {
+                return new Result<EnvelopeGroup> { Success = group.IsValid(), Message = group.ValidationMessage() };
+            }
+
             var result = new Result<EnvelopeGroup>();
             var groupToUpsert = group.DeepCopy();
             var dateTimeNow = DateTime.Now;
@@ -238,6 +248,11 @@ namespace BudgetBadger.Logic
 
         private async Task<Result<Envelope>> SaveEnvelopeAsync(Envelope envelope)
         {
+            if (!envelope.IsValid())
+            {
+                return new Result<Envelope> { Success = envelope.IsValid(), Message = envelope.ValidationMessage() };
+            }
+
             var result = new Result<Envelope>();
             var envelopeToUpsert = envelope.DeepCopy();
             var dateTimeNow = DateTime.Now;
@@ -273,6 +288,11 @@ namespace BudgetBadger.Logic
 
         private async Task<Result<BudgetSchedule>> SaveBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
+            if (!budgetSchedule.IsValid())
+            {
+                return new Result<BudgetSchedule> { Success = budgetSchedule.IsValid(), Message = budgetSchedule.ValidationMessage() };
+            }
+
             var result = new Result<BudgetSchedule>();
             var scheduleToUpsert = budgetSchedule.DeepCopy();
 

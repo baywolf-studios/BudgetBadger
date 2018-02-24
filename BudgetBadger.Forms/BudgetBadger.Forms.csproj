@@ -31,7 +31,6 @@
     <ProjectReference Include="..\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
     <ProjectReference Include="..\BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj" />
-    <ProjectReference Include="..\BudgetBadger.Sync.FileSync\BudgetBadger.Sync.FileSync.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\PayeeInfoPage.xaml" />
