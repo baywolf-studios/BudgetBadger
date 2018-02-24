@@ -11,17 +11,12 @@ namespace BudgetBadger.Models.Extensions
     {
         public static bool IsValid(this IValidatable input)
         {
-            return input.ValidationResult().Success;
+            return input.Validate().Success;
         }
 
         public static string ValidationMessage(this IValidatable input)
         {
-            return input.ValidationResult().Message;
-        }
-
-        public static Result ValidationResult(this IValidatable input)
-        {
-            return input == null ? new Result { Success = false, Message = "Null input is invalid." } : input.Validate();
+            return input.Validate().Message;
         }
     }
 }

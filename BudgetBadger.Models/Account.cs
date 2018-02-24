@@ -56,12 +56,12 @@ namespace BudgetBadger.Models
 
             if (string.IsNullOrEmpty(Description))
             {
-                errors.Add("Account Description Required");
+                errors.Add("Account Description is required");
             }
 
-            if (!Type.IsValid())
+            if (Type ==  null)
             {
-                errors.Add(Type.ValidationMessage());
+                errors.Add("Account Type is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
