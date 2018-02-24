@@ -75,7 +75,7 @@ namespace BudgetBadger.Forms.Transactions
             var transactionAmount = parameters.GetValue<decimal?>(PageParameter.TransactionAmount);
             if (transactionAmount != null)
             {
-                Transaction.Amount = transactionAmount.Value;
+                Transaction.Amount = transactionAmount.Value; 
             }
 
             var account = parameters.GetValue<Account>(PageParameter.Account);
