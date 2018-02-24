@@ -166,6 +166,18 @@ namespace BudgetBadger.Logic
             }
             else
             {
+                // update linked payee
+                var accountPayee = await PayeeDataAccess.ReadPayeeAsync(accountToUpsert.Id);
+                accountPayee.ModifiedDateTime = dateTimeNow;
+                accountPayee.Description = accountToUpsert.Description;
+                await PayeeDataAccess.UpdatePayeeAsync(accountPayee);
+
+                // update the debt envelope name
+                var debtEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(accountToUpsert.Id);
+                debtEnvelope.ModifiedDateTime = dateTimeNow;
+                debtEnvelope.Description = accountToUpsert.Description;
+                await EnvelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope);
+
                 accountToUpsert.ModifiedDateTime = dateTimeNow;
                 await AccountDataAccess.UpdateAccountAsync(accountToUpsert);
             }
