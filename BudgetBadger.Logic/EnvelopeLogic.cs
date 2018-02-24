@@ -172,7 +172,7 @@ namespace BudgetBadger.Logic
         {
             if (!budget.IsValid())
             {
-                return new Result<Budget> { Success = budget.IsValid(), Message = budget.ValidationMessage() };
+                return budget.Validate().ToResult<Budget>();
             }
 
             var result = new Result<Budget>();
@@ -217,7 +217,7 @@ namespace BudgetBadger.Logic
         {
             if (!group.IsValid())
             {
-                return new Result<EnvelopeGroup> { Success = group.IsValid(), Message = group.ValidationMessage() };
+                return group.Validate().ToResult<EnvelopeGroup>();
             }
 
             var result = new Result<EnvelopeGroup>();
@@ -250,7 +250,7 @@ namespace BudgetBadger.Logic
         {
             if (!envelope.IsValid())
             {
-                return new Result<Envelope> { Success = envelope.IsValid(), Message = envelope.ValidationMessage() };
+                return envelope.Validate().ToResult<Envelope>();
             }
 
             var result = new Result<Envelope>();
@@ -290,7 +290,7 @@ namespace BudgetBadger.Logic
         {
             if (!budgetSchedule.IsValid())
             {
-                return new Result<BudgetSchedule> { Success = budgetSchedule.IsValid(), Message = budgetSchedule.ValidationMessage() };
+                return budgetSchedule.Validate().ToResult<BudgetSchedule>();
             }
 
             var result = new Result<BudgetSchedule>();

@@ -42,7 +42,7 @@ namespace BudgetBadger.Models
 
             if (string.IsNullOrEmpty(Description))
             {
-                errors.Add("Payee Description Required");
+                errors.Add("Payee Description is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };

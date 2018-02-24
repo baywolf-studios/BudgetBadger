@@ -142,7 +142,7 @@ namespace BudgetBadger.Logic
         {
             if (!transaction.IsValid())
             {
-                return new Result<Transaction> { Success = transaction.IsValid(), Message = transaction.ValidationMessage() };
+                return transaction.Validate().ToResult<Transaction>();
             }
 
             // check for existance of payee

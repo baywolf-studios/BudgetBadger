@@ -119,7 +119,7 @@ namespace BudgetBadger.Logic
         {
             if (!payee.IsValid())
             {
-                return new Result<Payee> { Success = payee.IsValid(), Message = payee.ValidationMessage() };
+                return payee.Validate().ToResult<Payee>();
             }
 
             var result = new Result<Payee>();

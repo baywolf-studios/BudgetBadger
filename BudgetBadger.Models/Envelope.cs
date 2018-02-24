@@ -48,12 +48,12 @@ namespace BudgetBadger.Models
 
             if (string.IsNullOrEmpty(Description))
             {
-                errors.Add("Envelope Description Required");
+                errors.Add("Envelope Description is required");
             }
 
-            if (!Group.IsValid())
+            if (Group == null)
             {
-                errors.Add(Group.ValidationMessage());
+                errors.Add("Envelope Group is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };

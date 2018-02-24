@@ -88,19 +88,19 @@ namespace BudgetBadger.Models
         {
             var errors = new List<string>();
 
-            if (!Envelope.IsValid())
+            if (Envelope == null || Envelope.IsNew)
             {
-                errors.Add(Envelope.ValidationMessage());
+                errors.Add("Envelope is required");
             }
 
-            if (!Payee.IsValid())
+            if (Payee == null || Payee.IsNew)
             {
-                errors.Add(Payee.ValidationMessage());
+                errors.Add("Payee is required");
             }
 
-            if (!Account.IsValid())
+            if (Account == null || Account.IsNew)
             {
-                errors.Add(Account.ValidationMessage());
+                errors.Add("Account is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };

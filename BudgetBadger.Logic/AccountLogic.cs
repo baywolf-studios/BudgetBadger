@@ -107,7 +107,14 @@ namespace BudgetBadger.Logic
         {
             if (!account.IsValid())
             {
-                return new Result<Account> { Success = account.IsValid(), Message = account.ValidationMessage() };
+                return account.Validate().ToResult<Account>();
+            }
+
+            //check for existence of account type
+            var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
+            if (!accountTypes.Any(a => a.Id == account.Type.Id))
+            {
+                return new Result<Account> { Success = false, Message = "Account Type is required" };
             }
 
             var accountToUpsert = account.DeepCopy();
