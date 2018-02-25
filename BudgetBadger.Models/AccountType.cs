@@ -37,7 +37,7 @@ namespace BudgetBadger.Models
 
             if (string.IsNullOrEmpty(Description))
             {
-                errors.Add("Account Type Description Required");
+                errors.Add("Account type description is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
