@@ -22,22 +22,22 @@ namespace BudgetBadger.Forms.Envelopes
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         string _busyText;
         public string BusyText
         {
-            get { return _busyText; }
-            set { SetProperty(ref _busyText, value); }
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
         }
 
         Budget _budget;
         public Budget Budget
-        { 
-            get { return _budget; }
-            set { SetProperty(ref _budget, value); }
+        {
+            get => _budget;
+            set => SetProperty(ref _budget, value);
         }
 
         public ICommand SaveCommand { get; set; }

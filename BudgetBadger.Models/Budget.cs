@@ -6,38 +6,93 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : IValidatable, IDeepCopy<Budget>
+    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>
     {
-        public Guid Id { get; set; }
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public BudgetSchedule Schedule { get; set; }
+        BudgetSchedule schedule;
+        public BudgetSchedule Schedule
+        {
+            get => schedule;
+            set => SetProperty(ref schedule, value);
+        }
 
-        public Envelope Envelope { get; set; }
+        Envelope envelope;
+        public Envelope Envelope
+        {
+            get => envelope;
+            set => SetProperty(ref envelope, value);
+        }
 
-        public decimal Amount { get; set; }
+        bool ignoreOverspend;
+        public bool IgnoreOverspend
+        {
+            get => ignoreOverspend;
+            set => SetProperty(ref ignoreOverspend, value);
+        }
 
-        public bool IgnoreOverspend { get; set; }
+        decimal amount;
+        public decimal Amount
+        {
+            get => amount;
+            set { SetProperty(ref amount, value); OnPropertyChanged("Remaining"); }
+        }
 
         //calculated, not stored
-        public decimal PastAmount { get; set; }
+        decimal pastAmount;
+        public decimal PastAmount
+        {
+            get => pastAmount;
+            set { SetProperty(ref pastAmount, value); OnPropertyChanged("Remaining"); }
+        }
 
         //calculated, not stored
-        public decimal Activity { get; set; }
+        decimal activity;
+        public decimal Activity
+        {
+            get => activity;
+            set { SetProperty(ref activity, value); OnPropertyChanged("Remaining"); }
+        }
 
         //calculated, not stored
-        public decimal PastActivity { get; set; }
+        decimal pastActivity;
+        public decimal PastActivity
+        {
+            get => pastActivity;
+            set { SetProperty(ref pastActivity, value); OnPropertyChanged("Remaining"); }
+        }
 
         public decimal Remaining { get { return Amount + PastAmount + Activity + PastActivity; } }
 
-        public DateTime? CreatedDateTime { get; set; }
-
-        public DateTime? ModifiedDateTime { get; set; }
-
-        public DateTime? DeletedDateTime { get; set; }
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public Budget()
         {

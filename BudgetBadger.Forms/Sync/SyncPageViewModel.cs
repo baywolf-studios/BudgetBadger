@@ -21,9 +21,9 @@ namespace BudgetBadger.Forms.Sync
 
         string _syncMode;
         public string SyncMode
-        { 
-            get { return _syncMode; }
-            set { SetProperty(ref _syncMode, value); } 
+        {
+            get => _syncMode;
+            set => SetProperty(ref _syncMode, value);
         }
         public bool SyncModeSelected { get => !string.IsNullOrEmpty(SyncMode); }
 

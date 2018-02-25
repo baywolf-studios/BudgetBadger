@@ -23,22 +23,22 @@ namespace BudgetBadger.Forms.Transactions
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         string _busyText;
         public string BusyText
         {
-            get { return _busyText; }
-            set { SetProperty(ref _busyText, value); }
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
         }
 
         Transaction _transaction;
         public Transaction Transaction
         {
-            get { return _transaction; }
-            set { SetProperty(ref _transaction, value); }
+            get => _transaction;
+            set => SetProperty(ref _transaction, value);
         }
 
         public ICommand SaveCommand { get; set; }
@@ -60,7 +60,7 @@ namespace BudgetBadger.Forms.Transactions
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
-            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand());
+            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
         }
 

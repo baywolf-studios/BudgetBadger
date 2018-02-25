@@ -5,42 +5,97 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class BudgetSchedule : IValidatable, IDeepCopy<BudgetSchedule>
+    public class BudgetSchedule : BaseModel, IValidatable, IDeepCopy<BudgetSchedule>
     {
-        public Guid Id { get; set; }
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
         //calculated
-        public string Description { get; set; }
+        string description;
+        public string Description
+        {
+            get => description;
+            set => SetProperty(ref description, value);
+        }
 
-        public DateTime BeginDate { get; set; }
+        DateTime beginDate;
+        public DateTime BeginDate
+        {
+            get => beginDate;
+            set => SetProperty(ref beginDate, value);
+        }
 
-        public DateTime EndDate { get; set; }
+        DateTime endDate;
+        public DateTime EndDate
+        {
+            get => endDate;
+            set => SetProperty(ref endDate, value);
+        }
 
         //calculated
-        public decimal Past { get; set; }
+        decimal past;
+        public decimal Past
+        {
+            get => past;
+            set { SetProperty(ref past, value); OnPropertyChanged("Balance"); }
+        }
 
         //calculated
-        public decimal Income { get; set; }
+        decimal income;
+        public decimal Income
+        {
+            get => income;
+            set { SetProperty(ref income, value); OnPropertyChanged("ToBudget"); OnPropertyChanged("Balance"); }
+        }
 
         //calculated 
-        public decimal Budgeted { get; set; }
+        decimal budgeted;
+        public decimal Budgeted
+        {
+            get => budgeted;
+            set { SetProperty(ref budgeted, value); OnPropertyChanged("ToBudget"); OnPropertyChanged("Balance"); }
+        }
 
         public decimal ToBudget { get => Income - Budgeted; }
 
         //calculated
-        public decimal Overspend { get; set; }
+        decimal overspend;
+        public decimal Overspend
+        {
+            get => overspend;
+            set { SetProperty(ref overspend, value); OnPropertyChanged("Balance"); }
+        }
 
         public decimal Balance { get => Past + ToBudget - Overspend; }
 
-        public DateTime? CreatedDateTime { get; set; }
-
-        public DateTime? ModifiedDateTime { get; set; }
-
-        public DateTime? DeletedDateTime { get; set; }
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public BudgetSchedule()
         {

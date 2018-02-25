@@ -27,36 +27,36 @@ namespace BudgetBadger.Forms.Payees
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         Payee _payee;
         public Payee Payee
         {
-            get { return _payee; }
-            set { SetProperty(ref _payee, value); }
+            get => _payee;
+            set => SetProperty(ref _payee, value);
         }
 
         IEnumerable<Transaction> _transactions;
         public IEnumerable<Transaction> Transactions
         {
-            get { return _transactions; }
-            set { SetProperty(ref _transactions, value); }
+            get => _transactions;
+            set => SetProperty(ref _transactions, value);
         }
 
         ILookup<string, Transaction> _groupedTransactions;
         public ILookup<string, Transaction> GroupedTransactions
         {
-            get { return _groupedTransactions; }
-            set { SetProperty(ref _groupedTransactions, value); }
+            get => _groupedTransactions;
+            set => SetProperty(ref _groupedTransactions, value);
         }
 
         Transaction _selectedTransaction;
         public Transaction SelectedTransaction
         {
-            get { return _selectedTransaction; }
-            set { SetProperty(ref _selectedTransaction, value); }
+            get => _selectedTransaction;
+            set => SetProperty(ref _selectedTransaction, value);
         }
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }

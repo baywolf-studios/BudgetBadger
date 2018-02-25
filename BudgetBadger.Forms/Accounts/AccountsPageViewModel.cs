@@ -27,36 +27,36 @@ namespace BudgetBadger.Forms.Accounts
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         IEnumerable<Account> _accounts;
         public IEnumerable<Account> Accounts
         {
-            get { return _accounts; }
-            set { SetProperty(ref _accounts, value); }
+            get => _accounts;
+            set => SetProperty(ref _accounts, value);
         }
 
         Account _selectedAccount;
         public Account SelectedAccount
         {
-            get { return _selectedAccount; }
-            set { SetProperty(ref _selectedAccount, value); }
+            get => _selectedAccount;
+            set => SetProperty(ref _selectedAccount, value);
         }
 
         ILookup<string, Account> _groupedAccounts;
         public ILookup<string, Account> GroupedAccounts
         {
-            get { return _groupedAccounts; }
-            set { SetProperty(ref _groupedAccounts, value); }
+            get => _groupedAccounts;
+            set => SetProperty(ref _groupedAccounts, value);
         }
 
         bool _selectorMode;
         public bool SelectorMode
         {
-            get { return _selectorMode; }
-            set { SetProperty(ref _selectorMode, value); }
+            get => _selectorMode;
+            set => SetProperty(ref _selectorMode, value);
         }
 
         public bool NormalMode { get => !SelectorMode; }
@@ -64,7 +64,7 @@ namespace BudgetBadger.Forms.Accounts
         string _searchText;
         public string SearchText
         {
-            get { return _searchText; }
+            get => _searchText;
             set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 

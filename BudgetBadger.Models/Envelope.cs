@@ -6,27 +6,67 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : IValidatable, IDeepCopy<Envelope>
+    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>
     {
-        public Guid Id { get; set; }
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public string Description { get; set; }
+        string description;
+        public string Description
+        {
+            get => description;
+            set => SetProperty(ref description, value);
+        }
 
-        public string Notes { get; set; }
+        string notes;
+        public string Notes
+        {
+            get => notes;
+            set => SetProperty(ref notes, value);
+        }
 
-        public EnvelopeGroup Group { get; set; }
+        EnvelopeGroup group;
+        public EnvelopeGroup Group
+        {
+            get => group;
+            set => SetProperty(ref group, value);
+        }
 
-        public bool IgnoreOverspend { get; set; }
+        bool ignoreOverspend;
+        public bool IgnoreOverspend
+        {
+            get => ignoreOverspend;
+            set => SetProperty(ref ignoreOverspend, value);
+        }
 
-        public DateTime? CreatedDateTime { get; set; }
-
-        public DateTime? ModifiedDateTime { get; set; }
-
-        public DateTime? DeletedDateTime { get; set; }
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public Envelope()
         {

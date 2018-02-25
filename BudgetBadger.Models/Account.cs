@@ -6,36 +6,86 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Account : IValidatable, IDeepCopy<Account>
-    { 
-        public Guid Id { get; set; }
+    public class Account : BaseModel, IValidatable, IDeepCopy<Account>
+    {
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public string Description { get; set; }
+        string description;
+        public string Description
+        {
+            get => description;
+            set => SetProperty(ref description, value);
+        }
 
-        public AccountType Type { get; set; }
+        AccountType type;
+        public AccountType Type
+        {
+            get => type;
+            set => SetProperty(ref type, value);
+        }
 
-        public string Notes { get; set; }
+        string notes;
+        public string Notes
+        {
+            get => notes;
+            set => SetProperty(ref notes, value);
+        }
 
-        //calculated
-        public decimal Balance { get; set; }
-
-        public decimal Payment { get; set; }
-
-        public bool PaymentRequired { get => Payment > 0; }
-
-        public bool OnBudget { get; set; }
+        bool onBudget;
+        public bool OnBudget
+        {
+            get => onBudget;
+            set { SetProperty(ref onBudget, value); OnPropertyChanged("OffBudget"); }
+        }
 
         public bool OffBudget { get => !OnBudget; }
 
-        public DateTime? CreatedDateTime { get; set; }
+        //calculated
+        decimal balance;
+        public decimal Balance
+        {
+            get => balance;
+            set => SetProperty(ref balance, value);
+        }
 
-        public DateTime? ModifiedDateTime { get; set; }
+        decimal payment;
+        public decimal Payment
+        {
+            get => payment;
+            set { SetProperty(ref payment, value); OnPropertyChanged("PaymentRequired"); }
+        }
 
-        public DateTime? DeletedDateTime { get; set; }
+        public bool PaymentRequired { get => Payment > 0; }
+
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public Account()
         {
@@ -46,7 +96,7 @@ namespace BudgetBadger.Models
         public Account DeepCopy()
         {
             Account account = (Account)this.MemberwiseClone();
-            account.Type = this.Type.DeepCopy();
+            account.Type = this.Type?.DeepCopy();
             return account;
         }
 

@@ -27,8 +27,8 @@ namespace BudgetBadger.Forms.Envelopes
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         Guid? _currentScheduleId { get; set; }
@@ -36,36 +36,36 @@ namespace BudgetBadger.Forms.Envelopes
         BudgetSchedule _schedule;
         public BudgetSchedule Schedule
         {
-            get { return _schedule; }
-            set { SetProperty(ref _schedule, value); }
+            get => _schedule;
+            set => SetProperty(ref _schedule, value);
         }
 
         IEnumerable<Budget> _budgets;
         public IEnumerable<Budget> Budgets
         {
-            get { return _budgets; }
-            set { SetProperty(ref _budgets, value); }
+            get => _budgets;
+            set => SetProperty(ref _budgets, value);
         }
 
         Budget _selectedBudget;
         public Budget SelectedBudget
         {
-            get { return _selectedBudget; }
-            set { SetProperty(ref _selectedBudget, value); }
+            get => _selectedBudget;
+            set => SetProperty(ref _selectedBudget, value);
         }
 
         ILookup<string, Budget> _groupedBudgets;
         public ILookup<string, Budget> GroupedBudgets
         {
-            get { return _groupedBudgets; }
-            set { SetProperty(ref _groupedBudgets, value); }
+            get => _groupedBudgets;
+            set => SetProperty(ref _groupedBudgets, value);
         }
 
         bool _selectorMode;
         public bool SelectorMode
         {
-            get { return _selectorMode; }
-            set { SetProperty(ref _selectorMode, value); }
+            get => _selectorMode;
+            set => SetProperty(ref _selectorMode, value);
         }
 
         public bool MainMode { get => !SelectorMode; }
@@ -73,7 +73,7 @@ namespace BudgetBadger.Forms.Envelopes
         string _searchText;
         public string SearchText
         {
-            get { return _searchText; }
+            get => _searchText;
             set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 

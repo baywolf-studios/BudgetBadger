@@ -22,22 +22,22 @@ namespace BudgetBadger.Forms.Payees
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         string _busyText;
         public string BusyText
         {
-            get { return _busyText; }
-            set { SetProperty(ref _busyText, value); }
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
         }
 
         Payee _payee;
         public Payee Payee
         {
-            get { return _payee; }
-            set { SetProperty(ref _payee, value); }
+            get => _payee;
+            set => SetProperty(ref _payee, value);
         }
 
         public ICommand SaveCommand { get; set; }

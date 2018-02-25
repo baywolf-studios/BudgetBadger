@@ -28,46 +28,46 @@ namespace BudgetBadger.Forms.Payees
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         IEnumerable<Payee> _payees;
         public IEnumerable<Payee> Payees
         {
-            get { return _payees; }
-            set { SetProperty(ref _payees, value); }
+            get => _payees;
+            set => SetProperty(ref _payees, value);
         }
 
         Payee _selectedPayee;
         public Payee SelectedPayee
         {
-            get { return _selectedPayee; }
-            set { SetProperty(ref _selectedPayee, value); }
+            get => _selectedPayee;
+            set => SetProperty(ref _selectedPayee, value);
         }
 
         ILookup<string, Payee> _groupedPayees;
         public ILookup<string, Payee> GroupedPayees
         {
-            get { return _groupedPayees; }
+            get => _groupedPayees;
             set { SetProperty(ref _groupedPayees, value); RaisePropertyChanged("NoSearchResults"); }
         }
 
         bool _selectorMode;
         public bool SelectorMode
         {
-            get { return _selectorMode; }
+            get => _selectorMode;
             set { SetProperty(ref _selectorMode, value); RaisePropertyChanged("MainMode"); }
         }
 
-        public bool MainMode { get { return !SelectorMode; }}
+        public bool MainMode { get => !SelectorMode; }
 
-        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; } }
+        public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; }
 
         string _searchText;
         public string SearchText
         {
-            get { return _searchText; }
+            get => _searchText;
             set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged("NoSearchResults"); }
         }
 

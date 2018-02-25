@@ -22,8 +22,8 @@ namespace BudgetBadger.Forms.Settings
         string _syncMode;
         public string SyncMode
         {
-            get { return _syncMode; }
-            set { SetProperty(ref _syncMode, value); }
+            get => _syncMode;
+            set => SetProperty(ref _syncMode, value);
         }
 
         public SettingsPageViewModel(INavigationService navigationService,
