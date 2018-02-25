@@ -6,65 +6,118 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Transaction : IValidatable, IDeepCopy<Transaction>
+    public class Transaction : BaseModel, IValidatable, IDeepCopy<Transaction>
     {
-        public Guid Id { get; set; }
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public decimal Amount { get; set; }
+        decimal amount;
+        public decimal Amount
+        {
+            get => amount;
+            set { SetProperty(ref amount, value); OnPropertyChanged("Outflow"); OnPropertyChanged("Inflow"); }
+        }
 
         public decimal Outflow
         {
-            get
-            {
-                return Amount < 0 ? Math.Abs(Amount) : 0;
-            }
-            set
-            {
-                Amount = -1 * value;
-            }
+            get => Amount < 0 ? Math.Abs(Amount) : 0;
+            set => Amount = -1 * value;
         }
 
         public decimal Inflow
         {
-            get
-            {
-                return Amount > 0 ? Amount : 0;
-            }
-            set
-            {
-                Amount = value;
-            }
+            get => Amount > 0 ? Amount : 0;
+            set => Amount = value;
         }
 
-        public bool Pending { get { return !Posted; } }
+        bool posted;
+        public bool Posted
+        {
+            get => posted;
+            set => SetProperty(ref posted, value);
+        }
 
-        public bool Posted { get; set; }
+        public bool Pending { get => !Posted; }
 
-        public DateTime? ReconciledDateTime { get; set; }
+        DateTime? reconciledDateTime;
+        public DateTime? ReconciledDateTime
+        {
+            get => reconciledDateTime;
+            set => SetProperty(ref reconciledDateTime, value);
+        }
 
-        public Account Account { get; set; }
+        Account account;
+        public Account Account
+        {
+            get => account;
+            set => SetProperty(ref account, value);
+        }
 
-        public Payee Payee { get; set; }
+        Payee payee;
+        public Payee Payee
+        {
+            get => payee;
+            set { SetProperty(ref payee, value); OnPropertyChanged("IsTransfer"); }
+        }
 
-        public Envelope Envelope { get; set; }
+        Envelope envelope;
+        public Envelope Envelope
+        {
+            get => envelope;
+            set => SetProperty(ref envelope, value);
+        }
 
-        public Guid? LinkedId { get; set; }
+        Guid? linkedId;
+        public Guid? LinkedId
+        {
+            get => linkedId;
+            set => SetProperty(ref linkedId, value);
+        }
 
-        public DateTime ServiceDate { get; set; }
+        DateTime serviceDate;
+        public DateTime ServiceDate
+        {
+            get => serviceDate;
+            set => SetProperty(ref serviceDate, value);
+        }
 
-        public string Notes { get; set; }
-
-        public DateTime? CreatedDateTime { get; set; }
-
-        public DateTime? ModifiedDateTime { get; set; }
-
-        public DateTime? DeletedDateTime { get; set; }
+        string notes;
+        public string Notes
+        {
+            get => notes;
+            set => SetProperty(ref notes, value);
+        }
 
         public bool IsTransfer { get => Payee.IsAccount; }
+
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public Transaction()
         {

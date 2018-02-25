@@ -5,21 +5,46 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class AccountType : IValidatable, IDeepCopy<AccountType>
+    public class AccountType : BaseModel, IValidatable, IDeepCopy<AccountType>
     {
-        public Guid Id { get; set; }
+        Guid id;
+        public Guid Id
+        {
+            get => id;
+            set => SetProperty(ref id, value);
+        }
 
-        public string Description { get; set; }
+        string description;
+        public string Description
+        {
+            get => description;
+            set => SetProperty(ref description, value);
+        }
 
-        public DateTime? CreatedDateTime { get; set; }
-
-        public DateTime? ModifiedDateTime { get; set; }
-
-        public DateTime? DeletedDateTime { get; set; }
+        DateTime? createdDateTime;
+        public DateTime? CreatedDateTime
+        {
+            get => createdDateTime;
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+        }
 
         public bool IsNew { get => CreatedDateTime == null; }
 
         public bool Exists { get => !IsNew; }
+
+        DateTime? modifiedDateTime;
+        public DateTime? ModifiedDateTime
+        {
+            get => modifiedDateTime;
+            set => SetProperty(ref modifiedDateTime, value);
+        }
+
+        DateTime? deletedDateTime;
+        public DateTime? DeletedDateTime
+        {
+            get => deletedDateTime;
+            set => SetProperty(ref deletedDateTime, value);
+        }
 
         public AccountType()
         {

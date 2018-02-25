@@ -24,30 +24,30 @@ namespace BudgetBadger.Forms.Accounts
 
         bool _isBusy;
         public bool IsBusy
-        { 
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); } 
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         string _busyText;
         public string BusyText
         {
-            get { return _busyText; }
-            set { SetProperty(ref _busyText, value); }
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
         }
 
         Account _account;
         public Account Account
         {
-            get { return _account; }
-            set { SetProperty(ref _account, value); }
+            get => _account;
+            set => SetProperty(ref _account, value);
         }
 
         IEnumerable<AccountType> _accountTypes;
         public IEnumerable<AccountType> AccountTypes
         {
-            get { return _accountTypes; }
-            set { SetProperty(ref _accountTypes, value); }
+            get => _accountTypes;
+            set => SetProperty(ref _accountTypes, value);
         }
 
         public ICommand SaveCommand { get; set; }

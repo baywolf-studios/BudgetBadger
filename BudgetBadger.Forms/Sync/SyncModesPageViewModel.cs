@@ -38,8 +38,8 @@ namespace BudgetBadger.Forms.Sync
             _settings = settings;
             _dropboxApi = dropboxApi;
 
-            DropboxSelectedCommand = new DelegateCommand(async () => ExecuteDropboxSelectedCommand());
-            DisableSelectedCommand = new DelegateCommand(async () => ExecuteDisableSelectedCommand());
+            DropboxSelectedCommand = new DelegateCommand(async () => await ExecuteDropboxSelectedCommand());
+            DisableSelectedCommand = new DelegateCommand(async () => await ExecuteDisableSelectedCommand());
         }
 
         public async Task ExecuteDisableSelectedCommand()

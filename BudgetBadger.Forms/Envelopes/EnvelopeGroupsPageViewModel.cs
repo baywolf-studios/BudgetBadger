@@ -29,46 +29,46 @@ namespace BudgetBadger.Forms.Envelopes
         bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         string _busyText;
         public string BusyText
         {
-            get { return _busyText; }
-            set { SetProperty(ref _busyText, value); }
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
         }
 
         EnvelopeGroup _selectedEnvelopeGroup;
         public EnvelopeGroup SelectedEnvelopeGroup
         {
-            get { return _selectedEnvelopeGroup; }
-            set { SetProperty(ref _selectedEnvelopeGroup, value); }
+            get => _selectedEnvelopeGroup;
+            set => SetProperty(ref _selectedEnvelopeGroup, value);
         }
 
         IEnumerable<EnvelopeGroup> _envelopeGroups;
         public IEnumerable<EnvelopeGroup> EnvelopeGroups
         {
-            get { return _envelopeGroups; }
-            set { SetProperty(ref _envelopeGroups, value); }
+            get => _envelopeGroups;
+            set => SetProperty(ref _envelopeGroups, value);
         }
 
         IEnumerable<EnvelopeGroup> _filteredEnvelopeGroups;
         public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups
         {
-            get { return _filteredEnvelopeGroups; }
+            get => _filteredEnvelopeGroups;
             set { SetProperty(ref _filteredEnvelopeGroups, value); RaisePropertyChanged("NoSearchResults"); }
         }
 
         string _searchText;
         public string SearchText
         {
-            get { return _searchText; }
+            get => _searchText;
             set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged("NoSearchResults"); }
         }
 
-        public bool NoSearchResults { get { return !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; } }
+        public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; }
 
         public EnvelopeGroupsPageViewModel(INavigationService navigationService,
                                            IPageDialogService dialogService,
