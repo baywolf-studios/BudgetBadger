@@ -149,21 +149,21 @@ namespace BudgetBadger.Logic
             var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
             if (!transactionPayee.Exists)
             {
-                return new Result<Transaction> { Success = false, Message = "Payee does not exist." };
+                return new Result<Transaction> { Success = false, Message = "Payee does not exist" };
             }
 
             // check for existance of account
             var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
             if (!transactionAccount.Exists)
             {
-                return new Result<Transaction> { Success = false, Message = "Account does not exist." };
+                return new Result<Transaction> { Success = false, Message = "Account does not exist" };
             }
 
             // check for existance of envelope
             var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
             if (!transactionEnvelope.Exists)
             {
-                return new Result<Transaction> { Success = false, Message = "Envelope does not exist." };
+                return new Result<Transaction> { Success = false, Message = "Envelope does not exist" };
             }
 
             var result = new Result<Transaction>();

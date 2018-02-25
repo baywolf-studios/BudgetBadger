@@ -114,7 +114,7 @@ namespace BudgetBadger.Logic
             var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
             if (!accountTypes.Any(a => a.Id == account.Type.Id))
             {
-                return new Result<Account> { Success = false, Message = "Account Type is required" };
+                return new Result<Account> { Success = false, Message = "Account type does not exist" };
             }
 
             var accountToUpsert = account.DeepCopy();

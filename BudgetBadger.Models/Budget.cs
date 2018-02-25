@@ -63,10 +63,18 @@ namespace BudgetBadger.Models
             {
                 errors.Add("Envelope is required");
             }
+            else if (!Envelope.IsValid())
+            {
+                errors.Add("A valid envelope is required");
+            }
 
             if (Schedule == null)
             {
                 errors.Add("Schedule is required");
+            }
+            else if (!Schedule.IsValid())
+            {
+                errors.Add("A valid schedule is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
