@@ -4,13 +4,14 @@ using System.Windows.Input;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
+using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 
 namespace BudgetBadger.Forms.Sync
 {
-    public class SyncPageViewModel : BindableBase, INavigationAware
+    public class SyncPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly INavigationService NavigationService;
         readonly ISync SyncService;
@@ -39,6 +40,15 @@ namespace BudgetBadger.Forms.Sync
             SyncModeSelectedCommand = new DelegateCommand(async () => await ExecuteSyncModeSelectedCommand());
         }
 
+        public async void OnAppearing()
+        {
+            SyncMode = Settings.GetValueOrDefault(AppSettings.SyncMode);
+        }
+
+        public void OnDisappearing()
+        {
+        }
+
         public async Task ExecuteSyncCommand()
         {
             await SyncService.FullSync();
@@ -47,20 +57,6 @@ namespace BudgetBadger.Forms.Sync
         public async Task ExecuteSyncModeSelectedCommand()
         {
             await NavigationService.NavigateAsync(PageName.SyncModesPage);
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            SyncMode = Settings.GetValueOrDefault(AppSettings.SyncMode);
-            //RaisePropertyChanged();
         }
     }
 }

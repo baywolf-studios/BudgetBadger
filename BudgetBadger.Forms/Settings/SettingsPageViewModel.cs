@@ -12,7 +12,7 @@ using Prism.Navigation;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class SettingsPageViewModel : BindableBase, INavigationAware, IPageLifecycleAware
+    public class SettingsPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly INavigationService NavigationService;
         readonly ISettings Settings;
@@ -38,19 +38,6 @@ namespace BudgetBadger.Forms.Settings
         public async Task ExecuteSyncCommand()
         {
             await NavigationService.NavigateAsync(PageName.SyncPage);
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            SyncMode = Settings.GetValueOrDefault(AppSettings.SyncMode);
         }
 
         public void OnAppearing()

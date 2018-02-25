@@ -10,10 +10,11 @@ using Prism.Navigation;
 using Prism.Services;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using Prism.AppModel;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, INavigationAware
+    public class AccountsPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
     {
         readonly IAccountLogic AccountLogic;
         readonly INavigationService NavigationService;
@@ -84,11 +85,6 @@ namespace BudgetBadger.Forms.Accounts
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
-        }
-
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
@@ -97,7 +93,12 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public async void OnAppearing()
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnDisappearing()
         {
         }
 

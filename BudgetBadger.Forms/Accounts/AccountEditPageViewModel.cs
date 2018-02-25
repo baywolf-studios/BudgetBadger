@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigationAware
+    public class AccountEditPageViewModel : BindableBase, INavigatingAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -87,14 +87,6 @@ namespace BudgetBadger.Forms.Accounts
                 Account = account.DeepCopy();
                 Account.Type = AccountTypes.FirstOrDefault(t => t.Id == Account.Type.Id);
             }
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteSaveCommand()

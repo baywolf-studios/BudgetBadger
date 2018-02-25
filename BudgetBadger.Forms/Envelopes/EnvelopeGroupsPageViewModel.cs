@@ -14,7 +14,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeGroupsPageViewModel : BindableBase, INavigatingAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -93,14 +93,6 @@ namespace BudgetBadger.Forms.Envelopes
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteRefreshCommand()
