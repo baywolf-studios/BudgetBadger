@@ -13,7 +13,7 @@ using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeInfoPageViewModel : BindableBase, INavigatingAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -85,14 +85,6 @@ namespace BudgetBadger.Forms.Envelopes
             }
 
             await ExecuteRefreshCommand();
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteEditCommand()

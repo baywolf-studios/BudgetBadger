@@ -18,7 +18,7 @@ using SimpleAuth.Providers;
 
 namespace BudgetBadger.Forms.Sync
 {
-    public class SyncModesPageViewModel : BindableBase, INavigationAware
+    public class SyncModesPageViewModel : BindableBase
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -76,18 +76,6 @@ namespace BudgetBadger.Forms.Sync
             {
                 await _navigationService.GoBackAsync();
             }
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
         }
     }
 }

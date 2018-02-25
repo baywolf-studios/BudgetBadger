@@ -12,7 +12,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BindableBase, INavigationAware
+    public class PayeeEditPageViewModel : BindableBase, INavigatingAware
     {
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
@@ -66,14 +66,6 @@ namespace BudgetBadger.Forms.Payees
             {
                 Payee = payee.DeepCopy();
             }
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteSaveCommand()

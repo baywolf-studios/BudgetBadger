@@ -13,7 +13,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionPageViewModel : BindableBase, INavigationAware
+    public class TransactionPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -106,14 +106,6 @@ namespace BudgetBadger.Forms.Transactions
                 await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
                 await _navigationService.GoBackAsync();
             }
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteSaveCommand()

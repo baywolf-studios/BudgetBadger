@@ -13,7 +13,7 @@ using Prism.Mvvm;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : BindableBase, INavigationAware
+    public class PayeeInfoPageViewModel : BindableBase, INavigatingAware
     {
         readonly ITransactionLogic TransactionLogic;
         readonly INavigationService NavigationService;
@@ -87,14 +87,6 @@ namespace BudgetBadger.Forms.Payees
             }
 
             await ExecuteRefreshCommand();
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteEditCommand()

@@ -9,10 +9,11 @@ using BudgetBadger.Models;
 using BudgetBadger.Core.Logic;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using Prism.AppModel;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopesPageViewModel : BindableBase, INavigationAware
+    public class EnvelopesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
     {
         readonly IEnvelopeLogic EnvelopeLogic;
         readonly INavigationService NavigationService;
@@ -95,11 +96,6 @@ namespace BudgetBadger.Forms.Envelopes
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
-        }
-
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
@@ -108,7 +104,12 @@ namespace BudgetBadger.Forms.Envelopes
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public async void OnAppearing()
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnDisappearing()
         {
         }
 

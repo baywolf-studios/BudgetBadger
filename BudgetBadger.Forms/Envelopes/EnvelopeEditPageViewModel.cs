@@ -12,7 +12,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeEditPageViewModel : BindableBase, INavigatingAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -61,6 +61,27 @@ namespace BudgetBadger.Forms.Envelopes
             //DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
+        public void OnNavigatingTo(NavigationParameters parameters)
+        {
+            var budget = parameters.GetValue<Budget>(PageParameter.Budget);
+            if (budget != null)
+            {
+                Budget = budget.DeepCopy();
+            }
+
+            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
+            if (envelopeGroup != null)
+            {
+                Budget.Envelope.Group = envelopeGroup.DeepCopy();
+            }
+
+            var budgetSchedule = parameters.GetValue<BudgetSchedule>(PageParameter.BudgetSchedule);
+            if (budgetSchedule != null)
+            {
+                Budget.Schedule = budgetSchedule.DeepCopy();
+            }
+        }
+
         public async Task ExecuteSaveCommand()
         {
             if (IsBusy)
@@ -104,35 +125,6 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteGroupSelectedCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
-        }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            var budget = parameters.GetValue<Budget>(PageParameter.Budget);
-            if (budget != null)
-            {
-                Budget = budget.DeepCopy();
-            }
-
-            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
-            if (envelopeGroup != null)
-            {
-                Budget.Envelope.Group = envelopeGroup.DeepCopy();
-            }
-
-            var budgetSchedule = parameters.GetValue<BudgetSchedule>(PageParameter.BudgetSchedule);
-            if (budgetSchedule != null)
-            {
-                Budget.Schedule = budgetSchedule.DeepCopy();
-            }
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
         }
     }
 }
