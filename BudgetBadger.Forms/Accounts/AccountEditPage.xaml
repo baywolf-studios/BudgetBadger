@@ -31,7 +31,7 @@
                     </TableSection>
                     <TableSection>
                         <ViewCell>
-                            <Button Text="Close Account" TextColor="Red" />
+                            <Button Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

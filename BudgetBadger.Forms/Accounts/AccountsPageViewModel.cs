@@ -16,13 +16,15 @@ namespace BudgetBadger.Forms.Accounts
 {
     public class AccountsPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
     {
-        readonly IAccountLogic AccountLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
+        readonly IAccountLogic _accountLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand EditCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
         bool _isBusy;
@@ -71,9 +73,9 @@ namespace BudgetBadger.Forms.Accounts
 
         public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {
-            AccountLogic = accountLogic;
-            NavigationService = navigationService;
-            DialogService = dialogService;
+            _accountLogic = accountLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
 
             Accounts = new List<Account>();
             SelectedAccount = null;
@@ -82,6 +84,8 @@ namespace BudgetBadger.Forms.Accounts
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
+            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
@@ -116,11 +120,11 @@ namespace BudgetBadger.Forms.Accounts
 
             if (SelectorMode)
             {
-                await NavigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
-                await NavigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
             }
 
 
@@ -138,16 +142,16 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await AccountLogic.GetAccountsAsync();
+                var result = await _accountLogic.GetAccountsAsync();
                 if (result.Success)
                 {
                     Accounts = result.Data;
-                    GroupedAccounts = AccountLogic.GroupAccounts(Accounts);
+                    GroupedAccounts = _accountLogic.GroupAccounts(Accounts);
                 }
                 else
                 {
                     await Task.Yield();
-                    await DialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
                 }
             }
             finally
@@ -158,13 +162,36 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteAddCommand()
         {
-            await NavigationService.NavigateAsync(PageName.AccountEditPage);
+            await _navigationService.NavigateAsync(PageName.AccountEditPage);
             SelectedAccount = null;
+        }
+
+        public async Task ExecuteEditCommand(Account account)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, account }
+            };
+            await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+        }
+
+        public async Task ExecuteDeleteCommand(Account account)
+        {
+            var result = await _accountLogic.DeleteAccountAsync(account);
+
+            if (result.Success)
+            {
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
         }
 
         public void ExecuteSearchCommand()
         {
-            GroupedAccounts = AccountLogic.GroupAccounts(AccountLogic.SearchAccounts(Accounts, SearchText));
+            GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, SearchText));
         }
     }
 }
