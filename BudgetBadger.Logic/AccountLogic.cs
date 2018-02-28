@@ -29,6 +29,7 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> DeleteAccountAsync(Account account)
         {
+            //some validation logic?
             var result = new Result();
             var newAccont = account.DeepCopy();
             newAccont.DeletedDateTime = DateTime.Now;

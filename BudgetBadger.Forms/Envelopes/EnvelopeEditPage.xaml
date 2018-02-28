@@ -35,6 +35,11 @@
                             <Editor Text="{Binding Budget.Envelope.Notes}" />
                         </ViewCell>
                     </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
+                        </ViewCell>
+                    </TableSection>
                 </TableRoot>
             </TableView>
         </control:BusyIndicator>

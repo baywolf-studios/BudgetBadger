@@ -58,7 +58,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
-            //DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
@@ -125,6 +125,19 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteGroupSelectedCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
+        }
+
+        public async Task ExecuteDeleteCommand()
+        {
+            var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope);
+            if (result.Success)
+            {
+                await _navigationService.GoBackAsync();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
         }
     }
 }
