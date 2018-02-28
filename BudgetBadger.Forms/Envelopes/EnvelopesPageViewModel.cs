@@ -66,7 +66,7 @@ namespace BudgetBadger.Forms.Envelopes
         public bool SelectorMode
         {
             get => _selectorMode;
-            set => SetProperty(ref _selectorMode, value);
+            set { SetProperty(ref _selectorMode, value); RaisePropertyChanged("MainMode"); }
         }
 
         public bool MainMode { get => !SelectorMode; }

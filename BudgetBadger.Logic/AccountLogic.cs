@@ -170,6 +170,7 @@ namespace BudgetBadger.Logic
                     ModifiedDateTime = dateTimeNow,
                     Amount = accountToUpsert.Balance,
                     ServiceDate = dateTimeNow,
+                    Posted = true,
                     Account = accountToUpsert,
                     Payee = Constants.StartingBalancePayee,
                     Envelope = startingBalanceEnvelope                 

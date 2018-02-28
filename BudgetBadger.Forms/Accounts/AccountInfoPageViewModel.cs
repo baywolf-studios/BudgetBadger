@@ -42,7 +42,13 @@ namespace BudgetBadger.Forms.Accounts
         public IEnumerable<Transaction> Transactions
         {
             get => _transactions;
-            set => SetProperty(ref _transactions, value);
+            set
+            {
+                SetProperty(ref _transactions, value);
+                RaisePropertyChanged("PendingTotal");
+                RaisePropertyChanged("PostedTotal");
+                RaisePropertyChanged("TransactionsTotal");
+            }
         }
 
         ILookup<string, Transaction> _groupedTransactions;
