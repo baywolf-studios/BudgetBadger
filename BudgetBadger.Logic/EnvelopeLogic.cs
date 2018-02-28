@@ -32,11 +32,6 @@ namespace BudgetBadger.Logic
             envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.DebtEnvelopeGroup);
         }
 
-        public Task<Result> DeleteBudgetAsync(Budget budget)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Result<Budget>> GetBudgetAsync(Guid id)
         {
             var result = new Result<Budget>();
@@ -119,6 +114,46 @@ namespace BudgetBadger.Logic
         public Task<Result<IEnumerable<Envelope>>> GetEnvelopesAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result> DeleteEnvelopeAsync(Envelope envelope)
+        {
+            var result = new Result();
+            var envelopeToDelete = envelope.DeepCopy();
+            envelopeToDelete.DeletedDateTime = DateTime.Now;
+
+            try
+            {
+                await EnvelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result> DeleteEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        {
+            var result = new Result();
+            var envelopeGroupToDelete = envelopeGroup.DeepCopy();
+            envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
+
+            try
+            {
+                await EnvelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result<IEnumerable<EnvelopeGroup>>> GetEnvelopeGroupsAsync()

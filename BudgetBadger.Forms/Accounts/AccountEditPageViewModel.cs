@@ -51,7 +51,7 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         public ICommand SaveCommand { get; set; }
-        public ICommand DeleteAccountCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
@@ -76,7 +76,7 @@ namespace BudgetBadger.Forms.Accounts
             Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            DeleteAccountCommand = new DelegateCommand(async () => ExecuteDeleteAccountCommand());
+            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
@@ -129,7 +129,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteDeleteAccountCommand()
+        public async Task ExecuteDeleteCommand()
         {
             var result = await _accountLogic.DeleteAccountAsync(Account);
             if (result.Success)
