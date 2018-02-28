@@ -218,11 +218,8 @@ namespace BudgetBadger.Logic
                 .Where(a => a.Schedule.BeginDate <= dateTimeNow)
                 .Sum(a => a.Amount);
 
-            var debtTransactions = new List<Transaction>();
-            if (accountDebtBudgets.Any())
-            {
-                debtTransactions.AddRange(await TransactionDataAccess.ReadEnvelopeTransactionsAsync(accountDebtBudgets.FirstOrDefault().Envelope.Id));
-            }
+            var debtTransactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(account.Id);
+
 
             var debtTransactionAmount = debtTransactions.Where(d => d.ServiceDate <= dateTimeNow).Sum(d => d.Amount);
 
