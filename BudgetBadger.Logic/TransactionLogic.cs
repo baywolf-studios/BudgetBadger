@@ -161,7 +161,7 @@ namespace BudgetBadger.Logic
 
             // check for existance of envelope
             var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
-            if (!transactionEnvelope.Exists)
+            if (!transaction.Envelope.IsGenericDebtEnvelope() && !transactionEnvelope.Exists)
             {
                 return new Result<Transaction> { Success = false, Message = "Envelope does not exist" };
             }
