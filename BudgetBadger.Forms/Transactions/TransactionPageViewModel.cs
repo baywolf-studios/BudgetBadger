@@ -45,6 +45,7 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand PayeeSelectedCommand { get; set; }
         public ICommand EnvelopeSelectedCommand { get; set; }
         public ICommand AccountSelectedCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         public TransactionPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
@@ -62,6 +63,7 @@ namespace BudgetBadger.Forms.Transactions
             PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
             EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
+            DeleteCommand = new DelegateCommand(async () => ExecuteDeleteCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -178,6 +180,20 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.SelectorMode, true }
             };
             await _navigationService.NavigateAsync(PageName.AccountsPage, parameters);
+        }
+
+        public async Task ExecuteDeleteCommand()
+        {
+            var result = await _transLogic.DeleteTransactionAsync(Transaction.Id);
+
+            if (result.Success)
+            {
+                await _navigationService.GoBackToRootAsync();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
         }
     }
 }

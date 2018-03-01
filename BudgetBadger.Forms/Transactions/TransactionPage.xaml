@@ -51,7 +51,7 @@
                     </TableSection>
                     <TableSection>
                         <ViewCell>
-                            <Button Text="Delete Transaction" TextColor="Red" />
+                            <Button Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red" />
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

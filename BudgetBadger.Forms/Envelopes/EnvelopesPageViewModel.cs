@@ -10,13 +10,15 @@ using BudgetBadger.Core.Logic;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.AppModel;
+using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
     {
-        readonly IEnvelopeLogic EnvelopeLogic;
-        readonly INavigationService NavigationService;
+        readonly IEnvelopeLogic _envelopeLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
 
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
@@ -24,6 +26,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SelectedCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand EditCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -78,10 +82,11 @@ namespace BudgetBadger.Forms.Envelopes
             set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
         }
 
-        public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic)
+        public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
-            EnvelopeLogic = envelopeLogic;
-            NavigationService = navigationService;
+            _envelopeLogic = envelopeLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
 
             Schedule = null;
             Budgets = new List<Budget>();
@@ -94,6 +99,8 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            EditCommand = new DelegateCommand<Budget>(async b => await ExecuteEditCommand(b));
+            DeleteCommand = new DelegateCommand<Budget>(async b => await ExecuteDeleteCommand(b));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -126,7 +133,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Schedule == null)
                 {
-                    var scheduleResult = await EnvelopeLogic.GetCurrentBudgetScheduleAsync();
+                    var scheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
                     if (scheduleResult.Success)
                     {
                         Schedule = scheduleResult.Data;
@@ -137,11 +144,11 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                 }
 
-                var budgetResult = await EnvelopeLogic.GetBudgetsAsync(Schedule, SelectorMode);
+                var budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule, SelectorMode);
                 if (budgetResult.Success)
                 {
                     Budgets = budgetResult.Data;
-                    GroupedBudgets = EnvelopeLogic.GroupBudgets(Budgets);
+                    GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
                     Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
@@ -157,7 +164,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteNextCommand()
         {
-            var scheduleResult = await EnvelopeLogic.GetNextBudgetSchedule(Schedule);
+            var scheduleResult = await _envelopeLogic.GetNextBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
@@ -171,7 +178,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecutePreviousCommand()
         {
-            var scheduleResult = await EnvelopeLogic.GetPreviousBudgetSchedule(Schedule);
+            var scheduleResult = await _envelopeLogic.GetPreviousBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
@@ -196,7 +203,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     { PageParameter.Envelope, SelectedBudget.Envelope }
                 };
-                await NavigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
@@ -204,7 +211,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     { PageParameter.Budget, SelectedBudget }
                 };
-                await NavigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
             }
 
             SelectedBudget = null;
@@ -217,14 +224,37 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.BudgetSchedule, Schedule }
             };
 
-            await NavigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
 
             SelectedBudget = null;
         }
 
         public void ExecuteSearchCommand()
         {
-            GroupedBudgets = EnvelopeLogic.GroupBudgets(EnvelopeLogic.SearchBudgets(Budgets, SearchText));
+            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, SearchText));
+        }
+
+        public async Task ExecuteEditCommand(Budget budget)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Budget, budget }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+        }
+
+        public async Task ExecuteDeleteCommand(Budget budget)
+        {
+            var result = await _envelopeLogic.DeleteEnvelopeAsync(budget.Envelope.Id);
+
+            if (result.Success)
+            {
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
         }
     }
 }

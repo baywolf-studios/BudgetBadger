@@ -10,7 +10,7 @@ namespace BudgetBadger.Core.Logic
     {
         //Task<Result> ValidateAccountAsync(Account account);
         Task<Result<Account>> SaveAccountAsync(Account account);
-        Task<Result> DeleteAccountAsync(Account account);
+        Task<Result> DeleteAccountAsync(Guid id);
         Task<Result<Account>> GetAccountAsync(Guid id);
         Task<Result<IEnumerable<Account>>> GetAccountsAsync();
 

@@ -18,11 +18,11 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
 
         Task<Result<IEnumerable<Envelope>>> GetEnvelopesAsync();
-        Task<Result> DeleteEnvelopeAsync(Envelope envelope);
+        Task<Result> DeleteEnvelopeAsync(Guid id);
 
         Task<Result<IEnumerable<EnvelopeGroup>>> GetEnvelopeGroupsAsync();
         Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
-        Task<Result> DeleteEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
+        Task<Result> DeleteEnvelopeGroupAsync(Guid id);
 
         IEnumerable<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText);
         ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets);

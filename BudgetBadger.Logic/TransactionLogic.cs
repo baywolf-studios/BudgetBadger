@@ -24,15 +24,16 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
-        public async Task<Result> DeleteTransactionAsync(Transaction transaction)
+        public async Task<Result> DeleteTransactionAsync(Guid id)
         {
             var result = new Result();
-            var transactionToDelete = transaction.DeepCopy();
-            transactionToDelete.DeletedDateTime = DateTime.Now;
 
             try
             {
+                var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id);
+                transactionToDelete.DeletedDateTime = DateTime.Now;
                 await TransactionDataAccess.UpdateTransactionAsync(transactionToDelete);
+                result.Success = true;
             }
             catch (Exception ex)
             {

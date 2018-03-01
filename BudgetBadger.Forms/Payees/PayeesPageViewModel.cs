@@ -16,15 +16,17 @@ namespace BudgetBadger.Forms.Payees
 {
     public class PayeesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
     {
-        readonly IPayeeLogic PayeeLogic;
-        readonly INavigationService NavigationService;
-        readonly IPageDialogService DialogService;
+        readonly IPayeeLogic _payeeLogic;
+        readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand EditCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -74,9 +76,9 @@ namespace BudgetBadger.Forms.Payees
 
         public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
         {
-            PayeeLogic = payeeLogic;
-            NavigationService = navigationService;
-            DialogService = dialogService;
+            _payeeLogic = payeeLogic;
+            _navigationService = navigationService;
+            _dialogService = dialogService;
 
             Payees = new List<Payee>();
             SelectedPayee = null;
@@ -87,6 +89,8 @@ namespace BudgetBadger.Forms.Payees
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
+            DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -120,11 +124,11 @@ namespace BudgetBadger.Forms.Payees
 
             if (SelectorMode)
             {
-                await NavigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
-                await NavigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
             }
 
 
@@ -142,16 +146,16 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await PayeeLogic.GetPayeesAsync();
+                var result = await _payeeLogic.GetPayeesAsync();
                 if (result.Success)
                 {
                     Payees = result.Data;
-                    GroupedPayees = PayeeLogic.GroupPayees(Payees);
+                    GroupedPayees = _payeeLogic.GroupPayees(Payees);
                 }
                 else
                 {
                     await Task.Yield();
-                    await DialogService.DisplayAlertAsync("Error", result.Message, "Ok");
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Ok");
                 }
             }
             finally
@@ -167,7 +171,7 @@ namespace BudgetBadger.Forms.Payees
                 Description = SearchText
             };
 
-            var result = await PayeeLogic.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.SavePayeeAsync(newPayee);
 
             if (result.Success)
             {
@@ -176,7 +180,7 @@ namespace BudgetBadger.Forms.Payees
                     { PageParameter.Payee, result.Data }
                 };
 
-                await NavigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
@@ -186,14 +190,37 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteAddCommand()
         {
-            await NavigationService.NavigateAsync(PageName.PayeeEditPage);
+            await _navigationService.NavigateAsync(PageName.PayeeEditPage);
 
             SelectedPayee = null;
         }
 
+        public async Task ExecuteEditCommand(Payee payee)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Payee, payee }
+            };
+            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+        }
+
+        public async Task ExecuteDeleteCommand(Payee payee)
+        {
+            var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
+
+            if (result.Success)
+            {
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
+        }
+
         public void ExecuteSearchCommand()
         {
-            GroupedPayees = PayeeLogic.GroupPayees(PayeeLogic.SearchPayees(Payees, SearchText));
+            GroupedPayees = _payeeLogic.GroupPayees(_payeeLogic.SearchPayees(Payees, SearchText));
         }
     }
 }
