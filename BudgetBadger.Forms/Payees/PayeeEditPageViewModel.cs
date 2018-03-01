@@ -110,7 +110,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteCommand()
         {
-            var result = await _payeeLogic.DeletePayeeAsync(Payee);
+            var result = await _payeeLogic.DeletePayeeAsync(Payee.Id);
 
             if (result.Success)
             {
@@ -118,7 +118,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
         }
     }

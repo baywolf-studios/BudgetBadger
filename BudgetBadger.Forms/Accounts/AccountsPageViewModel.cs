@@ -177,7 +177,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteCommand(Account account)
         {
-            var result = await _accountLogic.DeleteAccountAsync(account);
+            var result = await _accountLogic.DeleteAccountAsync(account.Id);
 
             if (result.Success)
             {

@@ -129,10 +129,10 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteCommand()
         {
-            var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope);
+            var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
             if (result.Success)
             {
-                await _navigationService.GoBackAsync();
+                await _navigationService.GoBackToRootAsync();
             }
             else
             {

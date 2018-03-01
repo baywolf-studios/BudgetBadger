@@ -116,14 +116,14 @@ namespace BudgetBadger.Logic
             throw new NotImplementedException();
         }
 
-        public async Task<Result> DeleteEnvelopeAsync(Envelope envelope)
+        public async Task<Result> DeleteEnvelopeAsync(Guid id)
         {
             var result = new Result();
-            var envelopeToDelete = envelope.DeepCopy();
-            envelopeToDelete.DeletedDateTime = DateTime.Now;
 
             try
             {
+                var envelopeToDelete = await EnvelopeDataAccess.ReadEnvelopeAsync(id);
+                envelopeToDelete.DeletedDateTime = DateTime.Now;
                 await EnvelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
                 result.Success = true;
             }
@@ -136,14 +136,15 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> DeleteEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        public async Task<Result> DeleteEnvelopeGroupAsync(Guid id)
         {
             var result = new Result();
-            var envelopeGroupToDelete = envelopeGroup.DeepCopy();
-            envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
+
 
             try
             {
+                var envelopeGroupToDelete = await EnvelopeDataAccess.ReadEnvelopeGroupAsync(id);
+                envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
                 await EnvelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
                 result.Success = true;
             }

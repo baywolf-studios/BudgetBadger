@@ -20,14 +20,23 @@ namespace BudgetBadger.Logic
             AccountDataAccess = accountDataAccess;
         }
 
-        public async Task<Result> DeletePayeeAsync(Payee payee)
+        public async Task<Result> DeletePayeeAsync(Guid id)
         {
             var result = new Result();
 
-            payee.DeletedDateTime = DateTime.Now;
+            try
+            {
+                var payee = await PayeeDataAccess.ReadPayeeAsync(id);
+                payee.DeletedDateTime = DateTime.Now;
 
-            await PayeeDataAccess.UpdatePayeeAsync(payee);
-            result.Success = true;
+                await PayeeDataAccess.UpdatePayeeAsync(payee);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
             return result;
         }

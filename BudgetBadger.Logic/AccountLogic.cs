@@ -27,16 +27,16 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
-        public async Task<Result> DeleteAccountAsync(Account account)
+        public async Task<Result> DeleteAccountAsync(Guid id)
         {
             //some validation logic?
             var result = new Result();
-            var newAccont = account.DeepCopy();
-            newAccont.DeletedDateTime = DateTime.Now;
 
             try
             {
-                await AccountDataAccess.UpdateAccountAsync(newAccont);
+                var account = await AccountDataAccess.ReadAccountAsync(id);
+                account.DeletedDateTime = DateTime.Now;
+                await AccountDataAccess.UpdateAccountAsync(account);
                 result.Success = true;
             }
             catch (Exception ex)
