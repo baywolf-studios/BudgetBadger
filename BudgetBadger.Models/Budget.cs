@@ -85,6 +85,7 @@ namespace BudgetBadger.Models
             set => SetProperty(ref modifiedDateTime, value);
         }
 
+        //delete the deletedDateTime and rely on the envelope
         DateTime? deletedDateTime;
         public DateTime? DeletedDateTime
         {

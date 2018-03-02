@@ -11,15 +11,15 @@ namespace BudgetBadger.Logic
 {
     public class EnvelopeLogic : IEnvelopeLogic
     {
-        readonly IEnvelopeDataAccess EnvelopeDataAccess;
-        readonly ITransactionDataAccess TransactionDataAccess;
-        readonly IAccountDataAccess AccountDataAccess;
+        readonly IEnvelopeDataAccess _envelopeDataAccess;
+        readonly ITransactionDataAccess _transactionDataAccess;
+        readonly IAccountDataAccess _accountDataAccess;
 
         public EnvelopeLogic(IEnvelopeDataAccess envelopeDataAccess, ITransactionDataAccess transactionDataAccess, IAccountDataAccess accountDataAccess)
         {
-            EnvelopeDataAccess = envelopeDataAccess;
-            TransactionDataAccess = transactionDataAccess;
-            AccountDataAccess = accountDataAccess;
+            _envelopeDataAccess = envelopeDataAccess;
+            _transactionDataAccess = transactionDataAccess;
+            _accountDataAccess = accountDataAccess;
 
             // move these to the data access
             envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.IncomeEnvelopeGroup);
@@ -38,7 +38,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var budget = await EnvelopeDataAccess.ReadBudgetAsync(id);
+                var budget = await _envelopeDataAccess.ReadBudgetAsync(id);
                 var populatedBudget = await GetPopulatedBudget(budget);
                 result.Success = true;
                 result.Data = populatedBudget;
@@ -58,11 +58,11 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
 
-                var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
-                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive).ToList();
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
+                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive && b.Envelope.IsActive).ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
@@ -112,12 +112,12 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
                 var activeEnvelopes = envelopes.Where(e => e.IsActive && !e.IsSystem() && !e.Group.IsIncome());
 
-                var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
                 var activeBudgets = budgets
-                    .Where(b => b.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
+                    .Where(b => b.IsActive && b.Envelope.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
                     .ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
@@ -150,9 +150,34 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IEnumerable<Envelope>>> GetEnvelopesAsync()
+        async Task<Result> ValidateDeleteEnvelopeAsync(Envelope envelope)
         {
-            throw new NotImplementedException();
+            var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
+            if (envelopeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
+            {
+                return new Result { Success = false, Message = "Envelope has future transactions" };
+            }
+
+            var envelopeBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
+            if (envelopeBudgets.Any(b => b.Schedule.BeginDate > DateTime.Now && b.Amount != 0)) 
+            {
+                return new Result { Success = false, Message = "Envelope has future budget amounts to it" };
+            }
+
+            var latestEnvelopeBudget = envelopeBudgets
+                .Where(b => b.Schedule.BeginDate < DateTime.Now)
+                .OrderByDescending(b => b.Schedule.BeginDate)
+                .FirstOrDefault();
+            if (latestEnvelopeBudget != null)
+            {
+                var populateLatestEnvelopeBudget = await GetPopulatedBudget(latestEnvelopeBudget);
+                if (populateLatestEnvelopeBudget.Remaining != 0)
+                {
+                    return new Result { Success = false, Message = "Envelope still has a remaining balance" }; 
+                }
+            }
+
+            return new Result { Success = true };
         }
 
         public async Task<Result> DeleteEnvelopeAsync(Guid id)
@@ -161,9 +186,16 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeToDelete = await EnvelopeDataAccess.ReadEnvelopeAsync(id);
+                var envelopeToDelete = await _envelopeDataAccess.ReadEnvelopeAsync(id);
+
+                var validationResult = await ValidateDeleteEnvelopeAsync(envelopeToDelete);
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
+
                 envelopeToDelete.DeletedDateTime = DateTime.Now;
-                await EnvelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -182,9 +214,9 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeGroupToDelete = await EnvelopeDataAccess.ReadEnvelopeGroupAsync(id);
+                var envelopeGroupToDelete = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id);
                 envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
-                await EnvelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -202,8 +234,8 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeGroups = await EnvelopeDataAccess.ReadEnvelopeGroupsAsync();
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome() && !e.IsDebt()); 
+                var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome() && !e.IsDebt());
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
             }
@@ -243,11 +275,22 @@ namespace BudgetBadger.Logic
             return groupedBudgets;
         }
 
-        public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)
+        public Task<Result> ValidateBudgetAsync(Budget budget)
         {
             if (!budget.IsValid())
             {
-                return budget.Validate().ToResult<Budget>();
+                return Task.FromResult(budget.Validate());
+            }
+
+            return Task.FromResult(new Result { Success = true });
+        }
+
+        public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)
+        {
+            var validationResult = await ValidateBudgetAsync(budget);
+            if (!validationResult.Success)
+            {
+                return validationResult.ToResult<Budget>();
             }
 
             var result = new Result<Budget>();
@@ -272,7 +315,7 @@ namespace BudgetBadger.Logic
                 budgetToUpsert.CreatedDateTime = dateTimeNow;
                 budgetToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.CreateBudgetAsync(budgetToUpsert);
+                await _envelopeDataAccess.CreateBudgetAsync(budgetToUpsert);
                 result.Success = true;
                 result.Data = budgetToUpsert;
             }
@@ -280,7 +323,7 @@ namespace BudgetBadger.Logic
             {
                 budgetToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.UpdateBudgetAsync(budgetToUpsert);
+                await _envelopeDataAccess.UpdateBudgetAsync(budgetToUpsert);
                 result.Success = true;
                 result.Data = budgetToUpsert;
             }
@@ -288,11 +331,22 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        {
+            if (!envelopeGroup.IsValid())
+            {
+                return Task.FromResult(envelopeGroup.Validate());
+            }
+
+            return Task.FromResult(new Result { Success = true });
+        }
+
         public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
         {
-            if (!group.IsValid())
+            var validationResult = await ValidateEnvelopeGroupAsync(group);
+            if (!validationResult.Success)
             {
-                return group.Validate().ToResult<EnvelopeGroup>();
+                return validationResult.ToResult<EnvelopeGroup>();
             }
 
             var result = new Result<EnvelopeGroup>();
@@ -305,7 +359,7 @@ namespace BudgetBadger.Logic
                 groupToUpsert.CreatedDateTime = dateTimeNow;
                 groupToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.CreateEnvelopeGroupAsync(groupToUpsert);
+                await _envelopeDataAccess.CreateEnvelopeGroupAsync(groupToUpsert);
                 result.Success = true;
                 result.Data = groupToUpsert;
             }
@@ -313,7 +367,7 @@ namespace BudgetBadger.Logic
             {
                 groupToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.UpdateEnvelopeGroupAsync(groupToUpsert);
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(groupToUpsert);
                 result.Success = true;
                 result.Data = groupToUpsert;
             }
@@ -345,7 +399,7 @@ namespace BudgetBadger.Logic
                 envelopeToUpsert.CreatedDateTime = dateTimeNow;
                 envelopeToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.CreateEnvelopeAsync(envelopeToUpsert);
+                await _envelopeDataAccess.CreateEnvelopeAsync(envelopeToUpsert);
                 result.Success = true;
                 result.Data = envelopeToUpsert;
             }
@@ -353,7 +407,7 @@ namespace BudgetBadger.Logic
             {
                 envelopeToUpsert.ModifiedDateTime = dateTimeNow;
 
-                await EnvelopeDataAccess.UpdateEnvelopeAsync(envelopeToUpsert);
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToUpsert);
                 result.Success = true;
                 result.Data = envelopeToUpsert;
             }
@@ -377,7 +431,7 @@ namespace BudgetBadger.Logic
                 scheduleToUpsert.CreatedDateTime = DateTime.Now;
                 scheduleToUpsert.ModifiedDateTime = DateTime.Now;
 
-                await EnvelopeDataAccess.CreateBudgetScheduleAsync(scheduleToUpsert);
+                await _envelopeDataAccess.CreateBudgetScheduleAsync(scheduleToUpsert);
                 result.Success = true;
                 result.Data = scheduleToUpsert;
             }
@@ -385,7 +439,7 @@ namespace BudgetBadger.Logic
             {
                 scheduleToUpsert.ModifiedDateTime = DateTime.Now;
 
-                await EnvelopeDataAccess.UpdateBudgetScheduleAsync(scheduleToUpsert);
+                await _envelopeDataAccess.UpdateBudgetScheduleAsync(scheduleToUpsert);
                 result.Success = true;
                 result.Data = scheduleToUpsert;
             }
@@ -406,18 +460,19 @@ namespace BudgetBadger.Logic
                 budgetToPopulate.Schedule = budgetSchedule.DeepCopy();
             }
 
-            var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(budgetToPopulate.Envelope.Id);
-            var budgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budgetToPopulate.Envelope.Id);
+            var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(budgetToPopulate.Envelope.Id);
+            var activeTransactions = transactions.Where(t => t.IsActive);
+            var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budgetToPopulate.Envelope.Id);
 
             budgetToPopulate.PastAmount = budgets
                 .Where(b => b.Schedule.EndDate < budgetToPopulate.Schedule.BeginDate)
                     .Sum(b2 => b2.Amount);
 
-            budgetToPopulate.PastActivity = transactions
+            budgetToPopulate.PastActivity = activeTransactions
                 .Where(t => t.ServiceDate < budgetToPopulate.Schedule.BeginDate)
                 .Sum(t2 => t2.Amount);
 
-            budgetToPopulate.Activity = transactions
+            budgetToPopulate.Activity = activeTransactions
                 .Where(t => t.ServiceDate >= budgetToPopulate.Schedule.BeginDate && t.ServiceDate <= budgetToPopulate.Schedule.EndDate)
                 .Sum(t2 => t2.Amount);
 
@@ -426,13 +481,14 @@ namespace BudgetBadger.Logic
 
         private async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
         {
-            var allAccounts = await AccountDataAccess.ReadAccountsAsync();
+            var allAccounts = await _accountDataAccess.ReadAccountsAsync();
             var budgetAccounts = allAccounts.Where(a => a.OnBudget);
 
-            var allTransactions = await TransactionDataAccess.ReadTransactionsAsync();
-            var budgetTransactions = allTransactions.Where(t => budgetAccounts.Any(b => b.Id == t.Account.Id));
+            var allTransactions = await _transactionDataAccess.ReadTransactionsAsync();
+            var budgetTransactions = allTransactions.Where(t => t.IsActive &&
+                                                           budgetAccounts.Any(b => b.Id == t.Account.Id));
 
-            var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+            var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
 
             // get all income
             var incomeTransactions = budgetTransactions.Where(t => t.Envelope.IsIncome());
@@ -457,7 +513,7 @@ namespace BudgetBadger.Logic
                 .Sum(t => t.Amount);
 
             // get all budget amounts
-            var budgets = await EnvelopeDataAccess.ReadBudgetsAsync();
+            var budgets = await _envelopeDataAccess.ReadBudgetsAsync();
 
             var currentBudgetAmount = budgets
                 .Where(b => !b.Envelope.IsIncome()
@@ -510,7 +566,7 @@ namespace BudgetBadger.Logic
 
             var newBudgetSchedule = budgetSchedule.DeepCopy();
             // get existing schedule from data access if exists
-            var schedule = await EnvelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id);
+            var schedule = await _envelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id);
             if (schedule.IsActive)
             {
                 newBudgetSchedule = schedule.DeepCopy();

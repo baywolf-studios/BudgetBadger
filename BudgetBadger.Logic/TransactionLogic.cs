@@ -139,32 +139,43 @@ namespace BudgetBadger.Logic
             return groupedTransactions;
         }
 
-        public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
+        public async Task<Result> ValidateTransactionAsync(Transaction transaction)
         {
             if (!transaction.IsValid())
             {
-                return transaction.Validate().ToResult<Transaction>();
+                return transaction.Validate();
             }
 
             // check for existance of payee
             var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
             if (!transactionPayee.IsActive)
             {
-                return new Result<Transaction> { Success = false, Message = "Payee does not exist" };
+                return new Result { Success = false, Message = "Payee does not exist" };
             }
 
             // check for existance of account
             var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
             if (!transactionAccount.IsActive)
             {
-                return new Result<Transaction> { Success = false, Message = "Account does not exist" };
+                return new Result { Success = false, Message = "Account does not exist" };
             }
 
             // check for existance of envelope
             var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
             if (!transaction.Envelope.IsGenericDebtEnvelope() && !transactionEnvelope.IsActive)
             {
-                return new Result<Transaction> { Success = false, Message = "Envelope does not exist" };
+                return new Result { Success = false, Message = "Envelope does not exist" };
+            }
+
+            return new Result { Success = true };
+        }
+
+        public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
+        {
+            var validationResult = await ValidateTransactionAsync(transaction);
+            if (!validationResult.Success)
+            {
+                return validationResult.ToResult<Transaction>();
             }
 
             var result = new Result<Transaction>();

@@ -27,6 +27,25 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
+        async Task<Result> ValidateDeleteAccountAsync(Account account)
+        {
+            if (account.OnBudget)
+            {
+                if (account.Balance != 0)
+                {
+                    return new Result { Success = false, Message = "Cannot delete account with balance" };
+                }
+
+                var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
+                if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
+                {
+                    return new Result { Success = false, Message = "Cannot delete account with future transactions" }; 
+                }
+            }
+
+            return new Result { Success = true };
+        }
+
         public async Task<Result> DeleteAccountAsync(Guid id)
         {
             //some validation logic?
@@ -35,6 +54,13 @@ namespace BudgetBadger.Logic
             try
             {
                 var account = await AccountDataAccess.ReadAccountAsync(id);
+                var populatedAccount = await GetPopulatedAccount(account);
+                var validationResult = await ValidateDeleteAccountAsync(populatedAccount);
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
+
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
                 result.Success = true;
@@ -130,7 +156,7 @@ namespace BudgetBadger.Logic
             return groupedAccounts;
         }
 
-        public async Task<Result<Account>> SaveAccountAsync(Account account)
+        public async Task<Result> ValidateAccountAsync(Account account)
         {
             if (!account.IsValid())
             {
@@ -141,7 +167,19 @@ namespace BudgetBadger.Logic
             var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
             if (!accountTypes.Any(a => a.Id == account.Type.Id))
             {
-                return new Result<Account> { Success = false, Message = "Account type does not exist" };
+                return new Result { Success = false, Message = "Account type does not exist" };
+            }
+
+            return new Result { Success = true }; 
+        }
+
+        public async Task<Result<Account>> SaveAccountAsync(Account account)
+        {
+            var validationResult = await ValidateAccountAsync(account);
+
+            if (!validationResult.Success)
+            {
+                return validationResult.ToResult<Account>();
             }
 
             var accountToUpsert = account.DeepCopy();
