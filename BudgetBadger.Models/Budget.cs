@@ -73,12 +73,10 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("Exists"); }
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("IsActive"); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
-
-        public bool Exists { get => !IsNew; }
 
         DateTime? modifiedDateTime;
         public DateTime? ModifiedDateTime
@@ -91,8 +89,12 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set => SetProperty(ref deletedDateTime, value);
+            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged("IsDeleted"); OnPropertyChanged("IsActive"); }
         }
+
+        public bool IsDeleted { get => DeletedDateTime != null; }
+
+        public bool IsActive { get => !IsNew && !IsDeleted; }
 
         public Budget()
         {

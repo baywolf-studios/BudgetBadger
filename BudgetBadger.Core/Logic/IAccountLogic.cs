@@ -13,6 +13,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result> DeleteAccountAsync(Guid id);
         Task<Result<Account>> GetAccountAsync(Guid id);
         Task<Result<IEnumerable<Account>>> GetAccountsAsync();
+        Task<Result<IEnumerable<Account>>> GetAccountsForSelectionAsync();
 
         Task<Result<IEnumerable<AccountType>>> GetAccountTypesAsync();
 

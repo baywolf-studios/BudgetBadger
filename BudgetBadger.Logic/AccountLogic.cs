@@ -72,7 +72,33 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IEnumerable<Account>>();
 
-            var accounts = await AccountDataAccess.ReadAccountsAsync();
+            var allAccounts = await AccountDataAccess.ReadAccountsAsync();
+            IEnumerable<Account> accounts;
+
+            if (false) // show deleted
+            {
+                accounts = allAccounts;
+            }
+            else
+            {
+                accounts = allAccounts.Where(a => a.IsActive);
+            }
+
+            var tasks = accounts.Select(a => GetPopulatedAccount(a));
+
+            result.Success = true;
+            result.Data = await Task.WhenAll(tasks);
+
+            return result;
+        }
+
+        public async Task<Result<IEnumerable<Account>>> GetAccountsForSelectionAsync()
+        {
+            var result = new Result<IEnumerable<Account>>();
+
+            var allAccounts = await AccountDataAccess.ReadAccountsAsync();
+
+            var accounts = allAccounts.Where(a => a.IsActive);
 
             var tasks = accounts.Select(a => GetPopulatedAccount(a));
 

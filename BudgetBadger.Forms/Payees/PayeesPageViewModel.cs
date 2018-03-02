@@ -56,14 +56,14 @@ namespace BudgetBadger.Forms.Payees
             set { SetProperty(ref _groupedPayees, value); RaisePropertyChanged("NoSearchResults"); }
         }
 
-        bool _selectorMode;
-        public bool SelectorMode
+        bool _selectionMode;
+        public bool SelectionMode
         {
-            get => _selectorMode;
-            set { SetProperty(ref _selectorMode, value); RaisePropertyChanged("MainMode"); }
+            get => _selectionMode;
+            set { SetProperty(ref _selectionMode, value); RaisePropertyChanged("MainMode"); }
         }
 
-        public bool MainMode { get => !SelectorMode; }
+        public bool MainMode { get => !SelectionMode; }
 
         public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; }
 
@@ -96,7 +96,7 @@ namespace BudgetBadger.Forms.Payees
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
+            SelectionMode = parameters.GetValue<bool>(PageParameter.SelectionMode);
 
             await ExecuteRefreshCommand();
         }
@@ -122,7 +122,7 @@ namespace BudgetBadger.Forms.Payees
                 { PageParameter.Payee, SelectedPayee }
             };
 
-            if (SelectorMode)
+            if (SelectionMode)
             {
                 await _navigationService.GoBackAsync(parameters);
             }
@@ -146,7 +146,16 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                Result<IEnumerable<Payee>> result;
+                if (SelectionMode)
+                {
+                    result = await _payeeLogic.GetPayeesForSelectionAsync();
+                }
+                else
+                {
+                    result = await _payeeLogic.GetPayeesAsync();
+                }
+
                 if (result.Success)
                 {
                     Payees = result.Data;
@@ -155,7 +164,7 @@ namespace BudgetBadger.Forms.Payees
                 else
                 {
                     await Task.Yield();
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Ok");
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
             }
             finally
