@@ -15,12 +15,13 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule);
         Task<Result<IEnumerable<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule);
         Task<Result<Budget>> GetBudgetAsync(Guid id);
+        Task<Result> ValidateBudgetAsync(Budget budget);
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
 
-        Task<Result<IEnumerable<Envelope>>> GetEnvelopesAsync();
         Task<Result> DeleteEnvelopeAsync(Guid id);
 
         Task<Result<IEnumerable<EnvelopeGroup>>> GetEnvelopeGroupsAsync();
+        Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<Result> DeleteEnvelopeGroupAsync(Guid id);
 
