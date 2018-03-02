@@ -88,16 +88,7 @@ namespace BudgetBadger.Models
             set => SetProperty(ref modifiedDateTime, value);
         }
 
-        DateTime? deletedDateTime;
-        public DateTime? DeletedDateTime
-        {
-            get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged("IsDeleted"); OnPropertyChanged("IsActive"); }
-        }
-
-        public bool IsDeleted { get => DeletedDateTime != null; }
-
-        public bool IsActive { get => !IsNew && !IsDeleted; }
+        public bool IsActive { get => !IsNew; }
 
         public BudgetSchedule()
         {

@@ -92,16 +92,14 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      BudgetScheduleId, 
                                                      EnvelopeId, 
                                                      CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime)  
+                                                     ModifiedDateTime)  
                                         VALUES     (@Id, 
                                                     @Amount,
                                                     @IgnoreOverspend, 
                                                     @BudgetScheduleId, 
                                                     @EnvelopeId, 
                                                     @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                    @ModifiedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", budget.Id);
                 command.Parameters.AddWithValue("@Amount", budget.Amount);
@@ -110,7 +108,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                 command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", budget.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", budget.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -128,21 +125,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      BeginDate,
                                                      EndDate, 
                                                      CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
+                                                     ModifiedDateTime) 
                                         VALUES     (@Id, 
                                                     @BeginDate, 
                                                     @EndDate, 
                                                     @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                    @ModifiedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
                 command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
                 command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                 command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", budgetSchedule.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", budgetSchedule.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -292,13 +286,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
-                                               B.DeletedDateTime,  
                                                B.BudgetScheduleId, 
                                                BS.BeginDate        AS BudgetScheduleBeginDate, 
                                                BS.EndDate          AS BudgetScheduleEndDate,
                                                BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
                                                BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               BS.DeletedDateTime  AS BudgetScheduleDeletedDateTime,  
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
@@ -331,7 +323,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
                             Schedule = new BudgetSchedule
                             {
                                 Id = new Guid(reader["BudgetScheduleId"] as byte[]),
@@ -339,7 +330,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
-                                DeletedDateTime = reader["BudgetScheduleDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BudgetScheduleDeletedDateTime"])
                             },
                             Envelope = new Envelope
                             {
@@ -382,13 +372,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
-                                               B.DeletedDateTime,  
                                                B.BudgetScheduleId, 
                                                BS.BeginDate        AS BudgetScheduleBeginDate, 
                                                BS.EndDate          AS BudgetScheduleEndDate,
                                                BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
                                                BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               BS.DeletedDateTime  AS BudgetScheduleDeletedDateTime,  
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
@@ -418,7 +406,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
                             Schedule = new BudgetSchedule
                             {
                                 Id = new Guid(reader["BudgetScheduleId"] as byte[]),
@@ -426,7 +413,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
-                                DeletedDateTime = reader["BudgetScheduleDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BudgetScheduleDeletedDateTime"])
                             },
                             Envelope = new Envelope
                             {
@@ -469,13 +455,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
-                                               B.DeletedDateTime,  
                                                B.BudgetScheduleId, 
                                                BS.BeginDate        AS BudgetScheduleBeginDate, 
                                                BS.EndDate          AS BudgetScheduleEndDate,
                                                BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               BS.DeletedDateTime  AS BudgetScheduleDeletedDateTime,  
+                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime,  
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
@@ -508,7 +492,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
                             Schedule = new BudgetSchedule
                             {
                                 Id = new Guid(reader["BudgetScheduleId"] as byte[]),
@@ -516,7 +499,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
-                                DeletedDateTime = reader["BudgetScheduleDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BudgetScheduleDeletedDateTime"])
                             },
                             Envelope = new Envelope
                             {
@@ -559,13 +541,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                B.IgnoreOverspend,
                                                B.CreatedDateTime, 
                                                B.ModifiedDateTime, 
-                                               B.DeletedDateTime,  
                                                B.BudgetScheduleId, 
                                                BS.BeginDate        AS BudgetScheduleBeginDate, 
                                                BS.EndDate          AS BudgetScheduleEndDate,
                                                BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
                                                BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               BS.DeletedDateTime  AS BudgetScheduleDeletedDateTime,  
                                                B.EnvelopeId, 
                                                E.Description       AS EnvelopeDescription, 
                                                E.Notes             AS EnvelopeNotes, 
@@ -598,7 +578,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"]),
                             Schedule = new BudgetSchedule
                             {
                                 Id = new Guid(reader["BudgetScheduleId"] as byte[]),
@@ -606,7 +585,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
                                 CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
                                 ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
-                                DeletedDateTime = reader["BudgetScheduleDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BudgetScheduleDeletedDateTime"])
                             },
                             Envelope = new Envelope
                             {
@@ -648,8 +626,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                BeginDate, 
                                                EndDate,
                                                CreatedDateTime,
-                                               ModifiedDateTime,
-                                               DeletedDateTime
+                                               ModifiedDateTime
                                         FROM   BudgetSchedule
                                         WHERE  Id = @Id";
 
@@ -666,7 +643,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             EndDate = Convert.ToDateTime(reader["EndDate"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         };
                     }
                 }
@@ -688,8 +664,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                BeginDate, 
                                                EndDate,
                                                CreatedDateTime,
-                                               ModifiedDateTime,
-                                               DeletedDateTime
+                                               ModifiedDateTime
                                         FROM   BudgetSchedule";
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -703,7 +678,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                             EndDate = Convert.ToDateTime(reader["EndDate"]),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
                             ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
                         });
                     }
                 }
@@ -915,8 +889,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                EnvelopeId = @EnvelopeId, 
                                                BudgetScheduleId = @BudgetScheduleId,
                                                CreatedDateTime = @CreatedDateTime,
-                                               ModifiedDateTime = @ModifiedDateTime,
-                                               DeletedDateTime = @DeletedDateTime
+                                               ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", budget.Id);
@@ -926,7 +899,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
                 command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", budget.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", budget.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -943,8 +915,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         SET    BeginDate = @BeginDate, 
                                                EndDate = @EndDate,
                                                CreatedDateTime = @CreatedDateTime,
-                                               ModifiedDateTime = @ModifiedDateTime,
-                                               DeletedDateTime = @DeletedDateTime
+                                               ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
@@ -952,7 +923,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                 command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
                 command.Parameters.AddWithValue("@ModifiedDateTime", budgetSchedule.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", budgetSchedule.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync();
             }

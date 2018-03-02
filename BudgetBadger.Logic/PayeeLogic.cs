@@ -35,6 +35,11 @@ namespace BudgetBadger.Logic
                 return new Result { Success = false, Message = "Cannot delete an account payee" };
             }
 
+            if (payee.Id == Constants.StartingBalancePayee.Id)
+            {
+                return new Result { Success = false, Message = "Cannot delete the starting balance payee" }; 
+            }
+
             var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
             if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
             {
