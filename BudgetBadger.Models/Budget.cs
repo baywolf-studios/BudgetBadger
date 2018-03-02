@@ -85,17 +85,7 @@ namespace BudgetBadger.Models
             set => SetProperty(ref modifiedDateTime, value);
         }
 
-        //delete the deletedDateTime and rely on the envelope
-        DateTime? deletedDateTime;
-        public DateTime? DeletedDateTime
-        {
-            get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged("IsDeleted"); OnPropertyChanged("IsActive"); }
-        }
-
-        public bool IsDeleted { get => DeletedDateTime != null; }
-
-        public bool IsActive { get => !IsNew && !IsDeleted; }
+        public bool IsActive { get => !IsNew && !Envelope.IsDeleted; }
 
         public Budget()
         {

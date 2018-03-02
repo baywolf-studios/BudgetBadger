@@ -62,7 +62,7 @@ namespace BudgetBadger.Logic
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
-                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive && b.Envelope.IsActive).ToList();
+                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive).ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
@@ -117,7 +117,7 @@ namespace BudgetBadger.Logic
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
                 var activeBudgets = budgets
-                    .Where(b => b.IsActive && b.Envelope.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
+                    .Where(b => b.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
                     .ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
