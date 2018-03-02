@@ -52,39 +52,34 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IEnumerable<Budget>>> GetBudgetsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule, bool isSelection = false)
+        public async Task<Result<IEnumerable<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule)
         {
             var result = new Result<IEnumerable<Budget>>();
 
-            var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
-            var activeEnvelopes = envelopes.Where(e => !e.IsSystem());
-
-            var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
-            var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem()).ToList();
-
-            foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+            try
             {
-                activeBudgets.Add(new Budget
+                var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+                var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
+
+                var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
+                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive).ToList();
+
+                foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
-                    Schedule = schedule.DeepCopy(),
-                    Envelope = envelope.DeepCopy(),
-                    Amount = 0m
-                });
-            }
+                    activeBudgets.Add(new Budget
+                    {
+                        Schedule = schedule.DeepCopy(),
+                        Envelope = envelope.DeepCopy(),
+                        Amount = 0m
+                    });
+                }
 
-            var populatedSchedule = await GetPopulatedBudgetSchedule(schedule);
-            var tasks = activeBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
+                var populatedSchedule = await GetPopulatedBudgetSchedule(schedule);
+                var tasks = activeBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-            var budgetsToReturnTemp = await Task.WhenAll(tasks);
-            var budgetsToReturn = budgetsToReturnTemp.ToList();
+                var budgetsToReturnTemp = await Task.WhenAll(tasks);
+                var budgetsToReturn = budgetsToReturnTemp.ToList();
 
-            if (isSelection)
-            {
                 var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt()).ToList();
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt());
                 var genericDebtBudget = new Budget
@@ -96,17 +91,61 @@ namespace BudgetBadger.Logic
                     PastActivity = debtBudgets.Sum(b => b.PastActivity),
                     IgnoreOverspend = true
                 };
-
                 budgetsToReturn.Add(genericDebtBudget);
+
+
+                result.Success = true;
+                result.Data = budgetsToReturn;
             }
-            else
+            catch (Exception ex)
             {
-                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsIncome());
-                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt() && b.Remaining == 0 && b.Amount == 0);
+                result.Success = false;
+                result.Message = ex.Message;
             }
 
-            result.Success = true;
-            result.Data = budgetsToReturn;
+            return result;
+        }
+
+        public async Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule)
+        {
+            var result = new Result<IEnumerable<Budget>>();
+
+            try
+            {
+                var envelopes = await EnvelopeDataAccess.ReadEnvelopesAsync();
+                var activeEnvelopes = envelopes.Where(e => e.IsActive && !e.IsSystem() && !e.Group.IsIncome());
+
+                var budgets = await EnvelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
+                var activeBudgets = budgets
+                    .Where(b => b.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
+                    .ToList();
+
+                foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+                {
+                    activeBudgets.Add(new Budget
+                    {
+                        Schedule = schedule.DeepCopy(),
+                        Envelope = envelope.DeepCopy(),
+                        Amount = 0m
+                    });
+                }
+
+                var populatedSchedule = await GetPopulatedBudgetSchedule(schedule);
+                var tasks = activeBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
+
+                var budgetsToReturnTemp = await Task.WhenAll(tasks);
+                var budgetsToReturn = budgetsToReturnTemp.ToList();
+
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt() && b.Remaining == 0 && b.Amount == 0);
+
+                result.Success = true;
+                result.Data = budgetsToReturn;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
             return result;
         }
@@ -472,7 +511,7 @@ namespace BudgetBadger.Logic
             var newBudgetSchedule = budgetSchedule.DeepCopy();
             // get existing schedule from data access if exists
             var schedule = await EnvelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id);
-            if (schedule.Exists)
+            if (schedule.IsActive)
             {
                 newBudgetSchedule = schedule.DeepCopy();
             }

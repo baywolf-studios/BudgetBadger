@@ -154,7 +154,7 @@ namespace BudgetBadger.Forms.Transactions
         {
             var parameters = new NavigationParameters
             {
-                { PageParameter.SelectorMode, true }
+                { PageParameter.SelectionMode, true }
             };
             await _navigationService.NavigateAsync(PageName.PayeesPage, parameters);
         }
@@ -163,7 +163,7 @@ namespace BudgetBadger.Forms.Transactions
         {
             var parameters = new NavigationParameters
             {
-                { PageParameter.SelectorMode, true }
+                { PageParameter.SelectionMode, true }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopesPage, parameters);
         }
@@ -177,7 +177,7 @@ namespace BudgetBadger.Forms.Transactions
         {
             var parameters = new NavigationParameters
             {
-                { PageParameter.SelectorMode, true }
+                { PageParameter.SelectionMode, true }
             };
             await _navigationService.NavigateAsync(PageName.AccountsPage, parameters);
         }

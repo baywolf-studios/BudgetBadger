@@ -66,14 +66,14 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
-        bool _selectorMode;
-        public bool SelectorMode
+        bool _selectionMode;
+        public bool SelectionMode
         {
-            get => _selectorMode;
-            set { SetProperty(ref _selectorMode, value); RaisePropertyChanged("MainMode"); }
+            get => _selectionMode;
+            set { SetProperty(ref _selectionMode, value); RaisePropertyChanged("MainMode"); }
         }
 
-        public bool MainMode { get => !SelectorMode; }
+        public bool MainMode { get => !SelectionMode; }
 
         string _searchText;
         public string SearchText
@@ -106,7 +106,7 @@ namespace BudgetBadger.Forms.Envelopes
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
+            SelectionMode = parameters.GetValue<bool>(PageParameter.SelectionMode);
 
             await ExecuteRefreshCommand();
         }
@@ -140,11 +140,20 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                     else
                     {
-                        //show error
+                        await _dialogService.DisplayAlertAsync("Error", scheduleResult.Message, "OK");
                     }
                 }
 
-                var budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule, SelectorMode);
+                Result<IEnumerable<Budget>> budgetResult;
+                if (SelectionMode)
+                {
+                    budgetResult = await _envelopeLogic.GetBudgetsForSelectionAsync(Schedule);
+                }
+                else
+                {
+                    budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule);
+                }
+
                 if (budgetResult.Success)
                 {
                     Budgets = budgetResult.Data;
@@ -153,7 +162,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    //show error
+                    await _dialogService.DisplayAlertAsync("Error", budgetResult.Message, "OK");
                 }
             }
             finally
@@ -172,7 +181,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync("Error", scheduleResult.Message, "OK");
             }
         }
 
@@ -186,7 +195,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync("Error", scheduleResult.Message, "OK");
             }
         }
 
@@ -197,7 +206,7 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (SelectorMode)
+            if (SelectionMode)
             {
                 var parameters = new NavigationParameters
                 {

@@ -61,7 +61,7 @@ namespace BudgetBadger.Logic
                 transactions.Add(transaction);
             }
 
-            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
+            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -75,7 +75,7 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
 
-            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
+            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -89,7 +89,7 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
 
-            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
+            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -124,7 +124,7 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadTransactionsAsync();
 
-            var tasks = transactions.Select(t => GetPopulatedTransaction(t));
+            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
             result.Success = true;
             result.Data = await Task.WhenAll(tasks);
@@ -148,21 +148,21 @@ namespace BudgetBadger.Logic
 
             // check for existance of payee
             var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
-            if (!transactionPayee.Exists)
+            if (!transactionPayee.IsActive)
             {
                 return new Result<Transaction> { Success = false, Message = "Payee does not exist" };
             }
 
             // check for existance of account
             var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
-            if (!transactionAccount.Exists)
+            if (!transactionAccount.IsActive)
             {
                 return new Result<Transaction> { Success = false, Message = "Account does not exist" };
             }
 
             // check for existance of envelope
             var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
-            if (!transaction.Envelope.IsGenericDebtEnvelope() && !transactionEnvelope.Exists)
+            if (!transaction.Envelope.IsGenericDebtEnvelope() && !transactionEnvelope.IsActive)
             {
                 return new Result<Transaction> { Success = false, Message = "Envelope does not exist" };
             }
@@ -252,7 +252,7 @@ namespace BudgetBadger.Logic
 
             // transfer logic
             bool envelopeNotNeeded = false;
-            if (transactionToPopulate.Account.Exists)
+            if (transactionToPopulate.Account.IsActive)
             {
                 // if it is a transfer (aka account to account)
                 if (transactionToPopulate.IsTransfer)
@@ -295,7 +295,7 @@ namespace BudgetBadger.Logic
         {
             transaction.Payee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
             var payeeAccount = await AccountDataAccess.ReadAccountAsync(transaction.Payee.Id);
-            transaction.Payee.IsAccount = payeeAccount.Exists;
+            transaction.Payee.IsAccount = payeeAccount.IsActive;
 
             transaction.Envelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
 

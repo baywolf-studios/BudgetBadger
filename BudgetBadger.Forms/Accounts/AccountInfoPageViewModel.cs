@@ -134,7 +134,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                if (Account.Exists)
+                if (Account.IsActive)
                 {
                     var accountResult = await AccountLogic.GetAccountAsync(Account.Id);
                     if (accountResult.Success)

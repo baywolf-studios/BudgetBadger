@@ -125,7 +125,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                if (Payee.Exists)
+                if (Payee.IsActive)
                 {
                     var payeeResult = await PayeeLogic.GetPayeeAsync(Payee.Id);
                     if (payeeResult.Success)

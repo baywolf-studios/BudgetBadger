@@ -61,6 +61,32 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IEnumerable<Payee>>> GetPayeesForSelectionAsync()
+        {
+            var result = new Result<IEnumerable<Payee>>();
+
+            try
+            {
+                var allPayees = await PayeeDataAccess.ReadPayeesAsync();
+
+                var payees = allPayees.Where(p =>
+                                             p.Id != Constants.StartingBalancePayee.Id
+                                             && p.IsActive);
+
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
+
+                result.Success = true;
+                result.Data = await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IEnumerable<Payee>>> GetPayeesAsync()
         {
             var result = new Result<IEnumerable<Payee>>();
@@ -71,18 +97,21 @@ namespace BudgetBadger.Logic
 
                 // ugly hardcoded to remove the starting balance payee.
                 // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p => p.DeletedDateTime == null && p.Description != "Starting Balance").ToList();
+                var payees = allPayees.Where(p => p.IsActive && p.Id != Constants.StartingBalancePayee.Id)
+                                      .ToList();
 
                 var includeDeleted = false; //will get this from settings dataaccess
                 if (includeDeleted)
                 {
-                    payees.AddRange(allPayees.Where(p => p.DeletedDateTime.HasValue));
+                    payees.AddRange(allPayees.Where(p => p.IsDeleted));
                 }
 
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
 
+                var payeesTemp = await Task.WhenAll(tasks);
+
                 result.Success = true;
-                result.Data = await Task.WhenAll(tasks);
+                result.Data = payeesTemp.Where(p => !p.IsAccount);
             }
             catch (Exception ex)
             {
@@ -178,7 +207,7 @@ namespace BudgetBadger.Logic
 
             var payeeAccount = await AccountDataAccess.ReadAccountAsync(payee.Id);
 
-            payeeToPopulate.IsAccount = payeeAccount.Exists;
+            payeeToPopulate.IsAccount = payeeAccount.IsActive;
 
             return payeeToPopulate;
         }

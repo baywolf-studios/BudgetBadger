@@ -55,14 +55,14 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _groupedAccounts, value);
         }
 
-        bool _selectorMode;
-        public bool SelectorMode
+        bool _selectionMode;
+        public bool SelectionMode
         {
-            get => _selectorMode;
-            set => SetProperty(ref _selectorMode, value);
+            get => _selectionMode;
+            set => SetProperty(ref _selectionMode, value);
         }
 
-        public bool NormalMode { get => !SelectorMode; }
+        public bool NormalMode { get => !SelectionMode; }
 
         string _searchText;
         public string SearchText
@@ -92,7 +92,7 @@ namespace BudgetBadger.Forms.Accounts
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             // returns default bool if none present
-            SelectorMode = parameters.GetValue<bool>(PageParameter.SelectorMode);
+            SelectionMode = parameters.GetValue<bool>(PageParameter.SelectionMode);
 
             await ExecuteRefreshCommand();
         }
@@ -118,7 +118,7 @@ namespace BudgetBadger.Forms.Accounts
                 { PageParameter.Account, SelectedAccount }
             };
 
-            if (SelectorMode)
+            if (SelectionMode)
             {
                 await _navigationService.GoBackAsync(parameters);
             }
@@ -142,7 +142,17 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await _accountLogic.GetAccountsAsync();
+                Result<IEnumerable<Account>> result;
+
+                if (SelectionMode)
+                {
+                    result = await _accountLogic.GetAccountsForSelectionAsync();
+                }
+                else
+                {
+                    result = await _accountLogic.GetAccountsAsync();
+                }
+
                 if (result.Success)
                 {
                     Accounts = result.Data;

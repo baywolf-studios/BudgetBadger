@@ -132,21 +132,21 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                if (Budget.Exists)
+                if (Budget.IsActive)
                 {
                     var budgetResult = await EnvelopeLogic.GetBudgetAsync(Budget.Id);
                     if (budgetResult.Success)
                     {
                         Budget = budgetResult.Data;
                     }
+                }
 
-                    var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
-                    if (result.Success)
-                    {
-                        Transactions = result.Data;
-                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
-                        SelectedTransaction = null;
-                    }
+                var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
+                if (result.Success)
+                {
+                    Transactions = result.Data;
+                    GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
+                    SelectedTransaction = null;
                 }
             }
             finally
