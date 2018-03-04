@@ -6,12 +6,15 @@ using Prism.Navigation;
 using Microcharts;
 using System.Collections.Generic;
 using SkiaSharp;
+using Prism.AppModel;
+using BudgetBadger.Core.Logic;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BindableBase
+    public class ReportsPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly INavigationService _navigationService;
+        readonly IReportLogic _reportLogic;
 
         public ICommand SyncCommand { get; set; }
 
@@ -29,9 +32,10 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _chart, value);
         }
 
-        public ReportsPageViewModel(INavigationService navigationService)
+        public ReportsPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
         {
             _navigationService = navigationService;
+            _reportLogic = reportLogic;
 
             Chart = new LineChart();
             Chart.Entries = new[]
@@ -57,6 +61,25 @@ namespace BudgetBadger.Forms.Reports
             };
 
             //SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
+        }
+
+        public async void OnAppearing()
+        {
+            var entries = new List<Entry>();
+
+            var netWorthReportData = await _reportLogic.GetNetWorthReport();
+
+            foreach (var dataPoint in netWorthReportData)
+            {
+                entries.Add(new Entry((float)dataPoint.Value) { ValueLabel = dataPoint.Value.ToString("C"), Label = dataPoint.Key });
+            }
+
+            Chart = new LineChart();
+            Chart.Entries = entries;
+        }
+
+        public void OnDisappearing()
+        {
         }
     }
 }
