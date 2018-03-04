@@ -112,6 +112,7 @@ namespace BudgetBadger.Forms
             container.Register<IAccountLogic, AccountLogic>();
             container.Register<IPayeeLogic, PayeeLogic>();
             container.Register<IEnvelopeLogic, EnvelopeLogic>();
+            container.Register<IReportLogic, ReportLogic>();
 
             //sync dataaccess
             container.RegisterInstance(syncConnectionString, serviceKey: "syncConnectionString");
