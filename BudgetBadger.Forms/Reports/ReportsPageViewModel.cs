@@ -26,11 +26,18 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _syncMode, value);
         }
 
-        Chart _chart;
-        public Chart Chart
+        Chart _netWorthChart;
+        public Chart NetWorthChart
         {
-            get => _chart;
-            set => SetProperty(ref _chart, value);
+            get => _netWorthChart;
+            set => SetProperty(ref _netWorthChart, value);
+        }
+
+        Chart _envelopeChart;
+        public Chart EnvelopeChart
+        {
+            get => _envelopeChart;
+            set => SetProperty(ref _envelopeChart, value);
         }
 
         public ReportsPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
@@ -38,8 +45,8 @@ namespace BudgetBadger.Forms.Reports
             _navigationService = navigationService;
             _reportLogic = reportLogic;
 
-            Chart = new LineChart();
-            Chart.Entries = new[]
+            NetWorthChart = new LineChart();
+            NetWorthChart.Entries = new[]
             {
                 new Entry(200)
                 {
@@ -69,27 +76,44 @@ namespace BudgetBadger.Forms.Reports
             var entries = new List<Entry>();
 
             var netWorthReportResult = await _reportLogic.GetNetWorthReport();
-
             if (netWorthReportResult.Success)
             {
-                foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.X))
+                foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))
                 {
                     var color = SKColor.Parse("#4CAF50");
-                    if (dataPoint.Y < 0)
+                    if (dataPoint.Value < 0)
                     {
                         color = SKColor.Parse("#F44336");
                     }
 
-                    entries.Add(new Entry((float)dataPoint.Y)
+                    entries.Add(new Entry((float)dataPoint.Value)
                     {
-                        ValueLabel = dataPoint.YLabel,
-                        Label = dataPoint.XLabel,
+                        ValueLabel = dataPoint.Value.ToString("C"),
+                        Label = dataPoint.Key.ToString("Y"),
                         Color = color
                     });
                 }
             }
-            Chart = new LineChart();
-            Chart.Entries = entries;
+            NetWorthChart = new LineChart();
+            NetWorthChart.Entries = entries;
+
+            var envelopeEntries = new List<Entry>();
+
+            var envelopeReportResult = await _reportLogic.GetSpendingByEnvelopeReport();
+            if (envelopeReportResult.Success)
+            {
+                foreach (var datapoint in envelopeReportResult.Data)
+                {
+                    envelopeEntries.Add(new Entry((float)datapoint.Value)
+                    {
+                        Label = datapoint.Key,
+                        ValueLabel = datapoint.Value.ToString("C")
+                    });
+                }
+            }
+
+            EnvelopeChart = new DonutChart();
+            EnvelopeChart.Entries = envelopeEntries;
         }
 
         public void OnDisappearing()
