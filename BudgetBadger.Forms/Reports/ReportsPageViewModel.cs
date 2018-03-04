@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using SkiaSharp;
 using Prism.AppModel;
 using BudgetBadger.Core.Logic;
+using System.Linq;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -67,13 +68,26 @@ namespace BudgetBadger.Forms.Reports
         {
             var entries = new List<Entry>();
 
-            var netWorthReportData = await _reportLogic.GetNetWorthReport();
+            var netWorthReportResult = await _reportLogic.GetNetWorthReport();
 
-            foreach (var dataPoint in netWorthReportData)
+            if (netWorthReportResult.Success)
             {
-                entries.Add(new Entry((float)dataPoint.Value) { ValueLabel = dataPoint.Value.ToString("C"), Label = dataPoint.Key });
-            }
+                foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.X))
+                {
+                    var color = SKColor.Parse("#4CAF50");
+                    if (dataPoint.Y < 0)
+                    {
+                        color = SKColor.Parse("#F44336");
+                    }
 
+                    entries.Add(new Entry((float)dataPoint.Y)
+                    {
+                        ValueLabel = dataPoint.YLabel,
+                        Label = dataPoint.XLabel,
+                        Color = color
+                    });
+                }
+            }
             Chart = new LineChart();
             Chart.Entries = entries;
         }
