@@ -63,7 +63,7 @@ namespace BudgetBadger.Forms.Transactions
             PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
             EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
-            DeleteCommand = new DelegateCommand(async () => ExecuteDeleteCommand());
+            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
