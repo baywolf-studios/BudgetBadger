@@ -11,6 +11,8 @@
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
     <PackageReference Include="Dropbox.Api" Version="4.7.0" />
     <PackageReference Include="Clancey.SimpleAuth" Version="1.0.49" />
+    <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
+    <PackageReference Include="Microcharts" Version="0.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
@@ -24,6 +26,7 @@
     <Folder Include="Settings\" />
     <Folder Include="UserControls\" />
     <Folder Include="Converters\" />
+    <Folder Include="Reports\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />

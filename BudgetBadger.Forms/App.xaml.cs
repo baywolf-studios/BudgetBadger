@@ -30,11 +30,13 @@ using Prism.Services;
 using System.Threading.Tasks;
 using SimpleAuth;
 using BudgetBadger.Models;
+using BudgetBadger.Forms.Reports;
 
 namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
     {
+        public App() :base(null){}
         public App(IPlatformInitializer initializer = null) : base(initializer) { }
 
         protected async override void OnStart()
@@ -169,6 +171,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
+            containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<SyncPage, SyncPageViewModel>();
             containerRegistry.RegisterForNavigation<SyncModesPage, SyncModesPageViewModel>();
 
