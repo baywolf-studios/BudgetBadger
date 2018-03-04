@@ -84,8 +84,8 @@ namespace BudgetBadger.Forms.Accounts
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
+            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a), a => CanExecuteEditCommand()).ObservesProperty(() => SelectionMode);
+            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a), a => CanExecuteDeleteCommand()).ObservesProperty(() => SelectionMode);
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
@@ -185,6 +185,11 @@ namespace BudgetBadger.Forms.Accounts
             await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
+        public bool CanExecuteEditCommand()
+        {
+            return !SelectionMode;
+        }
+
         public async Task ExecuteDeleteCommand(Account account)
         {
             var result = await _accountLogic.DeleteAccountAsync(account.Id);
@@ -197,6 +202,11 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
+        }
+
+        public bool CanExecuteDeleteCommand()
+        {
+            return !SelectionMode;
         }
 
         public void ExecuteSearchCommand()

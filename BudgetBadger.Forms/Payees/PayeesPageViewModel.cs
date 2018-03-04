@@ -89,8 +89,8 @@ namespace BudgetBadger.Forms.Payees
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
+            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a), a => CanExecuteEditCommand()).ObservesProperty(() => SelectionMode);
+            DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a), a => CanExecuteDeleteCommand()).ObservesProperty(() => SelectionMode);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -213,6 +213,11 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
         }
 
+        public bool CanExecuteEditCommand()
+        {
+            return !SelectionMode;
+        }
+
         public async Task ExecuteDeleteCommand(Payee payee)
         {
             var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
@@ -225,6 +230,11 @@ namespace BudgetBadger.Forms.Payees
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
+        }
+
+        public bool CanExecuteDeleteCommand()
+        {
+            return !SelectionMode;
         }
 
         public void ExecuteSearchCommand()
