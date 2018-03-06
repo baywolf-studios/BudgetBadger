@@ -85,5 +85,11 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Sync\SyncModesPage.xaml.cs">
       <DependentUpon>SyncModesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Reports\EnvelopesSpendingReportPage.xaml.cs">
+      <DependentUpon>EnvelopesSpendingReportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Reports\PayeesSpendingReportPage.xaml.cs">
+      <DependentUpon>PayeesSpendingReportPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
