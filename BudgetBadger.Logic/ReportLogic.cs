@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Logic
 {
@@ -63,7 +64,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetSpendingByEnvelopeReport()
+        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport()
         {
             var result = new Result<IReadOnlyDictionary<string, decimal>>();
             var dataPoints = new Dictionary<string, decimal>();
@@ -73,12 +74,17 @@ namespace BudgetBadger.Logic
                 var transactions = await _transactionDataAccess.ReadTransactionsAsync();
                 var activeTransactions = transactions.Where(t => t.IsActive);
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
-                var activeEnvelopes = envelopes.Where(e => e.IsActive);
+                var activeEnvelopes = envelopes.Where(e =>
+                                                      e.IsActive
+                                                      && !e.IsSystem()
+                                                      && !e.Group.IsIncome()
+                                                      && !e.Group.IsSystem()
+                                                      && !e.Group.IsDebt());
 
                 foreach (var envelope in activeEnvelopes)
                 {
                     var envelopeTransactions = activeTransactions.Where(t => t.Envelope.Id == envelope.Id);
-                    var envelopeTransactionsSum = envelopeTransactions.Sum(t => t.Amount);
+                    var envelopeTransactionsSum = envelopeTransactions.Sum(t => t.Outflow);
                     dataPoints.Add(envelope.Description, envelopeTransactionsSum);
                 }
 
@@ -92,6 +98,52 @@ namespace BudgetBadger.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport()
+        {
+            var result = new Result<IReadOnlyDictionary<string, decimal>>();
+            var dataPoints = new Dictionary<string, decimal>();
+
+            try
+            {
+                var transactions = await _transactionDataAccess.ReadTransactionsAsync();
+                var activeTransactions = transactions.Where(t => t.IsActive);
+                var payees = await _payeeDataAccess.ReadPayeesAsync();
+                var activePayees = payees.Where(p => p.IsActive);
+
+                foreach (var payee in activePayees)
+                {
+                    var accountPayee = await _accountDataAccess.ReadAccountAsync(payee.Id);
+
+                    if (!accountPayee.IsActive)
+                    {
+                        var payeeTransactions = activeTransactions.Where(t => t.Payee.Id == payee.Id);
+                        var payeeTransactionsSum = payeeTransactions.Sum(t => t.Outflow);
+                        dataPoints.Add(payee.Description, payeeTransactionsSum);
+                    }
+                }
+
+                result.Data = dataPoints;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

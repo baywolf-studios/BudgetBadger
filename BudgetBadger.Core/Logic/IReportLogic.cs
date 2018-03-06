@@ -8,7 +8,10 @@ namespace BudgetBadger.Core.Logic
 {
     public interface IReportLogic
     {
-        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport();
-        Task<Result<IReadOnlyDictionary<string, decimal>>> GetSpendingByEnvelopeReport();
+        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport(); // some enum for month vs year vs week
+        Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport();
+        Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport();
+        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId);
+        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId);
     }
 }
