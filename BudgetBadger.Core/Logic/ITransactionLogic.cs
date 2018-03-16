@@ -10,6 +10,7 @@ namespace BudgetBadger.Core.Logic
     {
         Task<Result> ValidateTransactionAsync(Transaction transaction);
         Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction);
+        Task<Result<IReadOnlyList<Transaction>>> SaveSplitTransactionAsync(IEnumerable<Transaction> splitTransaction);
         Task<Result> DeleteTransactionAsync(Guid id);
         Task<Result<Transaction>> GetTransactionAsync(Guid id);
         Task<Result<IEnumerable<Transaction>>> GetTransactionsAsync();

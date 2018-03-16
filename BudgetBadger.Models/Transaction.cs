@@ -71,11 +71,11 @@ namespace BudgetBadger.Models
             set => SetProperty(ref envelope, value);
         }
 
-        Guid? linkedId;
-        public Guid? LinkedId
+        Guid? splitId;
+        public Guid? SplitId
         {
-            get => linkedId;
-            set => SetProperty(ref linkedId, value);
+            get => splitId;
+            set => SetProperty(ref splitId, value);
         }
 
         DateTime serviceDate;
