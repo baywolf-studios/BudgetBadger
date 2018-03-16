@@ -91,5 +91,8 @@
     <Compile Update="Reports\PayeesSpendingReportPage.xaml.cs">
       <DependentUpon>PayeesSpendingReportPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Transactions\SplitTransactionPage.xaml.cs">
+      <DependentUpon>SplitTransactionPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -256,6 +256,11 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public Task<Result<IReadOnlyList<Transaction>>> SaveSplitTransactionAsync(IEnumerable<Transaction> splitTransaction)
+        {
+            throw new NotImplementedException();
+        }
+
         // handle logic to get transaction into usable state
         public async Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction)
         {

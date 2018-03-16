@@ -35,7 +35,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              AccountId          BLOB NOT NULL, 
                                              PayeeId            BLOB NOT NULL, 
                                              EnvelopeId         BLOB NOT NULL,
-                                             LinkedId           BLOB, 
+                                             SplitId            BLOB, 
                                              ServiceDate        TEXT NOT NULL, 
                                              Notes              TEXT, 
                                              CreatedDateTime    TEXT NOT NULL, 
@@ -63,7 +63,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      AccountId, 
                                                      PayeeId, 
                                                      EnvelopeId, 
-                                                     LinkedId,
+                                                     SplitId,
                                                      ServiceDate, 
                                                      Notes, 
                                                      CreatedDateTime, 
@@ -76,7 +76,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @AccountId, 
                                                      @PayeeId, 
                                                      @EnvelopeId, 
-                                                     @LinkedId,
+                                                     @SplitId,
                                                      @ServiceDate, 
                                                      @Notes, 
                                                      @CreatedDateTime, 
@@ -90,7 +90,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
                 command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                command.Parameters.AddWithValue("@LinkedId", transaction.LinkedId ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                 command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
@@ -117,7 +117,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
@@ -141,7 +141,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -171,7 +171,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
@@ -195,7 +195,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -225,7 +225,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
@@ -249,7 +249,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -279,7 +279,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
@@ -303,7 +303,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -333,16 +333,16 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
                                                DeletedDateTime
                                         FROM   [Transaction]
-                                        WHERE  LinkedId = @LinkedId";
+                                        WHERE  SplitId = @SplitId";
 
-                command.Parameters.AddWithValue("@LinkedId", linkedId);
+                command.Parameters.AddWithValue("@SplitId", linkedId);
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {
@@ -357,7 +357,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -387,7 +387,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId, 
                                                PayeeId, 
                                                EnvelopeId, 
-                                               LinkedId,
+                                               SplitId,
                                                ServiceDate, 
                                                Notes, 
                                                CreatedDateTime, 
@@ -408,7 +408,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                             Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                             Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                             Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            LinkedId = reader["LinkedId"] == DBNull.Value ? (Guid?)null : new Guid(reader["LinkedId"] as byte[]),
+                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
                             ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
                             Notes = reader["Notes"].ToString(),
                             CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
@@ -436,7 +436,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                AccountId = @AccountId, 
                                                PayeeId = @PayeeId, 
                                                EnvelopeId = @EnvelopeId, 
-                                               LinkedId = @LinkedId,
+                                               SplitId = @SplitId,
                                                ServiceDate = @ServiceDate, 
                                                Notes = @Notes, 
                                                CreatedDateTime = @CreatedDateTime, 
@@ -451,7 +451,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
                 command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
                 command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                command.Parameters.AddWithValue("@LinkedId", transaction.LinkedId ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                 command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
