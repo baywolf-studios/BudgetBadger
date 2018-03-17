@@ -129,15 +129,17 @@ namespace BudgetBadger.Forms.Transactions
 
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
-                    await _navigationService.GoBackAsync();
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.Transaction, Transaction }
+                    };
+                    await _navigationService.GoBackAsync(parameters);
 
                     var syncResult = await syncTask;
                     if (!syncResult.Success)
                     {
                         await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
                     }
-
-
                 }
                 else
                 {

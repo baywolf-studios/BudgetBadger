@@ -21,5 +21,6 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string SyncPage = "SyncPage";
         public static readonly string SyncModesPage = "SyncModesPage";
         public static readonly string TransactionPage = "TransactionPage";
+        public static readonly string SplitTransactionPage = "SplitTransactionPage";
     }
 }

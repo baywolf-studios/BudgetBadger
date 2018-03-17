@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
     <ContentPage.Content>
-        <ListView>
+        <ListView x:Name="TransactionList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" >
             <ListView.Header>
                 <StackLayout Orientation="Horizontal">
                     <Label Text="Total: $30.00"/>
@@ -9,10 +9,17 @@
                 </StackLayout>
             </ListView.Header>
             <ListView.ItemTemplate>
-                
+                <DataTemplate>
+                    <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}">
+                        <TextCell.ContextActions>
+                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Edit" />
+                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <Button Text="Add New Transaction"/>
+                <Button Text="Add New Transaction" Command="{Binding AddCommand}"/>
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>
