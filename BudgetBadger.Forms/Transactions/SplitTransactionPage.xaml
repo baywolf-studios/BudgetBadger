@@ -1,5 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
     <ContentPage.Content>
+        <ListView>
+            <ListView.Header>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Total: $30.00"/>
+                    <Label Text="Remaining: $2.00"/>
+                </StackLayout>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Button Text="Add New Transaction"/>
+            </ListView.Footer>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>
