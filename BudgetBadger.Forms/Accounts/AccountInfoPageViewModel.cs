@@ -9,14 +9,16 @@ using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
     public class AccountInfoPageViewModel : BindableBase, INavigatingAware
     {
-        readonly ITransactionLogic TransactionLogic;
-        readonly INavigationService NavigationService;
-        readonly IAccountLogic AccountLogic;
+        readonly ITransactionLogic _transactionLogic;
+        readonly INavigationService _navigationService;
+        readonly IAccountLogic _accountLogic;
+        readonly IPageDialogService _dialogService;
 
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -69,11 +71,12 @@ namespace BudgetBadger.Forms.Accounts
         public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount); }
         public decimal TransactionsTotal { get => Transactions.Sum(t2 => t2.Amount); }
 
-        public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic)
+        public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic, IPageDialogService dialogService)
         {
-            TransactionLogic = transactionLogic;
-            NavigationService = navigationService;
-            AccountLogic = accountLogic;
+            _transactionLogic = transactionLogic;
+            _navigationService = navigationService;
+            _accountLogic = accountLogic;
+            _dialogService = dialogService;
 
             Account = new Account();
             Transactions = new List<Transaction>();
@@ -104,7 +107,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 { PageParameter.Account, Account }
             };
-            await NavigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+            await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -118,7 +121,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 { PageParameter.Transaction, SelectedTransaction }
             };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
 
             SelectedTransaction = null;
         }
@@ -136,7 +139,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 if (Account.IsActive)
                 {
-                    var accountResult = await AccountLogic.GetAccountAsync(Account.Id);
+                    var accountResult = await _accountLogic.GetAccountAsync(Account.Id);
                     if (accountResult.Success)
                     {
                         Account = accountResult.Data;
@@ -146,11 +149,11 @@ namespace BudgetBadger.Forms.Accounts
                         //show alert that account data may be stale
                     }
 
-                    var result = await TransactionLogic.GetAccountTransactionsAsync(Account);
+                    var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
+                        GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }
@@ -163,11 +166,23 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteNewTransactionCommand()
         {
-            var parameters = new NavigationParameters
+            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
             {
-                { PageParameter.Account, Account }
-            };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, Account }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            });
+
+            var splitAction = ActionSheetButton.CreateCancelButton("Split", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
+            });
+
+            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
+
+            await _dialogService.DisplayActionSheetAsync("New Transaction", simpleAction, splitAction, cancelAction);
         }
 
         public async Task ExecutePaymentCommand()
@@ -177,7 +192,7 @@ namespace BudgetBadger.Forms.Accounts
                 { PageParameter.Account, Account },
                 { PageParameter.TransactionAmount, Account.Payment }
             };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
         }
     }
 }
