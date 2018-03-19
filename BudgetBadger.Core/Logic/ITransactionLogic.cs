@@ -17,6 +17,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IEnumerable<Transaction>>> GetAccountTransactionsAsync(Account account);
         Task<Result<IEnumerable<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope);
         Task<Result<IEnumerable<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
+        Task<Result<IReadOnlyList<Transaction>>> GetSplitTransactionsAsync(Guid splitId);
 
         ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions);
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);
