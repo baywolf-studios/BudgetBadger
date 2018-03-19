@@ -261,6 +261,11 @@ namespace BudgetBadger.Logic
             throw new NotImplementedException();
         }
 
+        public Task<Result<IReadOnlyList<Transaction>>> GetSplitTransactionsAsync(Guid splitId)
+        {
+            return Task.FromResult(new Result<IReadOnlyList<Transaction>>());
+        }
+
         // handle logic to get transaction into usable state
         public async Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction)
         {
