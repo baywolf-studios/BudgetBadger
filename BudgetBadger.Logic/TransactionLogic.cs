@@ -274,6 +274,13 @@ namespace BudgetBadger.Logic
         {
             var result = new Result();
 
+            if (!transactionIds.Any())
+            {
+                result.Success = false;
+                result.Message = "No transactions to split";
+                return result;
+            }
+
             var splitId = Guid.NewGuid();
             var transactions = new List<Transaction>();
             try

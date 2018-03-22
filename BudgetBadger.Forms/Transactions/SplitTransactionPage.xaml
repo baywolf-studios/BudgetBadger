@@ -6,10 +6,20 @@
     <ContentPage.Content>
         <ListView x:Name="TransactionList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" >
             <ListView.Header>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Total: $30.00"/>
-                    <Label Text="Remaining: $2.00"/>
-                </StackLayout>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Text="Total"/>
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding Total}"/>
+                    <Label Grid.Row="0" Grid.Column="1" Text="Remaining"/>
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Remaining}"/>
+                </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
