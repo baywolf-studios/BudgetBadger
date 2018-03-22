@@ -40,11 +40,16 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _transactions, value);
         }
 
-        Transaction _selectedTransaction;
-        public Transaction SelectedTransaction
+        decimal _total;
+        public decimal Total
         {
-            get => _selectedTransaction;
-            set => SetProperty(ref _selectedTransaction, value);
+            get => _total;
+            set { SetProperty(ref _total, value); RaisePropertyChanged("Remaining"); }
+        }
+
+        public decimal Remaining
+        {
+            get => Total - (Transactions?.Sum(t => t.Amount) ?? 0m);
         }
 
         public SplitTransactionPageViewModel(INavigationService navigationService,
@@ -56,7 +61,6 @@ namespace BudgetBadger.Forms.Transactions
             _transLogic = transLogic;
 
             Transactions = new ObservableCollection<Transaction>();
-            SelectedTransaction = null;
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
