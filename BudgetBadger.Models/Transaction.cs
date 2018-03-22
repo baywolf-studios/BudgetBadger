@@ -75,7 +75,12 @@ namespace BudgetBadger.Models
         public Guid? SplitId
         {
             get => splitId;
-            set => SetProperty(ref splitId, value);
+            set { SetProperty(ref splitId, value); OnPropertyChanged("IsSplit"); }
+        }
+
+        public bool IsSplit
+        {
+            get => SplitId.HasValue;
         }
 
         DateTime serviceDate;

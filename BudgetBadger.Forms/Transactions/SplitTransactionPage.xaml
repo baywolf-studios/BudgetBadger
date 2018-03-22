@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView x:Name="TransactionList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" >
             <ListView.Header>
@@ -13,13 +16,14 @@
                     <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}">
                         <TextCell.ContextActions>
                             <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Edit" />
+                            <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Remove"/>
                             <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <Button Text="Add New Transaction" Command="{Binding AddCommand}"/>
+                <Button Text="Add New Transaction" Command="{Binding AddNewCommand}"/>
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>

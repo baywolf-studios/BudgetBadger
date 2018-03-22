@@ -317,7 +317,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transactions;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadLinkedTransactionsAsync(Guid linkedId)
+        public async Task<IEnumerable<Transaction>> ReadSplitTransactionsAsync(Guid splitId)
         {
             var transactions = new List<Transaction>();
 
@@ -342,7 +342,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  SplitId = @SplitId";
 
-                command.Parameters.AddWithValue("@SplitId", linkedId);
+                command.Parameters.AddWithValue("@SplitId", splitId);
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {

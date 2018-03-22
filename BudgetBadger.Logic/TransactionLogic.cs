@@ -44,9 +44,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Transaction>>> GetAccountTransactionsAsync(Account account)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(Account account)
         {
-            var result = new Result<IEnumerable<Transaction>>();
+            var result = new Result<IReadOnlyList<Transaction>>();
             var transactions = new List<Transaction>();
 
             transactions.AddRange(await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id));
@@ -69,9 +69,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope)
         {
-            var result = new Result<IEnumerable<Transaction>>();
+            var result = new Result<IReadOnlyList<Transaction>>();
 
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
 
@@ -83,9 +83,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Transaction>>> GetPayeeTransactionsAsync(Payee payee)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetPayeeTransactionsAsync(Payee payee)
         {
-            var result = new Result<IEnumerable<Transaction>>();
+            var result = new Result<IReadOnlyList<Transaction>>();
 
             var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
 
@@ -118,9 +118,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Transaction>>> GetTransactionsAsync()
+        public async Task<Result<IReadOnlyList<Transaction>>> GetTransactionsAsync()
         {
-            var result = new Result<IEnumerable<Transaction>>();
+            var result = new Result<IReadOnlyList<Transaction>>();
 
             var transactions = await TransactionDataAccess.ReadTransactionsAsync();
 
@@ -256,14 +256,95 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IReadOnlyList<Transaction>>> SaveSplitTransactionAsync(IEnumerable<Transaction> splitTransaction)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetTransactionsFromSplitAsync(Guid splitId)
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyList<Transaction>>();
+
+            var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId);
+
+            var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
+
+            result.Success = true;
+            result.Data = await Task.WhenAll(tasks);
+
+            return result;
         }
 
-        public Task<Result<IReadOnlyList<Transaction>>> GetSplitTransactionsAsync(Guid splitId)
+        public async Task<Result> SaveSplitTransactionAsync(IEnumerable<Guid> transactionIds)
         {
-            return Task.FromResult(new Result<IReadOnlyList<Transaction>>());
+            var result = new Result();
+
+            var splitId = Guid.NewGuid();
+            var transactions = new List<Transaction>();
+            try
+            {
+                foreach (var transactionId in transactionIds)
+                {
+                    var transaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
+                    if (transaction.IsActive)
+                    {
+                        transactions.Add(transaction);
+                    }
+                }
+
+                foreach (var transaction in transactions)
+                {
+                    if (transaction.IsSplit)
+                    {
+                        var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
+                        if (relatedTransactions.Count() <= 2) //need to unsplit
+                        {
+                            var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
+                            relatedTransaction.SplitId = null;
+                            relatedTransaction.ModifiedDateTime = DateTime.Now;
+                            await TransactionDataAccess.UpdateTransactionAsync(relatedTransaction);
+                        }
+                    }
+
+                    transaction.SplitId = splitId;
+                    transaction.ModifiedDateTime = DateTime.Now;
+                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
+                }
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId)
+        {
+            var result = new Result();
+
+            try
+            {
+                var transaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
+                if (transaction.IsActive)
+                {
+                    transaction.SplitId = null;
+                    transaction.ModifiedDateTime = DateTime.Now;
+                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "Transaction does not exist";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+
+            return result;
         }
 
         // handle logic to get transaction into usable state
