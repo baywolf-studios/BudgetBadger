@@ -117,11 +117,23 @@ namespace BudgetBadger.Forms.Accounts
                 return;
             }
 
-            var parameters = new NavigationParameters
+
+            if (SelectedTransaction.IsSplit)
             {
-                { PageParameter.Transaction, SelectedTransaction }
-            };
-            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.SplitTransactionId, SelectedTransaction.SplitId }
+                };
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Transaction, SelectedTransaction }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            }
 
             SelectedTransaction = null;
         }
