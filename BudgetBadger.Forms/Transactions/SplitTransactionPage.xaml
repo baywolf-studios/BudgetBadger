@@ -4,7 +4,7 @@
         <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView x:Name="TransactionList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" >
+        <ListView x:Name="TransactionList" IsRefreshing="{Binding IsBusy, Mode=OneWay}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
             <ListView.Header>
                 <Grid>
                     <Grid.RowDefinitions>

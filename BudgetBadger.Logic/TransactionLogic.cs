@@ -63,8 +63,10 @@ namespace BudgetBadger.Logic
 
             var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
+            var completedTasks = await Task.WhenAll(tasks);
+
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = CombineSplitTransactions(completedTasks);
 
             return result;
         }
@@ -299,7 +301,7 @@ namespace BudgetBadger.Logic
                     if (transaction.IsSplit)
                     {
                         var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
-                        if (relatedTransactions.Count() <= 2) //need to unsplit
+                        if (relatedTransactions.Count() == 2) //need to unsplit
                         {
                             var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
                             relatedTransaction.SplitId = null;
@@ -411,6 +413,39 @@ namespace BudgetBadger.Logic
             transaction.Account = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
 
             return transaction;
+        }
+
+        public IReadOnlyList<Transaction> CombineSplitTransactions(IEnumerable<Transaction> transactions)
+        {
+            var combinedTransactions = new List<Transaction>(transactions.Where(t => !t.IsSplit));
+
+            var transactionGroups = transactions.Where(t => t.IsSplit).GroupBy(t2 => t2.SplitId);
+
+            foreach (var transactionGroup in transactionGroups)
+            {
+                var combinedTransaction = transactionGroup.FirstOrDefault();
+                combinedTransaction.Id = combinedTransaction.SplitId.Value;
+                combinedTransaction.Amount = transactionGroup.Sum(t => t.Amount);
+
+                if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
+                {
+                    combinedTransaction.Account = new Account() { Description = "Split" };
+                }
+
+                if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
+                {
+                    combinedTransaction.Envelope = new Envelope() { Description = "Split" };
+                }
+
+                if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
+                {
+                    combinedTransaction.Payee = new Payee() { Description = "Split" };
+                }
+
+                combinedTransactions.Add(combinedTransaction);
+            }
+
+            return combinedTransactions;
         }
     }
 }

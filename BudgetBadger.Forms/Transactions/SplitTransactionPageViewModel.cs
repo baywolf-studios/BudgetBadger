@@ -33,6 +33,13 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _isBusy, value);
         }
 
+        Guid? _splitId;
+        public Guid? SplitId
+        {
+            get => _splitId;
+            set => SetProperty(ref _splitId, value);
+        }
+
         ObservableCollection<Transaction> _transactions;
         public ObservableCollection<Transaction> Transactions
         {
@@ -68,23 +75,23 @@ namespace BudgetBadger.Forms.Transactions
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var transactions = new List<Transaction>();
-
-            var splitTransaction = parameters.GetValue<IEnumerable<Transaction>>(PageParameter.SplitTransaction);
-            if (splitTransaction != null)
+            if (SplitId == null)
             {
-                transactions.AddRange(splitTransaction);
+                SplitId = parameters.GetValue<Guid>(PageParameter.SplitTransactionId);
+                if (SplitId.HasValue)
+                {
+                    var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
+                    if (result.Success)
+                    {
+                        Transactions = new ObservableCollection<Transaction>(result.Data);
+                    }
+                }
             }
 
-            var trans = parameters.GetValue<Transaction>(PageParameter.Transaction);
-            if (trans != null)
-            {
-                transactions.Add(trans);
-            }
-
-            foreach (var transaction in transactions)
+            var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
+            if (transaction != null)
             {
                 if (Transactions.Any(t => t.Id == transaction.Id))
                 {
