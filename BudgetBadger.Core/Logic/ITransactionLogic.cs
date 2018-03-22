@@ -10,14 +10,16 @@ namespace BudgetBadger.Core.Logic
     {
         Task<Result> ValidateTransactionAsync(Transaction transaction);
         Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction);
-        Task<Result<IReadOnlyList<Transaction>>> SaveSplitTransactionAsync(IEnumerable<Transaction> splitTransaction);
-        Task<Result> DeleteTransactionAsync(Guid id);
-        Task<Result<Transaction>> GetTransactionAsync(Guid id);
-        Task<Result<IEnumerable<Transaction>>> GetTransactionsAsync();
-        Task<Result<IEnumerable<Transaction>>> GetAccountTransactionsAsync(Account account);
-        Task<Result<IEnumerable<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope);
-        Task<Result<IEnumerable<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
-        Task<Result<IReadOnlyList<Transaction>>> GetSplitTransactionsAsync(Guid splitId);
+        Task<Result> DeleteTransactionAsync(Guid transactionId);
+        Task<Result<Transaction>> GetTransactionAsync(Guid transactionId);
+        Task<Result<IReadOnlyList<Transaction>>> GetTransactionsAsync();
+        Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(Account account);
+        Task<Result<IReadOnlyList<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope);
+        Task<Result<IReadOnlyList<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
+
+        Task<Result<IReadOnlyList<Transaction>>> GetTransactionsFromSplitAsync(Guid splitId);
+        Task<Result> SaveSplitTransactionAsync(IEnumerable<Guid> transactionIds);
+        Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId);
 
         ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions);
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);

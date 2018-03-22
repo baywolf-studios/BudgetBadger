@@ -126,12 +126,11 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
                     var parameters = new NavigationParameters
                     {
-                        { PageParameter.Transaction, Transaction }
+                        { PageParameter.Transaction, result.Data }
                     };
                     await _navigationService.GoBackAsync(parameters);
 
