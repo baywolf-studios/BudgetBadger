@@ -81,6 +81,7 @@ namespace BudgetBadger.Forms.Transactions
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             AddExistingCommand = new DelegateCommand(async () => await ExecuteAddExistingCommand());
             EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
+            RemoveCommand = new DelegateCommand<Transaction>(async a => await ExecuteRemoveCommand(a));
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
@@ -105,13 +106,28 @@ namespace BudgetBadger.Forms.Transactions
             var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
             if (transaction != null)
             {
-                if (Transactions.Any(t => t.Id == transaction.Id))
+                var transactionsToUpsert = new List<Transaction>();
+                if (transaction.IsCombined)
                 {
-                    var existingTransaction = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-                    Transactions.Remove(existingTransaction);
+                    var result = await _transLogic.GetTransactionsFromSplitAsync(transaction.SplitId.Value);
+                    if (result.Success)
+                    {
+                        transactionsToUpsert.AddRange(result.Data);
+                    }
                 }
-
-                Transactions.Add(transaction.DeepCopy());
+                else
+                {
+                    transactionsToUpsert.Add(transaction.DeepCopy());
+                }
+                foreach (var tran in transactionsToUpsert)
+                {
+                    if (Transactions.Any(t => t.Id == tran.Id))
+                    {
+                        var existingTransaction = Transactions.FirstOrDefault(t => t.Id == tran.Id);
+                        Transactions.Remove(existingTransaction);
+                    }
+                    Transactions.Add(tran);
+                }
             }
         }
 

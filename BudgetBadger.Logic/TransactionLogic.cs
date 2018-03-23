@@ -79,8 +79,10 @@ namespace BudgetBadger.Logic
 
             var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
+            var completedTasks = await Task.WhenAll(tasks);
+
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = CombineSplitTransactions(completedTasks);
 
             return result;
         }
@@ -93,8 +95,10 @@ namespace BudgetBadger.Logic
 
             var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
+            var completedTasks = await Task.WhenAll(tasks);
+
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = CombineSplitTransactions(completedTasks);
 
             return result;
         }
@@ -128,14 +132,17 @@ namespace BudgetBadger.Logic
 
             var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
 
+            var completedTasks = await Task.WhenAll(tasks);
+
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = CombineSplitTransactions(completedTasks);
 
             return result;
         }
 
         public IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText)
         {
+            //eventually look it up based on envelope description, account description, and payee description
             return transactions.ToList();
         }
 
@@ -288,6 +295,11 @@ namespace BudgetBadger.Logic
                 return result;
             }
 
+            if (transactionIds.Count() == 1)
+            {
+                return await RemoveTransactionFromSplitAsync(transactionIds.FirstOrDefault());
+            }
+
             var splitId = Guid.NewGuid();
             var transactions = new List<Transaction>();
             try
@@ -306,7 +318,7 @@ namespace BudgetBadger.Logic
                     if (transaction.IsSplit)
                     {
                         var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
-                        if (relatedTransactions.Count() == 2) //need to unsplit
+                        if (relatedTransactions.Count() == 2) //need to unsplit, need better logic here!!!
                         {
                             var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
                             relatedTransaction.SplitId = null;

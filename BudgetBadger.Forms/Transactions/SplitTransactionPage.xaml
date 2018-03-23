@@ -27,7 +27,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Margin="4">
+                        <Grid Margin="8">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
@@ -37,10 +37,9 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='E: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='A: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='P: {0}'}" />
                             <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
                         </Grid>
                         <ViewCell.ContextActions>
