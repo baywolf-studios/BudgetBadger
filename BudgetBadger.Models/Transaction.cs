@@ -78,6 +78,11 @@ namespace BudgetBadger.Models
             set { SetProperty(ref splitId, value); OnPropertyChanged("IsSplit"); }
         }
 
+        public bool IsCombined
+        {
+            get => Id == SplitId;
+        }
+
         public bool IsSplit
         {
             get => SplitId.HasValue;
