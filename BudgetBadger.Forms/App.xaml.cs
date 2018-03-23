@@ -172,6 +172,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
             containerRegistry.RegisterForNavigation<SplitTransactionPage, SplitTransactionPageViewModel>();
+            containerRegistry.RegisterForNavigation<TransactionSelectionPage, TransactionSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();

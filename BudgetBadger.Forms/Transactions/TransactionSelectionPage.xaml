@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" x:Class="BudgetBadger.Forms.Transactions.TransactionSelectionPage">
+    <ContentPage.Content>
+            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+                <ListView.Header>
+                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                </ListView.Header>
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+    </ContentPage.Content>
+</ContentPage>

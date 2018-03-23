@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly ITransactionLogic _transLogic;
 
         public ICommand AddNewCommand { get; set; }
+        public ICommand AddExistingCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -78,6 +79,7 @@ namespace BudgetBadger.Forms.Transactions
             Transactions = new ObservableCollection<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
+            AddExistingCommand = new DelegateCommand(async () => await ExecuteAddExistingCommand());
             EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
@@ -116,6 +118,11 @@ namespace BudgetBadger.Forms.Transactions
         public async Task ExecuteAddNewCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionPage);
+        }
+
+        public async Task ExecuteAddExistingCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.TransactionSelectionPage);
         }
 
         public async Task ExecuteEditCommand(Transaction transaction)
