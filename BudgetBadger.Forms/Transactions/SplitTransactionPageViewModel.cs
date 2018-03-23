@@ -25,6 +25,7 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand RemoveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand TransactionSelectedCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -38,6 +39,13 @@ namespace BudgetBadger.Forms.Transactions
         {
             get => _splitId;
             set => SetProperty(ref _splitId, value);
+        }
+
+        Transaction _selectedTransaction;
+        public Transaction SelectedTransaction
+        {
+            get => _selectedTransaction;
+            set => SetProperty(ref _selectedTransaction, value);
         }
 
         ObservableCollection<Transaction> _transactions;
@@ -73,6 +81,7 @@ namespace BudgetBadger.Forms.Transactions
             EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -86,6 +95,7 @@ namespace BudgetBadger.Forms.Transactions
                     if (result.Success)
                     {
                         Transactions = new ObservableCollection<Transaction>(result.Data);
+                        Total = Transactions.Sum(t => t.Amount);
                     }
                 }
             }
@@ -207,6 +217,25 @@ namespace BudgetBadger.Forms.Transactions
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteTransactionSelectedCommand()
+        {
+            if (SelectedTransaction == null)
+            {
+                return;
+            }
+
+
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Transaction, SelectedTransaction }
+            };
+
+            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+
+
+            SelectedTransaction = null;
         }
     }
 }
