@@ -37,11 +37,11 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
-                            <Label FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
-                            <Label FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
-                            <Label FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
-                            <Label FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
+                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
                         </Grid>
                         <ViewCell.ContextActions>
                             <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Edit" />
@@ -52,7 +52,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <Button Text="Add New Transaction" Command="{Binding AddNewCommand}" />
+                <StackLayout Orientation="Vertical">
+                    <Button Text="Add New Transaction" Command="{Binding AddNewCommand}" />
+                    <Button Text="Add Exisiting Transaction" Command="{Binding AddExistingCommand}" />
+                </StackLayout>
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>
