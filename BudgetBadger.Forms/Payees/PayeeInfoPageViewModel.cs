@@ -10,14 +10,16 @@ using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using Prism.Services;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class PayeeInfoPageViewModel : BindableBase, INavigatingAware
     {
-        readonly ITransactionLogic TransactionLogic;
-        readonly INavigationService NavigationService;
-        readonly IPayeeLogic PayeeLogic;
+        readonly ITransactionLogic _transactionLogic;
+        readonly INavigationService _navigationService;
+        readonly IPayeeLogic _payeeLogic;
+        readonly IPageDialogService _dialogService;
 
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -61,11 +63,12 @@ namespace BudgetBadger.Forms.Payees
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
 
-        public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic)
+        public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic, IPageDialogService dialogService)
         {
-            TransactionLogic = transactionLogic;
-            NavigationService = navigationService;
-            PayeeLogic = payeeLogic;
+            _transactionLogic = transactionLogic;
+            _navigationService = navigationService;
+            _payeeLogic = payeeLogic;
+            _dialogService = dialogService;
 
             Payee = new Payee();
             Transactions = new List<Transaction>();
@@ -95,7 +98,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 { PageParameter.Payee, Payee }
             };
-            await NavigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -105,11 +108,22 @@ namespace BudgetBadger.Forms.Payees
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (SelectedTransaction.IsSplit)
             {
-                { PageParameter.Transaction, SelectedTransaction }
-            };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.SplitTransactionId, SelectedTransaction.SplitId }
+                };
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Transaction, SelectedTransaction }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            }
 
             SelectedTransaction = null;
         }
@@ -127,7 +141,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 if (Payee.IsActive)
                 {
-                    var payeeResult = await PayeeLogic.GetPayeeAsync(Payee.Id);
+                    var payeeResult = await _payeeLogic.GetPayeeAsync(Payee.Id);
                     if (payeeResult.Success)
                     {
                         Payee = payeeResult.Data;
@@ -137,11 +151,11 @@ namespace BudgetBadger.Forms.Payees
                         //show alert that account data may be stale
                     }
 
-                    var result = await TransactionLogic.GetPayeeTransactionsAsync(Payee);
+                    var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
+                        GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }
@@ -154,11 +168,26 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteNewTransactionCommand()
         {
-            var parameters = new NavigationParameters
+            
+
+
+            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
             {
-                { PageParameter.Payee, Payee }
-            };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, Payee }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            });
+
+            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
+            });
+
+            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
+
+            await _dialogService.DisplayActionSheetAsync("New Transaction", simpleAction, splitAction, cancelAction);
         }
     }
 }

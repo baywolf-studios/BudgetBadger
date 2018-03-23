@@ -187,7 +187,7 @@ namespace BudgetBadger.Forms.Accounts
                 await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
             });
 
-            var splitAction = ActionSheetButton.CreateCancelButton("Split", async () =>
+            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
             {
                 await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
             });

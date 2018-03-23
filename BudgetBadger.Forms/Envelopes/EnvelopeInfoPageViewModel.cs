@@ -10,14 +10,16 @@ using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
+using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeInfoPageViewModel : BindableBase, INavigatingAware
     {
-        readonly ITransactionLogic TransactionLogic;
-        readonly INavigationService NavigationService;
-        readonly IEnvelopeLogic EnvelopeLogic;
+        readonly ITransactionLogic _transactionLogic;
+        readonly INavigationService _navigationService;
+        readonly IEnvelopeLogic _envelopeLogic;
+        readonly IPageDialogService _dialogService;
 
         public ICommand NewTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -59,11 +61,12 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic)
+        public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
-            TransactionLogic = transactionLogic;
-            NavigationService = navigationService;
-            EnvelopeLogic = envelopeLogic;
+            _transactionLogic = transactionLogic;
+            _navigationService = navigationService;
+            _envelopeLogic = envelopeLogic;
+            _dialogService = dialogService;
 
             Budget = new Budget();
             Transactions = new List<Transaction>();
@@ -93,7 +96,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 { PageParameter.Budget, Budget }
             };
-            await NavigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
 
         public async Task ExecuteTransactionSelectedCommand()
@@ -103,22 +106,48 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (SelectedTransaction.IsSplit)
             {
-                { PageParameter.Transaction, SelectedTransaction }
-            };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.SplitTransactionId, SelectedTransaction.SplitId }
+                };
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Transaction, SelectedTransaction }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            }
 
             SelectedTransaction = null;
         }
 
         public async Task ExecuteNewTransactionCommand()
         {
-            var parameters = new NavigationParameters
+            
+
+
+            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
             {
-                { PageParameter.Envelope, Budget.Envelope }
-            };
-            await NavigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Envelope, Budget.Envelope }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            });
+
+            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
+            });
+
+            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
+
+            await _dialogService.DisplayActionSheetAsync("New Transaction", simpleAction, splitAction, cancelAction);
         }
 
         public async Task ExecuteRefreshCommand()
@@ -134,18 +163,18 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Budget.IsActive)
                 {
-                    var budgetResult = await EnvelopeLogic.GetBudgetAsync(Budget.Id);
+                    var budgetResult = await _envelopeLogic.GetBudgetAsync(Budget.Id);
                     if (budgetResult.Success)
                     {
                         Budget = budgetResult.Data;
                     }
                 }
 
-                var result = await TransactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
+                var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                 if (result.Success)
                 {
                     Transactions = result.Data;
-                    GroupedTransactions = TransactionLogic.GroupTransactions(Transactions);
+                    GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                     SelectedTransaction = null;
                 }
             }
