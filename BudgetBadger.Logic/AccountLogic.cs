@@ -269,11 +269,11 @@ namespace BudgetBadger.Logic
             // balance
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
 
-            account.Balance = accountTransactions.Sum(t => t.Amount);
+            account.Balance = accountTransactions.Where(t => t.IsActive).Sum(t => t.Amount);
 
             var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
 
-            account.Balance -= payeeTransactions.Sum(t => t.Amount);
+            account.Balance -= payeeTransactions.Where(t => t.IsActive).Sum(t => t.Amount);
 
             // payment 
             var dateTimeNow = DateTime.Now;
@@ -286,8 +286,9 @@ namespace BudgetBadger.Logic
 
             var debtTransactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(account.Id);
 
-
-            var debtTransactionAmount = debtTransactions.Where(d => d.ServiceDate <= dateTimeNow).Sum(d => d.Amount);
+            var debtTransactionAmount = debtTransactions
+                .Where(d => d.IsActive && d.ServiceDate <= dateTimeNow)
+                .Sum(d => d.Amount);
 
             account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance;
 

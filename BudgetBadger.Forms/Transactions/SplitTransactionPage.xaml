@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView x:Name="TransactionList" IsRefreshing="{Binding IsBusy, Mode=OneWay}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
             <ListView.Header>
-                <Grid>
+                <Grid Margin="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="Total"/>
-                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding Total}"/>
-                    <Label Grid.Row="0" Grid.Column="1" Text="Remaining"/>
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Remaining}"/>
+                    <Label Grid.Row="0" Grid.Column="0" Text="Total" />
+                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding Total}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Remaining" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Remaining}" />
                 </Grid>
             </ListView.Header>
+            <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                </ListView.Behaviors>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}">
-                        <TextCell.ContextActions>
+                    <ViewCell>
+                        <Grid Margin="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
+                            <Label FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
+                            <Label FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
+                            <Label FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
+                            <Label FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                        </Grid>
+                        <ViewCell.ContextActions>
                             <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Edit" />
-                            <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Remove"/>
+                            <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Remove" />
                             <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                        </TextCell.ContextActions>
-                    </TextCell>
+                        </ViewCell.ContextActions>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <Button Text="Add New Transaction" Command="{Binding AddNewCommand}"/>
+                <Button Text="Add New Transaction" Command="{Binding AddNewCommand}" />
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>
