@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,30 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
             _settings = settings;
         }
 
+        static Stream Compress(Stream decompressed)
+        {
+            var compressed = new MemoryStream();
+            using (var zip = new GZipStream(compressed, CompressionLevel.Fastest, true))
+            {
+                decompressed.CopyTo(zip);
+            }
+
+            compressed.Seek(0, SeekOrigin.Begin);
+            return compressed;
+        }
+
+        static Stream Decompress(Stream compressed)
+        {
+            var decompressed = new MemoryStream();
+            using (var zip = new GZipStream(compressed, CompressionMode.Decompress, true))
+            {
+                zip.CopyTo(decompressed);
+            }
+
+            decompressed.Seek(0, SeekOrigin.Begin);
+            return decompressed;
+        }
+
         public async Task<Result> PullFilesTo(IDirectoryInfo destinationDirectory)
         {
             var result = new Result();
@@ -29,7 +54,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
             {
                 using (var dbx = new DropboxClient(_accessToken))
                 {
-                    var folderArgs = new ListFolderArg("", recursive:true);
+                    var folderArgs = new ListFolderArg("", recursive: true);
 
                     var folderList = await dbx.Files.ListFolderAsync(folderArgs);
 
@@ -50,7 +75,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                         {
                             if (compressed)
                             {
-                                using (var uncompressedFilestream = new GZipStream(fileStream, CompressionMode.Decompress))
+                                using (var uncompressedFilestream = Decompress(fileStream))
                                 {
                                     await uncompressedFilestream.CopyToAsync(destinationFile);
                                 }
@@ -85,11 +110,19 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
-                    using (var compressedFileStream = new GZipStream(fileStream, CompressionLevel.Fastest))
+                    using (var compressedFileStream = Compress(fileStream))    
                     using (var dbx = new DropboxClient(_accessToken))
                     {
-                        var commitInfo = new CommitInfo("/" + file.Name + ".tz", mode: WriteMode.Overwrite.Instance);
-                        var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);
+                        CommitInfo commitInfo;
+                        if (file.Name.EndsWith(".tz"))
+                        {
+                            commitInfo = new CommitInfo("/" + file.Name + ".tz", mode: WriteMode.Overwrite.Instance);
+                        }
+                        else
+                        {
+                            commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
+                        }
+                        var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, compressedFileStream);
                     }
                 }
 
