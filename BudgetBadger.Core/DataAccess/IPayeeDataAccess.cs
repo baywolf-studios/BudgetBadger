@@ -9,7 +9,7 @@ namespace BudgetBadger.Core.DataAccess
     {
         Task CreatePayeeAsync(Payee payee);
         Task<Payee> ReadPayeeAsync(Guid id);
-        Task<IEnumerable<Payee>> ReadPayeesAsync();
+        Task<IReadOnlyList<Payee>> ReadPayeesAsync();
         Task UpdatePayeeAsync(Payee payee);
         Task DeletePayeeAsync(Guid id);
     }

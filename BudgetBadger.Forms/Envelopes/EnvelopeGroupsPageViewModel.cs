@@ -47,25 +47,25 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedEnvelopeGroup, value);
         }
 
-        IEnumerable<EnvelopeGroup> _envelopeGroups;
-        public IEnumerable<EnvelopeGroup> EnvelopeGroups
+        IReadOnlyList<EnvelopeGroup> _envelopeGroups;
+        public IReadOnlyList<EnvelopeGroup> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
         }
 
-        IEnumerable<EnvelopeGroup> _filteredEnvelopeGroups;
-        public IEnumerable<EnvelopeGroup> FilteredEnvelopeGroups
+        IReadOnlyList<EnvelopeGroup> _filteredEnvelopeGroups;
+        public IReadOnlyList<EnvelopeGroup> FilteredEnvelopeGroups
         {
             get => _filteredEnvelopeGroups;
-            set { SetProperty(ref _filteredEnvelopeGroups, value); RaisePropertyChanged("NoSearchResults"); }
+            set => SetProperty(ref _filteredEnvelopeGroups, value);
         }
 
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); RaisePropertyChanged("NoSearchResults"); }
+            set => SetProperty(ref _searchText, value);
         }
 
         public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; }
@@ -194,6 +194,7 @@ namespace BudgetBadger.Forms.Envelopes
         public void ExecuteSearchCommand()
         {
             FilteredEnvelopeGroups = _envelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
+            RaisePropertyChanged("NoSearchResults");
         }
     }
 }

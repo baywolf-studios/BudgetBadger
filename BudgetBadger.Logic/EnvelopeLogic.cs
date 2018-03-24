@@ -52,9 +52,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule)
+        public async Task<Result<IReadOnlyList<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule)
         {
-            var result = new Result<IEnumerable<Budget>>();
+            var result = new Result<IReadOnlyList<Budget>>();
 
             try
             {
@@ -106,9 +106,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Budget>>> GetBudgetsAsync(BudgetSchedule schedule)
+        public async Task<Result<IReadOnlyList<Budget>>> GetBudgetsAsync(BudgetSchedule schedule)
         {
-            var result = new Result<IEnumerable<Budget>>();
+            var result = new Result<IReadOnlyList<Budget>>();
 
             try
             {
@@ -249,16 +249,16 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
+        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
         {
-            var result = new Result<IEnumerable<EnvelopeGroup>>();
+            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
 
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome() && !e.IsDebt());
                 result.Success = true;
-                result.Data = filteredEnvelopeGroups;
+                result.Data = filteredEnvelopeGroups.ToList();
             }
             catch (Exception ex)
             {
@@ -269,24 +269,24 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IEnumerable<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText)
+        public IReadOnlyList<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return budgets;
+                return budgets.ToList();
             }
 
-            return budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower()));
+            return budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
-        public IEnumerable<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroup, string searchText)
+        public IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroup, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return envelopeGroup;
+                return envelopeGroup.ToList();
             }
 
-            return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
+            return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
         public ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets)

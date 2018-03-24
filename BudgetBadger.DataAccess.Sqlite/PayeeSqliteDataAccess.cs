@@ -155,7 +155,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return payee;
         }
 
-        public async Task<IEnumerable<Payee>> ReadPayeesAsync()
+        public async Task<IReadOnlyList<Payee>> ReadPayeesAsync()
         {
             var payees = new List<Payee>();
 

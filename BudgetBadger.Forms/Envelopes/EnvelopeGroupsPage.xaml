@@ -8,7 +8,11 @@
                 </ListView.Behaviors>
                 <ListView.Header>
                     <StackLayout Orientation="Vertical">
-                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
+                            <SearchBar.Behaviors>
+                                <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
+                            </SearchBar.Behaviors>
+                        </SearchBar>
                         <Button IsVisible="{Binding NoSearchResults}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
                     </StackLayout>
                 </ListView.Header>

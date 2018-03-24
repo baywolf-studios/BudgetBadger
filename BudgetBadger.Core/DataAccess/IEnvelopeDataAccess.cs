@@ -9,27 +9,27 @@ namespace BudgetBadger.Core.DataAccess
     {
         Task CreateEnvelopeAsync(Envelope envelope);
         Task<Envelope> ReadEnvelopeAsync(Guid id);
-        Task<IEnumerable<Envelope>> ReadEnvelopesAsync();
+        Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync();
         Task UpdateEnvelopeAsync(Envelope envelope);
         Task DeleteEnvelopeAsync(Guid id);
 
         Task CreateBudgetAsync(Budget budget);
         Task<Budget> ReadBudgetAsync(Guid id);
-        Task<IEnumerable<Budget>> ReadBudgetsAsync();
-        Task<IEnumerable<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId);
-        Task<IEnumerable<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId);
+        Task<IReadOnlyList<Budget>> ReadBudgetsAsync();
+        Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId);
+        Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId);
         Task UpdateBudgetAsync(Budget budget);
         Task DeleteBudgetAsync(Guid id);
 
         Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id);
-        Task<IEnumerable<EnvelopeGroup>> ReadEnvelopeGroupsAsync();
+        Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync();
         Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task DeleteEnvelopeGroupAsync(Guid id);
 
         Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
         Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id);
-        Task<IEnumerable<BudgetSchedule>> ReadBudgetSchedulesAsync();
+        Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync();
         Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
         Task DeleteBudgetScheduleAsync(Guid id);
     }

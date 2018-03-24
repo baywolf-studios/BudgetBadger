@@ -134,9 +134,23 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<AccountType>>> GetAccountTypesAsync()
+        public async Task<Result<IReadOnlyList<AccountType>>> GetAccountTypesAsync()
         {
-            return new Result<IEnumerable<AccountType>> { Success = true, Data = await AccountDataAccess.ReadAccountTypesAsync() };
+            var result = new Result<IReadOnlyList<AccountType>>();
+
+            try
+            {
+                var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
+                result.Success = true;
+                result.Data = accountTypes;
+            }
+            catch(Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)

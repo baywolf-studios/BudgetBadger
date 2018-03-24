@@ -9,12 +9,12 @@ namespace BudgetBadger.Core.DataAccess
     {
         Task CreateAccountAsync(Account account);
         Task<Account> ReadAccountAsync(Guid id);
-        Task<IEnumerable<Account>> ReadAccountsAsync();
+        Task<IReadOnlyList<Account>> ReadAccountsAsync();
         Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(Guid id);
 
         Task CreateAccountTypeAsync(AccountType accountType);
-        Task<IEnumerable<AccountType>> ReadAccountTypesAsync();
+        Task<IReadOnlyList<AccountType>> ReadAccountTypesAsync();
         Task UpdateAccountTypeAsync(AccountType accountType);
         Task DeleteAccountTypeAsync(Guid id);
     }

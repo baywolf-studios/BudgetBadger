@@ -358,7 +358,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return budget;
         }
 
-        public async Task<IEnumerable<Budget>> ReadBudgetsAsync()
+        public async Task<IReadOnlyList<Budget>> ReadBudgetsAsync()
         {
             var budgets = new List<Budget>();
 
@@ -441,7 +441,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return budgets;
         }
 
-        public async Task<IEnumerable<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
+        public async Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
         {
             var budgets = new List<Budget>();
 
@@ -527,7 +527,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return budgets;
         }
 
-        public async Task<IEnumerable<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
+        public async Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
         {
             var budgets = new List<Budget>();
 
@@ -651,7 +651,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return budgetSchedule;
         }
 
-        public async Task<IEnumerable<BudgetSchedule>> ReadBudgetSchedulesAsync()
+        public async Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync()
         {
             var budgetSchedules = new List<BudgetSchedule>();
 
@@ -784,7 +784,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return envelopeGroup;
         }
 
-        public async Task<IEnumerable<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
+        public async Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
         {
             var envelopeGroups = new List<EnvelopeGroup>();
 
@@ -821,7 +821,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return envelopeGroups;
         }
 
-        public async Task<IEnumerable<Envelope>> ReadEnvelopesAsync()
+        public async Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync()
         {
             var envelopes = new List<Envelope>();
 
