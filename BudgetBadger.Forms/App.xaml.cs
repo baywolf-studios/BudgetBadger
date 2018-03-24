@@ -165,13 +165,14 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<AccountInfoPage, AccountInfoPageViewModel>();
             containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeesPage, PayeesPageViewModel>();
+            containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeeInfoPage, PayeeInfoPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopesPage, EnvelopesPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeInfoPage, EnvelopeInfoPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>();
-            containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
+            containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
             containerRegistry.RegisterForNavigation<SplitTransactionPage, SplitTransactionPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionSelectionPage, TransactionSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();

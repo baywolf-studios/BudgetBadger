@@ -132,7 +132,7 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     { PageParameter.Transaction, SelectedTransaction }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             }
 
             SelectedTransaction = null;
@@ -184,7 +184,7 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     { PageParameter.Account, Account }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             });
 
             var splitAction = ActionSheetButton.CreateButton("Split", async () =>
@@ -204,7 +204,7 @@ namespace BudgetBadger.Forms.Accounts
                 { PageParameter.Account, Account },
                 { PageParameter.TransactionAmount, Account.Payment }
             };
-            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
     }
 }

@@ -98,9 +98,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Payee>>> GetPayeesForSelectionAsync()
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync()
         {
-            var result = new Result<IEnumerable<Payee>>();
+            var result = new Result<IReadOnlyList<Payee>>();
 
             try
             {
@@ -124,9 +124,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Payee>>> GetPayeesAsync()
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync()
         {
-            var result = new Result<IEnumerable<Payee>>();
+            var result = new Result<IReadOnlyList<Payee>>();
 
             try
             {
@@ -148,7 +148,7 @@ namespace BudgetBadger.Logic
                 var payeesTemp = await Task.WhenAll(tasks);
 
                 result.Success = true;
-                result.Data = payeesTemp.Where(p => !p.IsAccount);
+                result.Data = payeesTemp.Where(p => !p.IsAccount).ToList();
             }
             catch (Exception ex)
             {
@@ -159,14 +159,14 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IEnumerable<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText)
+        public IReadOnlyList<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return payees;
+                return payees.ToList();
             }
 
-            return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
+            return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
         public ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees)

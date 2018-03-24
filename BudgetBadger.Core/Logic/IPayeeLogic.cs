@@ -12,10 +12,10 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Payee>> SavePayeeAsync(Payee payee);
         Task<Result> DeletePayeeAsync(Guid id);
         Task<Result<Payee>> GetPayeeAsync(Guid id);
-        Task<Result<IEnumerable<Payee>>> GetPayeesAsync();
-        Task<Result<IEnumerable<Payee>>> GetPayeesForSelectionAsync();
+        Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync();
+        Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync();
 
-        IEnumerable<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
+        IReadOnlyList<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
         ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees);
     }
 }

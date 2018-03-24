@@ -139,14 +139,14 @@ namespace BudgetBadger.Logic
             return new Result<IEnumerable<AccountType>> { Success = true, Data = await AccountDataAccess.ReadAccountTypesAsync() };
         }
 
-        public IEnumerable<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)
+        public IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return accounts;
+                return accounts.ToList();
             }
 
-            return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower()));
+            return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
         public ILookup<string, Account> GroupAccounts(IEnumerable<Account> accounts)
