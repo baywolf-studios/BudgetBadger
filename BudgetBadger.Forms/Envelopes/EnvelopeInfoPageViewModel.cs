@@ -120,7 +120,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     { PageParameter.Transaction, SelectedTransaction }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             }
 
             SelectedTransaction = null;
@@ -137,7 +137,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     { PageParameter.Envelope, Budget.Envelope }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             });
 
             var splitAction = ActionSheetButton.CreateButton("Split", async () =>

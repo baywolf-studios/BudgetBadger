@@ -133,7 +133,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteAddNewCommand()
         {
-            await _navigationService.NavigateAsync(PageName.TransactionPage);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
         }
 
         public async Task ExecuteAddExistingCommand()
@@ -147,7 +147,7 @@ namespace BudgetBadger.Forms.Transactions
             {
                 { PageParameter.Transaction, transaction }
             };
-            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
         async Task RemoveTransaction(Transaction transaction)
@@ -255,7 +255,7 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.Transaction, SelectedTransaction }
             };
 
-            await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
 
 
             SelectedTransaction = null;

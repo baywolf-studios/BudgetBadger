@@ -8,9 +8,9 @@
             <ListView.Header>
                 <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
                     <SearchBar.Behaviors>
-                    <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                </SearchBar.Behaviors>
-            </SearchBar>
+                        <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
+                    </SearchBar.Behaviors>
+                </SearchBar>
             </ListView.Header>
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />

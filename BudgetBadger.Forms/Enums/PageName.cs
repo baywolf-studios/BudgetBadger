@@ -12,6 +12,7 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string EnvelopeEditPage = "EnvelopeEditPage";
         public static readonly string EnvelopeGroupsPage = "EnvelopeGroupsPage";
         public static readonly string PayeesPage = "PayeesPage";
+        public static readonly string PayeeSelectionPage = "PayeeSelectionPage";
         public static readonly string PayeeInfoPage = "PayeeInfoPage";
         public static readonly string PayeeEditPage = "PayeeEditPage";
         public static readonly string ReportsPage = "ReportsPage";
@@ -23,7 +24,7 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string SettingsPage = "SettingsPage";
         public static readonly string SyncPage = "SyncPage";
         public static readonly string SyncModesPage = "SyncModesPage";
-        public static readonly string TransactionPage = "TransactionPage";
+        public static readonly string TransactionEditPage = "TransactionEditPage";
         public static readonly string SplitTransactionPage = "SplitTransactionPage";
         public static readonly string TransactionSelectionPage = "TransactionSelectionPage";
     }

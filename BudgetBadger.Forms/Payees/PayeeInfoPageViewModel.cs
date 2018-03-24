@@ -122,7 +122,7 @@ namespace BudgetBadger.Forms.Payees
                 {
                     { PageParameter.Transaction, SelectedTransaction }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             }
 
             SelectedTransaction = null;
@@ -177,7 +177,7 @@ namespace BudgetBadger.Forms.Payees
                 {
                     { PageParameter.Payee, Payee }
                 };
-                await _navigationService.NavigateAsync(PageName.TransactionPage, parameters);
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             });
 
             var splitAction = ActionSheetButton.CreateButton("Split", async () =>

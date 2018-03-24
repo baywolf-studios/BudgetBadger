@@ -13,7 +13,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionPageViewModel : BindableBase, INavigatingAware
+    public class TransactionEditPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -47,7 +47,7 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand AccountSelectedCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public TransactionPageViewModel(INavigationService navigationService,
+        public TransactionEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
                                         ISync syncService)
@@ -157,7 +157,7 @@ namespace BudgetBadger.Forms.Transactions
             {
                 { PageParameter.SelectionMode, true }
             };
-            await _navigationService.NavigateAsync(PageName.PayeesPage, parameters);
+            await _navigationService.NavigateAsync(PageName.PayeeSelectionPage, parameters);
         }
 
         public async Task ExecuteEnvelopeSelectedCommand()

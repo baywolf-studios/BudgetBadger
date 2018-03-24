@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
-namespace BudgetBadger.Forms.Transactions
+namespace BudgetBadger.Forms.Payees
 {
-    public partial class TransactionPage : ContentPage
+    public partial class PayeeSelectionPage : ContentPage
     {
-        public TransactionPage()
+        public PayeeSelectionPage()
         {
             InitializeComponent();
         }

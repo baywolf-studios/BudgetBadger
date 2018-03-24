@@ -1,20 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Models;
 using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using System.Linq;
-using Prism.Mvvm;
-using Prism.AppModel;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
+    public class PayeeSelectionPageViewModel : BindableBase, INavigatingAware
     {
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
@@ -22,11 +21,8 @@ namespace BudgetBadger.Forms.Payees
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand AddCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -65,7 +61,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _searchText, value);
         }
 
-        public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
+        public PayeeSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
         {
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
@@ -79,23 +75,11 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public async void OnAppearing()
-        {
-            await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteSelectedCommand()
@@ -110,7 +94,7 @@ namespace BudgetBadger.Forms.Payees
                 { PageParameter.Payee, SelectedPayee }
             };
 
-            await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+            await _navigationService.GoBackAsync(parameters);
 
             SelectedPayee = null;
         }
@@ -126,7 +110,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                var result = await _payeeLogic.GetPayeesForSelectionAsync();
 
                 if (result.Success)
                 {
@@ -166,36 +150,6 @@ namespace BudgetBadger.Forms.Payees
             else
             {
                 //show error
-            }
-        }
-
-        public async Task ExecuteAddCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.PayeeEditPage);
-
-            SelectedPayee = null;
-        }
-
-        public async Task ExecuteEditCommand(Payee payee)
-        {
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.Payee, payee }
-            };
-            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
-        }
-
-        public async Task ExecuteDeleteCommand(Payee payee)
-        {
-            var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
-
-            if (result.Success)
-            {
-                await ExecuteRefreshCommand();
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
         }
 

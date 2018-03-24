@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
+<ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage" Binding="{Binding Transaction.IsNew}" Value="True">
             <Setter Property="Title" Value="New Transaction" />
