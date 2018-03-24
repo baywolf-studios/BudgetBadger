@@ -20,18 +20,25 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        bool _dateRangeFilter;
+        public bool DateRangeFilter
+        {
+            get => _dateRangeFilter;
+            set => SetProperty(ref _dateRangeFilter, value);
+        }
+
         DateTime _beginDate;
         public DateTime BeginDate
         {
             get => _beginDate;
-            set { SetProperty(ref _beginDate, value); RefreshCommand.Execute(null); }
+            set => SetProperty(ref _beginDate, value);
         }
 
         DateTime _endDate;
         public DateTime EndDate
         {
             get => _endDate;
-            set { SetProperty(ref _endDate, value); RefreshCommand.Execute(null); }
+            set => SetProperty(ref _endDate, value);
         }
 
         Chart _netWorthChart;
@@ -49,7 +56,7 @@ namespace BudgetBadger.Forms.Reports
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
             BeginDate = DateTime.MinValue;
-            EndDate = DateTime.MaxValue;
+            EndDate = DateTime.Now;
         }
 
         public async void OnAppearing()
@@ -65,7 +72,10 @@ namespace BudgetBadger.Forms.Reports
         {
             var entries = new List<Entry>();
 
-            var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
+            var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
+            var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+
+            var netWorthReportResult = await _reportLogic.GetNetWorthReport(beginDate, endDate);
             if (netWorthReportResult.Success)
             {
                 foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))

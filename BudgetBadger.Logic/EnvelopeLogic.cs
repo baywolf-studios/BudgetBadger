@@ -207,6 +207,27 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync()
+        {
+            var result = new Result<IReadOnlyList<Envelope>>();
+
+            try
+            {
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
+                var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
+
+                result.Success = true;
+                result.Data = activeEnvelopes.ToList();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result> DeleteEnvelopeGroupAsync(Guid id)
         {
             var result = new Result();

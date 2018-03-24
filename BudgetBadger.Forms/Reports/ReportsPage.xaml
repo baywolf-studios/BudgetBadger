@@ -5,6 +5,8 @@
             <Button Text="Net Worth Report" Command="{Binding NetWorthCommand}"/>
             <Button Text="Envelopes Spending Report" Command="{Binding EnvelopesSpendingCommand}"/>
             <Button Text="Payees Spending Report" Command="{Binding PayeesSpendingCommand}"/>
+            <Button Text="Spending Trend By Envelope Report" Command="{Binding EnvelopeTrendCommand}"/>
+            <Button Text="Spending Trend By Payee Report" Command="{Binding PayeeTrendCommand}"/>
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

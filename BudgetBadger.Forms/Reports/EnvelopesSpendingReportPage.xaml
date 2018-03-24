@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" x:Class="BudgetBadger.Forms.Reports.EnvelopesSpendingReportPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" x:Class="BudgetBadger.Forms.Reports.EnvelopesSpendingReportPage">
     <ContentPage.Content>
         <Grid Margin="8">
             <Grid.RowDefinitions>
@@ -12,10 +12,22 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <microcharts:ChartView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="envelopeTotals" Chart="{Binding EnvelopeChart}"/>
-            <Label Grid.Row="1" Grid.Column="0" Text="Begin Date:"/>
-            <DatePicker Grid.Row="2" Grid.Column="0" Date="{Binding BeginDate}"/>
-            <Label Grid.Row="1" Grid.Column="1" Text="End Date:"/>
-            <DatePicker Grid.Row="2" Grid.Column="1" Date="{Binding EndDate}"/>
+            <Switch IsToggled="{Binding DateRangeFilter}" Grid.Row="1" Grid.Column="1">
+                <Switch.Behaviors>
+                    <b:EventToCommandBehavior EventName="Toggled" Command="{Binding RefreshCommand}" />
+                </Switch.Behaviors>
+            </Switch>
+            <Label Grid.Row="1" Grid.Column="0" Text="Date Range"/>
+            <DatePicker IsVisible="{Binding DateRangeFilter}" Grid.Row="2" Grid.Column="0" Date="{Binding BeginDate}">
+                <DatePicker.Behaviors>
+                    <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                </DatePicker.Behaviors>
+            </DatePicker>
+            <DatePicker IsVisible="{Binding DateRangeFilter}" Grid.Row="2" Grid.Column="1" Date="{Binding EndDate}">
+                <DatePicker.Behaviors>
+                    <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                </DatePicker.Behaviors>
+            </DatePicker>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

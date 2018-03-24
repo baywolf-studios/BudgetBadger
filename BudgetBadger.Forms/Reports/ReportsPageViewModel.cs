@@ -21,6 +21,8 @@ namespace BudgetBadger.Forms.Reports
         public ICommand NetWorthCommand { get; set; }
         public ICommand EnvelopesSpendingCommand { get; set; }
         public ICommand PayeesSpendingCommand { get; set; }
+        public ICommand EnvelopeTrendCommand { get; set; }
+        public ICommand PayeeTrendCommand { get; set; }
 
         public ReportsPageViewModel(INavigationService navigationService)
         {
@@ -29,6 +31,8 @@ namespace BudgetBadger.Forms.Reports
             NetWorthCommand = new DelegateCommand(async () => await ExecuteNetWorthCommand());
             EnvelopesSpendingCommand = new DelegateCommand(async () => await ExecuteEnvelopesSpendingCommand());
             PayeesSpendingCommand = new DelegateCommand(async () => await ExecutePayeesSpendingCommand());
+            EnvelopeTrendCommand = new DelegateCommand(async () => await ExecuteEnvelopeTrendCommand());
+            PayeeTrendCommand = new DelegateCommand(async () => await ExecutePayeeTrendCommand());
         }
 
         public async Task ExecuteNetWorthCommand()
@@ -44,6 +48,16 @@ namespace BudgetBadger.Forms.Reports
         public async Task ExecutePayeesSpendingCommand()
         {
             await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
+        }
+
+        public async Task ExecuteEnvelopeTrendCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.EnvelopeTrendReportPage);
+        }
+
+        public async Task ExecutePayeeTrendCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.PayeeTrendReportPage);
         }
     }
 }
