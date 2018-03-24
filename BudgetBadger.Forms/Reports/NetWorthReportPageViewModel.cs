@@ -20,6 +20,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        DateTime _beginDate;
+        public DateTime BeginDate
+        {
+            get => _beginDate;
+            set { SetProperty(ref _beginDate, value); RefreshCommand.Execute(null); }
+        }
+
+        DateTime _endDate;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set { SetProperty(ref _endDate, value); RefreshCommand.Execute(null); }
+        }
+
         Chart _netWorthChart;
         public Chart NetWorthChart
         {
@@ -33,6 +47,9 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+
+            BeginDate = DateTime.MinValue;
+            EndDate = DateTime.MaxValue;
         }
 
         public async void OnAppearing()
@@ -48,7 +65,7 @@ namespace BudgetBadger.Forms.Reports
         {
             var entries = new List<Entry>();
 
-            var netWorthReportResult = await _reportLogic.GetNetWorthReport();
+            var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
             if (netWorthReportResult.Success)
             {
                 foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))
@@ -67,8 +84,7 @@ namespace BudgetBadger.Forms.Reports
                     });
                 }
             }
-            NetWorthChart = new LineChart();
-            NetWorthChart.Entries = entries;
+            NetWorthChart = new LineChart() { Entries = entries };
         }
     }
 }

@@ -94,5 +94,8 @@
     <Compile Update="Transactions\SplitTransactionPage.xaml.cs">
       <DependentUpon>SplitTransactionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Accounts\AccountSelectionPage.xaml.cs">
+      <DependentUpon>AccountSelectionPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
