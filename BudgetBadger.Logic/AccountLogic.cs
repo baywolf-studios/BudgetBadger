@@ -94,9 +94,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Account>>> GetAccountsAsync()
+        public async Task<Result<IReadOnlyList<Account>>> GetAccountsAsync()
         {
-            var result = new Result<IEnumerable<Account>>();
+            var result = new Result<IReadOnlyList<Account>>();
 
             var allAccounts = await AccountDataAccess.ReadAccountsAsync();
             IEnumerable<Account> accounts;
@@ -118,9 +118,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IEnumerable<Account>>> GetAccountsForSelectionAsync()
+        public async Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync()
         {
-            var result = new Result<IEnumerable<Account>>();
+            var result = new Result<IReadOnlyList<Account>>();
 
             var allAccounts = await AccountDataAccess.ReadAccountsAsync();
 

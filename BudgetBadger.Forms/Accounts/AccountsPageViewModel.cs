@@ -34,8 +34,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IEnumerable<Account> _accounts;
-        public IEnumerable<Account> Accounts
+        IReadOnlyList<Account> _accounts;
+        public IReadOnlyList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -54,15 +54,6 @@ namespace BudgetBadger.Forms.Accounts
             get => _groupedAccounts;
             set => SetProperty(ref _groupedAccounts, value);
         }
-
-        bool _selectionMode;
-        public bool SelectionMode
-        {
-            get => _selectionMode;
-            set => SetProperty(ref _selectionMode, value);
-        }
-
-        public bool NormalMode { get => !SelectionMode; }
 
         string _searchText;
         public string SearchText
@@ -84,16 +75,13 @@ namespace BudgetBadger.Forms.Accounts
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a), a => CanExecuteEditCommand()).ObservesProperty(() => SelectionMode);
-            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a), a => CanExecuteDeleteCommand()).ObservesProperty(() => SelectionMode);
+            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
+            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            // returns default bool if none present
-            SelectionMode = parameters.GetValue<bool>(PageParameter.SelectionMode);
-
             await ExecuteRefreshCommand();
         }
 
@@ -118,15 +106,7 @@ namespace BudgetBadger.Forms.Accounts
                 { PageParameter.Account, SelectedAccount }
             };
 
-            if (SelectionMode)
-            {
-                await _navigationService.GoBackAsync(parameters);
-            }
-            else
-            {
-                await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
-            }
-
+            await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
 
             SelectedAccount = null;
         }
@@ -142,16 +122,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                Result<IEnumerable<Account>> result;
-
-                if (SelectionMode)
-                {
-                    result = await _accountLogic.GetAccountsForSelectionAsync();
-                }
-                else
-                {
-                    result = await _accountLogic.GetAccountsAsync();
-                }
+                var result = await _accountLogic.GetAccountsAsync();
 
                 if (result.Success)
                 {
@@ -185,11 +156,6 @@ namespace BudgetBadger.Forms.Accounts
             await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
-        public bool CanExecuteEditCommand()
-        {
-            return !SelectionMode;
-        }
-
         public async Task ExecuteDeleteCommand(Account account)
         {
             var result = await _accountLogic.DeleteAccountAsync(account.Id);
@@ -202,11 +168,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
-        }
-
-        public bool CanExecuteDeleteCommand()
-        {
-            return !SelectionMode;
         }
 
         public void ExecuteSearchCommand()
