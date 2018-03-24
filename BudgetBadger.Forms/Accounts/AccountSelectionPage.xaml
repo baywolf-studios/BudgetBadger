@@ -1,5 +1,22 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage">
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Accounts" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage">
     <ContentPage.Content>
+        <ListView x:Name="AccountList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+            <ListView.Header>
+                <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
+                    <SearchBar.Behaviors>
+                        <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
+                    </SearchBar.Behaviors>
+                </SearchBar>
+            </ListView.Header>
+            <ListView.Behaviors>
+                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+            </ListView.Behaviors>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Description}" Detail="{Binding Balance, StringFormat='{0:C}'}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

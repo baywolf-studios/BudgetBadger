@@ -176,11 +176,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteAccountSelectedCommand()
         {
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.SelectionMode, true }
-            };
-            await _navigationService.NavigateAsync(PageName.AccountsPage, parameters);
+            await _navigationService.NavigateAsync(PageName.AccountSelectionPage);
         }
 
         public async Task ExecuteDeleteCommand()
