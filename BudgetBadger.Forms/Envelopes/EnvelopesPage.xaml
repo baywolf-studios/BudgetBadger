@@ -5,7 +5,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal" IsVisible="{Binding MainMode}">
+            <StackLayout Orientation="Horizontal">
                 <Button Command="{Binding PreviousCommand}">
                     <Button.Text>
                         &lt;
@@ -18,7 +18,7 @@
                     </Button.Text>
                 </Button>
             </StackLayout>
-            <Grid IsVisible="{Binding MainMode}">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
@@ -62,7 +62,11 @@
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
+                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
+                        <SearchBar.Behaviors>
+                            <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
+                        </SearchBar.Behaviors>
+                    </SearchBar>
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>

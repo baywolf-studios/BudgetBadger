@@ -45,8 +45,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _schedule, value);
         }
 
-        IEnumerable<Budget> _budgets;
-        public IEnumerable<Budget> Budgets
+        IReadOnlyList<Budget> _budgets;
+        public IReadOnlyList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value);
@@ -66,20 +66,11 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
-        bool _selectionMode;
-        public bool SelectionMode
-        {
-            get => _selectionMode;
-            set { SetProperty(ref _selectionMode, value); RaisePropertyChanged("MainMode"); }
-        }
-
-        public bool MainMode { get => !SelectionMode; }
-
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
+            set => SetProperty(ref _searchText, value);
         }
 
         public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
@@ -99,15 +90,12 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
-            EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a), a => CanExecuteEditCommand()).ObservesProperty(() => SelectionMode);
-            DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a), a => CanExecuteDeleteCommand()).ObservesProperty(() => SelectionMode);
+            EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
+            DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            // returns default bool if none present
-            SelectionMode = parameters.GetValue<bool>(PageParameter.SelectionMode);
-
             await ExecuteRefreshCommand();
         }
 
@@ -144,15 +132,7 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                 }
 
-                Result<IEnumerable<Budget>> budgetResult;
-                if (SelectionMode)
-                {
-                    budgetResult = await _envelopeLogic.GetBudgetsForSelectionAsync(Schedule);
-                }
-                else
-                {
-                    budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule);
-                }
+                var budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule);
 
                 if (budgetResult.Success)
                 {
@@ -206,22 +186,11 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (SelectionMode)
+            var parameters = new NavigationParameters
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Envelope, SelectedBudget.Envelope }
-                };
-                await _navigationService.GoBackAsync(parameters);
-            }
-            else
-            {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Budget, SelectedBudget }
-                };
-                await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
-            }
+                { PageParameter.Budget, SelectedBudget }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
 
             SelectedBudget = null;
         }
@@ -252,11 +221,6 @@ namespace BudgetBadger.Forms.Envelopes
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
 
-        public bool CanExecuteEditCommand()
-        {
-            return !SelectionMode;
-        }
-
         public async Task ExecuteDeleteCommand(Budget budget)
         {
             var result = await _envelopeLogic.DeleteEnvelopeAsync(budget.Envelope.Id);
@@ -269,11 +233,6 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
-        }
-
-        public bool CanExecuteDeleteCommand()
-        {
-            return !SelectionMode;
         }
     }
 }

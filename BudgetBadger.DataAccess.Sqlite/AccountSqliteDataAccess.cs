@@ -216,7 +216,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return account;
         }
 
-        public async Task<IEnumerable<Account>> ReadAccountsAsync()
+        public async Task<IReadOnlyList<Account>> ReadAccountsAsync()
         {
             var accounts = new List<Account>();
 
@@ -270,7 +270,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return accounts;
         }
 
-        public async Task<IEnumerable<AccountType>> ReadAccountTypesAsync()
+        public async Task<IReadOnlyList<AccountType>> ReadAccountTypesAsync()
         {
             var accountTypes = new List<AccountType>();
 

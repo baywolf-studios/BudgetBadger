@@ -109,5 +109,8 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Transactions\TransactionEditPage.xaml.cs">
       <DependentUpon>TransactionEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Envelopes\EnvelopeSelectionPage.xaml.cs">
+      <DependentUpon>EnvelopeSelectionPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

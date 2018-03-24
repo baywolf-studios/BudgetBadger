@@ -153,20 +153,12 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecutePayeeSelectedCommand()
         {
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.SelectionMode, true }
-            };
-            await _navigationService.NavigateAsync(PageName.PayeeSelectionPage, parameters);
+            await _navigationService.NavigateAsync(PageName.PayeeSelectionPage);
         }
 
         public async Task ExecuteEnvelopeSelectedCommand()
         {
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.SelectionMode, true }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopesPage, parameters);
+            await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage);
         }
 
         public bool CanExecuteEnvelopeSelectedCommand()

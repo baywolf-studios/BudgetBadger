@@ -9,11 +9,11 @@ namespace BudgetBadger.Core.DataAccess
     {
         Task CreateTransactionAsync(Transaction transaction);
         Task<Transaction> ReadTransactionAsync(Guid id);
-        Task<IEnumerable<Transaction>> ReadAccountTransactionsAsync(Guid accountId);
-        Task<IEnumerable<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId);
-        Task<IEnumerable<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId);
-        Task<IEnumerable<Transaction>> ReadSplitTransactionsAsync(Guid splitId);
-        Task<IEnumerable<Transaction>> ReadTransactionsAsync();
+        Task<IReadOnlyList<Transaction>> ReadAccountTransactionsAsync(Guid accountId);
+        Task<IReadOnlyList<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId);
+        Task<IReadOnlyList<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId);
+        Task<IReadOnlyList<Transaction>> ReadSplitTransactionsAsync(Guid splitId);
+        Task<IReadOnlyList<Transaction>> ReadTransactionsAsync();
         Task UpdateTransactionAsync(Transaction transaction);
         Task DeleteTransaction(Guid id);
     }

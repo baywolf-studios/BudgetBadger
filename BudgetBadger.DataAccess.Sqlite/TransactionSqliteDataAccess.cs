@@ -155,7 +155,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transaction;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadAccountTransactionsAsync(Guid accountId)
+        public async Task<IReadOnlyList<Transaction>> ReadAccountTransactionsAsync(Guid accountId)
         {
             var transactions = new List<Transaction>();
 
@@ -209,7 +209,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transactions;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId)
+        public async Task<IReadOnlyList<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId)
         {
             var transactions = new List<Transaction>();
 
@@ -263,7 +263,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transactions;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId)
+        public async Task<IReadOnlyList<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId)
         {
             var transactions = new List<Transaction>();
 
@@ -317,7 +317,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transactions;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadSplitTransactionsAsync(Guid splitId)
+        public async Task<IReadOnlyList<Transaction>> ReadSplitTransactionsAsync(Guid splitId)
         {
             var transactions = new List<Transaction>();
 
@@ -371,7 +371,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             return transactions;
         }
 
-        public async Task<IEnumerable<Transaction>> ReadTransactionsAsync()
+        public async Task<IReadOnlyList<Transaction>> ReadTransactionsAsync()
         {
             var transactions = new List<Transaction>();
 
