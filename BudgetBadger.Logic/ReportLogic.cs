@@ -27,7 +27,7 @@ namespace BudgetBadger.Logic
             _envelopeDataAccess = envelopeDataAccess;
         }
 
-        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport()
+        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate)
         {
             var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
             var dataPoints = new Dictionary<DateTime, decimal>();
@@ -36,6 +36,16 @@ namespace BudgetBadger.Logic
             {
                 var transactions = await _transactionDataAccess.ReadTransactionsAsync();
                 var activeTransactions = transactions.Where(t => t.IsActive);
+
+                if (beginDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+                }
+
                 var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
                 var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
@@ -64,7 +74,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport()
+        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate)
         {
             var result = new Result<IReadOnlyDictionary<string, decimal>>();
             var dataPoints = new Dictionary<string, decimal>();
@@ -73,6 +83,16 @@ namespace BudgetBadger.Logic
             {
                 var transactions = await _transactionDataAccess.ReadTransactionsAsync();
                 var activeTransactions = transactions.Where(t => t.IsActive);
+
+                if (beginDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+                }
+
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
                 var activeEnvelopes = envelopes.Where(e =>
                                                       e.IsActive
@@ -100,7 +120,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport()
+        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate)
         {
             var result = new Result<IReadOnlyDictionary<string, decimal>>();
             var dataPoints = new Dictionary<string, decimal>();
@@ -109,6 +129,16 @@ namespace BudgetBadger.Logic
             {
                 var transactions = await _transactionDataAccess.ReadTransactionsAsync();
                 var activeTransactions = transactions.Where(t => t.IsActive);
+
+                if (beginDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+                }
+
                 var payees = await _payeeDataAccess.ReadPayeesAsync();
                 var activePayees = payees.Where(p => p.IsActive);
 

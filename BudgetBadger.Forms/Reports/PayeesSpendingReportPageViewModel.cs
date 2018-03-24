@@ -20,6 +20,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        DateTime _beginDate;
+        public DateTime BeginDate
+        {
+            get => _beginDate;
+            set { SetProperty(ref _beginDate, value); RefreshCommand.Execute(null); }
+        }
+
+        DateTime _endDate;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set { SetProperty(ref _endDate, value); RefreshCommand.Execute(null); }
+        }
+
         Chart _payeeChart;
         public Chart PayeeChart
         {
@@ -33,6 +47,9 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+
+            BeginDate = DateTime.MinValue;
+            EndDate = DateTime.MaxValue;
         }
 
         public async void OnAppearing()
@@ -48,7 +65,7 @@ namespace BudgetBadger.Forms.Reports
         {
             var payeeEntries = new List<Entry>();
 
-            var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport();
+            var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport(BeginDate, EndDate);
             if (payeeReportResult.Success)
             {
                 foreach (var datapoint in payeeReportResult.Data)
@@ -62,8 +79,7 @@ namespace BudgetBadger.Forms.Reports
                 }
             }
 
-            PayeeChart = new DonutChart();
-            PayeeChart.Entries = payeeEntries;
+            PayeeChart = new DonutChart() { Entries = payeeEntries };
         }
     }
 }

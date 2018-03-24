@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" x:Class="BudgetBadger.Forms.Reports.PayeesSpendingReportPage">
     <ContentPage.Content>
-        <microcharts:ChartView Chart="{Binding PayeeChart}"/>
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <microcharts:ChartView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="payeeTotals" Chart="{Binding PayeeChart}"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Begin Date:"/>
+            <DatePicker Grid.Row="2" Grid.Column="0" Date="{Binding BeginDate}"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="End Date:"/>
+            <DatePicker Grid.Row="2" Grid.Column="1" Date="{Binding EndDate}"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

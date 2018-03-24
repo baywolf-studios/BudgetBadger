@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Files;
@@ -34,12 +35,30 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
                     foreach (var file in folderList.Entries.Where(i => i.IsFile))
                     {
+                        var fileName = file.Name;
+
+                        var compressed = file.Name.EndsWith(".tz");
+                        if (compressed)
+                        {
+                            fileName = fileName.Substring(0, fileName.LastIndexOf(".tz"));
+                        }
+
                         var downloadArg = new DownloadArg("/" + file.Name);
                         using (var dropboxResponse = await dbx.Files.DownloadAsync(downloadArg))
                         using (var fileStream = await dropboxResponse.GetContentAsStreamAsync())
                         using (var destinationFile = destinationDirectory.CreateFile(file.Name))
                         {
-                            await fileStream.CopyToAsync(destinationFile);
+                            if (compressed)
+                            {
+                                using (var uncompressedFilestream = new GZipStream(fileStream, CompressionMode.Decompress))
+                                {
+                                    await uncompressedFilestream.CopyToAsync(destinationFile);
+                                }
+                            }
+                            else
+                            {
+                                await fileStream.CopyToAsync(destinationFile);
+                            }
                         }
                     }
                 }
@@ -66,9 +85,10 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
+                    using (var compressedFileStream = new GZipStream(fileStream, CompressionLevel.Fastest))
                     using (var dbx = new DropboxClient(_accessToken))
                     {
-                        var commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
+                        var commitInfo = new CommitInfo("/" + file.Name + ".tz", mode: WriteMode.Overwrite.Instance);
                         var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);
                     }
                 }
