@@ -48,8 +48,8 @@ namespace BudgetBadger.Logic
 
                 var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
+                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
 
                 var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
                 var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
@@ -166,14 +166,98 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId)
+        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId, DateTime? beginDate, DateTime? endDate)
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
+            var dataPoints = new Dictionary<DateTime, decimal>();
+
+            try
+            {
+                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelopeId);
+                var activeTransactions = transactions.Where(t => t.IsActive);
+
+                if (beginDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+                }
+
+                var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
+
+                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
+
+                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+
+                while (startMonth <= endMonth)
+                {
+                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+                    var monthTotal = monthTransactions.Sum(t => t.Amount);
+                    dataPoints.Add(startMonth, monthTotal);
+                    startMonth = startMonth.AddMonths(1);
+                }
+
+                result.Data = dataPoints;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId)
+        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId, DateTime? beginDate, DateTime? endDate)
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
+            var dataPoints = new Dictionary<DateTime, decimal>();
+
+            try
+            {
+                var transactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(payeeId);
+                var activeTransactions = transactions.Where(t => t.IsActive);
+
+                if (beginDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+                }
+
+                var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
+
+                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
+
+                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+
+                while (startMonth <= endMonth)
+                {
+                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+                    var monthTotal = monthTransactions.Sum(t => t.Amount);
+                    dataPoints.Add(startMonth, monthTotal);
+                    startMonth = startMonth.AddMonths(1);
+                }
+
+                result.Data = dataPoints;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
     }
 }

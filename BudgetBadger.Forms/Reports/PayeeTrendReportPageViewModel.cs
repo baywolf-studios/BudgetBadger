@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
 using Prism.Commands;
@@ -13,10 +14,11 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeesSpendingReportPageViewModel : BindableBase, IPageLifecycleAware
+    public class PayeeTrendReportPageViewModel: BindableBase, IPageLifecycleAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
+        readonly IPayeeLogic _payeeLogic;
 
         public ICommand RefreshCommand { get; set; }
 
@@ -41,6 +43,20 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _endDate, value);
         }
 
+        Payee _selectedPayee;
+        public Payee SelectedPayee
+        {
+            get => _selectedPayee;
+            set => SetProperty(ref _selectedPayee, value);
+        }
+
+        IReadOnlyList<Payee> _payees;
+        public IReadOnlyList<Payee> Payees
+        {
+            get => _payees;
+            set => SetProperty(ref _payees, value);
+        }
+
         Chart _payeeChart;
         public Chart PayeeChart
         {
@@ -48,10 +64,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _payeeChart, value);
         }
 
-        public PayeesSpendingReportPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
+        public PayeeTrendReportPageViewModel(INavigationService navigationService, IPayeeLogic payeeLogic, IReportLogic reportLogic)
         {
             _navigationService = navigationService;
             _reportLogic = reportLogic;
+            _payeeLogic = payeeLogic;
+
+            Payees = new List<Payee>();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
@@ -61,6 +80,17 @@ namespace BudgetBadger.Forms.Reports
 
         public async void OnAppearing()
         {
+            var payeesResult = await _payeeLogic.GetPayeesForSelectionAsync();
+            if (payeesResult.Success)
+            {
+                Payees = payeesResult.Data.ToList();
+                SelectedPayee = Payees.FirstOrDefault();
+            }
+            else
+            {
+                //show some error
+            }
+
             await ExecuteRefreshCommand();
         }
 
@@ -70,26 +100,38 @@ namespace BudgetBadger.Forms.Reports
 
         public async Task ExecuteRefreshCommand()
         {
+            if (SelectedPayee == null)
+            {
+                return;
+            }
+
             var payeeEntries = new List<Entry>();
 
             var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
             var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
 
-            var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport(beginDate, endDate);
+            var payeeReportResult = await _reportLogic.GetSpendingTrendsByPayeeReport(SelectedPayee.Id, beginDate, endDate);
             if (payeeReportResult.Success)
             {
                 foreach (var datapoint in payeeReportResult.Data)
                 {
+                    var color = SKColor.Parse("#4CAF50");
+                    if (datapoint.Value < 0)
+                    {
+                        color = SKColor.Parse("#F44336");
+                    }
+
                     payeeEntries.Add(new Entry((float)datapoint.Value)
                     {
-                        Label = datapoint.Key,
+                        Label = datapoint.Key.ToString("Y"),
                         ValueLabel = datapoint.Value.ToString("C"),
-                        Color = SKColor.Parse("#4CAF50")
+                        Color = color
                     });
                 }
             }
 
-            PayeeChart = new DonutChart() { Entries = payeeEntries };
+            PayeeChart = new BarChart() { Entries = payeeEntries };
         }
     }
 }
+

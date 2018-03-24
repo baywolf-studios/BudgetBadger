@@ -97,5 +97,14 @@
     <Compile Update="Accounts\AccountSelectionPage.xaml.cs">
       <DependentUpon>AccountSelectionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Reports\EnvelopesTrendReportPage.xaml.cs">
+      <DependentUpon>EnvelopeTrendReportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Reports\PayeeTrendReportPage.xaml.cs">
+      <DependentUpon>PayeeTrendReportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Reports\EnvelopeTrendReportPage.xaml.cs">
+      <DependentUpon>EnvelopeTrendReportPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

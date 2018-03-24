@@ -18,6 +18,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result> ValidateBudgetAsync(Budget budget);
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
 
+        Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync();
         Task<Result> DeleteEnvelopeAsync(Guid id);
 
         Task<Result<IEnumerable<EnvelopeGroup>>> GetEnvelopeGroupsAsync();

@@ -11,7 +11,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate); // some enum for month vs year vs week
         Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate);
         Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate);
-        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId);
-        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId);
+        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId, DateTime? beginDate, DateTime? endDate);
+        Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId, DateTime? beginDate, DateTime? endDate);
     }
 }
