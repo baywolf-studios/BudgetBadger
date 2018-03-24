@@ -163,9 +163,9 @@ namespace BudgetBadger.Logic
             return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
-        public ILookup<string, Account> GroupAccounts(IEnumerable<Account> accounts)
+        public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
         {
-            var groupedAccounts = accounts.ToLookup(a => a.OnBudget ? "On Budget" : "Off Budget");
+            var groupedAccounts = accounts.GroupBy(a => a.OnBudget ? "On Budget" : "Off Budget").ToList();
 
             return groupedAccounts;
         }

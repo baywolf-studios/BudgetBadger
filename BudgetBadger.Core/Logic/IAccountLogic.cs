@@ -18,6 +18,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<AccountType>>> GetAccountTypesAsync();
 
         IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText);
-        ILookup<string, Account> GroupAccounts(IEnumerable<Account> accounts);
+        IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts);
     }
 }

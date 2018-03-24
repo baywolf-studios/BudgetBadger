@@ -45,8 +45,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _selectedPayee, value);
         }
 
-        ILookup<string, Payee> _groupedPayees;
-        public ILookup<string, Payee> GroupedPayees
+        IReadOnlyList<IGrouping<string, Payee>> _groupedPayees;
+        public IReadOnlyList<IGrouping<string, Payee>> GroupedPayees
         {
             get => _groupedPayees;
             set => SetProperty(ref _groupedPayees, value);
@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms.Payees
 
             Payees = new List<Payee>();
             SelectedPayee = null;
-            GroupedPayees = Payees.ToLookup(p => "");
+            GroupedPayees = Payees.GroupBy(p => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());

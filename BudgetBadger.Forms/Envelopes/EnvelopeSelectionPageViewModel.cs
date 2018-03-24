@@ -44,8 +44,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedBudget, value);
         }
 
-        ILookup<string, Budget> _groupedBudgets;
-        public ILookup<string, Budget> GroupedBudgets
+        IReadOnlyList<IGrouping<string, Budget>> _groupedBudgets;
+        public IReadOnlyList<IGrouping<string, Budget>> GroupedBudgets
         {
             get => _groupedBudgets;
             set => SetProperty(ref _groupedBudgets, value);
@@ -66,7 +66,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             Budgets = new List<Budget>();
             SelectedBudget = null;
-            GroupedBudgets = Budgets.ToLookup(b => "");
+            GroupedBudgets = Budgets.GroupBy(b => "").ToList();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());

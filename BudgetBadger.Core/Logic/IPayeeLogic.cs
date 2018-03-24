@@ -16,6 +16,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync();
 
         IReadOnlyList<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
-        ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees);
+        IReadOnlyList<IGrouping<string, Payee>> GroupPayees(IEnumerable<Payee> payees);
     }
 }

@@ -169,9 +169,9 @@ namespace BudgetBadger.Logic
             return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
-        public ILookup<string, Payee> GroupPayees(IEnumerable<Payee> payees)
+        public IReadOnlyList<IGrouping<string, Payee>> GroupPayees(IEnumerable<Payee> payees)
         {
-            var groupedPayees = payees.ToLookup(p =>
+            var groupedPayees = payees.GroupBy(p =>
             {
                 if (p.IsAccount)
                 {
@@ -187,7 +187,7 @@ namespace BudgetBadger.Logic
                 }
             });
 
-            return groupedPayees;
+            return groupedPayees.ToList();
         }
 
         public Task<Result> ValidatePayeeAsync(Payee payee)

@@ -45,8 +45,8 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        ILookup<string, Transaction> _groupedTransactions;
-        public ILookup<string, Transaction> GroupedTransactions
+        IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
+        public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
         {
             get => _groupedTransactions;
             set => SetProperty(ref _groupedTransactions, value);
@@ -67,7 +67,7 @@ namespace BudgetBadger.Forms.Transactions
 
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
-            GroupedTransactions = Transactions.ToLookup(a => "");
+            GroupedTransactions = Transactions.GroupBy(a => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());

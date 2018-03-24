@@ -289,9 +289,9 @@ namespace BudgetBadger.Logic
             return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
-        public ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets)
+        public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
         {
-            var groupedBudgets = budgets.ToLookup(b => b.Envelope.Group.Description);
+            var groupedBudgets = budgets.GroupBy(b => b.Envelope.Group.Description).ToList();
 
             return groupedBudgets;
         }

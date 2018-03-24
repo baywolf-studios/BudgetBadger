@@ -48,8 +48,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _selectedAccount, value);
         }
 
-        ILookup<string, Account> _groupedAccounts;
-        public ILookup<string, Account> GroupedAccounts
+        IReadOnlyList<IGrouping<string, Account>> _groupedAccounts;
+        public IReadOnlyList<IGrouping<string, Account>> GroupedAccounts
         {
             get => _groupedAccounts;
             set => SetProperty(ref _groupedAccounts, value);
@@ -70,7 +70,7 @@ namespace BudgetBadger.Forms.Accounts
 
             Accounts = new List<Account>();
             SelectedAccount = null;
-            GroupedAccounts = Accounts.ToLookup(a => "");
+            GroupedAccounts = Accounts.GroupBy(a => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());

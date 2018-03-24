@@ -146,9 +146,9 @@ namespace BudgetBadger.Logic
             return transactions.ToList();
         }
 
-        public ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions)
+        public IReadOnlyList<IGrouping<string, Transaction>> GroupTransactions(IEnumerable<Transaction> transactions)
         {
-            var groupedTransactions = transactions.ToLookup(t => String.Format("{0:d}", t.ServiceDate));
+            var groupedTransactions = transactions.GroupBy(t => String.Format("{0:d}", t.ServiceDate)).ToList();
 
             return groupedTransactions;
         }

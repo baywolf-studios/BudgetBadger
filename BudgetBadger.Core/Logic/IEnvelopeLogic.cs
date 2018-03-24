@@ -27,7 +27,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result> DeleteEnvelopeGroupAsync(Guid id);
 
         IReadOnlyList<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText);
-        ILookup<string, Budget> GroupBudgets(IEnumerable<Budget> budgets);
+        IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets);
 
         IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText);
     }

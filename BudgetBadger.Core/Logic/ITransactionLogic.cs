@@ -22,7 +22,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId);
 
         IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText);
-        ILookup<string, Transaction> GroupTransactions(IEnumerable<Transaction> transactions);
+        IReadOnlyList<IGrouping<string, Transaction>> GroupTransactions(IEnumerable<Transaction> transactions);
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);
     }
 }
