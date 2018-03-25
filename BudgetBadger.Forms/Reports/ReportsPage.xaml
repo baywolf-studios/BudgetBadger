@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Reports" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Reports.ReportsPage">
 	<ContentPage.Content>
-        <ListView IsPullToRefreshEnabled="false" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}">
+        <ListView IsPullToRefreshEnabled="false" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport, Mode=TwoWay}">
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ReportCommand}"/>
             </ListView.Behaviors>
