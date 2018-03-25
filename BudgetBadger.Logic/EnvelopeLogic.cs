@@ -152,6 +152,16 @@ namespace BudgetBadger.Logic
 
         async Task<Result> ValidateDeleteEnvelopeAsync(Envelope envelope)
         {
+            if (envelope.Group.IsDebt() || envelope.IsGenericDebtEnvelope())
+            {
+                return new Result { Success = false, Message = "Cannot delete debt envelopes" };
+            }
+
+            if (envelope.Group.IsIncome() || envelope.IsIncome() || envelope.IsBuffer())
+            {
+                return new Result { Success = false, Message = "Cannot delete income envelopes" };
+            }
+
             var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
             if (envelopeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
