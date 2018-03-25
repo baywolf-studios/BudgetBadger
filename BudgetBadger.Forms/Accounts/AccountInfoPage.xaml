@@ -26,9 +26,39 @@
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.Header>
+                    <Grid Margin="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="0" Text="Payee" />
+                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="1" Text="Envelope" />
+                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="2" Text="Amount" />
+                    </Grid>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}"/>
+                        <!--<TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}"/>-->
+                        <ViewCell>
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="0" Text="{Binding Payee.Description, StringFormat='{0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="1" Text="{Binding Envelope.Description, StringFormat='{0}'}" />
+                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                            </Grid>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
