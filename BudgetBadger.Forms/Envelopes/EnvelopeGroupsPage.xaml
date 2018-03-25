@@ -13,7 +13,7 @@
                                 <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
                             </SearchBar.Behaviors>
                         </SearchBar>
-                        <Button IsVisible="{Binding NoSearchResults}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
+                        <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>
