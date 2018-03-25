@@ -20,6 +20,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
         bool _dateRangeFilter;
         public bool DateRangeFilter
         {
@@ -70,26 +84,42 @@ namespace BudgetBadger.Forms.Reports
 
         public async Task ExecuteRefreshCommand()
         {
-            var payeeEntries = new List<Entry>();
-
-            var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-            var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
-
-            var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport(beginDate, endDate);
-            if (payeeReportResult.Success)
+            if (IsBusy)
             {
-                foreach (var datapoint in payeeReportResult.Data)
-                {
-                    payeeEntries.Add(new Entry((float)datapoint.Value)
-                    {
-                        Label = datapoint.Key,
-                        ValueLabel = datapoint.Value.ToString("C"),
-                        Color = SKColor.Parse("#4CAF50")
-                    });
-                }
+                return;
             }
 
-            PayeeChart = new DonutChart() { Entries = payeeEntries };
+            IsBusy = true;
+            BusyText = "Loading...";
+
+            try
+            {
+                var payeeEntries = new List<Entry>();
+
+                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
+                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+
+                var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport(beginDate, endDate);
+                if (payeeReportResult.Success)
+                {
+                    foreach (var datapoint in payeeReportResult.Data)
+                    {
+                        payeeEntries.Add(new Entry((float)datapoint.Value)
+                        {
+                            Label = datapoint.Key,
+                            ValueLabel = datapoint.Value.ToString("C"),
+                            Color = SKColor.Parse("#4CAF50")
+                        });
+                    }
+                }
+
+                PayeeChart = new DonutChart() { Entries = payeeEntries };
+            }
+            finally
+            {
+                IsBusy = false;
+                BusyText = string.Empty;
+            }
         }
     }
 }

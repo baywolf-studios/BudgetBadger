@@ -20,6 +20,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
         bool _dateRangeFilter;
         public bool DateRangeFilter
         {
@@ -70,31 +84,47 @@ namespace BudgetBadger.Forms.Reports
 
         public async Task ExecuteRefreshCommand()
         {
-            var entries = new List<Entry>();
-
-            var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-            var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
-
-            var netWorthReportResult = await _reportLogic.GetNetWorthReport(beginDate, endDate);
-            if (netWorthReportResult.Success)
+            if (IsBusy)
             {
-                foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))
-                {
-                    var color = SKColor.Parse("#4CAF50");
-                    if (dataPoint.Value < 0)
-                    {
-                        color = SKColor.Parse("#F44336");
-                    }
-
-                    entries.Add(new Entry((float)dataPoint.Value)
-                    {
-                        ValueLabel = dataPoint.Value.ToString("C"),
-                        Label = dataPoint.Key.ToString("Y"),
-                        Color = color
-                    });
-                }
+                return;
             }
-            NetWorthChart = new LineChart() { Entries = entries };
+
+            IsBusy = true;
+            BusyText = "Loading...";
+
+            try
+            {
+                var entries = new List<Entry>();
+
+                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
+                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+
+                var netWorthReportResult = await _reportLogic.GetNetWorthReport(beginDate, endDate);
+                if (netWorthReportResult.Success)
+                {
+                    foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))
+                    {
+                        var color = SKColor.Parse("#4CAF50");
+                        if (dataPoint.Value < 0)
+                        {
+                            color = SKColor.Parse("#F44336");
+                        }
+
+                        entries.Add(new Entry((float)dataPoint.Value)
+                        {
+                            ValueLabel = dataPoint.Value.ToString("C"),
+                            Label = dataPoint.Key.ToString("Y"),
+                            Color = color
+                        });
+                    }
+                }
+                NetWorthChart = new LineChart() { Entries = entries };
+            }
+            finally
+            {
+                IsBusy = false;
+                BusyText = string.Empty;
+            }
         }
     }
 }

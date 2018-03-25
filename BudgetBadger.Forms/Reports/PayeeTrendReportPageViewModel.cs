@@ -22,6 +22,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
         bool _dateRangeFilter;
         public bool DateRangeFilter
         {
@@ -105,32 +119,48 @@ namespace BudgetBadger.Forms.Reports
                 return;
             }
 
-            var payeeEntries = new List<Entry>();
-
-            var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-            var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
-
-            var payeeReportResult = await _reportLogic.GetSpendingTrendsByPayeeReport(SelectedPayee.Id, beginDate, endDate);
-            if (payeeReportResult.Success)
+            if (IsBusy)
             {
-                foreach (var datapoint in payeeReportResult.Data)
-                {
-                    var color = SKColor.Parse("#4CAF50");
-                    if (datapoint.Value < 0)
-                    {
-                        color = SKColor.Parse("#F44336");
-                    }
-
-                    payeeEntries.Add(new Entry((float)datapoint.Value)
-                    {
-                        Label = datapoint.Key.ToString("Y"),
-                        ValueLabel = datapoint.Value.ToString("C"),
-                        Color = color
-                    });
-                }
+                return;
             }
 
-            PayeeChart = new BarChart() { Entries = payeeEntries };
+            IsBusy = true;
+            BusyText = "Loading...";
+
+            try
+            {
+                var payeeEntries = new List<Entry>();
+
+                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
+                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+
+                var payeeReportResult = await _reportLogic.GetSpendingTrendsByPayeeReport(SelectedPayee.Id, beginDate, endDate);
+                if (payeeReportResult.Success)
+                {
+                    foreach (var datapoint in payeeReportResult.Data)
+                    {
+                        var color = SKColor.Parse("#4CAF50");
+                        if (datapoint.Value < 0)
+                        {
+                            color = SKColor.Parse("#F44336");
+                        }
+
+                        payeeEntries.Add(new Entry((float)datapoint.Value)
+                        {
+                            Label = datapoint.Key.ToString("Y"),
+                            ValueLabel = datapoint.Value.ToString("C"),
+                            Color = color
+                        });
+                    }
+                }
+
+                PayeeChart = new BarChart() { Entries = payeeEntries };
+            }
+            finally
+            {
+                IsBusy = false;
+                BusyText = string.Empty;
+            }
         }
     }
 }
