@@ -65,10 +65,10 @@ namespace BudgetBadger.Forms.Envelopes
         public string SearchText
         {
             get => _searchText;
-            set => SetProperty(ref _searchText, value);
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
         }
 
-        public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && FilteredEnvelopeGroups.Count() == 0; }
+        public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
         public EnvelopeGroupsPageViewModel(INavigationService navigationService,
                                            IPageDialogService dialogService,
@@ -194,7 +194,6 @@ namespace BudgetBadger.Forms.Envelopes
         public void ExecuteSearchCommand()
         {
             FilteredEnvelopeGroups = _envelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
-            RaisePropertyChanged("NoSearchResults");
         }
     }
 }
