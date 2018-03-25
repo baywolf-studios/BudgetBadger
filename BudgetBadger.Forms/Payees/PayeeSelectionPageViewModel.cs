@@ -52,13 +52,13 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _groupedPayees, value);
         }
 
-        public bool NoSearchResults { get => !string.IsNullOrWhiteSpace(SearchText) && GroupedPayees.Count == 0; }
+        public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set => SetProperty(ref _searchText, value);
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
         }
 
         public PayeeSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
@@ -156,7 +156,6 @@ namespace BudgetBadger.Forms.Payees
         public void ExecuteSearchCommand()
         {
             GroupedPayees = _payeeLogic.GroupPayees(_payeeLogic.SearchPayees(Payees, SearchText));
-            RaisePropertyChanged("NoSearchResults");
         }
     }
 }
