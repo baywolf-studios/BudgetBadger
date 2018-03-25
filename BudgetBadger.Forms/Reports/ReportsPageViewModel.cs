@@ -87,11 +87,11 @@ namespace BudgetBadger.Forms.Reports
             }
             else if (SelectedReport == _spendingTrendByEnvelopeReport)
             {
-                await _navigationService.NavigateAsync(PageName.EnvelopesSpendingReportPage);
+                await _navigationService.NavigateAsync(PageName.EnvelopeTrendReportPage);
             }
             else if (SelectedReport == _spendingTrendByPayeeReport)
             {
-                await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
+                await _navigationService.NavigateAsync(PageName.PayeeTrendReportPage);
             }
 
             SelectedReport = null;
