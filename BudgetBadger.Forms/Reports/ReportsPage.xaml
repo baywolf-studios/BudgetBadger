@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Reports.ReportsPage">
+<ContentPage Title="Reports" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Reports.ReportsPage">
 	<ContentPage.Content>
-        <StackLayout>
-            <Button Text="Net Worth Report" Command="{Binding NetWorthCommand}"/>
-            <Button Text="Envelopes Spending Report" Command="{Binding EnvelopesSpendingCommand}"/>
-            <Button Text="Payees Spending Report" Command="{Binding PayeesSpendingCommand}"/>
-            <Button Text="Spending Trend By Envelope Report" Command="{Binding EnvelopeTrendCommand}"/>
-            <Button Text="Spending Trend By Payee Report" Command="{Binding PayeeTrendCommand}"/>
-        </StackLayout>
+        <ListView IsPullToRefreshEnabled="false" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}">
+            <ListView.Behaviors>
+                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ReportCommand}"/>
+            </ListView.Behaviors>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 	</ContentPage.Content>
 </ContentPage>

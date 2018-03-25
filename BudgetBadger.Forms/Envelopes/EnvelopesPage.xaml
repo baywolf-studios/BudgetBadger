@@ -4,73 +4,65 @@
         <ToolbarItem Name="Add" Text="Add" Command="{Binding AddCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView x:Name="EnvelopeList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
-            </ListView.Behaviors>
-            <ListView.Header>
-                <StackLayout Orientation="Vertical">
-                    <StackLayout Orientation="Horizontal">
-                        <Button Command="{Binding PreviousCommand}">
-                            <Button.Text>
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal">
+                <Button Command="{Binding PreviousCommand}">
+                    <Button.Text>
                         &lt;
                     </Button.Text>
-                        </Button>
-                        <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.Description}" />
-                        <Button Command="{Binding NextCommand}">
-                            <Button.Text>
+                </Button>
+                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.Description}" />
+                <Button Command="{Binding NextCommand}">
+                    <Button.Text>
                         &gt;
                     </Button.Text>
-                        </Button>
-                    </StackLayout>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" FontSize="10" Text="Past" />
-                        <Label Grid.Row="1" Grid.Column="0" FontSize="10" Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
-                        <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalOptions="CenterAndExpand" FontSize="Small" Text="+" />
-                        <Label Grid.Row="0" Grid.Column="2" FontSize="10" Text="Income" />
-                        <Label Grid.Row="1" Grid.Column="2" FontSize="10" Text="{Binding Schedule.Income, StringFormat='{0:c}'}" />
-                        <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" VerticalOptions="CenterAndExpand" FontSize="Small" Text="-" />
-                        <Label Grid.Row="0" Grid.Column="4" FontSize="10" Text="Budgeted" />
-                        <Label Grid.Row="1" Grid.Column="4" FontSize="10" Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}" />
-                        <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="5" VerticalOptions="CenterAndExpand" FontSize="Small" Text="-" />
-                        <Label Grid.Row="0" Grid.Column="6" FontSize="10" Text="Overspend" />
-                        <Label Grid.Row="1" Grid.Column="6" FontSize="10" Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}" />
-                        <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="7" VerticalOptions="CenterAndExpand" FontSize="Small" Text="=" />
-                        <Label Grid.Row="0" Grid.Column="8" FontSize="10" Text="Balance" />
-                        <Label Grid.Row="1" Grid.Column="8" FontSize="10" Text="{Binding Schedule.Balance, StringFormat='{0:c}'}" />
-                    </Grid>
+                </Button>
+            </StackLayout>
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" FontSize="Micro" Text="Past" />
+                <Label Grid.Row="1" Grid.Column="0" FontSize="Micro" Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
+                <Label Grid.Row="0" Grid.Column="1" FontSize="Micro" Text="Income" />
+                <Label Grid.Row="1" Grid.Column="1" FontSize="Micro" Text="{Binding Schedule.Income, StringFormat='+ {0:c}'}" />
+                <Label Grid.Row="0" Grid.Column="2" FontSize="Micro" Text="Budgeted" />
+                <Label Grid.Row="1" Grid.Column="2" FontSize="Micro" Text="{Binding Schedule.Budgeted, StringFormat='- {0:c}'}" />
+                <Label Grid.Row="0" Grid.Column="3" FontSize="Micro" Text="Overspend" />
+                <Label Grid.Row="1" Grid.Column="3" FontSize="Micro" Text="{Binding Schedule.Overspend, StringFormat='- {0:c}'}" />
+                <Label Grid.Row="0" Grid.Column="4" FontSize="Micro" Text="Balance" />
+                <Label Grid.Row="1" Grid.Column="4" FontSize="Micro" Text="{Binding Schedule.Balance, StringFormat='= {0:c}'}" />
+            </Grid>
+            <ListView x:Name="EnvelopeList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.Header>
                     <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
                         <SearchBar.Behaviors>
                             <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
                         </SearchBar.Behaviors>
                     </SearchBar>
-                </StackLayout>
-            </ListView.Header>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Envelope.Description}" Detail="{Binding Remaining, StringFormat='{0:C}'}">
-                        <TextCell.ContextActions>
-                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference EnvelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference EnvelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                        </TextCell.ContextActions>
-                    </TextCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Envelope.Description}" Detail="{Binding Remaining, StringFormat='{0:C}'}">
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference EnvelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference EnvelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

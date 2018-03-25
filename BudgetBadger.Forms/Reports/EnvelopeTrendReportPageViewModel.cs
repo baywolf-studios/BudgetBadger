@@ -22,6 +22,20 @@ namespace BudgetBadger.Forms.Reports
 
         public ICommand RefreshCommand { get; set; }
 
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
         bool _dateRangeFilter;
         public bool DateRangeFilter
         {
@@ -102,33 +116,48 @@ namespace BudgetBadger.Forms.Reports
             {
                 return;
             }
-
-            var envelopeEntries = new List<Entry>();
-
-            var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-            var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
-
-            var envelopeReportResult = await _reportLogic.GetSpendingTrendsByEnvelopeReport(SelectedEnvelope.Id, beginDate, endDate);
-            if (envelopeReportResult.Success)
+            if (IsBusy)
             {
-                foreach (var datapoint in envelopeReportResult.Data)
-                {
-                    var color = SKColor.Parse("#4CAF50");
-                    if (datapoint.Value < 0)
-                    {
-                        color = SKColor.Parse("#F44336");
-                    }
-
-                    envelopeEntries.Add(new Entry((float)datapoint.Value)
-                    {
-                        Label = datapoint.Key.ToString("Y"),
-                        ValueLabel = datapoint.Value.ToString("C"),
-                        Color = color
-                    });
-                }
+                return;
             }
 
-            EnvelopeChart = new BarChart() { Entries = envelopeEntries };
+            IsBusy = true;
+            BusyText = "Loading...";
+
+            try
+            {
+                var envelopeEntries = new List<Entry>();
+
+                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
+                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+
+                var envelopeReportResult = await _reportLogic.GetSpendingTrendsByEnvelopeReport(SelectedEnvelope.Id, beginDate, endDate);
+                if (envelopeReportResult.Success)
+                {
+                    foreach (var datapoint in envelopeReportResult.Data)
+                    {
+                        var color = SKColor.Parse("#4CAF50");
+                        if (datapoint.Value < 0)
+                        {
+                            color = SKColor.Parse("#F44336");
+                        }
+
+                        envelopeEntries.Add(new Entry((float)datapoint.Value)
+                        {
+                            Label = datapoint.Key.ToString("Y"),
+                            ValueLabel = datapoint.Value.ToString("C"),
+                            Color = color
+                        });
+                    }
+                }
+
+                EnvelopeChart = new BarChart() { Entries = envelopeEntries };
+            }
+            finally
+            {
+                IsBusy = false;
+                BusyText = string.Empty;
+            }
         }
     }
 }

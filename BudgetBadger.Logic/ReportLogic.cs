@@ -48,8 +48,8 @@ namespace BudgetBadger.Logic
 
                 var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
+                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
 
                 var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
                 var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
@@ -187,8 +187,8 @@ namespace BudgetBadger.Logic
 
                 var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
+                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
 
                 var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
                 var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
@@ -234,8 +234,8 @@ namespace BudgetBadger.Logic
 
                 var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = beginDate ?? activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = endDate ?? activeTransactions.Max(t => t.ServiceDate);
+                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
+                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
 
                 var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
                 var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
