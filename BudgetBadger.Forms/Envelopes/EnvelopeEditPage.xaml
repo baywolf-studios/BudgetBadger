@@ -37,7 +37,7 @@
                     </TableSection>
                     <TableSection>
                         <ViewCell>
-                            <Button Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
+                            <Button IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

@@ -45,13 +45,6 @@
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
-                <ListView.Header>
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                        <SearchBar.Behaviors>
-                            <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                        </SearchBar.Behaviors>
-                    </SearchBar>
-                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Envelope.Description}" Detail="{Binding Remaining, StringFormat='{0:C}'}">
