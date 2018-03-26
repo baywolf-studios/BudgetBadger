@@ -62,7 +62,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding NewTransactionCommand}" Text="New Transaction"/>
+            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

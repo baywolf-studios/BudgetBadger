@@ -21,7 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
 
-        public ICommand NewTransactionCommand { get; set; }
+        public ICommand AddTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -75,7 +75,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
-            NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
+            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
@@ -126,11 +126,8 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedTransaction = null;
         }
 
-        public async Task ExecuteNewTransactionCommand()
+        public async Task ExecuteAddTransactionCommand()
         {
-            
-
-
             var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
             {
                 var parameters = new NavigationParameters
@@ -147,7 +144,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
 
-            await _dialogService.DisplayActionSheetAsync("New Transaction", simpleAction, splitAction, cancelAction);
+            await _dialogService.DisplayActionSheetAsync("Add Transaction", simpleAction, splitAction, cancelAction);
         }
 
         public async Task ExecuteRefreshCommand()

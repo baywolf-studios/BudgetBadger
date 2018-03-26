@@ -4,27 +4,30 @@
         <ToolbarItem Text="Add" Command="{Binding AddCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView x:Name="AccountList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
-            <ListView.Header>
-                <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                    <SearchBar.Behaviors>
-                        <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                    </SearchBar.Behaviors>
-                </SearchBar>
-            </ListView.Header>
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Description}" Detail="{Binding Balance, StringFormat='{0:C}'}">
-                        <TextCell.ContextActions>
-                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Edit" />
-                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                        </TextCell.ContextActions>
-                    </TextCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout Orientation="Vertical">
+            <ListView x:Name="AccountList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+                <ListView.Header>
+                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
+                        <SearchBar.Behaviors>
+                            <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
+                        </SearchBar.Behaviors>
+                    </SearchBar>
+                </ListView.Header>
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Description}" Detail="{Binding Balance, StringFormat='{0:C}'}">
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

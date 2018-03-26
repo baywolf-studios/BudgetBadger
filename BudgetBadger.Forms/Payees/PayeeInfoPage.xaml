@@ -4,18 +4,18 @@
         <ToolbarItem Name="Edit" Text="Edit" Command="{Binding EditCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.Footer>
-                <Button Command="{Binding NewTransactionCommand}" Text="New Transaction" />
-            </ListView.Footer>
-        </ListView>
+        <StackLayout Orientation="Vertical">
+            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

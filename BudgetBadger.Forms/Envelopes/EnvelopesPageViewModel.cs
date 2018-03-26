@@ -28,6 +28,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SearchCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand AddTransactionCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -92,6 +93,7 @@ namespace BudgetBadger.Forms.Envelopes
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
+            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -233,6 +235,23 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
+        }
+
+        public async Task ExecuteAddTransactionCommand()
+        {
+            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+            });
+
+            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
+            });
+
+            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
+
+            await _dialogService.DisplayActionSheetAsync("Add Transaction", simpleAction, splitAction, cancelAction);
         }
     }
 }
