@@ -6,11 +6,33 @@
         </DataTrigger>
     </ContentPage.Triggers>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="Save" Text="Save" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <TableView Intent="Form">
+
+            <Grid Margin="8" ColumnSpacing="8" RowSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="Name"/>
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Payee.Description}"/>
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Notes"/>
+                <Frame OutlineColor="Black" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <control:BadgerEditor Text="{Binding Payee.Notes}"/>
+                </Frame>
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+            </Grid>
+
+
+            <!--<TableView Intent="Form">
                 <TableRoot>
                     <TableSection Title="Details">
                         <EntryCell Label="Name" Text="{Binding Payee.Description}" />
@@ -27,7 +49,9 @@
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
-            </TableView>
+            </TableView>-->
         </control:BusyIndicator>
+
+
     </ContentPage.Content>
 </ContentPage>

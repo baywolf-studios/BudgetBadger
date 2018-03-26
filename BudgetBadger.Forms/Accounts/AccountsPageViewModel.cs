@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand AddTransactionCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -78,6 +79,7 @@ namespace BudgetBadger.Forms.Accounts
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -173,6 +175,23 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteSearchCommand()
         {
             GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, SearchText));
+        }
+
+        public async Task ExecuteAddTransactionCommand()
+        {
+            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+            });
+
+            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
+            {
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
+            });
+
+            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
+
+            await _dialogService.DisplayActionSheetAsync("Add Transaction", simpleAction, splitAction, cancelAction);
         }
     }
 }

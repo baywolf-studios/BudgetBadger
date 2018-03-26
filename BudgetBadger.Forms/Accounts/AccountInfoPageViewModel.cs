@@ -23,7 +23,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand NewTransactionCommand { get; set; }
+        public ICommand AddTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
 
         bool _isBusy;
@@ -86,7 +86,7 @@ namespace BudgetBadger.Forms.Accounts
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            NewTransactionCommand = new DelegateCommand(async () => await ExecuteNewTransactionCommand());
+            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
         }
 
@@ -176,7 +176,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteNewTransactionCommand()
+        public async Task ExecuteAddTransactionCommand()
         {
             var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
             {
@@ -194,7 +194,7 @@ namespace BudgetBadger.Forms.Accounts
 
             var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
 
-            await _dialogService.DisplayActionSheetAsync("New Transaction", simpleAction, splitAction, cancelAction);
+            await _dialogService.DisplayActionSheetAsync("Add Transaction", simpleAction, splitAction, cancelAction);
         }
 
         public async Task ExecutePaymentCommand()
