@@ -17,7 +17,7 @@
                 </StackLayout>
                 <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="=" />
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Current" />
+                    <Label Text="Balance" />
                     <Label Text="{Binding TransactionsTotal, StringFormat='{0:c}'}" />
                 </StackLayout>
             </StackLayout>

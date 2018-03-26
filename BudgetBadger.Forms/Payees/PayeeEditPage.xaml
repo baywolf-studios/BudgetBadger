@@ -23,7 +23,7 @@
                     </TableSection>
                     <TableSection>
                         <ViewCell>
-                            <Button Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+                            <Button IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

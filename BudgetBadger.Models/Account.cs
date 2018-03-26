@@ -93,6 +93,7 @@ namespace BudgetBadger.Models
         {
             Id = Guid.Empty;
             Type = new AccountType();
+            OnBudget = true;
         }
 
         public Account DeepCopy()
