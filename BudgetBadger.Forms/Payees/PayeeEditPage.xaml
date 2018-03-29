@@ -10,8 +10,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-
-            <Grid Margin="8" ColumnSpacing="8" RowSpacing="8">
+            <Grid Margin="16" ColumnSpacing="8" RowSpacing="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
@@ -22,11 +21,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Text="Name"/>
-                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Payee.Description}"/>
+                <control:TextEntry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Name" Text="{Binding Payee.Description}"/>
                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Notes"/>
                 <Frame OutlineColor="Black" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                    <control:BadgerEditor Text="{Binding Payee.Notes}"/>
+                    <Editor Text="{Binding Payee.Notes}"/>
                 </Frame>
                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
             </Grid>

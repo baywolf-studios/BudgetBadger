@@ -16,6 +16,7 @@ namespace BudgetBadger.macOS
             catch (Exception ex)
             {
                 var test = ex;
+                throw;
             }
         }
     }
