@@ -27,6 +27,8 @@
     <Folder Include="UserControls\" />
     <Folder Include="Converters\" />
     <Folder Include="Reports\" />
+    <Folder Include="Effects\" />
+    <Folder Include="Animations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
@@ -111,6 +113,12 @@
     </Compile>
     <Compile Update="Envelopes\EnvelopeSelectionPage.xaml.cs">
       <DependentUpon>EnvelopeSelectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="UserControls\WolfEntry.xaml.cs">
+      <DependentUpon>TextEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\TextEntry.xaml.cs">
+      <DependentUpon>TextEntry.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
