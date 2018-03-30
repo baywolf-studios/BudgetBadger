@@ -160,6 +160,7 @@
     </Compile>
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

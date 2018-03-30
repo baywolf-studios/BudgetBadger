@@ -302,6 +302,11 @@ namespace BudgetBadger.Forms.UserControls
 
             var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
             var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                placholderTranslateX = -1 * placholderTranslateX;
+                placeholderTranslateY = -1 * placeholderTranslateY;
+            }
             if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
             {
                 tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
