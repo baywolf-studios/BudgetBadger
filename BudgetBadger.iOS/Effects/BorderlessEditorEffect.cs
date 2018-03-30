@@ -15,7 +15,6 @@ namespace BudgetBadger.iOS.Effects
             if (Control is UITextView entry)
             {
                 entry.Layer.BorderWidth = 0;
-                //entry.BorderStyle = UITextBorderStyle.None;
             }
         }
 

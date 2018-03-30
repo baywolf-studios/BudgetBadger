@@ -28,7 +28,6 @@ namespace BudgetBadger.Droid.Effects
 
         protected override void OnDetached()
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Views.InputMethods;
 using Android.Widget;
 using BudgetBadger.Droid.Effects;
 using Xamarin.Forms;
@@ -24,12 +25,12 @@ namespace BudgetBadger.Droid.Effects
                 layoutParams.SetMargins(0, 0, 0, 0);
                 entry.LayoutParameters = layoutParams;
                 entry.SetPadding(0, 0, 0, 0);
+                entry.ImeOptions = (ImeAction)ImeFlags.NoExtractUi;
             }
         }
 
         protected override void OnDetached()
         {
-            throw new NotImplementedException();
         }
     }
 }
