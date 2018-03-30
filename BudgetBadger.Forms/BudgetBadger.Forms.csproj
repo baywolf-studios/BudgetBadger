@@ -120,5 +120,8 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\TextEntry.xaml.cs">
       <DependentUpon>TextEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\SelectorButton.xaml.cs">
+      <DependentUpon>SelectorButton.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

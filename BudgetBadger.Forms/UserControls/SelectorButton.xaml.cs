@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BudgetBadger.Forms.Animation;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class TextEntry : ContentView
+    public partial class SelectorButton : ContentView
     {
         Color PrimaryColor38
         {
@@ -36,76 +36,50 @@ namespace BudgetBadger.Forms.UserControls
 
         public static void Init() { }
 
-        public event EventHandler<FocusEventArgs> EntryFocused;
-        public event EventHandler<FocusEventArgs> EntryUnfocused;
         public event EventHandler<TextChangedEventArgs> TextChanged;
 
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
+        public ICommand Command
+        {
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
+
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
         public string Text
         {
             get => (string)GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
         public string LabelText
         {
             get => (string)GetValue(LabelTextProperty);
             set => SetValue(LabelTextProperty, value);
         }
 
-        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false);
-        public bool IsPassword
-        {
-            get => (bool)GetValue(IsPasswordProperty);
-            set => SetValue(IsPasswordProperty, value);
-        }
-
-        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(TextEntry), defaultValue: Keyboard.Default);
-        public Keyboard Keyboard
-        {
-            get => (Keyboard)GetValue(KeyboardProperty);
-            set => SetValue(KeyboardProperty, value);
-        }
-
-        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Black);
+        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(SelectorButton), defaultValue: Color.Black);
         public Color PrimaryColor
         {
             get => (Color)GetValue(PrimaryColorProperty);
             set => SetValue(PrimaryColorProperty, value);
         }
 
-        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Accent);
+        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(SelectorButton), defaultValue: Color.Accent);
         public Color AccentColor
         {
             get => (Color)GetValue(AccentColorProperty);
             set => SetValue(AccentColorProperty, value);
         }
 
-        public TextEntry()
+        public SelectorButton()
         {
             InitializeComponent();
 
             LabelControl.BindingContext = this;
-            EntryControl.BindingContext = this;
-
-            EntryControl.Focused += (sender, e) =>
-            {
-                EntryFocused?.Invoke(this, e);
-                UpdateVisualState();
-            };
-
-            EntryControl.Unfocused += (sender, e) =>
-            {
-                EntryUnfocused?.Invoke(this, e);
-                UpdateVisualState();
-            };
-
-            EntryControl.TextChanged += (sender, e) => 
-            {
-                TextChanged?.Invoke(sender, e);
-                UpdateVisualState();
-            };
+            TextControl.BindingContext = this;
+            GridControl.BindingContext = this;
 
             PropertyChanged += (sender, e) => 
             {
@@ -115,44 +89,38 @@ namespace BudgetBadger.Forms.UserControls
                 }
             };
 
-            if (Device.RuntimePlatform == Device.macOS)
+            TextControl.PropertyChanged += (sender, e) =>
             {
-                EntryControl.PropertyChanged += (sender, e) =>
-                {
-                    if (e.PropertyName == nameof(EntryControl.IsFocused))
-                    {
-                        UpdateVisualState();
-                    }
-                };
-
-                EntryControl.Completed += (sender, e) =>
+                if (e.PropertyName == nameof(TextControl.Text))
                 {
                     UpdateVisualState();
-                };
-            }
+                }
+            };
+
+            Focused += (sender, e) =>
+            {
+                UpdateVisualState();
+            };
+
+            Unfocused += (sender, e) =>
+            {
+                UpdateVisualState();
+            };
 
             UpdateVisualState();
         }
 
-        void Handle_Tapped(object sender, System.EventArgs e)
-        {
-            if (!EntryControl.IsFocused)
-            {
-                EntryControl.Focus();
-            }
-        }
-
         async void UpdateVisualState()
         {
-            if (EntryControl.IsFocused)
+            if (TextControl.IsFocused)
             {
                 await SetFocusedState();
             }
-            else if (string.IsNullOrEmpty(EntryControl.Text))
+            else if (string.IsNullOrEmpty(TextControl.Text))
             {
                 await SetIdleEmptyState();
             }
-            else if (!string.IsNullOrEmpty(EntryControl.Text))
+            else if (!string.IsNullOrEmpty(TextControl.Text))
             {
                 await SetIdleFilledState();
             }
@@ -177,9 +145,9 @@ namespace BudgetBadger.Forms.UserControls
                 tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor42, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
             }
 
-            if (EntryControl.TextColor != PrimaryColor38)
+            if (TextControl.TextColor != PrimaryColor38)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor38, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor38, c => TextControl.TextColor = c, 230, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -189,9 +157,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            if (TextControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, 230, Easing.CubicIn));
             }
 
             if (BottomBorder.BackgroundColor != PrimaryColor42)
@@ -209,9 +177,9 @@ namespace BudgetBadger.Forms.UserControls
                 tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
             }
 
-            if (LabelControl.FontSize != EntryControl.FontSize)
+            if (LabelControl.FontSize != TextControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EntryControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, TextControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -222,9 +190,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            if (TextControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, 230, Easing.CubicIn));
             }
 
             if (BottomBorder.BackgroundColor != PrimaryColor42)
@@ -232,8 +200,8 @@ namespace BudgetBadger.Forms.UserControls
                 tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
             }
 
-            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
-            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            var placholderTranslateX = HiddenLabelControl.X - TextControl.X;
+            var placeholderTranslateY = HiddenLabelControl.Y - TextControl.Y;
             if (Device.RuntimePlatform == Device.macOS)
             {
                 placholderTranslateX = -1 * placholderTranslateX;
@@ -262,9 +230,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            if (TextControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, 230, Easing.CubicIn));
             }
 
             if (BottomBorder.BackgroundColor != AccentColor)
@@ -272,8 +240,8 @@ namespace BudgetBadger.Forms.UserControls
                 tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
             }
 
-            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
-            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            var placholderTranslateX = HiddenLabelControl.X - TextControl.X;
+            var placeholderTranslateY = HiddenLabelControl.Y - TextControl.Y;
             if (Device.RuntimePlatform == Device.macOS)
             {
                 placholderTranslateX = -1 * placholderTranslateX;
