@@ -12,8 +12,8 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding Label}" FontSize="16"/>
-            <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
+            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding LabelText}" FontSize="16"/>
+            <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}" IsPassword="{Binding IsPassword, Mode=TwoWay}" Keyboard="{Binding Keyboard, Mode=TwoWay}">
                 <Entry.Effects>
                     <effects:BorderlessEntryEffect />
                 </Entry.Effects>

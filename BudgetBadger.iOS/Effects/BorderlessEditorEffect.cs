@@ -12,9 +12,12 @@ namespace BudgetBadger.iOS.Effects
     {
         protected override void OnAttached()
         {
-            if (Control is UITextView entry)
+            if (Control is UITextView control)
             {
-                entry.Layer.BorderWidth = 0;
+                control.Layer.BorderWidth = 0;
+                control.TextContainerInset = UIEdgeInsets.Zero;
+                control.ContentInset = UIEdgeInsets.Zero;
+                control.TextContainer.LineFragmentPadding = 0;
             }
         }
 

@@ -11,7 +11,13 @@ namespace BudgetBadger.macOS.Effects
     {
         protected override void OnAttached()
         {
-            
+            if (Control is NSTextField control)
+            {
+                control.Layer.BorderWidth = 0;
+                control.BackgroundColor = NSColor.Clear;
+                control.Bordered = false;
+                control.FocusRingType = NSFocusRingType.None;
+            }
         }
 
         protected override void OnDetached()
