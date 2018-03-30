@@ -13,10 +13,10 @@ namespace BudgetBadger.iOS.Effects
     {
         protected override void OnAttached()
         {
-            if (Control is UITextField entry)
+            if (Control is UITextField control)
             {
-                entry.Layer.BorderWidth = 0;
-                entry.BorderStyle = UITextBorderStyle.None;
+                control.Layer.BorderWidth = 0;
+                control.BorderStyle = UITextBorderStyle.None;
             }
         }
 

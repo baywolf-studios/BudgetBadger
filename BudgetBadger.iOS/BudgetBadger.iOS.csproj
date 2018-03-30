@@ -165,6 +165,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Effects\" />
+    <Folder Include="Renderers\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -180,6 +181,7 @@
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
+    <Compile Include="Renderers\ExpandingEditorRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

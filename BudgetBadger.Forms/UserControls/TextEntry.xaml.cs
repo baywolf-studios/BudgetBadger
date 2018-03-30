@@ -40,102 +40,53 @@ namespace BudgetBadger.Forms.UserControls
         public event EventHandler<FocusEventArgs> EntryUnfocused;
         public event EventHandler<TextChangedEventArgs> TextChanged;
 
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
-
-        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newval) =>
-        {
-            var entry = (TextEntry)bindable;
-            entry.LabelControl.Text = (string)newval;
-        });
-
-        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false, propertyChanged: (bindable, oldVal, newVal) =>
-        {
-            var matEntry = (TextEntry)bindable;
-            matEntry.EntryControl.IsPassword = (bool)newVal;
-        });
-        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(TextEntry), defaultValue: Keyboard.Default, propertyChanged: (bindable, oldVal, newVal) =>
-        {
-            var matEntry = (TextEntry)bindable;
-            matEntry.EntryControl.Keyboard = (Keyboard)newVal;
-        });
-
-        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Black);
-        public Color PrimaryColor
-        {
-            get
-            {
-                return (Color)GetValue(PrimaryColorProperty);
-            }
-            set
-            {
-                SetValue(PrimaryColorProperty, value);
-            }
-        }
-
-        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Accent);
-        public Color AccentColor
-        {
-            get
-            {
-                return (Color)GetValue(AccentColorProperty);
-            }
-            set
-            {
-                SetValue(AccentColorProperty, value);
-            }
-        }
-        public Keyboard Keyboard
-        {
-            get
-            {
-                return (Keyboard)GetValue(KeyboardProperty);
-            }
-            set
-            {
-                SetValue(KeyboardProperty, value);
-            }
-        }
-
-        public bool IsPassword
-        {
-            get
-            {
-                return (bool)GetValue(IsPasswordProperty);
-            }
-            set
-            {
-                SetValue(IsPasswordProperty, value);
-            }
-        }
-
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
         public string Text
         {
-            get
-            {
-                return (string)GetValue(TextProperty);
-            }
-            set
-            {
-                SetValue(TextProperty, value);
-            }
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
-        public string Label
+        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string LabelText
         {
-            get
-            {
-                return (string)GetValue(LabelProperty);
-            }
-            set
-            {
-                SetValue(LabelProperty, value);
-            }
+            get => (string)GetValue(LabelTextProperty);
+            set => SetValue(LabelTextProperty, value);
+        }
+
+        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false);
+        public bool IsPassword
+        {
+            get => (bool)GetValue(IsPasswordProperty);
+            set => SetValue(IsPasswordProperty, value);
+        }
+
+        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextEntry), defaultValue: Keyboard.Default);
+        public Keyboard Keyboard
+        {
+            get => (Keyboard)GetValue(KeyboardProperty);
+            set => SetValue(KeyboardProperty, value);
+        }
+
+        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(MultilineTextEntry), defaultValue: Color.Black);
+        public Color PrimaryColor
+        {
+            get => (Color)GetValue(PrimaryColorProperty);
+            set => SetValue(PrimaryColorProperty, value);
+        }
+
+        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(MultilineTextEntry), defaultValue: Color.Accent);
+        public Color AccentColor
+        {
+            get => (Color)GetValue(AccentColorProperty);
+            set => SetValue(AccentColorProperty, value);
         }
 
         public TextEntry()
         {
             InitializeComponent();
 
+            LabelControl.BindingContext = this;
             EntryControl.BindingContext = this;
 
             EntryControl.Focused += (sender, e) =>
@@ -163,6 +114,22 @@ namespace BudgetBadger.Forms.UserControls
                     UpdateVisualState();
                 }
             };
+
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                EntryControl.PropertyChanged += (sender, e) =>
+                {
+                    if (e.PropertyName == nameof(EntryControl.IsFocused))
+                    {
+                        UpdateVisualState();
+                    }
+                };
+
+                EntryControl.Completed += (sender, e) =>
+                {
+                    UpdateVisualState();
+                };
+            }
 
             UpdateVisualState();
         }

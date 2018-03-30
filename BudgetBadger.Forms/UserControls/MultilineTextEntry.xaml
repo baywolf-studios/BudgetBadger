@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" x:Name="this" xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry">
     <ContentView.Content>
         <Grid RowSpacing="8" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -12,12 +12,12 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding Label, Mode=TwoWay}" FontSize="16"/>
-            <Editor Grid.Row="1" x:Name="EditorControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
-                <Entry.Effects>
+            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding LabelText, Mode=TwoWay}" FontSize="16"/>
+            <controls:ExpandingEditor Margin="0" BackgroundColor="Transparent" Grid.Row="1" x:Name="EditorControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}" Keyboard="{Binding Keyboard, Mode=TwoWay}">
+                <controls:ExpandingEditor.Effects>
                     <effects:BorderlessEditorEffect />
-                </Entry.Effects>
-            </Editor>
+                </controls:ExpandingEditor.Effects>
+            </controls:ExpandingEditor>
             <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand">
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />

@@ -35,106 +35,66 @@ namespace BudgetBadger.Forms.UserControls
 
         public static void Init() { }
 
-        public event EventHandler<FocusEventArgs> EntryFocused;
-        public event EventHandler<FocusEventArgs> EntryUnfocused;
+        public event EventHandler<FocusEventArgs> EditorFocused;
+        public event EventHandler<FocusEventArgs> EditorUnfocused;
         public event EventHandler<TextChangedEventArgs> TextChanged;
 
         public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
-
-        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newval) =>
+        public string Text
         {
-            var entry = (MultilineTextEntry)bindable;
-            entry.LabelControl.Text = (string)newval;
-        });
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
 
-        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextEntry), defaultValue: Keyboard.Default, propertyChanged: (bindable, oldVal, newVal) =>
+        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string LabelText
         {
-            var matEntry = (MultilineTextEntry)bindable;
-            matEntry.EditorControl.Keyboard = (Keyboard)newVal;
-        });
+            get => (string)GetValue(LabelTextProperty);
+            set => SetValue(LabelTextProperty, value);
+        }
+
+        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextEntry), defaultValue: Keyboard.Default);
+        public Keyboard Keyboard
+        {
+            get => (Keyboard)GetValue(KeyboardProperty);
+            set => SetValue(KeyboardProperty, value);
+        }
 
         public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(MultilineTextEntry), defaultValue: Color.Black);
         public Color PrimaryColor
         {
-            get
-            {
-                return (Color)GetValue(PrimaryColorProperty);
-            }
-            set
-            {
-                SetValue(PrimaryColorProperty, value);
-            }
+            get => (Color)GetValue(PrimaryColorProperty);
+            set => SetValue(PrimaryColorProperty, value);
         }
 
         public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(MultilineTextEntry), defaultValue: Color.Accent);
         public Color AccentColor
         {
-            get
-            {
-                return (Color)GetValue(AccentColorProperty);
-            }
-            set
-            {
-                SetValue(AccentColorProperty, value);
-            }
-        }
-        public Keyboard Keyboard
-        {
-            get
-            {
-                return (Keyboard)GetValue(KeyboardProperty);
-            }
-            set
-            {
-                SetValue(KeyboardProperty, value);
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return (string)GetValue(TextProperty);
-            }
-            set
-            {
-                SetValue(TextProperty, value);
-            }
-        }
-
-        public string Label
-        {
-            get
-            {
-                return (string)GetValue(LabelProperty);
-            }
-            set
-            {
-                SetValue(LabelProperty, value);
-            }
+            get => (Color)GetValue(AccentColorProperty);
+            set => SetValue(AccentColorProperty, value);
         }
 
         public MultilineTextEntry()
         {
             InitializeComponent();
 
+            LabelControl.BindingContext = this;
             EditorControl.BindingContext = this;
 
             EditorControl.Focused += (sender, e) =>
             {
-                EntryFocused?.Invoke(this, e);
+                EditorFocused?.Invoke(this, e);
                 UpdateVisualState();
             };
 
             EditorControl.Unfocused += (sender, e) =>
             {
-                EntryUnfocused?.Invoke(this, e);
+                EditorUnfocused?.Invoke(this, e);
                 UpdateVisualState();
             };
 
             EditorControl.TextChanged += (sender, e) =>
             {
-                InvalidateMeasure();
                 TextChanged?.Invoke(sender, e);
                 UpdateVisualState();
             };
@@ -146,6 +106,22 @@ namespace BudgetBadger.Forms.UserControls
                     UpdateVisualState();
                 }
             };
+
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                EditorControl.PropertyChanged += (sender, e) =>
+                {
+                    if (e.PropertyName == nameof(EditorControl.IsFocused))
+                    {
+                        UpdateVisualState();
+                    }
+                };
+
+                EditorControl.Completed += (sender, e) =>
+                {
+                    UpdateVisualState();
+                };
+            }
 
             UpdateVisualState();
         }
@@ -231,7 +207,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 2;
+            BottomBorder.HeightRequest = 1;
         }
 
         async Task SetIdleFilledState()

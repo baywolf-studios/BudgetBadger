@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using BudgetBadger.Droid.Effects;
@@ -17,15 +18,15 @@ namespace BudgetBadger.Droid.Effects
 
         protected override void OnAttached()
         {
-            if (Control is FormsEditText entry)
+            if (Control is FormsEditText control)
             {
-                entry.SetBackground(null);
+                control.SetBackground(null);
 
-                var layoutParams = new Android.Views.ViewGroup.MarginLayoutParams(Control.LayoutParameters);
+                var layoutParams = new ViewGroup.MarginLayoutParams(Control.LayoutParameters);
                 layoutParams.SetMargins(0, 0, 0, 0);
-                entry.LayoutParameters = layoutParams;
-                entry.SetPadding(0, 0, 0, 0);
-                entry.ImeOptions = (ImeAction)ImeFlags.NoExtractUi;
+                control.LayoutParameters = layoutParams;
+                control.SetPadding(0, 0, 0, 0);
+                control.ImeOptions = (ImeAction)ImeFlags.NoExtractUi;
             }
         }
 
