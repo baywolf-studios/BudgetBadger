@@ -15,9 +15,12 @@ namespace BudgetBadger.iOS.Effects
             if (Control is UITextView control)
             {
                 control.Layer.BorderWidth = 0;
-                control.TextContainerInset = UIEdgeInsets.Zero;
-                control.ContentInset = UIEdgeInsets.Zero;
-                control.TextContainer.LineFragmentPadding = 0;
+                control.TextContainerInset = new UIEdgeInsets(0,
+                                                              -control.TextContainer.LineFragmentPadding,
+                                                              0,
+                                                              -control.TextContainer.LineFragmentPadding);
+                //control.ContentInset = UIEdgeInsets.Zero;
+                //control.TextContainer.LineFragmentPadding = 0;
             }
         }
 
