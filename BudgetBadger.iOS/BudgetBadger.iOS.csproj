@@ -179,6 +179,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

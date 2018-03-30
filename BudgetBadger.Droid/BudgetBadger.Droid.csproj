@@ -194,6 +194,7 @@
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="AuthActivity.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
