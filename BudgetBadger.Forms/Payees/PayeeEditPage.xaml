@@ -10,12 +10,22 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <StackLayout Orientation="Vertical" Margin="16" Spacing="8">
-                <control:TextEntry LabelText="Name" Text="{Binding Payee.Description}"/>
-                <control:MultilineTextEntry LabelText="Notes" Text="{Binding Payee.Notes}"/>
-                <Button Grid.ColumnSpan="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
-                <control:SelectorButton Command="{Binding SaveCommand}" Text="{Binding Payee.Description}" LabelText="Description"/>
-            </StackLayout>
+            <Grid RowSpacing="8" ColumnSpacing="0" Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <control:TextEntry Grid.Row="0" LabelText="Name" Text="{Binding Payee.Description}"/>
+                <ScrollView Grid.Row="1">
+                    
+                
+                <control:MultilineTextEntry  LabelText="Notes" Text="{Binding Payee.Notes}"/>
+                </ScrollView>
+                <Button Grid.Row="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+                <!--<control:SelectorButton Command="{Binding SaveCommand}" Text="{Binding Payee.Description}" LabelText="Description"/>-->
+            </Grid>
         </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>
