@@ -12,7 +12,7 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label, Mode=TwoWay}" FontSize="16"/>
+            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding Label, Mode=TwoWay}" FontSize="16"/>
             <Editor Grid.Row="1" x:Name="EditorControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
                 <Entry.Effects>
                     <effects:BorderlessEditorEffect />
