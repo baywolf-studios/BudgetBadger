@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.SelectorButton">
+    <ContentView.Content>
+        <Grid x:Name="GridControl" RowSpacing="8" ColumnSpacing="0">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Command}" NumberOfTapsRequired="1" />
+            </Grid.GestureRecognizers>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="HiddenLabelControl" Text=" " FontSize="12" Margin="0,8,0,0" InputTransparent="true"/>
+            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding LabelText}" FontSize="16" InputTransparent="true"/>
+            <Label Grid.Row="1" x:Name="TextControl" FontSize="16" Text="{Binding Text}" InputTransparent="true"/>
+            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand" InputTransparent="true"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
