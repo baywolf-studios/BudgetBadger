@@ -4,13 +4,12 @@ using BudgetBadger.Droid.Effects;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ResolutionGroupName("Wolf")]
-[assembly: ExportEffect(typeof(BorderlessEntryEffect), "BorderlessEntryEffect")]
+[assembly: ExportEffect(typeof(BorderlessEditorEffect), "BorderlessEditorEffect")]
 namespace BudgetBadger.Droid.Effects
 {
-    public class BorderlessEntryEffect : PlatformEffect
+    public class BorderlessEditorEffect : PlatformEffect
     {
-        public BorderlessEntryEffect()
+        public BorderlessEditorEffect()
         {
         }
 

@@ -10,46 +10,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <Grid Margin="16" ColumnSpacing="8" RowSpacing="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <control:TextEntry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Name" Text="{Binding Payee.Description}"/>
-                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Notes"/>
-                <Frame OutlineColor="Black" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Editor Text="{Binding Payee.Notes}"/>
-                </Frame>
+            <StackLayout Orientation="Vertical" Margin="16" Spacing="8">
+                <control:TextEntry Label="Name" Text="{Binding Payee.Description}"/>
+                <control:MultilineTextEntry Label="Notes" Text="{Binding Payee.Notes}"/>
                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
-            </Grid>
-
-
-            <!--<TableView Intent="Form">
-                <TableRoot>
-                    <TableSection Title="Details">
-                        <EntryCell Label="Name" Text="{Binding Payee.Description}" />
-                    </TableSection>
-                    <TableSection Title="Notes">
-                        <ViewCell>
-                            <Editor Text="{Binding Payee.Notes}">
-                            </Editor>
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection>
-                        <ViewCell>
-                            <Button IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>-->
+            </StackLayout>
         </control:BusyIndicator>
-
-
     </ContentPage.Content>
 </ContentPage>

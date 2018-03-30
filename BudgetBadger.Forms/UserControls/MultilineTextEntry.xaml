@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TextEntry">
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry">
     <ContentView.Content>
         <Grid RowSpacing="8" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -12,12 +12,12 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label}" FontSize="16"/>
-            <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
+            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label, Mode=TwoWay}" FontSize="16"/>
+            <Editor Grid.Row="1" x:Name="EditorControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
                 <Entry.Effects>
-                    <effects:BorderlessEntryEffect />
+                    <effects:BorderlessEditorEffect />
                 </Entry.Effects>
-            </Entry>
+            </Editor>
             <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand">
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
