@@ -1,45 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using BudgetBadger.Forms.Animations;
+using BudgetBadger.Forms.Animation;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
     public partial class TextEntry : ContentView
     {
-        Color TextColor = Color.Black;
-        Color InactiveColor = Color.FromRgba(0, 0, 0, .56);
+        Color PrimaryColor38
+        {
+            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.38);
+        }
+
+        Color PrimaryColor42 
+        {
+            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.42);
+        }
+
+        Color PrimaryColor54
+        {
+            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.54);
+        }
+
+        Color PrimaryColor87
+        {
+            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.87);
+        }
+
+        Color AccentColor87
+        {
+            get => Color.FromRgba(AccentColor.R, AccentColor.G, AccentColor.B, 0.87);
+        }
 
         public static void Init() { }
+
+        public event EventHandler<FocusEventArgs> EntryFocused;
+        public event EventHandler<FocusEventArgs> EntryUnfocused;
+        public event EventHandler<TextChangedEventArgs> TextChanged;
+
         public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
         public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newval) =>
         {
             var matEntry = (TextEntry)bindable;
-            //matEntry.MainEntry.Placeholder = (string)newval;
-            matEntry.PlaceholderLabel.Text = (string)newval;
+            //matEntry.EntryControl.Placeholder = (string)newval;
+            matEntry.LabelControl.Text = (string)newval;
         });
 
         public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false, propertyChanged: (bindable, oldVal, newVal) =>
         {
             var matEntry = (TextEntry)bindable;
-            matEntry.MainEntry.IsPassword = (bool)newVal;
+            matEntry.EntryControl.IsPassword = (bool)newVal;
         });
         public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(TextEntry), defaultValue: Keyboard.Default, propertyChanged: (bindable, oldVal, newVal) =>
         {
             var matEntry = (TextEntry)bindable;
-            matEntry.MainEntry.Keyboard = (Keyboard)newVal;
+            matEntry.EntryControl.Keyboard = (Keyboard)newVal;
         });
-        public static BindableProperty ActiveColorProperty = BindableProperty.Create(nameof(ActiveColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Accent);
-        public Color ActiveColor
+
+        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Black);
+        public Color PrimaryColor
         {
             get
             {
-                return (Color)GetValue(ActiveColorProperty);
+                return (Color)GetValue(PrimaryColorProperty);
             }
             set
             {
-                SetValue(ActiveColorProperty, value);
+                SetValue(PrimaryColorProperty, value);
+            }
+        }
+
+        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Accent);
+        public Color AccentColor
+        {
+            get
+            {
+                return (Color)GetValue(AccentColorProperty);
+            }
+            set
+            {
+                SetValue(AccentColorProperty, value);
             }
         }
         public Keyboard Keyboard
@@ -93,61 +135,115 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
 
-            MainEntry.BindingContext = this;
-            MainEntry.Focused += async (s, a) =>
+            EntryControl.BindingContext = this;
+
+            EntryControl.Focused += (sender, e) =>
+            {
+                EntryFocused?.Invoke(this, e);
+                UpdateVisualState();
+            };
+
+            EntryControl.Unfocused += (sender, e) =>
+            {
+                EntryUnfocused?.Invoke(this, e);
+                UpdateVisualState();
+            };
+
+            EntryControl.TextChanged += (sender, e) => 
+            {
+                TextChanged?.Invoke(sender, e);
+                UpdateVisualState();
+            };
+
+            PropertyChanged += (sender, e) => 
+            {
+                if (e.PropertyName == nameof(IsEnabled))
+                {
+                    UpdateVisualState();
+                }
+            };
+
+            UpdateVisualState();
+        }
+
+        void Handle_Tapped(object sender, System.EventArgs e)
+        {
+            if (!EntryControl.IsFocused)
+            {
+                EntryControl.Focus();
+            }
+        }
+
+        async void UpdateVisualState()
+        {
+            if (EntryControl.IsFocused)
             {
                 await SetFocusedState();
-            };
-            MainEntry.Unfocused += async (s, a) =>
+            }
+            else if (string.IsNullOrEmpty(EntryControl.Text))
             {
-                if (string.IsNullOrEmpty(MainEntry.Text))
-                {
-                    await SetIdleEmptyState();
-                }
-                else
-                {
-                    await SetIdleFilledState();
-                }
-            };
-            MainEntry.TextChanged += async (sender, e) => 
+                await SetIdleEmptyState();
+            }
+            else if (!string.IsNullOrEmpty(EntryControl.Text))
             {
-                if (MainEntry.IsFocused)
-                {
-                    await SetFocusedState();
-                }
-                else if (string.IsNullOrEmpty(MainEntry.Text))
-                {
-                    await SetIdleEmptyState();
-                }
-                else if (!string.IsNullOrEmpty(MainEntry.Text))
-                {
-                    await SetIdleFilledState();
-                }
-            };
+                await SetIdleFilledState();
+            }
+
+            if (!IsEnabled)
+            {
+                await SetDisabledState();
+            }
+        }
+
+        async Task SetDisabledState()
+        {
+            var tasks = new List<Task>();
+
+            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            {
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+            }
+
+            if (LabelControl.TextColor != PrimaryColor38)
+            {
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor42, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+            }
+
+            if (EntryControl.TextColor != PrimaryColor38)
+            {
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor38, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+            }
+
+            await Task.WhenAll(tasks);
         }
 
         async Task SetIdleEmptyState()
         {
             var tasks = new List<Task>();
 
-            if (BottomBorder.BackgroundColor != Color.FromRgba(0, 0, 0, .56))
+            if (EntryControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, Color.FromRgba(0, 0, 0, .56), c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.TranslationX != 0 || PlaceholderLabel.TranslationY != 0)
+            if (BottomBorder.BackgroundColor != PrimaryColor42)
             {
-                tasks.Add(PlaceholderLabel.TranslateTo(0, 0, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.TextColor != Color.FromRgba(0,0,0,.56))
+            if (LabelControl.TranslationX != 0 || LabelControl.TranslationY != 0)
             {
-                tasks.Add(PlaceholderLabel.ColorTo(PlaceholderLabel.TextColor, Color.FromRgba(0, 0, 0, .56), c => PlaceholderLabel.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, 0, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.FontSize != MainEntry.FontSize)
+            if (LabelControl.TextColor != PrimaryColor54)
             {
-                tasks.Add(PlaceholderLabel.FontSizeTo(PlaceholderLabel.FontSize, MainEntry.FontSize, f => PlaceholderLabel.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+            }
+
+            if (LabelControl.FontSize != EntryControl.FontSize)
+            {
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EntryControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -157,26 +253,31 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (BottomBorder.BackgroundColor != Color.FromRgba(0, 0, 0, .56))
+            if (EntryControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, Color.FromRgba(0, 0, 0, .56), c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
             }
 
-            var placholderTranslateX = HiddenLabel.X - MainEntry.X;
-            var placeholderTranslateY = HiddenLabel.Y - MainEntry.Y;
-            if (PlaceholderLabel.TranslationX != placholderTranslateX || PlaceholderLabel.TranslationY != placeholderTranslateY)
+            if (BottomBorder.BackgroundColor != PrimaryColor42)
             {
-                tasks.Add(PlaceholderLabel.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.TextColor != Color.FromRgba(0, 0, 0, .56))
+            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
+            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
             {
-                tasks.Add(PlaceholderLabel.ColorTo(PlaceholderLabel.TextColor, Color.FromRgba(0, 0, 0, .56), c => PlaceholderLabel.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.FontSize != HiddenLabel.FontSize)
+            if (LabelControl.TextColor != PrimaryColor54)
             {
-                tasks.Add(PlaceholderLabel.FontSizeTo(PlaceholderLabel.FontSize, HiddenLabel.FontSize, f => PlaceholderLabel.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+            }
+
+            if (LabelControl.FontSize != HiddenLabelControl.FontSize)
+            {
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -186,26 +287,31 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (BottomBorder.BackgroundColor != ActiveColor)
+            if (EntryControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, ActiveColor, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
             }
 
-            var placholderTranslateX = HiddenLabel.X - MainEntry.X;
-            var placeholderTranslateY = HiddenLabel.Y - MainEntry.Y;
-            if (PlaceholderLabel.TranslationX != placholderTranslateX || PlaceholderLabel.TranslationY != placeholderTranslateY)
+            if (BottomBorder.BackgroundColor != AccentColor)
             {
-                tasks.Add(PlaceholderLabel.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.TextColor != ActiveColor)
+            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
+            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
             {
-                tasks.Add(PlaceholderLabel.ColorTo(PlaceholderLabel.TextColor, ActiveColor, c => PlaceholderLabel.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
             }
 
-            if (PlaceholderLabel.FontSize != HiddenLabel.FontSize)
+            if (LabelControl.TextColor != AccentColor87)
             {
-                tasks.Add(PlaceholderLabel.FontSizeTo(PlaceholderLabel.FontSize, HiddenLabel.FontSize, f => PlaceholderLabel.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, AccentColor87, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+            }
+
+            if (LabelControl.FontSize != HiddenLabelControl.FontSize)
+            {
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);

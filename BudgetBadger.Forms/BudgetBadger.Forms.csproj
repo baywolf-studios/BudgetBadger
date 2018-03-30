@@ -28,7 +28,7 @@
     <Folder Include="Converters\" />
     <Folder Include="Reports\" />
     <Folder Include="Effects\" />
-    <Folder Include="Animations\" />
+    <Folder Include="Animation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
