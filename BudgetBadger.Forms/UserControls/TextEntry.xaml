@@ -7,14 +7,22 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="2"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" x:Name="HiddenLabel" Text=" " FontSize="12" Margin="0,8,0,0" />
-            <Label Grid.Row="1" x:Name="PlaceholderLabel" Text="{Binding Placeholder}" FontSize="16"/>
-            <Entry Grid.Row="1" x:Name="MainEntry" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
+            <Label Grid.Row="0" x:Name="HiddenLabelControl" Text=" " FontSize="12" Margin="0,8,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Placeholder}" FontSize="16"/>
+            <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}">
                 <Entry.Effects>
                     <effects:BorderlessEntryEffect />
                 </Entry.Effects>
             </Entry>
-            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand" />
+            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
         </Grid>
     </ContentView.Content>
 </ContentView>
