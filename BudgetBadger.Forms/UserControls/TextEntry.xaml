@@ -12,13 +12,19 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding LabelText}" FontSize="16"/>
+            <Label Grid.Row="1" x:Name="PrefixControl" Text="{Binding Prefix}" FontSize="16" Opacity="0" HorizontalOptions="Start"/>
+            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label}" FontSize="16"/>
             <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}" IsPassword="{Binding IsPassword, Mode=TwoWay}" Keyboard="{Binding Keyboard, Mode=TwoWay}">
                 <Entry.Effects>
                     <effects:BorderlessEntryEffect />
                 </Entry.Effects>
             </Entry>
-            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand">
+            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Opacity="1" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <BoxView Grid.Row="2" x:Name="ThickBottomBorder" BackgroundColor="Gray" HeightRequest="2" Opacity="0" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </BoxView.GestureRecognizers>

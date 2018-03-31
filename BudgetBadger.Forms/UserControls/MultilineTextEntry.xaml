@@ -12,13 +12,18 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </Label.GestureRecognizers>
             </Label>
-            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding LabelText, Mode=TwoWay}" FontSize="16"/>
+            <Label InputTransparent="true" Grid.Row="1" x:Name="LabelControl" Text="{Binding Label, Mode=TwoWay}" FontSize="16"/>
             <controls:ExpandingEditor Margin="0" BackgroundColor="Transparent" Grid.Row="1" x:Name="EditorControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}" Keyboard="{Binding Keyboard, Mode=TwoWay}">
                 <controls:ExpandingEditor.Effects>
                     <effects:BorderlessEditorEffect />
                 </controls:ExpandingEditor.Effects>
             </controls:ExpandingEditor>
-            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" HorizontalOptions="FillAndExpand">
+            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <BoxView Grid.Row="2" x:Name="ThickBottomBorder" BackgroundColor="Gray" HeightRequest="2" Opacity="0" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
                 </BoxView.GestureRecognizers>
