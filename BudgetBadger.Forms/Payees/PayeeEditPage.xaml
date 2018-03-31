@@ -16,12 +16,9 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <control:TextEntry Grid.Row="0" LabelText="Name" Text="{Binding Payee.Description}"/>
+                <control:TextEntry Grid.Row="0" Prefix="$" Label="Name" Text="{Binding Payee.Description}"/>
                 <ScrollView Grid.Row="1">
-                    
-                
-                <control:MultilineTextEntry  LabelText="Notes" Text="{Binding Payee.Notes}"/>
+                    <control:MultilineTextEntry Label="Notes" Text="{Binding Payee.Notes}"/>
                 </ScrollView>
                 <Button Grid.Row="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
                 <!--<control:SelectorButton Command="{Binding SaveCommand}" Text="{Binding Payee.Description}" LabelText="Description"/>-->

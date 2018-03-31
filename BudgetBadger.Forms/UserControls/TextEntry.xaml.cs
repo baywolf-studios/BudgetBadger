@@ -9,27 +9,29 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class TextEntry : ContentView
     {
-        Color PrimaryColor38
+        uint _animationLength = 150;
+
+        Color _primaryColor38
         {
             get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.38);
         }
 
-        Color PrimaryColor42 
+        Color _primaryColor42 
         {
             get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.42);
         }
 
-        Color PrimaryColor54
+        Color _primaryColor54
         {
             get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.54);
         }
 
-        Color PrimaryColor87
+        Color _primaryColor87
         {
             get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.87);
         }
 
-        Color AccentColor87
+        Color _accentColor87
         {
             get => Color.FromRgba(AccentColor.R, AccentColor.G, AccentColor.B, 0.87);
         }
@@ -40,6 +42,13 @@ namespace BudgetBadger.Forms.UserControls
         public event EventHandler<FocusEventArgs> EntryUnfocused;
         public event EventHandler<TextChangedEventArgs> TextChanged;
 
+        public static BindableProperty PrefixProperty = BindableProperty.Create(nameof(Prefix), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Prefix
+        {
+            get => (string)GetValue(PrefixProperty);
+            set => SetValue(PrefixProperty, value);
+        }
+
         public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
         public string Text
         {
@@ -47,11 +56,11 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
-        public string LabelText
+        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Label
         {
-            get => (string)GetValue(LabelTextProperty);
-            set => SetValue(LabelTextProperty, value);
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
         }
 
         public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false);
@@ -88,6 +97,7 @@ namespace BudgetBadger.Forms.UserControls
 
             LabelControl.BindingContext = this;
             EntryControl.BindingContext = this;
+            PrefixControl.BindingContext = this;
 
             EntryControl.Focused += (sender, e) =>
             {
@@ -167,19 +177,29 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            if (BottomBorder.BackgroundColor != _primaryColor42)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, _primaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
             }
 
-            if (LabelControl.TextColor != PrimaryColor38)
+            if (ThickBottomBorder.BackgroundColor != _primaryColor42)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor42, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, _primaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
             }
 
-            if (EntryControl.TextColor != PrimaryColor38)
+            if (PrefixControl.TextColor != _primaryColor38)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor38, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(PrefixControl.ColorTo(PrefixControl.TextColor, _primaryColor38, c => PrefixControl.TextColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            if (LabelControl.TextColor != _primaryColor38)
+            {
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _primaryColor38, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            if (EntryControl.TextColor != _primaryColor38)
+            {
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, _primaryColor38, c => EntryControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -189,113 +209,226 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            // prefix should be hidden
+            if (PrefixControl.Opacity > 0)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(PrefixControl.FadeTo(0, _animationLength, Easing.CubicIn));
             }
 
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            // set the idle color of the entry
+            if (EntryControl.TextColor != _primaryColor87)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, _primaryColor87, c => EntryControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
+            // set the idle color of the bottom borders
+            if (BottomBorder.BackgroundColor != _primaryColor42)
+            {
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, _primaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            if (ThickBottomBorder.BackgroundColor != _primaryColor42)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, _primaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            // show the normal bottom border
+            if (BottomBorder.Opacity < 1)
+            {
+                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
+            }
+
+            // hide the thick bottom border
+            if (ThickBottomBorder.Opacity > 0)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicIn));
+            }
+
+            // reset label position
             if (LabelControl.TranslationX != 0 || LabelControl.TranslationY != 0)
             {
-                tasks.Add(LabelControl.TranslateTo(0, 0, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicIn));
             }
 
-            if (LabelControl.TextColor != PrimaryColor54)
+            // set the idle label color
+            if (LabelControl.TextColor != _primaryColor54)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _primaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
+            // set the font size of the label
             if (LabelControl.FontSize != EntryControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EntryControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EntryControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 1;
         }
 
         async Task SetIdleFilledState()
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            // show the prefix if there is one
+            if (!string.IsNullOrEmpty(Prefix) && PrefixControl.Opacity < 1)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicOut));
             }
 
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            // set the prefix color if exists
+            if (!string.IsNullOrEmpty(Prefix) && PrefixControl.TextColor != _primaryColor54)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(PrefixControl.ColorTo(PrefixControl.TextColor, _primaryColor54, c => PrefixControl.TextColor = c, _animationLength, Easing.CubicOut));
             }
 
-            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
-            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            // set teh entry color
+            if (EntryControl.TextColor != _primaryColor87)
+            {
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, _primaryColor87, c => EntryControl.TextColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // set the bottom border color
+            if (BottomBorder.BackgroundColor != _primaryColor42)
+            {
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, _primaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // set the thick bottom border color
+            if (ThickBottomBorder.BackgroundColor != _primaryColor42)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, _primaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // show the normal bottom border
+            if (BottomBorder.Opacity < 1)
+            {
+                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicOut));
+            }
+
+            // hide the thick bottom border
+            if (ThickBottomBorder.Opacity > 0)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
+            }
+
+            //move the label above the entry and prefix
+            var labelTranslateY = HiddenLabelControl.Y - EntryControl.Y;
             if (Device.RuntimePlatform == Device.macOS)
             {
-                placholderTranslateX = -1 * placholderTranslateX;
-                placeholderTranslateY = -1 * placeholderTranslateY;
+                labelTranslateY = -1 * labelTranslateY;
             }
-            if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
+            if (LabelControl.TranslationY != labelTranslateY)
             {
-                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, labelTranslateY, _animationLength, Easing.CubicOut));
             }
 
-            if (LabelControl.TextColor != PrimaryColor54)
+            //move the entry to the the right if the prefix is there
+            var entryTranslateX = (double)0;
+            if (!string.IsNullOrEmpty(Prefix))
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                entryTranslateX = PrefixControl.X + PrefixControl.Width + 8;
+            }
+            if (EntryControl.TranslationX != entryTranslateX)
+            {
+                tasks.Add(EntryControl.TranslateTo(entryTranslateX, EntryControl.TranslationY, _animationLength, Easing.CubicOut));
             }
 
+            // set the color of the label
+            if (LabelControl.TextColor != _primaryColor54)
+            {
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _primaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // make the label font size smaller
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicOut));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 1;
         }
 
         async Task SetFocusedState()
         {
             var tasks = new List<Task>();
 
-            if (EntryControl.TextColor != PrimaryColor87)
+            // show the prefix if there is one
+            if (!string.IsNullOrEmpty(Prefix) && PrefixControl.Opacity < 1)
             {
-                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, PrimaryColor87, c => EntryControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicOut));
             }
 
+            // set the prefix color if it exists
+            if (!string.IsNullOrEmpty(Prefix) && PrefixControl.TextColor != _primaryColor54)
+            {
+                tasks.Add(PrefixControl.ColorTo(PrefixControl.TextColor, _primaryColor54, c => PrefixControl.TextColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // set the entry color
+            if (EntryControl.TextColor != _primaryColor87)
+            {
+                tasks.Add(EntryControl.ColorTo(EntryControl.TextColor, _primaryColor87, c => EntryControl.TextColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // set the normal bottom border color
             if (BottomBorder.BackgroundColor != AccentColor)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
             }
 
-            var placholderTranslateX = HiddenLabelControl.X - EntryControl.X;
-            var placeholderTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+            // set the thick bottom border color
+            if (ThickBottomBorder.BackgroundColor != AccentColor)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, AccentColor, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // hide the normal bottom border
+            if (BottomBorder.Opacity > 0)
+            {
+                tasks.Add(BottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
+            }
+
+            // show the thick bottom border
+            if (ThickBottomBorder.Opacity < 1)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(1, _animationLength, Easing.CubicOut));
+            }
+
+            //move the label above the entry and prefix
+            var labelTranslateY = HiddenLabelControl.Y - EntryControl.Y;
             if (Device.RuntimePlatform == Device.macOS)
             {
-                placholderTranslateX = -1 * placholderTranslateX;
-                placeholderTranslateY = -1 * placeholderTranslateY;
+                labelTranslateY = -1 * labelTranslateY;
             }
-            if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
+            if (LabelControl.TranslationY != labelTranslateY)
             {
-                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, labelTranslateY, _animationLength, Easing.CubicOut));
             }
 
-            if (LabelControl.TextColor != AccentColor87)
+            //move the entry to the the right if the prefix is there
+            var entryTranslateX = (double)0;
+            if (!string.IsNullOrEmpty(Prefix))
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, AccentColor87, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                entryTranslateX = PrefixControl.X + PrefixControl.Width + 8;
+            }
+            if (EntryControl.TranslationX != entryTranslateX)
+            {
+                tasks.Add(EntryControl.TranslateTo(entryTranslateX, EntryControl.TranslationY, _animationLength, Easing.CubicOut));
             }
 
+            // set the label color
+            if (LabelControl.TextColor != _accentColor87)
+            {
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _accentColor87, c => LabelControl.TextColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // shrink the label font size
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicOut));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 2;
         }
     }
 }

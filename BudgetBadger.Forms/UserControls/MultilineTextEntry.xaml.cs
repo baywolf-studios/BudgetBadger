@@ -8,6 +8,8 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class MultilineTextEntry : ContentView
     {
+        uint _animationLength = 150;
+
         Color PrimaryColor38
         {
             get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.38);
@@ -46,11 +48,11 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
-        public string LabelText
+        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(MultilineTextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Label
         {
-            get => (string)GetValue(LabelTextProperty);
-            set => SetValue(LabelTextProperty, value);
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
         }
 
         public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextEntry), defaultValue: Keyboard.Default);
@@ -161,17 +163,22 @@ namespace BudgetBadger.Forms.UserControls
 
             if (BottomBorder.BackgroundColor != PrimaryColor42)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
             }
 
             if (LabelControl.TextColor != PrimaryColor38)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor42, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor38, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
             if (EditorControl.TextColor != PrimaryColor38)
             {
-                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor38, c => EditorControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor38, c => EditorControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -183,31 +190,48 @@ namespace BudgetBadger.Forms.UserControls
 
             if (EditorControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
+            // color the bottom borders
             if (BottomBorder.BackgroundColor != PrimaryColor42)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+            }
+
+            // show the normal bottom border
+            if (BottomBorder.Opacity < 1)
+            {
+                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
+            }
+
+            // hide the thick bottom border
+            if (ThickBottomBorder.Opacity > 0)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
             }
 
             if (LabelControl.TranslationX != 0 || LabelControl.TranslationY != 0)
             {
-                tasks.Add(LabelControl.TranslateTo(0, 0, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicIn));
             }
 
             if (LabelControl.TextColor != PrimaryColor54)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
             if (LabelControl.FontSize != EditorControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EditorControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EditorControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 1;
         }
 
         async Task SetIdleFilledState()
@@ -216,38 +240,56 @@ namespace BudgetBadger.Forms.UserControls
 
             if (EditorControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, _animationLength, Easing.CubicOut));
             }
 
+            // change the color of the bottom borders
             if (BottomBorder.BackgroundColor != PrimaryColor42)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
             }
 
-            var placholderTranslateX = HiddenLabelControl.X - EditorControl.X;
-            var placeholderTranslateY = HiddenLabelControl.Y - EditorControl.Y;
+            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // show the normal bottom border
+            if (BottomBorder.Opacity < 1)
+            {
+                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
+            }
+
+            // hide the thick bottom border
+            if (ThickBottomBorder.Opacity > 0)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
+            }
+
+            // move the label above entry
+            var labelTranslateX = HiddenLabelControl.X - EditorControl.X;
+            var labelTranslateY = HiddenLabelControl.Y - EditorControl.Y;
             if (Device.RuntimePlatform == Device.macOS)
             {
-                placholderTranslateX = -1 * placholderTranslateX;
-                placeholderTranslateY = -1 * placeholderTranslateY;
+                labelTranslateX = -1 * labelTranslateX;
+                labelTranslateY = -1 * labelTranslateY;
             }
-            if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
+            if (LabelControl.TranslationX != labelTranslateX || LabelControl.TranslationY != labelTranslateY)
             {
-                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(labelTranslateX, labelTranslateY, _animationLength, Easing.CubicOut));
             }
 
             if (LabelControl.TextColor != PrimaryColor54)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicOut));
             }
 
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicOut));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 1;
         }
 
         async Task SetFocusedState()
@@ -256,12 +298,30 @@ namespace BudgetBadger.Forms.UserControls
 
             if (EditorControl.TextColor != PrimaryColor87)
             {
-                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, _animationLength, Easing.CubicOut));
             }
 
+            // set the color to the bottom borders
             if (BottomBorder.BackgroundColor != AccentColor)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, 230, Easing.CubicIn));
+                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            if (ThickBottomBorder.BackgroundColor != AccentColor)
+            {
+                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, AccentColor, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+            }
+
+            // hide the normal bottom border
+            if (BottomBorder.Opacity > 0)
+            {
+                tasks.Add(BottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
+            }
+
+            // show the thick bottom border
+            if (ThickBottomBorder.Opacity < 1)
+            {
+                tasks.Add(ThickBottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
             }
 
             var placholderTranslateX = HiddenLabelControl.X - EditorControl.X;
@@ -273,21 +333,20 @@ namespace BudgetBadger.Forms.UserControls
             }
             if (LabelControl.TranslationX != placholderTranslateX || LabelControl.TranslationY != placeholderTranslateY)
             {
-                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(placholderTranslateX, placeholderTranslateY, _animationLength, Easing.CubicOut));
             }
 
             if (LabelControl.TextColor != AccentColor87)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, AccentColor87, c => LabelControl.TextColor = c, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, AccentColor87, c => LabelControl.TextColor = c, _animationLength, Easing.CubicOut));
             }
 
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, 230, Easing.CubicIn));
+                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicOut));
             }
 
             await Task.WhenAll(tasks);
-            BottomBorder.HeightRequest = 2;
         }
     }
 }
