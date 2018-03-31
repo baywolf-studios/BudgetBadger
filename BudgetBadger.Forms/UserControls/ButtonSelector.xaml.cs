@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class SelectorButton : ContentView
+    public partial class ButtonSelector : ContentView
     {
         Color PrimaryColor38
         {
@@ -38,42 +38,42 @@ namespace BudgetBadger.Forms.UserControls
 
         public event EventHandler<TextChangedEventArgs> TextChanged;
 
-        public static BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
         }
 
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Text
         {
             get => (string)GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(SelectorButton), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty LabelTextProperty = BindableProperty.Create(nameof(LabelText), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
         public string LabelText
         {
             get => (string)GetValue(LabelTextProperty);
             set => SetValue(LabelTextProperty, value);
         }
 
-        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(SelectorButton), defaultValue: Color.Black);
+        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Black);
         public Color PrimaryColor
         {
             get => (Color)GetValue(PrimaryColorProperty);
             set => SetValue(PrimaryColorProperty, value);
         }
 
-        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(SelectorButton), defaultValue: Color.Accent);
+        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Accent);
         public Color AccentColor
         {
             get => (Color)GetValue(AccentColorProperty);
             set => SetValue(AccentColorProperty, value);
         }
 
-        public SelectorButton()
+        public ButtonSelector()
         {
             InitializeComponent();
 
