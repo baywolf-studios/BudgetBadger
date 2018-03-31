@@ -15,52 +15,35 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <TableView Intent="Form">
-                <TableRoot>
-                    <TableSection Title="Amount (Outflow | Inflow)">
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Entry Grid.Column="0" HorizontalOptions="FillAndExpand" Placeholder="Outflow" Keyboard="Numeric" Text="{Binding Transaction.Outflow, Converter={StaticResource currencyConverter}}"/>
-                                <Entry Grid.Column="1" HorizontalOptions="FillAndExpand" Placeholder="Inflow" Keyboard="Numeric" Text="{Binding Transaction.Inflow, Converter={StaticResource currencyConverter}}" />
-                            </Grid>
-                        </ViewCell> 
-                    </TableSection>
-                    <TableSection Title="Account">
-                        <TextCell Command="{Binding AccountSelectedCommand}" Text="{Binding Transaction.Account.Description}">
-                        </TextCell>
-                    </TableSection>
-                    <TableSection Title="Payee">
-                        <TextCell Command="{Binding PayeeSelectedCommand}" Text="{Binding Transaction.Payee.Description}">
-                        </TextCell>
-                    </TableSection>
-                    <TableSection Title="Envelope">
-                        <TextCell Command="{Binding EnvelopeSelectedCommand}" IsEnabled="{Binding Transaction.Envelope.IsReadonly}" Text="{Binding Transaction.Envelope.Description}">
-                        </TextCell>
-                    </TableSection>
-                    <TableSection Title="Service Date">
-                        <ViewCell>
-                            <DatePicker Date="{Binding Transaction.ServiceDate}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection>
-                        <SwitchCell Text="Posted" On="{Binding Transaction.Posted}" />
-                    </TableSection>
-                    <TableSection Title="Notes">
-                        <ViewCell>
-                            <Entry Text="{Binding Transaction.Notes}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection>
-                        <ViewCell>
-                            <Button Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red" />
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
+            <ScrollView Orientation="Vertical">
+            <Grid RowSpacing="8" ColumnSpacing="8" Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <control:TextEntry Grid.Row="0" Grid.Column="0" Label="Outflow" Prefix="$" Text="{Binding Transaction.Outflow}" Keyboard="Numeric"/>
+                <control:TextEntry Grid.Row="0" Grid.Column="1" Label="Inflow" Prefix="$" Text="{Binding Transaction.Inflow}" Keyboard="Numeric"/>
+                <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
+                <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
+                <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
+                <Label Grid.Row="4" Grid.Column="0" Text="Service Date"/>
+                <DatePicker Grid.Row="4" Grid.Column="1" Date="{Binding ServiceDate}"/>
+                <Label Grid.Row="5" Grid.Column="0" Text="Posted"/>
+                <Switch Grid.Row="5" Grid.Column="1" IsToggled="{Binding Transaction.Posted}"/>
+                <control:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
+                <Button Grid.Row="7" Grid.ColumnSpan="2" Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red"/>
+            </Grid>
+            </ScrollView>
         </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>
