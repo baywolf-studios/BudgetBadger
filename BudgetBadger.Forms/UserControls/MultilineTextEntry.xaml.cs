@@ -188,6 +188,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
+            // color the text of the editor
             if (EditorControl.TextColor != PrimaryColor87)
             {
                 tasks.Add(EditorControl.ColorTo(EditorControl.TextColor, PrimaryColor87, c => EditorControl.TextColor = c, _animationLength, Easing.CubicIn));
@@ -216,16 +217,19 @@ namespace BudgetBadger.Forms.UserControls
                 tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
             }
 
+            // reset the label
             if (LabelControl.TranslationX != 0 || LabelControl.TranslationY != 0)
             {
                 tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicIn));
             }
 
+            // color the lable
             if (LabelControl.TextColor != PrimaryColor54)
             {
                 tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
             }
 
+            // increase the font size of the label
             if (LabelControl.FontSize != EditorControl.FontSize)
             {
                 tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, EditorControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
