@@ -149,24 +149,24 @@ namespace BudgetBadger.Forms.UserControls
             // color the bottom border
             if (BottomBorderControl.Color != BottomBorderIdleColor)
             {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             if (ThickBottomBorderControl.Color != BottomBorderIdleColor)
             {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             // show the normal bottom border
             if (BottomBorderControl.Opacity < 1)
             {
-                tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
             }
 
             // hide the thick bottom border
             if (ThickBottomBorderControl.Opacity > 0)
             {
-                tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
             }
 
             BottomBorderControl.IsVisible = true;
@@ -180,7 +180,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (LabelControl.TextColor != LabelIdleColor)
             {
-                await LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn);
+                await LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut);
             }
         }
 
@@ -188,7 +188,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (DateControl.TextColor != DateIdleColor)
             {
-                await DateControl.ColorTo(DateControl.TextColor, DateIdleColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicIn);
+                await DateControl.ColorTo(DateControl.TextColor, DateIdleColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut);
             }
         }
 
@@ -198,24 +198,24 @@ namespace BudgetBadger.Forms.UserControls
 
             if (BottomBorderControl.Color != BottomBorderFocusedColor)
             {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             if (ThickBottomBorderControl.Color != BottomBorderFocusedColor)
             {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             // show the thick bottom border
             if (ThickBottomBorderControl.Opacity < 1)
             {
-                tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
             }
 
             // hide the normal bottom border
             if (BottomBorderControl.Opacity > 0)
             {
-                tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
             }
 
             ThickBottomBorderControl.IsVisible = true;
@@ -229,7 +229,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (LabelControl.TextColor != LabelFocusedColor)
             {
-                await LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn);
+                await LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut);
             }
         }
 
@@ -237,7 +237,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (DateControl.TextColor != DateFocusedColor)
             {
-                await DateControl.ColorTo(DateControl.TextColor, DateFocusedColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicIn);
+                await DateControl.ColorTo(DateControl.TextColor, DateFocusedColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut);
             }
         }
 
@@ -247,22 +247,22 @@ namespace BudgetBadger.Forms.UserControls
 
             if (BottomBorderControl.Color != BottomBorderDisabledColor)
             {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             if (ThickBottomBorderControl.Color != BottomBorderDisabledColor)
             {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             if (LabelControl.TextColor != LabelDisabledColor)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
             if (DateControl.TextColor != DateDisabledColor)
             {
-                tasks.Add(DateControl.ColorTo(DateControl.TextColor, DateDisabledColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(DateControl.ColorTo(DateControl.TextColor, DateDisabledColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
             await Task.WhenAll(tasks);
