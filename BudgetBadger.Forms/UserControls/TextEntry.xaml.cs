@@ -313,6 +313,7 @@ namespace BudgetBadger.Forms.UserControls
 
             //move the label above the entry and prefix
             var labelTranslateY = HiddenLabelControl.Y - EntryControl.Y;
+
             if (Device.RuntimePlatform == Device.macOS)
             {
                 labelTranslateY = -1 * labelTranslateY;

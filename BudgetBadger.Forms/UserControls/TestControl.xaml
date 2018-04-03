@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout HeightRequest="56" BackgroundColor="Teal" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
+    <BoxView
+        BackgroundColor="Green"
+        AbsoluteLayout.LayoutBounds="0,0,1,56"
+        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"/>
+    <Entry
+        AbsoluteLayout.LayoutBounds="0,24,1,32"
+        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"
+        TextColor="White"
+        Text="Test"
+        FontSize="16"
+        BackgroundColor="Blue"/>
+    <Label
+        BackgroundColor="Fuchsia"
+        Text="Label"
+        FontSize="12"
+        AbsoluteLayout.LayoutBounds="0,8,1,16"
+        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"/>
+    <BoxView
+        BackgroundColor="Red"
+        AbsoluteLayout.LayoutBounds="0,55,1,2"
+        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"
+        InputTransparent="true"/>
+</AbsoluteLayout>

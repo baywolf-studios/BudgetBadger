@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using BudgetBadger.Droid.Effects;
 using Xamarin.Forms;
@@ -10,10 +11,6 @@ namespace BudgetBadger.Droid.Effects
 {
     public class BorderlessEditorEffect : PlatformEffect
     {
-        public BorderlessEditorEffect()
-        {
-        }
-
         protected override void OnAttached()
         {
             if (Control is FormsEditText control)
@@ -24,6 +21,7 @@ namespace BudgetBadger.Droid.Effects
                 layoutParams.SetMargins(0, 0, 0, 0);
                 control.LayoutParameters = layoutParams;
                 control.SetPadding(0, 0, 0, 0);
+                control.ImeOptions = (ImeAction)ImeFlags.NoExtractUi;
             }
         }
 

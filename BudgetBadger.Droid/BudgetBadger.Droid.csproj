@@ -195,6 +195,8 @@
     <Compile Include="AuthActivity.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
+    <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
+    <Compile Include="Effects\FontSizeDatePickerEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

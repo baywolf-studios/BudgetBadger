@@ -126,5 +126,8 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\ButtonSelector.xaml.cs">
       <DependentUpon>ButtonSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\DateSelector.xaml.cs">
+      <DependentUpon>DateSelector.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
