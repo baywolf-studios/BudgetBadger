@@ -181,6 +181,8 @@
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\NoScrollEditorEffect.cs" />
+    <Compile Include="Effects\FontSizeDatePickerEffect.cs" />
+    <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

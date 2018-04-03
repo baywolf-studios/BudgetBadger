@@ -31,13 +31,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                    
                 <control:TextEntry Grid.Row="0" Grid.Column="0" Label="Outflow" Prefix="$" Text="{Binding Transaction.Outflow}" Keyboard="Numeric"/>
                 <control:TextEntry Grid.Row="0" Grid.Column="1" Label="Inflow" Prefix="$" Text="{Binding Transaction.Inflow}" Keyboard="Numeric"/>
                 <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
                 <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
                 <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
-                <Label Grid.Row="4" Grid.Column="0" Text="Service Date"/>
-                <DatePicker Grid.Row="4" Grid.Column="1" Date="{Binding ServiceDate}"/>
+                <control:DateSelector Grid.Row="4" Grid.ColumnSpan="2" Label="Service Date" DateValue="{Binding Transaction.ServiceDate}"/>
                 <Label Grid.Row="5" Grid.Column="0" Text="Posted"/>
                 <Switch Grid.Row="5" Grid.Column="1" IsToggled="{Binding Transaction.Posted}"/>
                 <control:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
