@@ -10,7 +10,7 @@ namespace BudgetBadger.Forms.UserControls
     public partial class DateSelector : AbsoluteLayout
     {
         uint _animationLength = 150;
-        
+
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(DateSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -269,3 +269,4 @@ namespace BudgetBadger.Forms.UserControls
         }
     }
 }
+

@@ -214,7 +214,7 @@ namespace BudgetBadger.Forms.UserControls
             // increase the font size of the label
             if (LabelControl.FontSize != TextControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, TextControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, TextControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -275,7 +275,7 @@ namespace BudgetBadger.Forms.UserControls
             // shrink the font size down
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
@@ -336,7 +336,7 @@ namespace BudgetBadger.Forms.UserControls
             // shrink the font size of the label
             if (LabelControl.FontSize != HiddenLabelControl.FontSize)
             {
-                tasks.Add(LabelControl.FontSizeTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
             }
 
             await Task.WhenAll(tasks);
