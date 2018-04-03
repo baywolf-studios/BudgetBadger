@@ -20,7 +20,7 @@ namespace BudgetBadger.Forms.Animation
             return taskCompletionSource.Task;
         }
 
-        public static Task<bool> FontSizeTo(this VisualElement self, double fromDouble, double toDouble, Action<double> callback, uint length = 250, Easing easing = null, string animationName = "DoubleTo")
+        public static Task<bool> DoubleTo(this VisualElement self, double fromDouble, double toDouble, Action<double> callback, uint length = 250, Easing easing = null, string animationName = "DoubleTo")
         {
             double transform(double t) => fromDouble + t * (toDouble - fromDouble);
 
