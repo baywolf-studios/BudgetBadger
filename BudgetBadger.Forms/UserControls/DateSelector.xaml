@@ -31,7 +31,6 @@
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
-        IsVisible="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
@@ -39,6 +38,5 @@
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
-        IsVisible="false"
         Opacity="0"/>
 </AbsoluteLayout>

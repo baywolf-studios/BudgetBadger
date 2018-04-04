@@ -10,13 +10,13 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <Grid RowSpacing="8" ColumnSpacing="0" Margin="16">
+            <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <control:TextEntry Grid.Row="0" Prefix="$" Label="Name" Text="{Binding Payee.Description}"/>
+                <control:TextEntry Grid.Row="0" Label="Name" Text="{Binding Payee.Description}"/>
                 <ScrollView Grid.Row="1">
                     <control:MultilineTextEntry Label="Notes" Text="{Binding Payee.Notes}"/>
                 </ScrollView>
