@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.ButtonSelector">
-    <ContentView.Content>
-        <Grid x:Name="GridControl" RowSpacing="8" ColumnSpacing="0">
-            <Grid.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Command}" NumberOfTapsRequired="1" />
-            </Grid.GestureRecognizers>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="2"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" x:Name="HiddenLabelControl" Text=" " FontSize="12" Margin="0,8,0,0" InputTransparent="true"/>
-            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label}" FontSize="16" InputTransparent="true"/>
-            <Label Grid.Row="1" x:Name="TextControl" FontSize="16" Text="{Binding Text}" InputTransparent="true"/>
-            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand" InputTransparent="true"/>
-            <BoxView Grid.Row="2" x:Name="ThickBottomBorder" BackgroundColor="Gray" HeightRequest="2" Opacity="0" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand" InputTransparent="true"/>
-        </Grid>
-    </ContentView.Content>
-</ContentView>
+<AbsoluteLayout x:Name="LayoutControl" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.ButtonSelector">
+    <Label
+        x:Name="LabelControl"
+        Text="{Binding Label}"
+        FontSize="16"
+        TextColor="Gray"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"/>
+    <Label
+        x:Name="TextControl"
+        Text="{Binding Text}"
+        FontSize="16"
+        TextColor="Gray"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional">
+        <Label.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
+        </Label.GestureRecognizers>
+    </Label>
+    <BoxView
+        x:Name="IconControl"
+        AbsoluteLayout.LayoutBounds="1,16,24,24"
+        AbsoluteLayout.LayoutFlags="XProportional"
+        BackgroundColor="Blue"
+        InputTransparent="true"/>
+    <BoxView
+        x:Name="BottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,47,1,1"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="1"/>
+    <BoxView
+        x:Name="ThickBottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,46,1,2"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="0"/>
+</AbsoluteLayout>
+

@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TextEntry">
-    <ContentView.Content>
-        <Grid x:Name="GridControl" RowSpacing="8" ColumnSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="2"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" x:Name="HiddenLabelControl" Text=" " FontSize="12" Margin="0,8,0,0">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
-                </Label.GestureRecognizers>
-            </Label>
-            <Label Grid.Row="1" x:Name="PrefixControl" Text="{Binding Prefix}" FontSize="16" Opacity="0" HorizontalOptions="Start"/>
-            <Label Grid.Row="1" x:Name="LabelControl" Text="{Binding Label}" FontSize="16"/>
-            <Entry Grid.Row="1" x:Name="EntryControl" FontSize="16" Text="{Binding Text, Mode=TwoWay}" IsPassword="{Binding IsPassword, Mode=TwoWay}" Keyboard="{Binding Keyboard, Mode=TwoWay}">
-                <Entry.Effects>
-                    <effects:BorderlessEntryEffect />
-                </Entry.Effects>
-            </Entry>
-            <BoxView Grid.Row="2" x:Name="BottomBorder" BackgroundColor="Gray" HeightRequest="1" Opacity="1" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
-                <BoxView.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
-                </BoxView.GestureRecognizers>
-            </BoxView>
-            <BoxView Grid.Row="2" x:Name="ThickBottomBorder" BackgroundColor="Gray" HeightRequest="2" Opacity="0" Margin="0" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
-                <BoxView.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="Handle_Tapped" NumberOfTapsRequired="1" />
-                </BoxView.GestureRecognizers>
-            </BoxView>
-        </Grid>
-    </ContentView.Content>
-</ContentView>
+<AbsoluteLayout HeightRequest="48" VerticalOptions="Start" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TextEntry">
+    <Label
+        x:Name="LabelControl"
+        Text="{Binding Label}"
+        FontSize="16"
+        TextColor="Gray"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"/>
+    <Entry
+        x:Name="TextControl"
+        Text="{Binding Text}"
+        IsPassword="{Binding IsPassword, Mode=TwoWay}"
+        Keyboard="{Binding Keyboard, Mode=TwoWay}"
+        FontSize="16"
+        TextColor="Gray"
+        VerticalOptions="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional">
+        <Entry.Effects>
+            <effects:BorderlessEntryEffect />
+        </Entry.Effects>
+    </Entry>
+    <BoxView
+        x:Name="BottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,47,1,1"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="1"/>
+    <BoxView
+        x:Name="ThickBottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,46,1,2"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="0"/>
+</AbsoluteLayout>

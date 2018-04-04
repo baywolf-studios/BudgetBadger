@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Forms.Animation;
@@ -7,36 +8,23 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class ButtonSelector : ContentView
+    public partial class ButtonSelector : AbsoluteLayout
     {
         uint _animationLength = 150;
 
-        Color PrimaryColor38
+        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
+        public string Label
         {
-            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.38);
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
         }
 
-        Color PrimaryColor42 
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
+        public string Text
         {
-            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.42);
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
-
-        Color PrimaryColor54
-        {
-            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.54);
-        }
-
-        Color PrimaryColor87
-        {
-            get => Color.FromRgba(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B, 0.87);
-        }
-
-        Color AccentColor87
-        {
-            get => Color.FromRgba(AccentColor.R, AccentColor.G, AccentColor.B, 0.87);
-        }
-
-        public static void Init() { }
 
         public static BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
         public ICommand Command
@@ -50,34 +38,76 @@ namespace BudgetBadger.Forms.UserControls
         {
             get => GetValue(CommandParameterProperty);
             set => SetValue(CommandParameterProperty, value);
-        } 
-
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
-        public string Text
-        {
-            get => (string)GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
-        public string Label
+        public static BindableProperty BottomBorderIdleColorProperty = BindableProperty.Create(nameof(BottomBorderIdleColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
+        public Color BottomBorderIdleColor
         {
-            get => (string)GetValue(LabelProperty);
-            set => SetValue(LabelProperty, value);
+            get => (Color)GetValue(BottomBorderIdleColorProperty);
+            set => SetValue(BottomBorderIdleColorProperty, value);
         }
 
-        public static BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Black);
-        public Color PrimaryColor
+        public static BindableProperty BottomBorderFocusedColorProperty = BindableProperty.Create(nameof(BottomBorderFocusedColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Accent);
+        public Color BottomBorderFocusedColor
         {
-            get => (Color)GetValue(PrimaryColorProperty);
-            set => SetValue(PrimaryColorProperty, value);
+            get => (Color)GetValue(BottomBorderFocusedColorProperty);
+            set => SetValue(BottomBorderFocusedColorProperty, value);
         }
 
-        public static BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Accent);
-        public Color AccentColor
+        public static BindableProperty BottomBorderDisabledColorProperty = BindableProperty.Create(nameof(BottomBorderDisabledColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
+        public Color BottomBorderDisabledColor
         {
-            get => (Color)GetValue(AccentColorProperty);
-            set => SetValue(AccentColorProperty, value);
+            get => (Color)GetValue(BottomBorderDisabledColorProperty);
+            set => SetValue(BottomBorderDisabledColorProperty, value);
+        }
+
+        public static BindableProperty LabelIdleColorProperty = BindableProperty.Create(nameof(LabelIdleColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.54));
+        public Color LabelIdleColor
+        {
+            get => (Color)GetValue(LabelIdleColorProperty);
+            set => SetValue(LabelIdleColorProperty, value);
+        }
+
+        public static BindableProperty LabelFocusedColorProperty = BindableProperty.Create(nameof(LabelFocusedColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(Color.Accent.R, Color.Accent.G, Color.Accent.B, 0.87));
+        public Color LabelFocusedColor
+        {
+            get => (Color)GetValue(LabelFocusedColorProperty);
+            set => SetValue(LabelFocusedColorProperty, value);
+        }
+
+        public static BindableProperty LabelDisabledColorProperty = BindableProperty.Create(nameof(LabelDisabledColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
+        public Color LabelDisabledColor
+        {
+            get => (Color)GetValue(LabelDisabledColorProperty);
+            set => SetValue(LabelDisabledColorProperty, value);
+        }
+
+        public static BindableProperty TextIdleColorProperty = BindableProperty.Create(nameof(TextIdleColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
+        public Color TextIdleColor
+        {
+            get => (Color)GetValue(TextIdleColorProperty);
+            set => SetValue(TextIdleColorProperty, value);
+        }
+
+        public static BindableProperty TextFocusedColorProperty = BindableProperty.Create(nameof(TextFocusedColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
+        public Color TextFocusedColor
+        {
+            get => (Color)GetValue(TextFocusedColorProperty);
+            set => SetValue(TextFocusedColorProperty, value);
+        }
+
+        public static BindableProperty TextDisabledColorProperty = BindableProperty.Create(nameof(TextDisabledColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
+        public Color TextDisabledColor
+        {
+            get => (Color)GetValue(TextDisabledColorProperty);
+            set => SetValue(TextDisabledColorProperty, value);
+        }
+
+        public static BindableProperty ErrorColorProperty = BindableProperty.Create(nameof(ErrorColor), typeof(Color), typeof(ButtonSelector), defaultValue: Color.Red);
+        public Color ErrorColor
+        {
+            get => (Color)GetValue(ErrorColorProperty);
+            set => SetValue(ErrorColorProperty, value);
         }
 
         public ButtonSelector()
@@ -86,10 +116,13 @@ namespace BudgetBadger.Forms.UserControls
 
             LabelControl.BindingContext = this;
             TextControl.BindingContext = this;
-            GridControl.BindingContext = this;
 
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Command = Command;
+            tapGestureRecognizer.CommandParameter = CommandParameter;
+            GestureRecognizers.Add(tapGestureRecognizer);
 
-            PropertyChanged += (sender, e) => 
+            PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsEnabled))
                 {
@@ -120,223 +153,200 @@ namespace BudgetBadger.Forms.UserControls
 
         async void UpdateVisualState()
         {
-            if (TextControl.IsFocused)
+            var tasks = new List<Task>();
+
+            if (IsFocused)
             {
-                await SetFocusedState();
+                tasks.Add(SetBottomBorderFocused());
+                tasks.Add(SetLabelFocused());
+                tasks.Add(SetTextFocused());
             }
-            else if (string.IsNullOrEmpty(TextControl.Text))
+            else if (string.IsNullOrEmpty(Text))
             {
-                await SetIdleEmptyState();
+                tasks.Add(SetBottomBorderIdle());
+                tasks.Add(SetLabelIdleEmpty());
+                tasks.Add(SetTextIdle());
             }
-            else if (!string.IsNullOrEmpty(TextControl.Text))
+            else
             {
-                await SetIdleFilledState();
+                tasks.Add(SetBottomBorderIdle());
+                tasks.Add(SetLabelIdleFilled());
+                tasks.Add(SetTextIdle());
             }
+
+            await Task.WhenAll(tasks);
 
             if ((Command != null && !Command.CanExecute(CommandParameter)) || !IsEnabled)
             {
-                await UpdateDisabled();
+                await SetDisabledColors();
             }
         }
 
-        async Task UpdateDisabled()
+        async Task SetBottomBorderIdle()
         {
             var tasks = new List<Task>();
 
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            // color the bottom border
+            if (BottomBorderControl.Color != BottomBorderIdleColor)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
-            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
+            if (ThickBottomBorderControl.Color != BottomBorderIdleColor)
             {
-                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            if (LabelControl.TextColor != PrimaryColor38)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor38, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            if (TextControl.TextColor != PrimaryColor38)
-            {
-                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor38, c => TextControl.TextColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            await Task.WhenAll(tasks);
-        }
-
-        async Task SetIdleEmptyState()
-        {
-            var tasks = new List<Task>();
-
-            // color the main text
-            if (TextControl.TextColor != PrimaryColor87)
-            {
-                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            // color the bottom borders
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
-            {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
-            {
-                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             // show the normal bottom border
-            if (BottomBorder.Opacity < 1)
+            if (BottomBorderControl.Opacity < 1)
             {
-                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
             }
 
             // hide the thick bottom border
-            if (ThickBottomBorder.Opacity > 0)
+            if (ThickBottomBorderControl.Opacity > 0)
             {
-                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
-            }
-
-            // reset the label position
-            if (LabelControl.TranslationX != 0 || LabelControl.TranslationY != 0)
-            {
-                tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicIn));
-            }
-
-            // color the label
-            if (LabelControl.TextColor != PrimaryColor54)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            // increase the font size of the label
-            if (LabelControl.FontSize != TextControl.FontSize)
-            {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, TextControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
             }
 
             await Task.WhenAll(tasks);
         }
 
-        async Task SetIdleFilledState()
+        async Task SetLabelIdleEmpty()
         {
             var tasks = new List<Task>();
 
-            // color the main text
-            if (TextControl.TextColor != PrimaryColor87)
+            if (LabelControl.TextColor != LabelIdleColor)
             {
-                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
-            // color the bottom borders
-            if (BottomBorder.BackgroundColor != PrimaryColor42)
+            if (LabelControl.TranslationY != 0)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, PrimaryColor42, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicInOut));
             }
 
-            if (ThickBottomBorder.BackgroundColor != PrimaryColor42)
+            if (LabelControl.FontSize != 16)
             {
-                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, PrimaryColor42, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
-            }
-
-            // show the normal bottom border
-            if (BottomBorder.Opacity < 1)
-            {
-                tasks.Add(BottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
-            }
-
-            // hide the thick bottom border
-            if (ThickBottomBorder.Opacity > 0)
-            {
-                tasks.Add(ThickBottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
-            }
-
-            // move the label above the editor
-            var labelTranslateX = HiddenLabelControl.X - TextControl.X;
-            var labelTranslateY = HiddenLabelControl.Y - TextControl.Y;
-            if (Device.RuntimePlatform == Device.macOS)
-            {
-                labelTranslateX = -1 * labelTranslateX;
-                labelTranslateY = -1 * labelTranslateY;
-            }
-            if (LabelControl.TranslationX != labelTranslateX || LabelControl.TranslationY != labelTranslateY)
-            {
-                tasks.Add(LabelControl.TranslateTo(labelTranslateX, labelTranslateY, _animationLength, Easing.CubicIn));
-            }
-
-            // color the label control
-            if (LabelControl.TextColor != PrimaryColor54)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, PrimaryColor54, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
-            }
-
-            // shrink the font size down
-            if (LabelControl.FontSize != HiddenLabelControl.FontSize)
-            {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 16, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
             }
 
             await Task.WhenAll(tasks);
         }
 
-        async Task SetFocusedState()
+        async Task SetLabelIdleFilled()
         {
             var tasks = new List<Task>();
 
-            // set the text color
-            if (TextControl.TextColor != PrimaryColor87)
+            if (LabelControl.TextColor != LabelIdleColor)
             {
-                tasks.Add(TextControl.ColorTo(TextControl.TextColor, PrimaryColor87, c => TextControl.TextColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
-            // color the bottom borders
-            if (BottomBorder.BackgroundColor != AccentColor)
+            var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
+            if (LabelControl.TranslationY != translationY)
             {
-                tasks.Add(BottomBorder.ColorTo(BottomBorder.BackgroundColor, AccentColor, c => BottomBorder.BackgroundColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
             }
 
-            if (ThickBottomBorder.BackgroundColor != AccentColor)
+            if (LabelControl.FontSize != 12)
             {
-                tasks.Add(ThickBottomBorder.ColorTo(ThickBottomBorder.BackgroundColor, AccentColor, c => ThickBottomBorder.BackgroundColor = c, _animationLength, Easing.CubicOut));
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
             }
 
-            // hide the normal bottom border
-            if (BottomBorder.Opacity > 0)
+            await Task.WhenAll(tasks);
+        }
+
+        async Task SetTextIdle()
+        {
+            if (TextControl.TextColor != TextIdleColor)
             {
-                tasks.Add(BottomBorder.FadeTo(0, _animationLength, Easing.CubicOut));
+                await TextControl.ColorTo(TextControl.TextColor, TextIdleColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
+            }
+        }
+
+        async Task SetBottomBorderFocused()
+        {
+            var tasks = new List<Task>();
+
+            if (BottomBorderControl.Color != BottomBorderFocusedColor)
+            {
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            }
+
+            if (ThickBottomBorderControl.Color != BottomBorderFocusedColor)
+            {
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
             }
 
             // show the thick bottom border
-            if (ThickBottomBorder.Opacity < 1)
+            if (ThickBottomBorderControl.Opacity < 1)
             {
-                tasks.Add(ThickBottomBorder.FadeTo(1, _animationLength, Easing.CubicIn));
+                tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
             }
 
-            // move the label above the editor
-            var labelTranslateX = HiddenLabelControl.X - TextControl.X;
-            var labelTranslateY = HiddenLabelControl.Y - TextControl.Y;
-            if (Device.RuntimePlatform == Device.macOS)
+            // hide the normal bottom border
+            if (BottomBorderControl.Opacity > 0)
             {
-                labelTranslateX = -1 * labelTranslateX;
-                labelTranslateY = -1 * labelTranslateY;
-            }
-            if (LabelControl.TranslationX != labelTranslateX || LabelControl.TranslationY != labelTranslateY)
-            {
-                tasks.Add(LabelControl.TranslateTo(labelTranslateX, labelTranslateY, _animationLength, Easing.CubicIn));
+                tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
             }
 
-            // update color of the label
-            if (LabelControl.TextColor != AccentColor87)
+            await Task.WhenAll(tasks);
+        }
+
+        async Task SetLabelFocused()
+        {
+            var tasks = new List<Task>();
+            
+            if (LabelControl.TextColor != LabelFocusedColor)
             {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, AccentColor87, c => LabelControl.TextColor = c, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
-            // shrink the font size of the label
-            if (LabelControl.FontSize != HiddenLabelControl.FontSize)
+            var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
+            if (LabelControl.TranslationY != translationY)
             {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, HiddenLabelControl.FontSize, f => LabelControl.FontSize = f, _animationLength, Easing.CubicIn));
+                tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
+            }
+
+            if (LabelControl.FontSize != 12)
+            {
+                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        async Task SetTextFocused()
+        {
+            if (TextControl.TextColor != TextFocusedColor)
+            {
+                await TextControl.ColorTo(TextControl.TextColor, TextFocusedColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
+            }
+        }
+
+        async Task SetDisabledColors()
+        {
+            var tasks = new List<Task>();
+
+            if (BottomBorderControl.Color != BottomBorderDisabledColor)
+            {
+                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            }
+
+            if (ThickBottomBorderControl.Color != BottomBorderDisabledColor)
+            {
+                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            }
+
+            if (LabelControl.TextColor != LabelDisabledColor)
+            {
+                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            }
+
+            if (TextControl.TextColor != TextDisabledColor)
+            {
+                tasks.Add(TextControl.ColorTo(TextControl.TextColor, TextDisabledColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
             }
 
             await Task.WhenAll(tasks);
