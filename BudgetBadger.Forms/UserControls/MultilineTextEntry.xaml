@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout VerticalOptions="StartAndExpand" xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
+<AbsoluteLayout VerticalOptions="StartAndExpand" xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry">
    <Label
         x:Name="LabelControl"
         Text="{Binding Label}"

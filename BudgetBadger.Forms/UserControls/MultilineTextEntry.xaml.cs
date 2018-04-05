@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class TestControl : AbsoluteLayout
+    public partial class MultilineTextEntry : AbsoluteLayout
     {
         double _initialOffset = 0;
         uint _animationLength = 150;
@@ -109,7 +109,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ErrorColorProperty, value);
         }
 
-        public TestControl()
+        public MultilineTextEntry()
         {
             InitializeComponent();
 
