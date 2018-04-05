@@ -129,5 +129,8 @@
     <Compile Update="UserControls\DateSelector.xaml.cs">
       <DependentUpon>DateSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\MultilineTextEntry.xaml.cs">
+      <DependentUpon>MultilineTextEntry.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

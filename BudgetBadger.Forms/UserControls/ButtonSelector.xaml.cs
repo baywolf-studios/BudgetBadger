@@ -187,27 +187,15 @@ namespace BudgetBadger.Forms.UserControls
             var tasks = new List<Task>();
 
             // color the bottom border
-            if (BottomBorderControl.Color != BottomBorderIdleColor)
-            {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            if (ThickBottomBorderControl.Color != BottomBorderIdleColor)
-            {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
-            if (BottomBorderControl.Opacity < 1)
-            {
-                tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
             // hide the thick bottom border
-            if (ThickBottomBorderControl.Opacity > 0)
-            {
-                tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
@@ -216,20 +204,11 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (LabelControl.TextColor != LabelIdleColor)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
-            if (LabelControl.TranslationY != 0)
-            {
-                tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.TranslateTo(0, 0, _animationLength, Easing.CubicInOut));
 
-            if (LabelControl.FontSize != 16)
-            {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 16, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 16, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
@@ -238,58 +217,34 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            if (LabelControl.TextColor != LabelIdleColor)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
-            if (LabelControl.TranslationY != translationY)
-            {
-                tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
 
-            if (LabelControl.FontSize != 12)
-            {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
 
         async Task SetTextIdle()
         {
-            if (TextControl.TextColor != TextIdleColor)
-            {
-                await TextControl.ColorTo(TextControl.TextColor, TextIdleColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
-            }
+            await TextControl.ColorTo(TextControl.TextColor, TextIdleColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
         }
 
         async Task SetBottomBorderFocused()
         {
             var tasks = new List<Task>();
 
-            if (BottomBorderControl.Color != BottomBorderFocusedColor)
-            {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            if (ThickBottomBorderControl.Color != BottomBorderFocusedColor)
-            {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // show the thick bottom border
-            if (ThickBottomBorderControl.Opacity < 1)
-            {
-                tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
             // hide the normal bottom border
-            if (BottomBorderControl.Opacity > 0)
-            {
-                tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
@@ -298,56 +253,32 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
             
-            if (LabelControl.TextColor != LabelFocusedColor)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
-            if (LabelControl.TranslationY != translationY)
-            {
-                tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
 
-            if (LabelControl.FontSize != 12)
-            {
-                tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
 
         async Task SetTextFocused()
         {
-            if (TextControl.TextColor != TextFocusedColor)
-            {
-                await TextControl.ColorTo(TextControl.TextColor, TextFocusedColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
-            }
+            await TextControl.ColorTo(TextControl.TextColor, TextFocusedColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut);
         }
 
         async Task SetDisabledColors()
         {
             var tasks = new List<Task>();
 
-            if (BottomBorderControl.Color != BottomBorderDisabledColor)
-            {
-                tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            if (ThickBottomBorderControl.Color != BottomBorderDisabledColor)
-            {
-                tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            if (LabelControl.TextColor != LabelDisabledColor)
-            {
-                tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
-            if (TextControl.TextColor != TextDisabledColor)
-            {
-                tasks.Add(TextControl.ColorTo(TextControl.TextColor, TextDisabledColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
-            }
+            tasks.Add(TextControl.ColorTo(TextControl.TextColor, TextDisabledColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
