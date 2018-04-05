@@ -12,7 +12,6 @@
         x:Name="PickerControl"
         ItemsSource="{Binding ItemsSource}"
         SelectedItem="{Binding SelectedItem}"
-        ItemDisplayBinding="{Binding ItemDisplayBinding}"
         SelectedIndex="{Binding SelectedIndex}"
         TextColor="Gray"
         VerticalOptions="Center"
