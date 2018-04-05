@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout HeightRequest="56" BackgroundColor="Teal" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
-    <BoxView
-        BackgroundColor="Green"
-        AbsoluteLayout.LayoutBounds="0,0,1,56"
-        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"/>
-    <Entry
-        AbsoluteLayout.LayoutBounds="0,24,1,32"
-        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"
-        TextColor="White"
-        Text="Test"
+<AbsoluteLayout VerticalOptions="StartAndExpand" xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
+   <Label
+        x:Name="LabelControl"
+        Text="{Binding Label}"
         FontSize="16"
-        BackgroundColor="Blue"/>
-    <Label
-        BackgroundColor="Fuchsia"
-        Text="Label"
-        FontSize="12"
-        AbsoluteLayout.LayoutBounds="0,8,1,16"
-        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"/>
-    <BoxView
-        BackgroundColor="Red"
-        AbsoluteLayout.LayoutBounds="0,55,1,2"
-        AbsoluteLayout.LayoutFlags="XProportional, WidthProportional"
+        TextColor="Gray"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"/>
+    <controls:ExpandingEditor
+        x:Name="TextControl"
+        Text="{Binding Text}"
+        Keyboard="{Binding Keyboard, Mode=TwoWay}"
+        FontSize="16"
+        TextColor="Gray"
+        BackgroundColor="Transparent"
+        Margin="0,0,0,7"
+        VerticalOptions="StartAndExpand"
+        AbsoluteLayout.LayoutBounds="0,22,1,1"
+        AbsoluteLayout.LayoutFlags="WidthProportional, HeightProportional">
+        <controls:ExpandingEditor.Effects>
+            <effects:BorderlessEditorEffect />
+        </controls:ExpandingEditor.Effects>
+    </controls:ExpandingEditor>
+    <BoxView
+        x:Name="BottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,1,1,1"
+        AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
+        InputTransparent="true"
+        Opacity="1"/>
+    <BoxView
+        x:Name="ThickBottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,1,1,2"
+        AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
+        InputTransparent="true"
+        Opacity="0"/>
 </AbsoluteLayout>
