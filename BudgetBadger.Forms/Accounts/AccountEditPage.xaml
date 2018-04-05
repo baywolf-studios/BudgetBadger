@@ -10,32 +10,30 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            
-            <TableView Intent="Form">
-                <TableRoot>
-                    <TableSection Title="Details">
-                        <EntryCell Label="Name" Placeholder="Account" Text="{Binding Account.Description}" />
-                        <SwitchCell IsEnabled="{Binding Account.IsNew}" Text="On Budget" On="{Binding Account.OnBudget}" />
-                        <EntryCell IsEnabled="{Binding Account.IsNew}" Label="Balance" Text="{Binding Account.Balance}" />
-                    </TableSection>
-                    <TableSection Title="Account Type">
-                        <ViewCell>
-                            <Picker ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection Title="Notes">
-                        <ViewCell>
-                            <Editor Keyboard="Text" Text="{Binding Account.Notes}">
-                            </Editor>
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection>
-                        <ViewCell>
-                            <Button IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
+            <ScrollView Orientation="Vertical">
+                <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <control:TextEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Name" Text="{Binding Account.Description}" />
+                    <Label Grid.Row="1" Grid.Column="0" Text="On Budget"/>
+                    <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding Account.OnBudget}"  IsEnabled="{Binding Account.IsNew}"/>
+                    <control:TextEntry Grid.Row="2" Grid.ColumnSpan="2" IsEnabled="{Binding Account.IsNew}" Label="Balance" Text="{Binding Account.Balance}" />
+                    <control:DropdownSelector Grid.Row="3" Grid.ColumnSpan="2" ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
+                    <control:MultilineTextEntry Grid.Row="4" Grid.ColumnSpan="2" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
+                    <Button Grid.Row="5" Grid.ColumnSpan="2" IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
+                </Grid>
+            </ScrollView>
         </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

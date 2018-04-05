@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout HeightRequest="48" VerticalOptions="Start" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.DropdownSelector">
+    <Label
+        x:Name="LabelControl"
+        Text="{Binding Label}"
+        FontSize="12"
+        TextColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,0,1,16"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"/>
+    <Picker
+        x:Name="PickerControl"
+        ItemsSource="{Binding ItemsSource}"
+        SelectedItem="{Binding SelectedItem}"
+        ItemDisplayBinding="{Binding ItemDisplayBinding}"
+        SelectedIndex="{Binding SelectedIndex}"
+        TextColor="Gray"
+        VerticalOptions="Center"
+        BackgroundColor="Transparent"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional">
+        <Picker.Effects>
+            <effects:BorderlessPickerEffect/>
+        </Picker.Effects>
+    </Picker>
+    <BoxView
+        x:Name="IconControl"
+        AbsoluteLayout.LayoutBounds="1,16,24,24"
+        AbsoluteLayout.LayoutFlags="XProportional"
+        BackgroundColor="Blue"
+        InputTransparent="true"/>
+    <BoxView
+        x:Name="BottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,47,1,1"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="1"/>
+    <BoxView
+        x:Name="ThickBottomBorderControl"
+        BackgroundColor="Gray"
+        AbsoluteLayout.LayoutBounds="0,46,1,2"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"
+        Opacity="0"/>
+</AbsoluteLayout>

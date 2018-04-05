@@ -16,33 +16,33 @@
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ScrollView Orientation="Vertical">
-            <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                    
-                <control:TextEntry Grid.Row="0" Grid.Column="0" Label="Outflow" Text="{Binding Transaction.Outflow}" Keyboard="Numeric"/>
-                <control:TextEntry Grid.Row="0" Grid.Column="1" Label="Inflow"  Text="{Binding Transaction.Inflow}" Keyboard="Numeric"/>
-                <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
-                <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
-                <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
-                <control:DateSelector Grid.Row="4" Grid.ColumnSpan="2" Label="Service Date" Date="{Binding Transaction.ServiceDate}"/>
-                <Label Grid.Row="5" Grid.Column="0" Text="Posted"/>
-                <Switch Grid.Row="5" Grid.Column="1" IsToggled="{Binding Transaction.Posted}"/>
-                <control:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
-                <Button Grid.Row="7" Grid.ColumnSpan="2" Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red"/>
-            </Grid>
+                <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                        
+                    <control:TextEntry Grid.Row="0" Grid.Column="0" Label="Outflow" Text="{Binding Transaction.Outflow}" Keyboard="Numeric"/>
+                    <control:TextEntry Grid.Row="0" Grid.Column="1" Label="Inflow"  Text="{Binding Transaction.Inflow}" Keyboard="Numeric"/>
+                    <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
+                    <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
+                    <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
+                    <control:DateSelector Grid.Row="4" Grid.ColumnSpan="2" Label="Service Date" Date="{Binding Transaction.ServiceDate}"/>
+                    <Label Grid.Row="5" Grid.Column="0" Text="Posted"/>
+                    <Switch Grid.Row="5" Grid.Column="1" IsToggled="{Binding Transaction.Posted}"/>
+                    <control:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
+                    <Button Grid.Row="7" Grid.ColumnSpan="2" Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red"/>
+                </Grid>
             </ScrollView>
         </control:BusyIndicator>
     </ContentPage.Content>
