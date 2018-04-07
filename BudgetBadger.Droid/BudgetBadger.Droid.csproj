@@ -198,6 +198,7 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\FontSizeDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
+    <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

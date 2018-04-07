@@ -20,6 +20,7 @@
         x:Name="DateControl"
         Date="{Binding Date}"
         TextColor="Gray"
+        BackgroundColor="Transparent"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional">

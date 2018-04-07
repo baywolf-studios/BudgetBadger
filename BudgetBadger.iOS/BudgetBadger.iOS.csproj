@@ -184,6 +184,7 @@
     <Compile Include="Effects\FontSizeDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
+    <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
