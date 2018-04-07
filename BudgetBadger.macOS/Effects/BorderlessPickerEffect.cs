@@ -17,6 +17,7 @@ namespace BudgetBadger.macOS.Effects
         {
             if (Control is NSPopUpButton picker)
             {
+                //picker.Bordered = false;
                 //picker.Layer.BorderWidth = 0;
                 //picker.Bordered = false;
                 //picker.FocusRingType = NSFocusRingType.None;

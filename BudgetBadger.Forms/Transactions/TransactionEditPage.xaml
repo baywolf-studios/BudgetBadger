@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Edit Transaction" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:coverter="clr-namespace:BudgetBadger.Forms.Converters" x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <coverter:CurrencyConverter x:Key="currencyConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage" Binding="{Binding Transaction.IsNew}" Value="True">
             <Setter Property="Title" Value="New Transaction" />
@@ -32,8 +27,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                         
-                    <control:TextEntry Grid.Row="0" Grid.Column="0" Label="Outflow" Text="{Binding Transaction.Outflow}" Keyboard="Numeric"/>
-                    <control:TextEntry Grid.Row="0" Grid.Column="1" Label="Inflow"  Text="{Binding Transaction.Inflow}" Keyboard="Numeric"/>
+                    <control:CalculatorEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Amount" Number="{Binding Transaction.Amount}"/>
                     <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
                     <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
                     <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>

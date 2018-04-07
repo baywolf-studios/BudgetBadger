@@ -98,7 +98,7 @@ namespace BudgetBadger.Forms.Transactions
                     if (result.Success)
                     {
                         Transactions = new ObservableCollection<Transaction>(result.Data);
-                        Total = Transactions.Sum(t => t.Amount);
+                        Total = Transactions.Sum(t => t.Amount ?? 0);
                     }
                 }
             }

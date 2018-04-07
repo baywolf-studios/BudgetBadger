@@ -132,5 +132,11 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\MultilineTextEntry.xaml.cs">
       <DependentUpon>MultilineTextEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\CalculatorTextEntry.xaml.cs">
+      <DependentUpon>CalculatorEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="UserControls\CalculatorEntry.xaml.cs">
+      <DependentUpon>CalculatorEntry.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

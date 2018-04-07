@@ -40,14 +40,14 @@ namespace BudgetBadger.Models
         public bool OnBudget
         {
             get => onBudget;
-            set { SetProperty(ref onBudget, value); OnPropertyChanged("OffBudget"); }
+            set { SetProperty(ref onBudget, value); OnPropertyChanged(nameof(OffBudget)); }
         }
 
         public bool OffBudget { get => !OnBudget; }
 
         //calculated
-        decimal balance;
-        public decimal Balance
+        decimal? balance;
+        public decimal? Balance
         {
             get => balance;
             set => SetProperty(ref balance, value);
@@ -57,7 +57,7 @@ namespace BudgetBadger.Models
         public decimal Payment
         {
             get => payment;
-            set { SetProperty(ref payment, value); OnPropertyChanged("PaymentRequired"); }
+            set { SetProperty(ref payment, value); OnPropertyChanged(nameof(PaymentRequired)); }
         }
 
         public bool PaymentRequired { get => Payment > 0; }
@@ -66,7 +66,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -82,7 +82,7 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged("IsDeleted"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }
@@ -106,6 +106,11 @@ namespace BudgetBadger.Models
         public Result Validate()
         {
             var errors = new List<string>();
+
+            if (IsNew && !Balance.HasValue)
+            {
+                errors.Add("Balance is required");
+            }
 
             if (string.IsNullOrEmpty(Description))
             {

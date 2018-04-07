@@ -36,11 +36,11 @@ namespace BudgetBadger.Models
             set => SetProperty(ref ignoreOverspend, value);
         }
 
-        decimal amount;
-        public decimal Amount
+        decimal? amount;
+        public decimal? Amount
         {
             get => amount;
-            set { SetProperty(ref amount, value); OnPropertyChanged("Remaining"); }
+            set { SetProperty(ref amount, value); OnPropertyChanged(nameof(Remaining)); }
         }
 
         //calculated, not stored
@@ -48,7 +48,7 @@ namespace BudgetBadger.Models
         public decimal PastAmount
         {
             get => pastAmount;
-            set { SetProperty(ref pastAmount, value); OnPropertyChanged("Remaining"); }
+            set { SetProperty(ref pastAmount, value); OnPropertyChanged(nameof(Remaining)); }
         }
 
         //calculated, not stored
@@ -56,7 +56,7 @@ namespace BudgetBadger.Models
         public decimal Activity
         {
             get => activity;
-            set { SetProperty(ref activity, value); OnPropertyChanged("Remaining"); }
+            set { SetProperty(ref activity, value); OnPropertyChanged(nameof(Remaining)); }
         }
 
         //calculated, not stored
@@ -64,16 +64,16 @@ namespace BudgetBadger.Models
         public decimal PastActivity
         {
             get => pastActivity;
-            set { SetProperty(ref pastActivity, value); OnPropertyChanged("Remaining"); }
+            set { SetProperty(ref pastActivity, value); OnPropertyChanged(nameof(Remaining)); }
         }
 
-        public decimal Remaining { get { return Amount + PastAmount + Activity + PastActivity; } }
+        public decimal Remaining { get { return Amount ?? 0 + PastAmount + Activity + PastActivity; } }
 
         DateTime? createdDateTime;
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -106,6 +106,11 @@ namespace BudgetBadger.Models
         public Result Validate()
         {
             var errors = new List<string>();
+
+            if (!Amount.HasValue)
+            {
+                errors.Add("Amount is required");
+            }
 
             if (Envelope == null)
             {

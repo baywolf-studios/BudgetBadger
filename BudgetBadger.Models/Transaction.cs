@@ -15,23 +15,21 @@ namespace BudgetBadger.Models
             set => SetProperty(ref id, value);
         }
 
-        decimal amount;
-        public decimal Amount
+        decimal? amount;
+        public decimal? Amount
         {
             get => amount;
-            set { SetProperty(ref amount, value); OnPropertyChanged("Outflow"); OnPropertyChanged("Inflow"); }
+            set { SetProperty(ref amount, value); OnPropertyChanged(nameof(Outflow)); OnPropertyChanged(nameof(Inflow)); }
         }
 
         public decimal Outflow
         {
-            get => Amount < 0 ? Math.Abs(Amount) : 0;
-            set => Amount = -1 * value;
+            get => (Amount.HasValue && Amount < 0) ? Math.Abs(Amount.Value) : 0;
         }
 
         public decimal Inflow
         {
-            get => Amount > 0 ? Amount : 0;
-            set => Amount = value;
+            get => (Amount.HasValue && Amount > 0) ? Amount.Value : 0;
         }
 
         bool posted;
@@ -61,7 +59,7 @@ namespace BudgetBadger.Models
         public Payee Payee
         {
             get => payee;
-            set { SetProperty(ref payee, value); OnPropertyChanged("IsTransfer"); }
+            set { SetProperty(ref payee, value); OnPropertyChanged(nameof(IsTransfer)); }
         }
 
         Envelope envelope;
@@ -75,7 +73,7 @@ namespace BudgetBadger.Models
         public Guid? SplitId
         {
             get => splitId;
-            set { SetProperty(ref splitId, value); OnPropertyChanged("IsSplit"); }
+            set { SetProperty(ref splitId, value); OnPropertyChanged(nameof(IsSplit)); }
         }
 
         public bool IsCombined
@@ -108,7 +106,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -124,7 +122,7 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged("IsDeleted"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }
@@ -152,6 +150,11 @@ namespace BudgetBadger.Models
         public Result Validate()
         {
             var errors = new List<string>();
+
+            if (!Amount.HasValue)
+            {
+                errors.Add("Amount is required");
+            }
 
             if (Envelope == null)
             {
