@@ -14,11 +14,11 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
-        public static BindableProperty DecimalPlacesProperty = BindableProperty.Create(nameof(DecimalPlaces), typeof(int), typeof(CalculatorEntry), defaultBindingMode: BindingMode.TwoWay, defaultValue: 2);
-        public int DecimalPlaces
+        public static BindableProperty PrefixProperty = BindableProperty.Create(nameof(Prefix), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Prefix
         {
-            get => (int)GetValue(DecimalPlacesProperty);
-            set => SetValue(DecimalPlacesProperty, value);
+            get => (string)GetValue(PrefixProperty);
+            set => SetValue(PrefixProperty, value);
         }
 
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(CalculatorEntry), defaultBindingMode: BindingMode.TwoWay);
@@ -105,11 +105,26 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ErrorColorProperty, value);
         }
 
+        public static BindableProperty PrefixColorProperty = BindableProperty.Create(nameof(PrefixColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.54));
+        public Color PrefixColor
+        {
+            get => (Color)GetValue(PrefixColorProperty);
+            set => SetValue(PrefixColorProperty, value);
+        }
+
+        public static BindableProperty PrefixDisabledColorProperty = BindableProperty.Create(nameof(PrefixDisabledColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
+        public Color PrefixDisabledColor
+        {
+            get => (Color)GetValue(PrefixDisabledColorProperty);
+            set => SetValue(PrefixDisabledColorProperty, value);
+        }
+
         public CalculatorEntry()
         {
             InitializeComponent();
 
             LabelControl.BindingContext = this;
+            PrefixControl.BindingContext = this;
 
             TextControl.Focused += (sender, e) =>
             {
@@ -130,7 +145,10 @@ namespace BudgetBadger.Forms.UserControls
                     {
                         try
                         {
-                            var temp = new DataTable().Compute(TextControl.Text.Replace(",", ""), null);
+                            var nfi = CultureInfo.CurrentCulture.NumberFormat;
+                            var groupSeparator = nfi.CurrencyGroupSeparator;
+                            var decimalSeparator = nfi.CurrencyDecimalSeparator;
+                            var temp = new DataTable().Compute(TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, "."), null);
                             result = Convert.ToDecimal(temp);
                         }
                         catch (Exception ex)
@@ -164,7 +182,10 @@ namespace BudgetBadger.Forms.UserControls
                     {
                         try
                         {
-                            var temp = new DataTable().Compute(TextControl.Text.Replace(",", ""), null);
+                            var nfi = CultureInfo.CurrentCulture.NumberFormat;
+                            var groupSeparator = nfi.CurrencyGroupSeparator;
+                            var decimalSeparator = nfi.CurrencyDecimalSeparator;
+                            var temp = new DataTable().Compute(TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, "."), null);
                             result = Convert.ToDecimal(temp);
                         }
                         catch (Exception ex)
@@ -187,8 +208,10 @@ namespace BudgetBadger.Forms.UserControls
 
                 if (e.PropertyName == nameof(Number))
                 {
-                    var stringFormat = string.Format("N{0}", DecimalPlaces);
-                    TextControl.Text = Number.HasValue ? Number.Value.ToString(stringFormat, CultureInfo.InvariantCulture) : string.Empty;
+                    NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
+                    nfi = (NumberFormatInfo)nfi.Clone();
+                    nfi.CurrencySymbol = "";
+                    TextControl.Text = Number.HasValue ? Number.Value.ToString("C", nfi) : string.Empty;
                 }
             };
 
@@ -257,6 +280,9 @@ namespace BudgetBadger.Forms.UserControls
             // reset to original font size
             tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 16, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
+            // hide the prefix
+            tasks.Add(PrefixControl.FadeTo(0, _animationLength, Easing.CubicInOut));
+
             await Task.WhenAll(tasks);
         }
 
@@ -278,6 +304,10 @@ namespace BudgetBadger.Forms.UserControls
             var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
+            // color the prefix
+            var prefixColor = IsEnabled ? PrefixColor : PrefixDisabledColor;
+            tasks.Add(PrefixControl.ColorTo(PrefixControl.TextColor, prefixColor, c => PrefixControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
@@ -290,6 +320,14 @@ namespace BudgetBadger.Forms.UserControls
 
             // shrink label text
             tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
+
+            // show the prefix
+            tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicInOut));
+
+            //move entry over
+            var entryLeftMargin = (PrefixControl.Width > 0) ? PrefixControl.Width + 8 : 0;
+            var entryMargin = new Thickness(entryLeftMargin, 0, 0, 0);
+            tasks.Add(TextControl.ThicknessTo(TextControl.Margin, entryMargin, m => TextControl.Margin = m, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
@@ -309,6 +347,9 @@ namespace BudgetBadger.Forms.UserControls
             // color the text control
             tasks.Add(TextControl.ColorTo(TextControl.TextColor, TextFocusedColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
+            // color the prefix
+            tasks.Add(PrefixControl.ColorTo(PrefixControl.TextColor, PrefixColor, c => PrefixControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
             // show the thick bottom border
             tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
@@ -321,6 +362,14 @@ namespace BudgetBadger.Forms.UserControls
 
             // shrink font size
             tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
+
+            // show the prefix
+            tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicInOut));
+
+            //move entry over
+            var entryLeftMargin = (PrefixControl.Width > 0) ? PrefixControl.Width + 8 : 0;
+            var entryMargin = new Thickness(entryLeftMargin, 0, 0, 0);
+            tasks.Add(TextControl.ThicknessTo(TextControl.Margin, entryMargin, m => TextControl.Margin = m, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }
