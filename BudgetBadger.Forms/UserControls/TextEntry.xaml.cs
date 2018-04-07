@@ -275,5 +275,13 @@ namespace BudgetBadger.Forms.UserControls
 
             await Task.WhenAll(tasks);
         }
+
+        void Handle_Tapped(object sender, System.EventArgs e)
+        {
+            if (!TextControl.IsFocused)
+            {
+                TextControl.Focus();
+            }
+        }
     }
 }

@@ -147,11 +147,6 @@ namespace BudgetBadger.Forms.UserControls
             UpdateVisualState();
         }
 
-        void Handle_Tapped(object sender, System.EventArgs e)
-        {
-            
-        }
-
         async void UpdateVisualState()
         {
             if (PickerControl.IsFocused)
@@ -264,6 +259,14 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
+        }
+
+        void Handle_Tapped(object sender, System.EventArgs e)
+        {
+            if (!PickerControl.IsFocused)
+            {
+                PickerControl.Focus();
+            }
         }
     }
 }

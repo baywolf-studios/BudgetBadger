@@ -497,15 +497,15 @@ namespace BudgetBadger.Logic
 
             budgetToPopulate.PastAmount = budgets
                 .Where(b => b.Schedule.EndDate < budgetToPopulate.Schedule.BeginDate)
-                    .Sum(b2 => b2.Amount);
+                    .Sum(b2 => b2.Amount ?? 0);
 
             budgetToPopulate.PastActivity = activeTransactions
                 .Where(t => t.ServiceDate < budgetToPopulate.Schedule.BeginDate)
-                .Sum(t2 => t2.Amount);
+                .Sum(t2 => t2.Amount ?? 0);
 
             budgetToPopulate.Activity = activeTransactions
                 .Where(t => t.ServiceDate >= budgetToPopulate.Schedule.BeginDate && t.ServiceDate <= budgetToPopulate.Schedule.EndDate)
-                .Sum(t2 => t2.Amount);
+                .Sum(t2 => t2.Amount ?? 0);
 
             return budgetToPopulate;
         }
@@ -526,10 +526,10 @@ namespace BudgetBadger.Logic
 
             var pastIncome = incomeTransactions
                 .Where(t => t.ServiceDate < budgetSchedule.BeginDate)
-                .Sum(t => t.Amount);
+                .Sum(t => t.Amount ?? 0);
             var currentIncome = incomeTransactions
                 .Where(t => t.ServiceDate >= budgetSchedule.BeginDate && t.ServiceDate <= budgetSchedule.EndDate)
-                .Sum(t => t.Amount);
+                .Sum(t => t.Amount ?? 0);
 
             // get all buffers
             var bufferTransactions = budgetTransactions.Where(t => t.Envelope.IsBuffer());
@@ -538,10 +538,10 @@ namespace BudgetBadger.Logic
 
             var pastBufferIncome = bufferTransactions
                 .Where(t => t.ServiceDate < previousSchedule.BeginDate)
-                .Sum(t => t.Amount);
+                .Sum(t => t.Amount ?? 0);
             var currentBufferIncome = bufferTransactions
                 .Where(t => t.ServiceDate >= previousSchedule.BeginDate && t.ServiceDate <= previousSchedule.EndDate)
-                .Sum(t => t.Amount);
+                .Sum(t => t.Amount ?? 0);
 
             // get all budget amounts
             var budgets = await _envelopeDataAccess.ReadBudgetsAsync();
@@ -551,13 +551,13 @@ namespace BudgetBadger.Logic
                        && !b.Envelope.IsBuffer()
                        && !b.Envelope.IsSystem()
                        && b.Schedule.Id == budgetSchedule.Id)
-                .Sum(b => b.Amount);
+                .Sum(b => b.Amount ?? 0);
             var pastBudgetAmount = budgets
                 .Where(b => !b.Envelope.IsIncome()
                        && !b.Envelope.IsBuffer()
                        && !b.Envelope.IsSystem()
                        && b.Schedule.EndDate < budgetSchedule.BeginDate)
-                .Sum(b => b.Amount);
+                .Sum(b => b.Amount ?? 0);
 
             // past is all past income + all past budget amounts
             var past = (pastIncome + pastBufferIncome) - pastBudgetAmount;
@@ -575,12 +575,12 @@ namespace BudgetBadger.Logic
                 var envelopeTransactionsAmount = budgetTransactions
                 .Where(t => t.Envelope.Id == envelope.Id
                        && t.ServiceDate <= budgetSchedule.EndDate)
-                .Sum(t => t.Amount);
+                    .Sum(t => t.Amount ?? 0);
 
                 var envelopeBudgetAmount = budgets
                     .Where(b => b.Envelope.Id == envelope.Id
                            && b.Schedule.EndDate <= budgetSchedule.EndDate)
-                    .Sum(b => b.Amount);
+                    .Sum(b => b.Amount ?? 0);
 
                 var envelopeOverspend = envelopeBudgetAmount + envelopeTransactionsAmount;
 

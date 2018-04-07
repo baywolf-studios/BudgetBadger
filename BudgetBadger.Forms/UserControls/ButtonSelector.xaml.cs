@@ -116,11 +116,7 @@ namespace BudgetBadger.Forms.UserControls
 
             LabelControl.BindingContext = this;
             TextControl.BindingContext = this;
-
-            var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Command = Command;
-            tapGestureRecognizer.CommandParameter = CommandParameter;
-            GestureRecognizers.Add(tapGestureRecognizer);
+            BackgroundControl.BindingContext = this;
 
             PropertyChanged += (sender, e) =>
             {
@@ -171,6 +167,8 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
+            var disabled = ((Command != null && !Command.CanExecute(CommandParameter)) || !IsEnabled);
+
             // color the bottom border
             var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
             tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
@@ -178,11 +176,11 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // color the text
-            var textColor = IsEnabled ? TextIdleColor : TextDisabledColor;
+            var textColor = disabled ? TextDisabledColor : TextIdleColor;
             tasks.Add(TextControl.ColorTo(TextControl.TextColor, textColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // color the label
-            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            var labelColor = disabled ? LabelDisabledColor : LabelIdleColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
@@ -202,6 +200,8 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
+            var disabled = ((Command != null && !Command.CanExecute(CommandParameter)) || !IsEnabled);
+
             // color the bottom border
             var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
             tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
@@ -209,11 +209,11 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // color the text
-            var textColor = IsEnabled ? TextIdleColor : TextDisabledColor;
+            var textColor = disabled ? TextDisabledColor : TextIdleColor;
             tasks.Add(TextControl.ColorTo(TextControl.TextColor, textColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // color the label
-            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            var labelColor = disabled ? LabelDisabledColor : LabelIdleColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border

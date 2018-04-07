@@ -41,7 +41,7 @@ namespace BudgetBadger.Models
         public decimal Past
         {
             get => past;
-            set { SetProperty(ref past, value); OnPropertyChanged("Balance"); }
+            set { SetProperty(ref past, value); OnPropertyChanged(nameof(Balance)); }
         }
 
         //calculated
@@ -49,7 +49,7 @@ namespace BudgetBadger.Models
         public decimal Income
         {
             get => income;
-            set { SetProperty(ref income, value); OnPropertyChanged("ToBudget"); OnPropertyChanged("Balance"); }
+            set { SetProperty(ref income, value); OnPropertyChanged(nameof(ToBudget)); OnPropertyChanged(nameof(Balance)); }
         }
 
         //calculated 
@@ -57,7 +57,7 @@ namespace BudgetBadger.Models
         public decimal Budgeted
         {
             get => budgeted;
-            set { SetProperty(ref budgeted, value); OnPropertyChanged("ToBudget"); OnPropertyChanged("Balance"); }
+            set { SetProperty(ref budgeted, value); OnPropertyChanged(nameof(ToBudget)); OnPropertyChanged(nameof(Balance)); }
         }
 
         public decimal ToBudget { get => Income - Budgeted; }
@@ -67,7 +67,7 @@ namespace BudgetBadger.Models
         public decimal Overspend
         {
             get => overspend;
-            set { SetProperty(ref overspend, value); OnPropertyChanged("Balance"); }
+            set { SetProperty(ref overspend, value); OnPropertyChanged(nameof(Balance)); }
         }
 
         public decimal Balance { get => Past + ToBudget - Overspend; }
@@ -76,7 +76,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged("IsNew"); OnPropertyChanged("IsActive"); }
+            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }

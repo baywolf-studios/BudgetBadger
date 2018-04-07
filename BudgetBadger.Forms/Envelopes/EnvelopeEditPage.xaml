@@ -6,42 +6,36 @@
         </DataTrigger>
     </ContentPage.Triggers>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <TableView Intent="Data">
-                <TableRoot>
-                    <TableSection Title="Group">
-                        <TextCell Command="{Binding GroupSelectedCommand}" Text="{Binding Budget.Envelope.Group.Description}">
-                        </TextCell>
-                    </TableSection>
-                    <TableSection Title="Name">
-                        <ViewCell>
-                            <Entry Text="{Binding Budget.Envelope.Description}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection Title="Amount">
-                        <ViewCell>
-                            <Entry Keyboard="Numeric" Text="{Binding Budget.Amount}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection Title="Ignore Overspend">
-                        <SwitchCell Text="Current Period" On="{Binding Budget.IgnoreOverspend}" />
-                        <SwitchCell Text="Always" On="{Binding Budget.Envelope.IgnoreOverspend}" />
-                    </TableSection>
-                    <TableSection Title="Notes">
-                        <ViewCell>
-                            <Editor Text="{Binding Budget.Envelope.Notes}" />
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection>
-                        <ViewCell>
-                            <Button IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
+            <ScrollView Orientation="Vertical">
+                <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <control:ButtonSelector Grid.Row="0" Grid.ColumnSpan="2" Command="{Binding GroupSelectedCommand}" Label="Group" Text="{Binding Budget.Envelope.Group.Description}"/>
+                    <control:TextEntry Grid.Row="1" Grid.ColumnSpan="2" Label="Name" Text="{Binding Budget.Envelope.Description}"/>
+                    <control:CalculatorEntry Grid.Row="2" Grid.ColumnSpan="2" Label="Amount" Number="{Binding Budget.Amount}"/>
+                    <Label Grid.Row="3" Grid.Column="0" Text="Ignore Overspend"/>
+                    <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding Budget.IgnoreOverspend}"/>
+                    <Label Grid.Row="4" Grid.Column="0" Text="Always"/>
+                    <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding Budget.Envelope.IgnoreOverspend}"/>
+                    <control:MultilineTextEntry Grid.Row="5" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
+                    <Button Grid.Row="6" Grid.ColumnSpan="2" IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
+                </Grid>
+            </ScrollView>
         </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

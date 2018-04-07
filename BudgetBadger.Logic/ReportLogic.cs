@@ -57,7 +57,7 @@ namespace BudgetBadger.Logic
                 while (startMonth <= endMonth)
                 {
                     var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount);
+                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(startMonth, monthTotal);
                     startMonth = startMonth.AddMonths(1);
                 }
@@ -196,7 +196,7 @@ namespace BudgetBadger.Logic
                 while (startMonth <= endMonth)
                 {
                     var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount);
+                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(startMonth, monthTotal);
                     startMonth = startMonth.AddMonths(1);
                 }
@@ -243,7 +243,7 @@ namespace BudgetBadger.Logic
                 while (startMonth <= endMonth)
                 {
                     var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount);
+                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(startMonth, monthTotal);
                     startMonth = startMonth.AddMonths(1);
                 }

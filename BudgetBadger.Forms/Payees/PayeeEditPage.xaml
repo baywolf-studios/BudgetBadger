@@ -6,22 +6,22 @@
         </DataTrigger>
     </ContentPage.Triggers>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <control:TextEntry Grid.Row="0" Label="Name" Text="{Binding Payee.Description}"/>
-                <ScrollView Grid.Row="1">
-                    <control:MultilineTextEntry Label="Notes" Text="{Binding Payee.Notes}"/>
-                </ScrollView>
-                <Button Grid.Row="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
-            </Grid>
+            <ScrollView Orientation="Vertical">
+                <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <control:TextEntry Grid.Row="0" Label="Name" Text="{Binding Payee.Description}"/>
+                    <control:MultilineTextEntry Grid.Row="1" Label="Notes" Text="{Binding Payee.Notes}"/>
+                    <Button Grid.Row="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+                </Grid>
+            </ScrollView>
         </control:BusyIndicator>
     </ContentPage.Content>
 </ContentPage>

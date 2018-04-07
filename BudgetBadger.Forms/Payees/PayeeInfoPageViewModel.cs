@@ -61,7 +61,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount); }
+        public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount ?? 0); }
 
         public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic, IPageDialogService dialogService)
         {
