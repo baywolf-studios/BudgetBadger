@@ -325,7 +325,7 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
             //move entry over
-            var entryLeftMargin = (PrefixControl.Width > 0) ? PrefixControl.Width + 8 : 0;
+            var entryLeftMargin = string.IsNullOrEmpty(Prefix) ? 0 : PrefixControl.Width + 8;
             var entryMargin = new Thickness(entryLeftMargin, 0, 0, 0);
             tasks.Add(TextControl.ThicknessTo(TextControl.Margin, entryMargin, m => TextControl.Margin = m, _animationLength, Easing.CubicInOut));
 
@@ -367,7 +367,7 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(PrefixControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
             //move entry over
-            var entryLeftMargin = (PrefixControl.Width > 0) ? PrefixControl.Width + 8 : 0;
+            var entryLeftMargin = string.IsNullOrEmpty(Prefix) ? 0 : PrefixControl.Width + 8;
             var entryMargin = new Thickness(entryLeftMargin, 0, 0, 0);
             tasks.Add(TextControl.ThicknessTo(TextControl.Margin, entryMargin, m => TextControl.Margin = m, _animationLength, Easing.CubicInOut));
 
