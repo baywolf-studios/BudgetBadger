@@ -148,7 +148,8 @@ namespace BudgetBadger.Forms.UserControls
                             var nfi = CultureInfo.CurrentCulture.NumberFormat;
                             var groupSeparator = nfi.CurrencyGroupSeparator;
                             var decimalSeparator = nfi.CurrencyDecimalSeparator;
-                            var temp = new DataTable().Compute(TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, "."), null);
+                            var text = TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, ".").Replace("(", "-").Replace(")", "");
+                            var temp = new DataTable().Compute(text, null);
                             result = Convert.ToDecimal(temp);
                         }
                         catch (Exception ex)
@@ -185,7 +186,8 @@ namespace BudgetBadger.Forms.UserControls
                             var nfi = CultureInfo.CurrentCulture.NumberFormat;
                             var groupSeparator = nfi.CurrencyGroupSeparator;
                             var decimalSeparator = nfi.CurrencyDecimalSeparator;
-                            var temp = new DataTable().Compute(TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, "."), null);
+                            var text = TextControl.Text.Replace(groupSeparator, "").Replace(decimalSeparator, ".").Replace("(", "-").Replace(")", "");
+                            var temp = new DataTable().Compute(text, null);
                             result = Convert.ToDecimal(temp);
                         }
                         catch (Exception ex)
