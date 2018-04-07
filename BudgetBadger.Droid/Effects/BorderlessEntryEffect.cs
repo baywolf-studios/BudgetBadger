@@ -12,10 +12,6 @@ namespace BudgetBadger.Droid.Effects
 {
     public class BorderlessEntryEffect : PlatformEffect
     {
-        public BorderlessEntryEffect()
-        {
-        }
-
         protected override void OnAttached()
         {
             if (Control is FormsEditText control)

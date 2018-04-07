@@ -32,7 +32,7 @@
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"
         TextColor="Gray"
-        VerticalOptions="Center"
+        VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional">
