@@ -9,6 +9,14 @@
         </BoxView.GestureRecognizers>
     </BoxView>
     <Label
+        x:Name="PrefixControl"
+        Text="{Binding Prefix}"
+        FontSize="16"
+        TextColor="Gray"
+        VerticalOptions="Center"
+        AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
+        InputTransparent="true"/>
+    <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
         FontSize="16"

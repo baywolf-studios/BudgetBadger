@@ -26,8 +26,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                        
-                    <control:CalculatorEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Amount" Number="{Binding Transaction.Amount}"/>
+                    <control:CalculatorEntry Grid.Row="0" Grid.ColumnSpan="2" Prefix="$" Label="Amount" Number="{Binding Transaction.Amount}"/>
                     <control:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
                     <control:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
                     <control:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
