@@ -128,54 +128,69 @@ namespace BudgetBadger.Forms.UserControls
 
             if (DateControl.IsFocused)
             {
-                tasks.Add(SetBottomBorderFocused());
-                tasks.Add(SetLabelFocused());
-                tasks.Add(SetDateFocused());
+                await UpdateFocusedVisualState();
             }
             else
             {
-                tasks.Add(SetBottomBorderIdle());
-                tasks.Add(SetLabelIdle());
-                tasks.Add(SetDateIdle());
-            }
-
-            await Task.WhenAll(tasks);
-
-            if (!IsEnabled)
-            {
-                await SetDisabledColors();
+                await UpdateIdleVisualState();
             }
         }
 
-        async Task SetBottomBorderIdle()
+        async Task UpdateIdleVisualState()
         {
             var tasks = new List<Task>();
 
             // color the bottom border
-            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderIdleColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderIdleColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+
+            // color the text
+            var textColor = IsEnabled ? DateIdleColor : DateDisabledColor;
+            tasks.Add(DateControl.ColorTo(DateControl.TextColor, textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
+            // color the label
+            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
             // hide the thick bottom border
             tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
-
+      
             await Task.WhenAll(tasks);
         }
 
-        async Task SetLabelIdle()
-        {
-            await LabelControl.ColorTo(LabelControl.TextColor, LabelIdleColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut);
-        }
+        //async Task UpdateIdleFilledVisualState()
+        //{
+        //    var tasks = new List<Task>();
 
-        async Task SetDateIdle()
-        {
-            await DateControl.ColorTo(DateControl.TextColor, DateIdleColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut);
-        }
+        //    // color the bottom border
+        //    var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
+        //    tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-        async Task SetBottomBorderFocused()
+        //    tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+
+        //    // color the text
+        //    var textColor = IsEnabled ? DateIdleColor : DateDisabledColor;
+        //    tasks.Add(DateControl.ColorTo(DateControl.TextColor, textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
+        //    // color the label
+        //    var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+        //    tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
+        //    // show the normal bottom border
+        //    tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
+
+        //    // hide the thick bottom border
+        //    tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
+
+        //    await Task.WhenAll(tasks);
+        //}
+
+        async Task UpdateFocusedVisualState()
         {
             var tasks = new List<Task>();
 
@@ -189,30 +204,9 @@ namespace BudgetBadger.Forms.UserControls
             // hide the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
-            await Task.WhenAll(tasks);
-        }
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
-        async Task SetLabelFocused()
-        {
-            await LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut);
-        }
-
-        async Task SetDateFocused()
-        {
-            await DateControl.ColorTo(DateControl.TextColor, DateFocusedColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut);
-        }
-
-        async Task SetDisabledColors()
-        {
-            var tasks = new List<Task>();
-
-            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderDisabledColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-
-            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderDisabledColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-
-            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelDisabledColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-            tasks.Add(DateControl.ColorTo(DateControl.TextColor, DateDisabledColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(DateControl.ColorTo(DateControl.TextColor, DateFocusedColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }

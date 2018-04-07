@@ -3,9 +3,10 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
-        FontSize="12"
+        FontSize="16"
         TextColor="Gray"
-        AbsoluteLayout.LayoutBounds="0,0,1,16"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"/>
     <Picker
@@ -14,7 +15,7 @@
         SelectedItem="{Binding SelectedItem}"
         SelectedIndex="{Binding SelectedIndex}"
         TextColor="Gray"
-        VerticalOptions="Center"
+        VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional">
