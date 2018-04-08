@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Accounts" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage">
     <ContentPage.Content>
-        <ListView x:Name="AccountList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+        <ListView x:Name="AccountList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
             <ListView.Header>
                 <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
                     <SearchBar.Behaviors>
@@ -12,11 +12,53 @@
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
             </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Description}" Detail="{Binding Balance, StringFormat='{0:C}'}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="48">
+                            <StackLayout BackgroundColor="White">
+                            <Label
+                                HeightRequest="32"
+                                FontSize="14"
+                                FontFamily="{StaticResource FontFamilyMedium}"
+                                VerticalTextAlignment="Center"
+                                TextColor="{StaticResource ListViewGroupTextColor}"
+                                Text="{Binding Key}"
+                                Margin="16, 8"/>
+                                </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="48">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="16, 8"
+                                    Grid.Column="0"
+                                    Text="{Binding Description}"
+                                    HeightRequest="32"
+                                    FontSize="16"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Black87}"/>
+                                <Label 
+                                    Margin="16, 8"
+                                    Grid.Column="1" 
+                                    Text="{Binding Balance, StringFormat='{0:C}'}"
+                                    HeightRequest="32"
+                                    FontSize="16"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="End"
+                                    TextColor="{StaticResource Black87}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
         </ListView>
     </ContentPage.Content>
 </ContentPage>

@@ -22,41 +22,110 @@
                 </StackLayout>
             </StackLayout>
             <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
-            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+            <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <Grid Margin="8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="0" Text="Payee" />
-                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="1" Text="Envelope" />
-                        <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="2" Text="Amount" />
-                    </Grid>
-                </ListView.Header>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <!--<TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}"/>-->
-                        <ViewCell>
-                            <Grid Margin="8">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                    <StackLayout Spacing="0">
+                    <Grid HeightRequest="48"  Margin="16,0" RowSpacing="0" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="0" Text="{Binding Payee.Description, StringFormat='{0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="1" Text="{Binding Envelope.Description, StringFormat='{0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                                <Label
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Envelope"
+                                    HeightRequest="32"
+                                    FontSize="12"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Primary54}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="1" 
+                                    Text="Payee"
+                                    HeightRequest="32"
+                                    FontSize="12"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Primary54}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="2" 
+                                    Text="Amount"
+                                    HeightRequest="32"
+                                    FontSize="12"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Primary54}"/>
+                            </Grid>
+                            <BoxView
+                                    HeightRequest="1"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    Margin="16,0,0,0"
+                                    BackgroundColor="{StaticResource DividerColor}"/>
+                        </StackLayout>
+                </ListView.Header>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="48">
+                            <StackLayout BackgroundColor="White">
+                            <Label
+                                HeightRequest="32"
+                                FontSize="12"
+                                FontFamily="{StaticResource FontFamilyMedium}"
+                                VerticalTextAlignment="Center"
+                                TextColor="{StaticResource ListViewGroupTextColor}"
+                                Text="{Binding Key}"
+                                Margin="16, 8"/>
+                                </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="48">
+                            <Grid Margin="16,0" RowSpacing="0" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0, 8"
+                                    Grid.Column="0"
+                                    Text="{Binding Envelope.Description}"
+                                    HeightRequest="32"
+                                    FontSize="13"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Black87}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Column="1" 
+                                    Text="{Binding Payee.Description}"
+                                    HeightRequest="32"
+                                    FontSize="13"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource Black87}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Column="2" 
+                                    Text="{Binding Amount, StringFormat='{0:c}'}"
+                                    HeightRequest="32"
+                                    FontSize="13"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="End"
+                                    TextColor="{StaticResource Black87}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

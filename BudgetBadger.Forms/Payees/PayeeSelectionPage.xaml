@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeeSelectionPage">
     <ContentPage.Content>
-        <ListView x:Name="PayeeList" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+        <ListView x:Name="PayeeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
             </ListView.Behaviors>
@@ -15,9 +15,34 @@
                     <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
                 </StackLayout>
             </ListView.Header>
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell Height="48">
+                        <StackLayout BackgroundColor="White">
+                        <Label
+                            HeightRequest="32"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyMedium}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource ListViewGroupTextColor}"
+                            Text="{Binding Key}"
+                            Margin="16, 8"/>
+                            </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Description}" Detail="{Binding Notes}"/>
+                    <ViewCell Height="48">
+                        <Label
+                            HeightRequest="32"
+                            FontSize="16"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource Black87}"
+                            Text="{Binding Description}"
+                            Margin="16, 8"/>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

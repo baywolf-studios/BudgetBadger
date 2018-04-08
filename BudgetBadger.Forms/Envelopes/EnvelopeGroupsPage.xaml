@@ -2,7 +2,7 @@
 <ContentPage Title="Envelope Groups" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
 	<ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
+            <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
@@ -18,7 +18,16 @@
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Description}" />
+                        <ViewCell Height="48">
+                            <Label
+                                HeightRequest="32"
+                                FontSize="16"
+                                FontFamily="{StaticResource FontFamilyRegular}"
+                                VerticalTextAlignment="Center"
+                                TextColor="{StaticResource Black87}"
+                                Text="{Binding Description}"
+                                Margin="16, 8"/>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

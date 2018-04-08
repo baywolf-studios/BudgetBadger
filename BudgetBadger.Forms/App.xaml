@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms" xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.App">
-	<ContentPage.Content>
-	</ContentPage.Content>
+	<Application.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:Key="FontFamilyRegular" x:TypeArguments="x:String">
+                <On Platform="iOS">.SFUIText-Regular</On>
+                <On Platform="Android">sans-serif</On>
+                <On Platform="Windows">Segoe UI</On>
+                <On Platform="macOS">SFCompactDisplay-Regular</On>
+            </OnPlatform>
+            <OnPlatform x:Key="FontFamilyMedium" x:TypeArguments="x:String">
+                <On Platform="iOS">.SFUIText-Medium</On>
+                <On Platform="Android">sans-serif-medium</On>
+                <On Platform="Windows">Segoe UI Medium</On>
+                <On Platform="macOS">SFCompactDisplay-Medium</On>
+            </OnPlatform>
+            <Color x:Key="Black87" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>                      
+                <x:Int32>222</x:Int32>
+              </x:Arguments>
+            </Color>
+            <Color x:Key="Black54" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>                      
+                <x:Int32>138</x:Int32>
+              </x:Arguments>
+            </Color>
+            <Color x:Key="Primary87" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>21</x:Int32>
+                <x:Int32>101</x:Int32>
+                <x:Int32>192</x:Int32>                      
+                <x:Int32>222</x:Int32>
+              </x:Arguments>
+            </Color>
+            <Color x:Key="Primary54" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>21</x:Int32>
+                <x:Int32>101</x:Int32>
+                <x:Int32>192</x:Int32>                      
+                <x:Int32>138</x:Int32>
+              </x:Arguments>
+            </Color>
+            <Color x:Key="ListViewGroupTextColor" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>                      
+                <x:Int32>138</x:Int32>
+              </x:Arguments>
+            </Color>
+            <Color x:Key="DividerColor" x:FactoryMethod="FromRgba">
+              <x:Arguments>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>
+                <x:Int32>0</x:Int32>                      
+                <x:Int32>31</x:Int32>
+              </x:Arguments>
+            </Color>
+<!--            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="Blue"/>
+                <Setter Property="BarTextColor" Value="White"/>
+            </Style>-->
+        </ResourceDictionary>
+    </Application.Resources>
 </prism:PrismApplication>
