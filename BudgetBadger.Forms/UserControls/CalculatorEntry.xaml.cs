@@ -157,7 +157,7 @@ namespace BudgetBadger.Forms.UserControls
                             result = 0;
                         }
                     }
-                    Number = Convert.ToDecimal(result);
+                    Number = result;
                 }
 
                 OnPropertyChanged(nameof(Number));
