@@ -157,6 +157,11 @@ namespace BudgetBadger.Forms.UserControls
                 UpdateVisualState();
             };
 
+            PrefixControl.SizeChanged += (sender, e) =>
+            {
+                UpdateVisualState();
+            };
+
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsEnabled))
