@@ -28,7 +28,7 @@
                 </ListView.Behaviors>
                 <ListView.Header>
                     <StackLayout Spacing="0">
-                    <Grid HeightRequest="48"  Margin="16,0" RowSpacing="0" ColumnSpacing="16">
+                    <Grid HeightRequest="48"  Margin="24,0,16,0" RowSpacing="0" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*"/>
@@ -69,7 +69,7 @@
                                     HeightRequest="1"
                                     Grid.Row="1"
                                     Grid.ColumnSpan="3"
-                                    Margin="16,0,0,0"
+                                    Margin="24,0,0,0"
                                     BackgroundColor="{StaticResource DividerColor}"/>
                         </StackLayout>
                 </ListView.Header>
@@ -92,7 +92,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
-                            <Grid Margin="16,0" RowSpacing="0" ColumnSpacing="16">
+                            <Grid Margin="24,0,16,0" RowSpacing="0" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="3*"/>

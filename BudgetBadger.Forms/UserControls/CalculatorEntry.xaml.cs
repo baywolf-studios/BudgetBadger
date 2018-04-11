@@ -171,6 +171,11 @@ namespace BudgetBadger.Forms.UserControls
                 UpdateVisualState();
             };
 
+            PrefixControl.SizeChanged += (sender, e) =>
+            {
+                UpdateVisualState();
+            };
+
             TextControl.Completed += (sender, e) =>
             {
                 if (string.IsNullOrEmpty(TextControl.Text))
