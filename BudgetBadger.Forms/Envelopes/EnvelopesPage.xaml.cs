@@ -10,7 +10,7 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopesPage()
         {
             InitializeComponent();
-            //NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 }

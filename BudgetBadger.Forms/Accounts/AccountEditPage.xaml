@@ -11,6 +11,7 @@
     <ContentPage.Content>
         <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ScrollView Orientation="Vertical">
+                
                 <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -24,7 +25,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
                     <control:TextEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Name" Text="{Binding Account.Description}" />
                     <Label Grid.Row="1" Grid.Column="0" Text="On Budget"/>
                     <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding Account.OnBudget}"  IsEnabled="{Binding Account.IsNew}"/>

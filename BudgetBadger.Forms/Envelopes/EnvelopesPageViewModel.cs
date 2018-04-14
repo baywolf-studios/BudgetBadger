@@ -67,13 +67,6 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
-        string _searchText;
-        public string SearchText
-        {
-            get => _searchText;
-            set => SetProperty(ref _searchText, value);
-        }
-
         public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
             _envelopeLogic = envelopeLogic;
@@ -90,7 +83,7 @@ namespace BudgetBadger.Forms.Envelopes
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
@@ -209,9 +202,9 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedBudget = null;
         }
 
-        public void ExecuteSearchCommand()
+        public void ExecuteSearchCommand(string searchText)
         {
-            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, SearchText));
+            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, searchText));
         }
 
         public async Task ExecuteEditCommand(Budget budget)

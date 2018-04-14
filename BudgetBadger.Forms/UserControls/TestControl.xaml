@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
+    <ContentView.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource AppBarGridHeight}"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
+            </Grid.ColumnDefinitions>
+            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+            <Label
+                TextColor="White"
+                LineBreakMode="TailTruncation"
+                VerticalOptions="Center"
+                FontSize="17"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                Text="Envelopes">
+                <Grid.Column>
+                    <OnPlatform x:TypeArguments="x:Int32">
+                        <On Platform="Android" Value="0"/>
+                        <On Platform="iOS" Value="2"/>
+                    </OnPlatform>
+                </Grid.Column>
+                <Grid.ColumnSpan>
+                    <OnPlatform x:TypeArguments="x:Int32">
+                        <On Platform="Android" Value="3"/>
+                        <On Platform="iOS" Value="1"/>
+                    </OnPlatform>
+                </Grid.ColumnSpan>
+                <Label.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="16,0,0,0"/>
+                        <On Platform="iOS" Value="0"/>
+                    </OnPlatform>
+                </Label.Margin>
+                <Label.HorizontalOptions>
+                    <OnPlatform x:TypeArguments="LayoutOptions">
+                        <On Platform="Android" Value="Start"/>
+                        <On Platform="iOS" Value="Center"/>
+                    </OnPlatform>
+                </Label.HorizontalOptions>
+            </Label>
+            <Frame
+                Grid.Row="0"
+                Grid.Column="0"
+                HasShadow="false"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                BackgroundColor="Transparent"
+                InputTransparent="false">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BindingContext.AddCommand}" />
+                </Frame.GestureRecognizers>
+                <Image 
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Red"/>
+            </Frame>
+            <uc:SearchHeader Grid.Row="0" Grid.ColumnSpan="5" SearchCommand="{Binding BindingContext.SearchCommand}"/>
+            <ContentPresenter Grid.Row="1" Grid.ColumnSpan="5"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

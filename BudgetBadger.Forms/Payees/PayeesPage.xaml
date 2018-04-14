@@ -43,7 +43,7 @@
                                 FontSize="16"
                                 FontFamily="{StaticResource FontFamilyRegular}"
                                 VerticalTextAlignment="Center"
-                                TextColor="{StaticResource Black87}"
+                                TextColor="{StaticResource PrimaryTextColor}"
                                 Text="{Binding Description}"
                                 Margin="16, 8"/>
                             <ViewCell.ContextActions>

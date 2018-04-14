@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage  Title="Envelopes" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage">
+<ContentPage
+    Title="Envelopes"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    ControlTemplate="{StaticResource HeaderTemplate}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="Add" Text="Add" Command="{Binding AddCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal">
-                <Button Command="{Binding PreviousCommand}">
-                    <Button.Text>
-                        &lt;
-                    </Button.Text>
-                </Button>
-                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="{Binding Schedule.Description}" />
-                <Button Command="{Binding NextCommand}">
-                    <Button.Text>
-                        &gt;
-                    </Button.Text>
-                </Button>
-            </StackLayout>
+        <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5">
             <Grid Margin="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -77,7 +73,7 @@
                                     FontSize="16"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource Black87}"/>
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="16, 8"
                                     Grid.Column="1" 
@@ -87,7 +83,7 @@
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     HorizontalTextAlignment="End"
-                                    TextColor="{StaticResource Black87}"/>
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
                             </Grid>
                             <ViewCell.ContextActions>
                                 <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference EnvelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
@@ -96,8 +92,10 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
+                </ListView.Footer>
             </ListView>
-            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
