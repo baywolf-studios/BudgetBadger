@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout
+    HeightRequest="{StaticResource AppBarHeight}" 
+    VerticalOptions="Start" 
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="BudgetBadger.Forms.UserControls.SearchHeader">
+    <Frame
+        x:Name="SearchBoxFrame"
+        BackgroundColor="Teal"
+        HasShadow="false"
+        Padding="0"
+        CornerRadius="0"
+        AbsoluteLayout.LayoutBounds="0,0,1,1"
+        AbsoluteLayout.LayoutFlags="All"
+        TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}">
+        <Frame.Margin>
+            <Thickness
+                Bottom="0"
+                Top="0"
+                Left="0"
+                Right="{StaticResource AppBarHeight}"/>
+        </Frame.Margin>
+        <Frame
+            x:Name="EntryFrame"
+            Margin="8"
+            HasShadow="false"
+            Padding="0">
+            <Frame.BackgroundColor>
+                <Color x:FactoryMethod="FromRgba">
+                  <x:Arguments>
+                    <x:Int32>0</x:Int32>
+                    <x:Int32>0</x:Int32>
+                    <x:Int32>0</x:Int32>                      
+                    <x:Int32>31</x:Int32>
+                  </x:Arguments>
+                </Color>
+            </Frame.BackgroundColor>
+            <Entry
+                x:Name="EntryControl"
+                Margin="8,0"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"
+                TextColor="White"
+                HeightRequest="{StaticResource AppBarHeight}"
+                FontSize="17"
+                Text="{Binding SearchText}">
+                <Entry.Effects>
+                    <effects:BorderlessEntryEffect />
+                </Entry.Effects>
+            </Entry>
+        </Frame>
+    </Frame>
+    <Frame
+        WidthRequest="{StaticResource AppBarHeight}"
+        CornerRadius="0"
+        HasShadow="false"
+        Padding="0"
+        HorizontalOptions="End"
+        AbsoluteLayout.LayoutBounds="0,0,1,1"
+        AbsoluteLayout.LayoutFlags="All"
+        BackgroundColor="Red">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer Tapped="SearchTapped" />
+        </Frame.GestureRecognizers>
+        <Image
+            HeightRequest="24"
+            WidthRequest="24"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            BackgroundColor="Blue"/>
+    </Frame>
+</AbsoluteLayout>

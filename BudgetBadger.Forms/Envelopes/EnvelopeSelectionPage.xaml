@@ -44,7 +44,7 @@
                                     FontSize="16"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource Black87}"/>
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="16, 8"
                                     Grid.Column="1" 
@@ -54,7 +54,7 @@
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     HorizontalTextAlignment="End"
-                                    TextColor="{StaticResource Black87}"/>
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

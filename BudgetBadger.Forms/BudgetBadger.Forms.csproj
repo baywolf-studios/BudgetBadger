@@ -138,5 +138,8 @@
     <Compile Update="UserControls\CalculatorEntry.xaml.cs">
       <DependentUpon>CalculatorEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\TestControl.xaml.cs">
+      <DependentUpon>TestControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
