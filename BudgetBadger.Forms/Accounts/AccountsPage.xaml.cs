@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public partial class AccountsPage : ParentPage
+    public partial class AccountsPage : RootSearchPage
     {
         public AccountsPage()
         {

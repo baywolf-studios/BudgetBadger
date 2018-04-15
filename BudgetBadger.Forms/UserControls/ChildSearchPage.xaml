@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="BudgetBadger.Forms.UserControls.ChildSearchPage"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    x:Class="BudgetBadger.Forms.UserControls.ParentPage"
     ios:Page.UseSafeArea="true"
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
@@ -15,14 +15,17 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
+                <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
+                <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
             </Grid.ColumnDefinitions>
-            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
             <Label
                 x:Name="LabelControl"
                 TextColor="White"
-                Grid.Column="1"
+                Grid.Row="0"
+                Grid.Column="2"
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
@@ -44,9 +47,27 @@
                 </Label.HorizontalOptions>
             </Label>
             <Frame
-                x:Name="ToolbarItemFrame"
+                x:Name="BackButtonFrame"
                 Grid.Row="0"
                 Grid.Column="0"
+                HasShadow="false"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                BackgroundColor="Transparent">
+                <Image 
+                    x:Name="BackButtonImage"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Fuchsia"
+                    Source="{Binding BackButtonIcon}"/>
+            </Frame>
+            <Frame
+                x:Name="ToolbarItemFrame"
+                Grid.Row="0"
+                Grid.Column="3"
                 HasShadow="false"
                 Padding="0"
                 Margin="0"
@@ -64,11 +85,11 @@
                     BackgroundColor="Red"
                     Source="{Binding ToolbarItemIcon}"/>
             </Frame>
-                <Frame
+            <Frame
                 x:Name="SearchBoxFrame"
                 Grid.Row="0"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="4"
                 BackgroundColor="Teal"
                 HasShadow="false"
                 Padding="0"
@@ -96,7 +117,6 @@
                         VerticalOptions="Center"
                         HorizontalOptions="FillAndExpand"
                         TextColor="White"
-                        HeightRequest="{StaticResource AppBarHeight}"
                         FontSize="17"
                         Text="{Binding SearchText}">
                         <Entry.Effects>
@@ -113,7 +133,7 @@
                 Padding="0"
                 HorizontalOptions="End"
                 Grid.Row="0"
-                Grid.Column="2"
+                Grid.Column="4"
                 BackgroundColor="Red">
                 <Image
                     HeightRequest="24"
@@ -122,7 +142,7 @@
                     VerticalOptions="Center"
                     BackgroundColor="Blue"/>
             </Frame>
-            <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
