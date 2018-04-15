@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AbsoluteLayout
-    HeightRequest="{StaticResource AppBarHeight}" 
+    HeightRequest="{StaticResource AppBarHeight}"
     VerticalOptions="Start" 
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
     xmlns="http://xamarin.com/schemas/2014/forms" 
@@ -14,7 +14,7 @@
         CornerRadius="0"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
         AbsoluteLayout.LayoutFlags="All"
-        TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}">
+        TranslationX="0">
         <Frame.Margin>
             <Thickness
                 Bottom="0"
@@ -58,8 +58,8 @@
         HasShadow="false"
         Padding="0"
         HorizontalOptions="End"
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All"
+        AbsoluteLayout.LayoutBounds="1,0,56,1"
+        AbsoluteLayout.LayoutFlags="XProportional, YProportional, HeightProportional"
         BackgroundColor="Red">
         <Frame.GestureRecognizers>
             <TapGestureRecognizer Tapped="SearchTapped" />

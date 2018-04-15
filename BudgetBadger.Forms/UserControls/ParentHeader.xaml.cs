@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using BudgetBadger.Forms.Animation;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class SearchHeader : AbsoluteLayout
+    public partial class ParentHeader : ContentView
     {
         uint _animationLength = 150;
 
@@ -27,9 +26,10 @@ namespace BudgetBadger.Forms.UserControls
 
         async void SearchTapped(object sender, EventArgs e)
         {
-            if (SearchBoxFrame.TranslationX < 0) //currently hidden
+            if (!SearchBoxFrame.IsVisible) //currently hidden
             {
                 //show it
+                SearchBoxFrame.IsVisible = true;
                 await SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
                 EntryControl.Focus();
             }
@@ -38,14 +38,37 @@ namespace BudgetBadger.Forms.UserControls
                 SearchText = string.Empty;
 
                 //hide it
-                await SearchBoxFrame.TranslateTo(-1*SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
+                await SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
+                SearchBoxFrame.IsVisible = false;
             }
         }
 
-        public SearchHeader()
+        public static BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(ParentHeader), defaultBindingMode: BindingMode.TwoWay);
+        public string Title
+        {
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
+        }
+
+        public static BindableProperty ToolbarItemProperty = BindableProperty.Create(nameof(ToolbarItem), typeof(ToolbarItem), typeof(ParentHeader), defaultBindingMode: BindingMode.TwoWay);
+        public ToolbarItem ToolbarItem
+        {
+            get => (ToolbarItem)GetValue(ToolbarItemProperty);
+            set => SetValue(ToolbarItemProperty, value);
+        }
+
+        public View ChildContent
+        {
+            get => ChildView.Content;
+            set => ChildView.Content = value;
+        }
+
+        public ParentHeader()
         {
             InitializeComponent();
-
+            LabelControl.BindingContext = this;
+            ToolbarItemFrame.BindingContext = this;
+            ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
 
             EntryControl.TextChanged += (sender, e) =>

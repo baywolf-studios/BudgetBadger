@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout HeightRequest="48" VerticalOptions="Start" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.CalculatorEntry">
+<AbsoluteLayout
+    HeightRequest="48" 
+    VerticalOptions="Start" 
+    xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls" 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="BudgetBadger.Forms.UserControls.CalculatorEntry">
     <BoxView
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"

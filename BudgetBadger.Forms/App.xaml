@@ -19,7 +19,7 @@
                 <On Platform="Windows">Segoe UI Medium</On>
                 <On Platform="macOS">SFCompactDisplay-Medium</On>
             </OnPlatform>
-            <OnPlatform x:Key="AppBarGridHeight" x:TypeArguments="GridLength">
+            <OnPlatform x:Key="AppBarIconSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
                 <On Platform="Android">56</On>
                 <On Platform="Windows">64</On>
@@ -84,75 +84,6 @@
                 <Setter Property="BarBackgroundColor" Value="Blue"/>
                 <Setter Property="BarTextColor" Value="White"/>
             </Style>-->
-            <ControlTemplate x:Key="HeaderTemplate">
-                <Grid RowSpacing="0" ColumnSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="{StaticResource AppBarGridHeight}"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
-                        <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
-                        <ColumnDefinition Width="{StaticResource AppBarGridHeight}"/>
-                    </Grid.ColumnDefinitions>
-                    <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
-                    <Label
-                        TextColor="White"
-                        LineBreakMode="TailTruncation"
-                        VerticalOptions="Center"
-                        FontSize="17"
-                        FontFamily="{StaticResource FontFamilyMedium}"
-                        Text="{TemplateBinding Parent.Title}">
-                        <Grid.Column>
-                            <OnPlatform x:TypeArguments="x:Int32">
-                                <On Platform="Android" Value="0"/>
-                                <On Platform="iOS" Value="2"/>
-                            </OnPlatform>
-                        </Grid.Column>
-                        <Grid.ColumnSpan>
-                            <OnPlatform x:TypeArguments="x:Int32">
-                                <On Platform="Android" Value="3"/>
-                                <On Platform="iOS" Value="1"/>
-                            </OnPlatform>
-                        </Grid.ColumnSpan>
-                        <Label.Margin>
-                            <OnPlatform x:TypeArguments="Thickness">
-                                <On Platform="Android" Value="16,0,0,0"/>
-                                <On Platform="iOS" Value="0"/>
-                            </OnPlatform>
-                        </Label.Margin>
-                        <Label.HorizontalOptions>
-                            <OnPlatform x:TypeArguments="LayoutOptions">
-                                <On Platform="Android" Value="Start"/>
-                                <On Platform="iOS" Value="Center"/>
-                            </OnPlatform>
-                        </Label.HorizontalOptions>
-                    </Label>
-                    <Frame
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        HasShadow="false"
-                        Padding="0"
-                        Margin="0"
-                        CornerRadius="0"
-                        BackgroundColor="Transparent">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{TemplateBinding BindingContext.AddCommand}" />
-                        </Frame.GestureRecognizers>
-                        <Image 
-                            HeightRequest="24"
-                            WidthRequest="24"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"
-                            BackgroundColor="Red">
-                        </Image>
-                    </Frame>
-                    <uc:SearchHeader Grid.Row="0" Grid.ColumnSpan="5"  SearchCommand="{TemplateBinding BindingContext.SearchCommand}"/>
-                    <ContentPresenter Grid.Row="1" Grid.ColumnSpan="5"/>
-                </Grid>
-            </ControlTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>
