@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TestControl">
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    x:Class="BudgetBadger.Forms.UserControls.ParentHeader">
     <ContentView.Content>
         <Grid x:Name="HeaderGrid" RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -14,14 +18,14 @@
                 <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
             </Grid.ColumnDefinitions>
             <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
-
             <Label
+                x:Name="LabelControl"
                 TextColor="White"
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
                 FontFamily="{StaticResource FontFamilyMedium}"
-                Text="Envelopes">
+                Text="{Binding Title}">
                 <Grid.Column>
                     <OnPlatform x:TypeArguments="x:Int32">
                         <On Platform="Android" Value="0"/>
@@ -52,6 +56,7 @@
                 </Label.HorizontalOptions>
             </Label>
             <Frame
+                x:Name="ToolbarItemFrame"
                 Grid.Row="0"
                 Grid.Column="0"
                 HasShadow="false"
@@ -60,16 +65,18 @@
                 CornerRadius="0"
                 BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{TemplateBinding BindingContext.AddCommand}" />
+                    <TapGestureRecognizer Command="{Binding ToolbarItem.Command}" />
                 </Frame.GestureRecognizers>
                 <Image 
+                    x:Name="ToolbarItemImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="Red"/>
+                    BackgroundColor="Red"
+                    Source="{Binding ToolbarItem.Icon}"/>
             </Frame>
-                    <Frame
+                <Frame
                 x:Name="SearchBoxFrame"
                 Grid.Row="0"
                 Grid.Column="0"
@@ -78,8 +85,8 @@
                 HasShadow="false"
                 Padding="0"
                 CornerRadius="0"
-                TranslationX="0"
-                IsVisible="true">
+                TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}"
+                IsVisible="false">
                 <Frame
                     x:Name="EntryFrame"
                     Margin="8"
@@ -103,7 +110,10 @@
                         TextColor="White"
                         HeightRequest="{StaticResource AppBarHeight}"
                         FontSize="17"
-                        Text="Search">
+                        Text="{Binding SearchText}">
+                        <Entry.Effects>
+                            <effects:BorderlessEntryEffect/>
+                        </Entry.Effects>
                     </Entry>
                 </Frame>
             </Frame>
@@ -116,6 +126,9 @@
                 Grid.Row="0"
                 Grid.Column="4"
                 BackgroundColor="Red">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SearchTapped" />
+                </Frame.GestureRecognizers>
                 <Image
                     HeightRequest="24"
                     WidthRequest="24"
@@ -123,7 +136,7 @@
                     VerticalOptions="Center"
                     BackgroundColor="Blue"/>
             </Frame>
-            <ContentPresenter Grid.Row="1" Grid.ColumnSpan="5"/>
+            <ContentView x:Name="ChildView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

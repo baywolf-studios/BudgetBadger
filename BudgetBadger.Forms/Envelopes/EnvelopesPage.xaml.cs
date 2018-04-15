@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
@@ -10,7 +10,6 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopesPage()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 }

@@ -5,14 +5,16 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="true"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    ControlTemplate="{StaticResource HeaderTemplate}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Name="Add" Text="Add" Command="{Binding AddCommand}" />
-    </ContentPage.ToolbarItems>
+    NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
+        <uc:ParentHeader Title="Envelopes" SearchCommand="{Binding SearchCommand}">
+            <uc:ParentHeader.ToolbarItem>
+                <ToolbarItem Text="New" Command="{Binding AddCommand}" />
+            </uc:ParentHeader.ToolbarItem>
+            <uc:ParentHeader.ChildContent>
         <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5">
             <Grid Margin="8">
                 <Grid.ColumnDefinitions>
@@ -97,5 +99,7 @@
                 </ListView.Footer>
             </ListView>
         </StackLayout>
+        </uc:ParentHeader.ChildContent>
+        </uc:ParentHeader>
     </ContentPage.Content>
 </ContentPage>
