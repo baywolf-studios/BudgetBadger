@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public partial class PayeesPage : ContentPage
+    public partial class PayeesPage : ParentPage
     {
         public PayeesPage()
         {

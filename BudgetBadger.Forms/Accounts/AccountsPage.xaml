@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Accounts" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountsPage">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddCommand}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+<uc:ParentPage
+    Title="Accounts"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Accounts.AccountsPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    SearchCommand="{Binding SearchCommand}"
+    ToolbarItemCommand="{Binding AddCommand}"
+    ToolbarItemText="New">
+    <uc:ParentPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView x:Name="AccountList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedAccounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
-                <ListView.Header>
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                        <SearchBar.Behaviors>
-                            <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                        </SearchBar.Behaviors>
-                    </SearchBar>
-                </ListView.Header>
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
@@ -70,5 +69,5 @@
             </ListView>
             <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ParentPage.BodyContent>
+</uc:ParentPage>

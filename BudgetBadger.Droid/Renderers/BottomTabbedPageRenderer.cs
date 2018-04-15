@@ -7,7 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms.Platform.Android.AppCompat;
 
-//[assembly: ExportRenderer(typeof(TabbedPage), typeof(BottomTabbedPageRenderer))]
+[assembly: ExportRenderer(typeof(TabbedPage), typeof(BottomTabbedPageRenderer))]
 namespace BudgetBadger.Droid.Renderers
 {
     public class BottomTabbedPageRenderer : TabbedPageRenderer
