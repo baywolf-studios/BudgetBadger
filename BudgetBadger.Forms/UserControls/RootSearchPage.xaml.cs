@@ -1,75 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class StepperPage : ContentPage
+    public partial class RootSearchPage : ContentPage
     {
         uint _animationLength = 150;
 
-        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(RootSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string SearchText
         {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
         }
 
-        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(RootSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ICommand SearchCommand
         {
             get => (ICommand)GetValue(SearchCommandProperty);
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(RootSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string ToolbarItemText
         {
             get => (string)GetValue(ToolbarItemTextProperty);
             set => SetValue(ToolbarItemTextProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(RootSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ImageSource ToolbarItemIcon
         {
             get => (ImageSource)GetValue(ToolbarItemIconProperty);
             set => SetValue(ToolbarItemIconProperty, value);
         }
 
-        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(RootSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ICommand ToolbarItemCommand
         {
             get => (ICommand)GetValue(ToolbarItemCommandProperty);
             set => SetValue(ToolbarItemCommandProperty, value);
-        }
-
-        public static BindableProperty NextIconProperty = BindableProperty.Create(nameof(NextIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource NextIcon
-        {
-            get => (ImageSource)GetValue(NextIconProperty);
-            set => SetValue(NextIconProperty, value);
-        }
-
-        public static BindableProperty NextCommandProperty = BindableProperty.Create(nameof(NextCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ICommand NextCommand
-        {
-            get => (ICommand)GetValue(NextCommandProperty);
-            set => SetValue(NextCommandProperty, value);
-        }
-
-        public static BindableProperty PreviousIconProperty = BindableProperty.Create(nameof(PreviousIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource PreviousIcon
-        {
-            get => (ImageSource)GetValue(PreviousIconProperty);
-            set => SetValue(PreviousIconProperty, value);
-        }
-
-        public static BindableProperty PreviousCommandProperty = BindableProperty.Create(nameof(PreviousCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ICommand PreviousCommand
-        {
-            get => (ICommand)GetValue(PreviousCommandProperty);
-            set => SetValue(PreviousCommandProperty, value);
         }
 
         public View BodyContent
@@ -78,16 +52,12 @@ namespace BudgetBadger.Forms.UserControls
             set => BodyView.Content = value;
         }
 
-        public StepperPage()
+        public RootSearchPage()
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
-            PreviousFrame.BindingContext = this;
-            PreviousImage.BindingContext = this;
-            NextFrame.BindingContext = this;
-            NextImage.BindingContext = this;
             EntryControl.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
@@ -126,4 +96,3 @@ namespace BudgetBadger.Forms.UserControls
         }
     }
 }
-

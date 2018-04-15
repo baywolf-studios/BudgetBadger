@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uc:ParentPage
+<uc:RootSearchPage
     Title="Payees"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -10,7 +10,7 @@
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemText="New">
-    <uc:ParentPage.BodyContent>
+    <uc:RootSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView x:Name="PayeeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
@@ -56,5 +56,5 @@
             </ListView>
             <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
-    </uc:ParentPage.BodyContent>
-</uc:ParentPage>
+    </uc:RootSearchPage.BodyContent>
+</uc:RootSearchPage>

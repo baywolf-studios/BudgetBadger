@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    x:Class="BudgetBadger.Forms.UserControls.RootPage"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource AppBarIconSize}"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0"/>
+            <Label
+                x:Name="LabelControl"
+                TextColor="White"
+                Grid.Row="0"
+                LineBreakMode="TailTruncation"
+                VerticalOptions="Center"
+                FontSize="17"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                Text="{Binding Title}">
+                <Label.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="16,0,0,0"/>
+                        <On Platform="iOS" Value="0"/>
+                        <On Platform="macOS" Value="0"/>
+                    </OnPlatform>
+                </Label.Margin>
+                <Label.HorizontalOptions>
+                    <OnPlatform x:TypeArguments="LayoutOptions">
+                        <On Platform="Android" Value="Start"/>
+                        <On Platform="iOS" Value="Center"/>
+                        <On Platform="macOS" Value="Center"/>
+                    </OnPlatform>
+                </Label.HorizontalOptions>
+            </Label>
+            <ContentView x:Name="BodyView" Grid.Row="1"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeeSelectionPage">
-    <ContentPage.Content>
+<uc:ChildSearchPage
+    Title="Select a Payee"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Payees.PayeeSelectionPage"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
+    <uc:ChildSearchPage.BodyContent>
         <ListView x:Name="PayeeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
             </ListView.Behaviors>
             <ListView.Header>
-                <StackLayout Orientation="Vertical">
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                        <SearchBar.Behaviors>
-                            <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                        </SearchBar.Behaviors>
-                    </SearchBar>
-                    <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
-                </StackLayout>
+                <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
             </ListView.Header>
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
@@ -46,5 +47,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

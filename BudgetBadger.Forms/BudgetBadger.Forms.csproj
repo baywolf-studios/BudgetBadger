@@ -142,10 +142,22 @@
       <DependentUpon>TestControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="UserControls\ParentPage.xaml.cs">
-      <DependentUpon>ParentPage.xaml</DependentUpon>
+      <DependentUpon>RootPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="UserControls\StepperPage.xaml.cs">
       <DependentUpon>StepperPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="UserControls\BlankPage.xaml.cs">
+      <DependentUpon>RootTitleOnlyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootTitleOnlyPage.xaml.cs">
+      <DependentUpon>RootPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootPage.xaml.cs">
+      <DependentUpon>RootPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootSearchPage.xaml.cs">
+      <DependentUpon>RootSearchPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

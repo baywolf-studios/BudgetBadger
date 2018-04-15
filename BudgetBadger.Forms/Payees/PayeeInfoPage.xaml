@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="{Binding Payee.Description}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeeInfoPage">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Name="Edit" Text="Edit" Command="{Binding EditCommand}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+<uc:ChildSearchPage
+    Title="{Binding Payee.Description}"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Payees.PayeeInfoPage"
+    ToolbarItemText="Edit"
+    ToolbarItemCommand="{Binding EditCommand}">
+    <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
                 <ListView.Behaviors>
@@ -17,5 +22,5 @@
             </ListView>
             <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

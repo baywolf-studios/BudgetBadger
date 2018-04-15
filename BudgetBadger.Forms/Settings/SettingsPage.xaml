@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Settings" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Settings.SettingsPage">
-	<ContentPage.Content>
+<uc:RootPage
+    Title="Settings"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Settings.SettingsPage">
+	<uc:RootPage.BodyContent>
         <TableView Intent="Settings">
             <TableRoot>
                 <TableSection>
@@ -8,5 +13,5 @@
                 </TableSection>
             </TableRoot>
         </TableView>
-	</ContentPage.Content>
-</ContentPage>
+	</uc:RootPage.BodyContent>
+</uc:RootPage>

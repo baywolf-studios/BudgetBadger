@@ -1,49 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class ParentPage : ContentPage
+    public partial class ChildSearchPage : ContentPage
     {
         uint _animationLength = 150;
 
-        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(SearchHeader), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string SearchText
         {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
         }
 
-        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(SearchHeader), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ICommand SearchCommand
         {
             get => (ICommand)GetValue(SearchCommandProperty);
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(SearchHeader), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string ToolbarItemText
         {
             get => (string)GetValue(ToolbarItemTextProperty);
             set => SetValue(ToolbarItemTextProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(SearchHeader), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ImageSource ToolbarItemIcon
         {
             get => (ImageSource)GetValue(ToolbarItemIconProperty);
             set => SetValue(ToolbarItemIconProperty, value);
         }
 
-        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(SearchHeader), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ICommand ToolbarItemCommand
         {
             get => (ICommand)GetValue(ToolbarItemCommandProperty);
             set => SetValue(ToolbarItemCommandProperty, value);
+        }
+
+        public static BindableProperty BackButtonIconProperty = BindableProperty.Create(nameof(BackButtonIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
+        public ImageSource BackButtonIcon
+        {
+            get => (ImageSource)GetValue(BackButtonIconProperty);
+            set => SetValue(BackButtonIconProperty, value);
         }
 
         public View BodyContent
@@ -52,7 +57,7 @@ namespace BudgetBadger.Forms.UserControls
             set => BodyView.Content = value;
         }
 
-        public ParentPage()
+        public ChildSearchPage()
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
@@ -60,9 +65,14 @@ namespace BudgetBadger.Forms.UserControls
             ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
 
+
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
             SearchButtonFrame.GestureRecognizers.Add(tapGestureRecognizer);
+
+            var backGestureRecognizer = new TapGestureRecognizer();
+            backGestureRecognizer.Tapped += BackButtonTapped;
+            BackButtonFrame.GestureRecognizers.Add(backGestureRecognizer);
 
             EntryControl.TextChanged += (sender, e) =>
             {
@@ -93,6 +103,11 @@ namespace BudgetBadger.Forms.UserControls
                 await SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
                 SearchBoxFrame.IsVisible = false;
             }
+        }
+
+        async void BackButtonTapped(object sender, System.EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
     }
 }
