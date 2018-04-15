@@ -63,7 +63,7 @@ namespace BudgetBadger.Forms.Payees
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
         }
 
         public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)

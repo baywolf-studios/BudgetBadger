@@ -56,13 +56,6 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _groupedAccounts, value);
         }
 
-        string _searchText;
-        public string SearchText
-        {
-            get => _searchText;
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
-        }
-
         public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {
             _accountLogic = accountLogic;
@@ -78,7 +71,7 @@ namespace BudgetBadger.Forms.Accounts
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
@@ -172,9 +165,9 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void ExecuteSearchCommand()
+        public void ExecuteSearchCommand(string searchText)
         {
-            GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, SearchText));
+            GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, searchText));
         }
 
         public async Task ExecuteAddTransactionCommand()

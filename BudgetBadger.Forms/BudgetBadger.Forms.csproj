@@ -141,5 +141,11 @@
     <Compile Update="UserControls\TestControl.xaml.cs">
       <DependentUpon>TestControl.xaml</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\ParentPage.xaml.cs">
+      <DependentUpon>ParentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="UserControls\StepperPage.xaml.cs">
+      <DependentUpon>StepperPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

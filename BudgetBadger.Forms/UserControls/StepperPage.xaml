@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView
+<ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    x:Class="BudgetBadger.Forms.UserControls.ParentHeader">
-    <ContentView.Content>
-        <Grid x:Name="HeaderGrid" RowSpacing="0" ColumnSpacing="0">
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    x:Class="BudgetBadger.Forms.UserControls.StepperPage"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource AppBarIconSize}"/>
                 <RowDefinition Height="*"/>
@@ -21,39 +24,14 @@
             <Label
                 x:Name="LabelControl"
                 TextColor="White"
+                Grid.Column="2"
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
                 FontFamily="{StaticResource FontFamilyMedium}"
-                Text="{Binding Title}">
-                <Grid.Column>
-                    <OnPlatform x:TypeArguments="x:Int32">
-                        <On Platform="Android" Value="0"/>
-                        <On Platform="iOS" Value="2"/>
-                        <On Platform="macOS" Value="2"/>
-                    </OnPlatform>
-                </Grid.Column>
-                <Grid.ColumnSpan>
-                    <OnPlatform x:TypeArguments="x:Int32">
-                        <On Platform="Android" Value="3"/>
-                        <On Platform="iOS" Value="1"/>
-                        <On Platform="macOS" Value="1"/>
-                    </OnPlatform>
-                </Grid.ColumnSpan>
-                <Label.Margin>
-                    <OnPlatform x:TypeArguments="Thickness">
-                        <On Platform="Android" Value="16,0,0,0"/>
-                        <On Platform="iOS" Value="0"/>
-                        <On Platform="macOS" Value="0"/>
-                    </OnPlatform>
-                </Label.Margin>
-                <Label.HorizontalOptions>
-                    <OnPlatform x:TypeArguments="LayoutOptions">
-                        <On Platform="Android" Value="Start"/>
-                        <On Platform="iOS" Value="Center"/>
-                        <On Platform="macOS" Value="Center"/>
-                    </OnPlatform>
-                </Label.HorizontalOptions>
+                Text="{Binding Title}"
+                Margin="0"
+                HorizontalOptions="Center">
             </Label>
             <Frame
                 x:Name="ToolbarItemFrame"
@@ -65,7 +43,7 @@
                 CornerRadius="0"
                 BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToolbarItem.Command}" />
+                    <TapGestureRecognizer Command="{Binding ToolbarItemCommand}"/>
                 </Frame.GestureRecognizers>
                 <Image 
                     x:Name="ToolbarItemImage"
@@ -74,9 +52,51 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     BackgroundColor="Red"
-                    Source="{Binding ToolbarItem.Icon}"/>
+                    Source="{Binding ToolbarItemIcon}"/>
             </Frame>
-                <Frame
+            <Frame
+                x:Name="PreviousFrame"
+                Grid.Row="0"
+                Grid.Column="1"
+                HasShadow="false"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PreviousCommand}"/>
+                </Frame.GestureRecognizers>
+                <Image 
+                    x:Name="PreviousImage"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Silver"
+                    Source="{Binding PreviousIcon}"/>
+            </Frame>
+            <Frame
+                x:Name="NextFrame"
+                Grid.Row="0"
+                Grid.Column="3"
+                HasShadow="false"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NextCommand}"/>
+                </Frame.GestureRecognizers>
+                <Image 
+                    x:Name="NextImage"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Silver"
+                    Source="{Binding NextIcon}"/>
+            </Frame>
+            <Frame
                 x:Name="SearchBoxFrame"
                 Grid.Row="0"
                 Grid.Column="0"
@@ -118,6 +138,7 @@
                 </Frame>
             </Frame>
             <Frame
+                x:Name="SearchButtonFrame"
                 WidthRequest="{StaticResource AppBarHeight}"
                 CornerRadius="0"
                 HasShadow="false"
@@ -126,9 +147,6 @@
                 Grid.Row="0"
                 Grid.Column="4"
                 BackgroundColor="Red">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="SearchTapped" />
-                </Frame.GestureRecognizers>
                 <Image
                     HeightRequest="24"
                     WidthRequest="24"
@@ -136,7 +154,7 @@
                     VerticalOptions="Center"
                     BackgroundColor="Blue"/>
             </Frame>
-            <ContentView x:Name="ChildView" Grid.Row="1" Grid.ColumnSpan="5"/>
+            <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
-    </ContentView.Content>
-</ContentView>
+    </ContentPage.Content>
+</ContentPage>

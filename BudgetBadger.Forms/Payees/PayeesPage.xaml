@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Payees" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Payees.PayeesPage">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddCommand}" IsEnabled="{Binding MainMode}"/>
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+<uc:ParentPage
+    Title="Payees"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Payees.PayeesPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
+    ToolbarItemCommand="{Binding AddCommand}"
+    ToolbarItemText="New">
+    <uc:ParentPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView x:Name="PayeeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <StackLayout Orientation="Vertical">
-                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                            <SearchBar.Behaviors>
-                                <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                            </SearchBar.Behaviors>
-                        </SearchBar>
-                        <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
-                    </StackLayout>
+                    <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
                 </ListView.Header>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
@@ -56,5 +56,5 @@
             </ListView>
             <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ParentPage.BodyContent>
+</uc:ParentPage>
