@@ -111,16 +111,16 @@
                 CornerRadius="0"
                 HasShadow="false"
                 Padding="0"
+                BackgroundColor="Transparent"
                 HorizontalOptions="End"
                 Grid.Row="0"
-                Grid.Column="2"
-                BackgroundColor="Red">
+                Grid.Column="2">
                 <Image
                     HeightRequest="24"
                     WidthRequest="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    BackgroundColor="Blue"/>
+                    Source="searchwhite24.png"/>
             </Frame>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
         </Grid>

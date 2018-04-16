@@ -24,7 +24,7 @@
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
     <IOSDebuggerPort>31488</IOSDebuggerPort>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
@@ -161,10 +161,16 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\search_white_24.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\chevron-left.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Effects\" />
+    <Folder Include="Assets.xcassets\searchwhite24.png.imageset\" />
+    <Folder Include="Assets.xcassets\chevronleft.png.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -63,8 +63,7 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="Fuchsia"
-                    Source="{Binding BackButtonIcon}"/>
+                    Source="chevronleft.png"/>
             </Frame>
             <Frame
                 x:Name="ToolbarItemFrame"

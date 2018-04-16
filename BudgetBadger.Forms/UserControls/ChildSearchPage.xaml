@@ -61,8 +61,7 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="Fuchsia"
-                    Source="{Binding BackButtonIcon}"/>
+                    Source="chevronleft.png"/>
             </Frame>
             <Frame
                 x:Name="ToolbarItemFrame"
@@ -131,16 +130,16 @@
                 CornerRadius="0"
                 HasShadow="false"
                 Padding="0"
+                BackgroundColor="Transparent"
                 HorizontalOptions="End"
                 Grid.Row="0"
-                Grid.Column="4"
-                BackgroundColor="Red">
+                Grid.Column="4">
                 <Image
                     HeightRequest="24"
                     WidthRequest="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    BackgroundColor="Blue"/>
+                    Source="searchwhite24.png"/>
             </Frame>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
