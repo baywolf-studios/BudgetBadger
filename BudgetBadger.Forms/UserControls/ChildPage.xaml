@@ -2,9 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.UserControls.ChildPage"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    x:Class="BudgetBadger.Forms.UserControls.RootSearchPage"
     ios:Page.UseSafeArea="true"
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
@@ -18,7 +18,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
             </Grid.ColumnDefinitions>
-            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+            <BoxView
+                BackgroundColor="{StaticResource AppBarColor}" 
+                Grid.Row="0" 
+                Grid.Column="0"
+                Grid.ColumnSpan="3"/>
             <Label
                 x:Name="LabelControl"
                 TextColor="White"
@@ -45,9 +49,27 @@
                 </Label.HorizontalOptions>
             </Label>
             <Frame
-                x:Name="ToolbarItemFrame"
+                x:Name="BackButtonFrame"
                 Grid.Row="0"
                 Grid.Column="0"
+                HasShadow="false"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                BackgroundColor="Transparent">
+                <Image 
+                    x:Name="BackButtonImage"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Fuchsia"
+                    Source="{Binding BackButtonIcon}"/>
+            </Frame>
+            <Frame
+                x:Name="ToolbarItemFrame"
+                Grid.Row="0"
+                Grid.Column="2"
                 HasShadow="false"
                 Padding="0"
                 Margin="0"
@@ -64,63 +86,6 @@
                     HorizontalOptions="Center"
                     BackgroundColor="Red"
                     Source="{Binding ToolbarItemIcon}"/>
-            </Frame>
-                <Frame
-                x:Name="SearchBoxFrame"
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                BackgroundColor="Teal"
-                HasShadow="false"
-                Padding="0"
-                CornerRadius="0"
-                TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}"
-                IsVisible="false">
-                <Frame
-                    x:Name="EntryFrame"
-                    Margin="8"
-                    HasShadow="false"
-                    Padding="0">
-                    <Frame.BackgroundColor>
-                        <Color x:FactoryMethod="FromRgba">
-                          <x:Arguments>
-                            <x:Int32>0</x:Int32>
-                            <x:Int32>0</x:Int32>
-                            <x:Int32>0</x:Int32>                      
-                            <x:Int32>31</x:Int32>
-                          </x:Arguments>
-                        </Color>
-                    </Frame.BackgroundColor>
-                    <Entry
-                        x:Name="EntryControl"
-                        Margin="8,0"
-                        VerticalOptions="Center"
-                        HorizontalOptions="FillAndExpand"
-                        TextColor="White"
-                        FontSize="17"
-                        Text="{Binding SearchText}">
-                        <Entry.Effects>
-                            <effects:BorderlessEntryEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-            </Frame>
-            <Frame
-                x:Name="SearchButtonFrame"
-                WidthRequest="{StaticResource AppBarHeight}"
-                CornerRadius="0"
-                HasShadow="false"
-                Padding="0"
-                HorizontalOptions="End"
-                Grid.Row="0"
-                Grid.Column="2"
-                BackgroundColor="Red">
-                <Image
-                    HeightRequest="24"
-                    WidthRequest="24"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    BackgroundColor="Blue"/>
             </Frame>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
         </Grid>

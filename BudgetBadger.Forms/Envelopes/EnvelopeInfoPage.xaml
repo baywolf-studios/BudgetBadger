@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="{Binding Budget.Envelope.Description}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage">
-	<ContentPage.ToolbarItems>
-        <ToolbarItem Name="Edit" Text="Edit" Command="{Binding EditCommand}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+<uc:ChildSearchPage
+    Title="{Binding Budget.Envelope.Description}"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
+    ToolbarItemText="Edit"
+    ToolbarItemCommand="{Binding EditCommand}"
+    SearchCommand="{Binding SearchCommand}">
+    <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
@@ -39,5 +45,5 @@
             </ListView>
             <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

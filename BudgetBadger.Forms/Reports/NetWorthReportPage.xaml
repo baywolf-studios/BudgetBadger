@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" x:Class="BudgetBadger.Forms.Reports.NetWorthReportPage">
-    <ContentPage.Content>
+<uc:ChildPage 
+    Title="Net Worth Report"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Reports.NetWorthReportPage">
+    <uc:ChildPage.BodyContent>
         <Grid Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -11,9 +18,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <control:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            <uc:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
                 <microcharts:ChartView x:Name="networth" Chart="{Binding NetWorthChart}"/>
-            </control:BusyIndicator>
+            </uc:BusyIndicator>
             <Switch IsToggled="{Binding DateRangeFilter}" Grid.Row="1" Grid.Column="1">
                 <Switch.Behaviors>
                     <b:EventToCommandBehavior EventName="Toggled" Command="{Binding RefreshCommand}" />
@@ -31,5 +38,5 @@
                 </DatePicker.Behaviors>
             </DatePicker>
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>

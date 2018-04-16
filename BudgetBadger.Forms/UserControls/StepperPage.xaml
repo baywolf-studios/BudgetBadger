@@ -129,7 +129,6 @@
                         VerticalOptions="Center"
                         HorizontalOptions="FillAndExpand"
                         TextColor="White"
-                        HeightRequest="{StaticResource AppBarHeight}"
                         FontSize="17"
                         Text="{Binding SearchText}">
                         <Entry.Effects>

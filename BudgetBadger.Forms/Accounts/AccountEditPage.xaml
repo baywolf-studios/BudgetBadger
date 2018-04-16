@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Edit Account" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Accounts.AccountEditPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
-    <ContentPage.Triggers>
-        <DataTrigger TargetType="ContentPage" Binding="{Binding Account.IsNew}" Value="True">
+<uc:ChildPage
+    Title="Edit Account"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Accounts.AccountEditPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    ToolbarItemText="Save"
+    ToolbarItemCommand="{Binding SaveCommand}">
+    <uc:ChildPage.Triggers>
+        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Account.IsNew}" Value="True">
             <Setter Property="Title" Value="New Account" />
         </DataTrigger>
-    </ContentPage.Triggers>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+    </uc:ChildPage.Triggers>
+    <uc:ChildPage.BodyContent>
+        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ScrollView Orientation="Vertical">
                 
                 <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
@@ -25,15 +29,15 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <control:TextEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Name" Text="{Binding Account.Description}" />
+                    <uc:TextEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Name" Text="{Binding Account.Description}" />
                     <Label Grid.Row="1" Grid.Column="0" Text="On Budget"/>
                     <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding Account.OnBudget}"  IsEnabled="{Binding Account.IsNew}"/>
-                    <control:CalculatorEntry Grid.Row="2" Grid.ColumnSpan="2" Prefix="$" IsEnabled="{Binding Account.IsNew}" Label="Balance" Number="{Binding Account.Balance}" />
-                    <control:DropdownSelector Label="Type" Grid.Row="3" Grid.ColumnSpan="2" ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
-                    <control:MultilineTextEntry Grid.Row="4" Grid.ColumnSpan="2" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
+                    <uc:CalculatorEntry Grid.Row="2" Grid.ColumnSpan="2" Prefix="$" IsEnabled="{Binding Account.IsNew}" Label="Balance" Number="{Binding Account.Balance}" />
+                    <uc:DropdownSelector Label="Type" Grid.Row="3" Grid.ColumnSpan="2" ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
+                    <uc:MultilineTextEntry Grid.Row="4" Grid.ColumnSpan="2" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
                     <Button Grid.Row="5" Grid.ColumnSpan="2" IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
                 </Grid>
             </ScrollView>
-        </control:BusyIndicator>
-    </ContentPage.Content>
-</ContentPage>
+        </uc:BusyIndicator>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>

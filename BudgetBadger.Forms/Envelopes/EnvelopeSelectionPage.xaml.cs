@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public partial class EnvelopeSelectionPage : ContentPage
+    public partial class EnvelopeSelectionPage : ChildSearchPage
     {
         public EnvelopeSelectionPage()
         {

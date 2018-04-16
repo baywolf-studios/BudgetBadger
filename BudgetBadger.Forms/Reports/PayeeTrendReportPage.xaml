@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls" xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Reports.PayeeTrendReportPage">
-    <ContentPage.Content>
+<uc:ChildPage
+    Title="Payee Trend Report"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Reports.PayeeTrendReportPage">
+    <uc:ChildPage.BodyContent>
         <Grid Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -12,9 +19,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <control:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            <uc:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
                 <microcharts:ChartView x:Name="payeeTrend" Chart="{Binding PayeeChart}"/>
-            </control:BusyIndicator>
+            </uc:BusyIndicator>
             <Label Grid.Row="1" Grid.Column="0" Text="Payee:"/>
             <Picker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Payees}" SelectedItem="{Binding SelectedPayee}" ItemDisplayBinding="{Binding Description}">
                 <Picker.Behaviors>
@@ -38,5 +45,5 @@
                 </DatePicker.Behaviors>
             </DatePicker>
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>
