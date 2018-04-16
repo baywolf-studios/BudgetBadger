@@ -80,6 +80,7 @@
                 <x:Int32>31</x:Int32>
               </x:Arguments>
             </Color>
+
 <!--            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="Blue"/>
                 <Setter Property="BarTextColor" Value="White"/>
