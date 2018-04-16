@@ -51,13 +51,6 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
-        string _searchText;
-        public string SearchText
-        {
-            get => _searchText;
-            set => SetProperty(ref _searchText, value);
-        }
-
         public EnvelopeSelectionPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
             _envelopeLogic = envelopeLogic;
@@ -70,7 +63,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -138,9 +131,9 @@ namespace BudgetBadger.Forms.Envelopes
         }
 
 
-        public void ExecuteSearchCommand()
+        public void ExecuteSearchCommand(string searchText)
         {
-            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, SearchText));
+            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, searchText));
         }
     }
 }
