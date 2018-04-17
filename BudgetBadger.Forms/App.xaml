@@ -80,8 +80,16 @@
                 <x:Int32>31</x:Int32>
               </x:Arguments>
             </Color>
-            <FileImageSource x:Key="BackIcon" File="chevronleft.png"/>
+            <OnPlatform x:Key="BackIcon" x:TypeArguments="ImageSource">
+                <On Platform="iOS"><FileImageSource File="chevronleftwhite24.png"/></On>
+                <On Platform="Android"><FileImageSource File="arrowleftwhite24.png"/></On>
+<!--                <On Platform="Windows">Segoe UI</On>
+                <On Platform="macOS">SFCompactDisplay-Regular</On>-->
+            </OnPlatform>
+
             <FileImageSource x:Key="SearchIcon" File="searchwhite24.png"/>
+            <FileImageSource x:Key="EditIcon" File="editwhite24.png"/>
+            <FileImageSource x:Key="EnvelopeIcon" File="envelopewhite30.png"/>
 <!--            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="Blue"/>
                 <Setter Property="BarTextColor" Value="White"/>

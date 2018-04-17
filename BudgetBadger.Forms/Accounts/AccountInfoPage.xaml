@@ -8,6 +8,7 @@
     x:Class="BudgetBadger.Forms.Accounts.AccountInfoPage"
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding EditCommand}"
+    ToolbarItemIcon="{StaticResource EditIcon}"
     ToolbarItemText="Edit">
     <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">

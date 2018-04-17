@@ -63,7 +63,7 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    Source="chevronleft.png"/>
+                    Source="{StaticResource BackIcon}"/>
             </Frame>
             <Frame
                 x:Name="ToolbarItemFrame"

@@ -7,7 +7,8 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.Payees.PayeeInfoPage"
     ToolbarItemText="Edit"
-    ToolbarItemCommand="{Binding EditCommand}">
+    ToolbarItemCommand="{Binding EditCommand}"
+    ToolbarItemIcon="{StaticResource EditIcon}">
     <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">

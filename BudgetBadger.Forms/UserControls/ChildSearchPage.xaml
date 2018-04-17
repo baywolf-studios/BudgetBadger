@@ -81,7 +81,6 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="Red"
                     Source="{Binding ToolbarItemIcon}"/>
             </Frame>
             <Frame
