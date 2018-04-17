@@ -161,22 +161,32 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\searchwhite40.png" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\searchwhite60.png" />
-    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\chevronleft24.png" />
-    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\chevronleft48.png" />
-    <ImageAsset Include="Assets.xcassets\chevronleft.png.imageset\chevronleft72.png" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\searchwhite24.png" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\searchwhite48.png" />
     <ImageAsset Include="Assets.xcassets\searchwhite24.png.imageset\searchwhite72.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleftwhite24.png.imageset\chevronleft24.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleftwhite24.png.imageset\chevronleft48.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleftwhite24.png.imageset\chevronleft72.png" />
+    <ImageAsset Include="Assets.xcassets\chevronleftwhite24.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\envelopewhite30.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\envelopewhite30.png.imageset\envelopewhite30.png" />
+    <ImageAsset Include="Assets.xcassets\envelopewhite30.png.imageset\envelopewhite60.png" />
+    <ImageAsset Include="Assets.xcassets\envelopewhite30.png.imageset\envelopewhite90.png" />
+    <ImageAsset Include="Assets.xcassets\editwhite24.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\editwhite24.png.imageset\editwhite24.png" />
+    <ImageAsset Include="Assets.xcassets\editwhite24.png.imageset\editwhite48.png" />
+    <ImageAsset Include="Assets.xcassets\editwhite24.png.imageset\editwhite72.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Effects\" />
-    <Folder Include="Assets.xcassets\chevronleft.png.imageset\" />
     <Folder Include="Assets.xcassets\searchwhite24.png.imageset\" />
+    <Folder Include="Assets.xcassets\chevronleftwhite24.png.imageset\" />
+    <Folder Include="Assets.xcassets\envelopewhite30.png.imageset\" />
+    <Folder Include="Assets.xcassets\editwhite24.png.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
