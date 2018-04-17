@@ -215,6 +215,25 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\searchwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\searchwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\searchwhite24.png" />
+    <AndroidResource Include="Resources\drawable\chevronleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\chevronleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\chevronleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable\envelopewhite30.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\envelopewhite30.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\envelopewhite30.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\envelopewhite30.png" />
+    <AndroidResource Include="Resources\drawable\arrowleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\arrowleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\searchwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\arrowleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\arrowleftwhite24.png" />
+    <AndroidResource Include="Resources\drawable\editwhite24.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\editwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\editwhite24.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\editwhite24.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
