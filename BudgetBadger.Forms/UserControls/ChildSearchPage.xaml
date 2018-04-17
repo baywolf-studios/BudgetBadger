@@ -61,7 +61,7 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    Source="chevronleft.png"/>
+                    Source="{StaticResource BackIcon}"/>
             </Frame>
             <Frame
                 x:Name="ToolbarItemFrame"
@@ -139,7 +139,7 @@
                     WidthRequest="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Source="searchwhite24.png"/>
+                    Source="{StaticResource SearchIcon}"/>
             </Frame>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
