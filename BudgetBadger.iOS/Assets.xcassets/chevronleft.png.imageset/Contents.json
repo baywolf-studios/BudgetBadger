@@ -4,15 +4,17 @@
       "idiom": "universal"
     },
     {
-      "filename": "chevron-left.png",
+      "filename": "chevronleft24.png",
       "scale": "1x",
       "idiom": "universal"
     },
     {
+      "filename": "chevronleft48.png",
       "scale": "2x",
       "idiom": "universal"
     },
     {
+      "filename": "chevronleft72.png",
       "scale": "3x",
       "idiom": "universal"
     },

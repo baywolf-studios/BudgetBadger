@@ -80,7 +80,8 @@
                 <x:Int32>31</x:Int32>
               </x:Arguments>
             </Color>
-
+            <FileImageSource x:Key="BackIcon" File="chevronleft.png"/>
+            <FileImageSource x:Key="SearchIcon" File="searchwhite24.png"/>
 <!--            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="Blue"/>
                 <Setter Property="BarTextColor" Value="White"/>
