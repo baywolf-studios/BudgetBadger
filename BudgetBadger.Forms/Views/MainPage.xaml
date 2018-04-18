@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TabbedPage Title="Test" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:BudgetBadger.Forms.Views" xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings" xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions" xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes" xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts" xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees" xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Views.MainPage">
     <TabbedPage.Children>
-        <NavigationPage Title="Envelopes" Icon="{StaticResource EnvelopeIcon}">
+        <NavigationPage Title="Envelopes" Icon="{StaticResource EnvelopesTabIcon}">
             <x:Arguments>
                 <envelopes:EnvelopesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Accounts">
+        <NavigationPage Title="Accounts" Icon="{StaticResource AccountsTabIcon}">
             <x:Arguments>
                 <accounts:AccountsPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Payees">
+        <NavigationPage Title="Payees" Icon="{StaticResource PayeesTabIcon}">
             <x:Arguments>
                 <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Reports">
+        <NavigationPage Title="Reports" Icon="{StaticResource ReportsTabIcon}">
             <x:Arguments>
                 <reports:ReportsPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Settings">
+        <NavigationPage Title="Settings" Icon="{StaticResource SettingsTabIcon}">
             <x:Arguments>
                 <settings:SettingsPage />
             </x:Arguments>

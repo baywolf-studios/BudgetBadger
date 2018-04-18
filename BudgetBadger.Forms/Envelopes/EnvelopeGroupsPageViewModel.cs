@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms.Envelopes
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
         }
 
         public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }

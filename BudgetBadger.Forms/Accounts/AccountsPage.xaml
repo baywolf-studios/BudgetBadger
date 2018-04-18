@@ -8,7 +8,8 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding AddCommand}"
-    ToolbarItemText="New">
+    ToolbarItemText="New"
+    ToolbarItemIcon="{StaticResource NewIcon}">
     <uc:RootSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView
@@ -31,10 +32,10 @@
                             <StackLayout BackgroundColor="White">
                             <Label
                                 HeightRequest="32"
-                                FontSize="14"
+                                FontSize="{StaticResource ListGroupHeaderFontSize}"
                                 FontFamily="{StaticResource FontFamilyMedium}"
                                 VerticalTextAlignment="Center"
-                                TextColor="{StaticResource ListViewGroupTextColor}"
+                                TextColor="{StaticResource SecondaryTextColor}"
                                 Text="{Binding Key}"
                                 Margin="16, 8"/>
                                 </StackLayout>
@@ -54,7 +55,7 @@
                                     Grid.Column="0"
                                     Text="{Binding Description}"
                                     HeightRequest="32"
-                                    FontSize="16"
+                                    FontSize="{StaticResource ListItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
@@ -63,7 +64,7 @@
                                     Grid.Column="1" 
                                     Text="{Binding Balance, StringFormat='{0:C}'}"
                                     HeightRequest="32"
-                                    FontSize="16"
+                                    FontSize="{StaticResource ListItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     HorizontalTextAlignment="End"

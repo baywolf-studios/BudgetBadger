@@ -6,6 +6,7 @@
     x:Class="BudgetBadger.Forms.Payees.PayeeEditPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ToolbarItemText="Save"
+    ToolbarItemIcon="{StaticResource SaveIcon}"
     ToolbarItemCommand="{Binding SaveCommand}">
     <uc:ChildPage.Triggers>
         <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Payee.IsNew}" Value="True">
