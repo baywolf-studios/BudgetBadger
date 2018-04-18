@@ -15,7 +15,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Account>>> GetAccountsAsync();
         Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync();
 
-        Task<Result<IReadOnlyList<AccountType>>> GetAccountTypesAsync();
+        IReadOnlyList<string> GetAccountTypes();
 
         IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText);
         IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts);

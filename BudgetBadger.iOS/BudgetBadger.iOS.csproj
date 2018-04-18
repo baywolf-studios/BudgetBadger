@@ -209,17 +209,25 @@
     <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-24-2.png" />
     <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-48-2.png" />
     <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-72-2.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-expand-arrow-24-2.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-expand-arrow-48-2.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-expand-arrow-72.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorgrayicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorgrayicon.png.imageset\icons8-forward-24.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorgrayicon.png.imageset\icons8-forward-48.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorgrayicon.png.imageset\icons8-forward-72.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-sort-down-24.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-sort-down-48.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\icons8-sort-down-72.png" />
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-24.png" />
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-48.png" />
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-72.png" />
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-24.png" />
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-48.png" />
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-72.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-24-2.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-48-2.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-72.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-24.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-48.png" />
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-72.png" />
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-24.png" />
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-48.png" />
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-72.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -240,8 +248,10 @@
     <Folder Include="Assets.xcassets\backwhitetoolbaricon.png.imageset\" />
     <Folder Include="Assets.xcassets\previouswhitetoolbaricon.png.imageset\" />
     <Folder Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\" />
-    <Folder Include="Assets.xcassets\dropdownselectorgrayicon.png.imageset\" />
-    <Folder Include="Assets.xcassets\buttonselectorgrayicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\buttonselectorblackicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\checkedblackicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\uncheckedblackicon.png.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

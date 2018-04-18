@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout HeightRequest="48" VerticalOptions="Start" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.TextEntry">
+<AbsoluteLayout
+    HeightRequest="48"
+    VerticalOptions="Start"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.UserControls.TextEntry">
     <BoxView
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -11,16 +17,18 @@
     <Label
         x:Name="PrefixControl"
         Text="{Binding Prefix}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
-        TextColor="{StaticResource SecondaryTextColor}"
+        TextColor="{StaticResource IdleColor}"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
         InputTransparent="true"/>
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
@@ -28,6 +36,7 @@
     <Entry
         x:Name="TextControl"
         Text="{Binding Text}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         IsPassword="{Binding IsPassword, Mode=TwoWay}"
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"
@@ -42,14 +51,14 @@
     </Entry>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"

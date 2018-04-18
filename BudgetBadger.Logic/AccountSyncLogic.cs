@@ -25,17 +25,6 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncAccountTypes(_remoteAccountDataAccess, _localAccountDataAcces);
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-                return result;
-            }
-
-            try
-            {
                 await SyncAccounts(_remoteAccountDataAccess, _localAccountDataAcces);
             }
             catch (Exception ex)
@@ -52,17 +41,6 @@ namespace BudgetBadger.Logic
         public async Task<Result> PushAsync()
         {
             var result = new Result();
-
-            try
-            {
-                await SyncAccountTypes(_localAccountDataAcces, _remoteAccountDataAccess);
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-                return result;
-            }
 
             try
             {
@@ -91,34 +69,6 @@ namespace BudgetBadger.Logic
             }
 
             return result;
-        }
-
-        async Task SyncAccountTypes(IAccountDataAccess sourceAccountDataAccess, IAccountDataAccess targetAccountDataAccess)
-        {
-            var sourceAccountTypes = await sourceAccountDataAccess.ReadAccountTypesAsync();
-            var targetAccountTypes = await targetAccountDataAccess.ReadAccountTypesAsync();
-
-            var sourceAccountTypesDictionary = sourceAccountTypes.ToDictionary(a => a.Id, a2 => a2);
-            var targetAccountTypesDictionary = targetAccountTypes.ToDictionary(a => a.Id, a2 => a2);
-
-            var accountTypesToAdd = sourceAccountTypesDictionary.Keys.Except(targetAccountTypesDictionary.Keys);
-            foreach (var accountTypeId in accountTypesToAdd)
-            {
-                var accountTypeToAdd = sourceAccountTypesDictionary[accountTypeId];
-                await targetAccountDataAccess.CreateAccountTypeAsync(accountTypeToAdd);
-            }
-
-            var accountTypesToUpdate = sourceAccountTypesDictionary.Keys.Intersect(targetAccountTypesDictionary.Keys);
-            foreach (var accountTypeId in accountTypesToUpdate)
-            {
-                var sourceAccountType = sourceAccountTypesDictionary[accountTypeId];
-                var targetAccountType = targetAccountTypesDictionary[accountTypeId];
-
-                if (sourceAccountType.ModifiedDateTime > targetAccountType.ModifiedDateTime)
-                {
-                    await targetAccountDataAccess.UpdateAccountTypeAsync(sourceAccountType);
-                }
-            }
         }
 
         async Task SyncAccounts(IAccountDataAccess sourceAccountDataAccess, IAccountDataAccess targetAccountDataAccess)

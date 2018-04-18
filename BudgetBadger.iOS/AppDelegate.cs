@@ -22,6 +22,8 @@ namespace BudgetBadger.iOS
 
             SimpleAuth.NativeSafariAuthenticator.Activate();
 
+            UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(54, 120, 175);
+
             return base.FinishedLaunching(app, options);
         }
 

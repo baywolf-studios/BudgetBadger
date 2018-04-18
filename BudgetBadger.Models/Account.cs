@@ -22,13 +22,6 @@ namespace BudgetBadger.Models
             set => SetProperty(ref description, value);
         }
 
-        AccountType type;
-        public AccountType Type
-        {
-            get => type;
-            set => SetProperty(ref type, value);
-        }
-
         string notes;
         public string Notes
         {
@@ -36,11 +29,27 @@ namespace BudgetBadger.Models
             set => SetProperty(ref notes, value);
         }
 
+        public string Type
+        {
+            get => OnBudget ? "Budget" : "Reporting";
+            set 
+            {
+                if (value == "Budget")
+                {
+                    OnBudget = true;
+                }
+                else
+                {
+                    OnBudget = false;
+                }
+            }
+        }
+
         bool onBudget;
         public bool OnBudget
         {
             get => onBudget;
-            set { SetProperty(ref onBudget, value); OnPropertyChanged(nameof(OffBudget)); }
+            set { SetProperty(ref onBudget, value); OnPropertyChanged(nameof(OffBudget)); OnPropertyChanged(nameof(Type)); }
         }
 
         public bool OffBudget { get => !OnBudget; }
@@ -92,14 +101,12 @@ namespace BudgetBadger.Models
         public Account()
         {
             Id = Guid.Empty;
-            Type = new AccountType();
             OnBudget = true;
         }
 
         public Account DeepCopy()
         {
             Account account = (Account)this.MemberwiseClone();
-            account.Type = this.Type?.DeepCopy();
             return account;
         }
 
@@ -115,15 +122,6 @@ namespace BudgetBadger.Models
             if (string.IsNullOrEmpty(Description))
             {
                 errors.Add("Account description is required");
-            }
-
-            if (Type == null)
-            {
-                errors.Add("Account type is required");
-            }
-            else if (!Type.IsValid())
-            {
-                errors.Add("A valid account type is required");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };

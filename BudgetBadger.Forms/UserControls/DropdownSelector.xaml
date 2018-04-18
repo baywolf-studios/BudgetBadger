@@ -17,6 +17,7 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
@@ -42,7 +43,8 @@
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
         Source="{StaticResource DropDownSelectorIcon}"
-        InputTransparent="true"/>
+        InputTransparent="true"
+        Opacity="{StaticResource IdleOpacity}"/>
     <BoxView
         x:Name="BottomBorderControl"
         BackgroundColor="{StaticResource IdleColor}"

@@ -11,13 +11,125 @@
     ToolbarItemIcon="{StaticResource EditIcon}">
     <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
-            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding DisplayName}">
+            <ListView
+                BackgroundColor="White"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding GroupedTransactions}"
+                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                IsGroupingEnabled="true"
+                GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.Header>
+                    <StackLayout Spacing="0">
+                    <Grid HeightRequest="48"
+                          Margin="32, 0, 16, 0"
+                          RowSpacing="0"
+                          ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Account"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource PrimaryColor}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="1" 
+                                    Text="Envelope"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource PrimaryColor}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Row="0"
+                                    Grid.Column="2" 
+                                    Text="Amount"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="End"
+                                    TextColor="{StaticResource PrimaryColor}"/>
+                            </Grid>
+                            <BoxView
+                                    HeightRequest="1"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    Margin="32,0,0,0"
+                                    BackgroundColor="{StaticResource DividerColor}"/>
+                        </StackLayout>
+                </ListView.Header>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="48">
+                            <StackLayout BackgroundColor="White">
+                            <Label
+                                HeightRequest="32"
+                                FontSize="{StaticResource DataGridGroupHeaderFontSize}"
+                                FontFamily="{StaticResource FontFamilyMedium}"
+                                VerticalTextAlignment="Center"
+                                TextColor="{StaticResource SecondaryTextColor}"
+                                Text="{Binding Key}"
+                                Margin="16, 8"/>
+                                </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Amount, StringFormat='{0:c}'}" Detail="{Binding Payee.Description}" />
+                        <ViewCell Height="48">
+                            <Grid Margin="32,0,16,0" RowSpacing="0" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0, 8"
+                                    Grid.Column="0"
+                                    Text="{Binding Account.Description}"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Column="1" 
+                                    Text="{Binding Envelope.Description}"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Margin="0, 8"
+                                    Grid.Column="2" 
+                                    Text="{Binding Amount, StringFormat='{0:c}'}"
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="End"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                            </Grid>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

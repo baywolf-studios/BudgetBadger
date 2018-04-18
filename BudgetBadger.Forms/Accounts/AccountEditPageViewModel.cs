@@ -43,8 +43,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IEnumerable<AccountType> _accountTypes;
-        public IEnumerable<AccountType> AccountTypes
+        string _selectedAccountType;
+        public string SelectedAccountType
+        {
+            get => _selectedAccountType;
+            set { SetProperty(ref _selectedAccountType, value); Account.OnBudget = (value == "Budget"); }
+        }
+
+        IEnumerable<string> _accountTypes;
+        public IEnumerable<string> AccountTypes
         {
             get => _accountTypes;
             set => SetProperty(ref _accountTypes, value);
@@ -63,15 +70,7 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _syncService = syncService;
 
-            var accountTypes = _accountLogic.GetAccountTypesAsync().Result;
-            if (accountTypes.Success)
-            {
-                AccountTypes = accountTypes.Data;
-            }
-            else
-            {
-                AccountTypes = new List<AccountType>();
-            }
+            AccountTypes = _accountLogic.GetAccountTypes();
 
             Account = new Account();
 
@@ -85,7 +84,7 @@ namespace BudgetBadger.Forms.Accounts
             if (account != null)
             {
                 Account = account.DeepCopy();
-                Account.Type = AccountTypes.FirstOrDefault(t => t.Id == Account.Type.Id);
+                SelectedAccountType = AccountTypes.FirstOrDefault(t => t == Account.Type);
             }
         }
 
