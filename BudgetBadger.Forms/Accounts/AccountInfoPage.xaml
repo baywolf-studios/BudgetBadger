@@ -47,30 +47,30 @@
                                     Grid.Column="0"
                                     Text="Envelope"
                                     HeightRequest="32"
-                                    FontSize="12"
-                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource Primary54}"/>
+                                    TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
                                     Grid.Row="0"
                                     Grid.Column="1" 
                                     Text="Payee"
                                     HeightRequest="32"
-                                    FontSize="12"
-                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource Primary54}"/>
+                                    TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
                                     Grid.Row="0"
                                     Grid.Column="2" 
                                     Text="Amount"
                                     HeightRequest="32"
-                                    FontSize="12"
-                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource Primary54}"/>
+                                    TextColor="{StaticResource PrimaryColor}"/>
                             </Grid>
                             <BoxView
                                     HeightRequest="1"
@@ -86,10 +86,10 @@
                             <StackLayout BackgroundColor="White">
                             <Label
                                 HeightRequest="32"
-                                FontSize="12"
+                                FontSize="{StaticResource DataGridGroupHeaderFontSize}"
                                 FontFamily="{StaticResource FontFamilyMedium}"
                                 VerticalTextAlignment="Center"
-                                TextColor="{StaticResource ListViewGroupTextColor}"
+                                TextColor="{StaticResource SecondaryTextColor}"
                                 Text="{Binding Key}"
                                 Margin="16, 8"/>
                                 </StackLayout>
@@ -110,7 +110,7 @@
                                     Grid.Column="0"
                                     Text="{Binding Envelope.Description}"
                                     HeightRequest="32"
-                                    FontSize="13"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
@@ -119,7 +119,7 @@
                                     Grid.Column="1" 
                                     Text="{Binding Payee.Description}"
                                     HeightRequest="32"
-                                    FontSize="13"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
@@ -128,7 +128,7 @@
                                     Grid.Column="2" 
                                     Text="{Binding Amount, StringFormat='{0:c}'}"
                                     HeightRequest="32"
-                                    FontSize="13"
+                                    FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     HorizontalTextAlignment="End"

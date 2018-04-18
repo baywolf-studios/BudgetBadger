@@ -11,6 +11,31 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
+        Color _disabledColor
+        {
+            get => (Color)Application.Current.Resources["DisabledColor"];
+        }
+
+        Color _errorColor
+        {
+            get => (Color)Application.Current.Resources["ErrorColor"];
+        }
+
+        Color _idleColor
+        {
+            get => (Color)Application.Current.Resources["IdleColor"];
+        }
+
+        Color _focusedColor
+        {
+            get => (Color)Application.Current.Resources["PrimaryColor"];
+        }
+
+        Color _textColor
+        {
+            get => (Color)Application.Current.Resources["PrimaryTextColor"];
+        }
+
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(DateSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -23,76 +48,6 @@ namespace BudgetBadger.Forms.UserControls
         {
             get => (DateTime)GetValue(DateProperty);
             set => SetValue(DateProperty, value);
-        }
-
-        public static BindableProperty BottomBorderIdleColorProperty = BindableProperty.Create(nameof(BottomBorderIdleColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
-        public Color BottomBorderIdleColor
-        {
-            get => (Color)GetValue(BottomBorderIdleColorProperty);
-            set => SetValue(BottomBorderIdleColorProperty, value);
-        }
-
-        public static BindableProperty BottomBorderFocusedColorProperty = BindableProperty.Create(nameof(BottomBorderFocusedColor), typeof(Color), typeof(DateSelector), defaultValue: Color.Accent);
-        public Color BottomBorderFocusedColor
-        {
-            get => (Color)GetValue(BottomBorderFocusedColorProperty);
-            set => SetValue(BottomBorderFocusedColorProperty, value);
-        }
-
-        public static BindableProperty BottomBorderDisabledColorProperty = BindableProperty.Create(nameof(BottomBorderDisabledColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
-        public Color BottomBorderDisabledColor
-        {
-            get => (Color)GetValue(BottomBorderDisabledColorProperty);
-            set => SetValue(BottomBorderDisabledColorProperty, value);
-        }
-
-        public static BindableProperty LabelIdleColorProperty = BindableProperty.Create(nameof(LabelIdleColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.54));
-        public Color LabelIdleColor
-        {
-            get => (Color)GetValue(LabelIdleColorProperty);
-            set => SetValue(LabelIdleColorProperty, value);
-        }
-
-        public static BindableProperty LabelFocusedColorProperty = BindableProperty.Create(nameof(LabelFocusedColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(Color.Accent.R, Color.Accent.G, Color.Accent.B, 0.87));
-        public Color LabelFocusedColor
-        {
-            get => (Color)GetValue(LabelFocusedColorProperty);
-            set => SetValue(LabelFocusedColorProperty, value);
-        }
-
-        public static BindableProperty LabelDisabledColorProperty = BindableProperty.Create(nameof(LabelDisabledColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
-        public Color LabelDisabledColor
-        {
-            get => (Color)GetValue(LabelDisabledColorProperty);
-            set => SetValue(LabelDisabledColorProperty, value);
-        }
-
-        public static BindableProperty DateIdleColorProperty = BindableProperty.Create(nameof(DateIdleColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
-        public Color DateIdleColor
-        {
-            get => (Color)GetValue(DateIdleColorProperty);
-            set => SetValue(DateIdleColorProperty, value);
-        }
-
-        public static BindableProperty DateFocusedColorProperty = BindableProperty.Create(nameof(DateFocusedColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
-        public Color DateFocusedColor
-        {
-            get => (Color)GetValue(DateFocusedColorProperty);
-            set => SetValue(DateFocusedColorProperty, value);
-        }
-
-        public static BindableProperty DateDisabledColorProperty = BindableProperty.Create(nameof(DateDisabledColor), typeof(Color), typeof(DateSelector), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
-        public Color DateDisabledColor
-        {
-            get => (Color)GetValue(DateDisabledColorProperty);
-            set => SetValue(DateDisabledColorProperty, value);
-        }
-
-        public static BindableProperty ErrorColorProperty = BindableProperty.Create(nameof(ErrorColor), typeof(Color), typeof(DateSelector), defaultValue: Color.Red);
-        public Color ErrorColor
-        {
-            get => (Color)GetValue(ErrorColorProperty);
-            set => SetValue(ErrorColorProperty, value);
         }
 
         public DateSelector()
@@ -141,17 +96,17 @@ namespace BudgetBadger.Forms.UserControls
             var tasks = new List<Task>();
 
             // color the bottom border
-            var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
+            var bottomBorderColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // color the text
-            var textColor = IsEnabled ? DateIdleColor : DateDisabledColor;
+            var textColor = IsEnabled ? _textColor : _disabledColor;
             tasks.Add(DateControl.ColorTo(DateControl.TextColor, textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // color the label
-            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
@@ -194,9 +149,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, _focusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, _focusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // show the thick bottom border
             tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
@@ -204,9 +159,9 @@ namespace BudgetBadger.Forms.UserControls
             // hide the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _focusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(DateControl.ColorTo(DateControl.TextColor, DateFocusedColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(DateControl.ColorTo(DateControl.TextColor, _textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }

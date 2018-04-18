@@ -12,7 +12,7 @@
         x:Name="PrefixControl"
         Text="{Binding Prefix}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource SecondaryTextColor}"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
         InputTransparent="true"/>
@@ -31,7 +31,7 @@
         IsPassword="{Binding IsPassword, Mode=TwoWay}"
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"

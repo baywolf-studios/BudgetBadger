@@ -9,6 +9,10 @@
         <ResourceDictionary>
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListItemFontSize">16</x:Double>
+            <x:Double x:Key="DataGridColumnHeaderFontSize">12</x:Double>
+            <x:Double x:Key="DataGridItemFontSize">13</x:Double>
+            <x:Double x:Key="DataGridGroupHeaderFontSize">13</x:Double>
+            
             <OnPlatform x:Key="FontFamilyRegular" x:TypeArguments="x:String">
                 <On Platform="iOS">.SFUIText-Regular</On>
                 <On Platform="Android">sans-serif</On>
@@ -21,83 +25,72 @@
                 <On Platform="Windows">Segoe UI Medium</On>
                 <On Platform="macOS">SFCompactDisplay-Medium</On>
             </OnPlatform>
+            <OnPlatform x:Key="FontFamilySemiBold" x:TypeArguments="x:String">
+                <On Platform="iOS">.SFUIText-SemiBold</On>
+                <On Platform="Android">sans-serif-semibold</On>
+                <On Platform="Windows">Segoe UI SemiBold</On>
+                <On Platform="macOS">SFCompactDisplay-SemiBold</On>
+            </OnPlatform>
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
                 <On Platform="Android">56</On>
                 <On Platform="Windows">64</On>
                 <On Platform="macOS">64</On>
             </OnPlatform>
-            <Color x:Key="AppBarColor">Teal</Color>
-            <Color x:Key="PrimaryTextColor" x:FactoryMethod="FromRgba">
+            <Color x:Key="AppBarColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#3678AF</x:String>
+                </x:Arguments>
+            </Color>
+            <Color x:Key="PrimaryTextColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#191919</x:String>
+                </x:Arguments>
+            </Color>
+            <Color x:Key="SecondaryTextColor" x:FactoryMethod="FromHex">
               <x:Arguments>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>                      
-                <x:Int32>222</x:Int32>
+                <x:String>#737373</x:String>
               </x:Arguments>
             </Color>
-            <Color x:Key="SecondaryTextColor" x:FactoryMethod="FromRgba">
-              <x:Arguments>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>                      
-                <x:Int32>138</x:Int32>
-              </x:Arguments>
+            <Color x:Key="PrimaryColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#3678AF</x:String>
+                </x:Arguments>
             </Color>
-            <Color x:Key="Primary87" x:FactoryMethod="FromRgba">
-              <x:Arguments>
-                <x:Int32>21</x:Int32>
-                <x:Int32>101</x:Int32>
-                <x:Int32>192</x:Int32>                      
-                <x:Int32>222</x:Int32>
-              </x:Arguments>
+            <Color x:Key="IdleColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#737373</x:String>
+                </x:Arguments>
             </Color>
-            <Color x:Key="Primary54" x:FactoryMethod="FromRgba">
-              <x:Arguments>
-                <x:Int32>21</x:Int32>
-                <x:Int32>101</x:Int32>
-                <x:Int32>192</x:Int32>                      
-                <x:Int32>138</x:Int32>
-              </x:Arguments>
+            <Color x:Key="DisabledColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#999999</x:String>
+                </x:Arguments>
             </Color>
-            <Color x:Key="ListViewGroupTextColor" x:FactoryMethod="FromRgba">
-              <x:Arguments>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>                      
-                <x:Int32>138</x:Int32>
-              </x:Arguments>
+            <Color x:Key="DividerColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#E0E0E0</x:String>
+                </x:Arguments>
             </Color>
-            <Color x:Key="DividerColor" x:FactoryMethod="FromRgba">
-              <x:Arguments>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>
-                <x:Int32>0</x:Int32>                      
-                <x:Int32>31</x:Int32>
-              </x:Arguments>
-            </Color>
-            <OnPlatform x:Key="BackIcon" x:TypeArguments="ImageSource">
-                <On Platform="iOS"><FileImageSource File="backwhitetoolbaricon.png"/></On>
-                <On Platform="Android"><FileImageSource File="arrowleftwhite24.png"/></On>
-<!--                <On Platform="Windows">Segoe UI</On>
-                <On Platform="macOS">SFCompactDisplay-Regular</On>-->
-            </OnPlatform>
-
+            <Color x:Key="ErrorColor">Red</Color>
+            
+            <FileImageSource x:Key="BackIcon" File="backwhitetoolbaricon.png"/>
             <FileImageSource x:Key="SearchIcon" File="searchwhitetoolbaricon.png"/>
             <FileImageSource x:Key="EditIcon" File="editwhitetoolbaricon.png"/>
             <FileImageSource x:Key="NewIcon" File="newwhitetoolbaricon.png"/>
             <FileImageSource x:Key="SaveIcon" File="savewhitetoolbaricon.png"/>
             <FileImageSource x:Key="PreviousIcon" File="previouswhitetoolbaricon.png"/>
             <FileImageSource x:Key="NextIcon" File="nextwhitetoolbaricon.png"/>
+
+            <FileImageSource x:Key="DropDownSelectorIcon" File="dropdownselectorgrayicon.png"/>
+            <FileImageSource x:Key="DateSelectorIcon" File="dropdownselectorgrayicon.png"/>
+            <FileImageSource x:Key="ButtonSelectorIcon" File="buttonselectorgrayicon.png"/>
+            
             <FileImageSource x:Key="SettingsTabIcon" File="settingswhitetabicon.png"/>
             <FileImageSource x:Key="AccountsTabIcon" File="accountswhitetabicon.png"/>
             <FileImageSource x:Key="EnvelopesTabIcon" File="envelopeswhitetabicon.png"/>
             <FileImageSource x:Key="PayeesTabIcon" File="payeeswhitetabicon.png"/>
             <FileImageSource x:Key="ReportsTabIcon" File="reportswhitetabicon.png"/>
-<!--            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="Blue"/>
-                <Setter Property="BarTextColor" Value="White"/>
-            </Style>-->
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

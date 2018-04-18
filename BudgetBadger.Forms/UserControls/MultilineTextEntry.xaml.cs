@@ -10,6 +10,31 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
+        Color _disabledColor
+        {
+            get => (Color)Application.Current.Resources["DisabledColor"];
+        }
+
+        Color _errorColor
+        {
+            get => (Color)Application.Current.Resources["ErrorColor"];
+        }
+
+        Color _idleColor
+        {
+            get => (Color)Application.Current.Resources["IdleColor"];
+        }
+
+        Color _focusedColor
+        {
+            get => (Color)Application.Current.Resources["PrimaryColor"];
+        }
+
+        Color _textColor
+        {
+            get => (Color)Application.Current.Resources["PrimaryTextColor"];
+        }
+
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -36,76 +61,6 @@ namespace BudgetBadger.Forms.UserControls
         {
             get => (Keyboard)GetValue(KeyboardProperty);
             set => SetValue(KeyboardProperty, value);
-        }
-
-        public static BindableProperty BottomBorderIdleColorProperty = BindableProperty.Create(nameof(BottomBorderIdleColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
-        public Color BottomBorderIdleColor
-        {
-            get => (Color)GetValue(BottomBorderIdleColorProperty);
-            set => SetValue(BottomBorderIdleColorProperty, value);
-        }
-
-        public static BindableProperty BottomBorderFocusedColorProperty = BindableProperty.Create(nameof(BottomBorderFocusedColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Accent);
-        public Color BottomBorderFocusedColor
-        {
-            get => (Color)GetValue(BottomBorderFocusedColorProperty);
-            set => SetValue(BottomBorderFocusedColorProperty, value);
-        }
-
-        public static BindableProperty BottomBorderDisabledColorProperty = BindableProperty.Create(nameof(BottomBorderDisabledColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.42));
-        public Color BottomBorderDisabledColor
-        {
-            get => (Color)GetValue(BottomBorderDisabledColorProperty);
-            set => SetValue(BottomBorderDisabledColorProperty, value);
-        }
-
-        public static BindableProperty LabelIdleColorProperty = BindableProperty.Create(nameof(LabelIdleColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.54));
-        public Color LabelIdleColor
-        {
-            get => (Color)GetValue(LabelIdleColorProperty);
-            set => SetValue(LabelIdleColorProperty, value);
-        }
-
-        public static BindableProperty LabelFocusedColorProperty = BindableProperty.Create(nameof(LabelFocusedColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(Color.Accent.R, Color.Accent.G, Color.Accent.B, 0.87));
-        public Color LabelFocusedColor
-        {
-            get => (Color)GetValue(LabelFocusedColorProperty);
-            set => SetValue(LabelFocusedColorProperty, value);
-        }
-
-        public static BindableProperty LabelDisabledColorProperty = BindableProperty.Create(nameof(LabelDisabledColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
-        public Color LabelDisabledColor
-        {
-            get => (Color)GetValue(LabelDisabledColorProperty);
-            set => SetValue(LabelDisabledColorProperty, value);
-        }
-
-        public static BindableProperty TextIdleColorProperty = BindableProperty.Create(nameof(TextIdleColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
-        public Color TextIdleColor
-        {
-            get => (Color)GetValue(TextIdleColorProperty);
-            set => SetValue(TextIdleColorProperty, value);
-        }
-
-        public static BindableProperty TextFocusedColorProperty = BindableProperty.Create(nameof(TextFocusedColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.87));
-        public Color TextFocusedColor
-        {
-            get => (Color)GetValue(TextFocusedColorProperty);
-            set => SetValue(TextFocusedColorProperty, value);
-        }
-
-        public static BindableProperty TextDisabledColorProperty = BindableProperty.Create(nameof(TextDisabledColor), typeof(Color), typeof(TextEntry), defaultValue: Color.FromRgba(0, 0, 0, 0.38));
-        public Color TextDisabledColor
-        {
-            get => (Color)GetValue(TextDisabledColorProperty);
-            set => SetValue(TextDisabledColorProperty, value);
-        }
-
-        public static BindableProperty ErrorColorProperty = BindableProperty.Create(nameof(ErrorColor), typeof(Color), typeof(TextEntry), defaultValue: Color.Red);
-        public Color ErrorColor
-        {
-            get => (Color)GetValue(ErrorColorProperty);
-            set => SetValue(ErrorColorProperty, value);
         }
 
         public MultilineTextEntry()
@@ -182,17 +137,17 @@ namespace BudgetBadger.Forms.UserControls
             var tasks = new List<Task>();
 
             // color bottom border
-            var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
+            var bottomBorderColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // color text control
-            var textColor = IsEnabled ? TextIdleColor : TextDisabledColor;
+            var textColor = IsEnabled ? _textColor : _disabledColor;
             tasks.Add(TextControl.ColorTo(TextControl.TextColor, textColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // color the label control
-            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // reset bottom border
@@ -214,17 +169,17 @@ namespace BudgetBadger.Forms.UserControls
             var tasks = new List<Task>();
 
             // color bottom border
-            var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
+            var bottomBorderColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // color text control
-            var textColor = IsEnabled ? TextIdleColor : TextDisabledColor;
+            var textColor = IsEnabled ? _textColor : _disabledColor;
             tasks.Add(TextControl.ColorTo(TextControl.TextColor, textColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // color the label control
-            var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
+            var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             // show the bottom border
@@ -246,9 +201,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             var tasks = new List<Task>();
 
-            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, BottomBorderFocusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, _focusedColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, BottomBorderFocusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, _focusedColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
 
             // show the thick bottom border
             tasks.Add(ThickBottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
@@ -256,14 +211,14 @@ namespace BudgetBadger.Forms.UserControls
             // hide the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, LabelFocusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _focusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
             tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));
 
             tasks.Add(LabelControl.DoubleTo(LabelControl.FontSize, 12, f => LabelControl.FontSize = f, _animationLength, Easing.CubicInOut));
 
-            tasks.Add(TextControl.ColorTo(TextControl.TextColor, TextFocusedColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
+            tasks.Add(TextControl.ColorTo(TextControl.TextColor, _textColor, c => TextControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }

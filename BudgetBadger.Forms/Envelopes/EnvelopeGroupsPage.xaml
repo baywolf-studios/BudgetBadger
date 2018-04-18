@@ -8,7 +8,7 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}">
-	<uc:ChildSearchPage.ChildContent>
+	<uc:ChildSearchPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
                 <ListView.Behaviors>
@@ -33,5 +33,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </uc:BusyIndicator>
-	</uc:ChildSearchPage.ChildContent>
+	</uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

@@ -19,7 +19,7 @@
         x:Name="PrefixControl"
         Text="{Binding Prefix}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
         InputTransparent="true"/>
@@ -27,7 +27,7 @@
         x:Name="LabelControl"
         Text="{Binding Label}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
@@ -36,7 +36,7 @@
         x:Name="TextControl"
         IsPassword="false"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
@@ -48,14 +48,14 @@
     </control:MathKeyboardEntry>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"

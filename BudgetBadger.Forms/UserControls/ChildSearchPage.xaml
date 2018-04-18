@@ -25,12 +25,25 @@
                 x:Name="LabelControl"
                 TextColor="White"
                 Grid.Row="0"
-                Grid.Column="2"
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
                 FontFamily="{StaticResource FontFamilyMedium}"
                 Text="{Binding Title}">
+                <Grid.Column>
+                    <OnPlatform x:TypeArguments="x:Int32">
+                        <On Platform="Android" Value="1"/>
+                        <On Platform="iOS" Value="2"/>
+                        <On Platform="macOS" Value="2"/>
+                    </OnPlatform>     
+                </Grid.Column>        
+                <Grid.ColumnSpan>     
+                    <OnPlatform x:TypeArguments="x:Int32">        
+                        <On Platform="Android" Value="2"/>     
+                        <On Platform="iOS" Value="1"/>
+                        <On Platform="macOS" Value="1"/>
+                    </OnPlatform>     
+                 </Grid.ColumnSpan>
                 <Label.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="16,0,0,0"/>

@@ -13,7 +13,7 @@
         x:Name="LabelControl"
         Text="{Binding Label}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
@@ -22,7 +22,7 @@
         x:Name="TextControl"
         Text="{Binding Text}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource PrimaryTextColor}"
         VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional">
@@ -30,22 +30,22 @@
             <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
         </Label.GestureRecognizers>
     </Label>
-    <BoxView
+    <Image
         x:Name="IconControl"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
-        BackgroundColor="Blue"
+        Source="{StaticResource ButtonSelectorIcon}"
         InputTransparent="true"/>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"

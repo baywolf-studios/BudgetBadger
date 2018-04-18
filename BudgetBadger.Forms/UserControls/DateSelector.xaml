@@ -12,14 +12,14 @@
         x:Name="LabelControl"
         Text="{Binding Label}"
         FontSize="12"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,0,1,16"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"/>
     <DatePicker
         x:Name="DateControl"
         Date="{Binding Date}"
-        TextColor="Gray"
+        TextColor="{StaticResource PrimaryTextColor}"
         BackgroundColor="Transparent"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
@@ -29,22 +29,22 @@
             <effects:FontSizeDatePickerEffect FontSize="16"/>
         </DatePicker.Effects>
     </DatePicker>
-    <BoxView
+    <Image
         x:Name="IconControl"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
-        BackgroundColor="Blue"
+        Source="{StaticResource DateSelectorIcon}"
         InputTransparent="true"/>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"
