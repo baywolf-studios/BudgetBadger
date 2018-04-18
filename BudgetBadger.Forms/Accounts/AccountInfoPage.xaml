@@ -29,13 +29,25 @@
                 </StackLayout>
             </StackLayout>
             <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
-            <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+            <ListView
+                BackgroundColor="White"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding GroupedTransactions}"
+                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                IsGroupingEnabled="true"
+                GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
                     <StackLayout Spacing="0">
-                    <Grid HeightRequest="48"  Margin="24,0,16,0" RowSpacing="0" ColumnSpacing="16">
+                    <Grid HeightRequest="48"
+                          Margin="32, 0, 16, 0"
+                          RowSpacing="0"
+                          ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*"/>
@@ -70,13 +82,14 @@
                                     FontSize="{StaticResource DataGridColumnHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="End"
                                     TextColor="{StaticResource PrimaryColor}"/>
                             </Grid>
                             <BoxView
                                     HeightRequest="1"
                                     Grid.Row="1"
                                     Grid.ColumnSpan="3"
-                                    Margin="24,0,0,0"
+                                    Margin="32,0,0,0"
                                     BackgroundColor="{StaticResource DividerColor}"/>
                         </StackLayout>
                 </ListView.Header>
@@ -99,7 +112,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
-                            <Grid Margin="24,0,16,0" RowSpacing="0" ColumnSpacing="16">
+                            <Grid Margin="32,0,16,0" RowSpacing="0" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="3*"/>

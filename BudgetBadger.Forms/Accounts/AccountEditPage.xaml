@@ -16,27 +16,19 @@
     <uc:ChildPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ScrollView Orientation="Vertical">
-                
                 <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <uc:TextEntry Grid.Row="0" Grid.ColumnSpan="2" Label="Name" Text="{Binding Account.Description}" />
-                    <Label Grid.Row="1" Grid.Column="0" Text="On Budget"/>
-                    <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding Account.OnBudget}"  IsEnabled="{Binding Account.IsNew}"/>
-                    <uc:CalculatorEntry Grid.Row="2" Grid.ColumnSpan="2" Prefix="$" IsEnabled="{Binding Account.IsNew}" Label="Balance" Number="{Binding Account.Balance}" />
-                    <uc:DropdownSelector Label="Type" Grid.Row="3" Grid.ColumnSpan="2" ItemDisplayBinding="{Binding Description, Mode=TwoWay}" ItemsSource="{Binding AccountTypes, Mode=TwoWay}" SelectedItem="{Binding Account.Type, Mode=TwoWay}" />
-                    <uc:MultilineTextEntry Grid.Row="4" Grid.ColumnSpan="2" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
-                    <Button Grid.Row="5" Grid.ColumnSpan="2" IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
+                    <uc:TextEntry Grid.Row="0" Label="Name" Text="{Binding Account.Description}" />
+                    <uc:DropdownSelector Grid.Row="1" Label="Type" IsEnabled="{Binding Account.IsNew}" SelectedItem="{Binding SelectedAccountType}" ItemsSource="{Binding AccountTypes}" ItemDisplayBinding="{Binding .}"/>
+                    <uc:CalculatorEntry Grid.Row="2" Prefix="$" IsEnabled="{Binding Account.IsNew}" Label="Balance" Number="{Binding Account.Balance}" />
+                    <uc:MultilineTextEntry Grid.Row="3" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
+                    <Button Grid.Row="4" IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>

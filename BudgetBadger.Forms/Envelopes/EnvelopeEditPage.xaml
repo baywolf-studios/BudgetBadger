@@ -18,27 +18,29 @@
             <ScrollView Orientation="Vertical">
                 <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="80"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <uc:ButtonSelector Grid.Row="0" Grid.ColumnSpan="2" Command="{Binding GroupSelectedCommand}" Label="Group" Text="{Binding Budget.Envelope.Group.Description}"/>
-                    <uc:TextEntry Grid.Row="1" Grid.ColumnSpan="2" Label="Name" Text="{Binding Budget.Envelope.Description}"/>
-                    <uc:CalculatorEntry Grid.Row="2" Grid.ColumnSpan="2" Prefix="$" Label="Amount" Number="{Binding Budget.Amount}"/>
-                    <Label Grid.Row="3" Grid.Column="0" Text="Ignore Overspend"/>
-                    <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding Budget.IgnoreOverspend}"/>
-                    <Label Grid.Row="4" Grid.Column="0" Text="Always"/>
-                    <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding Budget.Envelope.IgnoreOverspend}"/>
-                    <uc:MultilineTextEntry Grid.Row="5" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
-                    <Button Grid.Row="6" Grid.ColumnSpan="2" IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
+                    <uc:ButtonSelector Grid.Row="0" Command="{Binding GroupSelectedCommand}" Label="Group" Text="{Binding Budget.Envelope.Group.Description}"/>
+                    <uc:TextEntry Grid.Row="1" Label="Name" Text="{Binding Budget.Envelope.Description}"/>
+                    <uc:CalculatorEntry Grid.Row="2" Prefix="$" Label="Amount" Number="{Binding Budget.Amount}"/>
+                    <StackLayout Grid.Row="3" Orientation="Vertical" Spacing="0">
+                        <Label
+                            FontSize="12"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            VerticalOptions="Center"
+                            HeightRequest="16"
+                            Text="Overspend"/>
+                        <uc:Checkbox Label="Ignore" IsChecked="{Binding Budget.IgnoreOverspend}"/>
+                        <uc:Checkbox Margin="32,0,0,0" Label="Always" IsChecked="{Binding Budget.Envelope.IgnoreOverspend}"/>
+                    </StackLayout>
+                    <uc:MultilineTextEntry Grid.Row="5" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
+                    <Button Grid.Row="6" IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>

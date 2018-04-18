@@ -37,6 +37,16 @@ namespace BudgetBadger.Forms.UserControls
             get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
+        double _disabledImageOpacity
+        {
+            get => (Double)Application.Current.Resources["DisabledOpacity"];
+        }
+
+        double _idleImageOpacity
+        {
+            get => (Double)Application.Current.Resources["IdleOpacity"];
+        }
+
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(ButtonSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -138,6 +148,10 @@ namespace BudgetBadger.Forms.UserControls
             var labelColor = disabled ? _disabledColor : _idleColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
+            // color the image
+            var imageOpacity = disabled ? _disabledImageOpacity : _idleImageOpacity;
+            tasks.Add(IconControl.FadeTo(imageOpacity, _animationLength, Easing.CubicInOut));
+
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
@@ -171,6 +185,10 @@ namespace BudgetBadger.Forms.UserControls
             var labelColor = disabled ? _disabledColor : _idleColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
+            // color the image
+            var imageOpacity = disabled ? _disabledImageOpacity : _idleImageOpacity;
+            tasks.Add(IconControl.FadeTo(imageOpacity, _animationLength, Easing.CubicInOut));
+
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
@@ -200,6 +218,9 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(BottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
 
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _focusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
+
+            // color the image
+            tasks.Add(IconControl.FadeTo(_idleImageOpacity, _animationLength, Easing.CubicInOut));
 
             var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
             tasks.Add(LabelControl.TranslateTo(0, translationY, _animationLength, Easing.CubicInOut));

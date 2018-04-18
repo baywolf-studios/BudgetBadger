@@ -73,6 +73,10 @@
                 </x:Arguments>
             </Color>
             <Color x:Key="ErrorColor">Red</Color>
+
+            <x:Double x:Key="DisabledOpacity">0.40</x:Double>
+            <x:Double x:Key="IdleOpacity">0.55</x:Double>
+            <x:Double x:Key="FocusedOpacity">0.9</x:Double>
             
             <FileImageSource x:Key="BackIcon" File="backwhitetoolbaricon.png"/>
             <FileImageSource x:Key="SearchIcon" File="searchwhitetoolbaricon.png"/>
@@ -82,9 +86,11 @@
             <FileImageSource x:Key="PreviousIcon" File="previouswhitetoolbaricon.png"/>
             <FileImageSource x:Key="NextIcon" File="nextwhitetoolbaricon.png"/>
 
-            <FileImageSource x:Key="DropDownSelectorIcon" File="dropdownselectorgrayicon.png"/>
-            <FileImageSource x:Key="DateSelectorIcon" File="dropdownselectorgrayicon.png"/>
-            <FileImageSource x:Key="ButtonSelectorIcon" File="buttonselectorgrayicon.png"/>
+            <FileImageSource x:Key="DropDownSelectorIcon" File="dropdownselectorblackicon.png"/>
+            <FileImageSource x:Key="DateSelectorIcon" File="dropdownselectorblackicon.png"/>
+            <FileImageSource x:Key="ButtonSelectorIcon" File="buttonselectorblackicon.png"/>
+            <FileImageSource x:Key="UncheckedCheckboxIcon" File="uncheckedblackicon.png"/>
+            <FileImageSource x:Key="CheckedCheckboxIcon" File="checkedblackicon.png"/>
             
             <FileImageSource x:Key="SettingsTabIcon" File="settingswhitetabicon.png"/>
             <FileImageSource x:Key="AccountsTabIcon" File="accountswhitetabicon.png"/>

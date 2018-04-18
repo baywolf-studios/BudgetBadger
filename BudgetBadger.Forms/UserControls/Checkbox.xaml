@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout
+    HeightRequest="32"
+    VerticalOptions="Start"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.UserControls.Checkbox">
+    <BoxView
+        x:Name="BackgroundControl"
+        AbsoluteLayout.LayoutBounds="0,4,24,24">
+        <BoxView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Handle_Tapped" />
+        </BoxView.GestureRecognizers>
+    </BoxView>
+    <Image
+        x:Name="UnCheckedImage"
+        AbsoluteLayout.LayoutBounds="0,4,24,24"
+        InputTransparent="true"
+        Source="{StaticResource UncheckedCheckboxIcon}"
+        Opacity="{StaticResource IdleOpacity}"/>
+    <Image
+        x:Name="CheckedImage"
+        AbsoluteLayout.LayoutBounds="0,4,24,24"
+        InputTransparent="true"
+        Source="{StaticResource CheckedCheckboxIcon}"
+        Opacity="0"/>
+    <Label
+        x:Name="LabelControl"
+        AbsoluteLayout.LayoutBounds="32,0,1,32"
+        AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
+        FontSize="16"
+        FontFamily="{StaticResource FontFamilyRegular}"
+        Text="{Binding Label}"
+        VerticalOptions="Center"/>
+</AbsoluteLayout>

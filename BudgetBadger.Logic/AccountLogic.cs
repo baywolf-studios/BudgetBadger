@@ -134,23 +134,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<AccountType>>> GetAccountTypesAsync()
+        public IReadOnlyList<string> GetAccountTypes()
         {
-            var result = new Result<IReadOnlyList<AccountType>>();
-
-            try
-            {
-                var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
-                result.Success = true;
-                result.Data = accountTypes;
-            }
-            catch(Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
+            return new List<string> { "Budget", "Reporting" };
         }
 
         public IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)
@@ -165,7 +151,7 @@ namespace BudgetBadger.Logic
 
         public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
         {
-            var groupedAccounts = accounts.GroupBy(a => a.OnBudget ? "On Budget" : "Off Budget").ToList();
+            var groupedAccounts = accounts.GroupBy(a => a.Type).ToList();
 
             return groupedAccounts;
         }
@@ -175,13 +161,6 @@ namespace BudgetBadger.Logic
             if (!account.IsValid())
             {
                 return account.Validate().ToResult<Account>();
-            }
-
-            //check for existence of account type
-            var accountTypes = await AccountDataAccess.ReadAccountTypesAsync();
-            if (!accountTypes.Any(a => a.Id == account.Type.Id))
-            {
-                return new Result { Success = false, Message = "Account type does not exist" };
             }
 
             return new Result { Success = true }; 

@@ -12,6 +12,7 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
@@ -21,6 +22,7 @@
     <Label
         x:Name="TextControl"
         Text="{Binding Text}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource PrimaryTextColor}"
         VerticalTextAlignment="Center"
@@ -35,6 +37,7 @@
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
         Source="{StaticResource ButtonSelectorIcon}"
+        Opacity="{StaticResource IdleOpacity}"
         InputTransparent="true"/>
     <BoxView
         x:Name="BottomBorderControl"

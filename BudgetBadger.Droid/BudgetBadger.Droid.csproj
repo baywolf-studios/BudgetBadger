@@ -263,14 +263,22 @@
     <AndroidResource Include="Resources\drawable-xhdpi\nextwhitetoolbaricon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\nextwhitetoolbaricon.png" />
     <AndroidResource Include="Resources\drawable\nextwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\dropdownselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\dropdownselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\dropdownselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\dropdownselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable\buttonselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\buttonselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\buttonselectorgrayicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\buttonselectorgrayicon.png" />
+    <AndroidResource Include="Resources\drawable\buttonselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\buttonselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\buttonselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\buttonselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable\checkedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checkedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\checkedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\checkedblackicon.png" />
+    <AndroidResource Include="Resources\drawable\dropdownselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\dropdownselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\dropdownselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\dropdownselectorblackicon.png" />
+    <AndroidResource Include="Resources\drawable\uncheckedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\uncheckedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\uncheckedblackicon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\uncheckedblackicon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

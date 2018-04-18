@@ -11,6 +11,7 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
@@ -20,6 +21,7 @@
     <controls:ExpandingEditor
         x:Name="TextControl"
         Text="{Binding Text}"
+        FontFamily="{StaticResource FontFamilyRegular}"
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"
         TextColor="{StaticResource PrimaryTextColor}"

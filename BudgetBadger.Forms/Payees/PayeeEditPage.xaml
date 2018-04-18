@@ -18,7 +18,7 @@
             <ScrollView Orientation="Vertical">
                 <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="48"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
