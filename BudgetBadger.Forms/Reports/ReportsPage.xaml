@@ -23,7 +23,7 @@
                                     Margin="16, 8"
                                     Text="{Binding .}"
                                     HeightRequest="32"
-                                    FontSize="16"
+                                    FontSize="{StaticResource ListItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     TextColor="{StaticResource PrimaryTextColor}"/>

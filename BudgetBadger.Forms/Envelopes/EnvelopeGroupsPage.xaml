@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Envelope Groups" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage" xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls">
-	<ContentPage.Content>
-        <control:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+<uc:ChildSearchPage
+    Title="Envelope Groups"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
+	<uc:ChildSearchPage.ChildContent>
+        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <StackLayout Orientation="Vertical">
-                        <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}">
-                            <SearchBar.Behaviors>
-                                <b:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchCommand}" />
-                            </SearchBar.Behaviors>
-                        </SearchBar>
-                        <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
-                    </StackLayout>
+                    <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Group: {0}'}"/>
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
                             <Label
                                 HeightRequest="32"
-                                FontSize="16"
+                                FontSize="{StaticResource ListItemFontSize}"
                                 FontFamily="{StaticResource FontFamilyRegular}"
                                 VerticalTextAlignment="Center"
                                 TextColor="{StaticResource PrimaryTextColor}"
@@ -31,6 +32,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </control:BusyIndicator>
-	</ContentPage.Content>
-</ContentPage>
+        </uc:BusyIndicator>
+	</uc:ChildSearchPage.ChildContent>
+</uc:ChildSearchPage>

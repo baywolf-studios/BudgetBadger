@@ -6,7 +6,8 @@
     x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ToolbarItemText="Save"
-    ToolbarItemCommand="{Binding SaveCommand}">
+    ToolbarItemCommand="{Binding SaveCommand}"
+    ToolbarItemIcon="{StaticResource SaveIcon}">
     <uc:ChildPage.Triggers>
         <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Transaction.IsNew}" Value="True">
             <Setter Property="Title" Value="New Transaction" />

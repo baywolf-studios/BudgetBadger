@@ -10,7 +10,7 @@
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="{StaticResource AppBarIconSize}"/>
+                <RowDefinition Height="{StaticResource AppBarGridSize}"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0"/>

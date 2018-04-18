@@ -10,13 +10,13 @@
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="{StaticResource AppBarIconSize}"/>
+                <RowDefinition Height="{StaticResource AppBarGridSize}"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridSize}"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="{StaticResource AppBarIconSize}"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridSize}"/>
             </Grid.ColumnDefinitions>
             <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
             <Label
@@ -52,7 +52,7 @@
                 Padding="0"
                 Margin="0"
                 CornerRadius="0"
-                BackgroundColor="Transparent">
+                BackgroundColor="{StaticResource AppBarColor}">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToolbarItemCommand}"/>
                 </Frame.GestureRecognizers>
@@ -62,7 +62,6 @@
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    BackgroundColor="Red"
                     Source="{Binding ToolbarItemIcon}"/>
             </Frame>
                 <Frame
@@ -70,7 +69,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                BackgroundColor="Teal"
+                BackgroundColor="{StaticResource AppBarColor}"
                 HasShadow="false"
                 Padding="0"
                 CornerRadius="0"
@@ -107,12 +106,10 @@
             </Frame>
             <Frame
                 x:Name="SearchButtonFrame"
-                WidthRequest="{StaticResource AppBarHeight}"
                 CornerRadius="0"
                 HasShadow="false"
                 Padding="0"
-                BackgroundColor="Transparent"
-                HorizontalOptions="End"
+                BackgroundColor="{StaticResource AppBarColor}"
                 Grid.Row="0"
                 Grid.Column="2">
                 <Image
@@ -120,7 +117,7 @@
                     WidthRequest="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Source="searchwhite24.png"/>
+                    Source="{StaticResource SearchIcon}"/>
             </Frame>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
         </Grid>
