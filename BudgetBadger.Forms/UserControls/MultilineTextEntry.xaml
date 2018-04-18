@@ -12,7 +12,7 @@
         x:Name="LabelControl"
         Text="{Binding Label}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
@@ -22,7 +22,7 @@
         Text="{Binding Text}"
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"
-        TextColor="Gray"
+        TextColor="{StaticResource PrimaryTextColor}"
         BackgroundColor="Transparent"
         Margin="0,0,0,7"
         VerticalOptions="StartAndExpand"
@@ -34,14 +34,14 @@
     </controls:ExpandingEditor>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,1,1,1"
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
         InputTransparent="true"
         Opacity="1"/>
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="Gray"
+        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,1,1,2"
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
         InputTransparent="true"
