@@ -9,19 +9,19 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
-        double _disabledOpacity
+        Color _disabledColor
         {
-            get => (Double)Application.Current.Resources["DisabledOpacity"];
+            get => (Color)Application.Current.Resources["DisabledColor"];
         }
 
-        double _idleOpacity
+        Color _idleColor
         {
-            get => (Double)Application.Current.Resources["IdleOpacity"];
+            get => (Color)Application.Current.Resources["IdleColor"];
         }
 
-        double _focusedOpacity
+        Color _focusedColor
         {
-            get => (Double)Application.Current.Resources["FocusedOpacity"];
+            get => (Color)Application.Current.Resources["PrimaryColor"];
         }
 
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox), defaultBindingMode: BindingMode.TwoWay);
@@ -38,15 +38,48 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsCheckedProperty, value);
         }
 
+        public Dictionary<string, string> ReplaceColorUnchecked
+        {
+            get
+            {
+                if (IsEnabled)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _idleColor.GetHexString() } };
+                }
+                else
+                {
+                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
+                }
+            }
+        }
+
+        public Dictionary<string, string> ReplaceColorChecked
+        {
+            get
+            {
+                if (IsEnabled)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _focusedColor.GetHexString() } };
+                }
+                else
+                {
+                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
+                }
+            }
+        }
+
         public Checkbox()
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
+            UncheckedImage.BindingContext = this;
+            CheckedImage.BindingContext = this;
+
             UpdateVisualState();
 
             PropertyChanged += (sender, e) => 
             {
-                if (e.PropertyName == nameof(IsChecked))
+                if (e.PropertyName == nameof(IsEnabled) || e.PropertyName == nameof(IsChecked) || e.PropertyName == nameof(IsFocused))
                 {
                     UpdateVisualState();
                 }
@@ -57,7 +90,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             IsChecked = !IsChecked;
 
-            UpdateVisualState();
+            //UpdateVisualState();
         }
 
         async void UpdateVisualState()
@@ -69,15 +102,15 @@ namespace BudgetBadger.Forms.UserControls
                 if (IsChecked)
                 {
                     // show the checked image
-                    tasks.Add(CheckedImage.FadeTo(_focusedOpacity, _animationLength, Easing.CubicInOut));
+                    tasks.Add(CheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
 
                     // hide the unchecked image
-                    tasks.Add(UnCheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
+                    tasks.Add(UncheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
                 }
                 else
                 {
                     // show the unchecked image
-                    tasks.Add(UnCheckedImage.FadeTo(_idleOpacity, _animationLength, Easing.CubicInOut));
+                    tasks.Add(UncheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
 
                     // hide the checked image
                     tasks.Add(CheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
@@ -88,15 +121,15 @@ namespace BudgetBadger.Forms.UserControls
                 if (IsChecked)
                 {
                     // show the checked image
-                    tasks.Add(CheckedImage.FadeTo(_disabledOpacity, _animationLength, Easing.CubicInOut));
+                    tasks.Add(CheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
 
                     // hide the unchecked image
-                    tasks.Add(UnCheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
+                    tasks.Add(UncheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
                 }
                 else
                 {
                     // show the unchecked image
-                    tasks.Add(UnCheckedImage.FadeTo(_disabledOpacity, _animationLength, Easing.CubicInOut));
+                    tasks.Add(UncheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
 
                     // hide the checked image
                     tasks.Add(CheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
@@ -104,6 +137,8 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             await Task.WhenAll(tasks);
+            OnPropertyChanged(nameof(ReplaceColorUnchecked));
+            OnPropertyChanged(nameof(ReplaceColorChecked));
         }
     }
 }

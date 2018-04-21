@@ -5,6 +5,7 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.UserControls.DropdownSelector">
     <BoxView
         BackgroundColor="Transparent"
@@ -38,13 +39,13 @@
             <effects:BorderlessPickerEffect/>
         </Picker.Effects>
     </Picker>
-    <Image
+    <svg:SvgCachedImage
         x:Name="IconControl"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
-        Source="{StaticResource DropDownSelectorIcon}"
-        InputTransparent="true"
-        Opacity="{StaticResource IdleOpacity}"/>
+        ReplaceStringMap="{Binding ReplaceColor}"
+        Source="dropdownselector.svg"
+        InputTransparent="true"/>
     <BoxView
         x:Name="BottomBorderControl"
         BackgroundColor="{StaticResource IdleColor}"

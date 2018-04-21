@@ -30,11 +30,10 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemTextProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
         public ImageSource ToolbarItemIcon
         {
-            get => (ImageSource)GetValue(ToolbarItemIconProperty);
-            set => SetValue(ToolbarItemIconProperty, value);
+            get => ToolbarItemImage.Source;
+            set  { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
@@ -44,25 +43,11 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
-        public static BindableProperty NextIconProperty = BindableProperty.Create(nameof(NextIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource NextIcon
-        {
-            get => (ImageSource)GetValue(NextIconProperty);
-            set => SetValue(NextIconProperty, value);
-        }
-
         public static BindableProperty NextCommandProperty = BindableProperty.Create(nameof(NextCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
         public ICommand NextCommand
         {
             get => (ICommand)GetValue(NextCommandProperty);
             set => SetValue(NextCommandProperty, value);
-        }
-
-        public static BindableProperty PreviousIconProperty = BindableProperty.Create(nameof(PreviousIcon), typeof(ImageSource), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource PreviousIcon
-        {
-            get => (ImageSource)GetValue(PreviousIconProperty);
-            set => SetValue(PreviousIconProperty, value);
         }
 
         public static BindableProperty PreviousCommandProperty = BindableProperty.Create(nameof(PreviousCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
@@ -78,6 +63,11 @@ namespace BudgetBadger.Forms.UserControls
             set => BodyView.Content = value;
         }
 
+        public Dictionary<string, string> ReplaceColor
+        {
+            get => new Dictionary<string, string> { { "currentColor", "#FFFFFF" } };
+        }
+
         public StepperPage()
         {
             InitializeComponent();
@@ -89,6 +79,7 @@ namespace BudgetBadger.Forms.UserControls
             NextFrame.BindingContext = this;
             NextImage.BindingContext = this;
             EntryControl.BindingContext = this;
+            SearchImage.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;

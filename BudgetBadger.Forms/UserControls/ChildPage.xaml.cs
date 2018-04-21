@@ -7,8 +7,6 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ChildPage : ContentPage
     {
-        uint _animationLength = 150;
-
         public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string ToolbarItemText
         {
@@ -16,11 +14,10 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemTextProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ImageSource ToolbarItemIcon
         {
-            get => (ImageSource)GetValue(ToolbarItemIconProperty);
-            set => SetValue(ToolbarItemIconProperty, value);
+            get => ToolbarItemImage.Source;
+            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
@@ -30,17 +27,15 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
-        public static BindableProperty BackButtonIconProperty = BindableProperty.Create(nameof(BackButtonIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource BackButtonIcon
-        {
-            get => (ImageSource)GetValue(BackButtonIconProperty);
-            set => SetValue(BackButtonIconProperty, value);
-        }
-
         public View BodyContent
         {
             get => BodyView.Content;
             set => BodyView.Content = value;
+        }
+
+        public Dictionary<string, string> ReplaceColor
+        {
+            get => new Dictionary<string, string> { { "currentColor", "#FFFFFF" } };
         }
 
         public ChildPage()
@@ -49,6 +44,7 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
+            BackButtonImage.BindingContext = this;
 
             var backGestureRecognizer = new TapGestureRecognizer();
             backGestureRecognizer.Tapped += BackButtonTapped;

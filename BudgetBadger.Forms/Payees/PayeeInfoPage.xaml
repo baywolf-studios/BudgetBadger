@@ -8,7 +8,7 @@
     x:Class="BudgetBadger.Forms.Payees.PayeeInfoPage"
     ToolbarItemText="Edit"
     ToolbarItemCommand="{Binding EditCommand}"
-    ToolbarItemIcon="{StaticResource EditIcon}">
+    ToolbarItemIcon="edit.svg">
     <uc:ChildSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
             <ListView

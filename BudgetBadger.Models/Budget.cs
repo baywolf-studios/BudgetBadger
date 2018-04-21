@@ -67,7 +67,7 @@ namespace BudgetBadger.Models
             set { SetProperty(ref pastActivity, value); OnPropertyChanged(nameof(Remaining)); }
         }
 
-        public decimal Remaining { get { return Amount ?? 0 + PastAmount + Activity + PastActivity; } }
+        public decimal Remaining { get { return (Amount ?? 0) + PastAmount + Activity + PastActivity; } }
 
         DateTime? createdDateTime;
         public DateTime? CreatedDateTime

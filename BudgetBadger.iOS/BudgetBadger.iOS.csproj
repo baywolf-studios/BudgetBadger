@@ -139,9 +139,6 @@
     <Reference Include="SimpleAuth">
       <HintPath>..\packages\Clancey.SimpleAuth.1.0.49\lib\Xamarin.iOS10\SimpleAuth.dll</HintPath>
     </Reference>
-    <Reference Include="SkiaSharp">
-      <HintPath>..\packages\SkiaSharp.1.59.1\lib\XamariniOS\SkiaSharp.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp.Views.iOS">
       <HintPath>..\packages\SkiaSharp.Views.1.59.1.1\lib\XamariniOS\SkiaSharp.Views.iOS.dll</HintPath>
     </Reference>
@@ -156,6 +153,30 @@
     </Reference>
     <Reference Include="Microcharts.Forms">
       <HintPath>..\packages\Microcharts.Forms.0.7.1\lib\netstandard1.4\Microcharts.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\packages\SkiaSharp.1.60.0\lib\XamariniOS\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="WebP.Touch">
+      <HintPath>..\packages\WebP.Touch.1.0.8\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Svg.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.2.3.6\lib\Xamarin.iOS10\FFImageLoading.Svg.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.6\lib\Xamarin.iOS10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Touch">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.6\lib\Xamarin.iOS10\FFImageLoading.Forms.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Svg.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.Forms.2.3.6\lib\Xamarin.iOS10\FFImageLoading.Svg.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -181,34 +202,6 @@
     <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png" />
     <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png" />
     <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png" />
-    <ImageAsset Include="Assets.xcassets\searchwhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\editwhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\editwhitetoolbaricon.png.imageset\icons8-pencil-24.png" />
-    <ImageAsset Include="Assets.xcassets\editwhitetoolbaricon.png.imageset\icons8-pencil-48.png" />
-    <ImageAsset Include="Assets.xcassets\editwhitetoolbaricon.png.imageset\icons8-pencil-72.png" />
-    <ImageAsset Include="Assets.xcassets\newwhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\newwhitetoolbaricon.png.imageset\icons8-plus-math-24.png" />
-    <ImageAsset Include="Assets.xcassets\newwhitetoolbaricon.png.imageset\icons8-plus-math-48.png" />
-    <ImageAsset Include="Assets.xcassets\newwhitetoolbaricon.png.imageset\icons8-plus-math-72.png" />
-    <ImageAsset Include="Assets.xcassets\savewhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\savewhitetoolbaricon.png.imageset\icons8-save-24.png" />
-    <ImageAsset Include="Assets.xcassets\savewhitetoolbaricon.png.imageset\icons8-save-48.png" />
-    <ImageAsset Include="Assets.xcassets\savewhitetoolbaricon.png.imageset\icons8-save-72.png" />
-    <ImageAsset Include="Assets.xcassets\backwhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\backwhitetoolbaricon.png.imageset\icons8-back-24.png" />
-    <ImageAsset Include="Assets.xcassets\backwhitetoolbaricon.png.imageset\icons8-back-48.png" />
-    <ImageAsset Include="Assets.xcassets\backwhitetoolbaricon.png.imageset\icons8-back-72.png" />
-    <ImageAsset Include="Assets.xcassets\searchwhitetoolbaricon.png.imageset\icons8-search-24.png" />
-    <ImageAsset Include="Assets.xcassets\searchwhitetoolbaricon.png.imageset\icons8-search-48.png" />
-    <ImageAsset Include="Assets.xcassets\searchwhitetoolbaricon.png.imageset\icons8-search-72.png" />
-    <ImageAsset Include="Assets.xcassets\previouswhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\previouswhitetoolbaricon.png.imageset\icons8-back-24.png" />
-    <ImageAsset Include="Assets.xcassets\previouswhitetoolbaricon.png.imageset\icons8-back-48.png" />
-    <ImageAsset Include="Assets.xcassets\previouswhitetoolbaricon.png.imageset\icons8-back-72.png" />
-    <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-24-2.png" />
-    <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-48-2.png" />
-    <ImageAsset Include="Assets.xcassets\nextwhitetoolbaricon.png.imageset\icons8-forward-72-2.png" />
     <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-24.png" />
     <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-48.png" />
@@ -286,6 +279,20 @@
       <Project>{0D2FC756-AB4A-453F-971E-16F557836C9D}</Project>
       <Name>BudgetBadger.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\search.svg" />
+    <BundleResource Include="Resources\newicon.svg" />
+    <BundleResource Include="Resources\previous.svg" />
+    <BundleResource Include="Resources\next.svg" />
+    <BundleResource Include="Resources\back.svg" />
+    <BundleResource Include="Resources\edit.svg" />
+    <BundleResource Include="Resources\save.svg" />
+    <BundleResource Include="Resources\uncheckedcheckbox.svg" />
+    <BundleResource Include="Resources\checkedcheckbox.svg" />
+    <BundleResource Include="Resources\dropdownselector.svg" />
+    <BundleResource Include="Resources\buttonselector.svg" />
+    <BundleResource Include="Resources\cancel.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

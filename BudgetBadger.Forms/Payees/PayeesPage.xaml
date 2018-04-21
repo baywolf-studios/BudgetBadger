@@ -9,7 +9,7 @@
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
-    ToolbarItemIcon="{StaticResource NewIcon}"
+    ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">

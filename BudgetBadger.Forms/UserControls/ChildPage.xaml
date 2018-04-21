@@ -5,6 +5,7 @@
     x:Class="BudgetBadger.Forms.UserControls.ChildPage"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
@@ -48,43 +49,41 @@
                     </OnPlatform>
                 </Label.HorizontalOptions>
             </Label>
-            <Frame
+            <ContentView
                 x:Name="BackButtonFrame"
                 Grid.Row="0"
                 Grid.Column="0"
-                HasShadow="false"
                 Padding="0"
                 Margin="0"
-                CornerRadius="0"
                 BackgroundColor="{StaticResource AppBarColor}">
-                <Image 
+                <svg:SvgCachedImage 
                     x:Name="BackButtonImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    Source="{StaticResource BackIcon}"/>
-            </Frame>
-            <Frame
+                    ReplaceStringMap="{Binding ReplaceColor}"
+                    Source="back.svg"/>
+            </ContentView>
+            <ContentView
                 x:Name="ToolbarItemFrame"
                 Grid.Row="0"
                 Grid.Column="2"
-                HasShadow="false"
                 Padding="0"
                 Margin="0"
-                CornerRadius="0"
                 BackgroundColor="{StaticResource AppBarColor}">
-                <Frame.GestureRecognizers>
+                <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToolbarItemCommand}"/>
-                </Frame.GestureRecognizers>
-                <Image 
+                </ContentView.GestureRecognizers>
+                <svg:SvgCachedImage 
                     x:Name="ToolbarItemImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
+                    ReplaceStringMap="{Binding ReplaceColor}"
                     Source="{Binding ToolbarItemIcon}"/>
-            </Frame>
+            </ContentView>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
         </Grid>
     </ContentPage.Content>

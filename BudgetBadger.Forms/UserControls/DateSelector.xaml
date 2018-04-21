@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout HeightRequest="48" VerticalOptions="Start" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.DateSelector">
+<AbsoluteLayout
+    HeightRequest="48"
+    VerticalOptions="Start" 
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="BudgetBadger.Forms.UserControls.DateSelector">
     <BoxView
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -30,13 +37,13 @@
             <effects:FontSizeDatePickerEffect FontSize="16"/>
         </DatePicker.Effects>
     </DatePicker>
-    <Image
+    <svg:SvgCachedImage
         x:Name="IconControl"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
-        Source="{StaticResource DateSelectorIcon}"
-        InputTransparent="true"
-        Opacity="{StaticResource IdleOpacity}"/>
+        ReplaceStringMap="{Binding ReplaceColor}"
+        Source="dropdownselector.svg"
+        InputTransparent="true"/>
     <BoxView
         x:Name="BottomBorderControl"
         BackgroundColor="{StaticResource IdleColor}"

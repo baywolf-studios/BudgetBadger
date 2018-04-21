@@ -30,11 +30,10 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemTextProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public ImageSource ToolbarItemIcon
         {
-            get => (ImageSource)GetValue(ToolbarItemIconProperty);
-            set => SetValue(ToolbarItemIconProperty, value);
+            get => ToolbarItemImage.Source;
+            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
@@ -44,17 +43,15 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
-        public static BindableProperty BackButtonIconProperty = BindableProperty.Create(nameof(BackButtonIcon), typeof(ImageSource), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource BackButtonIcon
-        {
-            get => (ImageSource)GetValue(BackButtonIconProperty);
-            set => SetValue(BackButtonIconProperty, value);
-        }
-
         public View BodyContent
         {
             get => BodyView.Content;
             set => BodyView.Content = value;
+        }
+
+        public Dictionary<string, string> ReplaceColor
+        {
+            get => new Dictionary<string, string> { { "currentColor", "#FFFFFF" } };
         }
 
         public ChildSearchPage()
@@ -64,7 +61,8 @@ namespace BudgetBadger.Forms.UserControls
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
-
+            BackButtonImage.BindingContext = this;
+            svgSearch.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
