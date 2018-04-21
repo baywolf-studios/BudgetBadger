@@ -101,6 +101,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
+                SearchImage.ReplaceStringMap = ReplaceColor;
+                SearchImage.Source = "cancel.svg";
+
                 //show it
                 SearchBoxFrame.IsVisible = true;
                 await SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
@@ -109,6 +112,9 @@ namespace BudgetBadger.Forms.UserControls
             else //currently showing
             {
                 SearchText = string.Empty;
+
+                SearchImage.ReplaceStringMap = ReplaceColor;
+                SearchImage.Source = "search.svg";
 
                 //hide it
                 await SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
