@@ -52,13 +52,20 @@ namespace BudgetBadger.Forms.UserControls
             set => BodyView.Content = value;
         }
 
+        public Dictionary<string, string> ReplaceColor
+        {
+            get => new Dictionary<string, string> { { "currentColor", "#FFFFFF" } };
+        }
+
         public RootSearchPage()
         {
+            
             InitializeComponent();
             LabelControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
+            svgSearch.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
@@ -80,6 +87,9 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
+                svgSearch.ReplaceStringMap = ReplaceColor;
+                svgSearch.Source = "cancel.svg";
+
                 //show it
                 SearchBoxFrame.IsVisible = true;
                 await SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
@@ -89,9 +99,13 @@ namespace BudgetBadger.Forms.UserControls
             {
                 SearchText = string.Empty;
 
+                svgSearch.ReplaceStringMap = ReplaceColor;
+                svgSearch.Source = "search.svg";
+
                 //hide it
                 await SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
                 SearchBoxFrame.IsVisible = false;
+
             }
         }
     }

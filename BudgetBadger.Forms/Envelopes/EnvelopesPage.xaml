@@ -9,7 +9,7 @@
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemText="New"
-    ToolbarItemIcon="{StaticResource NewIcon}"
+    ToolbarItemIcon="newicon.svg"
     NextCommand="{Binding NextCommand}"
     PreviousCommand="{Binding PreviousCommand}">
     <uc:StepperPage.BodyContent>

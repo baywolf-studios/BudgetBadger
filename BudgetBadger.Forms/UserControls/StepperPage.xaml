@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.UserControls.StepperPage"
     ios:Page.UseSafeArea="true"
     NavigationPage.HasNavigationBar="false">
@@ -34,83 +35,77 @@
                 Margin="0"
                 HorizontalOptions="Center">
             </Label>
-            <Frame
+            <ContentView
                 x:Name="ToolbarItemFrame"
                 Grid.Row="0"
                 Grid.Column="0"
-                HasShadow="false"
                 Padding="0"
                 Margin="0"
-                CornerRadius="0"
                 BackgroundColor="{StaticResource AppBarColor}">
-                <Frame.GestureRecognizers>
+                <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToolbarItemCommand}"/>
-                </Frame.GestureRecognizers>
-                <Image 
+                </ContentView.GestureRecognizers>
+                <svg:SvgCachedImage  
                     x:Name="ToolbarItemImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
+                    ReplaceStringMap="{Binding ReplaceColor}"
                     Source="{Binding ToolbarItemIcon}"/>
-            </Frame>
-            <Frame
+            </ContentView>
+            <ContentView
                 x:Name="PreviousFrame"
                 Grid.Row="0"
                 Grid.Column="1"
-                HasShadow="false"
                 Padding="0"
                 Margin="0"
-                CornerRadius="0"
                 BackgroundColor="{StaticResource AppBarColor}">
-                <Frame.GestureRecognizers>
+                <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PreviousCommand}"/>
-                </Frame.GestureRecognizers>
-                <Image 
+                </ContentView.GestureRecognizers>
+                <svg:SvgCachedImage 
                     x:Name="PreviousImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    Source="{StaticResource PreviousIcon}"/>
-            </Frame>
-            <Frame
+                    ReplaceStringMap="{Binding ReplaceColor}"
+                    Source="previous.svg"/>
+            </ContentView>
+            <ContentView
                 x:Name="NextFrame"
                 Grid.Row="0"
                 Grid.Column="3"
-                HasShadow="false"
                 Padding="0"
                 Margin="0"
-                CornerRadius="0"
                 BackgroundColor="{StaticResource AppBarColor}">
-                <Frame.GestureRecognizers>
+                <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding NextCommand}"/>
-                </Frame.GestureRecognizers>
-                <Image 
+                </ContentView.GestureRecognizers>
+                <svg:SvgCachedImage 
                     x:Name="NextImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
-                    Source="{StaticResource NextIcon}"/>
-            </Frame>
-            <Frame
+                    ReplaceStringMap="{Binding ReplaceColor}"
+                    Source="next.svg"/>
+            </ContentView>
+            <ContentView
                 x:Name="SearchBoxFrame"
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="4"
                 BackgroundColor="{StaticResource AppBarColor}"
-                HasShadow="false"
                 Padding="0"
-                CornerRadius="0"
                 TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}"
                 IsVisible="false">
-                <Frame
+                <ContentView
                     x:Name="EntryFrame"
                     Margin="8"
-                    HasShadow="false"
                     Padding="0">
-                    <Frame.BackgroundColor>
+                    <ContentView.BackgroundColor>
                         <Color x:FactoryMethod="FromRgba">
                           <x:Arguments>
                             <x:Int32>0</x:Int32>
@@ -119,7 +114,7 @@
                             <x:Int32>31</x:Int32>
                           </x:Arguments>
                         </Color>
-                    </Frame.BackgroundColor>
+                    </ContentView.BackgroundColor>
                     <Entry
                         x:Name="EntryControl"
                         Margin="8,0"
@@ -132,23 +127,23 @@
                             <effects:BorderlessEntryEffect/>
                         </Entry.Effects>
                     </Entry>
-                </Frame>
-            </Frame>
-            <Frame
+                </ContentView>
+            </ContentView>
+            <ContentView
                 x:Name="SearchButtonFrame"
-                CornerRadius="0"
-                HasShadow="false"
                 Padding="0"
                 BackgroundColor="{StaticResource AppBarColor}"
                 Grid.Row="0"
                 Grid.Column="4">
-                <Image
+                <svg:SvgCachedImage
+                    x:Name="SearchImage"
                     HeightRequest="24"
                     WidthRequest="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Source="{StaticResource SearchIcon}"/>
-            </Frame>
+                    ReplaceStringMap="{Binding ReplaceColor}"
+                    Source="search.svg"/>
+            </ContentView>
             <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="5"/>
         </Grid>
     </ContentPage.Content>

@@ -4,6 +4,7 @@
     VerticalOptions="Start"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.UserControls.Checkbox">
     <BoxView
         x:Name="BackgroundControl"
@@ -12,18 +13,18 @@
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
-    <Image
-        x:Name="UnCheckedImage"
+    <svg:SvgCachedImage
+        x:Name="UncheckedImage"
         AbsoluteLayout.LayoutBounds="0,4,24,24"
         InputTransparent="true"
-        Source="{StaticResource UncheckedCheckboxIcon}"
-        Opacity="{StaticResource IdleOpacity}"/>
-    <Image
+        ReplaceStringMap="{Binding ReplaceColorUnchecked}"
+        Source="uncheckedcheckbox.svg"/>
+    <svg:SvgCachedImage
         x:Name="CheckedImage"
         AbsoluteLayout.LayoutBounds="0,4,24,24"
         InputTransparent="true"
-        Source="{StaticResource CheckedCheckboxIcon}"
-        Opacity="0"/>
+        ReplaceStringMap="{Binding ReplaceColorChecked}"
+        Source="checkedcheckbox.svg"/>
     <Label
         x:Name="LabelControl"
         AbsoluteLayout.LayoutBounds="32,0,1,32"

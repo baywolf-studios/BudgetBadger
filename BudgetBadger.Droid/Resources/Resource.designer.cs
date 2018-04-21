@@ -2356,13 +2356,13 @@ namespace BudgetBadger.Droid
 			public const int avd_show_password_3 = 2130837829;
 			
 			// aapt resource value: 0x7f020056
-			public const int backwhitetoolbaricon = 2130837590;
+			public const int back = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int buttonselectorblackicon = 2130837591;
+			public const int buttonselector = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int checkedblackicon = 2130837592;
+			public const int checkedcheckbox = 2130837592;
 			
 			// aapt resource value: 0x7f020059
 			public const int design_bottom_navigation_item_background = 2130837593;
@@ -2383,10 +2383,10 @@ namespace BudgetBadger.Droid
 			public const int design_snackbar_background = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int dropdownselectorblackicon = 2130837599;
+			public const int dropdownselector = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int editwhitetoolbaricon = 2130837600;
+			public const int edit = 2130837600;
 			
 			// aapt resource value: 0x7f020061
 			public const int envelopeswhitetabicon = 2130837601;
@@ -2989,10 +2989,10 @@ namespace BudgetBadger.Droid
 			public const int navigation_empty_icon = 2130837800;
 			
 			// aapt resource value: 0x7f020129
-			public const int newwhitetoolbaricon = 2130837801;
+			public const int newicon = 2130837801;
 			
 			// aapt resource value: 0x7f02012a
-			public const int nextwhitetoolbaricon = 2130837802;
+			public const int next = 2130837802;
 			
 			// aapt resource value: 0x7f02012b
 			public const int notification_action_background = 2130837803;
@@ -3034,16 +3034,16 @@ namespace BudgetBadger.Droid
 			public const int payeeswhitetabicon = 2130837813;
 			
 			// aapt resource value: 0x7f020136
-			public const int previouswhitetoolbaricon = 2130837814;
+			public const int previous = 2130837814;
 			
 			// aapt resource value: 0x7f020137
 			public const int reportswhitetabicon = 2130837815;
 			
 			// aapt resource value: 0x7f020138
-			public const int savewhitetoolbaricon = 2130837816;
+			public const int save = 2130837816;
 			
 			// aapt resource value: 0x7f020139
-			public const int searchwhitetoolbaricon = 2130837817;
+			public const int search = 2130837817;
 			
 			// aapt resource value: 0x7f02013a
 			public const int settingswhitetabicon = 2130837818;
@@ -3055,7 +3055,7 @@ namespace BudgetBadger.Droid
 			public const int tooltip_frame_light = 2130837820;
 			
 			// aapt resource value: 0x7f02013d
-			public const int uncheckedblackicon = 2130837821;
+			public const int uncheckedcheckbox = 2130837821;
 			
 			static Drawable()
 			{

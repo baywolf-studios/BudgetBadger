@@ -168,9 +168,6 @@
     <Reference Include="SimpleAuth.Droid.CustomTabs">
       <HintPath>..\packages\Clancey.SimpleAuth.Droid.CustomTabs.1.0.1\lib\MonoAndroid\SimpleAuth.Droid.CustomTabs.dll</HintPath>
     </Reference>
-    <Reference Include="SkiaSharp">
-      <HintPath>..\packages\SkiaSharp.1.59.1\lib\MonoAndroid\SkiaSharp.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp.Views.Android">
       <HintPath>..\packages\SkiaSharp.Views.1.59.1.1\lib\MonoAndroid\SkiaSharp.Views.Android.dll</HintPath>
     </Reference>
@@ -186,13 +183,34 @@
     <Reference Include="Microcharts.Droid">
       <HintPath>..\packages\Microcharts.0.7.1\lib\MonoAndroid10\Microcharts.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\packages\SkiaSharp.1.60.0\lib\MonoAndroid\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Svg.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.2.3.6\lib\MonoAndroid10\FFImageLoading.Svg.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.6\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Droid">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.6\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Svg.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.Forms.2.3.6\lib\MonoAndroid10\FFImageLoading.Svg.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\Settings.cs" />
-    <Compile Include="AuthActivity.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
@@ -235,50 +253,17 @@
     <AndroidResource Include="Resources\drawable-xhdpi\reportswhitetabicon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\reportswhitetabicon.png" />
     <AndroidResource Include="Resources\drawable\reportswhitetabicon.png" />
-    <AndroidResource Include="Resources\drawable\searchwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\searchwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\searchwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\searchwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\editwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\editwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\editwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\editwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\backwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\backwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\backwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\backwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\newwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\newwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\newwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\newwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\savewhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\savewhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\savewhitetoolbaricon" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\savewhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\previouswhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\previouswhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\previouswhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\previouswhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\nextwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nextwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\nextwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\nextwhitetoolbaricon.png" />
-    <AndroidResource Include="Resources\drawable\buttonselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\buttonselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\buttonselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\buttonselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable\checkedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\checkedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\checkedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\checkedblackicon.png" />
-    <AndroidResource Include="Resources\drawable\dropdownselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\dropdownselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\dropdownselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\dropdownselectorblackicon.png" />
-    <AndroidResource Include="Resources\drawable\uncheckedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\uncheckedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\uncheckedblackicon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\uncheckedblackicon.png" />
+    <AndroidResource Include="Resources\drawable\back.svg" />
+    <AndroidResource Include="Resources\drawable\buttonselector.svg" />
+    <AndroidResource Include="Resources\drawable\checkedcheckbox.svg" />
+    <AndroidResource Include="Resources\drawable\dropdownselector.svg" />
+    <AndroidResource Include="Resources\drawable\edit.svg" />
+    <AndroidResource Include="Resources\drawable\newicon.svg" />
+    <AndroidResource Include="Resources\drawable\next.svg" />
+    <AndroidResource Include="Resources\drawable\previous.svg" />
+    <AndroidResource Include="Resources\drawable\save.svg" />
+    <AndroidResource Include="Resources\drawable\search.svg" />
+    <AndroidResource Include="Resources\drawable\uncheckedcheckbox.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

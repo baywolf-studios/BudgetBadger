@@ -7,7 +7,7 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ToolbarItemText="Save"
     ToolbarItemCommand="{Binding SaveCommand}"
-    ToolbarItemIcon="{StaticResource SaveIcon}">
+    ToolbarItemIcon="save.svg">
     <uc:ChildPage.Triggers>
         <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Account.IsNew}" Value="True">
             <Setter Property="Title" Value="New Account" />

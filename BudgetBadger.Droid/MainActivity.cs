@@ -10,6 +10,8 @@ using Android.OS;
 using BudgetBadger.Forms;
 using Prism;
 using Prism.Ioc;
+using FFImageLoading.Forms.Droid;
+using FFImageLoading.Svg.Forms;
 
 namespace BudgetBadger.Droid
 {
@@ -23,9 +25,11 @@ namespace BudgetBadger.Droid
 
             base.OnCreate(bundle);
 
-            SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
-
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            CachedImageRenderer.Init(true);
+            var ignore = typeof(SvgCachedImage);
+            SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
 
             LoadApplication(new App(new DroidInitializer()));
         }

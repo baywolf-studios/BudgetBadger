@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Forms;
 using DryIoc;
+using FFImageLoading.Forms.Touch;
+using FFImageLoading.Svg.Forms;
 using Foundation;
 using Prism;
 using Prism.DryIoc;
@@ -17,6 +19,9 @@ namespace BudgetBadger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            CachedImageRenderer.Init();
+            var ignore = typeof(SvgCachedImage);
 
             LoadApplication(new App(new iOSInitializer()));
 

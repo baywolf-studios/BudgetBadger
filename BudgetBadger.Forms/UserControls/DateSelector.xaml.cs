@@ -36,16 +36,6 @@ namespace BudgetBadger.Forms.UserControls
             get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
-        double _disabledImageOpacity
-        {
-            get => (Double)Application.Current.Resources["DisabledOpacity"];
-        }
-
-        double _idleImageOpacity
-        {
-            get => (Double)Application.Current.Resources["IdleOpacity"];
-        }
-
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(DateSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -60,11 +50,31 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(DateProperty, value);
         }
 
+        public Dictionary<string, string> ReplaceColor
+        {
+            get
+            {
+                if (DateControl.IsFocused)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _focusedColor.GetHexString() } };
+                }
+                else if (IsEnabled)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _idleColor.GetHexString() } };
+                }
+                else
+                {
+                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
+                }
+            }
+        }
+
         public DateSelector()
         {
             InitializeComponent();
             DateControl.BindingContext = this;
             LabelControl.BindingContext = this;
+            IconControl.BindingContext = this;
 
             DateControl.Focused += (sender, e) =>
             {
@@ -99,6 +109,8 @@ namespace BudgetBadger.Forms.UserControls
             {
                 await UpdateIdleVisualState();
             }
+
+            OnPropertyChanged(nameof(ReplaceColor));
         }
 
         async Task UpdateIdleVisualState()
@@ -119,10 +131,6 @@ namespace BudgetBadger.Forms.UserControls
             var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
-            // color the image
-            var imageOpacity = IsEnabled ? _idleImageOpacity : _disabledImageOpacity;
-            tasks.Add(IconControl.FadeTo(imageOpacity, _animationLength, Easing.CubicInOut));
-
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
 
@@ -131,33 +139,6 @@ namespace BudgetBadger.Forms.UserControls
       
             await Task.WhenAll(tasks);
         }
-
-        //async Task UpdateIdleFilledVisualState()
-        //{
-        //    var tasks = new List<Task>();
-
-        //    // color the bottom border
-        //    var bottomBorderColor = IsEnabled ? BottomBorderIdleColor : BottomBorderDisabledColor;
-        //    tasks.Add(BottomBorderControl.ColorTo(BottomBorderControl.Color, bottomBorderColor, c => BottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-
-        //    tasks.Add(ThickBottomBorderControl.ColorTo(ThickBottomBorderControl.Color, bottomBorderColor, c => ThickBottomBorderControl.Color = c, _animationLength, Easing.CubicInOut));
-
-        //    // color the text
-        //    var textColor = IsEnabled ? DateIdleColor : DateDisabledColor;
-        //    tasks.Add(DateControl.ColorTo(DateControl.TextColor, textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-        //    // color the label
-        //    var labelColor = IsEnabled ? LabelIdleColor : LabelDisabledColor;
-        //    tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-        //    // show the normal bottom border
-        //    tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
-
-        //    // hide the thick bottom border
-        //    tasks.Add(ThickBottomBorderControl.FadeTo(0, _animationLength, Easing.CubicInOut));
-
-        //    await Task.WhenAll(tasks);
-        //}
 
         async Task UpdateFocusedVisualState()
         {
@@ -176,8 +157,6 @@ namespace BudgetBadger.Forms.UserControls
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, _focusedColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
 
             tasks.Add(DateControl.ColorTo(DateControl.TextColor, _textColor, c => DateControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-            tasks.Add(IconControl.FadeTo(_idleImageOpacity, _animationLength, Easing.CubicInOut));
 
             await Task.WhenAll(tasks);
         }

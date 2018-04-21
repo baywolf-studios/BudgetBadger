@@ -36,16 +36,6 @@ namespace BudgetBadger.Forms.UserControls
             get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
-        double _disabledImageOpacity
-        {
-            get => (Double)Application.Current.Resources["DisabledOpacity"];
-        }
-
-        double _idleImageOpacity
-        {
-            get => (Double)Application.Current.Resources["IdleOpacity"];
-        }
-
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(DropdownSelector), defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
@@ -80,11 +70,31 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SelectedItemProperty, value);
         }
 
+        public Dictionary<string, string> ReplaceColor
+        {
+            get
+            {
+                if (PickerControl.IsFocused)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _focusedColor.GetHexString() } };
+                }
+                else if (IsEnabled)
+                {
+                    return new Dictionary<string, string> { { "currentColor", _idleColor.GetHexString() } };
+                }
+                else
+                {
+                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
+                }
+            }
+        }
+
         public DropdownSelector()
         {
             InitializeComponent();
             PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
+            IconControl.BindingContext = this;
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
@@ -126,6 +136,7 @@ namespace BudgetBadger.Forms.UserControls
             {
                 await SetIdleFilledVisualState();
             }
+            OnPropertyChanged(nameof(ReplaceColor));
         }
 
         async Task SetIdleEmptyVisualState()
@@ -145,10 +156,6 @@ namespace BudgetBadger.Forms.UserControls
             // color the label
             var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-            // color the image
-            var imageOpacity = IsEnabled ? _idleImageOpacity : _disabledImageOpacity;
-            tasks.Add(IconControl.FadeTo(imageOpacity, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
@@ -182,10 +189,6 @@ namespace BudgetBadger.Forms.UserControls
             // color the label
             var labelColor = IsEnabled ? _idleColor : _disabledColor;
             tasks.Add(LabelControl.ColorTo(LabelControl.TextColor, labelColor, c => LabelControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-            // color the image
-            var imageOpacity = IsEnabled ? _idleImageOpacity : _disabledImageOpacity;
-            tasks.Add(IconControl.FadeTo(imageOpacity, _animationLength, Easing.CubicInOut));
 
             // show the normal bottom border
             tasks.Add(BottomBorderControl.FadeTo(1, _animationLength, Easing.CubicInOut));
@@ -223,9 +226,6 @@ namespace BudgetBadger.Forms.UserControls
 
             // color the picker
             tasks.Add(PickerControl.ColorTo(PickerControl.TextColor, _textColor, c => PickerControl.TextColor = c, _animationLength, Easing.CubicInOut));
-
-            // color the image
-            tasks.Add(IconControl.FadeTo(_idleImageOpacity, _animationLength, Easing.CubicInOut));
 
             // move upward
             var translationY = Device.RuntimePlatform == Device.macOS ? 24 : -24;
