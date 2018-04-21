@@ -10,6 +10,7 @@ namespace BudgetBadger.Forms.Views
         public MainPage()
         {
             InitializeComponent();
+
         }
     }
 }

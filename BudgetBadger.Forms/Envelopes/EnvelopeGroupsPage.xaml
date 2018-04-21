@@ -10,7 +10,15 @@
     SearchText="{Binding SearchText}">
 	<uc:ChildSearchPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <ListView BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding FilteredEnvelopeGroups}" SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
+            <ListView 
+                HasUnevenRows="true"
+                BackgroundColor="White" 
+                SeparatorVisibility="None" 
+                IsPullToRefreshEnabled="true" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                RefreshCommand="{Binding RefreshCommand}" 
+                ItemsSource="{Binding FilteredEnvelopeGroups}" 
+                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>

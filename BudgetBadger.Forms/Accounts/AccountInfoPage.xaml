@@ -11,23 +11,23 @@
     ToolbarItemIcon="edit.svg"
     ToolbarItemText="Edit">
     <uc:ChildSearchPage.BodyContent>
-        <StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal">
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Pending" />
-                    <Label Text="{Binding PendingTotal, StringFormat='{0:c}'}" />
-                </StackLayout>
-                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="+" />
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Posted" />
-                    <Label Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
-                </StackLayout>
-                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Text="=" />
-                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Balance" />
-                    <Label Text="{Binding TransactionsTotal, StringFormat='{0:c}'}" />
-                </StackLayout>
-            </StackLayout>
+        <StackLayout Spacing="0" Orientation="Vertical">
+            <Grid ColumnSpacing="16" Margin="24,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Text="Balance"
+                    FontSize="18"
+                    TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                    FontSize="18"
+                    TextColor="{StaticResource SecondaryTextColor}"/>
+            </Grid>
             <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
             <ListView
                 BackgroundColor="White"
@@ -49,9 +49,9 @@
                           RowSpacing="0"
                           ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label
                                     Margin="0, 8"
@@ -62,6 +62,8 @@
                                     FontSize="{StaticResource DataGridColumnHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -72,6 +74,8 @@
                                     FontSize="{StaticResource DataGridColumnHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -83,6 +87,7 @@
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
                                     HorizontalOptions="End"
+                                    LineBreakMode="NoWrap"
                                     TextColor="{StaticResource PrimaryColor}"/>
                             </Grid>
                             <BoxView
@@ -126,6 +131,8 @@
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -135,6 +142,8 @@
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -145,6 +154,7 @@
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
                                     HorizontalTextAlignment="End"
+                                    LineBreakMode="NoWrap"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                             </Grid>
                         </ViewCell>

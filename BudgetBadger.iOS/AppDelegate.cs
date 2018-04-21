@@ -28,6 +28,11 @@ namespace BudgetBadger.iOS
             SimpleAuth.NativeSafariAuthenticator.Activate();
 
             UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(54, 120, 175);
+            var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
+            if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
+            {
+                statusBar.BackgroundColor = UIColor.FromRGB(54, 120, 175);
+            }
 
             return base.FinishedLaunching(app, options);
         }

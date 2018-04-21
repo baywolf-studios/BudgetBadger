@@ -13,7 +13,18 @@
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
         <StackLayout Orientation="Vertical">
-            <ListView x:Name="PayeeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedPayees}" SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+            <ListView
+                x:Name="PayeeList" 
+                HasUnevenRows="true"
+                BackgroundColor="White" 
+                SeparatorVisibility="None" 
+                IsPullToRefreshEnabled="true" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                RefreshCommand="{Binding RefreshCommand}" 
+                ItemsSource="{Binding GroupedPayees}" 
+                SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
+                IsGroupingEnabled="true" 
+                GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>

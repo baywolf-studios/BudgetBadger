@@ -22,26 +22,19 @@
                         <RowDefinition Height="48"/>
                         <RowDefinition Height="48"/>
                         <RowDefinition Height="48"/>
-                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <uc:ButtonSelector Grid.Row="0" Command="{Binding GroupSelectedCommand}" Label="Group" Text="{Binding Budget.Envelope.Group.Description}"/>
                     <uc:TextEntry Grid.Row="1" Label="Name" Text="{Binding Budget.Envelope.Description}"/>
                     <uc:CalculatorEntry Grid.Row="2" Prefix="$" Label="Amount" Number="{Binding Budget.Amount}"/>
-                    <StackLayout Grid.Row="3" Orientation="Vertical" Spacing="0">
-                        <Label
-                            FontSize="12"
-                            FontFamily="{StaticResource FontFamilyRegular}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            VerticalOptions="Center"
-                            HeightRequest="16"
-                            Text="Overspend"/>
-                        <uc:Checkbox Label="Ignore" IsChecked="{Binding Budget.IgnoreOverspend}"/>
-                        <uc:Checkbox Margin="32,0,0,0" Label="Always" IsChecked="{Binding Budget.Envelope.IgnoreOverspend}"/>
+                    <StackLayout BackgroundColor="Green" Grid.Row="3" Orientation="Vertical" Spacing="0">
+                        <uc:Checkbox Label="Ignore Overspend" IsChecked="{Binding Budget.IgnoreOverspend}"/>
+                        <uc:Checkbox Margin="32,0,0,0" Label="Always" IsChecked="{Binding Budget.Envelope.IgnoreOverspend}" IsVisible="{Binding Budget.IgnoreOverspend}"/>
                     </StackLayout>
-                    <uc:MultilineTextEntry Grid.Row="5" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
-                    <Button Grid.Row="6" IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
+                    <uc:MultilineTextEntry Grid.Row="4" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
+                    <Button Grid.Row="5" IsVisible="{Binding Budget.IsActive}"  Command="{Binding DeleteCommand}" Text="Delete Envelope" TextColor="Red" />
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>

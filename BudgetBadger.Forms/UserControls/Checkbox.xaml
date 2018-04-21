@@ -8,7 +8,7 @@
     x:Class="BudgetBadger.Forms.UserControls.Checkbox">
     <BoxView
         x:Name="BackgroundControl"
-        AbsoluteLayout.LayoutBounds="0,4,24,24">
+        AbsoluteLayout.LayoutBounds="0, 0, 32, 32">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>

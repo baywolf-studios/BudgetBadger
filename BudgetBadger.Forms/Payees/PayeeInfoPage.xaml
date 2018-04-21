@@ -31,9 +31,9 @@
                           RowSpacing="0"
                           ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label
                                     Margin="0, 8"
@@ -44,6 +44,8 @@
                                     FontSize="{StaticResource DataGridColumnHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -54,6 +56,8 @@
                                     FontSize="{StaticResource DataGridColumnHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -65,6 +69,7 @@
                                     FontFamily="{StaticResource FontFamilySemiBold}"
                                     VerticalTextAlignment="Center"
                                     HorizontalOptions="End"
+                                    LineBreakMode="NoWrap"
                                     TextColor="{StaticResource PrimaryColor}"/>
                             </Grid>
                             <BoxView
@@ -108,6 +113,8 @@
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -117,6 +124,8 @@
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
+                                    HorizontalOptions="Start"
+                                    LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
                                     Margin="0, 8"
@@ -126,7 +135,8 @@
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="End"
+                                    HorizontalOptions="End"
+                                    LineBreakMode="NoWrap"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                             </Grid>
                         </ViewCell>
