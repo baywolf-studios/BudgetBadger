@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TabbedPage Title="Test" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:BudgetBadger.Forms.Views" xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings" xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions" xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes" xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts" xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees" xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Views.MainPage">
     <TabbedPage.Children>
-        <NavigationPage Title="Envelopes" Icon="{StaticResource EnvelopesTabIcon}">
+        <NavigationPage Title="Envelopes" Icon="{StaticResource EnvelopesTabIcon}" BarTextColor="White">
             <x:Arguments>
                 <envelopes:EnvelopesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Accounts" Icon="{StaticResource AccountsTabIcon}">
+        <NavigationPage Title="Accounts" Icon="{StaticResource AccountsTabIcon}" BarTextColor="White">
             <x:Arguments>
                 <accounts:AccountsPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Payees" Icon="{StaticResource PayeesTabIcon}">
+        <NavigationPage Title="Payees" Icon="{StaticResource PayeesTabIcon}" BarTextColor="White">
             <x:Arguments>
                 <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Reports" Icon="{StaticResource ReportsTabIcon}">
+        <NavigationPage Title="Reports" Icon="{StaticResource ReportsTabIcon}" BarTextColor="White">
             <x:Arguments>
                 <reports:ReportsPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Settings" Icon="{StaticResource SettingsTabIcon}">
+        <NavigationPage Title="Settings" Icon="{StaticResource SettingsTabIcon}" BarTextColor="White">
             <x:Arguments>
                 <settings:SettingsPage />
             </x:Arguments>

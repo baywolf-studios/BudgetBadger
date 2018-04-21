@@ -47,8 +47,8 @@ namespace BudgetBadger.Forms.Accounts
             set
             {
                 SetProperty(ref _transactions, value);
-                RaisePropertyChanged("PendingTotal");
-                RaisePropertyChanged("PostedTotal");
+                RaisePropertyChanged(nameof(PendingTotal));
+                RaisePropertyChanged(nameof(PostedTotal));
                 RaisePropertyChanged("TransactionsTotal");
             }
         }
@@ -69,7 +69,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount ?? 0); }
         public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount ?? 0); }
-        public decimal TransactionsTotal { get => Transactions.Sum(t2 => t2.Amount ?? 0); }
 
         public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic, IPageDialogService dialogService)
         {
