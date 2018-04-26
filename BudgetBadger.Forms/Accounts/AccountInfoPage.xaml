@@ -13,7 +13,7 @@
     <uc:ChildSearchPage.BodyContent>
         <Grid
             BackgroundColor="White"
-            Margin="16,0"
+            Margin="0"
             RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -22,7 +22,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid
-                Margin="0,8,0,0"
+                Margin="16,8,16,0"
                 Grid.Row="0"
                 BackgroundColor="White"
                 ColumnSpacing="16" 
@@ -35,16 +35,19 @@
                     Grid.Column="0"
                     Text="Account Balance"
                     HorizontalOptions="Start"
-                    FontSize="18"
-                    TextColor="{StaticResource PrimaryTextColor}"/>
+                    FontSize="20"
+                    TextColor="{StaticResource PrimaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyMedium}"/>
                 <Label
                     Grid.Column="1"
                     Text="{Binding Account.Balance, StringFormat='{0:c}'}"
                     HorizontalOptions="End"
-                    FontSize="18"
-                    TextColor="{StaticResource SecondaryTextColor}"/>
+                    FontSize="20"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyMedium}"/>
             </Grid>
             <Grid 
+                Margin="16,0"
                 Grid.Row="1"
                 BackgroundColor="White"
                 ColumnSpacing="16" 
@@ -59,35 +62,40 @@
                     Grid.Column="0"
                     Text="Pending"
                     HorizontalOptions="End"
-                    FontSize="12"
-                    TextColor="{StaticResource PrimaryTextColor}"/>
+                    FontSize="16"
+                    TextColor="{StaticResource PrimaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyRegular}"/>
                 <Label
                     Grid.Column="1"
                     Text="{Binding PendingTotal, StringFormat='{0:c}'}"
                     HorizontalOptions="Start"
-                    FontSize="12"
-                    TextColor="{StaticResource SecondaryTextColor}"/>
+                    FontSize="16"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyRegular}"/>
                 <Label
                     Grid.Column="2"
                     Text="Cleared"
                     HorizontalOptions="End"
-                    FontSize="12"
-                    TextColor="{StaticResource PrimaryTextColor}"/>
+                    FontSize="16"
+                    TextColor="{StaticResource PrimaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyRegular}"/>
                 <Label
                     Grid.Column="3"
                     Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                     HorizontalOptions="Start"
-                    FontSize="12"
-                    TextColor="{StaticResource SecondaryTextColor}"/>
+                    FontSize="16"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyRegular}"/>
             </Grid>
             <BoxView
                 Grid.Row="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="-16,0"/>
+                Margin="0"/>
            <!-- <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>-->
 
             <ListView
+                Margin="16,0"
                 Grid.Row="3"
                 BackgroundColor="White"
                 SeparatorVisibility="None"
@@ -97,30 +105,34 @@
                 ItemsSource="{Binding GroupedTransactions}"
                 SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                 IsGroupingEnabled="true"
-                GroupDisplayBinding="{Binding Key}">
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <ViewCell Height="40">
-                            <StackLayout BackgroundColor="White">
+                        <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
+                            <ContentView BackgroundColor="White">
                                 <Label
-                                    HeightRequest="32"
-                                    FontSize="12"
+                                    BackgroundColor="White"
+                                    FontSize="{StaticResource ListDenseGroupHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilyMedium}"
-                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="Center"
                                     TextColor="{StaticResource SecondaryTextColor}"
-                                    Text="{Binding Key}"
-                                    Margin="0, 8"/>
-                            </StackLayout>
+                                    Text="{Binding Key}"/>
+                            </ContentView>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="60">
-                            <Grid Margin="0,0,0,0" RowSpacing="0" ColumnSpacing="16">
+                        <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
+                            <Grid 
+                                BackgroundColor="White" 
+                                Margin="0" 
+                                RowSpacing="0" 
+                                ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="*"/>
@@ -133,7 +145,7 @@
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Text="{Binding Envelope.Description}"
-                                    FontSize="13"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalOptions="End"
                                     HorizontalOptions="Start"
@@ -143,7 +155,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0" 
                                     Text="{Binding Payee.Description}"
-                                    FontSize="12"
+                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalOptions="Start"
                                     HorizontalOptions="Start"
@@ -153,21 +165,27 @@
                                     Grid.Column="1"
                                     Grid.RowSpan="2"
                                     Text="{Binding Amount, StringFormat='{0:c}'}"
-                                    HeightRequest="60"
-                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="End"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End"
                                     LineBreakMode="NoWrap"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <ContentView 
+                        Margin="0,8"
+                        BackgroundColor="White"
+                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                </ListView.Footer>
             </ListView>
             <Button
+                x:Name="NewTransactionButton"
                 Grid.Row="3"
-                Margin="0,0,0,8"
+                Margin="16,0,16,8"
                 VerticalOptions="End"
                 FontFamily="{StaticResource FontFamilyMedium}"
                 FontSize="14"
