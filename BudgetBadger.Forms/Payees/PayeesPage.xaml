@@ -66,7 +66,18 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
+            <Button
+                Margin="16"
+                HeightRequest="36"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add Transaction" 
+                Command="{Binding AddTransactionCommand}"
+                BorderColor="Blue"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
         </StackLayout>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>
