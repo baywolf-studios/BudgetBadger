@@ -26,7 +26,7 @@
                 </ListView.Behaviors>
                 <ListView.Header>
                     <StackLayout Spacing="0">
-                    <Grid HeightRequest="48"
+                    <Grid HeightRequest="40"
                           Margin="32, 0, 16, 0"
                           RowSpacing="0"
                           ColumnSpacing="16">

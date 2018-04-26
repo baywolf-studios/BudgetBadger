@@ -11,25 +11,84 @@
     ToolbarItemIcon="edit.svg"
     ToolbarItemText="Edit">
     <uc:ChildSearchPage.BodyContent>
-        <StackLayout Spacing="0" Orientation="Vertical">
-            <Grid ColumnSpacing="16" Margin="24,16">
+        <Grid
+            BackgroundColor="White"
+            Margin="16,0"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid
+                Margin="0,8,0,0"
+                Grid.Row="0"
+                BackgroundColor="White"
+                ColumnSpacing="16" 
+                HeightRequest="32">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Column="0"
-                    Text="Balance"
+                    Text="Account Balance"
+                    HorizontalOptions="Start"
                     FontSize="18"
                     TextColor="{StaticResource PrimaryTextColor}"/>
                 <Label
                     Grid.Column="1"
                     Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                    HorizontalOptions="End"
                     FontSize="18"
                     TextColor="{StaticResource SecondaryTextColor}"/>
             </Grid>
-            <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
+            <Grid 
+                Grid.Row="1"
+                BackgroundColor="White"
+                ColumnSpacing="16" 
+                HeightRequest="24" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Text="Pending"
+                    HorizontalOptions="End"
+                    FontSize="12"
+                    TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                    HorizontalOptions="Start"
+                    FontSize="12"
+                    TextColor="{StaticResource SecondaryTextColor}"/>
+                <Label
+                    Grid.Column="2"
+                    Text="Cleared"
+                    HorizontalOptions="End"
+                    FontSize="12"
+                    TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label
+                    Grid.Column="3"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    HorizontalOptions="Start"
+                    FontSize="12"
+                    TextColor="{StaticResource SecondaryTextColor}"/>
+            </Grid>
+            <BoxView
+                Grid.Row="2"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="-16,0"/>
+           <!-- <Button IsVisible="{Binding Account.PaymentRequired}" Command="{Binding PaymentCommand}" Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>-->
+
             <ListView
+                Grid.Row="3"
                 BackgroundColor="White"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
@@ -42,114 +101,59 @@
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
-                <ListView.Header>
-                    <StackLayout Spacing="0">
-                    <Grid HeightRequest="48"
-                          Margin="32, 0, 16, 0"
-                          RowSpacing="0"
-                          ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label
-                                    Margin="0, 8"
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Envelope"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
-                                    FontFamily="{StaticResource FontFamilySemiBold}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalOptions="Start"
-                                    LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource PrimaryColor}"/>
-                                <Label 
-                                    Margin="0, 8"
-                                    Grid.Row="0"
-                                    Grid.Column="1" 
-                                    Text="Payee"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
-                                    FontFamily="{StaticResource FontFamilySemiBold}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalOptions="Start"
-                                    LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource PrimaryColor}"/>
-                                <Label 
-                                    Margin="0, 8"
-                                    Grid.Row="0"
-                                    Grid.Column="2" 
-                                    Text="Amount"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource DataGridColumnHeaderFontSize}"
-                                    FontFamily="{StaticResource FontFamilySemiBold}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalOptions="End"
-                                    LineBreakMode="NoWrap"
-                                    TextColor="{StaticResource PrimaryColor}"/>
-                            </Grid>
-                            <BoxView
-                                    HeightRequest="1"
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="3"
-                                    Margin="32,0,0,0"
-                                    BackgroundColor="{StaticResource DividerColor}"/>
-                        </StackLayout>
-                </ListView.Header>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <ViewCell Height="48">
+                        <ViewCell Height="40">
                             <StackLayout BackgroundColor="White">
-                            <Label
-                                HeightRequest="32"
-                                FontSize="{StaticResource DataGridGroupHeaderFontSize}"
-                                FontFamily="{StaticResource FontFamilyMedium}"
-                                VerticalTextAlignment="Center"
-                                TextColor="{StaticResource SecondaryTextColor}"
-                                Text="{Binding Key}"
-                                Margin="16, 8"/>
-                                </StackLayout>
+                                <Label
+                                    HeightRequest="32"
+                                    FontSize="12"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource SecondaryTextColor}"
+                                    Text="{Binding Key}"
+                                    Margin="0, 8"/>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="48">
-                            <Grid Margin="32,0,16,0" RowSpacing="0" ColumnSpacing="16">
+                        <ViewCell Height="60">
+                            <Grid Margin="0,0,0,0" RowSpacing="0" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
                                 <Label
-                                    Margin="0, 8"
+                                    Grid.Row="0"
                                     Grid.Column="0"
                                     Text="{Binding Envelope.Description}"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontSize="13"
                                     FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="End"
                                     HorizontalOptions="Start"
                                     LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}"/>
                                 <Label 
-                                    Margin="0, 8"
-                                    Grid.Column="1" 
+                                    Grid.Row="1"
+                                    Grid.Column="0" 
                                     Text="{Binding Payee.Description}"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource DataGridItemFontSize}"
+                                    FontSize="12"
                                     FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="Start"
                                     HorizontalOptions="Start"
                                     LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                    TextColor="{StaticResource SecondaryTextColor}"/>
                                 <Label 
-                                    Margin="0, 8"
-                                    Grid.Column="2" 
+                                    Grid.Column="1"
+                                    Grid.RowSpan="2"
                                     Text="{Binding Amount, StringFormat='{0:c}'}"
-                                    HeightRequest="32"
+                                    HeightRequest="60"
                                     FontSize="{StaticResource DataGridItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Center"
@@ -161,7 +165,19 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
-        </StackLayout>
+            <Button
+                Grid.Row="3"
+                Margin="0,0,0,8"
+                VerticalOptions="End"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add Transaction" 
+                Command="{Binding AddTransactionCommand}"
+                BorderColor="Blue"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
+        </Grid>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

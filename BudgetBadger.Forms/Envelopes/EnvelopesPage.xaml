@@ -14,28 +14,36 @@
     PreviousCommand="{Binding PreviousCommand}">
     <uc:StepperPage.BodyContent>
         <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5">
-            <Grid Margin="8">
+            <Grid ColumnSpacing="16" Margin="0,16,0,0" RowSpacing="16">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" FontSize="Micro" Text="Past" />
-                <Label Grid.Row="1" Grid.Column="0" FontSize="Micro" Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
-                <Label Grid.Row="0" Grid.Column="1" FontSize="Micro" Text="Income" />
-                <Label Grid.Row="1" Grid.Column="1" FontSize="Micro" Text="{Binding Schedule.Income, StringFormat='+ {0:c}'}" />
-                <Label Grid.Row="0" Grid.Column="2" FontSize="Micro" Text="Budgeted" />
-                <Label Grid.Row="1" Grid.Column="2" FontSize="Micro" Text="{Binding Schedule.Budgeted, StringFormat='- {0:c}'}" />
-                <Label Grid.Row="0" Grid.Column="3" FontSize="Micro" Text="Overspend" />
-                <Label Grid.Row="1" Grid.Column="3" FontSize="Micro" Text="{Binding Schedule.Overspend, StringFormat='- {0:c}'}" />
-                <Label Grid.Row="0" Grid.Column="4" FontSize="Micro" Text="Balance" />
-                <Label Grid.Row="1" Grid.Column="4" FontSize="Micro" Text="{Binding Schedule.Balance, StringFormat='= {0:c}'}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="16,0,0,0"
+                    Text="To Budget"
+                    HorizontalOptions="Start"
+                    FontSize="18"
+                    TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="0,0,16,0"
+                    Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                    HorizontalOptions="End"
+                    FontSize="18"
+                    TextColor="{StaticResource SecondaryTextColor}"/>
+                <BoxView
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"/>
             </Grid>
             <ListView x:Name="EnvelopeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
                 <ListView.Behaviors>
