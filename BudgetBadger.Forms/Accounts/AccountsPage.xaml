@@ -11,9 +11,52 @@
     ToolbarItemText="New"
     ToolbarItemIcon="newicon.svg">
     <uc:RootSearchPage.BodyContent>
-        <StackLayout Orientation="Vertical">
+        <Grid
+            BackgroundColor="White"
+            Margin="0"
+            ColumnSpacing="16"
+            RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label
+                Margin="16,4,0,4"
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Net Worth"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+            <Label
+                Margin="0,4,16,4"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+             <BoxView
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
             <ListView
                 x:Name="AccountList"
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
                 BackgroundColor="White"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
@@ -22,7 +65,8 @@
                 ItemsSource="{Binding GroupedAccounts}"
                 SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
                 IsGroupingEnabled="true"
-                GroupDisplayBinding="{Binding Key}">
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
@@ -77,8 +121,27 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <ContentView 
+                        BackgroundColor="White"
+                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                </ListView.Footer>
             </ListView>
-            <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
-        </StackLayout>
+            <Button
+                x:Name="NewTransactionButton"
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="16,0,16,8"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add Transaction" 
+                VerticalOptions="End"
+                Command="{Binding AddTransactionCommand}"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
+        </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

@@ -48,7 +48,7 @@ namespace BudgetBadger.Models
         public decimal PastAmount
         {
             get => pastAmount;
-            set { SetProperty(ref pastAmount, value); OnPropertyChanged(nameof(Remaining)); }
+            set { SetProperty(ref pastAmount, value); OnPropertyChanged(nameof(Remaining)); OnPropertyChanged(nameof(Past)); }
         }
 
         //calculated, not stored
@@ -64,8 +64,10 @@ namespace BudgetBadger.Models
         public decimal PastActivity
         {
             get => pastActivity;
-            set { SetProperty(ref pastActivity, value); OnPropertyChanged(nameof(Remaining)); }
+            set { SetProperty(ref pastActivity, value); OnPropertyChanged(nameof(Remaining)); OnPropertyChanged(nameof(Past)); }
         }
+
+        public decimal Past { get => PastAmount + PastActivity; }
 
         public decimal Remaining { get { return (Amount ?? 0) + PastAmount + Activity + PastActivity; } }
 

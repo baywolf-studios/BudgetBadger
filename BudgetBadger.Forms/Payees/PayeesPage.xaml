@@ -12,10 +12,9 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
-        <StackLayout Orientation="Vertical">
+        <Grid BackgroundColor="White">
             <ListView
                 x:Name="PayeeList" 
-                HasUnevenRows="true"
                 BackgroundColor="White" 
                 SeparatorVisibility="None" 
                 IsPullToRefreshEnabled="true" 
@@ -24,12 +23,16 @@
                 ItemsSource="{Binding GroupedPayees}" 
                 SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
                 IsGroupingEnabled="true" 
-                GroupDisplayBinding="{Binding Key}">
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
+                    <Button
+                        IsVisible="{Binding HasSearchText}"
+                        Command="{Binding SaveCommand}"
+                        Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
                 </ListView.Header>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
@@ -65,19 +68,24 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <ContentView 
+                        BackgroundColor="White"
+                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                </ListView.Footer>
             </ListView>
             <Button
-                Margin="16"
-                HeightRequest="36"
+                x:Name="NewTransactionButton"
+                Margin="16,0,16,8"
                 FontFamily="{StaticResource FontFamilyMedium}"
                 FontSize="14"
                 Text="Add Transaction" 
+                VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}"
-                BorderColor="Blue"
                 BackgroundColor="{StaticResource AppBarColor}"
                 TextColor="White"
                 BorderWidth="0"
                 BorderRadius="2"/>
-        </StackLayout>
+        </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

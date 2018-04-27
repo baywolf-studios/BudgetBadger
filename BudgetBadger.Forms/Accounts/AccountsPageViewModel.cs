@@ -39,7 +39,7 @@ namespace BudgetBadger.Forms.Accounts
         public IReadOnlyList<Account> Accounts
         {
             get => _accounts;
-            set => SetProperty(ref _accounts, value);
+            set { SetProperty(ref _accounts, value); RaisePropertyChanged(nameof(NetWorth)); }
         }
 
         Account _selectedAccount;
@@ -55,6 +55,8 @@ namespace BudgetBadger.Forms.Accounts
             get => _groupedAccounts;
             set => SetProperty(ref _groupedAccounts, value);
         }
+
+        public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
 
         public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {

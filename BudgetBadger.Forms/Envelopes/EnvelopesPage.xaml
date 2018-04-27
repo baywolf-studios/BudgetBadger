@@ -13,39 +13,136 @@
     NextCommand="{Binding NextCommand}"
     PreviousCommand="{Binding PreviousCommand}">
     <uc:StepperPage.BodyContent>
-        <StackLayout Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5">
-            <Grid ColumnSpacing="16" Margin="0,16,0,0" RowSpacing="16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                </Grid.RowDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="16,0,0,0"
-                    Text="To Budget"
-                    HorizontalOptions="Start"
-                    FontSize="18"
-                    TextColor="{StaticResource PrimaryTextColor}"/>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="0,0,16,0"
-                    Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
-                    HorizontalOptions="End"
-                    FontSize="18"
-                    TextColor="{StaticResource SecondaryTextColor}"/>
-                <BoxView
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
-                    HeightRequest="1"
-                    BackgroundColor="{StaticResource DividerColor}"/>
-            </Grid>
-            <ListView x:Name="EnvelopeList" BackgroundColor="White" SeparatorVisibility="None" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedBudgets}" SelectedItem="{Binding SelectedBudget, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
+        <Grid
+            BackgroundColor="White"
+            Margin="0"
+            ColumnSpacing="16"
+            RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="16,4,0,4"
+                Text="To Budget"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+            <Label
+                Grid.Row="0"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                Margin="0,4,16,4"
+                Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="16,0,0,0"
+                Text="Past"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="16,0,0,4"
+                Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Income"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="2"
+                Text="Budgeted"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="2"
+                Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="3"
+                Margin="0,0,16,4"
+                Text="Over"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="3"
+                Margin="0,0,16,4"
+                Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="Center"
+                FontSize="{StaticResource PageSubheaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <BoxView
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <ListView
+                x:Name="EnvelopeList"
+                Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                BackgroundColor="White"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding GroupedBudgets}"
+                SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
+                IsGroupingEnabled="true"
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
@@ -101,9 +198,26 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
-                    <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"/>
+                    <ContentView 
+                        BackgroundColor="White"
+                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
                 </ListView.Footer>
             </ListView>
-        </StackLayout>
+            <Button
+                x:Name="NewTransactionButton"
+                Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                Margin="16,0,16,8"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add Transaction" 
+                VerticalOptions="End"
+                Command="{Binding AddTransactionCommand}"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
+        </Grid>
     </uc:StepperPage.BodyContent>
 </uc:StepperPage>
