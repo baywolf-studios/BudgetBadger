@@ -15,9 +15,11 @@
             <x:Double x:Key="ListDenseGroupHeaderFontSize">12</x:Double>
             <x:Double x:Key="ListDenseItemFontSize">13</x:Double>
             <x:Double x:Key="ListDenseItemSecondaryFontSize">13</x:Double>
-            <x:Double x:Key="ListDenseGroupHeaderHeight">40</x:Double>
+            <x:Double x:Key="ListDenseGroupHeaderHeight">32</x:Double>
             <x:Double x:Key="ListDenseItemDoubleHeight">60</x:Double>
 
+            <x:Double x:Key="PageHeaderFontSize">20</x:Double>
+            <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
             
             <x:Double x:Key="DataGridColumnHeaderFontSize">12</x:Double>
             <x:Double x:Key="DataGridItemFontSize">13</x:Double>

@@ -24,7 +24,17 @@
                     </Grid.RowDefinitions>
                     <uc:TextEntry Grid.Row="0" Label="Name" Text="{Binding Payee.Description}"/>
                     <uc:MultilineTextEntry Grid.Row="1" Label="Notes" Text="{Binding Payee.Notes}"/>
-                    <Button Grid.Row="2" IsVisible="{Binding Payee.IsActive}" Text="Delete Payee" TextColor="Red" Command="{Binding DeleteCommand}"/>
+                    <Button
+                        Grid.Row="2"
+                        IsVisible="{Binding Payee.IsActive}"
+                        Command="{Binding DeleteCommand}"
+                        FontFamily="{StaticResource FontFamilyMedium}"
+                        FontSize="14"
+                        Text="Delete Payee"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        BorderWidth="0"
+                        BorderRadius="2"/>
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>

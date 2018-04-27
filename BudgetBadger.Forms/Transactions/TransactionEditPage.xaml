@@ -43,7 +43,17 @@
                         <uc:Checkbox Label="Cleared" IsChecked="{Binding Transaction.Posted}"/>
                     </StackLayout>
                     <uc:MultilineTextEntry Grid.Row="6" Label="Notes" Text="{Binding Transaction.Notes}"/>
-                    <Button Grid.Row="7" Text="Delete Transaction" Command="{Binding DeleteCommand}" TextColor="Red"/>
+                    <Button
+                        Grid.Row="7"
+                        IsVisible="{Binding Transaction.IsActive}"
+                        Command="{Binding DeleteCommand}"
+                        FontFamily="{StaticResource FontFamilyMedium}"
+                        FontSize="14"
+                        Text="Delete Transaction"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        BorderWidth="0"
+                        BorderRadius="2"/>
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>

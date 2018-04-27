@@ -28,7 +28,17 @@
                     <uc:DropdownSelector Grid.Row="1" Label="Type" IsEnabled="{Binding Account.IsNew}" SelectedItem="{Binding SelectedAccountType}" ItemsSource="{Binding AccountTypes}" ItemDisplayBinding="{Binding .}"/>
                     <uc:CalculatorEntry Grid.Row="2" Prefix="$" IsEnabled="{Binding Account.IsNew}" Label="Balance" Number="{Binding Account.Balance}" />
                     <uc:MultilineTextEntry Grid.Row="3" Keyboard="Text" Label="Notes" Text="{Binding Account.Notes}"/>
-                    <Button Grid.Row="4" IsVisible="{Binding Account.IsActive}" Command="{Binding DeleteCommand}" Text="Delete Account" TextColor="Red" />
+                    <Button
+                        Grid.Row="4"
+                        IsVisible="{Binding Account.IsActive}"
+                        Command="{Binding DeleteCommand}"
+                        FontFamily="{StaticResource FontFamilyMedium}"
+                        FontSize="14"
+                        Text="Delete Account"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        BorderWidth="0"
+                        BorderRadius="2"/>
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>
