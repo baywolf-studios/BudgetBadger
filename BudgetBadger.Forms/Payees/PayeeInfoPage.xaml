@@ -70,7 +70,7 @@
                                 <Label 
                                     Grid.Row="1"
                                     Grid.Column="0" 
-                                    Text="{Binding Payee.Description}"
+                                    Text="{Binding Account.Description}"
                                     FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Start"
