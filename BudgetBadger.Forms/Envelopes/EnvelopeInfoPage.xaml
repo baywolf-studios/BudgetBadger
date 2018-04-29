@@ -170,7 +170,7 @@
                                 <Label
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="{Binding Envelope.Description}"
+                                    Text="{Binding Payee.Description}"
                                     FontSize="{StaticResource ListDenseItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="End"
@@ -180,7 +180,7 @@
                                 <Label 
                                     Grid.Row="1"
                                     Grid.Column="0" 
-                                    Text="{Binding Payee.Description}"
+                                    Text="{Binding Account.Description}"
                                     FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="Start"

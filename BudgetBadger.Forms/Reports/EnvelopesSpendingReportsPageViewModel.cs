@@ -113,7 +113,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
 
-                EnvelopeChart = new DonutChart() { Entries = envelopeEntries };
+                EnvelopeChart = new BarChart() { Entries = envelopeEntries };
             }
             finally
             {

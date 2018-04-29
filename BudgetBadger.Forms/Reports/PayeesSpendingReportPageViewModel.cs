@@ -113,7 +113,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
 
-                PayeeChart = new DonutChart() { Entries = payeeEntries };
+                PayeeChart = new BarChart() { Entries = payeeEntries };
             }
             finally
             {

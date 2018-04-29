@@ -154,7 +154,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
 
-                PayeeChart = new BarChart() { Entries = payeeEntries };
+                PayeeChart = new PointChart() { Entries = payeeEntries };
             }
             finally
             {
