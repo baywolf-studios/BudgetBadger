@@ -3,15 +3,61 @@
     Title="Settings"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.Settings.SettingsPage">
+    x:Class="BudgetBadger.Forms.Settings.SettingsPage"
+    BackgroundColor="White">
 	<uc:RootPage.BodyContent>
-        <TableView Intent="Settings">
-            <TableRoot>
-                <TableSection>
-                    <TextCell Text="Sync" Detail="{Binding SyncMode}" Command="{Binding SyncCommand}"/>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+        <Grid Margin="16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="56"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="56"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource ListGroupHeaderHeight}"/>
+                <RowDefinition Height="{StaticResource ListItemSingleHeight}"/>
+                <!--<RowDefinition Height="{StaticResource ListItemSingleHeight}"/>-->
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Text="Sync"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="{StaticResource ListGroupHeaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                VerticalTextAlignment="Center"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Dropbox"
+                FontFamily="{StaticResource FontFamilyRegular}"
+                FontSize="{StaticResource ListItemFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                VerticalTextAlignment="Center"/>
+            <Switch
+                Grid.Row="1"
+                Grid.Column="2"
+                IsToggled="{Binding DropboxEnabled}"
+                VerticalOptions="CenterAndExpand">
+                <Switch.Behaviors>
+                    <b:EventToCommandBehavior EventName="Toggled" Command="{Binding SyncToggleCommand}" />
+                </Switch.Behaviors>
+            </Switch>
+            <!--<Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="Sync Now"
+                FontFamily="{StaticResource FontFamilyRegular}"
+                FontSize="{StaticResource ListItemFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"/>
+            <ActivityIndicator
+                Grid.Row="2"
+                Grid.Column="2"
+                IsRunning="true"
+                VerticalOptions="CenterAndExpand"/>-->
+        </Grid>
 	</uc:RootPage.BodyContent>
 </uc:RootPage>
