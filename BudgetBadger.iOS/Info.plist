@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>BudgetBadger</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.baywolfstudios.budgetbadger</string>
+	<string>com.BayWolfStudios.BudgetBadger</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -15,7 +15,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>9.0</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
