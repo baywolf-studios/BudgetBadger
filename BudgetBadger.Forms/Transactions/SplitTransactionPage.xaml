@@ -1,47 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Done" Command="{Binding SaveCommand}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <ListView x:Name="TransactionList" IsRefreshing="{Binding IsBusy, Mode=OneWay}" ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
-            <ListView.Header>
-                <Grid Margin="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="Total" />
-                    <Entry Grid.Row="1" Grid.Column="0" Text="{Binding Total}" />
-                    <Label Grid.Row="0" Grid.Column="1" Text="Remaining" />
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Remaining}" />
-                </Grid>
-            </ListView.Header>
+<uc:ChildPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage"
+    Title="Split Transaction"
+    ToolbarItemIcon="save.svg"
+    ToolbarItemText="Save"
+    ToolbarItemCommand="{Binding SaveCommand}">
+    <uc:ChildPage.BodyContent>
+        <Grid
+            BackgroundColor="White"
+            Margin="0"
+            ColumnSpacing="16"
+            RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label
+                Margin="16,4,0,4"
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Total"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource PrimaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+            <Label
+                Margin="0,4,16,4"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding Total, StringFormat='{0:c}'}"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Center"
+                FontSize="{StaticResource PageHeaderFontSize}"
+                TextColor="{StaticResource SecondaryTextColor}"
+                FontFamily="{StaticResource FontFamilyMedium}"/>
+             <BoxView
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            
+            <ListView
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
+                x:Name="TransactionList"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                ItemsSource="{Binding Transactions}"
+                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
             <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Grid Margin="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Payee.Description, StringFormat='P: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='E: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Account.Description, StringFormat='A: {0}'}" />
-                            <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
-                        </Grid>
+                    <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
+                            <Grid 
+                                BackgroundColor="White" 
+                                Margin="16, 0" 
+                                RowSpacing="0" 
+                                ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding Payee.Description}"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="End"
+                                    HorizontalTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="0" 
+                                    Text="{Binding Account.Description}"
+                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource SecondaryTextColor}"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Text="{Binding Amount, StringFormat='{0:c}'}"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="End"
+                                    HorizontalTextAlignment="End"
+                                    LineBreakMode="NoWrap"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="1" 
+                                    Text="{Binding Envelope.Description}"
+                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource SecondaryTextColor}"/>
+                            </Grid>
                         <ViewCell.ContextActions>
                             <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Edit" />
                             <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference TransactionList}}" CommandParameter="{Binding .}" Text="Remove" />
@@ -51,11 +129,40 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <StackLayout Orientation="Vertical">
-                    <Button Text="Add New Transaction" Command="{Binding AddNewCommand}" />
-                    <Button Text="Add Exisiting Transaction" Command="{Binding AddExistingCommand}" />
-                </StackLayout>
+                <ContentView 
+                    BackgroundColor="White"
+                    Margin="0,0,0,8"
+                    HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
             </ListView.Footer>
-        </ListView>
-    </ContentPage.Content>
-</ContentPage>
+            </ListView>
+            <Button
+                x:Name="NewTransactionButton"
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="16,0,0,8"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add New" 
+                VerticalOptions="End"
+                Command="{Binding AddNewCommand}"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
+            <Button
+                x:Name="ExistingTransactionButton"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,0,16,8"
+                FontFamily="{StaticResource FontFamilyMedium}"
+                FontSize="14"
+                Text="Add Exisiting" 
+                VerticalOptions="End"
+                Command="{Binding AddExistingCommand}"
+                BackgroundColor="{StaticResource AppBarColor}"
+                TextColor="White"
+                BorderWidth="0"
+                BorderRadius="2"/>
+        </Grid>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>

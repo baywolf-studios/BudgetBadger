@@ -20,7 +20,6 @@ using BudgetBadger.Core.Files;
 using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.Forms.Settings;
 using BudgetBadger.Core.Settings;
-using BudgetBadger.Forms.Sync;
 using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
@@ -183,8 +182,6 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeTrendReportPage, EnvelopeTrendReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeesSpendingReportPage, PayeesSpendingReportPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeeTrendReportPage, PayeeTrendReportPageViewModel>();
-            containerRegistry.RegisterForNavigation<SyncPage, SyncPageViewModel>();
-            containerRegistry.RegisterForNavigation<SyncModesPage, SyncModesPageViewModel>();
 
             timer.Stop();
         }
