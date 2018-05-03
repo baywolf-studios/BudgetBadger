@@ -1,35 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" x:Class="BudgetBadger.Forms.Transactions.TransactionSelectionPage">
-    <ContentPage.Content>
-            <ListView IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" RefreshCommand="{Binding RefreshCommand}" ItemsSource="{Binding GroupedTransactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" IsGroupingEnabled="true" GroupDisplayBinding="{Binding Key}">
-                <ListView.Header>
-                    <SearchBar SearchCommand="{Binding SearchCommand}" Placeholder="Search" Text="{Binding SearchText}" />
-                </ListView.Header>
+<uc:ChildSearchPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    x:Class="BudgetBadger.Forms.Transactions.TransactionSelectionPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
+    <uc:ChildSearchPage.BodyContent>
+        <ListView
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding GroupedTransactions}"
+                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                IsGroupingEnabled="true"
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
+                            <ContentView 
+                                BackgroundColor="White"
+                                Margin="16,0">
+                                <Label
+                                    BackgroundColor="White"
+                                    FontSize="{StaticResource ListDenseGroupHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource SecondaryTextColor}"
+                                    Text="{Binding Key}"/>
+                            </ContentView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid Margin="4">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
+                        <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
+                            <Grid 
+                                BackgroundColor="White" 
+                                Margin="16, 0" 
+                                RowSpacing="0" 
+                                ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="0" Text="{Binding ServiceDate, StringFormat='Date: {0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="0" Text="{Binding Envelope.Description, StringFormat='Envelope: {0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="0" Grid.Column="1" Text="{Binding Account.Description, StringFormat='Account: {0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.Row="1" Grid.Column="1" Text="{Binding Payee.Description, StringFormat='Payee: {0}'}" />
-                                <Label LineBreakMode="TailTruncation" FontSize="Small" Grid.RowSpan="2" Grid.Column="2" Text="{Binding Amount, StringFormat='{0:c}'}" />
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding Payee.Description}"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="End"
+                                    HorizontalTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="0" 
+                                    Text="{Binding Account.Description}"
+                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource SecondaryTextColor}"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Text="{Binding Amount, StringFormat='{0:c}'}"
+                                    FontSize="{StaticResource ListDenseItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="End"
+                                    HorizontalTextAlignment="End"
+                                    LineBreakMode="NoWrap"
+                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="1" 
+                                    Text="{Binding Envelope.Description}"
+                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource SecondaryTextColor}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>
