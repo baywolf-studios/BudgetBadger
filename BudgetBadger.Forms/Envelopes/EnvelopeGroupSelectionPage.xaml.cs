@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public partial class EnvelopeGroupsPage : ChildSearchPage
+    public partial class EnvelopeGroupSelectionPage : ChildSearchPage
     {
-        public EnvelopeGroupsPage()
+        public EnvelopeGroupSelectionPage()
         {
             InitializeComponent();
         }

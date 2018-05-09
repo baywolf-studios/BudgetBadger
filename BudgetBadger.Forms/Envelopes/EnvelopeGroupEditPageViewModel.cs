@@ -12,9 +12,9 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BindableBase, INavigatingAware
+    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigatingAware
     {
-        readonly IPayeeLogic _payeeLogic;
+		readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISync _syncService;
@@ -33,27 +33,27 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _busyText, value);
         }
 
-        Payee _payee;
-        public Payee Payee
+		EnvelopeGroup _envelopeGroup;
+		public EnvelopeGroup EnvelopeGroup
         {
-            get => _payee;
-            set => SetProperty(ref _payee, value);
+            get => _envelopeGroup;
+            set => SetProperty(ref _envelopeGroup, value);
         }
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public PayeeEditPageViewModel(INavigationService navigationService,
-                                      IPageDialogService dialogService,
-                                      IPayeeLogic payeeLogic,
-                                      ISync syncService)
+		public EnvelopeGroupEditPageViewModel(INavigationService navigationService,
+                                              IPageDialogService dialogService,
+		                                      IEnvelopeLogic envelopeLogic,
+		                                      ISync syncService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _payeeLogic = payeeLogic;
+            _envelopeLogic = envelopeLogic;
             _syncService = syncService;
 
-            Payee = new Payee();
+			EnvelopeGroup = new EnvelopeGroup();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
@@ -61,10 +61,10 @@ namespace BudgetBadger.Forms.Payees
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
-            if (payee != null)
+            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
+            if (envelopeGroup != null)
             {
-                Payee = payee.DeepCopy();
+                EnvelopeGroup = envelopeGroup.DeepCopy();
             }
         }
 
@@ -80,7 +80,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Saving";
-                var result = await _payeeLogic.SavePayeeAsync(Payee);
+				var result = await _envelopeLogic.SaveEnvelopeGroupAsync(EnvelopeGroup);
 
                 if (result.Success)
                 {
@@ -88,10 +88,10 @@ namespace BudgetBadger.Forms.Payees
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
 
-					var parameters = new NavigationParameters
+                    var parameters = new NavigationParameters
                     {
-                        { PageParameter.Payee, result.Data }
-                    };               
+                        { PageParameter.EnvelopeGroup, result.Data }
+                    };
                     await _navigationService.GoBackAsync(parameters);
 
                     var syncResult = await syncTask;
@@ -115,7 +115,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteCommand()
         {
-            var result = await _payeeLogic.DeletePayeeAsync(Payee.Id);
+			var result = await _envelopeLogic.DeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
 
             if (result.Success)
             {

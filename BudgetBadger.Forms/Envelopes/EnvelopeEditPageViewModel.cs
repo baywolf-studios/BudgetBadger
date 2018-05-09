@@ -60,8 +60,8 @@ namespace BudgetBadger.Forms.Envelopes
             GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
+        
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
@@ -80,6 +80,19 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 Budget.Schedule = budgetSchedule.DeepCopy();
             }
+			else if (!Budget.Schedule.IsActive)
+			{
+				var result = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+                if (result.Success)
+				{
+					Budget.Schedule = result.Data;
+				}
+				else
+				{
+					await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+					await _navigationService.GoBackAsync();
+				}
+			}
         }
 
         public async Task ExecuteSaveCommand()
@@ -101,7 +114,12 @@ namespace BudgetBadger.Forms.Envelopes
 
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
-                    await _navigationService.GoBackAsync();
+
+					var parameters = new NavigationParameters
+                    {
+                        { PageParameter.Envelope, result.Data.Envelope }
+                    };
+                    await _navigationService.GoBackAsync(parameters);
 
                     var syncResult = await syncTask;
                     if (!syncResult.Success)
@@ -124,7 +142,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteGroupSelectedCommand()
         {
-            await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage);
+            await _navigationService.NavigateAsync(PageName.EnvelopeGroupSelectionPage);
         }
 
         public async Task ExecuteDeleteCommand()

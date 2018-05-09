@@ -23,6 +23,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+		public ICommand AddCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -76,7 +77,15 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+			var account = parameters.GetValue<Account>(PageParameter.Account);
+			if (account != null)
+			{
+				await _navigationService.GoBackAsync(parameters);
+			}
+			else
+			{
+				await ExecuteRefreshCommand();
+			}
         }
 
         public async Task ExecuteSelectedCommand()
@@ -129,6 +138,11 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteSearchCommand()
         {
             GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, SearchText));
+        }
+
+		public async Task ExecuteAddCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.AccountEditPage);
         }
     }
 }

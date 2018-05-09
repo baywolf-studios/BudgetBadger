@@ -74,10 +74,10 @@
       <DependentUpon>..\Views\Views\TransactionPage.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupSelectionPage.xaml.cs">
-      <DependentUpon>EnvelopeGroupsPage.xaml</DependentUpon>
+      <DependentUpon>EnvelopeGroupSelectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupsPage.xaml.cs">
-      <DependentUpon>EnvelopeGroupsPage.xaml</DependentUpon>
+      <DependentUpon>EnvelopeGroupsSelectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Settings\SettingsPage.xaml.cs">
       <DependentUpon>..\Views\Views\SettingsPage.xaml</DependentUpon>

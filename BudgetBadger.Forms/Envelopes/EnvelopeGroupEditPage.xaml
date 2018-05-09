@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uc:ChildPage
+    Title="Edit Envelope Group"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupEditPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    ToolbarItemText="Save"
+    ToolbarItemIcon="save.svg"
+    ToolbarItemCommand="{Binding SaveCommand}">
+    <uc:ChildPage.Triggers>
+        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding EnvelopeGroup.IsNew}" Value="True">
+            <Setter Property="Title" Value="New Envelope Group" />
+        </DataTrigger>
+    </uc:ChildPage.Triggers>
+    <uc:ChildPage.BodyContent>
+        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+            <ScrollView Orientation="Vertical">
+                <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <uc:TextEntry Grid.Row="0" Label="Name" Text="{Binding EnvelopeGroup.Description}"/>
+                    <uc:MultilineTextEntry Grid.Row="1" Label="Notes" Text="{Binding EnvelopeGroup.Notes}"/>
+                    <Button
+                        Grid.Row="2"
+                        IsVisible="{Binding EnvelopeGroup.IsActive}"
+                        Command="{Binding DeleteCommand}"
+                        FontFamily="{StaticResource FontFamilyMedium}"
+                        FontSize="14"
+                        Text="Delete Payee"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        BorderWidth="0"
+                        BorderRadius="2"/>
+                </Grid>
+            </ScrollView>
+        </uc:BusyIndicator>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>
