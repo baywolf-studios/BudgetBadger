@@ -23,6 +23,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand RefreshCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+		public ICommand AddCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -75,11 +76,25 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+			var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+			if (payee != null)
+			{
+                await _navigationService.GoBackAsync(parameters);
+			}
+			else
+			{
+				await ExecuteRefreshCommand();
+			}
+        }
+
+		public async Task ExecuteAddCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.PayeeEditPage);
         }
 
         public async Task ExecuteSelectedCommand()

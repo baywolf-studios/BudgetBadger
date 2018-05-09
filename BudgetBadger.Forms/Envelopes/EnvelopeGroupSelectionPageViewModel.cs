@@ -14,7 +14,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BindableBase, INavigatingAware
+    public class EnvelopeGroupSelectionPageViewModel : BindableBase, INavigatingAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -25,6 +25,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+		public ICommand AddCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -70,7 +71,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
-        public EnvelopeGroupsPageViewModel(INavigationService navigationService,
+        public EnvelopeGroupSelectionPageViewModel(INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic,
                                            ISync syncService)
@@ -88,11 +89,20 @@ namespace BudgetBadger.Forms.Envelopes
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+			var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
+            if (envelopeGroup != null)
+            {
+                await _navigationService.GoBackAsync(parameters);
+            }
+            else
+            {
+                await ExecuteRefreshCommand();
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -194,6 +204,11 @@ namespace BudgetBadger.Forms.Envelopes
         public void ExecuteSearchCommand()
         {
             FilteredEnvelopeGroups = _envelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
+        }
+
+		public async Task ExecuteAddCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage);
         }
     }
 }

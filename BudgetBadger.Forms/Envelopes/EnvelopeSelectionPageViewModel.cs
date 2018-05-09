@@ -22,6 +22,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+		public ICommand AddCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -64,11 +65,20 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
+			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+			var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
+			if (envelope != null)
+            {
+                await _navigationService.GoBackAsync(parameters);
+            }
+            else
+            {
+                await ExecuteRefreshCommand();
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -134,6 +144,11 @@ namespace BudgetBadger.Forms.Envelopes
         public void ExecuteSearchCommand(string searchText)
         {
             GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, searchText));
+        }
+
+		public async Task ExecuteAddCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage);
         }
     }
 }

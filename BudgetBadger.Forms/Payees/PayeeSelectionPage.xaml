@@ -7,7 +7,10 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.Payees.PayeeSelectionPage"
     SearchCommand="{Binding SearchCommand}"
-    SearchText="{Binding SearchText}">
+    SearchText="{Binding SearchText}"
+    ToolbarItemCommand="{Binding AddCommand}"
+    ToolbarItemIcon="newicon.svg"
+    ToolbarItemText="New">
     <uc:ChildSearchPage.BodyContent>
         <ListView
             x:Name="PayeeList" 
@@ -25,7 +28,19 @@
                 <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
             </ListView.Behaviors>
             <ListView.Header>
-                <Button IsVisible="{Binding HasSearchText}" Command="{Binding SaveCommand}" Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"/>
+                <Button
+                    FontFamily="{StaticResource FontFamilyMedium}"
+                    Margin="16,8"
+                    FontSize="14"
+                    Text="{Binding SearchText, StringFormat='Add Payee: {0}'}" 
+                    IsVisible="{Binding HasSearchText}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource AppBarColor}"
+                    TextColor="White"
+                    BorderWidth="0"
+                    BorderRadius="2"/>
             </ListView.Header>
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>

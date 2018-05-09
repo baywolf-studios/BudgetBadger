@@ -107,7 +107,12 @@ namespace BudgetBadger.Forms.Accounts
                     
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
-                    await _navigationService.GoBackAsync();
+
+					var parameters = new NavigationParameters
+                    {
+                        { PageParameter.Account, result.Data }
+                    };
+                    await _navigationService.GoBackAsync(parameters);
 
                     var syncResult = await syncTask;
                     if (!syncResult.Success)
