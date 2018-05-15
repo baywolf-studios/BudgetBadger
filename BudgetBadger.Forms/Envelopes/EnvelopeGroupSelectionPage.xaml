@@ -21,25 +21,37 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
                 RefreshCommand="{Binding RefreshCommand}" 
                 ItemsSource="{Binding FilteredEnvelopeGroups}" 
-                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}">
+                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
+                Header="{x:Null}">
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
-                <ListView.Header>
-                    <Button
-                        FontFamily="{StaticResource FontFamilyMedium}"
-                        FontSize="14"
-                        Margin="16,8"
-                        Text="{Binding SearchText, StringFormat='Add Group: {0}'}" 
-                        IsVisible="{Binding HasSearchText}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        Command="{Binding SaveCommand}"
-                        BackgroundColor="{StaticResource AppBarColor}"
-                        TextColor="White"
-                        BorderWidth="0"
-                        BorderRadius="2"/>
-                </ListView.Header>
+                <ListView.Triggers>
+                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="False">
+                      <Setter Property="Header" Value="{x:Null}"/>
+                   </DataTrigger>
+                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="True">
+                      <Setter Property="Header" Value="{Binding .}"/>
+                   </DataTrigger>
+                </ListView.Triggers>
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ContentView>
+                            <Button
+                                FontFamily="{StaticResource FontFamilyMedium}"
+                                FontSize="14"
+                                Margin="16,8"
+                                Text="{Binding SearchText, StringFormat='Add Group: {0}'}"
+                                Command="{Binding SaveCommand}"
+                                BackgroundColor="White"
+                                BorderColor="{StaticResource AppBarColor}"
+                                TextColor="{StaticResource AppBarColor}"
+                                BorderWidth="1"
+                                BorderRadius="4">
+                            </Button>
+                        </ContentView>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
