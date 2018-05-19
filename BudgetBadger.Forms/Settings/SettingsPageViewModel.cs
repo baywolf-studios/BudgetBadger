@@ -48,7 +48,9 @@ namespace BudgetBadger.Forms.Settings
 
         public async Task ExecuteSyncToggleCommand()
         {
-            if (DropboxEnabled)
+			var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+
+			if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
                 try
                 {
@@ -75,7 +77,7 @@ namespace BudgetBadger.Forms.Settings
                     DropboxEnabled = false;
                 }
             }
-            else
+			else if (!DropboxEnabled) 
             {
                 await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
             }

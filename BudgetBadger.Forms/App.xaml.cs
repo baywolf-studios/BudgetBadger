@@ -145,10 +145,10 @@ namespace BudgetBadger.Forms
                 Arg.Index<string>(2),
                 Arg.Index<string>(3),
                 null),
-                                                         _ => SyncMode.DropboxSync,
-                                                         _ => "***REMOVED***",
-                                                         _ => "",
-                                                         _ => "budgetbadger://authorize"));
+                _ => SyncMode.DropboxSync,
+                _ => "***REMOVED***",
+                _ => "",
+                _ => "budgetbadger://authorize"));
 
             container.Register(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
                                                                           Arg.Of<IDirectoryInfo>(),
