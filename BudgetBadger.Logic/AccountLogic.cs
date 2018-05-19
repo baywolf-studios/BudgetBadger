@@ -61,6 +61,7 @@ namespace BudgetBadger.Logic
                     return validationResult;
                 }
 
+				account.ModifiedDateTime = DateTime.Now;
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
                 result.Success = true;

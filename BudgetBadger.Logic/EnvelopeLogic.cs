@@ -204,6 +204,7 @@ namespace BudgetBadger.Logic
                     return validationResult;
                 }
 
+				envelopeToDelete.ModifiedDateTime = DateTime.Now;
                 envelopeToDelete.DeletedDateTime = DateTime.Now;
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
                 result.Success = true;
@@ -246,6 +247,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroupToDelete = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id);
+				envelopeGroupToDelete.ModifiedDateTime = DateTime.Now;
                 envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
                 await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
                 result.Success = true;

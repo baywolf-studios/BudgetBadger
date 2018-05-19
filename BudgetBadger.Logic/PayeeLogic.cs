@@ -64,6 +64,7 @@ namespace BudgetBadger.Logic
                     return validationResult;
                 }
 
+				payee.ModifiedDateTime = DateTime.Now;
                 payee.DeletedDateTime = DateTime.Now;
 
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
