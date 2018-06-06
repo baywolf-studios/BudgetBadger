@@ -111,10 +111,10 @@ namespace BudgetBadger.Logic
                 accounts = allAccounts.Where(a => a.IsActive);
             }
 
-            var tasks = accounts.Select(a => GetPopulatedAccount(a));
+            var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+			result.Data = OrderAccounts(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -127,10 +127,10 @@ namespace BudgetBadger.Logic
 
             var accounts = allAccounts.Where(a => a.IsActive);
 
-            var tasks = accounts.Select(a => GetPopulatedAccount(a));
+            var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+			result.Data = OrderAccounts(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -148,6 +148,11 @@ namespace BudgetBadger.Logic
             }
 
             return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
+        }
+        
+		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
+        {
+            return accounts.OrderBy(a => a.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
