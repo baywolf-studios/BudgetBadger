@@ -24,7 +24,7 @@
                                 FontSize="{StaticResource ListGroupHeaderFontSize}"
                                 FontFamily="{StaticResource FontFamilyMedium}"
                                 VerticalTextAlignment="Center"
-                                TextColor="{StaticResource SecondaryTextColor}"
+                                TextColor="{StaticResource ListGroupHeaderTextColor}"
                                 Text="{Binding Key}"
                                 Margin="16, 8"/>
                                 </StackLayout>
