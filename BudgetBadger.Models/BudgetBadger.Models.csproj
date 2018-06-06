@@ -8,4 +8,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Extensions\SortingExtensions.cs" />
+  </ItemGroup>
 </Project>
