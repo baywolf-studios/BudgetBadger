@@ -301,6 +301,11 @@ namespace BudgetBadger.Logic
             return envelopeGroup.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
         }
 
+		public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
+        {
+			return budgets.OrderBy(a => a.Envelope.Group.Description).ToList();
+        }
+
         public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
         {
             var groupedBudgets = budgets.GroupBy(b => b.Envelope.Group.Description).ToList();

@@ -146,8 +146,8 @@ namespace BudgetBadger.Logic
             {
                 return accounts.ToList();
             }
-
-            return accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
+            
+			return OrderAccounts(accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
         }
         
 		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
@@ -157,9 +157,13 @@ namespace BudgetBadger.Logic
 
         public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
         {
-            var groupedAccounts = accounts.GroupBy(a => a.Type).ToList();
+			var groupedAccounts = OrderAccounts(accounts).GroupBy(a => a.Type);
 
-            return groupedAccounts;
+			var orderedAndGroupedAccounts = new List<IGrouping<string, Account>>();
+			orderedAndGroupedAccounts.Add(groupedAccounts.FirstOrDefault(g => g.Any(a => a.OnBudget)));
+			orderedAndGroupedAccounts.Add(groupedAccounts.FirstOrDefault(g => g.Any(a => a.OffBudget)));
+
+			return orderedAndGroupedAccounts;
         }
 
         public async Task<Result> ValidateAccountAsync(Account account)

@@ -114,7 +114,7 @@ namespace BudgetBadger.Logic
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
 
                 result.Success = true;
-                result.Data = await Task.WhenAll(tasks);
+				result.Data = OrderPayees(await Task.WhenAll(tasks));
             }
             catch (Exception ex)
             {
@@ -144,12 +144,12 @@ namespace BudgetBadger.Logic
                     payees.AddRange(allPayees.Where(p => p.IsDeleted));
                 }
 
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
+                var tasks = payees.Select(GetPopulatedPayee);
 
-                var payeesTemp = await Task.WhenAll(tasks);
+				var payeesTemp = await Task.WhenAll(tasks);
 
                 result.Success = true;
-                result.Data = payeesTemp.Where(p => !p.IsAccount).ToList();
+				result.Data = OrderPayees(payeesTemp.Where(p => !p.IsAccount));
             }
             catch (Exception ex)
             {
@@ -167,12 +167,17 @@ namespace BudgetBadger.Logic
                 return payees.ToList();
             }
 
-            return payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower())).ToList();
+			return OrderPayees(payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+        }
+        
+		public IReadOnlyList<Payee> OrderPayees(IEnumerable<Payee> payees)
+        {
+            return payees.OrderBy(a => a.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Payee>> GroupPayees(IEnumerable<Payee> payees)
         {
-            var groupedPayees = payees.GroupBy(p =>
+			var groupedPayees = OrderPayees(payees).GroupBy(p =>
             {
                 if (p.IsAccount)
                 {
@@ -188,7 +193,12 @@ namespace BudgetBadger.Logic
                 }
             });
 
-            return groupedPayees.ToList();
+			var orderedAndGroupedPayees = new List<IGrouping<string, Payee>>();
+			orderedAndGroupedPayees.Add(groupedPayees.FirstOrDefault(g => g.Key == "Transfer"));
+			orderedAndGroupedPayees.AddRange(groupedPayees.Where(g => g.Key != "Transfer" && g.Key != "Deleted").OrderBy(g => g.Key));
+			orderedAndGroupedPayees.Add(groupedPayees.FirstOrDefault(g => g.Key == "Deleted"));
+
+			return orderedAndGroupedPayees;
         }
 
         public Task<Result> ValidatePayeeAsync(Payee payee)
