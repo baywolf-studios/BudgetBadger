@@ -62,10 +62,10 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                     {
                         var fileName = file.Name;
 
-                        var compressed = file.Name.EndsWith(".tz");
+                        var compressed = file.Name.EndsWith(".gz");
                         if (compressed)
                         {
-                            fileName = fileName.Substring(0, fileName.LastIndexOf(".tz"));
+                            fileName = fileName.Substring(0, fileName.LastIndexOf(".gz"));
                         }
 
                         var downloadArg = new DownloadArg("/" + file.Name);
@@ -113,14 +113,14 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
                     using (var compressedFileStream = Compress(fileStream))    
                     using (var dbx = new DropboxClient(_accessToken))
                     {
-                        if (file.Name.EndsWith(".tz"))
+                        if (file.Name.EndsWith(".gz"))
                         {
                             var commitInfo = new CommitInfo("/" + file.Name, mode: WriteMode.Overwrite.Instance);
                             var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, fileStream);
                         }
                         else
                         {
-                            var commitInfo = new CommitInfo("/" + file.Name + ".tz", mode: WriteMode.Overwrite.Instance);
+                            var commitInfo = new CommitInfo("/" + file.Name + ".gz", mode: WriteMode.Overwrite.Instance);
                             var dropBoxResponse = await dbx.Files.UploadAsync(commitInfo, compressedFileStream);
                         }
                     }

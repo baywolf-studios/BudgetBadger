@@ -145,7 +145,7 @@
                                     FontSize="{StaticResource ListDenseGroupHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilyMedium}"
                                     VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource SecondaryTextColor}"
+                                    TextColor="{StaticResource ListGroupHeaderTextColor}"
                                     Text="{Binding Key}"/>
                             </ContentView>
                         </ViewCell>

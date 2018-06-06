@@ -7,6 +7,11 @@
     x:Class="BudgetBadger.Forms.App">
 	<Application.Resources>
         <ResourceDictionary>
+            <Color x:Key="ListGroupHeaderTextColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#004d7f</x:String>
+                </x:Arguments>
+            </Color>
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListGroupHeaderHeight">48</x:Double>
             <x:Double x:Key="ListItemFontSize">16</x:Double>
