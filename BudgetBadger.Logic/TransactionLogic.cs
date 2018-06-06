@@ -62,12 +62,10 @@ namespace BudgetBadger.Logic
                 transactions.Add(transaction);
             }
 
-            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
-
-            var completedTasks = await Task.WhenAll(tasks);
+            var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-            result.Data = CombineSplitTransactions(completedTasks);
+			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
 
             return result;
         }
@@ -78,12 +76,10 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
 
-            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
-
-            var completedTasks = await Task.WhenAll(tasks);
+			var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-            result.Data = CombineSplitTransactions(completedTasks);
+			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
 
             return result;
         }
@@ -94,12 +90,10 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
 
-            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
-
-            var completedTasks = await Task.WhenAll(tasks);
-
+            var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
+                     
             result.Success = true;
-            result.Data = CombineSplitTransactions(completedTasks);
+			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
 
             return result;
         }
@@ -131,27 +125,35 @@ namespace BudgetBadger.Logic
 
             var transactions = await TransactionDataAccess.ReadTransactionsAsync();
 
-            var tasks = transactions.Where(t => t.IsActive).Select(t => GetPopulatedTransaction(t));
-
-            var completedTasks = await Task.WhenAll(tasks);
+            var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-            result.Data = CombineSplitTransactions(completedTasks);
+			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
 
             return result;
         }
 
         public IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText)
         {
-            //eventually look it up based on envelope description, account description, and payee description
-            return transactions.ToList();
+			var searchResults = transactions.Where(t => t.Envelope.Description.Contains(searchText)
+			                                       || t.Payee.Description.Contains(searchText)
+												   || t.Account.Description.Contains(searchText));
+
+			return OrderTransactions(searchResults);
+        }
+
+		public IReadOnlyList<Transaction> OrderTransactions(IEnumerable<Transaction> transactions)
+        {
+			return transactions.OrderByDescending(a => a.ServiceDate).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Transaction>> GroupTransactions(IEnumerable<Transaction> transactions)
         {
-            var groupedTransactions = transactions.GroupBy(t => String.Format("{0:d}", t.ServiceDate)).ToList();
+			var groupedTransactions = OrderTransactions(transactions).GroupBy(t => String.Format("{0:d}", t.ServiceDate));
 
-            return groupedTransactions;
+			var groupedAndOrderedTransactions = groupedTransactions.OrderByDescending(g => g.FirstOrDefault().ServiceDate).ToList();
+
+			return groupedAndOrderedTransactions;
         }
 
         public async Task<Result> ValidateTransactionAsync(Transaction transaction)
@@ -286,7 +288,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+			result.Data = OrderTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
