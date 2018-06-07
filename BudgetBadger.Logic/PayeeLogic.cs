@@ -194,9 +194,21 @@ namespace BudgetBadger.Logic
             });
 
 			var orderedAndGroupedPayees = new List<IGrouping<string, Payee>>();
-			orderedAndGroupedPayees.Add(groupedPayees.FirstOrDefault(g => g.Key == "Transfer"));
-			orderedAndGroupedPayees.AddRange(groupedPayees.Where(g => g.Key != "Transfer" && g.Key != "Deleted").OrderBy(g => g.Key));
-			orderedAndGroupedPayees.Add(groupedPayees.FirstOrDefault(g => g.Key == "Deleted"));
+
+			var transferPayees = groupedPayees.FirstOrDefault(g => g.Key == "Transfer");
+			if (transferPayees != null)
+			{
+				orderedAndGroupedPayees.Add(transferPayees);
+			}
+
+			var userPayees = groupedPayees.Where(g => g.Key != "Transfer" && g.Key != "Deleted").OrderBy(g => g.Key);
+			orderedAndGroupedPayees.AddRange(userPayees);
+
+			var deletedPayees = groupedPayees.FirstOrDefault(g => g.Key == "Deleted");
+			if (deletedPayees != null)
+			{
+				orderedAndGroupedPayees.Add(deletedPayees);
+			}
 
 			return orderedAndGroupedPayees;
         }

@@ -160,8 +160,18 @@ namespace BudgetBadger.Logic
 			var groupedAccounts = OrderAccounts(accounts).GroupBy(a => a.Type);
 
 			var orderedAndGroupedAccounts = new List<IGrouping<string, Account>>();
-			orderedAndGroupedAccounts.Add(groupedAccounts.FirstOrDefault(g => g.Any(a => a.OnBudget)));
-			orderedAndGroupedAccounts.Add(groupedAccounts.FirstOrDefault(g => g.Any(a => a.OffBudget)));
+
+			var budgetAccounts = groupedAccounts.FirstOrDefault(g => g.Any(a => a.OnBudget));
+			if (budgetAccounts != null)
+			{
+				orderedAndGroupedAccounts.Add(budgetAccounts);
+			}
+
+			var reportingAccounts = groupedAccounts.FirstOrDefault(g => g.Any(a => a.OffBudget));
+			if (reportingAccounts != null)
+			{
+				orderedAndGroupedAccounts.Add(reportingAccounts);
+			}
 
 			return orderedAndGroupedAccounts;
         }
