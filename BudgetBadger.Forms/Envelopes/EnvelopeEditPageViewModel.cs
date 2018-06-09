@@ -9,6 +9,7 @@ using Prism.Navigation;
 using Prism.Services;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -37,8 +38,17 @@ namespace BudgetBadger.Forms.Envelopes
         public Budget Budget
         {
             get => _budget;
-            set => SetProperty(ref _budget, value);
+			set
+			{
+				SetProperty(ref _budget, value);
+				RaisePropertyChanged(nameof(IsNotDebt));
+			}
         }
+        
+        public bool IsNotDebt
+		{
+			get { return !Budget.Envelope.Group.IsDebt(); }
+		}
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -147,14 +157,38 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteCommand()
         {
-            var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
-            if (result.Success)
+			if (IsBusy)
             {
-                await _navigationService.GoBackToRootAsync();
+                return;
             }
-            else
+
+            IsBusy = true;
+
+            try
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                BusyText = "Deleting";
+                var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncTask = _syncService.FullSync();
+
+                    await _navigationService.GoBackToRootAsync();
+
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                }
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

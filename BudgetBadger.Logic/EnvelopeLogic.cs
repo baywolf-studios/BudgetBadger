@@ -347,6 +347,17 @@ namespace BudgetBadger.Logic
             {
                 return Task.FromResult(budget.Validate());
             }
+            
+            if (budget.Envelope.IgnoreOverspend && !budget.IgnoreOverspend)
+			{
+				return Task.FromResult(new Result { Success = false, Message = "Cannot set Ignore Overspend Always when Ignore Overspend is not set" });
+			}
+
+			if (budget.Envelope.Group.IsDebt() && 
+			    (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
+            {
+                return Task.FromResult(new Result { Success = false, Message = "Ignore Overspend must be set on debt envelopes" });
+            }
 
             return Task.FromResult(new Result { Success = true });
         }
@@ -362,6 +373,7 @@ namespace BudgetBadger.Logic
             var result = new Result<Budget>();
             var budgetToUpsert = budget.DeepCopy();
             var dateTimeNow = DateTime.Now;
+
 
             var envelopeResult = await SaveEnvelopeAsync(budgetToUpsert.Envelope);
             if (envelopeResult.Success)
@@ -541,6 +553,12 @@ namespace BudgetBadger.Logic
             budgetToPopulate.Activity = activeTransactions
                 .Where(t => t.ServiceDate >= budgetToPopulate.Schedule.BeginDate && t.ServiceDate <= budgetToPopulate.Schedule.EndDate)
                 .Sum(t2 => t2.Amount ?? 0);
+
+            // inheritance for ignore overspend
+            if (budgetToPopulate.Envelope.IgnoreOverspend)
+			{
+				budgetToPopulate.IgnoreOverspend = true;
+			}
 
             return budgetToPopulate;
         }

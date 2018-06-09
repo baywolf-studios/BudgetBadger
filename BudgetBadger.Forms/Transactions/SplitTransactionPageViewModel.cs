@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Prism.Commands;
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
+		readonly ISync _syncService;
 
         public ICommand AddNewCommand { get; set; }
         public ICommand AddExistingCommand { get; set; }
@@ -75,11 +77,13 @@ namespace BudgetBadger.Forms.Transactions
 
         public SplitTransactionPageViewModel(INavigationService navigationService,
                                              IPageDialogService dialogService,
-                                             ITransactionLogic transLogic)
+                                             ITransactionLogic transLogic,
+		                                     ISync syncService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
+			_syncService = syncService;
 
             Transactions = new ObservableCollection<Transaction>();
 
@@ -198,12 +202,17 @@ namespace BudgetBadger.Forms.Transactions
                         await _dialogService.DisplayAlertAsync("Remove Unsuccessful", result.Message, "OK");
                         return;
                     }
+
+					var syncResult = await _syncService.FullSync();            
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    } 
                 }
                 finally
                 {
                     IsBusy = false;
-                }
-
+                }            
             }
 
             await RemoveTransaction(transaction);
@@ -226,7 +235,13 @@ namespace BudgetBadger.Forms.Transactions
                     {
                         await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
                         return;
-                    }
+                    }  
+
+					var syncResult = await _syncService.FullSync();            
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    } 
                 }
                 finally
                 {
@@ -251,7 +266,15 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.SaveSplitTransactionAsync(Transactions.Select(t => t.Id));
                 if (result.Success)
                 {
+					var syncTask = _syncService.FullSync();
+
                     await _navigationService.GoBackAsync();
+
+					var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }  
                 }
                 else
                 {

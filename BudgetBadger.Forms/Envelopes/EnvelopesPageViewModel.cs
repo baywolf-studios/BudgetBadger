@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.AppModel;
 using Prism.Services;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+		readonly ISync _syncService;
 
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
@@ -67,11 +69,15 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
-        public EnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
+        public EnvelopesPageViewModel(INavigationService navigationService,
+		                              IEnvelopeLogic envelopeLogic,
+		                              IPageDialogService dialogService,
+		                              ISync syncService)
         {
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+			_syncService = syncService;
 
             Schedule = null;
             Budgets = new List<Budget>();
@@ -222,6 +228,13 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
                 await ExecuteRefreshCommand();
             }
             else

@@ -33,7 +33,14 @@ namespace BudgetBadger.Models
         public bool IgnoreOverspend
         {
             get => ignoreOverspend;
-            set => SetProperty(ref ignoreOverspend, value);
+			set
+			{
+				SetProperty(ref ignoreOverspend, value);
+                if (value == false && Envelope != null)
+				{
+					Envelope.IgnoreOverspend = false;
+				}
+			}
         }
 
         decimal? amount;
