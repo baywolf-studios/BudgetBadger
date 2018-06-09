@@ -308,7 +308,7 @@ namespace BudgetBadger.Logic
 
 		public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
         {
-			return budgets.OrderBy(a => a.Envelope.Group.Description).ToList();
+			return budgets.OrderBy(a => a.Envelope.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
