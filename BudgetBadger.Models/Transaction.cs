@@ -22,14 +22,48 @@ namespace BudgetBadger.Models
             set { SetProperty(ref amount, value); OnPropertyChanged(nameof(Outflow)); OnPropertyChanged(nameof(Inflow)); }
         }
 
-        public decimal Outflow
+        public decimal? Outflow
         {
-            get => (Amount.HasValue && Amount < 0) ? Math.Abs(Amount.Value) : 0;
+			get
+			{
+				if (Amount.HasValue && Amount <= 0)
+				{
+					return Math.Abs(Amount.Value);               
+				}
+				else
+				{
+					return null;
+				}
+			}
+			set
+            {
+                if (value.HasValue || !(Amount.HasValue && Amount > 0))
+                {
+                    Amount = -1 * value;
+                }
+            }
         }
 
-        public decimal Inflow
+        public decimal? Inflow
         {
-            get => (Amount.HasValue && Amount > 0) ? Amount.Value : 0;
+			get
+			{
+				if (Amount.HasValue && Amount >= 0)
+				{
+					return Amount.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			set
+            {
+				if (value.HasValue || !(Amount.HasValue && Amount < 0))
+				{
+					Amount = value;
+				}
+            }
         }
 
         bool posted;

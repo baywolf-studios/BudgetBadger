@@ -17,6 +17,10 @@
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
             <ScrollView Orientation="Vertical">
                 <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="48"/>
                         <RowDefinition Height="48"/>
@@ -27,12 +31,13 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <uc:CalculatorEntry Grid.Row="0" Prefix="$" Label="Amount" Number="{Binding Transaction.Amount}"/>
-                    <uc:ButtonSelector Grid.Row="1" Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
-                    <uc:ButtonSelector Grid.Row="2" Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
-                    <uc:ButtonSelector Grid.Row="3" Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
-                    <uc:DateSelector Grid.Row="4" Label="Service Date" Date="{Binding Transaction.ServiceDate}"/>
-                    <StackLayout Grid.Row="5" Orientation="Vertical" Spacing="0">
+                    <uc:CalculatorEntry Grid.Row="0" Grid.Column="0" Prefix="$" Label="Outflow" Number="{Binding Transaction.Outflow}"/>
+                    <uc:CalculatorEntry Grid.Row="0" Grid.Column="1" Prefix="$" Label="Inflow" Number="{Binding Transaction.Inflow}"/>
+                    <uc:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2"  Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
+                    <uc:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2"  Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
+                    <uc:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2"  Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
+                    <uc:DateSelector Grid.Row="4" Grid.ColumnSpan="2"  Label="Service Date" Date="{Binding Transaction.ServiceDate}"/>
+                    <StackLayout Grid.Row="5" Grid.ColumnSpan="2"  Orientation="Vertical" Spacing="0">
                         <Label
                             FontSize="12"
                             FontFamily="{StaticResource FontFamilyRegular}"
@@ -42,9 +47,10 @@
                             Text="Status"/>
                         <uc:Checkbox Label="Cleared" IsChecked="{Binding Transaction.Posted}"/>
                     </StackLayout>
-                    <uc:MultilineTextEntry Grid.Row="6" Label="Notes" Text="{Binding Transaction.Notes}"/>
+                    <uc:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
                     <Button
                         Grid.Row="7"
+                        Grid.ColumnSpan="2" 
                         IsVisible="{Binding Transaction.IsActive}"
                         Command="{Binding DeleteCommand}"
                         FontFamily="{StaticResource FontFamilyMedium}"
