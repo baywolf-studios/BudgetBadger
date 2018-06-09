@@ -53,14 +53,19 @@ namespace BudgetBadger.Forms.Transactions
         public ObservableCollection<Transaction> Transactions
         {
             get => _transactions;
-            set => SetProperty(ref _transactions, value);
+			set
+			{
+				SetProperty(ref _transactions, value);
+				RaisePropertyChanged(nameof(Total));
+				RaisePropertyChanged(nameof(Remaining));
+			}
         }
 
         decimal _total;
         public decimal Total
         {
             get => _total;
-            set { SetProperty(ref _total, value); RaisePropertyChanged("Remaining"); }
+            set { SetProperty(ref _total, value); RaisePropertyChanged(nameof(Remaining)); }
         }
 
         public decimal Remaining
@@ -129,11 +134,28 @@ namespace BudgetBadger.Forms.Transactions
                     Transactions.Add(tran);
                 }
             }
+
+			RaisePropertyChanged(nameof(Total));
+            RaisePropertyChanged(nameof(Remaining));
         }
 
         public async Task ExecuteAddNewCommand()
         {
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+			if (Transactions.Count > 0)
+			{
+				//var envelope = Transactions.Last().Envelope; not needed normally
+				var parameters = new NavigationParameters
+                {
+					{ PageParameter.Payee, Transactions.Last().Payee },
+					{ PageParameter.Account, Transactions.Last().Account },
+					{ PageParameter.TransactionServiceDate, Transactions.Last().ServiceDate }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
+			}
+			else
+			{
+				await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+			}
         }
 
         public async Task ExecuteAddExistingCommand()

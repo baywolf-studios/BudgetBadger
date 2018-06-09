@@ -66,19 +66,25 @@ namespace BudgetBadger.Forms.Transactions
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
-            if (transaction != null)
-            {
-                Transaction = transaction.DeepCopy();
-            }
+		public async void OnNavigatingTo(NavigationParameters parameters)
+		{
+			var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
+			if (transaction != null)
+			{
+				Transaction = transaction.DeepCopy();
+			}
 
-            var transactionAmount = parameters.GetValue<decimal?>(PageParameter.TransactionAmount);
-            if (transactionAmount != null)
-            {
-                Transaction.Amount = transactionAmount.Value;
-            }
+			var transactionAmount = parameters.GetValue<decimal?>(PageParameter.TransactionAmount);
+			if (transactionAmount != null)
+			{
+				Transaction.Amount = transactionAmount.Value;
+			}
+
+			var transactionServiceDate = parameters.GetValue<DateTime?>(PageParameter.TransactionServiceDate);
+			if (transactionServiceDate != null)
+			{
+				Transaction.ServiceDate = transactionServiceDate.Value;
+			}
 
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
