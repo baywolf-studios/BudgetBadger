@@ -104,7 +104,7 @@ namespace BudgetBadger.Logic
                 foreach (var envelope in activeEnvelopes)
                 {
                     var envelopeTransactions = activeTransactions.Where(t => t.Envelope.Id == envelope.Id);
-                    var envelopeTransactionsSum = envelopeTransactions.Sum(t => t.Outflow);
+                    var envelopeTransactionsSum = envelopeTransactions.Sum(t => t.Outflow ?? 0);
                     dataPoints.Add(envelope.Description, envelopeTransactionsSum);
                 }
 
@@ -149,7 +149,7 @@ namespace BudgetBadger.Logic
                     if (!accountPayee.IsActive)
                     {
                         var payeeTransactions = activeTransactions.Where(t => t.Payee.Id == payee.Id);
-                        var payeeTransactionsSum = payeeTransactions.Sum(t => t.Outflow);
+                        var payeeTransactionsSum = payeeTransactions.Sum(t => t.Outflow ?? 0);
                         dataPoints.Add(payee.Description, payeeTransactionsSum);
                     }
                 }
