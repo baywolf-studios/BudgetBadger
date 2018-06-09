@@ -11,6 +11,7 @@ using Prism.Services;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.AppModel;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+		readonly ISync _syncService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -58,11 +60,15 @@ namespace BudgetBadger.Forms.Accounts
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
 
-        public AccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
+        public AccountsPageViewModel(INavigationService navigationService,
+		                             IPageDialogService dialogService,
+		                             IAccountLogic accountLogic,
+		                             ISync syncService)
         {
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+			_syncService = syncService;
 
             Accounts = new List<Account>();
             SelectedAccount = null;
@@ -159,6 +165,13 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
+				var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
                 await ExecuteRefreshCommand();
             }
             else

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Prism.Mvvm;
 using Prism.AppModel;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+		readonly ISync _syncService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -66,11 +68,15 @@ namespace BudgetBadger.Forms.Payees
             set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
         }
 
-        public PayeesPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
+        public PayeesPageViewModel(INavigationService navigationService,
+		                           IPageDialogService dialogService,
+		                           IPayeeLogic payeeLogic,
+		                           ISync syncService)
         {
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+			_syncService = syncService;
 
             Payees = new List<Payee>();
             SelectedPayee = null;
@@ -191,8 +197,15 @@ namespace BudgetBadger.Forms.Payees
         {
             var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
 
-            if (result.Success)
+			if (result.Success)
             {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
                 await ExecuteRefreshCommand();
             }
             else
