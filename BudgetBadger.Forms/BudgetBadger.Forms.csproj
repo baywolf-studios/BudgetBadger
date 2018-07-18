@@ -5,15 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="7.0.0.336-pre" />
-    <PackageReference Include="Prism.Forms" Version="7.0.0.336-pre" />
-    <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.336-pre" />
     <PackageReference Include="Dropbox.Api" Version="4.7.0" />
     <PackageReference Include="Clancey.SimpleAuth" Version="1.0.49" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
+    <PackageReference Include="Prism.Forms" Version="7.0.0.396" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.396" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

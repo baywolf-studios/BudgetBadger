@@ -77,7 +77,15 @@ namespace BudgetBadger.Forms
 
             SQLitePCL.Batteries_V2.Init();
 
-            await NavigationService.NavigateAsync("MainPage");
+            if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+            {
+                await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
+            }
+            else
+            {
+                await NavigationService.NavigateAsync("MainPage");
+            }
+
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -167,6 +175,7 @@ namespace BudgetBadger.Forms
             {
                 containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
             }
+            containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<AccountInfoPage, AccountInfoPageViewModel>();
