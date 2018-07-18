@@ -34,19 +34,16 @@
                 <On Platform="iOS">.SFUIText-Regular</On>
                 <On Platform="Android">sans-serif</On>
                 <On Platform="Windows">Segoe UI</On>
-                <On Platform="macOS">SFCompactDisplay-Regular</On>
             </OnPlatform>
             <OnPlatform x:Key="FontFamilyMedium" x:TypeArguments="x:String">
                 <On Platform="iOS">.SFUIText-Medium</On>
                 <On Platform="Android">sans-serif-medium</On>
                 <On Platform="Windows">Segoe UI Medium</On>
-                <On Platform="macOS">SFCompactDisplay-Medium</On>
             </OnPlatform>
             <OnPlatform x:Key="FontFamilySemiBold" x:TypeArguments="x:String">
                 <On Platform="iOS">.SFUIText-SemiBold</On>
                 <On Platform="Android">sans-serif-semibold</On>
                 <On Platform="Windows">Segoe UI SemiBold</On>
-                <On Platform="macOS">SFCompactDisplay-SemiBold</On>
             </OnPlatform>
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>

@@ -45,18 +45,6 @@
     <Reference Include="Mono.Android" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Prism">
-      <HintPath>..\packages\Prism.Core.7.0.0.336-pre\lib\netstandard2.0\Prism.dll</HintPath>
-    </Reference>
-    <Reference Include="DryIoc">
-      <HintPath>..\packages\DryIoc.dll.2.12.5\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\DryIoc.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.Forms">
-      <HintPath>..\packages\Prism.Forms.7.0.0.336-pre\lib\netstandard2.0\Prism.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.DryIoc.Forms">
-      <HintPath>..\packages\Prism.DryIoc.Forms.7.0.0.336-pre\lib\netstandard2.0\Prism.DryIoc.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="SQLitePCLRaw.core">
       <HintPath>..\packages\SQLitePCLRaw.core.1.1.7\lib\MonoAndroid\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
@@ -204,6 +192,18 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.3.1.0.637273\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="DryIoc">
+      <HintPath>..\packages\DryIoc.dll.2.12.6\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\DryIoc.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism">
+      <HintPath>..\packages\Prism.Core.7.0.0.396\lib\netstandard2.0\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Forms">
+      <HintPath>..\packages\Prism.Forms.7.0.0.396\lib\netstandard2.0\Prism.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.DryIoc.Forms">
+      <HintPath>..\packages\Prism.DryIoc.Forms.7.0.0.396\lib\netstandard2.0\Prism.DryIoc.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
