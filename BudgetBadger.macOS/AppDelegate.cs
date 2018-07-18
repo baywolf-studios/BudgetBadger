@@ -1,5 +1,7 @@
 ﻿using AppKit;
 using BudgetBadger.Forms;
+using FFImageLoading.Forms.Platform;
+using FFImageLoading.Svg.Forms;
 using Foundation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
@@ -28,8 +30,11 @@ namespace BudgetBadger.macOS
         public override void DidFinishLaunching(NSNotification notification)
         {
             Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            CachedImageRenderer.Init();
+            var ignore = typeof(SvgCachedImage);
             SimpleAuth.NativeSafariAuthenticator.Activate();
+
+            LoadApplication(new App());
             base.DidFinishLaunching(notification);
         }
     }

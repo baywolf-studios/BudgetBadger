@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TabbedPage Title="Test" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:BudgetBadger.Forms.Views" xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings" xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions" xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes" xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts" xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees" xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.Views.MainPage">
+<TabbedPage
+    Title="Test"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:local="clr-namespace:BudgetBadger.Forms.Views"
+    xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
+    xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions"
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts"
+    xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
+    xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Views.MainPage"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    android:TabbedPage.ToolbarPlacement="Bottom" >
     <TabbedPage.Children>
         <NavigationPage Title="Envelopes" Icon="{StaticResource EnvelopesTabIcon}" BarTextColor="White">
             <x:Arguments>

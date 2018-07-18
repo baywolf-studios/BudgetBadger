@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using SimpleAuth;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Reports;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms
 {
@@ -158,7 +159,14 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<ITransactionSyncLogic>(),
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
+            if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+            {
+                containerRegistry.RegisterForNavigation<MainDesktopPage, MainPageViewModel>("MainPage");
+            }
+            else
+            {
+                containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
+            }
             containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<AccountInfoPage, AccountInfoPageViewModel>();
