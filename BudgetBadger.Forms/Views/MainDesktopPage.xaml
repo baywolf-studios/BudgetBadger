@@ -6,8 +6,31 @@
     Title="Default">
     <MasterDetailPage.Master>
         <ContentPage Title="Default">
-            <StackLayout>
-                <Label Text="Test"/>
+            <StackLayout Spacing="8" Margin="16,0" HorizontalOptions="FillAndExpand">
+                <Label
+                    Text="Budget Badger"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="64"/>
+                <Label
+                    Text="Envelopes"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="48"/>
+                <Label
+                    Text="Accounts"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="48"/>
+                <Label
+                    Text="Payees"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="48"/>
+                <Label
+                    Text="Reports"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="48"/>
+                <Label
+                    Text="Settings"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="48"/>
             </StackLayout>
         </ContentPage>
     </MasterDetailPage.Master>
