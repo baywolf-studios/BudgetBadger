@@ -139,8 +139,10 @@
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}"
                 BackgroundColor="{StaticResource AppBarColor}"
+                BorderColor="{StaticResource AppBarColor}"
                 TextColor="White"
-                BorderWidth="0"
+                HeightRequest="36"
+                BorderWidth="2"
                 BorderRadius="2"/>
         </Grid>
     </uc:RootSearchPage.BodyContent>
