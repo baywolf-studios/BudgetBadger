@@ -18,13 +18,21 @@
         AbsoluteLayout.LayoutBounds="0,4,24,24"
         InputTransparent="true"
         ReplaceStringMap="{Binding ReplaceColorUnchecked}"
-        Source="uncheckedcheckbox.svg"/>
+        Source="uncheckedcheckbox.svg">
+        <svg:SvgCachedImage.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Handle_Tapped" />
+        </svg:SvgCachedImage.GestureRecognizers>
+    </svg:SvgCachedImage>
     <svg:SvgCachedImage
         x:Name="CheckedImage"
         AbsoluteLayout.LayoutBounds="0,4,24,24"
         InputTransparent="true"
         ReplaceStringMap="{Binding ReplaceColorChecked}"
-        Source="checkedcheckbox.svg"/>
+        Source="checkedcheckbox.svg">
+        <svg:SvgCachedImage.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Handle_Tapped" />
+        </svg:SvgCachedImage.GestureRecognizers>
+    </svg:SvgCachedImage>
     <Label
         x:Name="LabelControl"
         AbsoluteLayout.LayoutBounds="32,0,1,32"
