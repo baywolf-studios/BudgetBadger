@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="BudgetBadger.Forms.UserControls.Expander">
+    <ContentView.Content>
+        <StackLayout
+            Orientation="Vertical"
+            Spacing="16"
+            Margin="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="36"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <svg:SvgCachedImage
+                    x:Name="IconControl"
+                    Grid.Column="0"
+                    ReplaceStringMap="{Binding ReplaceColor}"
+                    Source="info.svg"
+                    InputTransparent="true"/>
+                <ContentView
+                    x:Name="HeaderView"
+                    Grid.Column="1"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Handle_Tapped"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <ContentView x:Name="BodyView" IsVisible="false"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

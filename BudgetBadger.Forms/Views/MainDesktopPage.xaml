@@ -3,7 +3,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="BudgetBadger.Forms.Views.MainDesktopPage"
-    Title="Default">
+    Title="Default"
+    IsPresented="true">
     <MasterDetailPage.Master>
         <ContentPage Title="Default">
             <StackLayout Spacing="8" Margin="16,0" HorizontalOptions="FillAndExpand">

@@ -106,9 +106,17 @@
                 BackgroundColor="{StaticResource AppBarColor}"
                 BorderColor="{StaticResource AppBarColor}"
                 TextColor="White"
-                HeightRequest="36"
+                HeightRequest="40"
                 BorderWidth="2"
-                BorderRadius="2"/>
+                BorderRadius="2">
+                <Button.HorizontalOptions>
+                    <OnIdiom x:TypeArguments="LayoutOptions">
+                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
+                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Button.HorizontalOptions>
+            </Button>
         </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

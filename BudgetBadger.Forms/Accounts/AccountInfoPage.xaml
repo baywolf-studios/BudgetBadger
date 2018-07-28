@@ -16,84 +16,88 @@
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label
-                Margin="16,4,0,4"
-                Grid.Row="0"
-                Grid.Column="0"
-                Text="Account Balance"
-                HorizontalTextAlignment="Start"
-                VerticalTextAlignment="Center"
-                FontSize="{StaticResource PageHeaderFontSize}"
-                TextColor="{StaticResource PrimaryTextColor}"
-                FontFamily="{StaticResource FontFamilyMedium}"/>
-            <Label
-                Margin="0,4,16,4"
-                Grid.Row="0"
-                Grid.Column="1"
-                Text="{Binding Account.Balance, StringFormat='{0:c}'}"
-                HorizontalTextAlignment="End"
-                VerticalTextAlignment="Center"
-                FontSize="{StaticResource PageHeaderFontSize}"
-                TextColor="{StaticResource SecondaryTextColor}"
-                FontFamily="{StaticResource FontFamilyMedium}"/>
-            <Label
-                Margin="16,0,0,4"
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="Pending"
-                HorizontalTextAlignment="Center"
-                FontSize="{StaticResource PageSubheaderFontSize}"
-                TextColor="{StaticResource PrimaryTextColor}"
-                FontFamily="{StaticResource FontFamilyRegular}"/>
-            <Label
-                Margin="16,0,0,4"
-                Grid.Row="2"
-                Grid.Column="0"
-                Text="{Binding PendingTotal, StringFormat='{0:c}'}"
-                HorizontalTextAlignment="Center"
-                FontSize="{StaticResource PageSubheaderFontSize}"
-                TextColor="{StaticResource SecondaryTextColor}"
-                FontFamily="{StaticResource FontFamilyRegular}"/>
-            <Label
-                Margin="0,0,16,4"
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="Cleared"
-                HorizontalTextAlignment="Center"
-                FontSize="{StaticResource PageSubheaderFontSize}"
-                TextColor="{StaticResource PrimaryTextColor}"
-                FontFamily="{StaticResource FontFamilyRegular}"/>
-            <Label
-                Margin="0,0,16,4"
-                Grid.Row="2"
-                Grid.Column="1"
-                Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                HorizontalTextAlignment="Center"
-                FontSize="{StaticResource PageSubheaderFontSize}"
-                TextColor="{StaticResource SecondaryTextColor}"
-                FontFamily="{StaticResource FontFamilyRegular}"/>
+            <uc:Expander Grid.Row="0">
+                <uc:Expander.HeaderContent>
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Column="0"
+                            Text="Account Balance"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Start"
+                            FontSize="{StaticResource PageHeaderFontSize}"
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="End"
+                            FontSize="{StaticResource PageHeaderFontSize}"
+                            TextColor="{StaticResource PrimaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                    </Grid>
+                </uc:Expander.HeaderContent>
+                <uc:Expander.BodyContent>
+                    <Grid ColumnSpacing="16" RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Pending"
+                            HorizontalTextAlignment="Center"
+                            FontSize="{StaticResource PageSubheaderFontSize}"
+                            TextColor="{StaticResource PrimaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                            HorizontalTextAlignment="Center"
+                            FontSize="{StaticResource PageSubheaderFontSize}"
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="Cleared"
+                            HorizontalTextAlignment="Center"
+                            FontSize="{StaticResource PageSubheaderFontSize}"
+                            TextColor="{StaticResource PrimaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                            HorizontalTextAlignment="Center"
+                            FontSize="{StaticResource PageSubheaderFontSize}"
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                    </Grid>
+                </uc:Expander.BodyContent>
+            </uc:Expander>
             <BoxView
-                Grid.Row="3"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.Row="1"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <ListView
-                Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.Row="2"
                 BackgroundColor="White"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
@@ -182,9 +186,7 @@
             </ListView>
             <Button
                 x:Name="NewTransactionButton"
-                Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.Row="2"
                 Margin="16,0,16,8"
                 FontFamily="{StaticResource FontFamilyMedium}"
                 FontSize="14"
@@ -192,9 +194,19 @@
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}"
                 BackgroundColor="{StaticResource AppBarColor}"
+                BorderColor="{StaticResource AppBarColor}"
                 TextColor="White"
-                BorderWidth="0"
-                BorderRadius="2"/>
+                HeightRequest="40"
+                BorderWidth="2"
+                BorderRadius="2">
+                <Button.HorizontalOptions>
+                    <OnIdiom x:TypeArguments="LayoutOptions">
+                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
+                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Button.HorizontalOptions>
+            </Button>
         </Grid>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>
