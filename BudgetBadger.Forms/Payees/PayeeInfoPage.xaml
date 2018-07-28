@@ -106,9 +106,19 @@
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}"
                 BackgroundColor="{StaticResource AppBarColor}"
+                BorderColor="{StaticResource AppBarColor}"
                 TextColor="White"
-                BorderWidth="0"
-                BorderRadius="2"/>
+                HeightRequest="40"
+                BorderWidth="2"
+                BorderRadius="2">
+                <Button.HorizontalOptions>
+                    <OnIdiom x:TypeArguments="LayoutOptions">
+                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
+                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Button.HorizontalOptions>
+            </Button>
         </Grid>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

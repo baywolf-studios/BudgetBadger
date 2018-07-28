@@ -16,47 +16,41 @@
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label
-                Margin="16,4,0,4"
-                Grid.Row="0"
-                Grid.Column="0"
-                Text="Net Worth"
-                HorizontalTextAlignment="Start"
-                VerticalTextAlignment="Center"
-                FontSize="{StaticResource PageHeaderFontSize}"
-                TextColor="{StaticResource PrimaryTextColor}"
-                FontFamily="{StaticResource FontFamilyMedium}"/>
-            <Label
-                Margin="0,4,16,4"
-                Grid.Row="0"
-                Grid.Column="1"
-                Text="{Binding NetWorth, StringFormat='{0:c}'}"
-                HorizontalTextAlignment="End"
-                VerticalTextAlignment="Center"
-                FontSize="{StaticResource PageHeaderFontSize}"
-                TextColor="{StaticResource SecondaryTextColor}"
-                FontFamily="{StaticResource FontFamilyMedium}"/>
-             <BoxView
+            <Grid Margin="16" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Text="Net Worth"
+                    HorizontalTextAlignment="Start"
+                    VerticalTextAlignment="Center"
+                    FontSize="{StaticResource PageHeaderFontSize}"
+                    TextColor="{StaticResource PrimaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyMedium}"/>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="End"
+                    VerticalTextAlignment="Center"
+                    FontSize="{StaticResource PageHeaderFontSize}"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    FontFamily="{StaticResource FontFamilyMedium}"/>
+            </Grid>
+            <BoxView
                 Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <ListView
                 x:Name="AccountList"
                 Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 BackgroundColor="White"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
@@ -130,8 +124,6 @@
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 Margin="16,0,16,8"
                 FontFamily="{StaticResource FontFamilyMedium}"
                 FontSize="14"
@@ -141,9 +133,17 @@
                 BackgroundColor="{StaticResource AppBarColor}"
                 BorderColor="{StaticResource AppBarColor}"
                 TextColor="White"
-                HeightRequest="36"
+                HeightRequest="40"
                 BorderWidth="2"
-                BorderRadius="2"/>
+                BorderRadius="2">
+                <Button.HorizontalOptions>
+                    <OnIdiom x:TypeArguments="LayoutOptions">
+                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
+                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Button.HorizontalOptions>
+            </Button>
         </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

@@ -209,6 +209,7 @@
     <BundleResource Include="Resources\save.svg" />
     <BundleResource Include="Resources\search.svg" />
     <BundleResource Include="Resources\uncheckedcheckbox.svg" />
+    <BundleResource Include="Resources\info.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
