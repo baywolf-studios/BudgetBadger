@@ -90,19 +90,19 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 Budget.Schedule = budgetSchedule.DeepCopy();
             }
-			else if (!Budget.Schedule.IsActive)
-			{
-				var result = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+            else if (Budget.Schedule.Id == Guid.Empty)
+            {
+                var result = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
                 if (result.Success)
-				{
-					Budget.Schedule = result.Data;
-				}
-				else
-				{
-					await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
-					await _navigationService.GoBackAsync();
-				}
-			}
+                {
+                    Budget.Schedule = result.Data;
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _navigationService.GoBackAsync();
+                }
+            }
         }
 
         public async Task ExecuteSaveCommand()
@@ -127,6 +127,7 @@ namespace BudgetBadger.Forms.Envelopes
 
 					var parameters = new NavigationParameters
                     {
+                        { PageParameter.Budget, result.Data },
                         { PageParameter.Envelope, result.Data.Envelope }
                     };
                     await _navigationService.GoBackAsync(parameters);

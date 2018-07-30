@@ -32,6 +32,7 @@ namespace BudgetBadger.Logic
             {
                 var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id);
 
+                transactionToDelete.ModifiedDateTime = DateTime.Now;
                 transactionToDelete.DeletedDateTime = DateTime.Now;
                 await TransactionDataAccess.UpdateTransactionAsync(transactionToDelete);
                 result.Success = true;
