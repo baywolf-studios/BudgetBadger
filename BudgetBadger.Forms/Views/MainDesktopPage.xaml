@@ -12,26 +12,47 @@
                     Text="Budget Badger"
                     VerticalTextAlignment="Center"
                     HeightRequest="64"/>
+
                 <Label
                     Text="Envelopes"
                     VerticalTextAlignment="Center"
-                    HeightRequest="48"/>
+                    HeightRequest="48">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="EnvelopesPage"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label
                     Text="Accounts"
                     VerticalTextAlignment="Center"
-                    HeightRequest="48"/>
+                    HeightRequest="48">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="AccountsPage"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label
                     Text="Payees"
                     VerticalTextAlignment="Center"
-                    HeightRequest="48"/>
+                    HeightRequest="48">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="PayeesPage"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label
                     Text="Reports"
                     VerticalTextAlignment="Center"
-                    HeightRequest="48"/>
+                    HeightRequest="48">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="ReportsPage"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label
                     Text="Settings"
                     VerticalTextAlignment="Center"
-                    HeightRequest="48"/>
+                    HeightRequest="48">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="SettingsPage"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </StackLayout>
         </ContentPage>
     </MasterDetailPage.Master>
