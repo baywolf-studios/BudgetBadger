@@ -3,57 +3,166 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="BudgetBadger.Forms.Views.MainDesktopPage"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     Title="Default"
     IsPresented="true">
     <MasterDetailPage.Master>
         <ContentPage Title="Default">
-            <StackLayout Spacing="8" Margin="16,0" HorizontalOptions="FillAndExpand">
+            <ContentPage.Resources>
+                <ResourceDictionary>
+                    <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
+                </ResourceDictionary>
+            </ContentPage.Resources>
+            <Grid RowSpacing="8" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="48"/>
+                </Grid.RowDefinitions>
                 <Label
+                    Grid.Row="0"
                     Text="Budget Badger"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="64"/>
-
-                <Label
-                    Text="Envelopes"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="48">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="EnvelopesPage"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label
-                    Text="Accounts"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="48">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="AccountsPage"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label
-                    Text="Payees"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="48">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="PayeesPage"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label
-                    Text="Reports"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="48">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="ReportsPage"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label
-                    Text="Settings"
-                    VerticalTextAlignment="Center"
-                    HeightRequest="48">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="SettingsPage"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </StackLayout>
+                    Margin="16"
+                    FontSize="17"
+                    FontFamily="{StaticResource FontFamilyMedium}"
+                    VerticalTextAlignment="Center"/>
+                <Frame
+                    x:Name="EnvelopesFrame"
+                    Grid.Row="1"
+                    Margin="8,0"
+                    Padding="0">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="EnvelopesPage"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <svg:SvgCachedImage
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Margin="8,12"
+                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            Source="envelope.svg">
+                        </svg:SvgCachedImage>
+                        <Label
+                            Margin="8,0"
+                            Text="Envelopes"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource SecondaryTextColor}">
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Frame
+                    x:Name="AccountsFrame"
+                    Grid.Row="2"
+                    Margin="8,0"
+                    Padding="0">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="AccountsPage"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <svg:SvgCachedImage
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Margin="8,12"
+                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            Source="account.svg">
+                        </svg:SvgCachedImage>
+                        <Label
+                            Margin="8,0"
+                            Text="Accounts"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource SecondaryTextColor}">
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Frame
+                    x:Name="PayeesFrame"
+                    Grid.Row="3"
+                    Margin="8,0"
+                    Padding="0">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="PayeesPage"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <svg:SvgCachedImage
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Margin="8,12"
+                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            Source="payees.svg">
+                        </svg:SvgCachedImage>
+                        <Label
+                            Margin="8,0"
+                            Text="Payees"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource SecondaryTextColor}">
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Frame
+                    x:Name="ReportsFrame"
+                    Grid.Row="4"
+                    Margin="8,0"
+                    Padding="0">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="ReportsPage"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <svg:SvgCachedImage
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Margin="8,12"
+                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            Source="report.svg">
+                        </svg:SvgCachedImage>
+                        <Label
+                            Margin="8,0"
+                            Text="Reports"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource SecondaryTextColor}">
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Frame
+                    x:Name="SettingsFrame"
+                    Grid.Row="6"
+                    Margin="8,0"
+                    Padding="0">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="SettingsPage"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <svg:SvgCachedImage
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Margin="8,12"
+                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            Source="settings.svg">
+                        </svg:SvgCachedImage>
+                        <Label
+                            Margin="8,0"
+                            Text="Settings"
+                            FontSize="14"
+                            FontFamily="{StaticResource FontFamilyRegular}"
+                            VerticalTextAlignment="Center"
+                            TextColor="{StaticResource SecondaryTextColor}">
+                        </Label>
+                    </StackLayout>
+                </Frame>
+            </Grid>
         </ContentPage>
     </MasterDetailPage.Master>
 </MasterDetailPage>

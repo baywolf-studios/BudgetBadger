@@ -41,6 +41,8 @@
     </Picker>
     <svg:SvgCachedImage
         x:Name="IconControl"
+        HeightRequest="24"
+        WidthRequest="24"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
         ReplaceStringMap="{Binding ReplaceColor}"
