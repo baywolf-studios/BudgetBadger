@@ -16,6 +16,8 @@
                 </Grid.ColumnDefinitions>
                 <svg:SvgCachedImage
                     x:Name="IconControl"
+                    HeightRequest="24"
+                    WidthRequest="24"
                     Grid.Column="0"
                     ReplaceStringMap="{Binding ReplaceColor}"
                     Source="info.svg"
