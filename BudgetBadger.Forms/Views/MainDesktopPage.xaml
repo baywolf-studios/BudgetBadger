@@ -36,25 +36,28 @@
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
                     Margin="8,0"
-                    Padding="0">
+                    Padding="0"
+                    BackgroundColor="{StaticResource SelectedNavigationItemColor}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="EnvelopesPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
+                            x:Name="EnvelopesIcon"
                             HeightRequest="24"
                             WidthRequest="24"
                             Margin="8,12"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                            ReplaceStringMap="{Binding Source={StaticResource PrimaryColor}, Converter={StaticResource ReplaceColorMap}}"
                             Source="envelope.svg">
                         </svg:SvgCachedImage>
                         <Label
+                            x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Text="Envelopes"
                             FontSize="14"
                             FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
-                            TextColor="{StaticResource SecondaryTextColor}">
+                            TextColor="{StaticResource PrimaryColor}">
                         </Label>
                     </StackLayout>
                 </Frame>
@@ -68,6 +71,7 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
+                            x:Name="AccountsIcon"
                             HeightRequest="24"
                             WidthRequest="24"
                             Margin="8,12"
@@ -75,6 +79,7 @@
                             Source="account.svg">
                         </svg:SvgCachedImage>
                         <Label
+                            x:Name="AccountsLabel"
                             Margin="8,0"
                             Text="Accounts"
                             FontSize="14"
@@ -94,6 +99,7 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
+                            x:Name="PayeesIcon"
                             HeightRequest="24"
                             WidthRequest="24"
                             Margin="8,12"
@@ -101,6 +107,7 @@
                             Source="payees.svg">
                         </svg:SvgCachedImage>
                         <Label
+                            x:Name="PayeesLabel"
                             Margin="8,0"
                             Text="Payees"
                             FontSize="14"
@@ -120,6 +127,7 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
+                            x:Name="ReportsIcon"
                             HeightRequest="24"
                             WidthRequest="24"
                             Margin="8,12"
@@ -127,6 +135,7 @@
                             Source="report.svg">
                         </svg:SvgCachedImage>
                         <Label
+                            x:Name="ReportsLabel"
                             Margin="8,0"
                             Text="Reports"
                             FontSize="14"
@@ -146,6 +155,7 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
+                            x:Name="SettingsIcon"
                             HeightRequest="24"
                             WidthRequest="24"
                             Margin="8,12"
@@ -153,6 +163,7 @@
                             Source="settings.svg">
                         </svg:SvgCachedImage>
                         <Label
+                            x:Name="SettingsLabel"
                             Margin="8,0"
                             Text="Settings"
                             FontSize="14"

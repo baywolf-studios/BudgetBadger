@@ -10,8 +10,9 @@
     ToolbarItemCommand="{Binding EditCommand}"
     ToolbarItemIcon="edit.svg">
     <uc:ChildSearchPage.BodyContent>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="{StaticResource BackgroundColor}">
             <ListView
+                BackgroundColor="{StaticResource BackgroundColor}"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -28,10 +29,10 @@
                     <DataTemplate>
                         <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
                             <ContentView 
-                                BackgroundColor="White"
-                                Margin="16,0">
+                                BackgroundColor="{StaticResource BackgroundColor}">
                                 <Label
-                                    BackgroundColor="White"
+                                    BackgroundColor="{StaticResource BackgroundColor}"
+                                    Margin="16,0"
                                     FontSize="{StaticResource ListDenseGroupHeaderFontSize}"
                                     FontFamily="{StaticResource FontFamilyMedium}"
                                     VerticalTextAlignment="Center"
@@ -45,7 +46,7 @@
                     <DataTemplate>
                         <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
                             <Grid 
-                                BackgroundColor="White" 
+                                BackgroundColor="{StaticResource BackgroundColor}" 
                                 Margin="16, 0" 
                                 RowSpacing="0" 
                                 ColumnSpacing="16">
@@ -93,7 +94,7 @@
                 </ListView.ItemTemplate>
                 <ListView.Footer>
                     <ContentView 
-                        BackgroundColor="White"
+                        BackgroundColor="{StaticResource BackgroundColor}"
                         HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
                 </ListView.Footer>
             </ListView>

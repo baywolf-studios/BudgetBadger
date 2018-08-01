@@ -12,10 +12,10 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="{StaticResource BackgroundColor}">
             <ListView
                 x:Name="PayeeList" 
-                BackgroundColor="White" 
+                BackgroundColor="{StaticResource BackgroundColor}" 
                 SeparatorVisibility="None" 
                 IsPullToRefreshEnabled="true" 
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}" 

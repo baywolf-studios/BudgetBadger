@@ -11,7 +11,7 @@
     ToolbarItemCommand="{Binding SaveCommand}">
     <uc:ChildPage.BodyContent>
         <Grid
-            BackgroundColor="White"
+            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
@@ -74,7 +74,7 @@
                 <DataTemplate>
                     <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
                             <Grid 
-                                BackgroundColor="White" 
+                                BackgroundColor="{StaticResource BackgroundColor}" 
                                 Margin="16, 0" 
                                 RowSpacing="0" 
                                 ColumnSpacing="16">
@@ -137,7 +137,7 @@
             </ListView.ItemTemplate>
             <ListView.Footer>
                 <ContentView 
-                    BackgroundColor="White"
+                    BackgroundColor="{StaticResource BackgroundColor}"
                     Margin="0,0,0,8"
                     HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
             </ListView.Footer>
