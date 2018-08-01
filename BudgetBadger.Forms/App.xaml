@@ -51,6 +51,7 @@
                 <On Platform="Windows">64</On>
                 <On Platform="macOS">64</On>
             </OnPlatform>
+            <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor" x:FactoryMethod="FromHex">
                 <x:Arguments>
                     <x:String>#3678AF</x:String>

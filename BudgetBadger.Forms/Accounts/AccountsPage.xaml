@@ -12,7 +12,7 @@
     ToolbarItemIcon="newicon.svg">
     <uc:RootSearchPage.BodyContent>
         <Grid
-            BackgroundColor="White"
+            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
@@ -51,7 +51,7 @@
             <ListView
                 x:Name="AccountList"
                 Grid.Row="2"
-                BackgroundColor="White"
+                BackgroundColor="{StaticResource BackgroundColor}"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -68,15 +68,15 @@
                     <DataTemplate>
                         <ViewCell Height="48">
                             <StackLayout BackgroundColor="White">
-                            <Label
-                                HeightRequest="32"
-                                FontSize="{StaticResource ListGroupHeaderFontSize}"
-                                FontFamily="{StaticResource FontFamilyMedium}"
-                                VerticalTextAlignment="Center"
-                                TextColor="{StaticResource ListGroupHeaderTextColor}"
-                                Text="{Binding Key}"
-                                Margin="16, 8"/>
-                                </StackLayout>
+                                <Label
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource ListGroupHeaderFontSize}"
+                                    FontFamily="{StaticResource FontFamilyMedium}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource ListGroupHeaderTextColor}"
+                                    Text="{Binding Key}"
+                                    Margin="16, 8"/>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>

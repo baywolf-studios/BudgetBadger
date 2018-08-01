@@ -22,7 +22,10 @@ namespace BudgetBadger.Forms.ViewModels
 
         public async Task ExecuteNavigateCommand(string pageName)
         {
-            await _navigationService.NavigateAsync("NavigationPage/" + pageName);
+            if (!string.IsNullOrEmpty(pageName))
+            {
+                await _navigationService.NavigateAsync("/MainPage/NavigationPage/" + pageName);
+            }
         }
     }
 }
