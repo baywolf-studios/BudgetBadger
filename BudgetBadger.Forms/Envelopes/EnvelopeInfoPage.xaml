@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
+    x:Name="this"
     ToolbarItemText="Edit"
     ToolbarItemCommand="{Binding EditCommand}"
     ToolbarItemIcon="edit.svg"
@@ -125,13 +126,13 @@
                 IsGroupingEnabled="true"
                 GroupDisplayBinding="{Binding Key}"
                 HasUnevenRows="true">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
-                </ListView.Behaviors>
+
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
-                            <ContentView BackgroundColor="{StaticResource BackgroundColor}">
+                            <ContentView BackgroundColor="{StaticResource BackgroundColor}"
+                                Margin="-1"
+                                Padding="1">
                                 <Label
                                     BackgroundColor="{StaticResource BackgroundColor}"
                                     Margin="16,0"
@@ -153,6 +154,7 @@
                                 RowSpacing="0" 
                                 ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
@@ -160,19 +162,40 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
+                                <Button
+                                    Grid.Column="0"
+                                    Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"
+                                    CommandParameter="{Binding .}"
+                                    Grid.RowSpan="2"
+                                    BackgroundColor="Red"
+                                    HeightRequest="24"
+                                    WidthRequest="24"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                    <Button.Triggers>
+                                        <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="Button">
+                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
                                 <Label
                                     Grid.Row="0"
-                                    Grid.Column="0"
+                                    Grid.Column="1"
                                     Text="{Binding Payee.Description}"
                                     FontSize="{StaticResource ListDenseItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
                                     VerticalTextAlignment="End"
                                     HorizontalTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                    TextColor="{StaticResource PrimaryTextColor}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"/>
+                                    </Label.GestureRecognizers>
+
+                                    </Label>
                                 <Label 
                                     Grid.Row="1"
-                                    Grid.Column="0" 
+                                    Grid.Column="1" 
                                     Text="{Binding Account.Description}"
                                     FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"
@@ -181,8 +204,8 @@
                                     LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource SecondaryTextColor}"/>
                                 <Label 
-                                    Grid.Column="1"
                                     Grid.RowSpan="2"
+                                    Grid.Column="2"
                                     Text="{Binding Amount, StringFormat='{0:c}'}"
                                     FontSize="{StaticResource ListDenseItemFontSize}"
                                     FontFamily="{StaticResource FontFamilyRegular}"

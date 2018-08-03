@@ -151,23 +151,31 @@
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
-                            <StackLayout BackgroundColor="White">
-                            <Label
-                                HeightRequest="32"
-                                FontSize="{StaticResource ListGroupHeaderFontSize}"
-                                FontFamily="{StaticResource FontFamilyMedium}"
-                                VerticalTextAlignment="Center"
-                                TextColor="{StaticResource ListGroupHeaderTextColor}"
-                                Text="{Binding Key}"
-                                Margin="16, 8"/>
-                                </StackLayout>
+                            <StackLayout
+                                BackgroundColor="{StaticResource BackgroundColor}"
+                                Margin="-1"
+                                Padding="1">
+                                <Label
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource ListGroupHeaderFontSize}"
+                                    FontAttributes="Bold"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource ListGroupHeaderTextColor}"
+                                    Text="{Binding Key}"
+                                    Margin="16, 8"/>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
-                            <Grid RowSpacing="0" ColumnSpacing="0">
+                            <Grid
+                                RowSpacing="0"
+                                ColumnSpacing="0"
+                                Margin="-1"
+                                Padding="1"
+                                BackgroundColor="{StaticResource BackgroundColor}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="*"/>
