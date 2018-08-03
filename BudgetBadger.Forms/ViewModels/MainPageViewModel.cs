@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Navigation;
 
 namespace BudgetBadger.Forms.ViewModels
@@ -24,7 +25,7 @@ namespace BudgetBadger.Forms.ViewModels
         {
             if (!string.IsNullOrEmpty(pageName))
             {
-                await _navigationService.NavigateAsync("/MainPage/NavigationPage/" + pageName);
+                await _navigationService.NavigateAsync(pageName);
             }
         }
     }

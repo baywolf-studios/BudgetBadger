@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
 
+        public ICommand TogglePostedTransaction { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -77,6 +78,7 @@ namespace BudgetBadger.Forms.Envelopes
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            TogglePostedTransaction = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -178,6 +180,34 @@ namespace BudgetBadger.Forms.Envelopes
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null)
+            {
+                if (!transaction.IsCombined)
+                {
+                    transaction.Posted = !transaction.Posted;
+
+                    var result = await _transactionLogic.SaveTransactionAsync(transaction);
+
+                    if (result.Success)
+                    {
+                        //var syncTask = _syncService.FullSync();
+
+                        //var syncResult = await syncTask;
+                        //if (!syncResult.Success)
+                        //{
+                        //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                        //}
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    }
+                }
             }
         }
     }

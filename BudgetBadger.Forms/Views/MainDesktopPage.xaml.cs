@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Envelopes;
 using FFImageLoading.Svg.Forms;
+using Prism.Ioc;
+using Prism.Navigation;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Views
@@ -59,7 +63,7 @@ namespace BudgetBadger.Forms.Views
             SettingsLabel.TextColor = _secondaryTextColor;
         }
 
-        void Handle_Tapped(object sender, EventArgs e)
+        async void Handle_Tapped(object sender, EventArgs e)
         {
             SetAllInactive();
 
@@ -75,6 +79,7 @@ namespace BudgetBadger.Forms.Views
 
             var currentLabel = (Label)stackLayout.Children.FirstOrDefault(c => c is Label);
             currentLabel.TextColor = _primaryColor;
+
         }
 
         public MainDesktopPage()
@@ -83,5 +88,6 @@ namespace BudgetBadger.Forms.Views
 
             _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
         }
+
     }
 }

@@ -6,6 +6,7 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
     Title="Default"
     IsPresented="true">
     <MasterDetailPage.Master>
@@ -39,7 +40,7 @@
                     Padding="0"
                     BackgroundColor="{StaticResource SelectedNavigationItemColor}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="EnvelopesPage"/>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/EnvelopesPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -67,7 +68,7 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="AccountsPage"/>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/AccountsPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -95,7 +96,7 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="PayeesPage"/>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/PayeesPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -123,7 +124,7 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="ReportsPage"/>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/ReportsPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -151,7 +152,7 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="SettingsPage"/>
+                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/SettingsPage"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage

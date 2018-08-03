@@ -31,6 +31,7 @@ using SimpleAuth;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
+using BudgetBadger.Forms.UserControls;
 
 namespace BudgetBadger.Forms
 {
@@ -93,7 +94,6 @@ namespace BudgetBadger.Forms
             var timer = Stopwatch.StartNew();
 
             var container = containerRegistry.GetContainer();
-
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();

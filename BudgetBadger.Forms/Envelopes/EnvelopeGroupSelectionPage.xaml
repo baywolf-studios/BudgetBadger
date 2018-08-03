@@ -36,7 +36,10 @@
                 </ListView.Triggers>
                 <ListView.HeaderTemplate>
                     <DataTemplate>
-                        <ContentView>
+                        <ContentView
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            Margin="-1"
+                            Padding="1">
                             <Button
                                 FontFamily="{StaticResource FontFamilyMedium}"
                                 FontSize="14"
@@ -55,14 +58,18 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="48">
-                            <Label
-                                HeightRequest="32"
-                                FontSize="{StaticResource ListItemFontSize}"
-                                FontFamily="{StaticResource FontFamilyRegular}"
-                                VerticalTextAlignment="Center"
-                                TextColor="{StaticResource PrimaryTextColor}"
-                                Text="{Binding Description}"
-                                Margin="16, 8"/>
+                            <ContentView BackgroundColor="{StaticResource BackgroundColor}"
+                                Margin="-1"
+                                Padding="1">
+                                <Label
+                                    HeightRequest="32"
+                                    FontSize="{StaticResource ListItemFontSize}"
+                                    FontFamily="{StaticResource FontFamilyRegular}"
+                                    VerticalTextAlignment="Center"
+                                    TextColor="{StaticResource PrimaryTextColor}"
+                                    Text="{Binding Description}"
+                                    Margin="16, 8"/>
+                            </ContentView>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
