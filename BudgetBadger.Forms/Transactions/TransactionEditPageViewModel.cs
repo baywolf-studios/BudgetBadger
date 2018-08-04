@@ -169,7 +169,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public bool CanExecuteEnvelopeSelectedCommand()
         {
-            return !Transaction.Envelope.IsSystem();
+            return !Transaction.Envelope.IsSystem;
         }
 
         public async Task ExecuteAccountSelectedCommand()

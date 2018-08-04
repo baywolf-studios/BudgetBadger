@@ -20,16 +20,6 @@ namespace BudgetBadger.Logic
             _envelopeDataAccess = envelopeDataAccess;
             _transactionDataAccess = transactionDataAccess;
             _accountDataAccess = accountDataAccess;
-
-            // move these to the data access
-            envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.IncomeEnvelopeGroup);
-            envelopeDataAccess.CreateEnvelopeAsync(Constants.IncomeEnvelope);
-            envelopeDataAccess.CreateEnvelopeAsync(Constants.BufferEnvelope);
-
-            envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.SystemEnvelopeGroup);
-            envelopeDataAccess.CreateEnvelopeAsync(Constants.IgnoredEnvelope);
-
-            envelopeDataAccess.CreateEnvelopeGroupAsync(Constants.DebtEnvelopeGroup);
         }
 
         public async Task<Result<Budget>> GetBudgetAsync(Guid id)
@@ -59,10 +49,10 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
-                var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
+                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive);
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
-                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem() && b.IsActive).ToList();
+                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem && b.IsActive).ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
@@ -80,8 +70,8 @@ namespace BudgetBadger.Logic
                 var budgetsToReturnTemp = await Task.WhenAll(tasks);
                 var budgetsToReturn = budgetsToReturnTemp.ToList();
 
-                var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt()).ToList();
-                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt());
+                var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt).ToList();
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
                 var genericDebtBudget = new Budget
                 {
                     Envelope = Constants.GenericDebtEnvelope,
@@ -113,11 +103,11 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
-                var activeEnvelopes = envelopes.Where(e => e.IsActive && !e.IsSystem() && !e.Group.IsIncome());
+                var activeEnvelopes = envelopes.Where(e => e.IsActive && !e.IsSystem && !e.Group.IsIncome);
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id);
                 var activeBudgets = budgets
-                    .Where(b => b.IsActive && !b.Envelope.IsSystem() && !b.Envelope.Group.IsIncome())
+                    .Where(b => b.IsActive && !b.Envelope.IsSystem && !b.Envelope.Group.IsIncome)
                     .ToList();
 
                 foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
@@ -136,7 +126,7 @@ namespace BudgetBadger.Logic
                 var budgetsToReturnTemp = await Task.WhenAll(tasks);
                 var budgetsToReturn = budgetsToReturnTemp.ToList();
 
-                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt() && b.Remaining == 0 && b.Amount == 0);
+                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
 
                 result.Success = true;
 				result.Data = OrderBudgets(budgetsToReturn);
@@ -152,12 +142,12 @@ namespace BudgetBadger.Logic
 
         async Task<Result> ValidateDeleteEnvelopeAsync(Envelope envelope)
         {
-            if (envelope.Group.IsDebt() || envelope.IsGenericDebtEnvelope())
+            if (envelope.Group.IsDebt || envelope.IsGenericDebtEnvelope)
             {
                 return new Result { Success = false, Message = "Cannot delete debt envelopes" };
             }
 
-            if (envelope.Group.IsIncome() || envelope.IsIncome() || envelope.IsBuffer())
+            if (envelope.Group.IsIncome || envelope.IsIncome || envelope.IsBuffer)
             {
                 return new Result { Success = false, Message = "Cannot delete income envelopes" };
             }
@@ -225,7 +215,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
-                var activeEnvelopes = envelopes.Where(e => !e.IsSystem() && e.IsActive);
+                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive);
 
                 result.Success = true;
                 result.Data = activeEnvelopes.ToList();
@@ -268,7 +258,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem() && !e.IsIncome() && !e.IsDebt());
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem && !e.IsIncome && !e.IsDebt);
                 result.Success = true;
 				result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
             }
@@ -317,26 +307,26 @@ namespace BudgetBadger.Logic
 
 			var orderedAndGroupedBudgets = new List<IGrouping<string, Budget>>();
 
-            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt() && !b.Envelope.IsGenericDebtEnvelope());
+            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope);
 			if (debtBudgets != null)
 			{
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(debtBudgets).GroupBy(b => b.Envelope.Group.Description));
 			}
 
-            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome());
+            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome);
 			if (incomeBudgets != null)
 			{
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(incomeBudgets).GroupBy(b => b.Envelope.Group.Description));
 			}
 
-			var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt() && !b.Envelope.Group.IsIncome());
+			var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome);
             if (userBudgets != null)
             {
                 var orderedUserBudgets = OrderBudgets(userBudgets);
                     orderedAndGroupedBudgets.AddRange(orderedUserBudgets.GroupBy(b => b.Envelope.Group.Description));
             }
 
-			var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope());
+			var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope);
             if (genericDebtBudget != null)
 			{
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(genericDebtBudget).GroupBy(b => b.Envelope.Group.Description));
@@ -357,7 +347,7 @@ namespace BudgetBadger.Logic
 				return Task.FromResult(new Result { Success = false, Message = "Cannot set Ignore Overspend Always when Ignore Overspend is not set" });
 			}
 
-			if (budget.Envelope.Group.IsDebt() && 
+			if (budget.Envelope.Group.IsDebt && 
 			    (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
             {
                 return Task.FromResult(new Result { Success = false, Message = "Ignore Overspend must be set on debt envelopes" });
@@ -579,7 +569,7 @@ namespace BudgetBadger.Logic
             var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
 
             // get all income
-            var incomeTransactions = budgetTransactions.Where(t => t.Envelope.IsIncome());
+            var incomeTransactions = budgetTransactions.Where(t => t.Envelope.IsIncome);
 
             var pastIncome = incomeTransactions
                 .Where(t => t.ServiceDate < budgetSchedule.BeginDate)
@@ -589,7 +579,7 @@ namespace BudgetBadger.Logic
                 .Sum(t => t.Amount ?? 0);
 
             // get all buffers
-            var bufferTransactions = budgetTransactions.Where(t => t.Envelope.IsBuffer());
+            var bufferTransactions = budgetTransactions.Where(t => t.Envelope.IsBuffer);
             var previousScheduleDate = GetPreviousBudgetScheduleDate(budgetSchedule);
             var previousSchedule = GetBudgetScheduleFromDate(previousScheduleDate);
 
@@ -604,15 +594,15 @@ namespace BudgetBadger.Logic
             var budgets = await _envelopeDataAccess.ReadBudgetsAsync();
 
             var currentBudgetAmount = budgets
-                .Where(b => !b.Envelope.IsIncome()
-                       && !b.Envelope.IsBuffer()
-                       && !b.Envelope.IsSystem()
+                .Where(b => !b.Envelope.IsIncome
+                       && !b.Envelope.IsBuffer
+                       && !b.Envelope.IsSystem
                        && b.Schedule.Id == budgetSchedule.Id)
                 .Sum(b => b.Amount ?? 0);
             var pastBudgetAmount = budgets
-                .Where(b => !b.Envelope.IsIncome()
-                       && !b.Envelope.IsBuffer()
-                       && !b.Envelope.IsSystem()
+                .Where(b => !b.Envelope.IsIncome
+                       && !b.Envelope.IsBuffer
+                       && !b.Envelope.IsSystem
                        && b.Schedule.EndDate < budgetSchedule.BeginDate)
                 .Sum(b => b.Amount ?? 0);
 
@@ -627,7 +617,7 @@ namespace BudgetBadger.Logic
 
             // overspend is current and past budget amounts + current and past transactions (if negative)
             decimal overspend = 0;
-            foreach (var envelope in envelopes.Where(e => !e.IsIncome() && !e.IsBuffer() && !e.IsSystem()))
+            foreach (var envelope in envelopes.Where(e => !e.IsIncome && !e.IsBuffer && !e.IsSystem))
             {
                 var envelopeTransactionsAmount = budgetTransactions
                 .Where(t => t.Envelope.Id == envelope.Id

@@ -70,6 +70,26 @@ namespace BudgetBadger.Models
 
         public bool IsActive { get => !IsNew && !IsDeleted; }
 
+        public bool IsIncome
+        {
+            get => Id == Constants.IncomeEnvelope.Id;
+        }
+
+        public bool IsBuffer
+        {
+            get => Id == Constants.BufferEnvelope.Id;
+        }
+
+        public bool IsSystem
+        {
+            get => Id == Constants.IgnoredEnvelope.Id;
+        }
+
+        public bool IsGenericDebtEnvelope
+        {
+            get => Id == Constants.GenericDebtEnvelope.Id;
+        }
+
         public Envelope()
         {
             Id = Guid.Empty;

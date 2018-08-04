@@ -47,7 +47,7 @@ namespace BudgetBadger.Forms.Envelopes
         
         public bool IsNotDebt
 		{
-			get { return !Budget.Envelope.Group.IsDebt(); }
+			get { return !Budget.Envelope.Group.IsDebt; }
 		}
 
         public ICommand SaveCommand { get; set; }

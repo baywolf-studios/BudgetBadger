@@ -63,6 +63,11 @@ namespace BudgetBadger.Models
 
         public bool IsActive { get => !IsNew && !IsDeleted; }
 
+        public bool IsStartingBalance
+        {
+            get => Id == Constants.StartingBalancePayee.Id;
+        }
+
         public Payee()
         {
             Id = Guid.Empty;
