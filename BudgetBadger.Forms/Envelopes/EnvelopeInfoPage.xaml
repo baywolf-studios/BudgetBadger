@@ -5,6 +5,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
     x:Name="this"
     ToolbarItemText="Edit"
@@ -126,7 +127,9 @@
                 IsGroupingEnabled="true"
                 GroupDisplayBinding="{Binding Key}"
                 HasUnevenRows="true">
-
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                </ListView.Behaviors>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
@@ -154,7 +157,7 @@
                                 RowSpacing="0" 
                                 ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="48"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
@@ -162,21 +165,35 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Button
+                                <svg:SvgCachedImage
+                                    InputTransparent="true"
                                     Grid.Column="0"
-                                    Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"
-                                    CommandParameter="{Binding .}"
+                                    Grid.Row="0"
                                     Grid.RowSpan="2"
-                                    BackgroundColor="Red"
                                     HeightRequest="24"
                                     WidthRequest="24"
                                     HorizontalOptions="Start"
-                                    VerticalOptions="Center">
-                                    <Button.Triggers>
-                                        <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="Button">
-                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                    VerticalOptions="Center"
+                                    ReplaceStringMap="{Binding ReplaceColorUnchecked}"
+                                    Source="uncheckedcheckbox.svg">
+                                    <svg:SvgCachedImage.Triggers>
+                                        <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
+                                            <Setter Property="Source" Value="checkedcheckbox.svg"/>
                                         </DataTrigger>
-                                    </Button.Triggers>
+                                        <DataTrigger Binding="{Binding Posted}" Value="false" TargetType="svg:SvgCachedImage">
+                                            <Setter Property="Source" Value="uncheckedcheckbox.svg"/>
+                                        </DataTrigger>
+                                    </svg:SvgCachedImage.Triggers>
+                                </svg:SvgCachedImage>
+                                <Button
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="Transparent"
+                                    BorderColor="White"
+                                    BorderWidth="2">
                                 </Button>
                                 <Label
                                     Grid.Row="0"

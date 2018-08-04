@@ -19,6 +19,7 @@ namespace BudgetBadger.Core.Logic
 
         Task<Result<IReadOnlyList<Transaction>>> GetTransactionsFromSplitAsync(Guid splitId);
         Task<Result> SaveSplitTransactionAsync(IEnumerable<Guid> transactionIds);
+        Task<Result> UpdateSplitTransactionPostedAsync(Guid splitID, bool posted);
         Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId);
 
         IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText);
