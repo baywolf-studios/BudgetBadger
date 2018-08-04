@@ -308,7 +308,7 @@ namespace BudgetBadger.Logic
 
 		public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
         {
-			return budgets.OrderBy(a => a.Envelope.Description).ToList();
+			return budgets.OrderBy(b => b.Envelope.Group.Description).ThenBy(a => a.Envelope.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
@@ -317,25 +317,29 @@ namespace BudgetBadger.Logic
 
 			var orderedAndGroupedBudgets = new List<IGrouping<string, Budget>>();
 
-			var debtBudgets = groupedBudgets.FirstOrDefault(b => b.Any(g => g.Envelope.Group.IsDebt() && !g.Envelope.IsGenericDebtEnvelope()));
+            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt() && !b.Envelope.IsGenericDebtEnvelope());
 			if (debtBudgets != null)
 			{
-				orderedAndGroupedBudgets.Add(debtBudgets);
+                orderedAndGroupedBudgets.AddRange(OrderBudgets(debtBudgets).GroupBy(b => b.Envelope.Group.Description));
 			}
 
-			var incomeBudgets = groupedBudgets.FirstOrDefault(b => b.Any(g => g.Envelope.Group.IsIncome()));
+            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome());
 			if (incomeBudgets != null)
 			{
-				orderedAndGroupedBudgets.Add(incomeBudgets);
+                orderedAndGroupedBudgets.AddRange(OrderBudgets(incomeBudgets).GroupBy(b => b.Envelope.Group.Description));
 			}
 
-			var userBudgets = groupedBudgets.Where(b => b.All(g => !g.Envelope.Group.IsDebt() && !g.Envelope.Group.IsIncome()));
-			orderedAndGroupedBudgets.AddRange(userBudgets);
+			var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt() && !b.Envelope.Group.IsIncome());
+            if (userBudgets != null)
+            {
+                var orderedUserBudgets = OrderBudgets(userBudgets);
+                    orderedAndGroupedBudgets.AddRange(orderedUserBudgets.GroupBy(b => b.Envelope.Group.Description));
+            }
 
-			var genericDebtBudget = groupedBudgets.FirstOrDefault(b => b.Any(g => g.Envelope.IsGenericDebtEnvelope()));
+			var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope());
             if (genericDebtBudget != null)
 			{
-				orderedAndGroupedBudgets.Add(genericDebtBudget);
+                orderedAndGroupedBudgets.AddRange(OrderBudgets(genericDebtBudget).GroupBy(b => b.Envelope.Group.Description));
 			}
 
 			return orderedAndGroupedBudgets;

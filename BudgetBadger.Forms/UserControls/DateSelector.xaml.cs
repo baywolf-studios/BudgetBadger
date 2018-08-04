@@ -91,6 +91,7 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     UpdateVisualState();
+                    DateControl.IsEnabled = IsEnabled;
                 }
             };
 

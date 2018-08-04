@@ -98,6 +98,8 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     UpdateVisualState();
+                    BackgroundControl.IsEnabled = IsEnabled;
+                    TextControl.IsEnabled = IsEnabled;
                 }
             };
 

@@ -477,31 +477,34 @@ namespace BudgetBadger.Logic
             foreach (var transactionGroup in transactionGroups)
             {
                 var combinedTransaction = transactionGroup.FirstOrDefault();
-                combinedTransaction.Id = combinedTransaction.SplitId.Value;
-                combinedTransaction.Amount = transactionGroup.Sum(t => t.Amount);
+                if (transactionGroup.Count() > 1)
+                {
+                    combinedTransaction.Id = combinedTransaction.SplitId.Value;
+                    combinedTransaction.Amount = transactionGroup.Sum(t => t.Amount);
 
-                if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
-                {
-                    combinedTransaction.Account = new Account() { Description = "Split" };
-                }
+                    if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
+                    {
+                        combinedTransaction.Account = new Account() { Description = "Split" };
+                    }
 
-                if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
-                {
-                    combinedTransaction.Envelope = new Envelope() { Description = "Split" };
-                }
+                    if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
+                    {
+                        combinedTransaction.Envelope = new Envelope() { Description = "Split" };
+                    }
 
-                if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
-                {
-                    combinedTransaction.Payee = new Payee() { Description = "Split" };
-                }
+                    if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
+                    {
+                        combinedTransaction.Payee = new Payee() { Description = "Split" };
+                    }
 
-                if (transactionGroup.All(t => t.Posted))
-                {
-                    combinedTransaction.Posted = true;
-                }
-                else
-                {
-                    combinedTransaction.Posted = false;
+                    if (transactionGroup.All(t => t.Posted))
+                    {
+                        combinedTransaction.Posted = true;
+                    }
+                    else
+                    {
+                        combinedTransaction.Posted = false;
+                    }
                 }
 
                 combinedTransactions.Add(combinedTransaction);

@@ -88,7 +88,10 @@ namespace BudgetBadger.Forms.UserControls
 
         void Handle_Tapped(object sender, System.EventArgs e)
         {
-            IsChecked = !IsChecked;
+            if (IsEnabled)
+            {
+                IsChecked = !IsChecked;
+            }
 
             //UpdateVisualState();
         }

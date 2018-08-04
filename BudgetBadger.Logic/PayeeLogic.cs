@@ -189,7 +189,7 @@ namespace BudgetBadger.Logic
                 }
                 else
                 {
-                    return p.Description[0].ToString();
+                    return p.Description[0].ToString().ToUpper();
                 }
             });
 
