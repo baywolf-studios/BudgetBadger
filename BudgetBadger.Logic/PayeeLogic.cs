@@ -108,7 +108,7 @@ namespace BudgetBadger.Logic
                 var allPayees = await _payeeDataAccess.ReadPayeesAsync();
 
                 var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance()
+                                             !p.IsStartingBalance
                                              && p.IsActive);
 
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
@@ -135,8 +135,7 @@ namespace BudgetBadger.Logic
 
                 // ugly hardcoded to remove the starting balance payee.
                 // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance())
-                                      .ToList();
+                var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance).ToList();
 
                 var includeDeleted = false; //will get this from settings dataaccess
                 if (includeDeleted)

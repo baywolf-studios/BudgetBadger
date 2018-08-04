@@ -165,7 +165,7 @@ namespace BudgetBadger.Logic
             }
 
             // don't save the starting balance transaction
-            if (transaction.Payee.IsStartingBalance())
+            if (transaction.Payee.IsStartingBalance)
             {
                 return new Result { Success = false, Message = "Cannot edit the starting balance" };
             }
@@ -186,7 +186,7 @@ namespace BudgetBadger.Logic
 
             // check for existance of envelope
             var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
-            if (!transaction.Envelope.IsGenericDebtEnvelope() && !transactionEnvelope.IsActive)
+            if (!transaction.Envelope.IsGenericDebtEnvelope && !transactionEnvelope.IsActive)
             {
                 return new Result { Success = false, Message = "Envelope does not exist" };
             }
@@ -227,7 +227,7 @@ namespace BudgetBadger.Logic
                 }
             }
 
-            if (transactionToUpsert.Envelope.IsGenericDebtEnvelope())
+            if (transactionToUpsert.Envelope.IsGenericDebtEnvelope)
             {
                 try
                 {
@@ -435,17 +435,17 @@ namespace BudgetBadger.Logic
                 }
             }
 
-            if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem())
+            if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem)
             {
                 transactionToPopulate.Envelope = Constants.IgnoredEnvelope;
             }
-            else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem())
+            else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem)
             {
                 transactionToPopulate.Envelope = new Envelope();
             }
 
             // handle logic to set envelope to the generic debt envelope
-            if (transactionToPopulate.Envelope.Group.IsDebt() && !transactionToPopulate.Envelope.IsGenericDebtEnvelope())
+            if (transactionToPopulate.Envelope.Group.IsDebt && !transactionToPopulate.Envelope.IsGenericDebtEnvelope)
             {
                 var debtAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Envelope.Id);
                 transactionToPopulate.Account = debtAccount;

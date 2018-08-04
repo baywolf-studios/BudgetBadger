@@ -76,6 +76,201 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.ExecuteNonQuery();
             }
+
+
+            // envelope groups
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                                                    (Id, 
+                                                     Description, 
+                                                     Notes, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @Notes, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
+                command.Parameters.AddWithValue("@Description", Constants.DebtEnvelopeGroup.Description);
+                command.Parameters.AddWithValue("@Notes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.DebtEnvelopeGroup.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.DebtEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                                                    (Id, 
+                                                     Description, 
+                                                     Notes, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @Notes, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
+                command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelopeGroup.Description);
+                command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelopeGroup.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.IncomeEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                                                    (Id, 
+                                                     Description, 
+                                                     Notes, 
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @Notes, 
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
+                command.Parameters.AddWithValue("@Description", Constants.SystemEnvelopeGroup.Description);
+                command.Parameters.AddWithValue("@Notes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.SystemEnvelopeGroup.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.SystemEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
+
+            //envelopes
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                                                    (Id, 
+                                                     Description, 
+                                                     EnvelopeGroupId, 
+                                                     Notes, 
+                                                     IgnoreOverspend,
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @EnvelopeGroupId,
+                                                    @Notes, 
+                                                    @IgnoreOverspend,
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
+                command.Parameters.AddWithValue("@Description", Constants.BufferEnvelope.Description);
+                command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
+                command.Parameters.AddWithValue("@Notes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@IgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.BufferEnvelope.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.BufferEnvelope.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.BufferEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                                                    (Id, 
+                                                     Description, 
+                                                     EnvelopeGroupId, 
+                                                     Notes, 
+                                                     IgnoreOverspend,
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @EnvelopeGroupId,
+                                                    @Notes, 
+                                                    @IgnoreOverspend,
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
+                command.Parameters.AddWithValue("@Description", Constants.IgnoredEnvelope.Description);
+                command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
+                command.Parameters.AddWithValue("@Notes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.IgnoredEnvelope.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IgnoredEnvelope.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.IgnoredEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (var db = new SqliteConnection(_connectionString))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+
+                command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                                                    (Id, 
+                                                     Description, 
+                                                     EnvelopeGroupId, 
+                                                     Notes, 
+                                                     IgnoreOverspend,
+                                                     CreatedDateTime, 
+                                                     ModifiedDateTime, 
+                                                     DeletedDateTime) 
+                                        VALUES     (@Id, 
+                                                    @Description, 
+                                                    @EnvelopeGroupId,
+                                                    @Notes, 
+                                                    @IgnoreOverspend,
+                                                    @CreatedDateTime, 
+                                                    @ModifiedDateTime, 
+                                                    @DeletedDateTime)";
+
+                command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
+                command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelope.Description);
+                command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
+                command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
+                command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelope.CreatedDateTime);
+                command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelope.ModifiedDateTime);
+                command.Parameters.AddWithValue("@DeletedDateTime", Constants.IncomeEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public async Task CreateBudgetAsync(Budget budget)

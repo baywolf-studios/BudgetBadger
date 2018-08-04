@@ -96,10 +96,10 @@ namespace BudgetBadger.Logic
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
                 var activeEnvelopes = envelopes.Where(e =>
                                                       e.IsActive
-                                                      && !e.IsSystem()
-                                                      && !e.Group.IsIncome()
-                                                      && !e.Group.IsSystem()
-                                                      && !e.Group.IsDebt());
+                                                      && !e.IsSystem
+                                                      && !e.Group.IsIncome
+                                                      && !e.Group.IsSystem
+                                                      && !e.Group.IsDebt);
 
                 foreach (var envelope in activeEnvelopes)
                 {
