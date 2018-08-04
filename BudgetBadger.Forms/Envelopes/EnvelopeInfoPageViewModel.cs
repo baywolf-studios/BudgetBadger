@@ -187,26 +187,32 @@ namespace BudgetBadger.Forms.Envelopes
         {
             if (transaction != null)
             {
-                if (!transaction.IsCombined)
+                transaction.Posted = !transaction.Posted;
+
+                Result result = new Result();
+
+                if (transaction.IsCombined)
                 {
-                    transaction.Posted = !transaction.Posted;
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                }
+                else
+                {
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                }
 
-                    var result = await _transactionLogic.SaveTransactionAsync(transaction);
+                if (result.Success)
+                {
+                    //var syncTask = _syncService.FullSync();
 
-                    if (result.Success)
-                    {
-                        //var syncTask = _syncService.FullSync();
-
-                        //var syncResult = await syncTask;
-                        //if (!syncResult.Success)
-                        //{
-                        //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                        //}
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
-                    }
+                    //var syncResult = await syncTask;
+                    //if (!syncResult.Success)
+                    //{
+                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    //}
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
         }

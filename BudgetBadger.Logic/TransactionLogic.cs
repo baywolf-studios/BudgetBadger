@@ -353,6 +353,32 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result> UpdateSplitTransactionPostedAsync(Guid splitId, bool posted)
+        {
+            var result = new Result();
+
+            try
+            {
+                var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId);
+
+                foreach (var transaction in transactions)
+                {
+                    transaction.Posted = posted;
+                    transaction.ModifiedDateTime = DateTime.Now;
+                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
+                }
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId)
         {
             var result = new Result();
@@ -467,6 +493,15 @@ namespace BudgetBadger.Logic
                 if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
                 {
                     combinedTransaction.Payee = new Payee() { Description = "Split" };
+                }
+
+                if (transactionGroup.All(t => t.Posted))
+                {
+                    combinedTransaction.Posted = true;
+                }
+                else
+                {
+                    combinedTransaction.Posted = false;
                 }
 
                 combinedTransactions.Add(combinedTransaction);
