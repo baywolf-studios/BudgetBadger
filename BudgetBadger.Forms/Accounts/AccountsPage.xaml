@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Accounts.AccountsPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemText="New"
@@ -40,7 +41,7 @@
                     HorizontalTextAlignment="End"
                     VerticalTextAlignment="Center"
                     FontSize="{StaticResource PageHeaderFontSize}"
-                    TextColor="{StaticResource SecondaryTextColor}"
+                    TextColor="{StaticResource PrimaryTextColor}"
                     FontFamily="{StaticResource FontFamilyMedium}"/>
             </Grid>
             <BoxView
@@ -49,7 +50,7 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <ListView
-                x:Name="AccountList"
+                x:Name="accountList"
                 Grid.Row="2"
                 BackgroundColor="{StaticResource BackgroundColor}"
                 SeparatorVisibility="None"
@@ -64,82 +65,75 @@
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.Header>
+                   <dt:AccountColumnHeaders>
+                        <dt:AccountColumnHeaders.Triggers>
+                            <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
+                                <Setter Property="HeightRequest" Value="0" />
+                            </Trigger>
+                        </dt:AccountColumnHeaders.Triggers>
+                        <dt:AccountColumnHeaders.IsVisible>
+                            <OnIdiom x:TypeArguments="x:Boolean">
+                                <OnIdiom.Phone>false</OnIdiom.Phone>
+                                <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                                <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            </OnIdiom>
+                        </dt:AccountColumnHeaders.IsVisible>
+                    </dt:AccountColumnHeaders>
+                </ListView.Header>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <ViewCell Height="48">
-                            <StackLayout BackgroundColor="{StaticResource BackgroundColor}"
-                                Margin="-1"
-                                Padding="1">
-                                <Label
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource ListGroupHeaderFontSize}"
-                                    FontFamily="{StaticResource FontFamilyMedium}"
-                                    VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource ListGroupHeaderTextColor}"
-                                    Text="{Binding Key}"
-                                    Margin="16, 8"/>
-                            </StackLayout>
-                        </ViewCell>
+                        <dt:GroupHeaderViewCell/>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell Height="48">
-                            <Grid RowSpacing="0" ColumnSpacing="0" BackgroundColor="{StaticResource BackgroundColor}"
-                                Margin="-1"
-                                Padding="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label
-                                    Margin="16, 8"
-                                    Grid.Column="0"
-                                    Text="{Binding Description}"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource ListItemFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
-                                <Label 
-                                    Margin="16, 8"
-                                    Grid.Column="1" 
-                                    Text="{Binding Balance, StringFormat='{0:C}'}"
-                                    HeightRequest="32"
-                                    FontSize="{StaticResource ListItemFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="End"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
-                            </Grid>
-                            <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference AccountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                            </ViewCell.ContextActions>
-                        </ViewCell>
-                    </DataTemplate>
+                    <OnIdiom x:TypeArguments="DataTemplate">
+                        <OnIdiom.Phone>
+                            <DataTemplate>
+                                <dt:AccountViewCell>
+                                    <dt:AccountViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:AccountViewCell.ContextActions>
+                                </dt:AccountViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Phone>
+                        <OnIdiom.Tablet>
+                            <DataTemplate>
+                                <dt:AccountDetailedViewCell>
+                                    <dt:AccountViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:AccountViewCell.ContextActions>
+                                </dt:AccountDetailedViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Tablet>
+                        <OnIdiom.Desktop>
+                            <DataTemplate>
+                                <dt:AccountDetailedViewCell>
+                                    <dt:AccountViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:AccountViewCell.ContextActions>
+                                </dt:AccountDetailedViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Desktop>
+                    </OnIdiom>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
-                    <ContentView 
-                        BackgroundColor="White"
-                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                    <BoxView
+                        BackgroundColor="{StaticResource BackgroundColor}"
+                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
                 </ListView.Footer>
             </ListView>
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,8"
-                FontFamily="{StaticResource FontFamilyMedium}"
-                FontSize="14"
+                Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}"
-                BackgroundColor="{StaticResource AppBarColor}"
-                BorderColor="{StaticResource AppBarColor}"
-                TextColor="White"
-                HeightRequest="40"
-                BorderWidth="2"
-                BorderRadius="2">
+                Command="{Binding AddTransactionCommand}">
                 <Button.HorizontalOptions>
                     <OnIdiom x:TypeArguments="LayoutOptions">
                         <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ViewCell
-    x:Name="envelopeCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.DataTemplates.EnvelopeViewCell"
+    x:Class="BudgetBadger.Forms.DataTemplates.PayeeViewCell"
     Height="{StaticResource Key=ListItemSingleHeight}">
     <Grid
         HeightRequest="{StaticResource Key=ListItemSingleHeight}"
@@ -12,20 +11,10 @@
         Margin="-1"
         Padding="1"
         BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>   
-        </Grid.ColumnDefinitions>
         <Label
             Margin="16, 8"
             Grid.Column="0"
-            Text="{Binding Envelope.Description}"
+            Text="{Binding Description}"
             Style="{StaticResource Key=ListItemLabelStyle}"/>
-        <Label 
-            Margin="16, 8"
-            Grid.Column="1" 
-            Text="{Binding Remaining, StringFormat='{0:C}'}"
-            Style="{StaticResource Key=ListItemLabelStyle}"
-            HorizontalTextAlignment="End"/>
     </Grid>
 </ViewCell>

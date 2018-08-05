@@ -11,11 +11,6 @@
     IsPresented="true">
     <MasterDetailPage.Master>
         <ContentPage Title="Default">
-            <ContentPage.Resources>
-                <ResourceDictionary>
-                    <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
-                </ResourceDictionary>
-            </ContentPage.Resources>
             <Grid RowSpacing="8" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64"/>

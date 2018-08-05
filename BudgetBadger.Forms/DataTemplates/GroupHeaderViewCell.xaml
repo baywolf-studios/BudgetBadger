@@ -3,8 +3,9 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.DataTemplates.GroupHeaderViewCell"
-    Height="32">
+    Height="{StaticResource Key=ListGroupHeaderHeight}">
     <ContentView
+        x:Name="groupHeaderCell"
         HeightRequest="32"
         BackgroundColor="{StaticResource BackgroundColor}"
         Margin="-1"

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ViewCell
-    x:Name="envelopeCell"
+    x:Name="accountCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.DataTemplates.EnvelopeViewCell"
+    x:Class="BudgetBadger.Forms.DataTemplates.AccountViewCell"
     Height="{StaticResource Key=ListItemSingleHeight}">
     <Grid
         HeightRequest="{StaticResource Key=ListItemSingleHeight}"
@@ -19,12 +19,12 @@
         <Label
             Margin="16, 8"
             Grid.Column="0"
-            Text="{Binding Envelope.Description}"
+            Text="{Binding Description}"
             Style="{StaticResource Key=ListItemLabelStyle}"/>
         <Label 
             Margin="16, 8"
             Grid.Column="1" 
-            Text="{Binding Remaining, StringFormat='{0:C}'}"
+            Text="{Binding Balance, StringFormat='{0:C}'}"
             Style="{StaticResource Key=ListItemLabelStyle}"
             HorizontalTextAlignment="End"/>
     </Grid>
