@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell
+    x:Name="envelopeDetailCell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.DataTemplates.EnvelopeDetailedViewCell"
+    Height="48">
+    <ContentView
+        Margin="-1"
+        Padding="1"
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid
+            HeightRequest="48"
+            RowSpacing="0"
+            ColumnSpacing="16"
+            Margin="16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>  
+                <ColumnDefinition Width="*"/> 
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/> 
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Column="0"
+                Text="{Binding Envelope.Description}"
+                Style="{StaticResource Key=ListItemLabelStyle}"/>
+            <Label
+                Grid.Column="1"
+                Text="{Binding Past, StringFormat='{0:C}'}"
+                Style="{StaticResource Key=ListItemLabelStyle}"
+                HorizontalTextAlignment="End"/>
+            <Label
+                Grid.Column="2"
+                Text="{Binding Activity, StringFormat='{0:C}'}"
+                Style="{StaticResource Key=ListItemLabelStyle}"
+                HorizontalTextAlignment="End"/>
+            <Label
+                Grid.Column="3"
+                Text="{Binding Amount, StringFormat='{0:C}'}"
+                Style="{StaticResource Key=ListItemLabelStyle}"
+                HorizontalTextAlignment="End"/>
+            <Label
+                Grid.Column="4" 
+                Text="{Binding Remaining, StringFormat='{0:C}'}"
+                Style="{StaticResource Key=ListItemLabelStyle}"
+                HorizontalTextAlignment="End"/>
+        </Grid>
+    </ContentView>
+    <ViewCell.ContextActions>
+        <MenuItem Command="{Binding ParentContext.EditCommand, Source={x:Reference envelopeDetailCell}}" CommandParameter="{Binding .}" Text="Edit" />
+        <MenuItem Command="{Binding ParentContext.DeleteCommand, Source={x:Reference envelopeDetailCell}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+    </ViewCell.ContextActions>
+</ViewCell>
+    

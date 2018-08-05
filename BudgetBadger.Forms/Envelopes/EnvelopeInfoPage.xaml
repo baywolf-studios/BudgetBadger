@@ -205,10 +205,6 @@
                                     HorizontalTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     TextColor="{StaticResource PrimaryTextColor}">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"/>
-                                    </Label.GestureRecognizers>
-
                                     </Label>
                                 <Label 
                                     Grid.Row="1"
