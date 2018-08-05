@@ -279,14 +279,24 @@ namespace BudgetBadger.Logic
 
         private async Task<Account> GetPopulatedAccount(Account account)
         {
-            // balance
+            
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
-
-            account.Balance = accountTransactions.Where(t => t.IsActive).Sum(t => t.Amount ?? 0);
+            var activeAccountTransactions = accountTransactions.Where(t => t.IsActive);
 
             var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
+            var activePayeeTransactions = payeeTransactions.Where(t => t.IsActive);
 
-            account.Balance -= payeeTransactions.Where(t => t.IsActive).Sum(t => t.Amount ?? 0);
+            // pending
+            account.Pending = accountTransactions.Where(a => a.Pending).Sum(t => t.Amount ?? 0);
+            account.Pending -= payeeTransactions.Where(t => t.Pending).Sum(t => t.Amount ?? 0);
+
+            // posted
+            account.Posted = accountTransactions.Where(a => a.Posted).Sum(t => t.Amount ?? 0);
+            account.Posted -= payeeTransactions.Where(t => t.Posted).Sum(t => t.Amount ?? 0);
+
+            // balance
+            account.Balance = activeAccountTransactions.Sum(t => t.Amount ?? 0);
+            account.Balance -= activePayeeTransactions.Sum(t => t.Amount ?? 0);
 
             // payment 
             var dateTimeNow = DateTime.Now;

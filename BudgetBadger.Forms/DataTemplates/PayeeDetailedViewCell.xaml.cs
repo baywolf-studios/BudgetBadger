@@ -4,9 +4,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class EnvelopeViewCell : ViewCell
+    public partial class PayeeDetailedViewCell : ViewCell
     {
-        public EnvelopeViewCell()
+        public PayeeDetailedViewCell()
         {
             InitializeComponent();
         }

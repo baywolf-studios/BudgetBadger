@@ -62,6 +62,22 @@ namespace BudgetBadger.Models
             set => SetProperty(ref balance, value);
         }
 
+        //calculated
+        decimal? pending;
+        public decimal? Pending
+        {
+            get => pending;
+            set => SetProperty(ref pending, value);
+        }
+
+        //calculated
+        decimal? posted;
+        public decimal? Posted
+        {
+            get => posted;
+            set => SetProperty(ref posted, value);
+        }
+
         decimal payment;
         public decimal Payment
         {

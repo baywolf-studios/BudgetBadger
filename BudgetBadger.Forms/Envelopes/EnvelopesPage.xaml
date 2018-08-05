@@ -38,7 +38,7 @@
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
                             FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
+                            TextColor="{StaticResource PrimaryTextColor}"
                             FontFamily="{StaticResource FontFamilyMedium}"/>
                         <Label
                             Grid.Column="1"
@@ -68,7 +68,7 @@
                             Text="Past"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                         FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -84,7 +84,7 @@
                             Text="Income"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -100,7 +100,7 @@
                             Text="Budgeted"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -116,7 +116,7 @@
                             Text="Over"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -135,9 +135,9 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <ListView
-                x:Name="EnvelopeList"
+                x:Name="envelopeList"
                 Grid.Row="2"
-                BackgroundColor="White"
+                BackgroundColor="{StaticResource BackgroundColor}"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -151,73 +151,20 @@
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <ContentView BackgroundColor="{StaticResource BackgroundColor}">
-                        <ContentView.Triggers>
+                    <dt:EnvelopeColumnHeaders>
+                        <dt:EnvelopeColumnHeaders.Triggers>
                             <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
                                 <Setter Property="HeightRequest" Value="0" />
                             </Trigger>
-                        </ContentView.Triggers>
-                        <ContentView.IsVisible>
+                        </dt:EnvelopeColumnHeaders.Triggers>
+                        <dt:EnvelopeColumnHeaders.IsVisible>
                             <OnIdiom x:TypeArguments="x:Boolean">
                                 <OnIdiom.Phone>false</OnIdiom.Phone>
                                 <OnIdiom.Desktop>true</OnIdiom.Desktop>
                                 <OnIdiom.Tablet>true</OnIdiom.Tablet>
                             </OnIdiom>
-                        </ContentView.IsVisible>
-                        <ContentView.Margin>
-                            <OnPlatform x:TypeArguments="Thickness">
-                                <On Platform="macOS">0,0,15,0</On>
-                            </OnPlatform>
-                        </ContentView.Margin>
-                        <Grid
-                            HeightRequest="48"
-                            RowSpacing="0"
-                            ColumnSpacing="16"
-                            Margin="16,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>  
-                                <ColumnDefinition Width="*"/> 
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/> 
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="1"/>
-                            </Grid.RowDefinitions>
-                            <Label
-                                Grid.Column="0"
-                                Text="Description"
-                                Style="{StaticResource Key=ListHeaderLabelStyle}"/>
-                            <Label
-                                Grid.Column="1"
-                                Text="Past"
-                                Style="{StaticResource Key=ListHeaderLabelStyle}"
-                                HorizontalTextAlignment="End"/>
-                            <Label
-                                Grid.Column="2"
-                                Text="Activity"
-                                Style="{StaticResource Key=ListHeaderLabelStyle}"
-                                HorizontalTextAlignment="End"/>
-                            <Label
-                                Grid.Column="3"
-                                Text="Budget"
-                                Style="{StaticResource Key=ListHeaderLabelStyle}"
-                                HorizontalTextAlignment="End"/>
-                            <Label 
-                                Grid.Column="4" 
-                                Text="Remaining"
-                                Style="{StaticResource Key=ListHeaderLabelStyle}"
-                                HorizontalTextAlignment="End">
-                            </Label>
-                            <BoxView
-                                Grid.Row="1"
-                                Grid.ColumnSpan="5"
-                                HeightRequest="1"
-                                BackgroundColor="{StaticResource DividerColor}"
-                                Margin="0"/>
-                        </Grid>
-                    </ContentView>
+                        </dt:EnvelopeColumnHeaders.IsVisible>
+                    </dt:EnvelopeColumnHeaders>
                 </ListView.Header>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
@@ -225,40 +172,53 @@
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
-                    <dt:SimpleDetailedDataTemplateSelector>
-                        <dt:SimpleDetailedDataTemplateSelector.SimpleTemplate>
+                    <OnIdiom x:TypeArguments="DataTemplate">
+                        <OnIdiom.Phone>
                             <DataTemplate>
-                                <dt:EnvelopeViewCell ParentContext="{Binding BindingContext, Source={x:Reference envelopesPage}}"/>
+                                <dt:EnvelopeViewCell>
+                                    <dt:EnvelopeViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:EnvelopeViewCell.ContextActions>
+                                </dt:EnvelopeViewCell>
                             </DataTemplate>
-                        </dt:SimpleDetailedDataTemplateSelector.SimpleTemplate>
-                        <dt:SimpleDetailedDataTemplateSelector.DetailedTemplate>
+                        </OnIdiom.Phone>
+                        <OnIdiom.Tablet>
                             <DataTemplate>
-                                <dt:EnvelopeDetailedViewCell ParentContext="{Binding BindingContext, Source={x:Reference envelopesPage}}"/>
+                                <dt:EnvelopeDetailedViewCell>
+                                    <dt:EnvelopeDetailedViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:EnvelopeDetailedViewCell.ContextActions>
+                                </dt:EnvelopeDetailedViewCell>
                             </DataTemplate>
-                        </dt:SimpleDetailedDataTemplateSelector.DetailedTemplate>
-                    </dt:SimpleDetailedDataTemplateSelector>
+                        </OnIdiom.Tablet>
+                        <OnIdiom.Desktop>
+                            <DataTemplate>
+                                <dt:EnvelopeDetailedViewCell>
+                                    <dt:EnvelopeDetailedViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                    </dt:EnvelopeDetailedViewCell.ContextActions>
+                                </dt:EnvelopeDetailedViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Desktop>
+                    </OnIdiom>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
-                    <ContentView 
-                        BackgroundColor="White"
-                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                    <BoxView
+                        BackgroundColor="{StaticResource BackgroundColor}"
+                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
                 </ListView.Footer>
             </ListView>
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,8"
-                FontFamily="{StaticResource FontFamilyMedium}"
-                FontSize="14"
+                Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}"
-                BackgroundColor="{StaticResource AppBarColor}"
-                BorderColor="{StaticResource AppBarColor}"
-                TextColor="White"
-                HeightRequest="40"
-                BorderWidth="2"
-                BorderRadius="2">
+                Command="{Binding AddTransactionCommand}">
                 <Button.HorizontalOptions>
                     <OnIdiom x:TypeArguments="LayoutOptions">
                         <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>

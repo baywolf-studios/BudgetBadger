@@ -19,7 +19,7 @@
                     HeightRequest="24"
                     WidthRequest="24"
                     Grid.Column="0"
-                    ReplaceStringMap="{Binding ReplaceColor}"
+                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                     Source="info.svg"
                     InputTransparent="true"/>
                 <ContentView

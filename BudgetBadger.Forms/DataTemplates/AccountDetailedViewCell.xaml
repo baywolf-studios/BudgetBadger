@@ -3,7 +3,7 @@
     x:Name="envelopeDetailCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.DataTemplates.EnvelopeDetailedViewCell"
+    x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedViewCell"
     Height="{StaticResource Key=ListItemSingleHeight}">
     <ContentView
         Margin="-1"
@@ -19,33 +19,26 @@
                 <ColumnDefinition Width="*"/>  
                 <ColumnDefinition Width="*"/> 
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/> 
             </Grid.ColumnDefinitions>
             <Label
                 Grid.Column="0"
-                Text="{Binding Envelope.Description}"
+                Text="{Binding Description}"
                 Style="{StaticResource Key=ListItemLabelStyle}"/>
             <Label
                 Grid.Column="1"
-                Text="{Binding Past, StringFormat='{0:C}'}"
+                Text="{Binding Pending, StringFormat='{0:C}'}"
                 Style="{StaticResource Key=ListItemLabelStyle}"
                 HorizontalTextAlignment="End"/>
             <Label
                 Grid.Column="2"
-                Text="{Binding Activity, StringFormat='{0:C}'}"
+                Text="{Binding Posted, StringFormat='{0:C}'}"
                 Style="{StaticResource Key=ListItemLabelStyle}"
                 HorizontalTextAlignment="End"/>
             <Label
-                Grid.Column="3"
-                Text="{Binding Amount, StringFormat='{0:C}'}"
-                Style="{StaticResource Key=ListItemLabelStyle}"
-                HorizontalTextAlignment="End"/>
-            <Label
-                Grid.Column="4" 
-                Text="{Binding Remaining, StringFormat='{0:C}'}"
+                Grid.Column="3" 
+                Text="{Binding Balance, StringFormat='{0:C}'}"
                 Style="{StaticResource Key=ListItemLabelStyle}"
                 HorizontalTextAlignment="End"/>
         </Grid>
     </ContentView>
 </ViewCell>
-    
