@@ -28,6 +28,7 @@
     <Folder Include="Reports\" />
     <Folder Include="Effects\" />
     <Folder Include="Animation\" />
+    <Folder Include="DataTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />

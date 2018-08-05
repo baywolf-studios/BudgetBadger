@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.DataTemplates.GroupHeaderViewCell"
+    Height="32">
+    <ContentView
+        HeightRequest="32"
+        BackgroundColor="{StaticResource BackgroundColor}"
+        Margin="-1"
+        Padding="1">
+        <Label
+            Margin="16, 12, 16, 0"
+            Style="{StaticResource Key=ListGroupHeaderLabelStyle}"
+            Text="{Binding Key}"/>
+    </ContentView>
+</ViewCell>
