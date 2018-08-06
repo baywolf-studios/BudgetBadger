@@ -83,13 +83,24 @@
             </Style>
             
             <x:Double x:Key="ListItemFontSize">16</x:Double>
-            <x:Double x:Key="ListItemSingleHeight">48</x:Double>
+            <x:Double x:Key="ListItemHeight">48</x:Double>
             <Style x:Key="ListItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListItemFontSize}"/>
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
 
+            <x:Double x:Key="ListDoubleItemFontSize">13</x:Double>
+            <x:Double x:Key="ListDoubleItemHeight">64</x:Double>
+            <Style x:Key="ListDoubleItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleItemFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
+            </Style>
+            <Style x:Key="ListDoubleSubItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleItemFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
+            </Style>
+            
             <x:Double x:Key="PrimaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="PrimaryActionButtonHeight">40</x:Double>
             <Color x:Key="PrimaryActionButtonTextColor">white</Color>

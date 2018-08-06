@@ -4,9 +4,9 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.DataTemplates.EnvelopeViewCell"
-    Height="{StaticResource Key=ListItemSingleHeight}">
+    Height="{StaticResource Key=ListItemHeight}">
     <Grid
-        HeightRequest="{StaticResource Key=ListItemSingleHeight}"
+        HeightRequest="{StaticResource Key=ListItemHeight}"
         RowSpacing="0"
         ColumnSpacing="16"
         Margin="-1"
@@ -17,13 +17,13 @@
             <ColumnDefinition Width="*"/>   
         </Grid.ColumnDefinitions>
         <Label
-            Margin="16, 8"
             Grid.Column="0"
+            Margin="16,0,0,0"
             Text="{Binding Envelope.Description}"
             Style="{StaticResource Key=ListItemLabelStyle}"/>
         <Label 
-            Margin="16, 8"
-            Grid.Column="1" 
+            Grid.Column="1"
+            Margin="0,0,16,0"
             Text="{Binding Remaining, StringFormat='{0:C}'}"
             Style="{StaticResource Key=ListItemLabelStyle}"
             HorizontalTextAlignment="End"/>

@@ -5,7 +5,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
     x:Name="this"
     ToolbarItemText="Edit"
@@ -132,102 +132,12 @@
                 </ListView.Behaviors>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <ViewCell Height="{StaticResource ListDenseGroupHeaderHeight}">
-                            <ContentView BackgroundColor="{StaticResource BackgroundColor}"
-                                Margin="-1"
-                                Padding="1">
-                                <Label
-                                    BackgroundColor="{StaticResource BackgroundColor}"
-                                    Margin="16,0"
-                                    FontSize="{StaticResource ListDenseGroupHeaderFontSize}"
-                                    FontFamily="{StaticResource FontFamilyMedium}"
-                                    VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource ListGroupHeaderTextColor}"
-                                    Text="{Binding Key}"/>
-                            </ContentView>
-                        </ViewCell>
+                        <dt:GroupHeaderViewCell/>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="{StaticResource ListDenseItemDoubleHeight}">
-                            <Grid 
-                                BackgroundColor="{StaticResource BackgroundColor}" 
-                                Margin="16, 0" 
-                                RowSpacing="0" 
-                                ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <svg:SvgCachedImage
-                                    InputTransparent="true"
-                                    Grid.Column="0"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    HeightRequest="24"
-                                    WidthRequest="24"
-                                    HorizontalOptions="Start"
-                                    VerticalOptions="Center"
-                                    ReplaceStringMap="{Binding ReplaceColorUnchecked}"
-                                    Source="uncheckedcheckbox.svg">
-                                    <svg:SvgCachedImage.Triggers>
-                                        <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
-                                            <Setter Property="Source" Value="checkedcheckbox.svg"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Posted}" Value="false" TargetType="svg:SvgCachedImage">
-                                            <Setter Property="Source" Value="uncheckedcheckbox.svg"/>
-                                        </DataTrigger>
-                                    </svg:SvgCachedImage.Triggers>
-                                </svg:SvgCachedImage>
-                                <Button
-                                    Grid.Column="0"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    Command="{Binding Path=BindingContext.TogglePostedTransaction, Source={x:Reference this}}"
-                                    CommandParameter="{Binding .}"
-                                    BackgroundColor="Transparent"
-                                    BorderColor="White"
-                                    BorderWidth="2">
-                                </Button>
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="{Binding Payee.Description}"
-                                    FontSize="{StaticResource ListDenseItemFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="End"
-                                    HorizontalTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource PrimaryTextColor}">
-                                    </Label>
-                                <Label 
-                                    Grid.Row="1"
-                                    Grid.Column="1" 
-                                    Text="{Binding Account.Description}"
-                                    FontSize="{StaticResource ListDenseItemSecondaryFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Start"
-                                    HorizontalTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource SecondaryTextColor}"/>
-                                <Label 
-                                    Grid.RowSpan="2"
-                                    Grid.Column="2"
-                                    Text="{Binding Amount, StringFormat='{0:c}'}"
-                                    FontSize="{StaticResource ListDenseItemFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="End"
-                                    LineBreakMode="NoWrap"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
-                            </Grid>
-                        </ViewCell>
+                        <dt:TransactionViewCell/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.Footer>

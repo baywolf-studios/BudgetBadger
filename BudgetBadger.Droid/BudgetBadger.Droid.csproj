@@ -266,6 +266,8 @@
     <AndroidResource Include="Resources\drawable\uncheckedcheckbox.svg" />
     <AndroidResource Include="Resources\drawable\cancel.svg" />
     <AndroidResource Include="Resources\drawable\info.svg" />
+    <AndroidResource Include="Resources\drawable\posted.svg" />
+    <AndroidResource Include="Resources\drawable\pending.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

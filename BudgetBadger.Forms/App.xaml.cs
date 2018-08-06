@@ -78,7 +78,7 @@ namespace BudgetBadger.Forms
 
             SQLitePCL.Batteries_V2.Init();
 
-            if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+            if (Device.Idiom == TargetIdiom.Desktop)
             {
                 await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
             }
@@ -167,7 +167,7 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<ITransactionSyncLogic>(),
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
-            if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+            if (Device.Idiom == TargetIdiom.Desktop)
             {
                 containerRegistry.RegisterForNavigation<MainDesktopPage, MainPageViewModel>("MainPage");
             }
