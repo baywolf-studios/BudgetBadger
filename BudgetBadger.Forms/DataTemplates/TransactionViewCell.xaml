@@ -42,11 +42,13 @@
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
         <Button
+            x:Name="hiddenButton"
             Grid.Column="0"
             Grid.Row="0"
             Grid.RowSpan="2"
             BackgroundColor="Transparent"
-            BorderWidth="2">
+            BorderWidth="2"
+            CommandParameter="{Binding .}">
             <Button.BorderColor>
                 <OnPlatform x:TypeArguments="Color" Default="Transparent">
                     <On Platform="macOS" Value="White"/>
