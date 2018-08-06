@@ -215,6 +215,8 @@
     <BundleResource Include="Resources\report.svg" />
     <BundleResource Include="Resources\settings.svg" />
     <BundleResource Include="Resources\payees.svg" />
+    <BundleResource Include="Resources\posted.svg" />
+    <BundleResource Include="Resources\pending.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

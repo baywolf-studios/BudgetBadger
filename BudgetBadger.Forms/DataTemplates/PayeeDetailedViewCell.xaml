@@ -3,27 +3,29 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.DataTemplates.PayeeDetailedViewCell"
-    Height="{StaticResource Key=ListItemSingleHeight}">
-    <Grid
-        HeightRequest="{StaticResource Key=ListItemSingleHeight}"
-        RowSpacing="0"
-        ColumnSpacing="16"
+    Height="{StaticResource Key=ListItemHeight}">
+    <ContentView
         Margin="-1"
         Padding="1"
         BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>   
-        </Grid.ColumnDefinitions>
-        <Label
-            Margin="16, 8"
-            Grid.Column="0"
-            Text="{Binding Description}"
-            Style="{StaticResource Key=ListItemLabelStyle}"/>
-        <Label 
-            Margin="16, 8"
-            Grid.Column="1" 
-            Text="{Binding Notes}"
-            Style="{StaticResource Key=ListItemLabelStyle}"/>
-    </Grid>
+        <Grid
+            HeightRequest="{StaticResource Key=ListItemHeight}"
+            RowSpacing="0"
+            ColumnSpacing="16"
+            Margin="16,0"
+            BackgroundColor="{StaticResource BackgroundColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>   
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Column="0"
+                Text="{Binding Description}"
+                Style="{StaticResource Key=ListItemLabelStyle}"/>
+            <Label
+                Grid.Column="1" 
+                Text="{Binding Notes}"
+                Style="{StaticResource Key=ListItemLabelStyle}"/>
+        </Grid>
+    </ContentView>
 </ViewCell>

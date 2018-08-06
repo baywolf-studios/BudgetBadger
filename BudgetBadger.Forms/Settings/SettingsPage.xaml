@@ -16,8 +16,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource ListGroupHeaderHeight}"/>
-                <RowDefinition Height="{StaticResource ListItemSingleHeight}"/>
-                <!--<RowDefinition Height="{StaticResource ListItemSingleHeight}"/>-->
+                <RowDefinition Height="{StaticResource ListItemHeight}"/>
+                <!--<RowDefinition Height="{StaticResource ListItemHeight}"/>-->
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"

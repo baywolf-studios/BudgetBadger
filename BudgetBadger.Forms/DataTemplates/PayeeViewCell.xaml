@@ -3,17 +3,17 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.DataTemplates.PayeeViewCell"
-    Height="{StaticResource Key=ListItemSingleHeight}">
+    Height="{StaticResource Key=ListItemHeight}">
     <Grid
-        HeightRequest="{StaticResource Key=ListItemSingleHeight}"
+        HeightRequest="{StaticResource Key=ListItemHeight}"
         RowSpacing="0"
         ColumnSpacing="16"
         Margin="-1"
         Padding="1"
         BackgroundColor="{StaticResource BackgroundColor}">
         <Label
-            Margin="16, 8"
             Grid.Column="0"
+            Margin="16,0"
             Text="{Binding Description}"
             Style="{StaticResource Key=ListItemLabelStyle}"/>
     </Grid>
