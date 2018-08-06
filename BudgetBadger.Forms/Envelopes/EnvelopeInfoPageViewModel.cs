@@ -212,6 +212,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
+                    transaction.Posted = !transaction.Posted;
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }

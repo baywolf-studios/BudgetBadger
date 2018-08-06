@@ -137,7 +137,7 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <dt:TransactionViewCell/>
+                        <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransaction, Source={x:Reference Name=this}}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
