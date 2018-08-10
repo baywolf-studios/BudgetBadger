@@ -10,6 +10,7 @@ using Prism.Services;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
+using System.Collections.Generic;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -50,6 +51,7 @@ namespace BudgetBadger.Forms.Envelopes
 			get { return !Budget.Envelope.Group.IsDebt; }
 		}
 
+        public ICommand QuickBudgetCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand GroupSelectedCommand { get; set; }
@@ -69,6 +71,7 @@ namespace BudgetBadger.Forms.Envelopes
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
         }
         
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -191,6 +194,26 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteQuickBudgetCommand()
+        {
+            var buttons = new List<IActionSheetButton>();
+
+            foreach (var quickBudget in Budget.QuickBudgets)
+            {
+                var buttonText = quickBudget.Description + ": " + quickBudget.Amount.ToString("c");
+                var action = ActionSheetButton.CreateButton(buttonText, () =>
+                {
+                    Budget.Amount = quickBudget.Amount;
+                });
+
+                buttons.Add(action);
+            }
+
+            buttons.Add(ActionSheetButton.CreateCancelButton("Cancel", () => { }));
+
+            await _dialogService.DisplayActionSheetAsync("Quick Budget", buttons.ToArray());
         }
     }
 }

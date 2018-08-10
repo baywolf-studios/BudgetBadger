@@ -554,19 +554,64 @@ namespace BudgetBadger.Logic
                 budgetToPopulate.IgnoreOverspend = true;
             }
 
-            // previous schedule amount & activity
-            var previousScheduleResult = await GetPreviousBudgetSchedule(budgetToPopulate.Schedule);
-            if (previousScheduleResult.Success)
+            var quickBudgetsResult = await GetQuickBudgetsAsync(budgetToPopulate.Envelope, budgetToPopulate.Schedule);
+            if (quickBudgetsResult.Success)
             {
-                var previousSchedule = previousScheduleResult.Data;
-                var firstBudget = budgets.FirstOrDefault(b => b.Schedule.Id == previousSchedule.Id);
-                budgetToPopulate.PreviousScheduleAmount = firstBudget?.Amount ?? 0;
-                budgetToPopulate.PreviousScheduleActivity = activeTransactions
-                                                            .Where(t => t.ServiceDate < budgetToPopulate.Schedule.BeginDate && t.ServiceDate >= previousSchedule.BeginDate)
-                                                            .Sum(t2 => t2.Amount ?? 0);
+                budgetToPopulate.QuickBudgets = quickBudgetsResult.Data;
             }
 
             return budgetToPopulate;
+        }
+
+        async Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Envelope envelope, BudgetSchedule budgetSchedule)
+        {
+            var result = new Result<IReadOnlyList<QuickBudget>>();
+            var quickBudgets = new List<QuickBudget>();
+
+            try
+            {
+                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
+                var activeTransactions = transactions.Where(t => t.IsActive);
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
+
+                // previous schedule amount & activity
+                var previousScheduleResult = await GetPreviousBudgetSchedule(budgetSchedule);
+                if (previousScheduleResult.Success)
+                {
+                    var previousSchedule = previousScheduleResult.Data;
+                    var firstBudget = budgets.FirstOrDefault(b => b.Schedule.Id == previousSchedule.Id);
+
+                    var previousScheduleAmount = new QuickBudget
+                    {
+                        Description = "Previous Schedule Amount",
+                        Amount = firstBudget?.Amount ?? 0
+                    };
+                    quickBudgets.Add(previousScheduleAmount);
+
+                    var previousScheduleActivity = new QuickBudget
+                    {
+                        Description = "Previous Schedule Activity",
+                        Amount = activeTransactions
+                            .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= previousSchedule.BeginDate)
+                            .Sum(t2 => t2.Amount ?? 0)
+                    };
+                    quickBudgets.Add(previousScheduleActivity);
+
+                    result.Success = true;
+                    result.Data = quickBudgets;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = previousScheduleResult.Message;
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
         }
 
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
@@ -671,7 +716,7 @@ namespace BudgetBadger.Logic
             return newBudgetSchedule;
         }
 
-        private BudgetSchedule GetBudgetScheduleFromDate(DateTime date)
+        BudgetSchedule GetBudgetScheduleFromDate(DateTime date)
         {
             var selectedSchedule = new BudgetSchedule();
             selectedSchedule.BeginDate = new DateTime(date.Year, date.Month, 1);
@@ -702,7 +747,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private DateTime GetNextBudgetScheduleDate(BudgetSchedule currentSchedule)
+        DateTime GetNextBudgetScheduleDate(BudgetSchedule currentSchedule)
         {
             return currentSchedule.EndDate.AddDays(1);
         }
@@ -729,7 +774,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private DateTime GetPreviousBudgetScheduleDate(BudgetSchedule currentSchedule)
+        DateTime GetPreviousBudgetScheduleDate(BudgetSchedule currentSchedule)
         {
             return currentSchedule.BeginDate.AddDays(-1);
         }
