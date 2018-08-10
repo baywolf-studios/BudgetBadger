@@ -15,14 +15,11 @@ namespace BudgetBadger.macOS.Effects
 
         protected override void OnAttached()
         {
-            var defaultFont = NSFont.SystemFontOfSize(12);
-            var testFont = NSFont.FromFontName(".AppleSystemUIFont-Regular", 12);
-
             if (Control is NSPopUpButton picker)
             {
-                picker.Layer.BorderWidth = 0;
-                picker.Bordered = false;
-                picker.FocusRingType = NSFocusRingType.None;
+                //picker.Layer.BorderWidth = 0;
+                //picker.Bordered = false;
+                //picker.FocusRingType = NSFocusRingType.None;
             }
         }
 

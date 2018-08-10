@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="BudgetBadger.Forms.DataTemplates.TransactionDetailedViewCell"
+    Height="{StaticResource Key=ListItemHeight}">
+    <ContentView
+        Margin="-1"
+        Padding="1"
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid
+            HeightRequest="{StaticResource Key=ListItemHeight}"
+            ColumnSpacing="16"
+            Margin="16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>  
+                <ColumnDefinition Width="*"/> 
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/> 
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Column="0"
+                Text="{Binding ServiceDate, StringFormat='{0:d}'}"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                VerticalTextAlignment="Center"/>
+            <Label
+                Grid.Column="1"
+                Text="{Binding Account.Description}"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                VerticalTextAlignment="Center"/>
+            <Label
+                Grid.Column="2"
+                Text="{Binding Payee.Description}"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                VerticalTextAlignment="Center"/>
+            <Label
+                Grid.Column="3"
+                Text="{Binding Envelope.Description}"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                VerticalTextAlignment="Center"/>
+            <Label
+                Grid.Column="4"
+                Text="{Binding Amount, StringFormat='{0:C}'}"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Center"/>
+            <svg:SvgCachedImage
+                InputTransparent="true"
+                Grid.Column="5"
+                HeightRequest="16"
+                WidthRequest="16"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="pending.svg">
+                <svg:SvgCachedImage.Triggers>
+                    <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
+                        <Setter Property="Source" Value="posted.svg"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Posted}" Value="false" TargetType="svg:SvgCachedImage">
+                        <Setter Property="Source" Value="pending.svg"/>
+                    </DataTrigger>
+                </svg:SvgCachedImage.Triggers>
+            </svg:SvgCachedImage>
+            <Button
+                x:Name="hiddenButton"
+                Grid.Column="5"
+                BackgroundColor="Transparent"
+                BorderWidth="2"
+                HeightRequest="{StaticResource Key=ListItemHeight}"
+                CommandParameter="{Binding .}">
+                <Button.BorderColor>
+                    <OnPlatform x:TypeArguments="Color" Default="Transparent">
+                        <On Platform="macOS" Value="White"/>
+                    </OnPlatform>
+                </Button.BorderColor>
+            </Button>
+        </Grid>
+    </ContentView>  
+</ViewCell>

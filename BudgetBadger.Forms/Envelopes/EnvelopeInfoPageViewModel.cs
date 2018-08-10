@@ -21,7 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
 
-        public ICommand TogglePostedTransaction { get; set; }
+        public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -78,7 +78,7 @@ namespace BudgetBadger.Forms.Envelopes
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            TogglePostedTransaction = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)

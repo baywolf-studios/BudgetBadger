@@ -16,76 +16,135 @@
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <ScrollView Orientation="Vertical">
-                <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="1"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" ColumnSpacing="8">
+            <Grid
+                BackgroundColor="{StaticResource BackgroundColor}"
+                Margin="0"
+                ColumnSpacing="16" 
+                RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="16" ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        Text="To Budget"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Start"
+                        FontSize="{StaticResource PageHeaderFontSize}"
+                        TextColor="{StaticResource PrimaryTextColor}"
+                        FontAttributes="Bold"/>
+                    <Label
+                        Grid.Column="1"
+                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="End"
+                        FontSize="{StaticResource PageHeaderFontSize}"
+                        TextColor="{StaticResource PrimaryTextColor}"
+                        FontAttributes="Bold"/>
+                </Grid>
+                <BoxView
+                    Grid.Row="1"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
+                <ScrollView 
+                    Grid.Row="2"
+                    Orientation="Vertical"
+                    Margin="16">
+                    <Grid RowSpacing="16" ColumnSpacing="16" Margin="16">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <uc:ButtonSelector
+                            Grid.Row="0"
                             Grid.Column="0"
-                            Text="To Budget"
-                            HorizontalTextAlignment="Start"
-                            VerticalTextAlignment="Center"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
-                        <Label
+                            Grid.ColumnSpan="2"
+                            Command="{Binding GroupSelectedCommand}"
+                            Label="Group"
+                            Text="{Binding Budget.Envelope.Group.Description}"/>
+                        <uc:TextEntry
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Label="Name"
+                            Text="{Binding Budget.Envelope.Description}"/>
+                        <uc:CalculatorEntry
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Prefix="$"
+                            Label="Amount"
+                            Number="{Binding Budget.Amount}"/>
+                        <Button
+                            Grid.Row="2"
                             Grid.Column="1"
-                            Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
-                            HorizontalTextAlignment="End"
-                            VerticalTextAlignment="Center"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                            Text="Quick Budget"
+                            VerticalOptions="End"
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            />
+                        <StackLayout
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Orientation="Vertical"
+                            Spacing="0">
+                            <uc:Checkbox
+                                IsEnabled="{Binding IsNotDebt}"
+                                Label="Ignore Overspend"
+                                IsChecked="{Binding Budget.IgnoreOverspend}"/>
+                            <uc:Checkbox
+                                IsEnabled="{Binding IsNotDebt}"
+                                Margin="32,0,0,0"
+                                Label="Always"
+                                IsChecked="{Binding Budget.Envelope.IgnoreOverspend}"
+                                IsVisible="{Binding Budget.IgnoreOverspend}"/>
+                        </StackLayout>
+                        <uc:MultilineTextEntry
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Label="Notes"
+                            Text="{Binding Budget.Envelope.Notes}"/>
+                        <Button
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            IsVisible="{Binding Budget.IsActive}"
+                            Command="{Binding DeleteCommand}"
+                            FontFamily="{StaticResource FontFamilyMedium}"
+                            FontSize="14"
+                            Text="Delete Envelope"
+                            BackgroundColor="Red"
+                            BorderColor="Red"
+                            TextColor="White"
+                            HeightRequest="40"
+                            BorderWidth="2"
+                            BorderRadius="2">
+                            <Button.HorizontalOptions>
+                                <OnIdiom x:TypeArguments="LayoutOptions">
+                                    <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Button.HorizontalOptions>
+                        </Button>
                     </Grid>
-                    <BoxView
-                        Grid.Row="1"
-                        HeightRequest="1"
-                        BackgroundColor="{StaticResource DividerColor}"
-                        Margin="0"/>
-                    <uc:ButtonSelector Grid.Row="2" Command="{Binding GroupSelectedCommand}" Label="Group" Text="{Binding Budget.Envelope.Group.Description}"/>
-                    <uc:TextEntry Grid.Row="3" Label="Name" Text="{Binding Budget.Envelope.Description}"/>
-                    <uc:CalculatorEntry Grid.Row="4" Prefix="$" Label="Amount" Number="{Binding Budget.Amount}"/>
-                    <StackLayout Grid.Row="5" Orientation="Vertical" Spacing="0">
-                        <uc:Checkbox IsEnabled="{Binding IsNotDebt}" Label="Ignore Overspend" IsChecked="{Binding Budget.IgnoreOverspend}"/>
-                        <uc:Checkbox IsEnabled="{Binding IsNotDebt}" Margin="32,0,0,0" Label="Always" IsChecked="{Binding Budget.Envelope.IgnoreOverspend}" IsVisible="{Binding Budget.IgnoreOverspend}"/>
-                    </StackLayout>
-                    <uc:MultilineTextEntry Grid.Row="6" Label="Notes" Text="{Binding Budget.Envelope.Notes}"/>
-                    <Button
-                        Grid.Row="7"
-                        IsVisible="{Binding Budget.IsActive}"
-                        Command="{Binding DeleteCommand}"
-                        FontFamily="{StaticResource FontFamilyMedium}"
-                        FontSize="14"
-                        Text="Delete Envelope"
-                        BackgroundColor="Red"
-                        BorderColor="Red"
-                        TextColor="White"
-                        HeightRequest="40"
-                        BorderWidth="2"
-                        BorderRadius="2">
-                        <Button.HorizontalOptions>
-                            <OnIdiom x:TypeArguments="LayoutOptions">
-                                <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                                <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                                <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
-                            </OnIdiom>
-                        </Button.HorizontalOptions>
-                    </Button>
-                </Grid>
-            </ScrollView>
+                </ScrollView>
+            </Grid>
         </uc:BusyIndicator>
     </uc:ChildPage.BodyContent>
 </uc:ChildPage>
