@@ -95,6 +95,7 @@
                             Text="Quick Budget"
                             VerticalOptions="End"
                             Style="{StaticResource SecondaryActionButtonStyle}"
+                            Command="{Binding QuickBudgetCommand}"
                             />
                         <StackLayout
                             Grid.Row="3"
