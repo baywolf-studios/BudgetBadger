@@ -33,14 +33,14 @@ namespace BudgetBadger.Models
         public bool IgnoreOverspend
         {
             get => ignoreOverspend;
-			set
-			{
-				SetProperty(ref ignoreOverspend, value);
+            set
+            {
+                SetProperty(ref ignoreOverspend, value);
                 if (value == false && Envelope != null)
-				{
-					Envelope.IgnoreOverspend = false;
-				}
-			}
+                {
+                    Envelope.IgnoreOverspend = false;
+                }
+            }
         }
 
         decimal? amount;
@@ -77,6 +77,38 @@ namespace BudgetBadger.Models
         public decimal Past { get => PastAmount + PastActivity; }
 
         public decimal Remaining { get { return (Amount ?? 0) + PastAmount + Activity + PastActivity; } }
+
+        //calculated, not stored
+        decimal previousScheduleAmount;
+        public decimal PreviousScheduleAmount
+        {
+            get => previousScheduleAmount;
+            set => SetProperty(ref previousScheduleAmount, value);
+        }
+
+        //calculated, not stored
+        decimal previousScheduleActivity;
+        public decimal PreviousScheduleActivity
+        {
+            get => previousScheduleActivity;
+            set => SetProperty(ref previousScheduleActivity, value);
+        }
+
+        //calculated, not stored
+        decimal avgLast3SchedulesAmount;
+        public decimal AvgLast3SchedulesAmount
+        {
+            get => avgLast3SchedulesAmount;
+            set => SetProperty(ref avgLast3SchedulesAmount, value);
+        }
+
+        //calculated, not stored
+        decimal avgLast12SchedulesAmount;
+        public decimal AvgLast12SchedulesAmount
+        {
+            get => avgLast12SchedulesAmount;
+            set => SetProperty(ref avgLast12SchedulesAmount, value);
+        }
 
         DateTime? createdDateTime;
         public DateTime? CreatedDateTime

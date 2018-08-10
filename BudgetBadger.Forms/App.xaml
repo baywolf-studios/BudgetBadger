@@ -90,6 +90,20 @@
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
 
+            <x:Double x:Key="DenseListGroupHeaderFontSize">12</x:Double>
+            <x:Double x:Key="DenseListGroupHeaderHeight">32</x:Double>
+            <Color x:Key="DenseListGroupHeaderTextColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#004d7f</x:String>
+                </x:Arguments>
+            </Color>
+            <Style x:Key="DenseListGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=DenseListGroupHeaderFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=DenseListGroupHeaderTextColor}"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+            
             <x:Double x:Key="ListDoubleItemFontSize">13</x:Double>
             <x:Double x:Key="ListDoubleItemHeight">64</x:Double>
             <Style x:Key="ListDoubleItemLabelStyle" TargetType="Label">
@@ -140,7 +154,7 @@
                 <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="BorderWidth" Value="1"/>
                 <Setter Property="BorderRadius" Value="4"/>
             </Style>
             

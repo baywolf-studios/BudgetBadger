@@ -16,6 +16,31 @@ namespace BudgetBadger.Forms.DataTemplates
             set { SetValue(CommandProperty, value); }
         }
 
+        TransactionViewCellType transactionViewCellType;
+        public TransactionViewCellType TransactionViewCellType
+        {
+            get => transactionViewCellType;
+            set
+            {
+                transactionViewCellType = value;
+                switch(transactionViewCellType)
+                {
+                    case TransactionViewCellType.Envelope:
+                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        break;
+                    case TransactionViewCellType.Account:
+                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        secondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        break;
+                    case TransactionViewCellType.Payee:
+                        primaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        break;
+                }
+            }            
+        }
+
         public TransactionViewCell()
         {
             InitializeComponent();

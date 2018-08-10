@@ -85,7 +85,7 @@ namespace BudgetBadger.Logic
 
 
                 result.Success = true;
-				result.Data = OrderBudgets(budgetsToReturn);
+                result.Data = OrderBudgets(budgetsToReturn);
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
 
                 result.Success = true;
-				result.Data = OrderBudgets(budgetsToReturn);
+                result.Data = OrderBudgets(budgetsToReturn);
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@ namespace BudgetBadger.Logic
                     return validationResult;
                 }
 
-				envelopeToDelete.ModifiedDateTime = DateTime.Now;
+                envelopeToDelete.ModifiedDateTime = DateTime.Now;
                 envelopeToDelete.DeletedDateTime = DateTime.Now;
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
                 result.Success = true;
@@ -237,7 +237,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroupToDelete = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id);
-				envelopeGroupToDelete.ModifiedDateTime = DateTime.Now;
+                envelopeGroupToDelete.ModifiedDateTime = DateTime.Now;
                 envelopeGroupToDelete.DeletedDateTime = DateTime.Now;
                 await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
                 result.Success = true;
@@ -260,7 +260,7 @@ namespace BudgetBadger.Logic
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem && !e.IsIncome && !e.IsDebt);
                 result.Success = true;
-				result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
+                result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
             }
             catch (Exception ex)
             {
@@ -278,7 +278,7 @@ namespace BudgetBadger.Logic
                 return budgets.ToList();
             }
 
-			return OrderBudgets(budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower())));
+            return OrderBudgets(budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower())));
         }
 
         public IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText)
@@ -288,51 +288,51 @@ namespace BudgetBadger.Logic
                 return envelopeGroups.ToList();
             }
 
-			return OrderEnvelopeGroups(envelopeGroups.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+            return OrderEnvelopeGroups(envelopeGroups.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
         }
 
         public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
-		{
-			return envelopeGroups.OrderBy(a => a.Description).ToList();
-		}
-
-		public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
         {
-			return budgets.OrderBy(b => b.Envelope.Group.Description).ThenBy(a => a.Envelope.Description).ToList();
+            return envelopeGroups.OrderBy(a => a.Description).ToList();
+        }
+
+        public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
+        {
+            return budgets.OrderBy(b => b.Envelope.Group.Description).ThenBy(a => a.Envelope.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
         {
-			var groupedBudgets = OrderBudgets(budgets).GroupBy(b => b.Envelope.Group.Description).ToList();
+            var groupedBudgets = OrderBudgets(budgets).GroupBy(b => b.Envelope.Group.Description).ToList();
 
-			var orderedAndGroupedBudgets = new List<IGrouping<string, Budget>>();
+            var orderedAndGroupedBudgets = new List<IGrouping<string, Budget>>();
 
             var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope);
-			if (debtBudgets != null)
-			{
+            if (debtBudgets != null)
+            {
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(debtBudgets).GroupBy(b => b.Envelope.Group.Description));
-			}
+            }
 
             var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome);
-			if (incomeBudgets != null)
-			{
+            if (incomeBudgets != null)
+            {
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(incomeBudgets).GroupBy(b => b.Envelope.Group.Description));
-			}
+            }
 
-			var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome);
+            var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome);
             if (userBudgets != null)
             {
                 var orderedUserBudgets = OrderBudgets(userBudgets);
                     orderedAndGroupedBudgets.AddRange(orderedUserBudgets.GroupBy(b => b.Envelope.Group.Description));
             }
 
-			var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope);
+            var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope);
             if (genericDebtBudget != null)
-			{
+            {
                 orderedAndGroupedBudgets.AddRange(OrderBudgets(genericDebtBudget).GroupBy(b => b.Envelope.Group.Description));
-			}
+            }
 
-			return orderedAndGroupedBudgets;
+            return orderedAndGroupedBudgets;
         }
 
         public Task<Result> ValidateBudgetAsync(Budget budget)
@@ -343,12 +343,12 @@ namespace BudgetBadger.Logic
             }
             
             if (budget.Envelope.IgnoreOverspend && !budget.IgnoreOverspend)
-			{
-				return Task.FromResult(new Result { Success = false, Message = "Cannot set Ignore Overspend Always when Ignore Overspend is not set" });
-			}
+            {
+                return Task.FromResult(new Result { Success = false, Message = "Cannot set Ignore Overspend Always when Ignore Overspend is not set" });
+            }
 
-			if (budget.Envelope.Group.IsDebt && 
-			    (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
+            if (budget.Envelope.Group.IsDebt && 
+                (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
             {
                 return Task.FromResult(new Result { Success = false, Message = "Ignore Overspend must be set on debt envelopes" });
             }
@@ -447,7 +447,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Result<Envelope>> SaveEnvelopeAsync(Envelope envelope)
+        async Task<Result<Envelope>> SaveEnvelopeAsync(Envelope envelope)
         {
             if (!envelope.IsValid())
             {
@@ -487,7 +487,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Result<BudgetSchedule>> SaveBudgetScheduleAsync(BudgetSchedule budgetSchedule)
+        async Task<Result<BudgetSchedule>> SaveBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
             if (!budgetSchedule.IsValid())
             {
@@ -519,7 +519,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Budget> GetPopulatedBudget(Budget budget, BudgetSchedule budgetSchedule = null)
+        async Task<Budget> GetPopulatedBudget(Budget budget, BudgetSchedule budgetSchedule = null)
         {
             var budgetToPopulate = budget.DeepCopy();
 
@@ -550,14 +550,26 @@ namespace BudgetBadger.Logic
 
             // inheritance for ignore overspend
             if (budgetToPopulate.Envelope.IgnoreOverspend)
-			{
-				budgetToPopulate.IgnoreOverspend = true;
-			}
+            {
+                budgetToPopulate.IgnoreOverspend = true;
+            }
+
+            // previous schedule amount & activity
+            var previousScheduleResult = await GetPreviousBudgetSchedule(budgetToPopulate.Schedule);
+            if (previousScheduleResult.Success)
+            {
+                var previousSchedule = previousScheduleResult.Data;
+                var firstBudget = budgets.FirstOrDefault(b => b.Schedule.Id == previousSchedule.Id);
+                budgetToPopulate.PreviousScheduleAmount = firstBudget?.Amount ?? 0;
+                budgetToPopulate.PreviousScheduleActivity = activeTransactions
+                                                            .Where(t => t.ServiceDate < budgetToPopulate.Schedule.BeginDate && t.ServiceDate >= previousSchedule.BeginDate)
+                                                            .Sum(t2 => t2.Amount ?? 0);
+            }
 
             return budgetToPopulate;
         }
 
-        private async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
+        async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
         {
             var allAccounts = await _accountDataAccess.ReadAccountsAsync();
             var budgetAccounts = allAccounts.Where(a => a.OnBudget);

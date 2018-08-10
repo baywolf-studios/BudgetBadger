@@ -36,7 +36,7 @@
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
                             FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
+                            TextColor="{StaticResource PrimaryTextColor}"
                             FontFamily="{StaticResource FontFamilyMedium}"/>
                         <Label
                             Grid.Column="1"
@@ -65,7 +65,7 @@
                             Text="Past"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -81,7 +81,7 @@
                             Text="Activity"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -97,7 +97,7 @@
                             Text="Budget"
                             HorizontalTextAlignment="Center"
                             FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
+                            TextColor="{StaticResource SecondaryTextColor}"
                             FontFamily="{StaticResource FontFamilyRegular}"/>
                         <Label
                             Grid.Row="1"
@@ -130,15 +130,67 @@
                 <ListView.Behaviors>
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
+                <ListView.Header>
+                    <dt:TransactionColumnHeaders>
+                        <dt:TransactionColumnHeaders.Triggers>
+                            <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
+                                <Setter Property="HeightRequest" Value="0" />
+                            </Trigger>
+                        </dt:TransactionColumnHeaders.Triggers>
+                        <dt:TransactionColumnHeaders.IsVisible>
+                            <OnIdiom x:TypeArguments="x:Boolean">
+                                <OnIdiom.Phone>false</OnIdiom.Phone>
+                                <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                                <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            </OnIdiom>
+                        </dt:TransactionColumnHeaders.IsVisible>
+                    </dt:TransactionColumnHeaders>
+                </ListView.Header>
                 <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <dt:GroupHeaderViewCell/>
-                    </DataTemplate>
+                    <OnIdiom x:TypeArguments="DataTemplate">
+                        <OnIdiom.Phone>
+                            <DataTemplate>
+                                <dt:DenseGroupHeaderViewCell/>
+                            </DataTemplate>
+                        </OnIdiom.Phone>
+                        <OnIdiom.Tablet>
+                            <DataTemplate>
+                                <ViewCell Height="0">
+                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="White"/>
+                                </ViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Tablet>
+                        <OnIdiom.Desktop>
+                            <DataTemplate>
+                                <ViewCell Height="0">
+                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="White"/>
+                                </ViewCell>
+                            </DataTemplate>
+                        </OnIdiom.Desktop>
+                    </OnIdiom>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransaction, Source={x:Reference Name=this}}"/>
-                    </DataTemplate>
+                    <OnIdiom x:TypeArguments="DataTemplate">
+                        <OnIdiom.Phone>
+                            <DataTemplate>
+                                <dt:TransactionViewCell
+                                    TransactionViewCellType="Envelope"
+                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            </DataTemplate>
+                        </OnIdiom.Phone>
+                        <OnIdiom.Tablet>
+                            <DataTemplate>
+                                <dt:TransactionDetailedViewCell
+                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            </DataTemplate>
+                        </OnIdiom.Tablet>
+                        <OnIdiom.Desktop>
+                            <DataTemplate>
+                                <dt:TransactionDetailedViewCell
+                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            </DataTemplate>
+                        </OnIdiom.Desktop>
+                    </OnIdiom>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
                     <ContentView 
