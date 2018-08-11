@@ -30,7 +30,7 @@
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
-                FontFamily="{StaticResource FontFamilyMedium}"
+                FontAttributes="Bold"
                 Text="{Binding Title}"
                 Margin="0"
                 HorizontalOptions="Center">

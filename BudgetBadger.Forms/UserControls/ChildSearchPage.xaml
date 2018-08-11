@@ -29,7 +29,7 @@
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
-                FontFamily="{StaticResource FontFamilyMedium}"
+                FontAttributes="Bold"
                 Text="{Binding Title}">
                 <Grid.Column>
                     <OnPlatform x:TypeArguments="x:Int32">

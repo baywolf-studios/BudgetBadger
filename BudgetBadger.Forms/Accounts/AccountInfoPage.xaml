@@ -22,8 +22,17 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0">
+                <uc:Expander.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                    </OnIdiom>
+                </uc:Expander.IsVisible>
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
@@ -32,20 +41,16 @@
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            Text="Account Balance"
+                            Text="Balance"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"/>
                         <Label
                             Grid.Column="1"
                             Text="{Binding Account.Balance, StringFormat='{0:c}'}"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="End"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"/>
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -63,33 +68,25 @@
                             Grid.Column="0"
                             Text="Pending"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             Text="{Binding PendingTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
                             Text="Cleared"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -139,14 +136,14 @@
                         <OnIdiom.Tablet>
                             <DataTemplate>
                                 <ViewCell Height="0">
-                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="White"/>
+                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
                                 </ViewCell>
                             </DataTemplate>
                         </OnIdiom.Tablet>
                         <OnIdiom.Desktop>
                             <DataTemplate>
                                 <ViewCell Height="0">
-                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="White"/>
+                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
                                 </ViewCell>
                             </DataTemplate>
                         </OnIdiom.Desktop>
@@ -176,34 +173,119 @@
                     </OnIdiom>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
-                    <ContentView 
+                    <BoxView
                         BackgroundColor="{StaticResource BackgroundColor}"
-                        HeightRequest="{Binding Source={x:Reference Name=NewTransactionButton}, Path=Height}"/>
+                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
                 </ListView.Footer>
             </ListView>
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,8"
-                FontFamily="{StaticResource FontFamilyMedium}"
-                FontSize="14"
+                Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}"
-                BackgroundColor="{StaticResource AppBarColor}"
-                BorderColor="{StaticResource AppBarColor}"
-                TextColor="White"
-                HeightRequest="40"
-                BorderWidth="2"
-                BorderRadius="2">
-                <Button.HorizontalOptions>
-                    <OnIdiom x:TypeArguments="LayoutOptions">
-                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                Command="{Binding AddTransactionCommand}">
+                <Button.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </Button.HorizontalOptions>
+                </Button.IsVisible>
             </Button>
+            <BoxView
+                Grid.Row="3"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <Grid
+                Grid.Row="4"
+                ColumnSpacing="16"
+                RowSpacing="8"
+                Margin="16">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>false</OnIdiom.Phone>
+                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Balance"
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Text="Pending"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Text="Posted"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="5"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    IsVisible="true"
+                    Command="{Binding PaymentCommand}"
+                    Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="6"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding AddTransactionCommand}"/>
+            </Grid>
         </Grid>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

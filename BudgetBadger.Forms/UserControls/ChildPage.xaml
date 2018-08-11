@@ -32,7 +32,7 @@
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
-                FontFamily="{StaticResource FontFamilyMedium}"
+                FontAttributes="Bold"
                 Text="{Binding Title}">
                 <Label.Margin>
                     <OnPlatform x:TypeArguments="Thickness">

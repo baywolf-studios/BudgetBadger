@@ -21,8 +21,20 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid Margin="16" ColumnSpacing="8">
+            <Grid
+                Grid.Row="0"
+                Margin="16"
+                ColumnSpacing="8">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -32,17 +44,13 @@
                     Text="Net Worth"
                     HorizontalTextAlignment="Start"
                     VerticalTextAlignment="Center"
-                    FontSize="{StaticResource PageHeaderFontSize}"
-                    TextColor="{StaticResource PrimaryTextColor}"
-                    FontFamily="{StaticResource FontFamilyMedium}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
                 <Label
                     Grid.Column="1"
                     Text="{Binding NetWorth, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="End"
                     VerticalTextAlignment="Center"
-                    FontSize="{StaticResource PageHeaderFontSize}"
-                    TextColor="{StaticResource PrimaryTextColor}"
-                    FontFamily="{StaticResource FontFamilyMedium}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
             </Grid>
             <BoxView
                 Grid.Row="1"
@@ -134,14 +142,62 @@
                 Text="Add Transaction" 
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}">
-                <Button.HorizontalOptions>
-                    <OnIdiom x:TypeArguments="LayoutOptions">
-                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                <Button.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </Button.HorizontalOptions>
+                </Button.IsVisible>
             </Button>
+            <BoxView
+                Grid.Row="3"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <Grid
+                Grid.Row="4"
+                Margin="16"
+                ColumnSpacing="16">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>false</OnIdiom.Phone>
+                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Net Worth"
+                    HorizontalTextAlignment="Start"
+                    VerticalTextAlignment="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Start"
+                    VerticalTextAlignment="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding AddTransactionCommand}"/>
+            </Grid>
         </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>
