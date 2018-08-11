@@ -10,7 +10,7 @@
     ToolbarItemIcon="save.svg"
     ToolbarItemCommand="{Binding SaveCommand}">
     <uc:ChildPage.Triggers>
-        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Budget.IsNew}" Value="True">
+        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Budget.Envelope.IsNew}" Value="True">
             <Setter Property="Title" Value="New Envelope" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
@@ -25,8 +25,17 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid Margin="16" ColumnSpacing="8">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>true</OnIdiom.Phone>
+                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -124,27 +133,67 @@
                             Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            IsVisible="{Binding Budget.IsActive}"
                             Command="{Binding DeleteCommand}"
-                            FontFamily="{StaticResource FontFamilyMedium}"
-                            FontSize="14"
                             Text="Delete Envelope"
-                            BackgroundColor="Red"
-                            BorderColor="Red"
-                            TextColor="White"
-                            HeightRequest="40"
-                            BorderWidth="2"
-                            BorderRadius="2">
-                            <Button.HorizontalOptions>
-                                <OnIdiom x:TypeArguments="LayoutOptions">
-                                    <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                            Style="{StaticResource PrimaryDestructionButtonStyle}">
+                            <Button.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.HorizontalOptions>
+                            </Button.IsVisible>
                         </Button>
                     </Grid>
                 </ScrollView>
+                <BoxView
+                    Grid.Row="3"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
+                <Grid
+                    Grid.Row="4"
+                    Margin="16"
+                    ColumnSpacing="16">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="To Budget"
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Command="{Binding DeleteCommand}"
+                        Text="Delete Envelope"
+                        Style="{StaticResource PrimaryDestructionButtonStyle}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"/>
+                </Grid>
             </Grid>
         </uc:BusyIndicator>
     </uc:ChildPage.BodyContent>

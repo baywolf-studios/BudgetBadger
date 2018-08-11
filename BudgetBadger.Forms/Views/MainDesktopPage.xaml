@@ -26,7 +26,7 @@
                     Text="Budget Badger"
                     Margin="16"
                     FontSize="17"
-                    FontFamily="{StaticResource FontFamilyMedium}"
+                    FontAttributes="Bold"
                     VerticalTextAlignment="Center"/>
                 <Frame
                     x:Name="EnvelopesFrame"
@@ -51,7 +51,6 @@
                             Margin="8,0"
                             Text="Envelopes"
                             FontSize="14"
-                            FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
                             TextColor="{StaticResource PrimaryColor}">
                         </Label>
@@ -79,7 +78,6 @@
                             Margin="8,0"
                             Text="Accounts"
                             FontSize="14"
-                            FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
                             TextColor="{StaticResource SecondaryTextColor}">
                         </Label>
@@ -107,7 +105,6 @@
                             Margin="8,0"
                             Text="Payees"
                             FontSize="14"
-                            FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
                             TextColor="{StaticResource SecondaryTextColor}">
                         </Label>
@@ -135,7 +132,6 @@
                             Margin="8,0"
                             Text="Reports"
                             FontSize="14"
-                            FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
                             TextColor="{StaticResource SecondaryTextColor}">
                         </Label>
@@ -163,7 +159,6 @@
                             Margin="8,0"
                             Text="Settings"
                             FontSize="14"
-                            FontFamily="{StaticResource FontFamilyRegular}"
                             VerticalTextAlignment="Center"
                             TextColor="{StaticResource SecondaryTextColor}">
                         </Label>

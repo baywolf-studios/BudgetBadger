@@ -13,9 +13,19 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
-        <Grid BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}"
+            Margin="0"
+            ColumnSpacing="16"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <ListView
                 x:Name="payeeList" 
+                Grid.Row="0"
                 BackgroundColor="{StaticResource BackgroundColor}" 
                 SeparatorVisibility="None" 
                 IsPullToRefreshEnabled="true" 
@@ -92,19 +102,71 @@
             </ListView>
             <Button
                 x:Name="NewTransactionButton"
+                Grid.Row="0"
                 Margin="16,0,16,8"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}">
-                <Button.HorizontalOptions>
-                    <OnIdiom x:TypeArguments="LayoutOptions">
-                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                <Button.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </Button.HorizontalOptions>
+                </Button.IsVisible>
             </Button>
+            <BoxView
+                Grid.Row="1"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <Grid
+                Grid.Row="2"
+                ColumnSpacing="16"
+                RowSpacing="8"
+                Margin="16">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>false</OnIdiom.Phone>
+                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text=""
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text=""
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding AddTransactionCommand}"/>
+            </Grid>
         </Grid>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

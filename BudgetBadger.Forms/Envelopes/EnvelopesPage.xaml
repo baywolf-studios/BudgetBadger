@@ -16,7 +16,7 @@
     PreviousCommand="{Binding PreviousCommand}">
     <uc:StepperPage.BodyContent>
         <Grid
-            BackgroundColor="White"
+            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
@@ -24,8 +24,17 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0">
+                <uc:Expander.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                    </OnIdiom>
+                </uc:Expander.IsVisible>
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
@@ -37,17 +46,13 @@
                             Text="To Budget"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"/>
                         <Label
                             Grid.Column="1"
                             Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="End"
-                            FontSize="{StaticResource PageHeaderFontSize}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyMedium}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"/>
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -67,65 +72,49 @@
                             Grid.Column="0"
                             Text="Past"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                        FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
                             Text="Income"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
                             Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="0"
                             Grid.Column="2"
                             Text="Budgeted"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="2"
                             Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="0"
                             Grid.Column="3"
                             Text="Over"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
                             Grid.Column="3"
                             Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource PageSubheaderFontSize}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            FontFamily="{StaticResource FontFamilyRegular}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -219,14 +208,125 @@
                 Text="Add Transaction" 
                 VerticalOptions="End"
                 Command="{Binding AddTransactionCommand}">
-                <Button.HorizontalOptions>
-                    <OnIdiom x:TypeArguments="LayoutOptions">
-                        <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                        <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
+                <Button.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </Button.HorizontalOptions>
+                </Button.IsVisible>
             </Button>
+            <BoxView
+                Grid.Row="3"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <Grid
+                Grid.Row="4"
+                ColumnSpacing="16"
+                RowSpacing="8"
+                Margin="16">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>false</OnIdiom.Phone>
+                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="To Budget"
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Text="Past"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Text="Income"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    Text="Budgeted"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="5"
+                    Text="Over"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="7"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding AddTransactionCommand}"/>
+            </Grid>
         </Grid>
     </uc:StepperPage.BodyContent>
 </uc:StepperPage>

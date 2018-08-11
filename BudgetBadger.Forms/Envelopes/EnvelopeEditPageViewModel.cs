@@ -70,7 +70,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
-            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand(), CanExecuteDeleteCommand).ObservesProperty(() => Budget);
             QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
         }
         
@@ -157,6 +157,18 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteGroupSelectedCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupSelectionPage);
+        }
+
+        public bool CanExecuteDeleteCommand()
+        {
+            if (Budget != null && Budget.Envelope != null)
+            {
+                return Budget.Envelope.IsActive;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task ExecuteDeleteCommand()

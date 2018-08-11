@@ -118,6 +118,9 @@
             <x:Double x:Key="PrimaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="PrimaryActionButtonHeight">40</x:Double>
             <Color x:Key="PrimaryActionButtonTextColor">white</Color>
+            <OnPlatform x:Key="PrimaryActionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+                <On Platform="macOS">2</On>
+            </OnPlatform>
             <Color x:Key="PrimaryActionButtonBackgroundColor" x:FactoryMethod="FromHex">
                 <x:Arguments>
                     <x:String>#3678AF</x:String>
@@ -130,12 +133,33 @@
                 <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}"/>
                 <Setter Property="BorderRadius" Value="4"/>
             </Style>
 
+            <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
+            <x:Double x:Key="PrimaryDestructionButtonHeight">40</x:Double>
+            <Color x:Key="PrimaryDestructionButtonTextColor">white</Color>
+            <OnPlatform x:Key="PrimaryDestructionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+                <On Platform="macOS">2</On>
+            </OnPlatform>
+            <Color x:Key="PrimaryDestructionButtonBackgroundColor">red</Color>
+            <Style x:Key="PrimaryDestructionButtonStyle" TargetType="Button">
+                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}"/>
+                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}"/>
+                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}"/>
+                <Setter Property="BorderRadius" Value="4"/>
+            </Style>
+            
             <x:Double x:Key="SecondaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
+            <OnPlatform x:Key="SecondaryActionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+                <On Platform="macOS">2</On>
+            </OnPlatform>
             <Color x:Key="SecondaryActionButtonTextColor" x:FactoryMethod="FromHex">
                 <x:Arguments>
                     <x:String>#3678AF</x:String>
@@ -154,8 +178,21 @@
                 <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="1"/>
+                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}"/>
                 <Setter Property="BorderRadius" Value="4"/>
+            </Style>
+
+            <x:Double x:Key="PageHeaderFontSize">20</x:Double>
+            <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=PageHeaderFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+            
+            <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
+            <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}"/>
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
             </Style>
             
             <x:Double x:Key="ListDenseGroupHeaderFontSize">12</x:Double>
@@ -163,9 +200,6 @@
             <x:Double x:Key="ListDenseItemSecondaryFontSize">13</x:Double>
             <x:Double x:Key="ListDenseGroupHeaderHeight">32</x:Double>
             <x:Double x:Key="ListDenseItemDoubleHeight">60</x:Double>
-
-            <x:Double x:Key="PageHeaderFontSize">20</x:Double>
-            <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
             
             <OnPlatform x:Key="FontFamilyRegular" x:TypeArguments="x:String">
                 <On Platform="iOS">.SFUIText-Regular</On>
