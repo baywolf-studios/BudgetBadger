@@ -78,13 +78,6 @@ namespace BudgetBadger.Models
 
         public decimal Remaining { get { return (Amount ?? 0) + PastAmount + Activity + PastActivity; } }
 
-        IReadOnlyList<QuickBudget> quickBudgets;
-        public IReadOnlyList<QuickBudget> QuickBudgets
-        {
-            get => quickBudgets;
-            set => SetProperty(ref quickBudgets, value);
-        }
-
         DateTime? createdDateTime;
         public DateTime? CreatedDateTime
         {

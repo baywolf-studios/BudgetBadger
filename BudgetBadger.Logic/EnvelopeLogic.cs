@@ -554,64 +554,7 @@ namespace BudgetBadger.Logic
                 budgetToPopulate.IgnoreOverspend = true;
             }
 
-            var quickBudgetsResult = await GetQuickBudgetsAsync(budgetToPopulate.Envelope, budgetToPopulate.Schedule);
-            if (quickBudgetsResult.Success)
-            {
-                budgetToPopulate.QuickBudgets = quickBudgetsResult.Data;
-            }
-
             return budgetToPopulate;
-        }
-
-        async Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Envelope envelope, BudgetSchedule budgetSchedule)
-        {
-            var result = new Result<IReadOnlyList<QuickBudget>>();
-            var quickBudgets = new List<QuickBudget>();
-
-            try
-            {
-                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
-                var activeTransactions = transactions.Where(t => t.IsActive);
-                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
-
-                // previous schedule amount & activity
-                var previousScheduleResult = await GetPreviousBudgetSchedule(budgetSchedule);
-                if (previousScheduleResult.Success)
-                {
-                    var previousSchedule = previousScheduleResult.Data;
-                    var firstBudget = budgets.FirstOrDefault(b => b.Schedule.Id == previousSchedule.Id);
-
-                    var previousScheduleAmount = new QuickBudget
-                    {
-                        Description = "Previous Schedule Amount",
-                        Amount = firstBudget?.Amount ?? 0
-                    };
-                    quickBudgets.Add(previousScheduleAmount);
-
-                    var previousScheduleActivity = new QuickBudget
-                    {
-                        Description = "Previous Schedule Activity",
-                        Amount = activeTransactions
-                            .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= previousSchedule.BeginDate)
-                            .Sum(t2 => t2.Amount ?? 0)
-                    };
-                    quickBudgets.Add(previousScheduleActivity);
-
-                    result.Success = true;
-                    result.Data = quickBudgets;
-                }
-                else
-                {
-                    result.Success = false;
-                    result.Message = previousScheduleResult.Message;
-                }
-            }
-            catch(Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-            return result;
         }
 
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
@@ -801,5 +744,114 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Envelope envelope, BudgetSchedule budgetSchedule)
+        {
+            var result = new Result<IReadOnlyList<QuickBudget>>();
+            var quickBudgets = new List<QuickBudget>();
+
+            try
+            {
+                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
+                var activeTransactions = transactions.Where(t => t.IsActive);
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
+
+                // previous schedule amount & activity
+                var previousScheduleResult = await GetPreviousBudgetSchedule(budgetSchedule);
+                if (previousScheduleResult.Success)
+                {
+                    var previousSchedule = previousScheduleResult.Data;
+
+                    BudgetSchedule lastMonth = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddMonths(-1));
+                    if (activeTransactions.Any(t => t.ServiceDate <= lastMonth.EndDate))
+                    {
+                        var threeMonthsAgoActivity = new QuickBudget
+                        {
+                            Description = "Last Month Activity",
+                            Amount = (activeTransactions
+                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= lastMonth.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0)) * -1
+                        };
+                        quickBudgets.Add(threeMonthsAgoActivity);
+                    }
+
+                    if (budgets.Any(b => b.Schedule.EndDate <= lastMonth.EndDate))
+                    {
+                        var yearAgoActivity = new QuickBudget
+                        {
+                            Description = "Last Month Budgeted",
+                            Amount = (budgets
+                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= lastMonth.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0))
+                        };
+                        quickBudgets.Add(yearAgoActivity);
+                    }
+
+                    BudgetSchedule threeMonthsAgo = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddMonths(-3));
+                    if (activeTransactions.Any(t => t.ServiceDate <= threeMonthsAgo.EndDate))
+                    {
+                        var threeMonthsAgoActivity = new QuickBudget
+                        {
+                            Description = "Avg. Past 3 Months Activity",
+                            Amount = (activeTransactions
+                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= threeMonthsAgo.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0)) / -3
+                        };
+                        quickBudgets.Add(threeMonthsAgoActivity);
+                    }
+
+                    if (budgets.Any(b => b.Schedule.EndDate <= threeMonthsAgo.EndDate))
+                    {
+                        var yearAgoActivity = new QuickBudget
+                        {
+                            Description = "Avg. Past 3 Months Budgeted",
+                            Amount = (budgets
+                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= threeMonthsAgo.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0)) / 3
+                        };
+                        quickBudgets.Add(yearAgoActivity);
+                    }
+
+                    BudgetSchedule yearAgo = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddYears(-1));
+                    if (activeTransactions.Any(t => t.ServiceDate <= yearAgo.EndDate))
+                    {
+                        var threeMonthsAgoActivity = new QuickBudget
+                        {
+                            Description = "Avg. Past Year Activity",
+                            Amount = (activeTransactions
+                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= yearAgo.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0)) / -12
+                        };
+                        quickBudgets.Add(threeMonthsAgoActivity);
+                    }
+
+                    if (budgets.Any(b => b.Schedule.EndDate <= yearAgo.EndDate))
+                    {
+                        var yearAgoActivity = new QuickBudget
+                        {
+                            Description = "Avg. Past Year Budgeted",
+                            Amount = (budgets
+                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= yearAgo.BeginDate)
+                                      .Sum(t2 => t2.Amount ?? 0)) / 12
+                        };
+                        quickBudgets.Add(yearAgoActivity);
+                    }
+
+
+                    result.Success = true;
+                    result.Data = quickBudgets;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = previousScheduleResult.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
     }
 }
