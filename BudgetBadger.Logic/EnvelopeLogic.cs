@@ -744,31 +744,31 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Envelope envelope, BudgetSchedule budgetSchedule)
+        public async Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Budget budget)
         {
             var result = new Result<IReadOnlyList<QuickBudget>>();
             var quickBudgets = new List<QuickBudget>();
 
             try
             {
-                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
+                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(budget.Envelope.Id);
                 var activeTransactions = transactions.Where(t => t.IsActive);
-                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budget.Envelope.Id);
 
                 // previous schedule amount & activity
-                var previousScheduleResult = await GetPreviousBudgetSchedule(budgetSchedule);
+                var previousScheduleResult = await GetPreviousBudgetSchedule(budget.Schedule);
                 if (previousScheduleResult.Success)
                 {
                     var previousSchedule = previousScheduleResult.Data;
 
-                    BudgetSchedule lastMonth = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddMonths(-1));
+                    BudgetSchedule lastMonth = GetBudgetScheduleFromDate(budget.Schedule.BeginDate.AddMonths(-1));
                     if (activeTransactions.Any(t => t.ServiceDate <= lastMonth.EndDate))
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
                             Description = "Last Month Activity",
                             Amount = (activeTransactions
-                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= lastMonth.BeginDate)
+                                      .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) * -1
                         };
                         quickBudgets.Add(threeMonthsAgoActivity);
@@ -780,20 +780,20 @@ namespace BudgetBadger.Logic
                         {
                             Description = "Last Month Budgeted",
                             Amount = (budgets
-                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= lastMonth.BeginDate)
+                                      .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0))
                         };
                         quickBudgets.Add(yearAgoActivity);
                     }
 
-                    BudgetSchedule threeMonthsAgo = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddMonths(-3));
+                    BudgetSchedule threeMonthsAgo = GetBudgetScheduleFromDate(budget.Schedule.BeginDate.AddMonths(-3));
                     if (activeTransactions.Any(t => t.ServiceDate <= threeMonthsAgo.EndDate))
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
                             Description = "Avg. Past 3 Months Activity",
                             Amount = (activeTransactions
-                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= threeMonthsAgo.BeginDate)
+                                      .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -3
                         };
                         quickBudgets.Add(threeMonthsAgoActivity);
@@ -805,20 +805,20 @@ namespace BudgetBadger.Logic
                         {
                             Description = "Avg. Past 3 Months Budgeted",
                             Amount = (budgets
-                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= threeMonthsAgo.BeginDate)
+                                      .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 3
                         };
                         quickBudgets.Add(yearAgoActivity);
                     }
 
-                    BudgetSchedule yearAgo = GetBudgetScheduleFromDate(budgetSchedule.BeginDate.AddYears(-1));
+                    BudgetSchedule yearAgo = GetBudgetScheduleFromDate(budget.Schedule.BeginDate.AddYears(-1));
                     if (activeTransactions.Any(t => t.ServiceDate <= yearAgo.EndDate))
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
                             Description = "Avg. Past Year Activity",
                             Amount = (activeTransactions
-                                      .Where(t => t.ServiceDate < budgetSchedule.BeginDate && t.ServiceDate >= yearAgo.BeginDate)
+                                      .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -12
                         };
                         quickBudgets.Add(threeMonthsAgoActivity);
@@ -830,12 +830,19 @@ namespace BudgetBadger.Logic
                         {
                             Description = "Avg. Past Year Budgeted",
                             Amount = (budgets
-                                      .Where(b => b.Schedule.BeginDate < budgetSchedule.BeginDate && b.Schedule.BeginDate >= yearAgo.BeginDate)
+                                      .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 12
                         };
                         quickBudgets.Add(yearAgoActivity);
                     }
 
+
+                    var balance = new QuickBudget
+                    {
+                        Description = "Balance",
+                        Amount = budget.Remaining * -1
+                    };
+                    quickBudgets.Add(balance);
 
                     result.Success = true;
                     result.Data = quickBudgets;
