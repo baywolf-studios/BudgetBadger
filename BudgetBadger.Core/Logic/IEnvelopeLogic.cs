@@ -31,6 +31,6 @@ namespace BudgetBadger.Core.Logic
 
         IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText);
 
-        Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Envelope envelope, BudgetSchedule budgetSchedule);
+        Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Budget budget);
     }
 }

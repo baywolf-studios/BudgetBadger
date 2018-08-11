@@ -198,26 +198,33 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteQuickBudgetCommand()
         {
-            var quickBudgetResult = await _envelopeLogic.GetQuickBudgetsAsync(Budget.Envelope, Budget.Schedule);
+            var quickBudgetResult = await _envelopeLogic.GetQuickBudgetsAsync(Budget);
 
             if (quickBudgetResult.Success)
             {
-                var buttons = new List<IActionSheetButton>();
-
-                foreach (var quickBudget in quickBudgetResult.Data)
+                if (quickBudgetResult.Data.Count > 0)
                 {
-                    var buttonText = quickBudget.Description + ": " + quickBudget.Amount.ToString("c");
-                    var action = ActionSheetButton.CreateButton(buttonText, () =>
+                    var buttons = new List<IActionSheetButton>();
+
+                    foreach (var quickBudget in quickBudgetResult.Data)
                     {
-                        Budget.Amount = quickBudget.Amount;
-                    });
+                        var buttonText = quickBudget.Description + ": " + quickBudget.Amount.ToString("c");
+                        var action = ActionSheetButton.CreateButton(buttonText, () =>
+                        {
+                            Budget.Amount = quickBudget.Amount;
+                        });
 
-                    buttons.Add(action);
+                        buttons.Add(action);
+                    }
+
+                    buttons.Add(ActionSheetButton.CreateCancelButton("Cancel", () => { }));
+
+                    await _dialogService.DisplayActionSheetAsync("Quick Budget", buttons.ToArray());
                 }
-
-                buttons.Add(ActionSheetButton.CreateCancelButton("Cancel", () => { }));
-
-                await _dialogService.DisplayActionSheetAsync("Quick Budget", buttons.ToArray());
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Not Enough Data for Quick Budgets", quickBudgetResult.Message, "OK");
+                }
             }
             else
             {
