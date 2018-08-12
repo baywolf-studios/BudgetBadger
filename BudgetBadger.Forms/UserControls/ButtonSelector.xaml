@@ -17,7 +17,6 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalTextAlignment="Center"
@@ -27,7 +26,6 @@
     <Label
         x:Name="TextControl"
         Text="{Binding Text}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource PrimaryTextColor}"
         VerticalTextAlignment="Center"

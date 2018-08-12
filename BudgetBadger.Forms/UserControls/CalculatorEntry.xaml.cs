@@ -152,7 +152,10 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     UpdateVisualState();
-                    TextControl.IsEnabled = IsEnabled;
+                    if (Device.RuntimePlatform == Device.macOS)
+                    {
+                        TextControl.IsEnabled = IsEnabled;
+                    }
                 }
 
                 if (e.PropertyName == nameof(Number))

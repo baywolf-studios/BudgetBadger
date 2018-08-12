@@ -64,9 +64,13 @@
                     Margin="0"/>
                 <ScrollView 
                     Grid.Row="2"
-                    Orientation="Vertical"
-                    Margin="16">
-                    <Grid RowSpacing="16" ColumnSpacing="16" Margin="16">
+                    Margin="0"
+                    Padding="0"
+                    Orientation="Vertical">
+                    <Grid
+                        RowSpacing="16"
+                        ColumnSpacing="0"
+                        Margin="0,16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -83,6 +87,7 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="16,0"
                             Command="{Binding GroupSelectedCommand}"
                             Label="Group"
                             Text="{Binding Budget.Envelope.Group.Description}"/>
@@ -90,17 +95,20 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="16,0"
                             Label="Name"
                             Text="{Binding Budget.Envelope.Description}"/>
                         <uc:CalculatorEntry
                             Grid.Row="2"
                             Grid.Column="0"
+                            Margin="16,0"
                             Prefix="$"
                             Label="Amount"
                             Number="{Binding Budget.Amount}"/>
                         <Button
                             Grid.Row="2"
                             Grid.Column="1"
+                            Margin="16,0"
                             Text="Quick Budget"
                             VerticalOptions="End"
                             Style="{StaticResource SecondaryActionButtonStyle}"
@@ -110,6 +118,7 @@
                             Grid.Row="3"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="16,0"
                             Orientation="Vertical"
                             Spacing="0">
                             <uc:Checkbox
@@ -127,12 +136,14 @@
                             Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="16,0"
                             Label="Notes"
                             Text="{Binding Budget.Envelope.Notes}"/>
                         <Button
                             Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Text="Delete Envelope"
                             Style="{StaticResource PrimaryDestructionButtonStyle}">
@@ -143,6 +154,11 @@
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
                             </Button.IsVisible>
+                            <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsNew}" Value="true">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
                         </Button>
                     </Grid>
                 </ScrollView>
@@ -192,7 +208,13 @@
                         Text="Delete Envelope"
                         Style="{StaticResource PrimaryDestructionButtonStyle}"
                         VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand"/>
+                        HorizontalOptions="EndAndExpand">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsNew}" Value="true">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
                 </Grid>
             </Grid>
         </uc:BusyIndicator>
