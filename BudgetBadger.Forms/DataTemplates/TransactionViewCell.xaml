@@ -70,13 +70,35 @@
             Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
             VerticalOptions="Start"/>
         <Label
+            x:Name="rightSingleLabel"
             Grid.Column="2"
             Grid.Row="0"
             Grid.RowSpan="2"
-            Margin="0,0,16,00"
+            Margin="0,0,16,0"
+            Text="{Binding Amount, StringFormat='{0:C}'}"
+            Style="{StaticResource Key=ListItemLabelStyle}"
+            HorizontalTextAlignment="End"
+            VerticalOptions="Center"/>
+
+        <Label
+            x:Name="rightPrimaryLabel"
+            IsVisible="false"
+            Grid.Column="2"
+            Grid.Row="0"
+            Margin="0,0,16,0"
             Text="{Binding Amount, StringFormat='{0:C}'}"
             Style="{StaticResource Key=ListDoubleItemLabelStyle}"
             HorizontalTextAlignment="End"
-            VerticalTextAlignment="Center"/>
+            VerticalOptions="End"/>
+        <Label
+            x:Name="rightSecondaryLabel"
+            IsVisible="false"
+            Grid.Column="2"
+            Grid.Row="1"
+            Margin="0,0,16,0"
+            Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
+            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+            HorizontalTextAlignment="End"
+            VerticalOptions="Start"/>
     </Grid>
 </ViewCell>

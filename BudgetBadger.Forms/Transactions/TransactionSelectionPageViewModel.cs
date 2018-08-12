@@ -20,6 +20,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
 
+        public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -72,6 +73,7 @@ namespace BudgetBadger.Forms.Transactions
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async void OnAppearing()
@@ -132,10 +134,44 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-
         public void ExecuteSearchCommand()
         {
             GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
+        }
+
+        public async Task ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null)
+            {
+                transaction.Posted = !transaction.Posted;
+
+                Result result = new Result();
+
+                if (transaction.IsCombined)
+                {
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                }
+                else
+                {
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                }
+
+                if (result.Success)
+                {
+                    //var syncTask = _syncService.FullSync();
+
+                    //var syncResult = await syncTask;
+                    //if (!syncResult.Success)
+                    //{
+                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    //}
+                }
+                else
+                {
+                    transaction.Posted = !transaction.Posted;
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                }
+            }
         }
     }
 }

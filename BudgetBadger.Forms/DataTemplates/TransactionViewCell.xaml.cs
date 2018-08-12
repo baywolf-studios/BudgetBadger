@@ -26,16 +26,37 @@ namespace BudgetBadger.Forms.DataTemplates
                 switch(transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
                         break;
                     case TransactionViewCellType.Account:
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
                         break;
                     case TransactionViewCellType.Payee:
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        break;
+                    case TransactionViewCellType.Full:
+                        rightSingleLabel.IsVisible = false;
+                        rightPrimaryLabel.IsVisible = true;
+                        rightSecondaryLabel.IsVisible = true;
+                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightPrimaryLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        rightSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         break;
                 }
             }            
