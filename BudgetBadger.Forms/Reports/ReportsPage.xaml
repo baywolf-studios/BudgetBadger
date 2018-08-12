@@ -8,7 +8,7 @@
     x:Class="BudgetBadger.Forms.Reports.ReportsPage">
 	<uc:RootPage.BodyContent>
         <ListView 
-            BackgroundColor="White"
+            BackgroundColor="{StaticResource BackgroundColor}"
             SeparatorVisibility="None"
             IsPullToRefreshEnabled="false" 
             ItemsSource="{Binding Reports}" 
@@ -23,10 +23,7 @@
                                     Margin="16, 8"
                                     Text="{Binding .}"
                                     HeightRequest="32"
-                                    FontSize="{StaticResource ListItemFontSize}"
-                                    FontFamily="{StaticResource FontFamilyRegular}"
-                                    VerticalTextAlignment="Center"
-                                    TextColor="{StaticResource PrimaryTextColor}"/>
+                                    Style="{StaticResource ListItemLabelStyle}"/>
                         </ViewCell>
                     </DataTemplate>
             </ListView.ItemTemplate>

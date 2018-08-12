@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -22,6 +21,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly ITransactionLogic _transLogic;
 		readonly ISync _syncService;
 
+        public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddNewCommand { get; set; }
         public ICommand AddExistingCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -51,28 +51,20 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        ObservableCollection<Transaction> _transactions;
-        public ObservableCollection<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
 			set
 			{
 				SetProperty(ref _transactions, value);
 				RaisePropertyChanged(nameof(Total));
-				RaisePropertyChanged(nameof(Remaining));
 			}
         }
 
-        decimal _total;
         public decimal Total
         {
-            get => _total;
-            set { SetProperty(ref _total, value); RaisePropertyChanged(nameof(Remaining)); }
-        }
-
-        public decimal Remaining
-        {
-            get => Total - (Transactions?.Sum(t => t.Amount) ?? 0m);
+            get => Transactions?.Sum(t => t.Amount ?? 0) ?? 0;
         }
 
         public SplitTransactionPageViewModel(INavigationService navigationService,
@@ -85,7 +77,7 @@ namespace BudgetBadger.Forms.Transactions
             _transLogic = transLogic;
 			_syncService = syncService;
 
-            Transactions = new ObservableCollection<Transaction>();
+            Transactions = new List<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             AddExistingCommand = new DelegateCommand(async () => await ExecuteAddExistingCommand());
@@ -94,6 +86,7 @@ namespace BudgetBadger.Forms.Transactions
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
+            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -106,8 +99,7 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions = new ObservableCollection<Transaction>(result.Data);
-                        Total = Transactions.Sum(t => t.Amount ?? 0);
+                        Transactions = result.Data;
                     }
                 }
             }
@@ -130,17 +122,13 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 foreach (var tran in transactionsToUpsert)
                 {
-                    if (Transactions.Any(t => t.Id == tran.Id))
-                    {
-                        var existingTransaction = Transactions.FirstOrDefault(t => t.Id == tran.Id);
-                        Transactions.Remove(existingTransaction);
-                    }
-                    Transactions.Add(tran);
+                    List<Transaction> tempTransactions = Transactions.Where(t => t.Id != tran.Id).ToList();
+                    tempTransactions.Add(tran);
+                    Transactions = tempTransactions;
                 }
             }
 
 			RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(Remaining));
         }
 
         public async Task ExecuteAddNewCommand()
@@ -176,13 +164,12 @@ namespace BudgetBadger.Forms.Transactions
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
-        async Task RemoveTransaction(Transaction transaction)
+        void RemoveTransaction(Transaction transaction)
         {
-            var existingTransaction = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-            if (!Transactions.Remove(existingTransaction))
-            {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", "Transaction does not exist", "OK");
-            }
+            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
+            Transactions = existingTransactions;
+
+            RaisePropertyChanged(nameof(Total));
         }
 
         public async Task ExecuteRemoveCommand(Transaction transaction)
@@ -215,7 +202,7 @@ namespace BudgetBadger.Forms.Transactions
                 }            
             }
 
-            await RemoveTransaction(transaction);
+            RemoveTransaction(transaction);
         }
 
         public async Task ExecuteDeleteCommand(Transaction transaction)
@@ -249,7 +236,7 @@ namespace BudgetBadger.Forms.Transactions
                 }
             }
 
-            await RemoveTransaction(transaction);
+            RemoveTransaction(transaction);
         }
 
         public async Task ExecuteSaveCommand()
@@ -294,7 +281,6 @@ namespace BudgetBadger.Forms.Transactions
                 return;
             }
 
-
             var parameters = new NavigationParameters
             {
                 { PageParameter.Transaction, SelectedTransaction }
@@ -304,6 +290,41 @@ namespace BudgetBadger.Forms.Transactions
 
 
             SelectedTransaction = null;
+        }
+
+        public async Task ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null)
+            {
+                transaction.Posted = !transaction.Posted;
+
+                Result result = new Result();
+
+                if (transaction.IsCombined)
+                {
+                    result = await _transLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                }
+                else
+                {
+                    result = await _transLogic.SaveTransactionAsync(transaction);
+                }
+
+                if (result.Success)
+                {
+                    //var syncTask = _syncService.FullSync();
+
+                    //var syncResult = await syncTask;
+                    //if (!syncResult.Success)
+                    //{
+                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    //}
+                }
+                else
+                {
+                    transaction.Posted = !transaction.Posted;
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                }
+            }
         }
     }
 }

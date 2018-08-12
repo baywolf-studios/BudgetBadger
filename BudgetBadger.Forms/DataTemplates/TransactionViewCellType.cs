@@ -5,6 +5,7 @@ namespace BudgetBadger.Forms.DataTemplates
     {
 		Envelope,
         Payee,
-        Account
+        Account,
+        Full
     }
 }
