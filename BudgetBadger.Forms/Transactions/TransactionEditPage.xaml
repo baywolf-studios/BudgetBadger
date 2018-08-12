@@ -15,63 +15,177 @@
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <ScrollView Orientation="Vertical">
-                <Grid RowSpacing="16" ColumnSpacing="8" Margin="16">
+            <Grid
+                BackgroundColor="{StaticResource BackgroundColor}"
+                Margin="0"
+                ColumnSpacing="16" 
+                RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollView
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    Orientation="Vertical">
+                    <Grid
+                        RowSpacing="16"
+                        ColumnSpacing="0"
+                        Margin="0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <uc:CalculatorEntry
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="16,0"
+                            Prefix="$"
+                            Label="Outflow"
+                            Number="{Binding Transaction.Outflow}"/>
+                        <uc:CalculatorEntry
+                            Grid.Row="0" 
+                            Grid.Column="1"
+                            Margin="16,0"
+                            Prefix="$"
+                            Label="Inflow"
+                            Number="{Binding Transaction.Inflow}"/>
+                        <uc:ButtonSelector
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Account"
+                            Text="{Binding Transaction.Account.Description}"
+                            Command="{Binding AccountSelectedCommand}"/>
+                        <uc:ButtonSelector
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Payee"
+                            Text="{Binding Transaction.Payee.Description}"
+                            Command="{Binding PayeeSelectedCommand}"/>
+                        <uc:ButtonSelector
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Envelope"
+                            Text="{Binding Transaction.Envelope.Description}"
+                            Command="{Binding EnvelopeSelectedCommand}"/>
+                        <uc:DateSelector
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Service Date"
+                            Date="{Binding Transaction.ServiceDate}"/>
+                        <StackLayout
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Orientation="Vertical"
+                            Spacing="0">
+                            <Label
+                                FontSize="12"
+                                TextColor="{StaticResource SecondaryTextColor}"
+                                VerticalOptions="Center"
+                                HeightRequest="16"
+                                Text="Status"/>
+                            <uc:Checkbox Label="Cleared" IsChecked="{Binding Transaction.Posted}"/>
+                        </StackLayout>
+                        <uc:MultilineTextEntry
+                            Grid.Row="6"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Notes"
+                            Text="{Binding Transaction.Notes}"/>
+                        <Button
+                            Grid.Row="7"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Command="{Binding DeleteCommand}"
+                            Text="Delete Transaction"
+                            Style="{StaticResource PrimaryDestructionButtonStyle}">
+                            <Button.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Button.IsVisible>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Transaction.IsNew}" Value="true">
+                                    <Setter Property="IsVisible" Value="false"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </ScrollView>
+                <BoxView
+                    Grid.Row="1"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
+                <Grid
+                    Grid.Row="2"
+                    Margin="16"
+                    ColumnSpacing="16">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <uc:CalculatorEntry Grid.Row="0" Grid.Column="0" Prefix="$" Label="Outflow" Number="{Binding Transaction.Outflow}"/>
-                    <uc:CalculatorEntry Grid.Row="0" Grid.Column="1" Prefix="$" Label="Inflow" Number="{Binding Transaction.Inflow}"/>
-                    <uc:ButtonSelector Grid.Row="1" Grid.ColumnSpan="2"  Label="Account" Text="{Binding Transaction.Account.Description}" Command="{Binding AccountSelectedCommand}"/>
-                    <uc:ButtonSelector Grid.Row="2" Grid.ColumnSpan="2"  Label="Payee" Text="{Binding Transaction.Payee.Description}" Command="{Binding PayeeSelectedCommand}"/>
-                    <uc:ButtonSelector Grid.Row="3" Grid.ColumnSpan="2"  Label="Envelope" Text="{Binding Transaction.Envelope.Description}" Command="{Binding EnvelopeSelectedCommand}"/>
-                    <uc:DateSelector Grid.Row="4" Grid.ColumnSpan="2"  Label="Service Date" Date="{Binding Transaction.ServiceDate}"/>
-                    <StackLayout Grid.Row="5" Grid.ColumnSpan="2"  Orientation="Vertical" Spacing="0">
-                        <Label
-                            FontSize="12"
-                            FontFamily="{StaticResource FontFamilyRegular}"
-                            TextColor="{StaticResource SecondaryTextColor}"
-                            VerticalOptions="Center"
-                            HeightRequest="16"
-                            Text="Status"/>
-                        <uc:Checkbox Label="Cleared" IsChecked="{Binding Transaction.Posted}"/>
-                    </StackLayout>
-                    <uc:MultilineTextEntry Grid.Row="6" Grid.ColumnSpan="2" Label="Notes" Text="{Binding Transaction.Notes}"/>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
                     <Button
-                        Grid.Row="7"
-                        Grid.ColumnSpan="2" 
-                        IsVisible="{Binding Transaction.IsActive}"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
                         Command="{Binding DeleteCommand}"
-                        FontFamily="{StaticResource FontFamilyMedium}"
-                        FontSize="14"
                         Text="Delete Transaction"
-                        BackgroundColor="Red"
-                        BorderColor="Red"
-                        TextColor="White"
-                        HeightRequest="40"
-                        BorderWidth="2"
-                        BorderRadius="2">
-                        <Button.HorizontalOptions>
-                            <OnIdiom x:TypeArguments="LayoutOptions">
-                                <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                                <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                                <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
-                            </OnIdiom>
-                        </Button.HorizontalOptions>
+                        Style="{StaticResource PrimaryDestructionButtonStyle}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Transaction.IsNew}" Value="true">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
                     </Button>
                 </Grid>
-            </ScrollView>
+            </Grid>
         </uc:BusyIndicator>
     </uc:ChildPage.BodyContent>
 </uc:ChildPage>

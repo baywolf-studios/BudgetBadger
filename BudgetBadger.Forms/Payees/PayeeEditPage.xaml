@@ -15,38 +15,116 @@
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
         <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-            <ScrollView Orientation="Vertical">
-                <Grid RowSpacing="16" ColumnSpacing="0" Margin="16">
+            <Grid
+                BackgroundColor="{StaticResource BackgroundColor}"
+                Margin="0"
+                ColumnSpacing="16" 
+                RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollView
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    Orientation="Vertical">
+                    <Grid
+                        RowSpacing="16"
+                        ColumnSpacing="0"
+                        Margin="0,16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <uc:TextEntry
+                            Grid.Row="0"
+                            Margin="16,0"
+                            Label="Name"
+                            Text="{Binding Payee.Description}"/>
+                        <uc:MultilineTextEntry
+                            Grid.Row="1"
+                            Margin="16,0"
+                            Label="Notes"
+                            Text="{Binding Payee.Notes}"/>
+                        <Button
+                            Grid.Row="2"
+                            Margin="16,0"
+                            Command="{Binding DeleteCommand}"
+                            Text="Delete Payee"
+                            Style="{StaticResource PrimaryDestructionButtonStyle}">
+                            <Button.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Button.IsVisible>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Payee.IsNew}" Value="true">
+                                    <Setter Property="IsVisible" Value="false"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </ScrollView>
+                <BoxView
+                    Grid.Row="1"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
+                <Grid
+                    Grid.Row="2"
+                    Margin="16"
+                    ColumnSpacing="16">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <uc:TextEntry Grid.Row="0" Label="Name" Text="{Binding Payee.Description}"/>
-                    <uc:MultilineTextEntry Grid.Row="1" Label="Notes" Text="{Binding Payee.Notes}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
                     <Button
-                        Grid.Row="2"
-                        IsVisible="{Binding Payee.IsActive}"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
                         Command="{Binding DeleteCommand}"
-                        FontFamily="{StaticResource FontFamilyMedium}"
-                        FontSize="14"
                         Text="Delete Payee"
-                        BackgroundColor="Red"
-                        BorderColor="Red"
-                        TextColor="White"
-                        HeightRequest="40"
-                        BorderWidth="2"
-                        BorderRadius="2">
-                        <Button.HorizontalOptions>
-                            <OnIdiom x:TypeArguments="LayoutOptions">
-                                <OnIdiom.Phone>FillAndExpand</OnIdiom.Phone>
-                                <OnIdiom.Tablet>EndAndExpand</OnIdiom.Tablet>
-                                <OnIdiom.Desktop>EndAndExpand</OnIdiom.Desktop>
-                            </OnIdiom>
-                        </Button.HorizontalOptions>
+                        Style="{StaticResource PrimaryDestructionButtonStyle}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Payee.IsNew}" Value="true">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
                     </Button>
                 </Grid>
-            </ScrollView>
+            </Grid>
         </uc:BusyIndicator>
     </uc:ChildPage.BodyContent>
 </uc:ChildPage>

@@ -17,7 +17,6 @@
     <Label
         x:Name="PrefixControl"
         Text="{Binding Prefix}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalOptions="Center"
@@ -26,7 +25,6 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="16"
         TextColor="{StaticResource IdleColor}"
         VerticalOptions="Center"
@@ -36,7 +34,6 @@
     <Entry
         x:Name="TextControl"
         Text="{Binding Text}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         IsPassword="{Binding IsPassword, Mode=TwoWay}"
         Keyboard="{Binding Keyboard, Mode=TwoWay}"
         FontSize="16"

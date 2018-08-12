@@ -18,7 +18,6 @@
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
-        FontFamily="{StaticResource FontFamilyRegular}"
         FontSize="12"
         TextColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,0,1,16"
@@ -28,6 +27,7 @@
         x:Name="DateControl"
         Date="{Binding Date}"
         TextColor="{StaticResource PrimaryTextColor}"
+        FontSize="16"
         BackgroundColor="Transparent"
         VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"

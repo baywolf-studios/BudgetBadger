@@ -38,7 +38,6 @@
         AbsoluteLayout.LayoutBounds="32,0,1,32"
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
         FontSize="16"
-        FontFamily="{StaticResource FontFamilyRegular}"
         Text="{Binding Label}"
         VerticalOptions="Center"/>
 </AbsoluteLayout>
