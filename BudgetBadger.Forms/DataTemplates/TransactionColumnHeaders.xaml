@@ -10,6 +10,7 @@
         </OnPlatform>
     </ContentView.Margin>
     <Grid
+        x:Name="transactionGrid"
         HeightRequest="{StaticResource ListHeaderHeight}"
         RowSpacing="0"
         ColumnSpacing="16"
@@ -27,27 +28,33 @@
             <RowDefinition Height="1"/>
         </Grid.RowDefinitions>
         <Label
+            x:Name="serviceDateLabel"
             Grid.Column="0"
             Text="Service Date"
             Style="{StaticResource Key=ListHeaderLabelStyle}"/>
         <Label
+            x:Name="accountLabel"
             Grid.Column="1"
             Text="Account"
             Style="{StaticResource Key=ListHeaderLabelStyle}"/>
         <Label
+            x:Name="payeeLabel"
             Grid.Column="2"
             Text="Payee"
             Style="{StaticResource Key=ListHeaderLabelStyle}"/>
         <Label
+            x:Name="envelopeLabel"
             Grid.Column="3"
             Text="Envelope"
             Style="{StaticResource Key=ListHeaderLabelStyle}"/>
         <Label 
+            x:Name="amountLabel"
             Grid.Column="4" 
             Text="Amount"
             Style="{StaticResource Key=ListHeaderLabelStyle}"
             HorizontalTextAlignment="End"/>
         <Label 
+            x:Name="clearedLabel"
             Grid.Column="5" 
             Text="Clr"
             Style="{StaticResource Key=ListHeaderLabelStyle}"

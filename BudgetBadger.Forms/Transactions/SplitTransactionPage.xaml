@@ -81,7 +81,7 @@
                         <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <dt:TransactionColumnHeaders>
+                    <dt:TransactionColumnHeaders TransactionViewCellType="Full">
                         <dt:TransactionColumnHeaders.Triggers>
                             <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
                                 <Setter Property="HeightRequest" Value="0" />
@@ -114,6 +114,7 @@
                         <OnIdiom.Tablet>
                             <DataTemplate>
                                 <dt:TransactionDetailedViewCell
+                                    TransactionViewCellType="Full"
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
                                     <dt:TransactionDetailedViewCell.ContextActions>
                                         <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
@@ -126,6 +127,7 @@
                         <OnIdiom.Desktop>
                             <DataTemplate>
                                 <dt:TransactionDetailedViewCell
+                                    TransactionViewCellType="Full"
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
                                     <dt:TransactionDetailedViewCell.ContextActions>
                                         <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />

@@ -38,7 +38,7 @@
                     <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
                 </ListView.Behaviors>
                 <ListView.Header>
-                    <dt:TransactionColumnHeaders>
+                    <dt:TransactionColumnHeaders TransactionViewCellType="Payee">
                         <dt:TransactionColumnHeaders.Triggers>
                             <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
                                 <Setter Property="HeightRequest" Value="0" />
@@ -88,12 +88,14 @@
                         <OnIdiom.Tablet>
                             <DataTemplate>
                                 <dt:TransactionDetailedViewCell
+                                    TransactionViewCellType="Payee"
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
                             </DataTemplate>
                         </OnIdiom.Tablet>
                         <OnIdiom.Desktop>
                             <DataTemplate>
                                 <dt:TransactionDetailedViewCell
+                                    TransactionViewCellType="Payee"
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
                             </DataTemplate>
                         </OnIdiom.Desktop>
