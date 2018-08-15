@@ -10,6 +10,7 @@
         Padding="1"
         BackgroundColor="{StaticResource BackgroundColor}">
         <Grid
+            x:Name="transactionGrid"
             HeightRequest="{StaticResource Key=ListItemHeight}"
             ColumnSpacing="16"
             Margin="16,0">
@@ -22,32 +23,38 @@
                 <ColumnDefinition Width="48"/>
             </Grid.ColumnDefinitions>
             <Label
+                x:Name="serviceDateLabel"
                 Grid.Column="0"
                 Text="{Binding ServiceDate, StringFormat='{0:d}'}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 VerticalTextAlignment="Center"/>
             <Label
+                x:Name="accountLabel"
                 Grid.Column="1"
                 Text="{Binding Account.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 VerticalTextAlignment="Center"/>
             <Label
+                x:Name="payeeLabel"
                 Grid.Column="2"
                 Text="{Binding Payee.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 VerticalTextAlignment="Center"/>
             <Label
+                x:Name="envelopeLabel"
                 Grid.Column="3"
                 Text="{Binding Envelope.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 VerticalTextAlignment="Center"/>
             <Label
+                x:Name="amountLabel"
                 Grid.Column="4"
                 Text="{Binding Amount, StringFormat='{0:C}'}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 HorizontalTextAlignment="End"
                 VerticalTextAlignment="Center"/>
             <svg:SvgCachedImage
+                x:Name="clearedImage"
                 InputTransparent="true"
                 Grid.Column="5"
                 HeightRequest="16"
