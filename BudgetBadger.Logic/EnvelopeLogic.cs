@@ -771,7 +771,10 @@ namespace BudgetBadger.Logic
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) * -1
                         };
-                        quickBudgets.Add(threeMonthsAgoActivity);
+                        if (threeMonthsAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(threeMonthsAgoActivity);
+                        }
                     }
 
                     if (budgets.Any(b => b.Schedule.EndDate <= lastMonth.EndDate))
@@ -783,7 +786,10 @@ namespace BudgetBadger.Logic
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0))
                         };
-                        quickBudgets.Add(yearAgoActivity);
+                        if (yearAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(yearAgoActivity);
+                        }
                     }
 
                     BudgetSchedule threeMonthsAgo = GetBudgetScheduleFromDate(budget.Schedule.BeginDate.AddMonths(-3));
@@ -796,7 +802,10 @@ namespace BudgetBadger.Logic
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -3
                         };
-                        quickBudgets.Add(threeMonthsAgoActivity);
+                        if (threeMonthsAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(threeMonthsAgoActivity);
+                        }
                     }
 
                     if (budgets.Any(b => b.Schedule.EndDate <= threeMonthsAgo.EndDate))
@@ -808,7 +817,10 @@ namespace BudgetBadger.Logic
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 3
                         };
-                        quickBudgets.Add(yearAgoActivity);
+                        if (yearAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(yearAgoActivity);
+                        }
                     }
 
                     BudgetSchedule yearAgo = GetBudgetScheduleFromDate(budget.Schedule.BeginDate.AddYears(-1));
@@ -821,7 +833,10 @@ namespace BudgetBadger.Logic
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -12
                         };
-                        quickBudgets.Add(threeMonthsAgoActivity);
+                        if (threeMonthsAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(threeMonthsAgoActivity);
+                        }
                     }
 
                     if (budgets.Any(b => b.Schedule.EndDate <= yearAgo.EndDate))
@@ -833,7 +848,10 @@ namespace BudgetBadger.Logic
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 12
                         };
-                        quickBudgets.Add(yearAgoActivity);
+                        if (yearAgoActivity.Amount != 0)
+                        {
+                            quickBudgets.Add(yearAgoActivity);
+                        }
                     }
 
 
@@ -842,7 +860,10 @@ namespace BudgetBadger.Logic
                         Description = "Balance",
                         Amount = budget.Remaining * -1
                     };
-                    quickBudgets.Add(balance);
+                    if (balance.Amount != 0)
+                    {
+                        quickBudgets.Add(balance);
+                    }
 
                     result.Success = true;
                     result.Data = quickBudgets;

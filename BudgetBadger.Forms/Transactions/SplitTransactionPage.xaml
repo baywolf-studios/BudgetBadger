@@ -28,36 +28,81 @@
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid
+            <uc:Expander
                 Grid.Row="0"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="16"
-                ColumnSpacing="8">
-                <Grid.IsVisible>
+                Grid.ColumnSpan="2">
+                <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
                         <OnIdiom.Tablet>false</OnIdiom.Tablet>
                         <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </Grid.IsVisible>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    Text="Total"
-                    HorizontalTextAlignment="Start"
-                    VerticalTextAlignment="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
-                <Label
-                    Grid.Column="1"
-                    Text="{Binding Total, StringFormat='{0:c}'}"
-                    HorizontalTextAlignment="End"
-                    VerticalTextAlignment="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
-            </Grid>
+                </uc:Expander.IsVisible>
+                <uc:Expander.HeaderContent>
+                    <Grid
+                        ColumnSpacing="8">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>true</OnIdiom.Phone>
+                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        Text="Total"
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Label
+                        Grid.Column="1"
+                        Text="{Binding Total, StringFormat='{0:c}'}"
+                        HorizontalTextAlignment="End"
+                        VerticalTextAlignment="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                </Grid>
+                </uc:Expander.HeaderContent>
+                <uc:Expander.BodyContent>
+                    <Grid ColumnSpacing="16" RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <uc:CalculatorEntry 
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            Prefix="$"
+                            Label="Desired Total"
+                            Number="{Binding DesiredTotal}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"/>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="Remaining"
+                            HorizontalTextAlignment="Center"
+                            VerticalOptions="End"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Remaining, StringFormat='{0:c}'}"
+                            HorizontalTextAlignment="Center"
+                            VerticalOptions="Start"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    </Grid>
+                </uc:Expander.BodyContent>
+            </uc:Expander>
              <BoxView
                 Grid.Row="1"
                 Grid.Column="0"
@@ -205,6 +250,9 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -221,10 +269,33 @@
                     Text="{Binding Total, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
-                <Button
+                <uc:CalculatorEntry 
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="2"
+                    Prefix="$"
+                    Label="Desired Total"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Number="{Binding DesiredTotal}"/>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Text="Remaining"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Text="{Binding Remaining, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="5"
                     Text="Add Exisiting" 
                     VerticalOptions="Center"
                     Command="{Binding AddExistingCommand}"
@@ -232,7 +303,7 @@
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="3"
+                    Grid.Column="6"
                     Text="Add New" 
                     VerticalOptions="Center"
                     Command="{Binding AddNewCommand}"
