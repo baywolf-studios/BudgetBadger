@@ -67,6 +67,22 @@ namespace BudgetBadger.Forms.Transactions
             get => Transactions?.Sum(t => t.Amount ?? 0) ?? 0;
         }
 
+        decimal desiredTotal;
+        public decimal DesiredTotal
+        {
+            get => desiredTotal;
+            set
+            {
+                SetProperty(ref desiredTotal, value);
+                RaisePropertyChanged(nameof(Remaining));
+            }
+        }
+
+        public decimal Remaining
+        {
+            get => DesiredTotal - Total;
+        }
+
         public SplitTransactionPageViewModel(INavigationService navigationService,
                                              IPageDialogService dialogService,
                                              ITransactionLogic transLogic,
@@ -129,6 +145,8 @@ namespace BudgetBadger.Forms.Transactions
             }
 
 			RaisePropertyChanged(nameof(Total));
+            RaisePropertyChanged(nameof(DesiredTotal));
+            RaisePropertyChanged(nameof(Remaining));
         }
 
         public async Task ExecuteAddNewCommand()
@@ -170,6 +188,8 @@ namespace BudgetBadger.Forms.Transactions
             Transactions = existingTransactions;
 
             RaisePropertyChanged(nameof(Total));
+            RaisePropertyChanged(nameof(DesiredTotal));
+            RaisePropertyChanged(nameof(Remaining));
         }
 
         public async Task ExecuteRemoveCommand(Transaction transaction)
