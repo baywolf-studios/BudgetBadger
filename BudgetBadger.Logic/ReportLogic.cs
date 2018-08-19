@@ -12,6 +12,7 @@ namespace BudgetBadger.Logic
     public class ReportLogic : IReportLogic
     {
         readonly ITransactionDataAccess _transactionDataAccess;
+        readonly ITransactionLogic _transactionLogic;
         readonly IAccountDataAccess _accountDataAccess;
         readonly IPayeeDataAccess _payeeDataAccess;
         readonly IEnvelopeDataAccess _envelopeDataAccess;
@@ -19,34 +20,25 @@ namespace BudgetBadger.Logic
         public ReportLogic(ITransactionDataAccess transactionDataAccess,
                            IAccountDataAccess accountDataAccess,
                            IPayeeDataAccess payeeDataAccess,
-                           IEnvelopeDataAccess envelopeDataAccess)
+                           IEnvelopeDataAccess envelopeDataAccess,
+                           ITransactionLogic transactionLogic)
         {
             _transactionDataAccess = transactionDataAccess;
+            _transactionLogic = transactionLogic;
             _accountDataAccess = accountDataAccess;
             _payeeDataAccess = payeeDataAccess;
             _envelopeDataAccess = envelopeDataAccess;
         }
 
-        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate)
         {
-            var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
-            var dataPoints = new Dictionary<DateTime, decimal>();
+            var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
+            var dataPoints = new List<DataPoint<DateTime, decimal>>();
 
             try
             {
-                var transactions = await _transactionDataAccess.ReadTransactionsAsync();
-                var activeTransactions = transactions.Where(t => t.IsActive);
-
-                if (beginDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
-                }
-                if (endDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
-                }
-
-                var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
+                var transactions = await _transactionLogic.GetTransactionsAsync();
+                var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
 
                 var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
                 var latestMonth = activeTransactions.Max(t => t.ServiceDate);
@@ -58,11 +50,26 @@ namespace BudgetBadger.Logic
                 {
                     var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
                     var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(startMonth, monthTotal);
+                    dataPoints.Add(new DataPoint<DateTime, decimal>
+                    {
+                        XLabel = startMonth.ToString("Y"),
+                        XValue = startMonth,
+                        YLabel = monthTotal.ToString("C"),
+                        YValue = monthTotal
+                    });
                     startMonth = startMonth.AddMonths(1);
                 }
 
-                result.Data = dataPoints;
+                if (beginDate.HasValue)
+                {
+                    dataPoints = dataPoints.Where(d => d.XValue >= beginDate.Value).ToList();
+                }
+                if (endDate.HasValue)
+                {
+                    dataPoints = dataPoints.Where(d => d.XValue <= beginDate.Value).ToList();
+                }
+
+                result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
                 result.Success = true;
             }
             catch (Exception ex)

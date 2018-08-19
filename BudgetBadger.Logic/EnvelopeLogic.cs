@@ -140,28 +140,32 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        async Task<Result> ValidateDeleteEnvelopeAsync(Envelope envelope)
+        async Task<Result> ValidateDeleteEnvelopeAsync(Guid envelopeId)
         {
+            var errors = new List<string>();
+
+            var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(envelopeId);
+
             if (envelope.Group.IsDebt || envelope.IsGenericDebtEnvelope)
             {
-                return new Result { Success = false, Message = "Cannot delete debt envelopes" };
+                errors.Add("Cannot delete debt envelopes");
             }
 
             if (envelope.Group.IsIncome || envelope.IsIncome || envelope.IsBuffer)
             {
-                return new Result { Success = false, Message = "Cannot delete income envelopes" };
+                errors.Add("Cannot delete income envelopes");
             }
 
             var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
             if (envelopeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
-                return new Result { Success = false, Message = "Envelope has future transactions" };
+                errors.Add("Envelope has future transactions");
             }
 
             var envelopeBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id);
             if (envelopeBudgets.Any(b => b.Schedule.BeginDate > DateTime.Now && b.Amount != 0)) 
             {
-                return new Result { Success = false, Message = "Envelope has future budget amounts to it" };
+                errors.Add("Envelope has future budget amounts to it");
             }
 
             var latestEnvelopeBudget = envelopeBudgets
@@ -173,11 +177,11 @@ namespace BudgetBadger.Logic
                 var populateLatestEnvelopeBudget = await GetPopulatedBudget(latestEnvelopeBudget);
                 if (populateLatestEnvelopeBudget.Remaining != 0)
                 {
-                    return new Result { Success = false, Message = "Envelope still has a remaining balance" }; 
+                    errors.Add("Envelope still has a remaining balance"); 
                 }
             }
 
-            return new Result { Success = true };
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public async Task<Result> DeleteEnvelopeAsync(Guid id)
@@ -186,14 +190,13 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeToDelete = await _envelopeDataAccess.ReadEnvelopeAsync(id);
-
-                var validationResult = await ValidateDeleteEnvelopeAsync(envelopeToDelete);
+                var validationResult = await ValidateDeleteEnvelopeAsync(id);
                 if (!validationResult.Success)
                 {
                     return validationResult;
                 }
 
+                var envelopeToDelete = await _envelopeDataAccess.ReadEnvelopeAsync(id);
                 envelopeToDelete.ModifiedDateTime = DateTime.Now;
                 envelopeToDelete.DeletedDateTime = DateTime.Now;
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
@@ -341,19 +344,21 @@ namespace BudgetBadger.Logic
             {
                 return Task.FromResult(budget.Validate());
             }
-            
+
+            var errors = new List<string>();
+
             if (budget.Envelope.IgnoreOverspend && !budget.IgnoreOverspend)
             {
-                return Task.FromResult(new Result { Success = false, Message = "Cannot set Ignore Overspend Always when Ignore Overspend is not set" });
+                errors.Add("Cannot set Ignore Overspend Always when Ignore Overspend is not set");
             }
 
             if (budget.Envelope.Group.IsDebt && 
                 (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
             {
-                return Task.FromResult(new Result { Success = false, Message = "Ignore Overspend must be set on debt envelopes" });
+                errors.Add("Ignore Overspend must be set on debt envelopes");
             }
 
-            return Task.FromResult(new Result { Success = true });
+            return Task.FromResult(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
         }
 
         public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)

@@ -23,30 +23,35 @@ namespace BudgetBadger.Logic
             _transactionDataAccess = transactionDataAccess;
         }
 
-        async Task<Result> ValidateDeletePayeeAsync(Payee payee)
+        async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
         {
-            if (!payee.IsActive)
+            var errors = new List<string>();
+
+            var payee = await _payeeDataAccess.ReadPayeeAsync(payeeId);
+            var populatePayee = await GetPopulatedPayee(payee);
+
+            if (!populatePayee.IsActive)
             {
-                return new Result { Success = false, Message = "Cannot delete an inactive payee" }; 
+                errors.Add("Cannot delete an inactive payee"); 
             }
 
-            if (payee.IsAccount)
+            if (populatePayee.IsAccount)
             {
-                return new Result { Success = false, Message = "Cannot delete an account payee" };
+                errors.Add("Cannot delete an account payee");
             }
 
-            if (payee.Id == Constants.StartingBalancePayee.Id)
+            if (populatePayee.Id == Constants.StartingBalancePayee.Id)
             {
-                return new Result { Success = false, Message = "Cannot delete the starting balance payee" }; 
+                errors.Add("Cannot delete the starting balance payee"); 
             }
 
-            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
+            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id);
             if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
             {
-                return new Result { Success = false, Message = "Cannot delete a payee with future transactions on it" };
+                errors.Add("Cannot delete a payee with future transactions on it");
             }
 
-            return new Result { Success = true };
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public async Task<Result> DeletePayeeAsync(Guid id)
@@ -55,15 +60,13 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id);
-                var populatePayee = await GetPopulatedPayee(payee);
-
-                var validationResult = await ValidateDeletePayeeAsync(populatePayee);
+                var validationResult = await ValidateDeletePayeeAsync(id);
                 if (!validationResult.Success)
                 {
                     return validationResult;
                 }
 
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id);
 				payee.ModifiedDateTime = DateTime.Now;
                 payee.DeletedDateTime = DateTime.Now;
 

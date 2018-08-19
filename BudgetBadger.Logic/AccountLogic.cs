@@ -27,40 +27,40 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
-        async Task<Result> ValidateDeleteAccountAsync(Account account)
+        async Task<Result> ValidateDeleteAccountAsync(Guid accountId)
         {
-            if (account.OnBudget)
-            {
-                if (account.Balance != 0)
-                {
-                    return new Result { Success = false, Message = "Cannot delete account with balance" };
-                }
+            var errors = new List<string>();
 
-                var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
-                if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
-                {
-                    return new Result { Success = false, Message = "Cannot delete account with future transactions" }; 
-                }
+            var tempAccount = await AccountDataAccess.ReadAccountAsync(accountId);
+            var account = await GetPopulatedAccount(tempAccount);
+
+            if (account.Balance != 0)
+            {
+                errors.Add("Cannot delete account with balance");
             }
 
-            return new Result { Success = true };
+            var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
+            if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
+            {
+                errors.Add("Cannot delete account with future transactions"); 
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public async Task<Result> DeleteAccountAsync(Guid id)
         {
-            //some validation logic?
             var result = new Result();
 
             try
             {
-                var account = await AccountDataAccess.ReadAccountAsync(id);
-                var populatedAccount = await GetPopulatedAccount(account);
-                var validationResult = await ValidateDeleteAccountAsync(populatedAccount);
+                var validationResult = await ValidateDeleteAccountAsync(id);
                 if (!validationResult.Success)
                 {
                     return validationResult;
                 }
 
+                var account = await AccountDataAccess.ReadAccountAsync(id);
 				account.ModifiedDateTime = DateTime.Now;
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
