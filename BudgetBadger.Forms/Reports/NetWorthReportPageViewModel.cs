@@ -34,13 +34,6 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _busyText, value);
         }
 
-        bool _dateRangeFilter;
-        public bool DateRangeFilter
-        {
-            get => _dateRangeFilter;
-            set => SetProperty(ref _dateRangeFilter, value);
-        }
-
         DateTime _beginDate;
         public DateTime BeginDate
         {
@@ -69,8 +62,9 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
-            BeginDate = DateTime.MinValue;
-            EndDate = DateTime.Now;
+            var now = DateTime.Now;
+            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            BeginDate = EndDate.AddMonths(-12);
         }
 
         public async void OnAppearing()
@@ -96,10 +90,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var entries = new List<Entry>();
 
-                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
-
-                var netWorthReportResult = await _reportLogic.GetNetWorthReport(beginDate, endDate);
+                var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
                 if (netWorthReportResult.Success)
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
