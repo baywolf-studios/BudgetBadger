@@ -17,10 +17,6 @@
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
@@ -29,9 +25,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <uc:Expander
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2">
+                Grid.Row="0">
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -77,15 +71,20 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <uc:CalculatorEntry 
+                        <Label
                             Grid.Row="0"
-                            Grid.RowSpan="2"
                             Grid.Column="0"
-                            Prefix="$"
-                            Label="Desired Total"
-                            Number="{Binding DesiredTotal}"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"/>
+                            Text="Running Total"
+                            HorizontalTextAlignment="Center"
+                            VerticalOptions="End"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="{Binding RunningTotal, StringFormat='{0:c}'}"
+                            HorizontalTextAlignment="Center"
+                            VerticalOptions="Start"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -105,15 +104,11 @@
             </uc:Expander>
              <BoxView
                 Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <ListView
                 Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 BackgroundColor="{StaticResource BackgroundColor}"
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="true"
@@ -191,27 +186,9 @@
                 </ListView.Footer>
             </ListView>
             <Button
-                x:Name="ExistingTransactionButton"
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="16,0,0,8"
-                Text="Add Exisiting" 
-                VerticalOptions="End"
-                Command="{Binding AddExistingCommand}"
-                Style="{StaticResource SecondaryActionButtonStyle}">
-                <Button.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Button.IsVisible>
-            </Button>
-            <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
-                Grid.Column="1"
-                Margin="0,0,16,8"
+                Margin="16,0,16,8"
                 Text="Add New" 
                 VerticalOptions="End"
                 Command="{Binding AddNewCommand}"
@@ -226,15 +203,11 @@
             </Button>
             <BoxView
                 Grid.Row="3"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <Grid
                 Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 Margin="16"
                 ColumnSpacing="16">
                 <Grid.IsVisible>
@@ -255,7 +228,6 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
@@ -269,15 +241,20 @@
                     Text="{Binding Total, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
-                <uc:CalculatorEntry 
+                <Label
                     Grid.Row="0"
-                    Grid.RowSpan="2"
                     Grid.Column="2"
-                    Prefix="$"
-                    Label="Desired Total"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Number="{Binding DesiredTotal}"/>
+                    Text="Running Total"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="{Binding RunningTotal, StringFormat='{0:c}'}"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}"/>
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
@@ -296,14 +273,6 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
-                    Text="Add Exisiting" 
-                    VerticalOptions="Center"
-                    Command="{Binding AddExistingCommand}"
-                    Style="{StaticResource SecondaryActionButtonStyle}"/>
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="6"
                     Text="Add New" 
                     VerticalOptions="Center"
                     Command="{Binding AddNewCommand}"

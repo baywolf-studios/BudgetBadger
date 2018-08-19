@@ -41,11 +41,19 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _transaction, value);
         }
 
+        bool _splitTransactionMode;
+        public bool SplitTransactionMode
+        {
+            get => _splitTransactionMode;
+            set => SetProperty(ref _splitTransactionMode, value);
+        }
+
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
         public ICommand EnvelopeSelectedCommand { get; set; }
         public ICommand AccountSelectedCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand SplitCommand { get; set; }
 
         public TransactionEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
@@ -64,10 +72,23 @@ namespace BudgetBadger.Forms.Transactions
             EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
         }
 
 		public async void OnNavigatingTo(NavigationParameters parameters)
 		{
+            var goBack = parameters.GetValue<bool>(PageParameter.SplitTransactionCompleted);
+            if (goBack)
+            {
+                await _navigationService.GoBackAsync();
+                return;
+            }
+
+            if (!SplitTransactionMode)
+            {
+                SplitTransactionMode = parameters.GetValue<bool>(PageParameter.SplitTransactionMode);
+            }
+
 			var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
 			if (transaction != null)
 			{
@@ -118,6 +139,16 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
+            if (SplitTransactionMode)
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Transaction, Transaction}
+                };
+                await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
             if (IsBusy)
             {
                 return;
@@ -134,6 +165,7 @@ namespace BudgetBadger.Forms.Transactions
                 {
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
+
                     var parameters = new NavigationParameters
                     {
                         { PageParameter.Transaction, result.Data }
@@ -195,7 +227,11 @@ namespace BudgetBadger.Forms.Transactions
                     BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
 
-                    await _navigationService.GoBackToRootAsync();
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.DeletedTransaction, Transaction }
+                    };
+                    await _navigationService.GoBackAsync(parameters);
 
                     var syncResult = await syncTask;
                     if (!syncResult.Success)
@@ -212,6 +248,15 @@ namespace BudgetBadger.Forms.Transactions
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteSplitCommand()
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.InitialSplitTransaction, Transaction }
+            };
+            await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
         }
     }
 }

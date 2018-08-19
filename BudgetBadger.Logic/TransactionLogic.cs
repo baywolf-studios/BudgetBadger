@@ -63,6 +63,8 @@ namespace BudgetBadger.Logic
 
                 var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id);
 
+                await CleanupRelatedSplitTransactions(transactionToDelete);
+
                 transactionToDelete.ModifiedDateTime = DateTime.Now;
                 transactionToDelete.DeletedDateTime = DateTime.Now;
                 await TransactionDataAccess.UpdateTransactionAsync(transactionToDelete);
@@ -369,52 +371,45 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SaveSplitTransactionAsync(IEnumerable<Guid> transactionIds)
+        public async Task<Result> SaveSplitTransactionAsync(IEnumerable<Transaction> transactions)
         {
             var result = new Result();
 
-            if (!transactionIds.Any())
+            if (!transactions.Any())
             {
                 result.Success = false;
-                result.Message = "No transactions to split";
+                result.Message = "No split transactions to save";
                 return result;
             }
 
-            if (transactionIds.Count() == 1)
+            if (transactions.Count() == 1)
             {
-                return await RemoveTransactionFromSplitAsync(transactionIds.FirstOrDefault());
+                var transaction = transactions.Single();
+                transaction.SplitId = null;
+                return await SaveTransactionAsync(transaction);
             }
 
             var splitId = Guid.NewGuid();
-            var transactions = new List<Transaction>();
             try
             {
-                foreach (var transactionId in transactionIds)
+                // extra validation so we don't save one and then fail validation later
+                var validationResults = await Task.WhenAll(transactions.Select(ValidateTransactionAsync));
+                if (validationResults.Any(v => !v.Success))
                 {
-                    var transaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
-                    if (transaction.IsActive)
-                    {
-                        transactions.Add(transaction);
-                    }
+                    return new Result { Success = false, Message = string.Join(Environment.NewLine, validationResults.Select(m => m.Message)) };
                 }
 
                 foreach (var transaction in transactions)
                 {
-                    if (transaction.IsSplit)
-                    {
-                        var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
-                        if (relatedTransactions.Count() == 2) //need to unsplit, need better logic here!!!
-                        {
-                            var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
-                            relatedTransaction.SplitId = null;
-                            relatedTransaction.ModifiedDateTime = DateTime.Now;
-                            await TransactionDataAccess.UpdateTransactionAsync(relatedTransaction);
-                        }
-                    }
+                    await CleanupRelatedSplitTransactions(transaction);
 
                     transaction.SplitId = splitId;
-                    transaction.ModifiedDateTime = DateTime.Now;
-                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
+
+                    var saveResult = await SaveTransactionAsync(transaction);
+                    if (!saveResult.Success)
+                    {
+                        return saveResult;
+                    }
                 }
 
                 result.Success = true;
@@ -454,34 +449,19 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> RemoveTransactionFromSplitAsync(Guid transactionId)
+        async Task CleanupRelatedSplitTransactions(Transaction transaction)
         {
-            var result = new Result();
-
-            try
+            if (transaction.IsSplit)
             {
-                var transaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
-                if (transaction.IsActive)
+                var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
+                if (relatedTransactions.Count() == 2) //need to unsplit, need better logic here!!!
                 {
-                    transaction.SplitId = null;
-                    transaction.ModifiedDateTime = DateTime.Now;
-                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
-                    result.Success = true;
-                }
-                else
-                {
-                    result.Success = false;
-                    result.Message = "Transaction does not exist";
+                    var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
+                    relatedTransaction.SplitId = null;
+                    relatedTransaction.ModifiedDateTime = DateTime.Now;
+                    await TransactionDataAccess.UpdateTransactionAsync(relatedTransaction);
                 }
             }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-
-            return result;
         }
 
         // handle logic to get transaction into usable state

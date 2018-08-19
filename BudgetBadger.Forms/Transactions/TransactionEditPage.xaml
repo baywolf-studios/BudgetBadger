@@ -21,12 +21,14 @@
                 ColumnSpacing="16" 
                 RowSpacing="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="1"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <ScrollView
-                    Grid.Row="0"
+                    Grid.Row="2"
                     Margin="0"
                     Padding="0"
                     Orientation="Vertical">
@@ -132,12 +134,12 @@
                     </Grid>
                 </ScrollView>
                 <BoxView
-                    Grid.Row="1"
+                    Grid.Row="3"
                     HeightRequest="1"
                     BackgroundColor="{StaticResource DividerColor}"
                     Margin="0"/>
                 <Grid
-                    Grid.Row="2"
+                    Grid.Row="4"
                     Margin="16"
                     ColumnSpacing="16">
                     <Grid.IsVisible>
@@ -154,6 +156,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
@@ -172,14 +176,29 @@
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Command="{Binding DeleteCommand}"
                         Text="Delete Transaction"
-                        Style="{StaticResource PrimaryDestructionButtonStyle}"
+                        Style="{StaticResource SecondaryDestructionButtonStyle}"
                         VerticalOptions="Center"
                         HorizontalOptions="EndAndExpand">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding Transaction.IsNew}" Value="true">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Command="{Binding SplitCommand}"
+                        Text="Split Transaction"
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SplitTransactionMode}" Value="true">
                                 <Setter Property="IsVisible" Value="false"/>
                             </DataTrigger>
                         </Button.Triggers>

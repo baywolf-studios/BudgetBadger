@@ -23,9 +23,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddNewCommand { get; set; }
-        public ICommand AddExistingCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand RemoveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -58,29 +56,29 @@ namespace BudgetBadger.Forms.Transactions
 			set
 			{
 				SetProperty(ref _transactions, value);
-				RaisePropertyChanged(nameof(Total));
+				RaisePropertyChanged(nameof(RunningTotal));
 			}
         }
 
-        public decimal Total
+        public decimal RunningTotal
         {
             get => Transactions?.Sum(t => t.Amount ?? 0) ?? 0;
         }
 
-        decimal desiredTotal;
-        public decimal DesiredTotal
+        decimal total;
+        public decimal Total
         {
-            get => desiredTotal;
+            get => total;
             set
             {
-                SetProperty(ref desiredTotal, value);
+                SetProperty(ref total, value);
                 RaisePropertyChanged(nameof(Remaining));
             }
         }
 
         public decimal Remaining
         {
-            get => DesiredTotal - Total;
+            get => Total - RunningTotal;
         }
 
         public SplitTransactionPageViewModel(INavigationService navigationService,
@@ -96,9 +94,7 @@ namespace BudgetBadger.Forms.Transactions
             Transactions = new List<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
-            AddExistingCommand = new DelegateCommand(async () => await ExecuteAddExistingCommand());
             EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
-            RemoveCommand = new DelegateCommand<Transaction>(async a => await ExecuteRemoveCommand(a));
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
@@ -109,13 +105,15 @@ namespace BudgetBadger.Forms.Transactions
         {
             if (SplitId == null)
             {
-                SplitId = parameters.GetValue<Guid>(PageParameter.SplitTransactionId);
+                SplitId = parameters.GetValue<Guid?>(PageParameter.SplitTransactionId);
                 if (SplitId.HasValue)
                 {
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
                         Transactions = result.Data;
+                        Total = RunningTotal;
+                        return;
                     }
                 }
             }
@@ -123,106 +121,72 @@ namespace BudgetBadger.Forms.Transactions
             var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
             if (transaction != null)
             {
-                var transactionsToUpsert = new List<Transaction>();
-                if (transaction.IsCombined)
-                {
-                    var result = await _transLogic.GetTransactionsFromSplitAsync(transaction.SplitId.Value);
-                    if (result.Success)
-                    {
-                        transactionsToUpsert.AddRange(result.Data);
-                    }
-                }
-                else
-                {
-                    transactionsToUpsert.Add(transaction.DeepCopy());
-                }
-                foreach (var tran in transactionsToUpsert)
-                {
-                    List<Transaction> tempTransactions = Transactions.Where(t => t.Id != tran.Id).ToList();
-                    tempTransactions.Add(tran);
-                    Transactions = tempTransactions;
-                }
+                List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
+                tempTransactions.Add(transaction);
+                Transactions = tempTransactions;
+                return;
             }
 
-			RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(DesiredTotal));
-            RaisePropertyChanged(nameof(Remaining));
+            var initialSplitTransaction = parameters.GetValue<Transaction>(PageParameter.InitialSplitTransaction);
+            if (initialSplitTransaction != null)
+            {
+                Total = initialSplitTransaction.Amount ?? 0;
+
+                var tempTrans = initialSplitTransaction.DeepCopy();
+
+                tempTrans.Id = Guid.NewGuid();
+                tempTrans.Amount = null;
+                tempTrans.Envelope = new Envelope();
+
+                var transResult = await _transLogic.GetCorrectedTransaction(tempTrans);
+
+                if (transResult.Success)
+                {
+                    var split1 = transResult.Data;
+                    var split2 = split1.DeepCopy();
+                    split2.Id = Guid.NewGuid();
+                    Transactions = new List<Transaction>
+                    {
+                        split1,
+                        split2
+                    };
+                }
+                return;
+            }
+
+            var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
+            if (deletedTransaction != null)
+            {
+                Transactions = Transactions.Where(t => t.Id != deletedTransaction.Id).ToList();
+                return;
+            }
         }
 
         public async Task ExecuteAddNewCommand()
         {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.SplitTransactionMode, true }
+            };
+
 			if (Transactions.Count > 0)
 			{
-				//var envelope = Transactions.Last().Envelope; not needed normally
-				var parameters = new NavigationParameters
-                {
-					{ PageParameter.Payee, Transactions.Last().Payee },
-					{ PageParameter.Account, Transactions.Last().Account },
-					{ PageParameter.TransactionServiceDate, Transactions.Last().ServiceDate }
-                };
-                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
+                parameters.Add(PageParameter.Payee, Transactions.Last().Payee);
+                parameters.Add(PageParameter.Account, Transactions.Last().Account);
+                parameters.Add(PageParameter.TransactionServiceDate, Transactions.Last().ServiceDate);
 			}
-			else
-			{
-				await _navigationService.NavigateAsync(PageName.TransactionEditPage);
-			}
-        }
 
-        public async Task ExecuteAddExistingCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.TransactionSelectionPage);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
         public async Task ExecuteEditCommand(Transaction transaction)
         {
             var parameters = new NavigationParameters
             {
-                { PageParameter.Transaction, transaction }
+                { PageParameter.Transaction, transaction },
+                { PageParameter.SplitTransactionMode, true }
             };
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
-        }
-
-        void RemoveTransaction(Transaction transaction)
-        {
-            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            Transactions = existingTransactions;
-
-            RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(DesiredTotal));
-            RaisePropertyChanged(nameof(Remaining));
-        }
-
-        public async Task ExecuteRemoveCommand(Transaction transaction)
-        {
-            if (transaction.IsActive)
-            {
-                if (IsBusy)
-                {
-                    return;
-                }
-                IsBusy = true;
-                try
-                {
-                    var result = await _transLogic.RemoveTransactionFromSplitAsync(transaction.Id);
-                    if (!result.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Remove Unsuccessful", result.Message, "OK");
-                        return;
-                    }
-
-					var syncResult = await _syncService.FullSync();            
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    } 
-                }
-                finally
-                {
-                    IsBusy = false;
-                }            
-            }
-
-            RemoveTransaction(transaction);
         }
 
         public async Task ExecuteDeleteCommand(Transaction transaction)
@@ -256,7 +220,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
             }
 
-            RemoveTransaction(transaction);
+            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
+            Transactions = existingTransactions;
         }
 
         public async Task ExecuteSaveCommand()
@@ -270,12 +235,16 @@ namespace BudgetBadger.Forms.Transactions
 
             try
             {
-                var result = await _transLogic.SaveSplitTransactionAsync(Transactions.Select(t => t.Id));
+                var result = await _transLogic.SaveSplitTransactionAsync(Transactions);
                 if (result.Success)
                 {
 					var syncTask = _syncService.FullSync();
 
-                    await _navigationService.GoBackAsync();
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.SplitTransactionCompleted, true }
+                    };
+                    await _navigationService.GoBackAsync(parameters);
 
 					var syncResult = await syncTask;
                     if (!syncResult.Success)
@@ -303,11 +272,11 @@ namespace BudgetBadger.Forms.Transactions
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Transaction, SelectedTransaction }
+                { PageParameter.Transaction, SelectedTransaction },
+                { PageParameter.SplitTransactionMode, true }
             };
 
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
-
 
             SelectedTransaction = null;
         }
@@ -318,31 +287,34 @@ namespace BudgetBadger.Forms.Transactions
             {
                 transaction.Posted = !transaction.Posted;
 
-                Result result = new Result();
+                if (transaction.IsActive)
+                {
+                    Result result = new Result();
 
-                if (transaction.IsCombined)
-                {
-                    result = await _transLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
-                }
-                else
-                {
-                    result = await _transLogic.SaveTransactionAsync(transaction);
-                }
+                    if (transaction.IsCombined)
+                    {
+                        result = await _transLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                    }
+                    else
+                    {
+                        result = await _transLogic.SaveTransactionAsync(transaction);
+                    }
 
-                if (result.Success)
-                {
-                    //var syncTask = _syncService.FullSync();
+                    if (result.Success)
+                    {
+                        var syncTask = _syncService.FullSync();
 
-                    //var syncResult = await syncTask;
-                    //if (!syncResult.Success)
-                    //{
-                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    //}
-                }
-                else
-                {
-                    transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                        var syncResult = await syncTask;
+                        if (!syncResult.Success)
+                        {
+                            await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                        }
+                    }
+                    else
+                    {
+                        transaction.Posted = !transaction.Posted;
+                        await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    }
                 }
             }
         }

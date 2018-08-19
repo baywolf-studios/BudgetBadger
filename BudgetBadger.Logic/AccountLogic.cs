@@ -287,12 +287,12 @@ namespace BudgetBadger.Logic
             var activePayeeTransactions = payeeTransactions.Where(t => t.IsActive);
 
             // pending
-            account.Pending = accountTransactions.Where(a => a.Pending).Sum(t => t.Amount ?? 0);
-            account.Pending -= payeeTransactions.Where(t => t.Pending).Sum(t => t.Amount ?? 0);
+            account.Pending = activeAccountTransactions.Where(a => a.Pending).Sum(t => t.Amount ?? 0);
+            account.Pending -= activePayeeTransactions.Where(t => t.Pending).Sum(t => t.Amount ?? 0);
 
             // posted
-            account.Posted = accountTransactions.Where(a => a.Posted).Sum(t => t.Amount ?? 0);
-            account.Posted -= payeeTransactions.Where(t => t.Posted).Sum(t => t.Amount ?? 0);
+            account.Posted = activeAccountTransactions.Where(a => a.Posted).Sum(t => t.Amount ?? 0);
+            account.Posted -= activePayeeTransactions.Where(t => t.Posted).Sum(t => t.Amount ?? 0);
 
             // balance
             account.Balance = activeAccountTransactions.Sum(t => t.Amount ?? 0);
