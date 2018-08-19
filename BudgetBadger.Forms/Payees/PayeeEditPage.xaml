@@ -54,7 +54,7 @@
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Text="Delete Payee"
-                            Style="{StaticResource PrimaryDestructionButtonStyle}">
+                            Style="{StaticResource SecondaryDestructionButtonStyle}">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -114,7 +114,7 @@
                         Grid.Column="1"
                         Command="{Binding DeleteCommand}"
                         Text="Delete Payee"
-                        Style="{StaticResource PrimaryDestructionButtonStyle}"
+                        Style="{StaticResource SecondaryDestructionButtonStyle}"
                         VerticalOptions="Center"
                         HorizontalOptions="EndAndExpand">
                         <Button.Triggers>
