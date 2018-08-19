@@ -62,11 +62,13 @@ namespace BudgetBadger.Logic
 
                 if (beginDate.HasValue)
                 {
-                    dataPoints = dataPoints.Where(d => d.XValue >= beginDate.Value).ToList();
+                    var beginDateMonth = new DateTime(beginDate.Value.Year, beginDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
+                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth).ToList();
                 }
                 if (endDate.HasValue)
                 {
-                    dataPoints = dataPoints.Where(d => d.XValue <= beginDate.Value).ToList();
+                    var endDateMonth = new DateTime(endDate.Value.Year, endDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
+                    dataPoints = dataPoints.Where(d => d.XValue <= endDateMonth).ToList();
                 }
 
                 result.Data = dataPoints.OrderBy(d => d.XValue).ToList();

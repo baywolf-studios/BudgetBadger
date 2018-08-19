@@ -69,6 +69,8 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
+        public event EventHandler<DateChangedEventArgs> DateSelected;
+
         public DateSelector()
         {
             InitializeComponent();
@@ -79,6 +81,11 @@ namespace BudgetBadger.Forms.UserControls
             DateControl.Focused += (sender, e) =>
             {
                 UpdateVisualState();
+            };
+
+            DateControl.DateSelected += (sender, e) => 
+            {
+                DateSelected?.Invoke(this, e);
             };
 
             DateControl.Unfocused += (sender, e) =>
