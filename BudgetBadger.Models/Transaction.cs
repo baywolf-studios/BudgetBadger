@@ -79,8 +79,10 @@ namespace BudgetBadger.Models
         public DateTime? ReconciledDateTime
         {
             get => reconciledDateTime;
-            set => SetProperty(ref reconciledDateTime, value);
+            set { SetProperty(ref reconciledDateTime, value); OnPropertyChanged(nameof(Reconciled)); }
         }
+
+        public bool Reconciled { get => ReconciledDateTime.HasValue; }
 
         Account account;
         public Account Account

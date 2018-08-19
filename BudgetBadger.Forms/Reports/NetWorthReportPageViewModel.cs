@@ -102,18 +102,18 @@ namespace BudgetBadger.Forms.Reports
                 var netWorthReportResult = await _reportLogic.GetNetWorthReport(beginDate, endDate);
                 if (netWorthReportResult.Success)
                 {
-                    foreach (var dataPoint in netWorthReportResult.Data.OrderBy(d => d.Key))
+                    foreach (var dataPoint in netWorthReportResult.Data)
                     {
                         var color = SKColor.Parse("#4CAF50");
-                        if (dataPoint.Value < 0)
+                        if (dataPoint.YValue < 0)
                         {
                             color = SKColor.Parse("#F44336");
                         }
 
-                        entries.Add(new Entry((float)dataPoint.Value)
+                        entries.Add(new Entry((float)dataPoint.YValue)
                         {
-                            ValueLabel = dataPoint.Value.ToString("C"),
-                            Label = dataPoint.Key.ToString("Y"),
+                            ValueLabel = dataPoint.YLabel,
+                            Label = dataPoint.XLabel,
                             Color = color
                         });
                     }

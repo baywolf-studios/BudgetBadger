@@ -24,12 +24,43 @@ namespace BudgetBadger.Logic
             EnvelopeDataAccess = envelopeDataAccess;
         }
 
+        async Task<Result> ValidateDeleteTransactionAsync(Guid transactionId)
+        {
+            var errors = new List<string>();
+
+            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
+            var transaction = await GetPopulatedTransaction(tempTransaction);
+
+            if (transaction.IsTransfer && transaction.Payee.IsDeleted)
+            {
+                errors.Add("Cannot delete transfer transaction with deleted payee");
+            }
+
+            if (transaction.Account.IsDeleted)
+            {
+                errors.Add("Cannot delete transaction with deleted account");
+            }
+
+            if (transaction.Envelope.IsDeleted)
+            {
+                errors.Add("Cannot delete transaction with deleted envelope");
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+        }
+
         public async Task<Result> DeleteTransactionAsync(Guid id)
         {
             var result = new Result();
 
             try
             {
+                var validationResult = await ValidateDeleteTransactionAsync(id);
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
+
                 var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id);
 
                 transactionToDelete.ModifiedDateTime = DateTime.Now;
@@ -164,34 +195,78 @@ namespace BudgetBadger.Logic
                 return transaction.Validate();
             }
 
-            // don't save the starting balance transaction
-            if (transaction.Payee.IsStartingBalance)
+            var errors = new List<string>();
+
+            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transaction.Id);
+            var existingTransaction = await GetPopulatedTransaction(tempTransaction);
+
+            if (existingTransaction.IsActive) // already exists need to compare
             {
-                return new Result { Success = false, Message = "Cannot edit the starting balance" };
+                if (existingTransaction.Reconciled || existingTransaction.Account.IsDeleted || (existingTransaction.IsTransfer && existingTransaction.Payee.IsDeleted))
+                {
+                    if (transaction.Account.Id != existingTransaction.Account.Id)
+                    {
+                        errors.Add("Cannot edit the account on a reconciled transaction");
+                    }
+
+                    if (transaction.Amount != existingTransaction.Amount)
+                    {
+                        errors.Add("Cannot edit the amount on a reconciled transaction");
+                    }
+
+                    if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                    {
+                        errors.Add("Cannot edit the service date on a reconciled transaction");
+                    }
+
+                    if (transaction.Payee.Id != existingTransaction.Payee.Id)
+                    {
+                        errors.Add("Cannot edit the payee on a reconciled transaction");
+                    }
+                }
+                else if (existingTransaction.Envelope.IsDeleted)
+                {
+                    if (transaction.Amount != existingTransaction.Amount)
+                    {
+                        errors.Add("Cannot edit the amount on a transaction with a deleted envelope");
+                    }
+
+                    if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                    {
+                        errors.Add("Cannot edit the service date on a transaction with a deleted envelope");
+                    }
+
+                    if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
+                    {
+                        errors.Add("Cannot edit the envelope on a transaction with a deleted envelope");
+                    }
+                }
+            }
+            else
+            {
+                var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
+                // check for existance of payee
+                if (!transactionPayee.IsActive)
+                {
+                    errors.Add( "Payee does not exist");
+                }
+
+                // check for existance of account
+                var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
+                if (!transactionAccount.IsActive)
+                {
+                    errors.Add("Account does not exist");
+                }
+
+                // check for existance of envelope
+                var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
+                if (!transaction.Envelope.IsGenericDebtEnvelope && !transactionEnvelope.IsActive)
+                {
+                    errors.Add("Envelope does not exist");
+                }
             }
 
-            // check for existance of payee
-            var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
-            if (!transactionPayee.IsActive)
-            {
-                return new Result { Success = false, Message = "Payee does not exist" };
-            }
-
-            // check for existance of account
-            var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
-            if (!transactionAccount.IsActive)
-            {
-                return new Result { Success = false, Message = "Account does not exist" };
-            }
-
-            // check for existance of envelope
-            var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
-            if (!transaction.Envelope.IsGenericDebtEnvelope && !transactionEnvelope.IsActive)
-            {
-                return new Result { Success = false, Message = "Envelope does not exist" };
-            }
-
-            return new Result { Success = true };
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
