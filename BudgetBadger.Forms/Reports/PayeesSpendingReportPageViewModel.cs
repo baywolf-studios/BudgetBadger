@@ -68,8 +68,9 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
-            BeginDate = DateTime.MinValue;
-            EndDate = DateTime.MaxValue;
+            var now = DateTime.Now;
+            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            BeginDate = EndDate.AddMonths(-12);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
