@@ -4,18 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopesSpendingReportsPageViewModel : BindableBase, IPageLifecycleAware
+    public class EnvelopesSpendingReportPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
         readonly IReportLogic _reportLogic;
 
         public ICommand RefreshCommand { get; set; }
@@ -25,20 +28,6 @@ namespace BudgetBadger.Forms.Reports
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
-        }
-
-        string _busyText;
-        public string BusyText
-        {
-            get => _busyText;
-            set => SetProperty(ref _busyText, value);
-        }
-
-        bool _dateRangeFilter;
-        public bool DateRangeFilter
-        {
-            get => _dateRangeFilter;
-            set => SetProperty(ref _dateRangeFilter, value);
         }
 
         DateTime _beginDate;
@@ -55,31 +44,38 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _endDate, value);
         }
 
-        Chart _envelopeChart;
-        public Chart EnvelopeChart
+        IReadOnlyList<DataPoint<Envelope, decimal>> _envelopes;
+        public IReadOnlyList<DataPoint<Envelope, decimal>> Envelopes
         {
-            get => _envelopeChart;
-            set => SetProperty(ref _envelopeChart, value);
+            get => _envelopes;
+            set => SetProperty(ref _envelopes, value);
         }
 
-        public EnvelopesSpendingReportsPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
+        DataPoint<Envelope, decimal> _selectedEnvelope;
+        public DataPoint<Envelope, decimal> SelectedEnvelope
+        {
+            get => _selectedEnvelope;
+            set => SetProperty(ref _selectedEnvelope, value);
+        }
+
+        public EnvelopesSpendingReportPageViewModel(INavigationService navigationService,
+                                                    IPageDialogService dialogService,
+                                                    IReportLogic reportLogic)
         {
             _navigationService = navigationService;
+            _dialogService = dialogService;
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
-            BeginDate = DateTime.MinValue;
-            EndDate = DateTime.MaxValue;
+            var now = DateTime.Now;
+            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            BeginDate = EndDate.AddMonths(-12);
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteRefreshCommand()
@@ -90,35 +86,27 @@ namespace BudgetBadger.Forms.Reports
             }
 
             IsBusy = true;
-            BusyText = "Loading...";
 
             try
             {
                 var envelopeEntries = new List<Entry>();
 
-                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+                var beginDate = (DateTime?)BeginDate;
+                var endDate = (DateTime?)EndDate;
 
                 var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(beginDate, endDate);
                 if (envelopeReportResult.Success)
                 {
-                    foreach (var datapoint in envelopeReportResult.Data)
-                    {
-                        envelopeEntries.Add(new Entry((float)datapoint.YValue)
-                        {
-                            Label = datapoint.YLabel,
-                            ValueLabel = datapoint.XLabel,
-                            Color = SKColor.Parse("#4CAF50")
-                        });
-                    }
+                    Envelopes = envelopeReportResult.Data;
                 }
-
-                EnvelopeChart = new BarChart() { Entries = envelopeEntries };
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", envelopeReportResult.Message, "OK");
+                }
             }
             finally
             {
                 IsBusy = false;
-                BusyText = string.Empty;
             }
         }
     }

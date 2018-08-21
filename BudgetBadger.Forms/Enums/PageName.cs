@@ -21,8 +21,8 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string NetWorthReportPage = "NetWorthReportPage";
         public static readonly string EnvelopesSpendingReportPage = "EnvelopesSpendingReportPage";
         public static readonly string PayeesSpendingReportPage = "PayeesSpendingReportPage";
-        public static readonly string EnvelopeTrendReportPage = "EnvelopeTrendReportPage";
-        public static readonly string PayeeTrendReportPage = "PayeeTrendReportPage";
+        public static readonly string EnvelopeTrendsReportPage = "EnvelopeTrendsReportPage";
+        public static readonly string PayeeTrendsReportPage = "PayeeTrendsReportPage";
         public static readonly string SettingsPage = "SettingsPage";
         public static readonly string SyncPage = "SyncPage";
         public static readonly string SyncModesPage = "SyncModesPage";

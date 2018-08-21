@@ -13,7 +13,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, IPageLifecycleAware
+    public class NetWorthReportPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -67,13 +67,9 @@ namespace BudgetBadger.Forms.Reports
             BeginDate = EndDate.AddMonths(-12);
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteRefreshCommand()

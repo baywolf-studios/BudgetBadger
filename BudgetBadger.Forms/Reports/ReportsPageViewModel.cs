@@ -20,8 +20,8 @@ namespace BudgetBadger.Forms.Reports
         readonly string _netWorthReport = "Net Worth";
         readonly string _envelopeSpendingReport = "Envelopes Spending";
         readonly string _payeeSpendingReport = "Payees Spending";
-        readonly string _spendingTrendByEnvelopeReport = "Spending Trend By Envelope";
-        readonly string _spendingTrendByPayeeReport = "Spending Trend By Payee";
+        readonly string _spendingTrendByEnvelopeReport = "Envelope Trend";
+        readonly string _spendingTrendByPayeeReport = "Payee Trend";
 
         public ICommand ReportCommand { get; set; }
 
@@ -87,11 +87,11 @@ namespace BudgetBadger.Forms.Reports
             }
             else if (SelectedReport == _spendingTrendByEnvelopeReport)
             {
-                await _navigationService.NavigateAsync(PageName.EnvelopeTrendReportPage);
+                await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
             }
             else if (SelectedReport == _spendingTrendByPayeeReport)
             {
-                await _navigationService.NavigateAsync(PageName.PayeeTrendReportPage);
+                await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
             }
 
             SelectedReport = null;
@@ -114,12 +114,12 @@ namespace BudgetBadger.Forms.Reports
 
         public async Task ExecuteEnvelopeTrendCommand()
         {
-            await _navigationService.NavigateAsync(PageName.EnvelopeTrendReportPage);
+            await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
         }
 
         public async Task ExecutePayeeTrendCommand()
         {
-            await _navigationService.NavigateAsync(PageName.PayeeTrendReportPage);
+            await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
         }
     }
 }

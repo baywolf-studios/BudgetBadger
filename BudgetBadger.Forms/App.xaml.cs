@@ -196,10 +196,10 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();
-            containerRegistry.RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportsPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTrendReportPage, EnvelopeTrendReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeesSpendingReportPage, PayeesSpendingReportPageViewModel>();
-            containerRegistry.RegisterForNavigation<PayeeTrendReportPage, PayeeTrendReportPageViewModel>();
+            containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
 
             timer.Stop();
         }
