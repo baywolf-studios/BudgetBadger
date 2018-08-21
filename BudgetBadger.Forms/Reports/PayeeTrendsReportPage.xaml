@@ -8,42 +8,121 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.Reports.PayeeTrendsReportPage">
     <uc:ChildPage.BodyContent>
-        <Grid Margin="8">
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}"
+            Margin="0"
+            ColumnSpacing="16"
+            RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <uc:BusyIndicator Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
-                <microcharts:ChartView x:Name="payeeTrend" Chart="{Binding PayeeChart}"/>
+            <uc:Expander Grid.Row="0">
+                <uc:Expander.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                    </OnIdiom>
+                </uc:Expander.IsVisible>
+                <uc:Expander.HeaderContent>
+                    <Grid ColumnSpacing="8">
+                        <Label
+                            Text="Filter"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Start"
+                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                    </Grid>
+                </uc:Expander.HeaderContent>
+                <uc:Expander.BodyContent>
+                    <Grid ColumnSpacing="16" RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <uc:DateSelector
+                            Grid.Column="0"
+                            Label="Begin Date"
+                            Date="{Binding BeginDate}">
+                            <uc:DateSelector.Behaviors>
+                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                            </uc:DateSelector.Behaviors>
+                        </uc:DateSelector>
+                        <uc:DateSelector
+                            Grid.Column="1"
+                            Label="End Date"
+                            Date="{Binding EndDate}">
+                            <uc:DateSelector.Behaviors>
+                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                            </uc:DateSelector.Behaviors>
+                        </uc:DateSelector>
+                    </Grid>
+                </uc:Expander.BodyContent>
+            </uc:Expander>
+            <BoxView
+                Grid.Row="1"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <uc:BusyIndicator
+                Grid.Row="2"
+                IsBusy="{Binding IsBusy, Mode=OneWay}"
+                BusyText="{Binding BusyText}">
+                <microcharts:ChartView Chart="{Binding PayeeChart}"/>
             </uc:BusyIndicator>
-            <Label Grid.Row="1" Grid.Column="0" Text="Payee:"/>
-            <Picker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Payees}" SelectedItem="{Binding SelectedPayee}" ItemDisplayBinding="{Binding Description}">
-                <Picker.Behaviors>
-                    <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
-                </Picker.Behaviors>
-            </Picker>
-            <Switch IsToggled="{Binding DateRangeFilter}" Grid.Row="2" Grid.Column="1">
-                <Switch.Behaviors>
-                    <b:EventToCommandBehavior EventName="Toggled" Command="{Binding RefreshCommand}" />
-                </Switch.Behaviors>
-            </Switch>
-            <Label Grid.Row="2" Grid.Column="0" Text="Date Range"/>
-            <DatePicker IsVisible="{Binding DateRangeFilter}" Grid.Row="3" Grid.Column="0" Date="{Binding BeginDate}">
-                <DatePicker.Behaviors>
-                    <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                </DatePicker.Behaviors>
-            </DatePicker>
-            <DatePicker IsVisible="{Binding DateRangeFilter}" Grid.Row="3" Grid.Column="1" Date="{Binding EndDate}">
-                <DatePicker.Behaviors>
-                    <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                </DatePicker.Behaviors>
-            </DatePicker>
+            <BoxView
+                Grid.Row="3"
+                HeightRequest="1"
+                BackgroundColor="{StaticResource DividerColor}"
+                Margin="0"/>
+            <Grid
+                Grid.Row="4"
+                ColumnSpacing="16"
+                RowSpacing="8"
+                Margin="16">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>false</OnIdiom.Phone>
+                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Text="Filters"
+                    HorizontalTextAlignment="Start"
+                    VerticalOptions="Center"
+                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                <uc:DateSelector
+                    Grid.Column="2"
+                    Label="Begin Date"
+                    Date="{Binding BeginDate}">
+                    <uc:DateSelector.Behaviors>
+                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                    </uc:DateSelector.Behaviors>
+                </uc:DateSelector>
+                <uc:DateSelector
+                    Grid.Column="3"
+                    Label="End Date"
+                    Date="{Binding EndDate}">
+                    <uc:DateSelector.Behaviors>
+                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
+                    </uc:DateSelector.Behaviors>
+                </uc:DateSelector>
+            </Grid>
         </Grid>
     </uc:ChildPage.BodyContent>
 </uc:ChildPage>
