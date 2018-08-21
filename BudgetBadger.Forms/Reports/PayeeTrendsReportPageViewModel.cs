@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
@@ -14,7 +15,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeeTrendReportPageViewModel: BindableBase, IPageLifecycleAware
+    public class PayeeTrendsReportPageViewModel: BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -34,13 +35,6 @@ namespace BudgetBadger.Forms.Reports
         {
             get => _busyText;
             set => SetProperty(ref _busyText, value);
-        }
-
-        bool _dateRangeFilter;
-        public bool DateRangeFilter
-        {
-            get => _dateRangeFilter;
-            set => SetProperty(ref _dateRangeFilter, value);
         }
 
         DateTime _beginDate;
@@ -78,7 +72,7 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _payeeChart, value);
         }
 
-        public PayeeTrendReportPageViewModel(INavigationService navigationService, IPayeeLogic payeeLogic, IReportLogic reportLogic)
+        public PayeeTrendsReportPageViewModel(INavigationService navigationService, IPayeeLogic payeeLogic, IReportLogic reportLogic)
         {
             _navigationService = navigationService;
             _reportLogic = reportLogic;
@@ -92,7 +86,7 @@ namespace BudgetBadger.Forms.Reports
             EndDate = DateTime.MaxValue;
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             var payeesResult = await _payeeLogic.GetPayeesForSelectionAsync();
             if (payeesResult.Success)
@@ -100,16 +94,14 @@ namespace BudgetBadger.Forms.Reports
                 Payees = payeesResult.Data.ToList();
                 SelectedPayee = Payees.FirstOrDefault();
             }
-            else
+
+            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+            if (payee != null)
             {
-                //show some error
+                SelectedPayee = payee.DeepCopy();
             }
 
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteRefreshCommand()
@@ -131,30 +123,30 @@ namespace BudgetBadger.Forms.Reports
             {
                 var payeeEntries = new List<Entry>();
 
-                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+                var beginDate = (DateTime?)BeginDate;
+                var endDate = (DateTime?)EndDate;
 
-                //var payeeReportResult = await _reportLogic.GetSpendingTrendsByPayeeReport(SelectedPayee.Id, beginDate, endDate);
-                //if (payeeReportResult.Success)
-                //{
-                //    foreach (var datapoint in payeeReportResult.Data)
-                //    {
-                //        var color = SKColor.Parse("#4CAF50");
-                //        if (datapoint.Value < 0)
-                //        {
-                //            color = SKColor.Parse("#F44336");
-                //        }
+                var payeeReportResult = await _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, beginDate, endDate);
+                if (payeeReportResult.Success)
+                {
+                    foreach (var datapoint in payeeReportResult.Data)
+                    {
+                        var color = SKColor.Parse("#4CAF50");
+                        if (datapoint.YValue < 0)
+                        {
+                            color = SKColor.Parse("#F44336");
+                        }
 
-                //        payeeEntries.Add(new Entry((float)datapoint.Value)
-                //        {
-                //            Label = datapoint.Key.ToString("Y"),
-                //            ValueLabel = datapoint.Value.ToString("C"),
-                //            Color = color
-                //        });
-                //    }
-                //}
+                        payeeEntries.Add(new Entry((float)datapoint.YValue)
+                        {
+                            Label = datapoint.XLabel,
+                            ValueLabel = datapoint.YLabel,
+                            Color = color
+                        });
+                    }
+                }
 
-                PayeeChart = new PointChart() { Entries = payeeEntries };
+                PayeeChart = new PointChart { Entries = payeeEntries };
             }
             finally
             {

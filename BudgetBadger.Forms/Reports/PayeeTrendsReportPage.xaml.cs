@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public partial class PayeeTrendReportPage : ChildPage
+    public partial class PayeeTrendsReportPage : ChildPage
     {
-        public PayeeTrendReportPage()
+        public PayeeTrendsReportPage()
         {
             InitializeComponent();
         }

@@ -4,18 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeesSpendingReportPageViewModel : BindableBase, IPageLifecycleAware
+    public class PayeesSpendingReportPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
         readonly IReportLogic _reportLogic;
 
         public ICommand RefreshCommand { get; set; }
@@ -25,20 +28,6 @@ namespace BudgetBadger.Forms.Reports
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
-        }
-
-        string _busyText;
-        public string BusyText
-        {
-            get => _busyText;
-            set => SetProperty(ref _busyText, value);
-        }
-
-        bool _dateRangeFilter;
-        public bool DateRangeFilter
-        {
-            get => _dateRangeFilter;
-            set => SetProperty(ref _dateRangeFilter, value);
         }
 
         DateTime _beginDate;
@@ -55,16 +44,26 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _endDate, value);
         }
 
-        Chart _payeeChart;
-        public Chart PayeeChart
+        IReadOnlyList<DataPoint<Payee, decimal>> _payees;
+        public IReadOnlyList<DataPoint<Payee, decimal>> Payees
         {
-            get => _payeeChart;
-            set => SetProperty(ref _payeeChart, value);
+            get => _payees;
+            set => SetProperty(ref _payees, value);
         }
 
-        public PayeesSpendingReportPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
+        DataPoint<Payee, decimal> _selectedPayee;
+        public DataPoint<Payee, decimal> SelectedPayee
+        {
+            get => _selectedPayee;
+            set => SetProperty(ref _selectedPayee, value);
+        }
+
+        public PayeesSpendingReportPageViewModel(INavigationService navigationService,
+                                                 IPageDialogService dialogService,
+                                                 IReportLogic reportLogic)
         {
             _navigationService = navigationService;
+            _dialogService = dialogService;
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -73,13 +72,9 @@ namespace BudgetBadger.Forms.Reports
             EndDate = DateTime.MaxValue;
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteRefreshCommand()
@@ -90,35 +85,27 @@ namespace BudgetBadger.Forms.Reports
             }
 
             IsBusy = true;
-            BusyText = "Loading...";
 
             try
             {
                 var payeeEntries = new List<Entry>();
 
-                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+                var beginDate = (DateTime?)BeginDate;
+                var endDate = (DateTime?)EndDate;
 
                 var payeeReportResult = await _reportLogic.GetPayeesSpendingReport(beginDate, endDate);
                 if (payeeReportResult.Success)
                 {
-                    foreach (var datapoint in payeeReportResult.Data)
-                    {
-                        payeeEntries.Add(new Entry((float)datapoint.YValue)
-                        {
-                            Label = datapoint.YLabel,
-                            ValueLabel = datapoint.XLabel,
-                            Color = SKColor.Parse("#4CAF50")
-                        });
-                    }
+                    Payees = payeeReportResult.Data;
                 }
-
-                PayeeChart = new BarChart { Entries = payeeEntries };
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Error", payeeReportResult.Message, "OK");
+                }
             }
             finally
             {
                 IsBusy = false;
-                BusyText = string.Empty;
             }
         }
     }
