@@ -145,7 +145,6 @@
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
                                     <dt:TransactionViewCell.ContextActions>
                                         <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Remove" />
                                         <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                                     </dt:TransactionViewCell.ContextActions>
                                 </dt:TransactionViewCell>
@@ -158,7 +157,6 @@
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
                                     <dt:TransactionDetailedViewCell.ContextActions>
                                         <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Remove" />
                                         <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                                     </dt:TransactionDetailedViewCell.ContextActions>
                                 </dt:TransactionDetailedViewCell>
@@ -171,7 +169,6 @@
                                     Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
                                     <dt:TransactionDetailedViewCell.ContextActions>
                                         <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.RemoveCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Remove" />
                                         <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                                     </dt:TransactionDetailedViewCell.ContextActions>
                                 </dt:TransactionDetailedViewCell>

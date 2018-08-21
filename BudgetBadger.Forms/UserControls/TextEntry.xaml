@@ -42,6 +42,13 @@
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional">
+        <Entry.Keyboard>
+            <Keyboard x:FactoryMethod="Create">
+                <x:Arguments>
+                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
+                </x:Arguments>
+            </Keyboard>
+        </Entry.Keyboard>
         <Entry.Effects>
             <effects:BorderlessEntryEffect />
         </Entry.Effects>

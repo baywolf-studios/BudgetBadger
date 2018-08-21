@@ -95,6 +95,13 @@
                         TextColor="White"
                         FontSize="17"
                         Text="{Binding SearchText}">
+                        <Entry.Keyboard>
+                            <Keyboard x:FactoryMethod="Create">
+                                <x:Arguments>
+                                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Entry.Keyboard>
                         <Entry.Effects>
                             <effects:BorderlessEntryEffect/>
                         </Entry.Effects>

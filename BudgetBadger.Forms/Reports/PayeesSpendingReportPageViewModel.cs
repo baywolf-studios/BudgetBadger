@@ -99,21 +99,21 @@ namespace BudgetBadger.Forms.Reports
                 var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
                 var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
 
-                var payeeReportResult = await _reportLogic.GetPayeeSpendingTotalsReport(beginDate, endDate);
+                var payeeReportResult = await _reportLogic.GetPayeesSpendingReport(beginDate, endDate);
                 if (payeeReportResult.Success)
                 {
                     foreach (var datapoint in payeeReportResult.Data)
                     {
-                        payeeEntries.Add(new Entry((float)datapoint.Value)
+                        payeeEntries.Add(new Entry((float)datapoint.YValue)
                         {
-                            Label = datapoint.Key,
-                            ValueLabel = datapoint.Value.ToString("C"),
+                            Label = datapoint.YLabel,
+                            ValueLabel = datapoint.XLabel,
                             Color = SKColor.Parse("#4CAF50")
                         });
                     }
                 }
 
-                PayeeChart = new BarChart() { Entries = payeeEntries };
+                PayeeChart = new BarChart { Entries = payeeEntries };
             }
             finally
             {

@@ -87,6 +87,7 @@ namespace BudgetBadger.Forms.Transactions
             if (!SplitTransactionMode)
             {
                 SplitTransactionMode = parameters.GetValue<bool>(PageParameter.SplitTransactionMode);
+                RaisePropertyChanged(nameof(SplitTransactionMode));
             }
 
 			var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
