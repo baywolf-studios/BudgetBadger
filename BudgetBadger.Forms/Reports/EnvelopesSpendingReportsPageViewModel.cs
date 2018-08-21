@@ -99,15 +99,15 @@ namespace BudgetBadger.Forms.Reports
                 var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
                 var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
 
-                var envelopeReportResult = await _reportLogic.GetEnvelopeSpendingTotalsReport(beginDate, endDate);
+                var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(beginDate, endDate);
                 if (envelopeReportResult.Success)
                 {
                     foreach (var datapoint in envelopeReportResult.Data)
                     {
-                        envelopeEntries.Add(new Entry((float)datapoint.Value)
+                        envelopeEntries.Add(new Entry((float)datapoint.YValue)
                         {
-                            Label = datapoint.Key,
-                            ValueLabel = datapoint.Value.ToString("C"),
+                            Label = datapoint.YLabel,
+                            ValueLabel = datapoint.XLabel,
                             Color = SKColor.Parse("#4CAF50")
                         });
                     }

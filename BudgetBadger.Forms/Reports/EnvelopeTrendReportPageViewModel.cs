@@ -131,25 +131,25 @@ namespace BudgetBadger.Forms.Reports
                 var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
                 var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
 
-                var envelopeReportResult = await _reportLogic.GetSpendingTrendsByEnvelopeReport(SelectedEnvelope.Id, beginDate, endDate);
-                if (envelopeReportResult.Success)
-                {
-                    foreach (var datapoint in envelopeReportResult.Data)
-                    {
-                        var color = SKColor.Parse("#4CAF50");
-                        if (datapoint.Value < 0)
-                        {
-                            color = SKColor.Parse("#F44336");
-                        }
+                //var envelopeReportResult = await _reportLogic.GetSpendingTrendsByEnvelopeReport(SelectedEnvelope.Id, beginDate, endDate);
+                //if (envelopeReportResult.Success)
+                //{
+                //    foreach (var datapoint in envelopeReportResult.Data)
+                //    {
+                //        var color = SKColor.Parse("#4CAF50");
+                //        if (datapoint.Value < 0)
+                //        {
+                //            color = SKColor.Parse("#F44336");
+                //        }
 
-                        envelopeEntries.Add(new Entry((float)datapoint.Value)
-                        {
-                            Label = datapoint.Key.ToString("Y"),
-                            ValueLabel = datapoint.Value.ToString("C"),
-                            Color = color
-                        });
-                    }
-                }
+                //        envelopeEntries.Add(new Entry((float)datapoint.Value)
+                //        {
+                //            Label = datapoint.Key.ToString("Y"),
+                //            ValueLabel = datapoint.Value.ToString("C"),
+                //            Color = color
+                //        });
+                //    }
+                //}
 
                 EnvelopeChart = new PointChart() { Entries = envelopeEntries };
             }

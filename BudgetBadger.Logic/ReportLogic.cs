@@ -11,23 +11,20 @@ namespace BudgetBadger.Logic
 {
     public class ReportLogic : IReportLogic
     {
-        readonly ITransactionDataAccess _transactionDataAccess;
         readonly ITransactionLogic _transactionLogic;
-        readonly IAccountDataAccess _accountDataAccess;
-        readonly IPayeeDataAccess _payeeDataAccess;
-        readonly IEnvelopeDataAccess _envelopeDataAccess;
+        readonly IAccountLogic _accountLogic;
+        readonly IPayeeLogic _payeeLogic;
+        readonly IEnvelopeLogic _envelopeLogic;
 
-        public ReportLogic(ITransactionDataAccess transactionDataAccess,
-                           IAccountDataAccess accountDataAccess,
-                           IPayeeDataAccess payeeDataAccess,
-                           IEnvelopeDataAccess envelopeDataAccess,
-                           ITransactionLogic transactionLogic)
+        public ReportLogic(ITransactionLogic transactionLogic,
+                           IAccountLogic accountLogic,
+                           IPayeeLogic payeeLogic,
+                           IEnvelopeLogic envelopeLogic)
         {
-            _transactionDataAccess = transactionDataAccess;
             _transactionLogic = transactionLogic;
-            _accountDataAccess = accountDataAccess;
-            _payeeDataAccess = payeeDataAccess;
-            _envelopeDataAccess = envelopeDataAccess;
+            _accountLogic = accountLogic;
+            _payeeLogic = payeeLogic;
+            _envelopeLogic = envelopeLogic;
         }
 
         public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate)
@@ -83,38 +80,41 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetEnvelopeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<Envelope, decimal>>>> GetEnvelopesSpendingReport(DateTime? beginDate, DateTime? endDate)
         {
-            var result = new Result<IReadOnlyDictionary<string, decimal>>();
-            var dataPoints = new Dictionary<string, decimal>();
+            var result = new Result<IReadOnlyList<DataPoint<Envelope, decimal>>>();
+            var dataPoints = new List<DataPoint<Envelope, decimal>>();
 
             try
             {
-                var transactions = await _transactionDataAccess.ReadTransactionsAsync();
-                var activeTransactions = transactions.Where(t => t.IsActive);
-
-                if (beginDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
-                }
-                if (endDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
-                }
-
-                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
-                var activeEnvelopes = envelopes.Where(e =>
-                                                      e.IsActive
-                                                      && !e.IsSystem
-                                                      && !e.Group.IsIncome
-                                                      && !e.Group.IsSystem
-                                                      && !e.Group.IsDebt);
-
+                var envelopeResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
+                var activeEnvelopes = envelopeResult.Data.Where(e =>
+                                                                e.IsActive
+                                                                && !e.IsSystem
+                                                                && !e.Group.IsIncome
+                                                                && !e.Group.IsSystem
+                                                                && !e.Group.IsDebt);
+                
                 foreach (var envelope in activeEnvelopes)
                 {
-                    var envelopeTransactions = activeTransactions.Where(t => t.Envelope.Id == envelope.Id);
-                    var envelopeTransactionsSum = envelopeTransactions.Sum(t => t.Outflow ?? 0);
-                    dataPoints.Add(envelope.Description, envelopeTransactionsSum);
+                    var envelopeTransactions = await _transactionLogic.GetEnvelopeTransactionsAsync(envelope);
+                    var activeEnvelopeTransactions = envelopeTransactions.Data.Where(t => t.IsActive);
+                    if (beginDate.HasValue)
+                    {
+                        activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate);
+                    }
+                    if (endDate.HasValue)
+                    {
+                        activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate <= endDate);
+                    }
+                    var envelopeTransactionsSum = activeEnvelopeTransactions.Sum(t => t.Amount ?? 0);
+                    dataPoints.Add(new DataPoint<Envelope, decimal>
+                    {
+                        XValue = envelope,
+                        XLabel = envelope.Description,
+                        YValue = envelopeTransactionsSum,
+                        YLabel = envelopeTransactionsSum.ToString("C")
+                    });
                 }
 
                 result.Data = dataPoints;
@@ -129,38 +129,37 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<string, decimal>>> GetPayeeSpendingTotalsReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<Payee, decimal>>>> GetPayeesSpendingReport(DateTime? beginDate, DateTime? endDate)
         {
-            var result = new Result<IReadOnlyDictionary<string, decimal>>();
-            var dataPoints = new Dictionary<string, decimal>();
+            var result = new Result<IReadOnlyList<DataPoint<Payee, decimal>>>();
+            var dataPoints = new List<DataPoint<Payee, decimal>>();
 
             try
             {
-                var transactions = await _transactionDataAccess.ReadTransactionsAsync();
-                var activeTransactions = transactions.Where(t => t.IsActive);
-
-                if (beginDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
-                }
-                if (endDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
-                }
-
-                var payees = await _payeeDataAccess.ReadPayeesAsync();
-                var activePayees = payees.Where(p => p.IsActive);
+                var payeeResult = await _payeeLogic.GetPayeesAsync();
+                var activePayees = payeeResult.Data.Where(e => e.IsActive && !e.IsAccount);
 
                 foreach (var payee in activePayees)
                 {
-                    var accountPayee = await _accountDataAccess.ReadAccountAsync(payee.Id);
+                    var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee);
+                    var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
 
-                    if (!accountPayee.IsActive)
+                    if (beginDate.HasValue)
                     {
-                        var payeeTransactions = activeTransactions.Where(t => t.Payee.Id == payee.Id);
-                        var payeeTransactionsSum = payeeTransactions.Sum(t => t.Outflow ?? 0);
-                        dataPoints.Add(payee.Description, payeeTransactionsSum);
+                        activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate);
                     }
+                    if (endDate.HasValue)
+                    {
+                        activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate <= endDate);
+                    }
+                    var payeeTransactionsSum = activePayeeTransactions.Sum(t => t.Amount ?? 0);
+                    dataPoints.Add(new DataPoint<Payee, decimal>
+                    {
+                        XValue = payee,
+                        XLabel = payee.Description,
+                        YValue = payeeTransactionsSum,
+                        YLabel = payeeTransactionsSum.ToString("C")
+                    });
                 }
 
                 result.Data = dataPoints;
@@ -175,96 +174,94 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByEnvelopeReport(Guid envelopeId, DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetEnvelopeTrendsReport(Guid envelopeId, DateTime? beginDate, DateTime? endDate)
         {
-            var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
-            var dataPoints = new Dictionary<DateTime, decimal>();
+            var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
 
-            try
-            {
-                var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelopeId);
-                var activeTransactions = transactions.Where(t => t.IsActive);
+            //try
+            //{
+            //    var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelopeId);
+            //    var activeTransactions = transactions.Where(t => t.IsActive);
 
-                if (beginDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
-                }
-                if (endDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
-                }
+            //    if (beginDate.HasValue)
+            //    {
+            //        activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+            //    }
+            //    if (endDate.HasValue)
+            //    {
+            //        activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+            //    }
 
-                var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
+            //    var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
+            //    var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
+            //    var latestMonth = activeTransactions.Max(t => t.ServiceDate);
 
-                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+            //    var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+            //    var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
 
-                while (startMonth <= endMonth)
-                {
-                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(startMonth, monthTotal);
-                    startMonth = startMonth.AddMonths(1);
-                }
+            //    while (startMonth <= endMonth)
+            //    {
+            //        var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+            //        var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
+            //        dataPoints.Add(startMonth, monthTotal);
+            //        startMonth = startMonth.AddMonths(1);
+            //    }
 
-                result.Data = dataPoints;
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
+            //    result.Data = dataPoints;
+            //    result.Success = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.Success = false;
+            //    result.Message = ex.Message;
+            //}
 
             return result;
         }
 
-        public async Task<Result<IReadOnlyDictionary<DateTime, decimal>>> GetSpendingTrendsByPayeeReport(Guid payeeId, DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetPayeeTrendsReport(Guid payeeId, DateTime? beginDate, DateTime? endDate)
         {
-            var result = new Result<IReadOnlyDictionary<DateTime, decimal>>();
-            var dataPoints = new Dictionary<DateTime, decimal>();
+            var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
 
-            try
-            {
-                var transactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(payeeId);
-                var activeTransactions = transactions.Where(t => t.IsActive);
+            //try
+            //{
+            //    var transactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(payeeId);
+            //    var activeTransactions = transactions.Where(t => t.IsActive);
 
-                if (beginDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
-                }
-                if (endDate.HasValue)
-                {
-                    activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
-                }
+            //    if (beginDate.HasValue)
+            //    {
+            //        activeTransactions = activeTransactions.Where(t => t.ServiceDate >= beginDate);
+            //    }
+            //    if (endDate.HasValue)
+            //    {
+            //        activeTransactions = activeTransactions.Where(t => t.ServiceDate <= endDate);
+            //    }
 
-                var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
+            //    var months = activeTransactions.Select(d => new DateTime(d.ServiceDate.Year, d.ServiceDate.Month, 1)).Distinct();
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
+            //    var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
+            //    var latestMonth = activeTransactions.Max(t => t.ServiceDate);
 
-                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+            //    var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+            //    var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
 
-                while (startMonth <= endMonth)
-                {
-                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(startMonth, monthTotal);
-                    startMonth = startMonth.AddMonths(1);
-                }
+            //    while (startMonth <= endMonth)
+            //    {
+            //        var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+            //        var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
+            //        dataPoints.Add(startMonth, monthTotal);
+            //        startMonth = startMonth.AddMonths(1);
+            //    }
 
-                result.Data = dataPoints;
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
+            //    result.Data = dataPoints;
+            //    result.Success = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.Success = false;
+            //    result.Message = ex.Message;
+            //}
 
             return result;
         }

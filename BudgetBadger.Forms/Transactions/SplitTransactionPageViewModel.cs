@@ -57,6 +57,7 @@ namespace BudgetBadger.Forms.Transactions
 			{
 				SetProperty(ref _transactions, value);
 				RaisePropertyChanged(nameof(RunningTotal));
+                RaisePropertyChanged(nameof(Remaining));
 			}
         }
 
@@ -132,24 +133,30 @@ namespace BudgetBadger.Forms.Transactions
             {
                 Total = initialSplitTransaction.Amount ?? 0;
 
-                var tempTrans = initialSplitTransaction.DeepCopy();
-
-                tempTrans.Id = Guid.NewGuid();
-                tempTrans.Amount = null;
-                tempTrans.Envelope = new Envelope();
-
-                var transResult = await _transLogic.GetCorrectedTransaction(tempTrans);
-
-                if (transResult.Success)
+                if (initialSplitTransaction.Account.IsActive || initialSplitTransaction.Payee.IsActive)
                 {
-                    var split1 = transResult.Data;
-                    var split2 = split1.DeepCopy();
-                    split2.Id = Guid.NewGuid();
-                    Transactions = new List<Transaction>
+
+                    var tempTrans = initialSplitTransaction.DeepCopy();
+
+                    tempTrans.Amount = null;
+                    tempTrans.Envelope = new Envelope();
+
+                    var transResult = await _transLogic.GetCorrectedTransaction(tempTrans);
+
+                    if (transResult.Success)
+                    {
+                        var split1 = transResult.Data.DeepCopy();
+                        split1.Id = Guid.NewGuid();
+
+                        var split2 = split1.DeepCopy();
+                        split2.Id = Guid.NewGuid();
+
+                        Transactions = new List<Transaction>
                     {
                         split1,
                         split2
                     };
+                    }
                 }
                 return;
             }

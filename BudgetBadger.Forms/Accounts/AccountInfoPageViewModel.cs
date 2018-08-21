@@ -179,23 +179,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteAddTransactionCommand()
         {
-            var simpleAction = ActionSheetButton.CreateButton("Simple", async () =>
-            {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Account, Account }
-                };
-                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
-            });
-
-            var splitAction = ActionSheetButton.CreateButton("Split", async () =>
-            {
-                await _navigationService.NavigateAsync(PageName.SplitTransactionPage);
-            });
-
-            var cancelAction = ActionSheetButton.CreateCancelButton("Cancel", () => { });
-
-            await _dialogService.DisplayActionSheetAsync("Add Transaction", simpleAction, splitAction, cancelAction);
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
         }
 
         public async Task ExecutePaymentCommand()
