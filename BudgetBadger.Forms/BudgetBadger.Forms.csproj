@@ -104,7 +104,7 @@
       <DependentUpon>PayeeTrendReportPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Reports\EnvelopeTrendReportPage.xaml.cs">
-      <DependentUpon>EnvelopeTrendReportPage.xaml</DependentUpon>
+      <DependentUpon>EnvelopeTrendsReportPage.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Transactions\TransactionEditPage.xaml.cs">
       <DependentUpon>TransactionEditPage.xaml</DependentUpon>

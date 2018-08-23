@@ -89,6 +89,8 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
+        public event EventHandler<EventArgs> SelectedIndexChanged;
+
         public DropdownSelector()
         {
             InitializeComponent();
@@ -96,8 +98,10 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             IconControl.BindingContext = this;
 
+
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
+                SelectedIndexChanged?.Invoke(this, e);
                 UpdateVisualState();
             };
 

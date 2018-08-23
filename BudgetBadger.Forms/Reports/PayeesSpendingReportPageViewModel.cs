@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
@@ -22,6 +23,7 @@ namespace BudgetBadger.Forms.Reports
         readonly IReportLogic _reportLogic;
 
         public ICommand RefreshCommand { get; set; }
+        public ICommand SelectedCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -67,6 +69,7 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
 
             var now = DateTime.Now;
             EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
@@ -108,6 +111,22 @@ namespace BudgetBadger.Forms.Reports
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteSelectedCommand()
+        {
+            if (SelectedPayee == null)
+            {
+                return;
+            }
+
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Payee, SelectedPayee.XValue }
+            };
+            await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage, parameters);
+
+            SelectedPayee = null;
         }
     }
 }

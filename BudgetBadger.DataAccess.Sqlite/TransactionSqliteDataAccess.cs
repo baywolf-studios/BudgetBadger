@@ -52,7 +52,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"INSERT INTO [Transaction]
@@ -97,7 +97,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
                 command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
 
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
         }
 
@@ -107,7 +107,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -128,7 +128,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@Id", id);
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     if (reader.Read())
                     {
@@ -161,7 +161,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -182,7 +182,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@AccountId", accountId);
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
@@ -215,7 +215,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -236,7 +236,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@PayeeId", payeeId);
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
@@ -269,7 +269,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -290,7 +290,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
@@ -323,7 +323,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -344,7 +344,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.Parameters.AddWithValue("@SplitId", splitId);
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
@@ -377,7 +377,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
@@ -395,7 +395,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime
                                         FROM   [Transaction]";
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
@@ -426,7 +426,7 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"UPDATE [Transaction]
@@ -458,7 +458,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
                 command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
 
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
         }
 
@@ -466,14 +466,14 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             using (var db = new SqliteConnection(_connectionString))
             {
-                await db.OpenAsync();
+                await db.OpenAsync().ConfigureAwait(false);
                 var command = db.CreateCommand();
 
                 command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
         }
     }

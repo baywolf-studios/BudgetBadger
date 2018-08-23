@@ -192,7 +192,7 @@ namespace BudgetBadger.Logic
 
                 while (startMonth <= endMonth)
                 {
-                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth && t.ServiceDate > startMonth.AddMonths(-1));
                     var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<DateTime, decimal>
                     {
