@@ -146,7 +146,6 @@ namespace BudgetBadger.Forms.Transactions
                     if (transResult.Success)
                     {
                         var split1 = transResult.Data.DeepCopy();
-                        split1.Id = Guid.NewGuid();
 
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
