@@ -94,10 +94,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var envelopeEntries = new List<Entry>();
 
-                var beginDate = (DateTime?)BeginDate;
-                var endDate = (DateTime?)EndDate;
-
-                var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(beginDate, endDate);
+                var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(BeginDate, EndDate);
                 if (envelopeReportResult.Success)
                 {
                     Envelopes = envelopeReportResult.Data;

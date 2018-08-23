@@ -27,7 +27,7 @@ namespace BudgetBadger.Logic
             _envelopeLogic = envelopeLogic;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetNetWorthReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetNetWorthReport(DateTime beginDate, DateTime endDate)
         {
             var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
             var dataPoints = new List<DataPoint<DateTime, decimal>>();
@@ -37,11 +37,8 @@ namespace BudgetBadger.Logic
                 var transactions = await _transactionLogic.GetTransactionsAsync();
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
-
-                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+                var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
 
                 while (startMonth <= endMonth)
                 {
@@ -57,16 +54,9 @@ namespace BudgetBadger.Logic
                     startMonth = startMonth.AddMonths(1);
                 }
 
-                if (beginDate.HasValue)
-                {
-                    var beginDateMonth = new DateTime(beginDate.Value.Year, beginDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth).ToList();
-                }
-                if (endDate.HasValue)
-                {
-                    var endDateMonth = new DateTime(endDate.Value.Year, endDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue <= endDateMonth).ToList();
-                }
+                var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+                dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
 
                 result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
                 result.Success = true;
@@ -80,7 +70,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<Envelope, decimal>>>> GetEnvelopesSpendingReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<Envelope, decimal>>>> GetEnvelopesSpendingReport(DateTime beginDate, DateTime endDate)
         {
             var result = new Result<IReadOnlyList<DataPoint<Envelope, decimal>>>();
             var dataPoints = new List<DataPoint<Envelope, decimal>>();
@@ -99,14 +89,8 @@ namespace BudgetBadger.Logic
                 {
                     var envelopeTransactions = await _transactionLogic.GetEnvelopeTransactionsAsync(envelope);
                     var activeEnvelopeTransactions = envelopeTransactions.Data.Where(t => t.IsActive);
-                    if (beginDate.HasValue)
-                    {
-                        activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate);
-                    }
-                    if (endDate.HasValue)
-                    {
-                        activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate <= endDate);
-                    }
+                    activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
+
                     var envelopeTransactionsSum = activeEnvelopeTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<Envelope, decimal>
                     {
@@ -129,7 +113,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<Payee, decimal>>>> GetPayeesSpendingReport(DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<Payee, decimal>>>> GetPayeesSpendingReport(DateTime beginDate, DateTime endDate)
         {
             var result = new Result<IReadOnlyList<DataPoint<Payee, decimal>>>();
             var dataPoints = new List<DataPoint<Payee, decimal>>();
@@ -144,14 +128,8 @@ namespace BudgetBadger.Logic
                     var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee);
                     var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
 
-                    if (beginDate.HasValue)
-                    {
-                        activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate);
-                    }
-                    if (endDate.HasValue)
-                    {
-                        activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate <= endDate);
-                    }
+                    activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
+
                     var payeeTransactionsSum = activePayeeTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<Payee, decimal>
                     {
@@ -174,7 +152,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetEnvelopeTrendsReport(Guid envelopeId, DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetEnvelopeTrendsReport(Guid envelopeId, DateTime beginDate, DateTime endDate)
         {
             var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
             var dataPoints = new List<DataPoint<DateTime, decimal>>();
@@ -184,11 +162,8 @@ namespace BudgetBadger.Logic
                 var transactions = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId });
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
-
-                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+                var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
 
                 while (startMonth <= endMonth)
                 {
@@ -204,16 +179,9 @@ namespace BudgetBadger.Logic
                     startMonth = startMonth.AddMonths(1);
                 }
 
-                if (beginDate.HasValue)
-                {
-                    var beginDateMonth = new DateTime(beginDate.Value.Year, beginDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth).ToList();
-                }
-                if (endDate.HasValue)
-                {
-                    var endDateMonth = new DateTime(endDate.Value.Year, endDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue <= endDateMonth).ToList();
-                }
+                var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+                dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
 
                 result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
                 result.Success = true;
@@ -227,7 +195,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetPayeeTrendsReport(Guid payeeId, DateTime? beginDate, DateTime? endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetPayeeTrendsReport(Guid payeeId, DateTime beginDate, DateTime endDate)
         {
             var result = new Result<IReadOnlyList<DataPoint<DateTime, decimal>>>();
             var dataPoints = new List<DataPoint<DateTime, decimal>>();
@@ -237,11 +205,8 @@ namespace BudgetBadger.Logic
                 var transactions = await _transactionLogic.GetPayeeTransactionsAsync(new Payee { Id = payeeId });
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
-                var earliestMonth = activeTransactions.Min(t => t.ServiceDate);
-                var latestMonth = activeTransactions.Max(t => t.ServiceDate);
-
-                var startMonth = new DateTime(earliestMonth.Year, earliestMonth.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(latestMonth.Year, latestMonth.Month, 1).AddMonths(1).AddTicks(-1);
+                var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
 
                 while (startMonth <= endMonth)
                 {
@@ -257,16 +222,10 @@ namespace BudgetBadger.Logic
                     startMonth = startMonth.AddMonths(1);
                 }
 
-                if (beginDate.HasValue)
-                {
-                    var beginDateMonth = new DateTime(beginDate.Value.Year, beginDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth).ToList();
-                }
-                if (endDate.HasValue)
-                {
-                    var endDateMonth = new DateTime(endDate.Value.Year, endDate.Value.Month, 1).AddMonths(1).AddTicks(-1);
-                    dataPoints = dataPoints.Where(d => d.XValue <= endDateMonth).ToList();
-                }
+                var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+                dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
+
 
                 result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
                 result.Success = true;
