@@ -124,10 +124,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var payeeEntries = new List<Entry>();
 
-                var beginDate = (DateTime?)BeginDate;
-                var endDate = (DateTime?)EndDate;
-
-                var payeeReportResult = await _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, beginDate, endDate);
+                var payeeReportResult = await _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, BeginDate, EndDate);
                 if (payeeReportResult.Success)
                 {
                     foreach (var datapoint in payeeReportResult.Data)
