@@ -20,8 +20,8 @@ namespace BudgetBadger.Forms.Reports
         readonly string _netWorthReport = "Net Worth";
         readonly string _envelopeSpendingReport = "Envelopes Spending";
         readonly string _payeeSpendingReport = "Payees Spending";
-        readonly string _spendingTrendByEnvelopeReport = "Envelope Trend";
-        readonly string _spendingTrendByPayeeReport = "Payee Trend";
+        readonly string _spendingTrendByEnvelopeReport = "Envelope Trends";
+        readonly string _spendingTrendByPayeeReport = "Payee Trends";
 
         public ICommand ReportCommand { get; set; }
 

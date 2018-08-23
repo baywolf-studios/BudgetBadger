@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
@@ -14,7 +15,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopeTrendReportsPageViewModel : BindableBase, IPageLifecycleAware
+    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -78,7 +79,7 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _envelopeChart, value);
         }
 
-        public EnvelopeTrendReportsPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IReportLogic reportLogic)
+        public EnvelopeTrendsReportsPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IReportLogic reportLogic)
         {
             _navigationService = navigationService;
             _reportLogic = reportLogic;
@@ -86,11 +87,12 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
-            BeginDate = DateTime.MinValue;
-            EndDate = DateTime.MaxValue;
+            var now = DateTime.Now;
+            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            BeginDate = EndDate.AddMonths(-12);
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             var envelopesResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
             if (envelopesResult.Success)
@@ -98,16 +100,14 @@ namespace BudgetBadger.Forms.Reports
                 Envelopes = envelopesResult.Data.ToList();
                 SelectedEnvelope = Envelopes.FirstOrDefault();
             }
-            else
+
+            var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
+            if (envelope != null)
             {
-                //show some error
+                SelectedEnvelope = Envelopes.FirstOrDefault(e => e.Id == envelope.Id);
             }
 
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteRefreshCommand()
@@ -116,6 +116,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 return;
             }
+
             if (IsBusy)
             {
                 return;
@@ -128,30 +129,30 @@ namespace BudgetBadger.Forms.Reports
             {
                 var envelopeEntries = new List<Entry>();
 
-                var beginDate = DateRangeFilter ? (DateTime?)BeginDate : null;
-                var endDate = DateRangeFilter ? (DateTime?)EndDate : null;
+                var beginDate = (DateTime?)BeginDate;
+                var endDate = (DateTime?)EndDate;
 
-                //var envelopeReportResult = await _reportLogic.GetSpendingTrendsByEnvelopeReport(SelectedEnvelope.Id, beginDate, endDate);
-                //if (envelopeReportResult.Success)
-                //{
-                //    foreach (var datapoint in envelopeReportResult.Data)
-                //    {
-                //        var color = SKColor.Parse("#4CAF50");
-                //        if (datapoint.Value < 0)
-                //        {
-                //            color = SKColor.Parse("#F44336");
-                //        }
+                var envelopeReportResult = await _reportLogic.GetEnvelopeTrendsReport(SelectedEnvelope.Id, beginDate, endDate);
+                if (envelopeReportResult.Success)
+                {
+                    foreach (var datapoint in envelopeReportResult.Data)
+                    {
+                        var color = SKColor.Parse("#4CAF50");
+                        if (datapoint.YValue < 0)
+                        {
+                            color = SKColor.Parse("#F44336");
+                        }
 
-                //        envelopeEntries.Add(new Entry((float)datapoint.Value)
-                //        {
-                //            Label = datapoint.Key.ToString("Y"),
-                //            ValueLabel = datapoint.Value.ToString("C"),
-                //            Color = color
-                //        });
-                //    }
-                //}
+                        envelopeEntries.Add(new Entry((float)datapoint.YValue)
+                        {
+                            Label = datapoint.XLabel,
+                            ValueLabel = datapoint.YLabel,
+                            Color = color
+                        });
+                    }
+                }
 
-                EnvelopeChart = new PointChart() { Entries = envelopeEntries };
+                EnvelopeChart = new PointChart { Entries = envelopeEntries };
             }
             finally
             {

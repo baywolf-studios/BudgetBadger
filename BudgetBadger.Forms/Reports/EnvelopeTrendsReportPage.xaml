@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
-    Title="Payee Trend Report"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Envelope Trend Report"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.Reports.PayeeTrendsReportPage">
+    x:Class="BudgetBadger.Forms.Reports.EnvelopeTrendsReportPage">
     <uc:ChildPage.BodyContent>
         <Grid
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -51,9 +49,9 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Label="Payee"
-                            SelectedItem="{Binding SelectedPayee}"
-                            ItemsSource="{Binding Payees}"
+                            Label="Envelope"
+                            SelectedItem="{Binding SelectedEnvelope}"
+                            ItemsSource="{Binding Envelopes}"
                             ItemDisplayBinding="{Binding Description}">
                             <uc:DropdownSelector.Behaviors>
                                 <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
@@ -89,7 +87,7 @@
                 Grid.Row="2"
                 IsBusy="{Binding IsBusy, Mode=OneWay}"
                 BusyText="{Binding BusyText}">
-                <microcharts:ChartView Chart="{Binding PayeeChart}"/>
+                <microcharts:ChartView Chart="{Binding EnvelopeChart}"/>
             </uc:BusyIndicator>
             <BoxView
                 Grid.Row="3"
@@ -123,9 +121,9 @@
                     Style="{StaticResource PageHeaderLabelStyle}"/>
                 <uc:DropdownSelector
                     Grid.Column="2"
-                    Label="Payee"
-                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}"
-                    ItemsSource="{Binding Payees, Mode=TwoWay}"
+                    Label="Envelope"
+                    SelectedItem="{Binding SelectedEnvelope, Mode=TwoWay}"
+                    ItemsSource="{Binding Envelopes, Mode=TwoWay}"
                     ItemDisplayBinding="{Binding Description, Mode=TwoWay}">
                     <uc:DropdownSelector.Behaviors>
                         <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
