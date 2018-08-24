@@ -17,5 +17,7 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string TransactionAmount = "transactionAmount";
 		public static readonly string TransactionServiceDate = "transactionServiceDate";
         public static readonly string DeletedTransaction = "deletedTransaction";
+        public static readonly string ReportBeginDate = "reportBeginDate";
+        public static readonly string ReportEndDate = "reportEndDate";
     }
 }

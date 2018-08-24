@@ -102,6 +102,18 @@ namespace BudgetBadger.Forms.Reports
                 SelectedPayee = Payees.FirstOrDefault(p => p.Id == payee.Id);
             }
 
+            var beginDate = parameters.GetValue<DateTime?>(PageParameter.ReportBeginDate);
+            if (beginDate.HasValue)
+            {
+                BeginDate = beginDate.GetValueOrDefault();
+            }
+
+            var endDate = parameters.GetValue<DateTime?>(PageParameter.ReportEndDate);
+            if (endDate.HasValue)
+            {
+                EndDate = endDate.GetValueOrDefault();
+            }
+
             await ExecuteRefreshCommand();
         }
 

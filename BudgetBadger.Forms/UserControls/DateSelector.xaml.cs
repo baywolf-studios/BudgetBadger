@@ -43,7 +43,19 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(LabelProperty, value);
         }
 
-        public static BindableProperty DateProperty = BindableProperty.Create(nameof(Date), typeof(DateTime), typeof(DateSelector), defaultBindingMode: BindingMode.TwoWay, defaultValue: DateTime.Now);
+        public static BindableProperty DateProperty =
+            BindableProperty.Create(nameof(Date),
+                                    typeof(DateTime),
+                                    typeof(DateSelector),
+                                    defaultBindingMode: BindingMode.TwoWay,
+                                    defaultValue: DateTime.Now,
+                                    propertyChanged: (bindable, oldVal, newVal) =>
+        {
+            if (oldVal != newVal)
+            {
+                ((DateSelector)bindable).DateControl.Date = (DateTime)newVal;
+            }
+        });
         public DateTime Date
         {
             get => (DateTime)GetValue(DateProperty);
@@ -74,7 +86,6 @@ namespace BudgetBadger.Forms.UserControls
         public DateSelector()
         {
             InitializeComponent();
-            DateControl.BindingContext = this;
             LabelControl.BindingContext = this;
             IconControl.BindingContext = this;
 
@@ -85,7 +96,11 @@ namespace BudgetBadger.Forms.UserControls
 
             DateControl.DateSelected += (sender, e) => 
             {
-                DateSelected?.Invoke(this, e);
+                if (e.OldDate != e.NewDate)
+                {
+                    Date = e.NewDate;
+                    DateSelected?.Invoke(this, e);
+                }
             };
 
             DateControl.Unfocused += (sender, e) =>

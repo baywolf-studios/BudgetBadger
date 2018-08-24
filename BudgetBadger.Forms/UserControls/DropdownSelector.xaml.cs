@@ -36,7 +36,11 @@ namespace BudgetBadger.Forms.UserControls
             get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
-        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(DropdownSelector), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty LabelProperty =
+            BindableProperty.Create(nameof(Label),
+                                    typeof(string),
+                                    typeof(DropdownSelector),
+                                    defaultBindingMode: BindingMode.TwoWay);
         public string Label
         {
             get => (string)GetValue(LabelProperty);
@@ -49,21 +53,56 @@ namespace BudgetBadger.Forms.UserControls
             set => PickerControl.ItemDisplayBinding = value;
         }
 
-        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(DropdownSelector), -1, BindingMode.TwoWay);
+        public static readonly BindableProperty SelectedIndexProperty =
+            BindableProperty.Create(nameof(SelectedIndex),
+                                    typeof(int),
+                                    typeof(DropdownSelector),
+                                    -1,
+                                    BindingMode.TwoWay,
+                                    propertyChanged: (bindable, oldVal, newVal) =>
+        {
+            if (oldVal != newVal)
+            {
+                ((DropdownSelector)bindable).PickerControl.SelectedIndex = (int)newVal;
+            }
+        });
         public int SelectedIndex
         {
             get => (int)GetValue(SelectedIndexProperty);
             set => SetValue(SelectedIndexProperty, value);
         }
 
-        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(DropdownSelector), default(IList));
+        public static readonly BindableProperty ItemsSourceProperty =
+            BindableProperty.Create(nameof(ItemsSource),
+                                    typeof(IList),
+                                    typeof(DropdownSelector),
+                                    default(IList),
+                                    propertyChanged: (bindable, oldVal, newVal) =>
+                                    {
+                                        if (oldVal != newVal)
+                                        {
+                                            ((DropdownSelector)bindable).PickerControl.ItemsSource = (IList)newVal;
+                                        }
+                                    });
         public IList ItemsSource
         {
             get => (IList)GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
         }
 
-        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DropdownSelector), null, BindingMode.TwoWay);
+        public static readonly BindableProperty SelectedItemProperty =
+            BindableProperty.Create(nameof(SelectedItem),
+                                    typeof(object),
+                                    typeof(DropdownSelector),
+                                    null,
+                                    BindingMode.TwoWay,
+                                    propertyChanged: (bindable, oldVal, newVal) =>
+                                    {
+                                        if (oldVal != newVal)
+                                        {
+                                            ((DropdownSelector)bindable).PickerControl.SelectedItem = newVal;
+                                        }
+                                    });
         public object SelectedItem
         {
             get => GetValue(SelectedItemProperty);
@@ -94,13 +133,26 @@ namespace BudgetBadger.Forms.UserControls
         public DropdownSelector()
         {
             InitializeComponent();
-            PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
             IconControl.BindingContext = this;
 
+            PickerControl.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(PickerControl.SelectedItem))
+                {
+                    SelectedItem = PickerControl.SelectedItem;
+                }
+
+                if (e.PropertyName == nameof(PickerControl.ItemsSource))
+                {
+                    ItemsSource = PickerControl.ItemsSource;
+                }
+            };
+                
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
+                SelectedIndex = PickerControl.SelectedIndex;
                 SelectedIndexChanged?.Invoke(this, e);
                 UpdateVisualState();
             };

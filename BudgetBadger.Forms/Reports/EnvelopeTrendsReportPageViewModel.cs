@@ -37,13 +37,6 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _busyText, value);
         }
 
-        bool _dateRangeFilter;
-        public bool DateRangeFilter
-        {
-            get => _dateRangeFilter;
-            set => SetProperty(ref _dateRangeFilter, value);
-        }
-
         DateTime _beginDate;
         public DateTime BeginDate
         {
@@ -105,6 +98,18 @@ namespace BudgetBadger.Forms.Reports
             if (envelope != null)
             {
                 SelectedEnvelope = Envelopes.FirstOrDefault(e => e.Id == envelope.Id);
+            }
+
+            var beginDate = parameters.GetValue<DateTime?>(PageParameter.ReportBeginDate);
+            if (beginDate.HasValue)
+            {
+                BeginDate = beginDate.GetValueOrDefault();
+            }
+
+            var endDate = parameters.GetValue<DateTime?>(PageParameter.ReportEndDate);
+            if (endDate.HasValue)
+            {
+                EndDate = endDate.GetValueOrDefault();
             }
 
             await ExecuteRefreshCommand();
