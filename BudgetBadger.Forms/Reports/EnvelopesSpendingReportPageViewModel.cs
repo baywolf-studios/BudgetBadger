@@ -119,7 +119,9 @@ namespace BudgetBadger.Forms.Reports
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Envelope, SelectedEnvelope.XValue }
+                { PageParameter.Envelope, SelectedEnvelope.XValue },
+                { PageParameter.ReportBeginDate, BeginDate },
+                { PageParameter.ReportEndDate, EndDate }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage, parameters);
 

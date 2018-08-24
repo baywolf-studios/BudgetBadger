@@ -25,7 +25,6 @@
         InputTransparent="true"/>
     <DatePicker
         x:Name="DateControl"
-        Date="{Binding Date}"
         TextColor="{StaticResource PrimaryTextColor}"
         FontSize="16"
         BackgroundColor="Transparent"

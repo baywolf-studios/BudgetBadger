@@ -37,7 +37,7 @@
                     Orientation="Vertical">
                     <Grid
                         RowSpacing="16"
-                        ColumnSpacing="0"
+                        ColumnSpacing="16"
                         Margin="0,16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -56,14 +56,14 @@
                         <uc:CalculatorEntry
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="16,0"
+                            Margin="16,0,0,0"
                             Prefix="$"
                             Label="Outflow"
                             Number="{Binding Transaction.Outflow}"/>
                         <uc:CalculatorEntry
                             Grid.Row="0" 
                             Grid.Column="1"
-                            Margin="16,0"
+                            Margin="0,0,16,0"
                             Prefix="$"
                             Label="Inflow"
                             Number="{Binding Transaction.Inflow}"/>
@@ -114,110 +114,96 @@
                             Margin="16,0"
                             Label="Notes"
                             Text="{Binding Transaction.Notes}"/>
-                        <Button
+                        <Grid
                             Grid.Row="7"
                             Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding DeleteCommand}"
-                            Text="Delete Transaction"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            IsVisible="false">
-                            <Button.Triggers>
-                                <MultiTrigger TargetType="Button">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
-                                        <BindingCondition Binding="{Binding SplitTransactionMode}" Value="true"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible">
-                                        <Setter.Value>
-                                            <OnIdiom x:TypeArguments="x:Boolean">
-                                                <OnIdiom.Phone>true</OnIdiom.Phone>
-                                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                            </OnIdiom>
-                                        </Setter.Value>
-                                     </Setter>
-                                </MultiTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
-                            Grid.Row="7"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding SplitCommand}"
-                            Text="Split Transaction"
-                            Style="{StaticResource PrimaryActionButtonStyle}"
-                            IsVisible="false">
-                            <Button.Triggers>
-                                <MultiTrigger TargetType="Button">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding Transaction.IsNew}" Value="true"/>
-                                        <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible">
-                                        <Setter.Value>
-                                            <OnIdiom x:TypeArguments="x:Boolean">
-                                                <OnIdiom.Phone>true</OnIdiom.Phone>
-                                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                            </OnIdiom>
-                                        </Setter.Value>
-                                     </Setter>
-                                </MultiTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            Margin="16,0"
-                            Command="{Binding DeleteCommand}"
-                            Text="Delete Transaction"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            IsVisible="false">
-                            <Button.Triggers>
-                                <MultiTrigger TargetType="Button">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
-                                        <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible">
-                                        <Setter.Value>
-                                            <OnIdiom x:TypeArguments="x:Boolean">
-                                                <OnIdiom.Phone>true</OnIdiom.Phone>
-                                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                            </OnIdiom>
-                                        </Setter.Value>
-                                     </Setter>
-                                </MultiTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Margin="16,0"
-                            Command="{Binding SplitCommand}"
-                            Text="Split Transaction"
-                            Style="{StaticResource PrimaryActionButtonStyle}"
-                            IsVisible="false">
-                            <Button.Triggers>
-                                <MultiTrigger TargetType="Button">
-                                    <MultiTrigger.Conditions>
-                                        <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
-                                        <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="IsVisible">
-                                        <Setter.Value>
-                                            <OnIdiom x:TypeArguments="x:Boolean">
-                                                <OnIdiom.Phone>true</OnIdiom.Phone>
-                                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                            </OnIdiom>
-                                        </Setter.Value>
-                                     </Setter>
-                                </MultiTrigger>
-                            </Button.Triggers>
-                        </Button>
+                            ColumnSpacing="16"
+                            RowSpacing="16"
+                            Margin="0,0,0,16">
+                            <Grid.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Grid.IsVisible>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                Margin="16,0"
+                                Command="{Binding DeleteCommand}"
+                                Text="Delete Transaction"
+                                Style="{StaticResource SecondaryDestructionButtonStyle}"
+                                IsVisible="false">
+                                <Button.Triggers>
+                                    <MultiTrigger TargetType="Button">
+                                        <MultiTrigger.Conditions>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="true"/>
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="IsVisible" Value="true"/>
+                                    </MultiTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                Margin="16,0"
+                                Command="{Binding SplitCommand}"
+                                Text="Split Transaction"
+                                Style="{StaticResource PrimaryActionButtonStyle}"
+                                IsVisible="false">
+                                <Button.Triggers>
+                                    <MultiTrigger TargetType="Button">
+                                        <MultiTrigger.Conditions>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
+                                            <BindingCondition Binding="{Binding Transaction.IsNew}" Value="true"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="IsVisible" Value="True"/>
+                                    </MultiTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="16,0,0,0"
+                                Command="{Binding DeleteCommand}"
+                                Text="Delete Transaction"
+                                Style="{StaticResource SecondaryDestructionButtonStyle}"
+                                IsVisible="false">
+                                <Button.Triggers>
+                                    <MultiTrigger TargetType="Button">
+                                        <MultiTrigger.Conditions>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="IsVisible" Value="true"/>
+                                    </MultiTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="0,0,16,0"
+                                Command="{Binding SplitCommand}"
+                                Text="Split Transaction"
+                                Style="{StaticResource PrimaryActionButtonStyle}"
+                                IsVisible="false">
+                                <Button.Triggers>
+                                    <MultiTrigger TargetType="Button">
+                                        <MultiTrigger.Conditions>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="IsVisible" Value="true"/>
+                                    </MultiTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </ScrollView>
                 <BoxView

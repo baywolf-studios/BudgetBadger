@@ -63,7 +63,7 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Label="Begin Date"
-                            Date="{Binding BeginDate}">
+                            Date="{Binding BeginDate, Mode=TwoWay}">
                             <uc:DateSelector.Behaviors>
                                 <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
                             </uc:DateSelector.Behaviors>
@@ -72,7 +72,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Label="End Date"
-                            Date="{Binding EndDate}">
+                            Date="{Binding EndDate, Mode=TwoWay}">
                             <uc:DateSelector.Behaviors>
                                 <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
                             </uc:DateSelector.Behaviors>
@@ -124,9 +124,9 @@
                 <uc:DropdownSelector
                     Grid.Column="2"
                     Label="Payee"
-                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}"
-                    ItemsSource="{Binding Payees, Mode=TwoWay}"
-                    ItemDisplayBinding="{Binding Description, Mode=TwoWay}">
+                    SelectedItem="{Binding SelectedPayee}"
+                    ItemsSource="{Binding Payees}"
+                    ItemDisplayBinding="{Binding Description}">
                     <uc:DropdownSelector.Behaviors>
                         <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
                     </uc:DropdownSelector.Behaviors>
@@ -134,7 +134,7 @@
                 <uc:DateSelector
                     Grid.Column="3"
                     Label="Begin Date"
-                    Date="{Binding BeginDate}">
+                    Date="{Binding BeginDate, Mode=TwoWay}">
                     <uc:DateSelector.Behaviors>
                         <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
                     </uc:DateSelector.Behaviors>
@@ -142,7 +142,7 @@
                 <uc:DateSelector
                     Grid.Column="4"
                     Label="End Date"
-                    Date="{Binding EndDate}">
+                    Date="{Binding EndDate, Mode=TwoWay}">
                     <uc:DateSelector.Behaviors>
                         <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
                     </uc:DateSelector.Behaviors>

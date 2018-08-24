@@ -122,9 +122,9 @@
                 <uc:DropdownSelector
                     Grid.Column="2"
                     Label="Envelope"
-                    SelectedItem="{Binding SelectedEnvelope, Mode=TwoWay}"
-                    ItemsSource="{Binding Envelopes, Mode=TwoWay}"
-                    ItemDisplayBinding="{Binding Description, Mode=TwoWay}">
+                    SelectedItem="{Binding SelectedEnvelope}"
+                    ItemsSource="{Binding Envelopes}"
+                    ItemDisplayBinding="{Binding Description}">
                     <uc:DropdownSelector.Behaviors>
                         <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
                     </uc:DropdownSelector.Behaviors>

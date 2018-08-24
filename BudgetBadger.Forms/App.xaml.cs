@@ -32,7 +32,9 @@ using BudgetBadger.Models;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
 using BudgetBadger.Forms.UserControls;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
