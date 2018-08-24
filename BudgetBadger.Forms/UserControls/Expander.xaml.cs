@@ -59,6 +59,8 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
             IconControl.BindingContext = this;
+
+            BodyView.IsVisible = false;
         }
 
         async void UpdateBodyVisibility(bool isVisible)

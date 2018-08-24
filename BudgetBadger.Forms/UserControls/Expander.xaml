@@ -29,7 +29,7 @@
                     <TapGestureRecognizer Tapped="Handle_Tapped"/>
                 </Grid.GestureRecognizers>
             </Grid>
-            <ContentView x:Name="BodyView" IsVisible="false"/>
+            <ContentView x:Name="BodyView"/>
         </StackLayout>
     </ContentView.Content>
 </ContentView>
