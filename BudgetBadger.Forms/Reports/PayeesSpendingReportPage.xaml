@@ -20,7 +20,9 @@
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0">
+            <uc:Expander
+                Grid.Row="0"
+                IsExpanded="true">
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
