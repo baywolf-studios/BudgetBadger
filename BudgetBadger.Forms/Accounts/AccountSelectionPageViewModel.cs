@@ -60,6 +60,13 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
+        bool _noAccounts;
+        public bool NoAccounts
+        {
+            get => _noAccounts;
+            set => SetProperty(ref _noAccounts, value);
+        }
+
         public AccountSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
         {
             _accountLogic = accountLogic;
@@ -128,6 +135,8 @@ namespace BudgetBadger.Forms.Accounts
                     await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
                 }
+
+                NoAccounts = (Accounts?.Count ?? 0) == 0;
             }
             finally
             {

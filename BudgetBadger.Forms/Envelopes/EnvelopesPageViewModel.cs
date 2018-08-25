@@ -52,7 +52,10 @@ namespace BudgetBadger.Forms.Envelopes
         public IReadOnlyList<Budget> Budgets
         {
             get => _budgets;
-            set => SetProperty(ref _budgets, value);
+            set
+            {
+                SetProperty(ref _budgets, value);
+            }
         }
 
         Budget _selectedBudget;
@@ -67,6 +70,13 @@ namespace BudgetBadger.Forms.Envelopes
         {
             get => _groupedBudgets;
             set => SetProperty(ref _groupedBudgets, value);
+        }
+
+        bool _noEnvelopes;
+        public bool NoEnvelopes
+        {
+            get => _noEnvelopes;
+            set => SetProperty(ref _noEnvelopes, value);
         }
 
         public EnvelopesPageViewModel(INavigationService navigationService,
@@ -137,14 +147,16 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (budgetResult.Success)
                 {
-                    Budgets = budgetResult.Data;
-                    GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
-                    Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
+                    //Budgets = budgetResult.Data;
+                    //GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
+                    //Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
                 {
                     await _dialogService.DisplayAlertAsync("Error", budgetResult.Message, "OK");
                 }
+
+                NoEnvelopes = (Budgets?.Count ?? 0) == 0;
             }
             finally
             {

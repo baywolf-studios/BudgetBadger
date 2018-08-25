@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
-    Title="Payee Trend Report"
+    Title="{Binding SelectedPayee.Description}"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"

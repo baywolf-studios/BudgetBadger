@@ -296,6 +296,10 @@
     <BundleResource Include="Resources\info.svg" />
     <BundleResource Include="Resources\posted.svg" />
     <BundleResource Include="Resources\pending.svg" />
+    <BundleResource Include="Resources\helperenvelope.svg" />
+    <BundleResource Include="Resources\helperaccount.svg" />
+    <BundleResource Include="Resources\helperpayee.svg" />
+    <BundleResource Include="Resources\helpertransaction.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

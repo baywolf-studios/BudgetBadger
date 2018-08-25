@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
-    Title="Envelope Trend Report"
+    Title="{Binding SelectedEnvelope.Description}"
     xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.Reports.EnvelopeTrendsReportPage">
     <uc:ChildPage.BodyContent>
@@ -54,7 +56,7 @@
                             Label="Envelope"
                             SelectedItem="{Binding SelectedEnvelope}"
                             ItemsSource="{Binding Envelopes}"
-                            ItemDisplayBinding="{Binding Description}">
+                            ItemDisplayBinding="{Binding ExtendedDescription}">
                         </uc:DropdownSelector>
                         <uc:DateSelector
                             Grid.Row="1"
@@ -117,7 +119,7 @@
                     Label="Envelope"
                     SelectedItem="{Binding SelectedEnvelope}"
                     ItemsSource="{Binding Envelopes}"
-                    ItemDisplayBinding="{Binding Description}">
+                    ItemDisplayBinding="{Binding ExtendedDescription}">
                 </uc:DropdownSelector>
                 <uc:DateSelector
                     Grid.Column="3"

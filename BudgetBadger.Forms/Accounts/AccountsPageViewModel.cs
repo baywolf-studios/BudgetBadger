@@ -15,7 +15,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
+    public class AccountsPageViewModel : BindableBase, INavigatingAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -60,6 +60,13 @@ namespace BudgetBadger.Forms.Accounts
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
 
+        bool _noAccounts;
+        public bool NoAccounts
+        {
+            get => _noAccounts;
+            set => SetProperty(ref _noAccounts, value);
+        }
+
         public AccountsPageViewModel(INavigationService navigationService,
 		                             IPageDialogService dialogService,
 		                             IAccountLogic accountLogic,
@@ -86,15 +93,6 @@ namespace BudgetBadger.Forms.Accounts
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public async void OnAppearing()
-        {
-            await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteSelectedCommand()
@@ -137,6 +135,8 @@ namespace BudgetBadger.Forms.Accounts
                     await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
                 }
+
+                NoAccounts = (Accounts?.Count ?? 0) == 0;
             }
             finally
             {

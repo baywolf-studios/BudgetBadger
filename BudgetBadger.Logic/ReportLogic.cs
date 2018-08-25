@@ -77,32 +77,34 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
-                var activeEnvelopes = envelopeResult.Data.Where(e =>
-                                                                e.IsActive
-                                                                && !e.IsSystem
-                                                                && !e.Group.IsIncome
-                                                                && !e.Group.IsSystem
-                                                                && !e.Group.IsDebt);
-                
-                foreach (var envelope in activeEnvelopes)
+                var envelopeResult = await _envelopeLogic.GetEnvelopesForReportAsync();
+
+                if (envelopeResult.Success)
                 {
-                    var envelopeTransactions = await _transactionLogic.GetEnvelopeTransactionsAsync(envelope);
-                    var activeEnvelopeTransactions = envelopeTransactions.Data.Where(t => t.IsActive);
-                    activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
-
-                    var envelopeTransactionsSum = activeEnvelopeTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(new DataPoint<Envelope, decimal>
+                    foreach (var envelope in envelopeResult.Data)
                     {
-                        XValue = envelope,
-                        XLabel = envelope.Group.Description + " " + envelope.Description,
-                        YValue = envelopeTransactionsSum,
-                        YLabel = envelopeTransactionsSum.ToString("C")
-                    });
-                }
+                        var envelopeTransactions = await _transactionLogic.GetEnvelopeTransactionsAsync(envelope);
+                        var activeEnvelopeTransactions = envelopeTransactions.Data.Where(t => t.IsActive);
+                        activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
 
-                result.Data = dataPoints.OrderBy(d => d.YValue).ToList();
-                result.Success = true;
+                        var envelopeTransactionsSum = activeEnvelopeTransactions.Sum(t => t.Amount ?? 0);
+                        dataPoints.Add(new DataPoint<Envelope, decimal>
+                        {
+                            XValue = envelope,
+                            XLabel = envelope.Group.Description + " " + envelope.Description,
+                            YValue = envelopeTransactionsSum,
+                            YLabel = envelopeTransactionsSum.ToString("C")
+                        });
+                    }
+
+                    result.Data = dataPoints.OrderBy(d => d.YValue).ToList();
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "Could not retrieve Envelopes at this time. Please try again.";
+                }
             }
             catch (Exception ex)
             {
@@ -120,28 +122,35 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payeeResult = await _payeeLogic.GetPayeesAsync();
-                var activePayees = payeeResult.Data.Where(e => e.IsActive && !e.IsAccount);
+                var payeeResult = await _payeeLogic.GetPayeesForReportAsync();
 
-                foreach (var payee in activePayees)
+                if (payeeResult.Success)
                 {
-                    var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee);
-                    var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
-
-                    activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
-
-                    var payeeTransactionsSum = activePayeeTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(new DataPoint<Payee, decimal>
+                    foreach (var payee in payeeResult.Data)
                     {
-                        XValue = payee,
-                        XLabel = payee.Description,
-                        YValue = payeeTransactionsSum,
-                        YLabel = payeeTransactionsSum.ToString("C")
-                    });
-                }
+                        var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee);
+                        var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
 
-                result.Data = dataPoints.OrderBy(d => d.YValue).ToList();
-                result.Success = true;
+                        activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
+
+                        var payeeTransactionsSum = activePayeeTransactions.Sum(t => t.Amount ?? 0);
+                        dataPoints.Add(new DataPoint<Payee, decimal>
+                        {
+                            XValue = payee,
+                            XLabel = payee.Description,
+                            YValue = payeeTransactionsSum,
+                            YLabel = payeeTransactionsSum.ToString("C")
+                        });
+                    }
+
+                    result.Data = dataPoints.OrderBy(d => d.YValue).ToList();
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "Could not retrieve Payees at this time. Please try again.";
+                }
             }
             catch (Exception ex)
             {

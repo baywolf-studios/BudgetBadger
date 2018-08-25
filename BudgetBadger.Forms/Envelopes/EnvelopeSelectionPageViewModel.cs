@@ -52,6 +52,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _groupedBudgets, value);
         }
 
+        bool _noEnvelopes;
+        public bool NoEnvelopes
+        {
+            get => _noEnvelopes;
+            set => SetProperty(ref _noEnvelopes, value);
+        }
+
         public EnvelopeSelectionPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
             _envelopeLogic = envelopeLogic;
@@ -115,7 +122,7 @@ namespace BudgetBadger.Forms.Envelopes
                     await _dialogService.DisplayAlertAsync("Error", scheduleResult.Message, "OK");
                 }
 
-
+                NoEnvelopes = (Budgets?.Count ?? 0) == 0;
             }
             finally
             {

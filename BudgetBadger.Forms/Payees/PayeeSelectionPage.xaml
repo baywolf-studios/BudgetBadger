@@ -13,55 +13,60 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:ChildSearchPage.BodyContent>
-        <ListView
-            x:Name="payeeList" 
-            HasUnevenRows="true"
-            BackgroundColor="{StaticResource BackgroundColor}"
-            SeparatorVisibility="None" 
-            IsPullToRefreshEnabled="true" 
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-            RefreshCommand="{Binding RefreshCommand}" 
-            ItemsSource="{Binding GroupedPayees}" 
-            SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
-            IsGroupingEnabled="true" 
-            GroupDisplayBinding="{Binding Key}"
-            Header="{x:Null}">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
-            </ListView.Behaviors>
-            <ListView.Triggers>
-               <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="False">
-                  <Setter Property="Header" Value="{x:Null}"/>
-               </DataTrigger>
-               <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="True">
-                  <Setter Property="Header" Value="{Binding .}"/>
-               </DataTrigger>
-            </ListView.Triggers>
-            <ListView.HeaderTemplate>
-                <DataTemplate>
-                    <ContentView
-                        BackgroundColor="{StaticResource BackgroundColor}"
-                        Margin="-1"
-                        Padding="1">
-                        <Button
-                            Margin="16,8"
-                            Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"
-                            Command="{Binding SaveCommand}"
-                            Style="{StaticResource SecondaryActionButtonStyle}">
-                        </Button>
-                    </ContentView>
-                </DataTemplate>
-            </ListView.HeaderTemplate>
-            <ListView.GroupHeaderTemplate>
-                <DataTemplate>
-                    <dt:GroupHeaderViewCell/>
-                </DataTemplate>
-            </ListView.GroupHeaderTemplate>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <dt:PayeeViewCell/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <uc:HelperControl
+            ShowHelper="{Binding NoPayees}"
+            ImagePath="helperpayee.svg"
+            HelperText="Add a Payee using the + button">
+            <ListView
+                x:Name="payeeList" 
+                HasUnevenRows="true"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                SeparatorVisibility="None" 
+                IsPullToRefreshEnabled="true" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                RefreshCommand="{Binding RefreshCommand}" 
+                ItemsSource="{Binding GroupedPayees}" 
+                SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
+                IsGroupingEnabled="true" 
+                GroupDisplayBinding="{Binding Key}"
+                Header="{x:Null}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.Triggers>
+                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="False">
+                      <Setter Property="Header" Value="{x:Null}"/>
+                   </DataTrigger>
+                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="True">
+                      <Setter Property="Header" Value="{Binding .}"/>
+                   </DataTrigger>
+                </ListView.Triggers>
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ContentView
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            Margin="-1"
+                            Padding="1">
+                            <Button
+                                Margin="16,8"
+                                Text="{Binding SearchText, StringFormat='Add Payee: {0}'}"
+                                Command="{Binding SaveCommand}"
+                                Style="{StaticResource SecondaryActionButtonStyle}">
+                            </Button>
+                        </ContentView>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <dt:GroupHeaderViewCell/>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:PayeeViewCell/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

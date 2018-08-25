@@ -42,8 +42,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _budget, value);
         }
 
-        IEnumerable<Transaction> _transactions;
-        public IEnumerable<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -68,6 +68,13 @@ namespace BudgetBadger.Forms.Envelopes
         {
             get => _searchText;
             set => SetProperty(ref _searchText, value);
+        }
+
+        bool _noTransactions;
+        public bool NoTransactions
+        {
+            get => _noTransactions;
+            set => SetProperty(ref _noTransactions, value);
         }
 
         public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
@@ -169,6 +176,8 @@ namespace BudgetBadger.Forms.Envelopes
                     GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                     SelectedTransaction = null;
                 }
+
+                NoTransactions = (Transactions?.Count ?? 0) == 0;
             }
             finally
             {
