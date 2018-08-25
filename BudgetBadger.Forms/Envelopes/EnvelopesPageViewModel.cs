@@ -147,9 +147,9 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (budgetResult.Success)
                 {
-                    //Budgets = budgetResult.Data;
-                    //GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
-                    //Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
+                    Budgets = budgetResult.Data;
+                    GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
+                    Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
                 {

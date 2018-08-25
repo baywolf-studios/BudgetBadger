@@ -27,7 +27,13 @@
             <uc:HelperControl
                 Grid.Row="0"
                 ShowHelper="{Binding NoTransactions}"
-                ImagePath="helpertransaction.svg">
+                ImagePath="helpertransaction.svg"
+                HelperText="No transactions yet">
+                <uc:HelperControl.Triggers>
+                    <DataTrigger TargetType="uc:HelperControl" Binding="{Binding NoTransactions}" Value="true">
+                        <Setter Property="Margin" Value="0,0,0,56"/>
+                    </DataTrigger>
+                </uc:HelperControl.Triggers>
                 <ListView
                     BackgroundColor="{StaticResource BackgroundColor}"
                     SeparatorVisibility="None"

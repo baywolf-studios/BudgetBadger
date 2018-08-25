@@ -176,14 +176,14 @@ namespace BudgetBadger.Logic
 			return orderedAndGroupedAccounts;
         }
 
-        public async Task<Result> ValidateAccountAsync(Account account)
+        public Task<Result> ValidateAccountAsync(Account account)
         {
             if (!account.IsValid())
             {
-                return account.Validate().ToResult<Account>();
+                return Task.FromResult<Result>(account.Validate().ToResult<Account>());
             }
 
-            return new Result { Success = true }; 
+            return Task.FromResult<Result>(new Result { Success = true }); 
         }
 
         public async Task<Result<Account>> SaveAccountAsync(Account account)
@@ -277,7 +277,7 @@ namespace BudgetBadger.Logic
             return new Result<Account> { Success = true, Data = accountToUpsert };
         }
 
-        private async Task<Account> GetPopulatedAccount(Account account)
+        async Task<Account> GetPopulatedAccount(Account account)
         {
             
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
@@ -316,6 +316,48 @@ namespace BudgetBadger.Logic
             account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance ?? 0;
 
             return account;
+        }
+
+        public async Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount)
+        {
+            var result = new Result();
+            var now = DateTime.Now;
+
+            try
+            {
+                var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(accountId);
+                var accountTransactionsToReconcile = accountTransactions.Where(t => t.IsActive
+                                                                               && t.ServiceDate <= dateTime
+                                                                               && t.Posted);
+
+                if (accountTransactionsToReconcile.Sum(t => t.Amount ?? 0) == amount)
+                {
+                    var tasks = new List<Task>();
+                    foreach (var transaction in accountTransactionsToReconcile)
+                    {
+                        transaction.Posted = true;
+                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? now;
+                        tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
+                    }
+
+                    await Task.WhenAll(tasks);
+
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "The reconciled amounts do not match";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
     }
 }

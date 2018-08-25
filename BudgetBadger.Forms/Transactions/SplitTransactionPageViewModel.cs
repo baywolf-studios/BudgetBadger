@@ -82,6 +82,13 @@ namespace BudgetBadger.Forms.Transactions
             get => Total - RunningTotal;
         }
 
+        bool _noTransactions;
+        public bool NoTransactions
+        {
+            get => _noTransactions;
+            set => SetProperty(ref _noTransactions, value);
+        }
+
         public SplitTransactionPageViewModel(INavigationService navigationService,
                                              IPageDialogService dialogService,
                                              ITransactionLogic transLogic,
@@ -114,6 +121,7 @@ namespace BudgetBadger.Forms.Transactions
                     {
                         Transactions = result.Data;
                         Total = RunningTotal;
+                        NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
                     }
                 }
@@ -125,6 +133,7 @@ namespace BudgetBadger.Forms.Transactions
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
                 Transactions = tempTransactions;
+                NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
 
@@ -151,12 +160,13 @@ namespace BudgetBadger.Forms.Transactions
                         split2.Id = Guid.NewGuid();
 
                         Transactions = new List<Transaction>
-                    {
-                        split1,
-                        split2
-                    };
+                        {
+                            split1,
+                            split2
+                        };
                     }
                 }
+                NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
 
@@ -164,8 +174,11 @@ namespace BudgetBadger.Forms.Transactions
             if (deletedTransaction != null)
             {
                 Transactions = Transactions.Where(t => t.Id != deletedTransaction.Id).ToList();
+                NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
+
+            NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
         public async Task ExecuteAddNewCommand()
@@ -228,6 +241,7 @@ namespace BudgetBadger.Forms.Transactions
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
             Transactions = existingTransactions;
+            NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
         public async Task ExecuteSaveCommand()
