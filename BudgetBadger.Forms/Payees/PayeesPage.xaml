@@ -13,160 +13,165 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
-        <Grid
-            BackgroundColor="{StaticResource BackgroundColor}"
-            Margin="0"
-            ColumnSpacing="16"
-            RowSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ListView
-                x:Name="payeeList" 
-                Grid.Row="0"
-                BackgroundColor="{StaticResource BackgroundColor}" 
-                SeparatorVisibility="None" 
-                IsPullToRefreshEnabled="true" 
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                RefreshCommand="{Binding RefreshCommand}" 
-                ItemsSource="{Binding GroupedPayees}" 
-                SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
-                IsGroupingEnabled="true" 
-                GroupDisplayBinding="{Binding Key}"
-                HasUnevenRows="true">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
-                </ListView.Behaviors>
-                <ListView.Header>
-                    <dt:PayeeColumnHeaders>
-                        <dt:PayeeColumnHeaders.Triggers>
-                            <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                <Setter Property="HeightRequest" Value="0" />
-                            </Trigger>
-                        </dt:PayeeColumnHeaders.Triggers>
-                        <dt:PayeeColumnHeaders.IsVisible>
-                            <OnIdiom x:TypeArguments="x:Boolean">
-                                <OnIdiom.Phone>false</OnIdiom.Phone>
-                                <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            </OnIdiom>
-                        </dt:PayeeColumnHeaders.IsVisible>
-                    </dt:PayeeColumnHeaders>
-                </ListView.Header>
-                <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <dt:GroupHeaderViewCell/>
-                    </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-                <ListView.ItemTemplate>
-                    <OnIdiom x:TypeArguments="DataTemplate">
-                        <OnIdiom.Phone>
-                            <DataTemplate>
-                                <dt:PayeeViewCell>
-                                    <dt:PayeeViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:PayeeViewCell.ContextActions>
-                                </dt:PayeeViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Phone>
-                        <OnIdiom.Tablet>
-                            <DataTemplate>
-                                <dt:PayeeDetailedViewCell>
-                                    <dt:PayeeDetailedViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:PayeeDetailedViewCell.ContextActions>
-                                </dt:PayeeDetailedViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Tablet>
-                        <OnIdiom.Desktop>
-                            <DataTemplate>
-                                <dt:PayeeDetailedViewCell>
-                                    <dt:PayeeDetailedViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:PayeeDetailedViewCell.ContextActions>
-                                </dt:PayeeDetailedViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Desktop>
-                    </OnIdiom>
-                </ListView.ItemTemplate>
-                <ListView.Footer>
-                    <BoxView
-                        BackgroundColor="{StaticResource BackgroundColor}"
-                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
-                </ListView.Footer>
-            </ListView>
-            <Button
-                x:Name="NewTransactionButton"
-                Grid.Row="0"
-                Margin="16,0,16,16"
-                Style="{StaticResource PrimaryActionButtonStyle}"
-                Text="Add Transaction" 
-                VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}">
-                <Button.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Button.IsVisible>
-            </Button>
-            <BoxView
-                Grid.Row="1"
-                HeightRequest="1"
-                BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+        <uc:HelperControl
+                ShowHelper="{Binding NoPayees}"
+                ImagePath="helperpayee.svg"
+                HelperText="Add a Payee using the + button">
             <Grid
-                Grid.Row="2"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                Margin="0"
                 ColumnSpacing="16"
-                RowSpacing="8"
-                Margin="16">
-                <Grid.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>false</OnIdiom.Phone>
-                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Grid.IsVisible>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label
+                <ListView
+                    x:Name="payeeList" 
                     Grid.Row="0"
-                    Grid.Column="0"
-                    Text=""
-                    HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Text=""
-                    HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    BackgroundColor="{StaticResource BackgroundColor}" 
+                    SeparatorVisibility="None" 
+                    IsPullToRefreshEnabled="true" 
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                    RefreshCommand="{Binding RefreshCommand}" 
+                    ItemsSource="{Binding GroupedPayees}" 
+                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
+                    IsGroupingEnabled="true" 
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="true">
+                    <ListView.Behaviors>
+                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    </ListView.Behaviors>
+                    <ListView.Header>
+                        <dt:PayeeColumnHeaders>
+                            <dt:PayeeColumnHeaders.Triggers>
+                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
+                                    <Setter Property="HeightRequest" Value="0" />
+                                </Trigger>
+                            </dt:PayeeColumnHeaders.Triggers>
+                            <dt:PayeeColumnHeaders.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>false</OnIdiom.Phone>
+                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                                </OnIdiom>
+                            </dt:PayeeColumnHeaders.IsVisible>
+                        </dt:PayeeColumnHeaders>
+                    </ListView.Header>
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <dt:GroupHeaderViewCell/>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <OnIdiom x:TypeArguments="DataTemplate">
+                            <OnIdiom.Phone>
+                                <DataTemplate>
+                                    <dt:PayeeViewCell>
+                                        <dt:PayeeViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:PayeeViewCell.ContextActions>
+                                    </dt:PayeeViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Phone>
+                            <OnIdiom.Tablet>
+                                <DataTemplate>
+                                    <dt:PayeeDetailedViewCell>
+                                        <dt:PayeeDetailedViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:PayeeDetailedViewCell.ContextActions>
+                                    </dt:PayeeDetailedViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Tablet>
+                            <OnIdiom.Desktop>
+                                <DataTemplate>
+                                    <dt:PayeeDetailedViewCell>
+                                        <dt:PayeeDetailedViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:PayeeDetailedViewCell.ContextActions>
+                                    </dt:PayeeDetailedViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Desktop>
+                        </OnIdiom>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <BoxView
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                    </ListView.Footer>
+                </ListView>
                 <Button
+                    x:Name="NewTransactionButton"
                     Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="3"
+                    Margin="16,0,16,16"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="Add Transaction" 
-                    VerticalOptions="Center"
-                    HorizontalOptions="EndAndExpand"
-                    Command="{Binding AddTransactionCommand}"/>
+                    VerticalOptions="End"
+                    Command="{Binding AddTransactionCommand}">
+                    <Button.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>true</OnIdiom.Phone>
+                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Button.IsVisible>
+                </Button>
+                <BoxView
+                    Grid.Row="1"
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
+                <Grid
+                    Grid.Row="2"
+                    ColumnSpacing="16"
+                    RowSpacing="8"
+                    Margin="16">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalOptions="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text=""
+                        HorizontalTextAlignment="Start"
+                        VerticalOptions="Center"
+                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        Text="Add Transaction" 
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        Command="{Binding AddTransactionCommand}"/>
+                </Grid>
             </Grid>
-        </Grid>
+        </uc:HelperControl>
     </uc:RootSearchPage.BodyContent>
 </uc:RootSearchPage>

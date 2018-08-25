@@ -90,6 +90,11 @@ namespace BudgetBadger.Models
             get => Id == Constants.GenericDebtEnvelope.Id;
         }
 
+        public string ExtendedDescription
+        {
+            get => Group?.Description + " - " + Description;
+        }
+
         public Envelope()
         {
             Id = Guid.Empty;

@@ -25,7 +25,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <uc:Expander
-                Grid.Row="0">
+                Grid.Row="0"
+                IsExpanded="true">
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -179,7 +180,7 @@
                 <ListView.Footer>
                     <BoxView
                         BackgroundColor="{StaticResource BackgroundColor}"
-                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
+                        HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
                 </ListView.Footer>
             </ListView>
             <Button

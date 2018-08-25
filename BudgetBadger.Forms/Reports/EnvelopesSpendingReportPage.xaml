@@ -81,29 +81,48 @@
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="{StaticResource Key=ListItemHeight}">
+                        <ViewCell Height="{StaticResource Key=ListDoubleItemHeight}">
                             <Grid
-                                HeightRequest="{StaticResource Key=ListItemHeight}"
-                                RowSpacing="0"
+                                HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
+                                RowSpacing="4"
                                 ColumnSpacing="16"
                                 Margin="-1"
                                 Padding="1"
                                 BackgroundColor="{StaticResource BackgroundColor}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>   
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>   
+                                </Grid.RowDefinitions>
                                 <Label
+                                    x:Name="primaryLabel"
                                     Grid.Column="0"
+                                    Grid.Row="0"
                                     Margin="16,0,0,0"
-                                    Text="{Binding XLabel}"
-                                    Style="{StaticResource Key=ListItemLabelStyle}"/>
-                                <Label 
+                                    Text="{Binding XValue.Description}"
+                                    Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                                    VerticalOptions="End"/>
+                                <Label
+                                    x:Name="secondaryLabel"
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Margin="16,0,0,0"
+                                    Text="{Binding XValue.Group.Description}"
+                                    Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                                    VerticalOptions="Start"/>
+                                <Label
+                                    x:Name="rightSingleLabel"
                                     Grid.Column="1"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
                                     Margin="0,0,16,0"
                                     Text="{Binding YValue, StringFormat='{0:C}'}"
                                     Style="{StaticResource Key=ListItemLabelStyle}"
-                                    HorizontalTextAlignment="End"/>
+                                    HorizontalTextAlignment="End"
+                                    VerticalOptions="Center"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

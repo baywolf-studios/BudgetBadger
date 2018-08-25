@@ -14,6 +14,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Payee>> GetPayeeAsync(Guid id);
         Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync();
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync();
+        Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync();
 
         IReadOnlyList<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText);
         IReadOnlyList<IGrouping<string, Payee>> GroupPayees(IEnumerable<Payee> payees);

@@ -12,31 +12,36 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:ChildSearchPage.BodyContent>
-        <ListView
-            x:Name="envelopeList"
-            BackgroundColor="{StaticResource BackgroundColor}"
-            SeparatorVisibility="None"
-            IsPullToRefreshEnabled="true"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            RefreshCommand="{Binding RefreshCommand}"
-            ItemsSource="{Binding GroupedBudgets}"
-            SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
-            IsGroupingEnabled="true"
-            GroupDisplayBinding="{Binding Key}"
-            HasUnevenRows="true">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
-            </ListView.Behaviors>
-            <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <dt:GroupHeaderViewCell/>
-                    </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <dt:EnvelopeViewCell/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-        </ListView>
+        <uc:HelperControl
+            ShowHelper="{Binding NoEnvelopes}"
+            ImagePath="helperenvelope.svg"
+            HelperText="Add an Envelope using the + button">
+            <ListView
+                x:Name="envelopeList"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding GroupedBudgets}"
+                SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
+                IsGroupingEnabled="true"
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <dt:GroupHeaderViewCell/>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <dt:EnvelopeViewCell/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+            </ListView>
+        </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

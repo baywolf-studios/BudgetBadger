@@ -268,6 +268,10 @@
     <AndroidResource Include="Resources\drawable\info.svg" />
     <AndroidResource Include="Resources\drawable\posted.svg" />
     <AndroidResource Include="Resources\drawable\pending.svg" />
+    <AndroidResource Include="Resources\drawable\helperenvelope.svg" />
+    <AndroidResource Include="Resources\drawable\helperaccount.svg" />
+    <AndroidResource Include="Resources\drawable\helperpayee.svg" />
+    <AndroidResource Include="Resources\drawable\helpertransaction.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

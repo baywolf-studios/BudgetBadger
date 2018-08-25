@@ -113,7 +113,7 @@
                             VerticalOptions="End"
                             Style="{StaticResource SecondaryActionButtonStyle}"
                             Command="{Binding QuickBudgetCommand}"
-                            />
+                            IsVisible="{Binding Budget.IsActive}"/>
                         <StackLayout
                             Grid.Row="3"
                             Grid.Column="0"

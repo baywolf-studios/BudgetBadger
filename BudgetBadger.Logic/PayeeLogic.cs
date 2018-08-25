@@ -128,6 +128,36 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync();
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsActive);
+
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
+
+                var populatedPayees = await Task.WhenAll(tasks);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
+
+                result.Success = true;
+                result.Data = OrderPayees(filteredPopulatedPayees);
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync()
         {
             var result = new Result<IReadOnlyList<Payee>>();

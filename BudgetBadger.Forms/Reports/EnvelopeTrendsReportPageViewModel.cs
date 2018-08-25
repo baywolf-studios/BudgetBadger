@@ -112,7 +112,7 @@ namespace BudgetBadger.Forms.Reports
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var envelopesResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
+            var envelopesResult = await _envelopeLogic.GetEnvelopesForReportAsync();
             if (envelopesResult.Success)
             {
                 Envelopes = envelopesResult.Data.ToList();

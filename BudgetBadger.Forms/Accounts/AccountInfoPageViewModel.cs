@@ -29,7 +29,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand SearchCommand { get; set; }
 
         bool _isBusy;
-        public bool IsBusy 
+        public bool IsBusy
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
@@ -42,8 +42,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IEnumerable<Transaction> _transactions;
-        public IEnumerable<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -77,6 +77,13 @@ namespace BudgetBadger.Forms.Accounts
         {
             get => _searchText;
             set => SetProperty(ref _searchText, value);
+        }
+
+        bool _noTransactions;
+        public bool NoTransactions
+        {
+            get => _noTransactions;
+            set => SetProperty(ref _noTransactions, value);
         }
 
         public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic, IPageDialogService dialogService)
@@ -179,6 +186,8 @@ namespace BudgetBadger.Forms.Accounts
                         SelectedTransaction = null;
                     }
                 }
+
+                NoTransactions = (Transactions?.Count ?? 0) == 0;
             }
             finally
             {

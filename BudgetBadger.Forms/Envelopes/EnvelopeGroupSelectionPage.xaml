@@ -13,9 +13,10 @@
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
 	<uc:ChildSearchPage.BodyContent>
-        <uc:BusyIndicator 
-            IsBusy="{Binding IsBusy}"
-            BusyText="{Binding BusyText}">
+        <uc:HelperControl
+            ShowHelper="{Binding NoEnvelopeGroups}"
+            ImagePath="helperenvelope.svg"
+            HelperText="Add an Envelope Group using the + button">
             <ListView 
                 HasUnevenRows="true"
                 BackgroundColor="{StaticResource BackgroundColor}" 
@@ -58,6 +59,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </uc:BusyIndicator>
+        </uc:HelperControl>
 	</uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

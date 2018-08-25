@@ -34,13 +34,6 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        string _busyText;
-        public string BusyText
-        {
-            get => _busyText;
-            set => SetProperty(ref _busyText, value);
-        }
-
         EnvelopeGroup _selectedEnvelopeGroup;
         public EnvelopeGroup SelectedEnvelopeGroup
         {
@@ -70,6 +63,13 @@ namespace BudgetBadger.Forms.Envelopes
         }
 
         public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
+
+        bool _noEnvelopeGroups;
+        public bool NoEnvelopeGroups
+        {
+            get => _noEnvelopeGroups;
+            set => SetProperty(ref _noEnvelopeGroups, value);
+        }
 
         public EnvelopeGroupSelectionPageViewModel(INavigationService navigationService,
                                            IPageDialogService dialogService,
@@ -127,6 +127,8 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     //show error
                 }
+
+                NoEnvelopeGroups = (EnvelopeGroups?.Count ?? 0) == 0;
             }
             finally
             {
@@ -167,13 +169,10 @@ namespace BudgetBadger.Forms.Envelopes
                     Description = SearchText
                 };
 
-                BusyText = "Saving";
                 var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
 
                 if (result.Success)
                 {
-
-                    BusyText = "Syncing";
                     var syncTask = _syncService.FullSync();
                     var parameters = new NavigationParameters
                     {
@@ -187,8 +186,6 @@ namespace BudgetBadger.Forms.Envelopes
                     {
                         await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
                     }
-
-
                 }
                 else
                 {

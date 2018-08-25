@@ -24,91 +24,95 @@
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListView
+            <uc:HelperControl
                 Grid.Row="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
-                ItemsSource="{Binding GroupedTransactions}"
-                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                IsGroupingEnabled="true"
-                GroupDisplayBinding="{Binding Key}"
-                HasUnevenRows="true">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
-                </ListView.Behaviors>
-                <ListView.Header>
-                    <dt:TransactionColumnHeaders TransactionViewCellType="Payee">
-                        <dt:TransactionColumnHeaders.Triggers>
-                            <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                <Setter Property="HeightRequest" Value="0" />
-                            </Trigger>
-                        </dt:TransactionColumnHeaders.Triggers>
-                        <dt:TransactionColumnHeaders.IsVisible>
-                            <OnIdiom x:TypeArguments="x:Boolean">
-                                <OnIdiom.Phone>false</OnIdiom.Phone>
-                                <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            </OnIdiom>
-                        </dt:TransactionColumnHeaders.IsVisible>
-                    </dt:TransactionColumnHeaders>
-                </ListView.Header>
-                <ListView.GroupHeaderTemplate>
-                    <OnIdiom x:TypeArguments="DataTemplate">
-                        <OnIdiom.Phone>
-                            <DataTemplate>
-                                <dt:DenseGroupHeaderViewCell/>
-                            </DataTemplate>
-                        </OnIdiom.Phone>
-                        <OnIdiom.Tablet>
-                            <DataTemplate>
-                                <ViewCell Height="0">
-                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
-                                </ViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Tablet>
-                        <OnIdiom.Desktop>
-                            <DataTemplate>
-                                <ViewCell Height="0">
-                                    <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
-                                </ViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Desktop>
-                    </OnIdiom>
-                </ListView.GroupHeaderTemplate>
-                <ListView.ItemTemplate>
-                    <OnIdiom x:TypeArguments="DataTemplate">
-                        <OnIdiom.Phone>
-                            <DataTemplate>
-                                <dt:TransactionViewCell
-                                    TransactionViewCellType="Payee"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
-                            </DataTemplate>
-                        </OnIdiom.Phone>
-                        <OnIdiom.Tablet>
-                            <DataTemplate>
-                                <dt:TransactionDetailedViewCell
-                                    TransactionViewCellType="Payee"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
-                            </DataTemplate>
-                        </OnIdiom.Tablet>
-                        <OnIdiom.Desktop>
-                            <DataTemplate>
-                                <dt:TransactionDetailedViewCell
-                                    TransactionViewCellType="Payee"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
-                            </DataTemplate>
-                        </OnIdiom.Desktop>
-                    </OnIdiom>
-                </ListView.ItemTemplate>
-                <ListView.Footer>
-                    <BoxView
-                        BackgroundColor="{StaticResource BackgroundColor}"
-                        HeightRequest="{StaticResource Key=PrimaryActionButtonHeight}"/>
-                </ListView.Footer>
-            </ListView>
+                ShowHelper="{Binding NoTransactions}"
+                ImagePath="helpertransaction.svg">
+                <ListView
+                    BackgroundColor="{StaticResource BackgroundColor}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="true"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    ItemsSource="{Binding GroupedTransactions}"
+                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                    IsGroupingEnabled="true"
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="true">
+                    <ListView.Behaviors>
+                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                    </ListView.Behaviors>
+                    <ListView.Header>
+                        <dt:TransactionColumnHeaders TransactionViewCellType="Payee">
+                            <dt:TransactionColumnHeaders.Triggers>
+                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
+                                    <Setter Property="HeightRequest" Value="0" />
+                                </Trigger>
+                            </dt:TransactionColumnHeaders.Triggers>
+                            <dt:TransactionColumnHeaders.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>false</OnIdiom.Phone>
+                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                                </OnIdiom>
+                            </dt:TransactionColumnHeaders.IsVisible>
+                        </dt:TransactionColumnHeaders>
+                    </ListView.Header>
+                    <ListView.GroupHeaderTemplate>
+                        <OnIdiom x:TypeArguments="DataTemplate">
+                            <OnIdiom.Phone>
+                                <DataTemplate>
+                                    <dt:DenseGroupHeaderViewCell/>
+                                </DataTemplate>
+                            </OnIdiom.Phone>
+                            <OnIdiom.Tablet>
+                                <DataTemplate>
+                                    <ViewCell Height="0">
+                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Tablet>
+                            <OnIdiom.Desktop>
+                                <DataTemplate>
+                                    <ViewCell Height="0">
+                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Desktop>
+                        </OnIdiom>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <OnIdiom x:TypeArguments="DataTemplate">
+                            <OnIdiom.Phone>
+                                <DataTemplate>
+                                    <dt:TransactionViewCell
+                                        TransactionViewCellType="Payee"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                </DataTemplate>
+                            </OnIdiom.Phone>
+                            <OnIdiom.Tablet>
+                                <DataTemplate>
+                                    <dt:TransactionDetailedViewCell
+                                        TransactionViewCellType="Payee"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                </DataTemplate>
+                            </OnIdiom.Tablet>
+                            <OnIdiom.Desktop>
+                                <DataTemplate>
+                                    <dt:TransactionDetailedViewCell
+                                        TransactionViewCellType="Payee"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                </DataTemplate>
+                            </OnIdiom.Desktop>
+                        </OnIdiom>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <BoxView
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                    </ListView.Footer>
+                </ListView>
+            </uc:HelperControl>
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="0"

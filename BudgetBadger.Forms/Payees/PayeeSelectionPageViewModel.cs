@@ -62,6 +62,13 @@ namespace BudgetBadger.Forms.Payees
             set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
         }
 
+        bool _noPayees;
+        public bool NoPayees
+        {
+            get => _noPayees;
+            set => SetProperty(ref _noPayees, value);
+        }
+
         public PayeeSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
         {
             _payeeLogic = payeeLogic;
@@ -137,6 +144,8 @@ namespace BudgetBadger.Forms.Payees
                     await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
+
+                NoPayees = (Payees?.Count ?? 0) == 0;
             }
             finally
             {

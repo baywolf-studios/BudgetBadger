@@ -112,7 +112,7 @@ namespace BudgetBadger.Forms.Reports
 
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-            var payeesResult = await _payeeLogic.GetPayeesAsync();
+            var payeesResult = await _payeeLogic.GetPayeesForReportAsync();
             if (payeesResult.Success)
             {
                 Payees = payeesResult.Data.ToList();

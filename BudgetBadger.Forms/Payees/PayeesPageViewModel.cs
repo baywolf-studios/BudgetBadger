@@ -15,7 +15,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
+    public class PayeesPageViewModel : BindableBase, INavigatingAware
     {
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
@@ -68,6 +68,13 @@ namespace BudgetBadger.Forms.Payees
             set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
         }
 
+        bool _noPayees;
+        public bool NoPayees
+        {
+            get => _noPayees;
+            set => SetProperty(ref _noPayees, value);
+        }
+
         public PayeesPageViewModel(INavigationService navigationService,
 		                           IPageDialogService dialogService,
 		                           IPayeeLogic payeeLogic,
@@ -95,15 +102,6 @@ namespace BudgetBadger.Forms.Payees
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public async void OnAppearing()
-        {
-            await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteSelectedCommand()
@@ -146,6 +144,8 @@ namespace BudgetBadger.Forms.Payees
                     await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
+
+                NoPayees = (Payees?.Count ?? 0) == 0;
             }
             finally
             {
