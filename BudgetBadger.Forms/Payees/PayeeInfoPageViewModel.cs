@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -64,6 +65,13 @@ namespace BudgetBadger.Forms.Payees
 
         public decimal LifetimeSpent { get => Transactions.Sum(t => t.Amount ?? 0); }
 
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic, IPageDialogService dialogService)
         {
             _transactionLogic = transactionLogic;
@@ -81,6 +89,7 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -206,6 +215,11 @@ namespace BudgetBadger.Forms.Payees
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
+        }
+
+        public void ExecuteSearchCommand()
+        {
+            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
     }
 }

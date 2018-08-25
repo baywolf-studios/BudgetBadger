@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy 
@@ -71,6 +72,13 @@ namespace BudgetBadger.Forms.Accounts
         public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount ?? 0); }
         public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount ?? 0); }
 
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic, IPageDialogService dialogService)
         {
             _transactionLogic = transactionLogic;
@@ -89,6 +97,7 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -225,6 +234,11 @@ namespace BudgetBadger.Forms.Accounts
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
+        }
+
+        public void ExecuteSearchCommand()
+        {
+            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
     }
 }

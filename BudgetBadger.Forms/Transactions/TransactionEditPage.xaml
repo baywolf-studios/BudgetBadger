@@ -119,7 +119,7 @@
                             Grid.ColumnSpan="2"
                             ColumnSpacing="16"
                             RowSpacing="16"
-                            Margin="0,0,0,16">
+                            Margin="0">
                             <Grid.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>

@@ -103,7 +103,7 @@
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="0"
-                Margin="16,0,16,8"
+                Margin="16,0,16,16"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"

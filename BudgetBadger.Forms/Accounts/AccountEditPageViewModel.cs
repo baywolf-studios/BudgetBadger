@@ -106,7 +106,7 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     
                     BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    var syncTask = await _syncService.FullSync();
 
 					var parameters = new NavigationParameters
                     {
@@ -114,7 +114,7 @@ namespace BudgetBadger.Forms.Accounts
                     };
                     await _navigationService.GoBackAsync(parameters);
 
-                    var syncResult = await syncTask;
+                    var syncResult = syncTask;
                     if (!syncResult.Success)
                     {
                         await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
