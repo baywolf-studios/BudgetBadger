@@ -15,6 +15,8 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Account>>> GetAccountsAsync();
         Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync();
 
+        Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount);
+
         IReadOnlyList<string> GetAccountTypes();
 
         IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText);

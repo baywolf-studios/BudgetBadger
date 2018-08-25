@@ -108,81 +108,86 @@
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
-            <ListView
+            <uc:HelperControl
                 Grid.Row="2"
-                BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
-                ItemsSource="{Binding Transactions}"
-                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                HasUnevenRows="true">
-                <ListView.Behaviors>
-                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
-                </ListView.Behaviors>
-                <ListView.Header>
-                    <dt:TransactionColumnHeaders TransactionViewCellType="Full">
-                        <dt:TransactionColumnHeaders.Triggers>
-                            <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                <Setter Property="HeightRequest" Value="0" />
-                            </Trigger>
-                        </dt:TransactionColumnHeaders.Triggers>
-                        <dt:TransactionColumnHeaders.IsVisible>
-                            <OnIdiom x:TypeArguments="x:Boolean">
-                                <OnIdiom.Phone>false</OnIdiom.Phone>
-                                <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            </OnIdiom>
-                        </dt:TransactionColumnHeaders.IsVisible>
-                    </dt:TransactionColumnHeaders>
-                </ListView.Header>
-                <ListView.ItemTemplate>
-                    <OnIdiom x:TypeArguments="DataTemplate">
-                        <OnIdiom.Phone>
-                            <DataTemplate>
-                                <dt:TransactionViewCell
-                                    TransactionViewCellType="Full"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
-                                    <dt:TransactionViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:TransactionViewCell.ContextActions>
-                                </dt:TransactionViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Phone>
-                        <OnIdiom.Tablet>
-                            <DataTemplate>
-                                <dt:TransactionDetailedViewCell
-                                    TransactionViewCellType="Full"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
-                                    <dt:TransactionDetailedViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:TransactionDetailedViewCell.ContextActions>
-                                </dt:TransactionDetailedViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Tablet>
-                        <OnIdiom.Desktop>
-                            <DataTemplate>
-                                <dt:TransactionDetailedViewCell
-                                    TransactionViewCellType="Full"
-                                    Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
-                                    <dt:TransactionDetailedViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                    </dt:TransactionDetailedViewCell.ContextActions>
-                                </dt:TransactionDetailedViewCell>
-                            </DataTemplate>
-                        </OnIdiom.Desktop>
-                    </OnIdiom>
-                </ListView.ItemTemplate>
-                <ListView.Footer>
-                    <BoxView
-                        BackgroundColor="{StaticResource BackgroundColor}"
-                        HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
-                </ListView.Footer>
-            </ListView>
+                ShowHelper="{Binding NoTransactions}"
+                ImagePath="helpertransaction.svg"
+                HelperText="No transactions yet">
+                <ListView
+                    BackgroundColor="{StaticResource BackgroundColor}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="true"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    ItemsSource="{Binding Transactions}"
+                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                    HasUnevenRows="true">
+                    <ListView.Behaviors>
+                            <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                    </ListView.Behaviors>
+                    <ListView.Header>
+                        <dt:TransactionColumnHeaders TransactionViewCellType="Full">
+                            <dt:TransactionColumnHeaders.Triggers>
+                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
+                                    <Setter Property="HeightRequest" Value="0" />
+                                </Trigger>
+                            </dt:TransactionColumnHeaders.Triggers>
+                            <dt:TransactionColumnHeaders.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>false</OnIdiom.Phone>
+                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                                </OnIdiom>
+                            </dt:TransactionColumnHeaders.IsVisible>
+                        </dt:TransactionColumnHeaders>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <OnIdiom x:TypeArguments="DataTemplate">
+                            <OnIdiom.Phone>
+                                <DataTemplate>
+                                    <dt:TransactionViewCell
+                                        TransactionViewCellType="Full"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                        <dt:TransactionViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:TransactionViewCell.ContextActions>
+                                    </dt:TransactionViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Phone>
+                            <OnIdiom.Tablet>
+                                <DataTemplate>
+                                    <dt:TransactionDetailedViewCell
+                                        TransactionViewCellType="Full"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                        <dt:TransactionDetailedViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:TransactionDetailedViewCell.ContextActions>
+                                    </dt:TransactionDetailedViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Tablet>
+                            <OnIdiom.Desktop>
+                                <DataTemplate>
+                                    <dt:TransactionDetailedViewCell
+                                        TransactionViewCellType="Full"
+                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                        <dt:TransactionDetailedViewCell.ContextActions>
+                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
+                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                        </dt:TransactionDetailedViewCell.ContextActions>
+                                    </dt:TransactionDetailedViewCell>
+                                </DataTemplate>
+                            </OnIdiom.Desktop>
+                        </OnIdiom>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <BoxView
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                    </ListView.Footer>
+                </ListView>
+            </uc:HelperControl>
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
