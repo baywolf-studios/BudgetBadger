@@ -10,7 +10,9 @@
     x:Class="BudgetBadger.Forms.Payees.PayeeInfoPage"
     ToolbarItemText="Edit"
     ToolbarItemCommand="{Binding EditCommand}"
-    ToolbarItemIcon="edit.svg">
+    ToolbarItemIcon="edit.svg"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
         <Grid
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -110,7 +112,7 @@
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="0"
-                Margin="16,0,16,8"
+                Margin="16,0,16,16"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"

@@ -41,21 +41,39 @@ namespace BudgetBadger.Forms.Reports
         public DateTime BeginDate
         {
             get => _beginDate;
-            set => SetProperty(ref _beginDate, value);
+            set
+            {
+                if (SetProperty(ref _beginDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         DateTime _endDate;
         public DateTime EndDate
         {
             get => _endDate;
-            set => SetProperty(ref _endDate, value);
+            set
+            {
+                if (SetProperty(ref _endDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         Envelope _selectedEnvelope;
         public Envelope SelectedEnvelope
         {
             get => _selectedEnvelope;
-            set => SetProperty(ref _selectedEnvelope, value);
+            set
+            {
+                if (SetProperty(ref _selectedEnvelope, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         IReadOnlyList<Envelope> _envelopes;
@@ -82,7 +100,14 @@ namespace BudgetBadger.Forms.Reports
 
             var now = DateTime.Now;
             EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
-            BeginDate = EndDate.AddMonths(-12);
+            if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
+            {
+                BeginDate = EndDate.AddMonths(-12);
+            }
+            else if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Phone)
+            {
+                BeginDate = EndDate.AddMonths(-6);
+            }
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -91,13 +116,16 @@ namespace BudgetBadger.Forms.Reports
             if (envelopesResult.Success)
             {
                 Envelopes = envelopesResult.Data.ToList();
-                SelectedEnvelope = Envelopes.FirstOrDefault();
             }
 
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
             if (envelope != null)
             {
                 SelectedEnvelope = Envelopes.FirstOrDefault(e => e.Id == envelope.Id);
+            }
+            else
+            {
+                SelectedEnvelope = Envelopes.FirstOrDefault();
             }
 
             var beginDate = parameters.GetValue<DateTime?>(PageParameter.ReportBeginDate);

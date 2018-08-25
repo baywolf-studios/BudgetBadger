@@ -185,8 +185,8 @@
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
-                Margin="16,0,16,8"
-                Text="Add New" 
+                Margin="16,0,16,16"
+                Text="Add Transaction" 
                 VerticalOptions="End"
                 Command="{Binding AddNewCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}">

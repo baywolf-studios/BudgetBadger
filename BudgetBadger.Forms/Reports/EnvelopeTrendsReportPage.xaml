@@ -55,27 +55,18 @@
                             SelectedItem="{Binding SelectedEnvelope}"
                             ItemsSource="{Binding Envelopes}"
                             ItemDisplayBinding="{Binding Description}">
-                            <uc:DropdownSelector.Behaviors>
-                                <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
-                            </uc:DropdownSelector.Behaviors>
                         </uc:DropdownSelector>
                         <uc:DateSelector
                             Grid.Row="1"
                             Grid.Column="0"
                             Label="Begin Date"
                             Date="{Binding BeginDate}">
-                            <uc:DateSelector.Behaviors>
-                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                            </uc:DateSelector.Behaviors>
                         </uc:DateSelector>
                         <uc:DateSelector
                             Grid.Row="1"
                             Grid.Column="1"
                             Label="End Date"
                             Date="{Binding EndDate}">
-                            <uc:DateSelector.Behaviors>
-                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                            </uc:DateSelector.Behaviors>
                         </uc:DateSelector>
                     </Grid>
                 </uc:Expander.BodyContent>
@@ -127,25 +118,16 @@
                     SelectedItem="{Binding SelectedEnvelope}"
                     ItemsSource="{Binding Envelopes}"
                     ItemDisplayBinding="{Binding Description}">
-                    <uc:DropdownSelector.Behaviors>
-                        <b:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding RefreshCommand}" />
-                    </uc:DropdownSelector.Behaviors>
                 </uc:DropdownSelector>
                 <uc:DateSelector
                     Grid.Column="3"
                     Label="Begin Date"
                     Date="{Binding BeginDate}">
-                    <uc:DateSelector.Behaviors>
-                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                    </uc:DateSelector.Behaviors>
                 </uc:DateSelector>
                 <uc:DateSelector
                     Grid.Column="4"
                     Label="End Date"
                     Date="{Binding EndDate}">
-                    <uc:DateSelector.Behaviors>
-                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                    </uc:DateSelector.Behaviors>
                 </uc:DateSelector>
             </Grid>
         </Grid>

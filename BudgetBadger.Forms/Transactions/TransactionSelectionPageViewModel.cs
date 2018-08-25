@@ -57,7 +57,7 @@ namespace BudgetBadger.Forms.Transactions
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); ExecuteSearchCommand(); }
+            set => SetProperty(ref _searchText, value);
         }
 
         public TransactionSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, ITransactionLogic transactionLogic)

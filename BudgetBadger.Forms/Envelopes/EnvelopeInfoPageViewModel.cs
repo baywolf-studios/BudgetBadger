@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -62,6 +63,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedTransaction, value);
         }
 
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
             _transactionLogic = transactionLogic;
@@ -79,6 +87,7 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -200,6 +209,11 @@ namespace BudgetBadger.Forms.Envelopes
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
+        }
+
+        public void ExecuteSearchCommand()
+        {
+            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
     }
 }

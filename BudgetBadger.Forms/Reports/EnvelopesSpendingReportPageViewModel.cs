@@ -36,14 +36,26 @@ namespace BudgetBadger.Forms.Reports
         public DateTime BeginDate
         {
             get => _beginDate;
-            set => SetProperty(ref _beginDate, value);
+            set
+            {
+                if (SetProperty(ref _beginDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         DateTime _endDate;
         public DateTime EndDate
         {
             get => _endDate;
-            set => SetProperty(ref _endDate, value);
+            set
+            {
+                if (SetProperty(ref _endDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         IReadOnlyList<DataPoint<Envelope, decimal>> _envelopes;
@@ -73,7 +85,14 @@ namespace BudgetBadger.Forms.Reports
 
             var now = DateTime.Now;
             EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
-            BeginDate = EndDate.AddMonths(-12);
+            if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
+            {
+                BeginDate = EndDate.AddMonths(-12);
+            }
+            else if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Phone)
+            {
+                BeginDate = EndDate.AddMonths(-6);
+            }
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)

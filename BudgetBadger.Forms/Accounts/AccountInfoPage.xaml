@@ -8,10 +8,11 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Accounts.AccountInfoPage"
-    SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding EditCommand}"
     ToolbarItemIcon="edit.svg"
-    ToolbarItemText="Edit">
+    ToolbarItemText="Edit"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
         <Grid
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -62,6 +63,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Row="0"
@@ -87,6 +89,39 @@
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Text="Payment"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource PageSubheaderLabelStyle}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
+                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource PageSubheaderLabelStyle}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="false">
+                                    <Setter Property="Text" Value="Not Needed"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
+                                    <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}"/>
+                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -183,7 +218,7 @@
             <Button
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
-                Margin="16,0,16,8"
+                Margin="16,0,16,16"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction" 
                 VerticalOptions="End"
@@ -222,8 +257,8 @@
                     <ColumnDefinition Width="0"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label
@@ -268,16 +303,41 @@
                     HorizontalTextAlignment="Center"
                     VerticalOptions="Start"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
-                <Button
+                <Label
                     Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="5"
-                    Style="{StaticResource SecondaryActionButtonStyle}"
-                    VerticalOptions="Center"
-                    HorizontalOptions="EndAndExpand"
-                    IsVisible="true"
-                    Command="{Binding PaymentCommand}"
-                    Text="{Binding Account.Payment, StringFormat='Payment: {0:c}'}"/>
+                    Grid.Column="4"
+                    Text="Payment"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="End"
+                    Style="{StaticResource PageSubheaderLabelStyle}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
+                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    Style="{StaticResource PageSubheaderLabelStyle}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="false">
+                            <Setter Property="Text" Value="Not Needed"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
+                            <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}"/>
+                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"

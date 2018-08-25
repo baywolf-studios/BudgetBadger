@@ -52,17 +52,11 @@
                             Grid.Column="0"
                             Label="Begin Date"
                             Date="{Binding BeginDate}">
-                            <uc:DateSelector.Behaviors>
-                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                            </uc:DateSelector.Behaviors>
                         </uc:DateSelector>
                         <uc:DateSelector
                             Grid.Column="1"
                             Label="End Date"
                             Date="{Binding EndDate}">
-                            <uc:DateSelector.Behaviors>
-                                <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                            </uc:DateSelector.Behaviors>
                         </uc:DateSelector>
                     </Grid>
                 </uc:Expander.BodyContent>
@@ -114,17 +108,11 @@
                     Grid.Column="2"
                     Label="Begin Date"
                     Date="{Binding BeginDate}">
-                    <uc:DateSelector.Behaviors>
-                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                    </uc:DateSelector.Behaviors>
                 </uc:DateSelector>
                 <uc:DateSelector
                     Grid.Column="3"
                     Label="End Date"
                     Date="{Binding EndDate}">
-                    <uc:DateSelector.Behaviors>
-                        <b:EventToCommandBehavior EventName="DateSelected" Command="{Binding RefreshCommand}" />
-                    </uc:DateSelector.Behaviors>
                 </uc:DateSelector>
             </Grid>
         </Grid>

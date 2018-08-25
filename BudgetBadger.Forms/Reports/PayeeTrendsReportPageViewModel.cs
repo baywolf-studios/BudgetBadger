@@ -41,21 +41,39 @@ namespace BudgetBadger.Forms.Reports
         public DateTime BeginDate
         {
             get => _beginDate;
-            set => SetProperty(ref _beginDate, value);
+            set
+            {
+                if (SetProperty(ref _beginDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         DateTime _endDate;
         public DateTime EndDate
         {
             get => _endDate;
-            set => SetProperty(ref _endDate, value);
+            set
+            {
+                if (SetProperty(ref _endDate, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         Payee _selectedPayee;
         public Payee SelectedPayee
         {
             get => _selectedPayee;
-            set => SetProperty(ref _selectedPayee, value);
+            set
+            {
+                if (SetProperty(ref _selectedPayee, value))
+                {
+                    RefreshCommand.Execute(null);
+                }
+            }
         }
 
         IReadOnlyList<Payee> _payees;
@@ -78,13 +96,18 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
             _payeeLogic = payeeLogic;
 
-            Payees = new List<Payee>();
-
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
             var now = DateTime.Now;
             EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
-            BeginDate = EndDate.AddMonths(-12);
+            if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
+            {
+                BeginDate = EndDate.AddMonths(-12);
+            }
+            else if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Phone)
+            {
+                BeginDate = EndDate.AddMonths(-6);
+            }
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -93,13 +116,16 @@ namespace BudgetBadger.Forms.Reports
             if (payeesResult.Success)
             {
                 Payees = payeesResult.Data.ToList();
-                SelectedPayee = Payees.FirstOrDefault();
             }
 
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
             {
                 SelectedPayee = Payees.FirstOrDefault(p => p.Id == payee.Id);
+            }
+            else
+            {
+                SelectedPayee = Payees.FirstOrDefault();
             }
 
             var beginDate = parameters.GetValue<DateTime?>(PageParameter.ReportBeginDate);

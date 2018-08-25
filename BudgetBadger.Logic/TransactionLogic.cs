@@ -169,9 +169,14 @@ namespace BudgetBadger.Logic
 
         public IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText)
         {
-			var searchResults = transactions.Where(t => t.Envelope.Description.Contains(searchText)
-			                                       || t.Payee.Description.Contains(searchText)
-												   || t.Account.Description.Contains(searchText));
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return transactions.ToList();
+            }
+
+            var searchResults = transactions.Where(t => t.Envelope.Description.ToLower().Contains(searchText.ToLower())
+                                                   || t.Payee.Description.ToLower().Contains(searchText.ToLower())
+                                                   || t.Account.Description.ToLower().Contains(searchText.ToLower()));
 
 			return OrderTransactions(searchResults);
         }
