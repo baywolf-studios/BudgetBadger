@@ -27,6 +27,11 @@
             <uc:Expander
                 Grid.Row="0"
                 IsExpanded="true">
+                <uc:Expander.Triggers>
+                    <DataTrigger TargetType="uc:Expander" Binding="{Binding NoTransactions}" Value="true">
+                        <Setter Property="IsExpanded" Value="false"/>
+                    </DataTrigger>
+                </uc:Expander.Triggers>
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
