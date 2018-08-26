@@ -130,6 +130,10 @@ namespace BudgetBadger.Forms.Transactions
             var transaction = parameters.GetValue<Transaction>(PageParameter.Transaction);
             if (transaction != null)
             {
+                if (transaction.Id == Guid.Empty)
+                {
+                    transaction.Id = Guid.NewGuid();
+                }
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
                 Transactions = tempTransactions;
@@ -155,7 +159,10 @@ namespace BudgetBadger.Forms.Transactions
                     if (transResult.Success)
                     {
                         var split1 = transResult.Data.DeepCopy();
-
+                        if (split1.Id == Guid.Empty)
+                        {
+                            split1.Id = Guid.NewGuid();
+                        }
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
 
