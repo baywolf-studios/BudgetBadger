@@ -8,6 +8,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage"
     SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">

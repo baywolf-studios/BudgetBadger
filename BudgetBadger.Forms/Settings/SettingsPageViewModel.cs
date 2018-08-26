@@ -25,6 +25,7 @@ namespace BudgetBadger.Forms.Settings
         readonly DropBoxApi _dropboxApi;
 
         public ICommand SyncToggleCommand { get; set; }
+        public ICommand ShowDeletedCommand { get; set; }
 
         bool _dropboxEnabled;
         public bool DropboxEnabled
@@ -44,6 +45,7 @@ namespace BudgetBadger.Forms.Settings
             _dropboxApi = dropboxApi;
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
+            ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
         }
 
         public async Task ExecuteSyncToggleCommand()
@@ -81,6 +83,11 @@ namespace BudgetBadger.Forms.Settings
             {
                 await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
             }
+        }
+
+        public async Task ExecuteShowDeletedCommand(string pageName)
+        {
+            await _navigationService.NavigateAsync(pageName);
         }
 
         public void OnAppearing()

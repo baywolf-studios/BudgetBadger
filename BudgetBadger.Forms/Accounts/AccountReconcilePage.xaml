@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uc:ChildSearchPage
+<uc:ChildPage
     x:Name="this"
     Title="{Binding Account.Description}"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -7,18 +7,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage"
-    ToolbarItemCommand="{Binding ReconcileCommand}"
-    ToolbarItemIcon="save.svg"
-    ToolbarItemText="Save"
-    SearchCommand="{Binding SearchCommand}"
-    SearchText="{Binding SearchText}">
-    <uc:ChildSearchPage.BodyContent>
+    x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage">
+    <uc:ChildPage.BodyContent>
         <Grid
             BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1"/>
@@ -26,7 +25,15 @@
                 <RowDefinition Height="1"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0">
+            <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
+                <uc:Expander.Triggers>
+                    <DataTrigger TargetType="uc:Expander" Binding="{Binding StatementMode}" Value="true">
+                        <Setter Property="IsExpanded" Value="false"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="uc:Expander" Binding="{Binding ReconcileMode}" Value="true">
+                        <Setter Property="IsExpanded" Value="true"/>
+                    </DataTrigger>
+                </uc:Expander.Triggers>
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -42,13 +49,13 @@
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            Text="Balance"
+                            Text="Statement"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"/>
                         <Label
                             Grid.Column="1"
-                            Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                            Text="{Binding StatementAmount, StringFormat='{0:c}'}"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="End"
                             Style="{StaticResource PageHeaderLabelStyle}"/>
@@ -67,25 +74,25 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Pending"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Text="{Binding PendingTotal, StringFormat='{0:c}'}"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
                             Text="Cleared"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"/>
                         <Label
                             Grid.Row="1"
-                            Grid.Column="1"
+                            Grid.Column="0"
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="Difference"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Difference, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"/>
                     </Grid>
@@ -93,43 +100,40 @@
             </uc:Expander>
             <BoxView
                 Grid.Row="1"
+                Grid.ColumnSpan="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
-            <Grid
+            <ScrollView
                 Grid.Row="2"
+                Grid.ColumnSpan="2"
                 Margin="0"
-                RowSpacing="16"
-                ColumnSpacing="16"
+                Padding="16"
+                Orientation="Vertical"
                 IsVisible="{Binding StatementMode}">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <uc:DateSelector
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Label="Statement Date"
-                    Date="{Binding ReconcileDate}"/>
-                <uc:CalculatorEntry
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Prefix="$"
-                    Label="Statement Balance"
-                    Number="{Binding ReconcileAmount}"/>
-            </Grid>
+                <Grid
+                    Margin="0"
+                    RowSpacing="16"
+                    ColumnSpacing="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <uc:DateSelector
+                        Grid.Row="0"
+                        Label="Statement Date"
+                        Date="{Binding StatementDate}"/>
+                    <uc:CalculatorEntry
+                        Grid.Row="1"
+                        Prefix="$"
+                        Label="Statement Balance"
+                        Number="{Binding StatementAmount}"/>
+                </Grid>
+            </ScrollView>
             <uc:HelperControl
                 Grid.Row="2"
+                Grid.ColumnSpan="2"
                 ShowHelper="{Binding NoTransactions}"
                 ImagePath="reconciled.svg"
                 HelperText="All transactions reconciled"
@@ -221,13 +225,58 @@
                     </ListView.Footer>
                 </ListView>
             </uc:HelperControl>
+            <Grid
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                ColumnSpacing="16"
+                RowSpacing="16"
+                Margin="0"
+                VerticalOptions="End">
+                <Grid.IsVisible>
+                    <OnIdiom x:TypeArguments="x:Boolean">
+                        <OnIdiom.Phone>true</OnIdiom.Phone>
+                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                    </OnIdiom>
+                </Grid.IsVisible>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.ColumnSpan="2"
+                    Margin="16,0,16,16"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Show Transactions"
+                    VerticalOptions="End"
+                    Command="{Binding ToggleReconcileModeCommand}"
+                    IsVisible="{Binding StatementMode}"/>
+                <Button
+                    Grid.Column="0"
+                    Margin="16,0,0,16"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="Statement"
+                    VerticalOptions="End"
+                    Command="{Binding ToggleReconcileModeCommand}"
+                    IsVisible="{Binding ReconcileMode}"/>
+                <Button
+                    Grid.Column="1"
+                    Margin="0,0,16,16"
+                    Style="{StaticResource PrimaryActionButtonStyle}" 
+                    Text="Reconcile"
+                    VerticalOptions="End"
+                    Command="{Binding ReconcileCommand}"
+                    IsVisible="{Binding ReconcileMode}"/>
+            </Grid>
             <BoxView
                 Grid.Row="3"
+                Grid.ColumnSpan="2"
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
             <Grid
                 Grid.Row="4"
+                Grid.ColumnSpan="2"
                 ColumnSpacing="16"
                 RowSpacing="8"
                 Margin="16">
@@ -249,46 +298,47 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Statement Balance"
+                    Text="Statement"
                     HorizontalTextAlignment="Start"
                     VerticalOptions="Center"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{Binding ReconcileAmount, StringFormat='{0:c}'}"
+                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
                     VerticalOptions="Center"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
-                    Text="Pending"
+                    Text="Cleared"
                     HorizontalTextAlignment="Center"
                     VerticalOptions="End"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
                     VerticalOptions="Start"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    Text="Posted"
+                    Text="Difference"
                     HorizontalTextAlignment="Center"
                     VerticalOptions="End"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    Text="{Binding Difference, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
                     VerticalOptions="Start"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
@@ -296,12 +346,31 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
-                    Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Change Date/Amount" 
                     VerticalOptions="Center"
                     HorizontalOptions="EndAndExpand"
-                    Command="{Binding ToggleReconcileModeCommand}"/>
+                    Command="{Binding ToggleReconcileModeCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding ReconcileMode}" Value="true">
+                            <Setter Property="Text" Value="Statement"/>
+                            <Setter Property="Style" Value="{StaticResource SecondaryActionButtonStyle}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding StatementMode}" Value="true">
+                            <Setter Property="Text" Value="Show Transactions"/>
+                            <Setter Property="Style" Value="{StaticResource PrimaryActionButtonStyle}"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="6"
+                    Style="{StaticResource PrimaryActionButtonStyle}" 
+                    Text="Reconcile"
+                    VerticalOptions="Center"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding ReconcileCommand}"
+                    IsVisible="{Binding ReconcileMode}"/>
             </Grid>
         </Grid>
-    </uc:ChildSearchPage.BodyContent>
-</uc:ChildSearchPage>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>

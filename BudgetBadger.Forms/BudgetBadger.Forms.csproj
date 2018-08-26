@@ -157,5 +157,21 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootSearchPage.xaml.cs">
       <DependentUpon>RootSearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountSelectionPage.xaml %28copy%29.cs">
+      <DependentUpon>Accounts\AccountSelectionPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupSelectionPage.xaml %28copy%29.cs">
+      <DependentUpon>Envelopes\EnvelopeGroupSelectionPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeSelectionPage.xaml %28copy%29.cs">
+      <DependentUpon>Envelopes\EnvelopeSelectionPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeSelectionPage.xaml %28copy%29.cs">
+      <DependentUpon>Payees\PayeeSelectionPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

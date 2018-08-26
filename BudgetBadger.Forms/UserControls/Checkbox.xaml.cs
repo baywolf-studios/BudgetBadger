@@ -21,7 +21,7 @@ namespace BudgetBadger.Forms.UserControls
 
         Color _focusedColor
         {
-            get => (Color)Application.Current.Resources["PrimaryColor"];
+            get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox), defaultBindingMode: BindingMode.TwoWay);

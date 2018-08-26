@@ -34,15 +34,29 @@ namespace BudgetBadger.Logic
             var tempAccount = await AccountDataAccess.ReadAccountAsync(accountId);
             var account = await GetPopulatedAccount(tempAccount);
 
+            if (account.IsNew)
+            {
+                errors.Add("Cannot delete an inactive account");
+            }
+
             if (account.Balance != 0)
             {
                 errors.Add("Cannot delete account with balance");
             }
 
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id);
-            if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
+            var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
+
+            if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now)
+                || payeeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
                 errors.Add("Cannot delete account with future transactions"); 
+            }
+
+            if (accountTransactions.Any(t => t.IsActive && t.Pending) 
+                || payeeTransactions.Any(t => t.IsActive && t.Pending))
+            {
+                errors.Add("Cannot delete account with pending transactions"); 
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -65,9 +79,49 @@ namespace BudgetBadger.Logic
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
 
+                var payee = await PayeeDataAccess.ReadPayeeAsync(id);
+                payee.ModifiedDateTime = DateTime.Now;
+                payee.DeletedDateTime = DateTime.Now;
+                await PayeeDataAccess.UpdatePayeeAsync(payee);
+
                 var reconcileResult = await ReconcileAccount(account.Id, DateTime.Now, 0);
 
                 return reconcileResult;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result> UndoDeleteAccountAsync(Guid id)
+        {
+            var result = new Result();
+
+            try
+            {
+                var account = await AccountDataAccess.ReadAccountAsync(id);
+                if (account.IsDeleted)
+                {
+                    account.ModifiedDateTime = DateTime.Now;
+                    account.DeletedDateTime = null;
+                    await AccountDataAccess.UpdateAccountAsync(account);
+
+                    var payee = await PayeeDataAccess.ReadPayeeAsync(id);
+                    payee.ModifiedDateTime = DateTime.Now;
+                    payee.DeletedDateTime = null;
+                    await PayeeDataAccess.UpdatePayeeAsync(payee);
+
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "Account is not deleted";
+                }
             }
             catch (Exception ex)
             {
@@ -105,14 +159,7 @@ namespace BudgetBadger.Logic
             var allAccounts = await AccountDataAccess.ReadAccountsAsync();
             IEnumerable<Account> accounts;
 
-            if (false) // show deleted
-            {
-                accounts = allAccounts;
-            }
-            else
-            {
-                accounts = allAccounts.Where(a => a.IsActive);
-            }
+            accounts = allAccounts.Where(a => a.IsActive);
 
             var tasks = accounts.Select(GetPopulatedAccount);
 
@@ -134,6 +181,22 @@ namespace BudgetBadger.Logic
 
             result.Success = true;
 			result.Data = OrderAccounts(await Task.WhenAll(tasks));
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Account>>> GetDeletedAccountsAsync()
+        {
+            var result = new Result<IReadOnlyList<Account>>();
+
+            var allAccounts = await AccountDataAccess.ReadAccountsAsync();
+
+            var accounts = allAccounts.Where(a => a.IsDeleted);
+
+            var tasks = accounts.Select(GetPopulatedAccount);
+
+            result.Success = true;
+            result.Data = OrderAccounts(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -324,22 +387,36 @@ namespace BudgetBadger.Logic
         public async Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount)
         {
             var result = new Result();
-            var now = DateTime.Now;
 
             try
             {
                 var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(accountId);
+                var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(accountId);
                 var accountTransactionsToReconcile = accountTransactions.Where(t => t.IsActive
-                                                                               && t.ServiceDate <= dateTime
-                                                                               && t.Posted);
+                                                                       && t.ServiceDate <= dateTime
+                                                                       && t.Posted);
 
-                if (accountTransactionsToReconcile.Sum(t => t.Amount ?? 0) == amount)
+                var payeeTransactionsToReconcile = payeeTransactions.Where(t => t.IsActive
+                                                                           && t.ServiceDate <= dateTime
+                                                                           && t.Posted);
+
+                var accountTransactionsSum = accountTransactionsToReconcile.Sum(t => t.Amount ?? 0);
+                var payeeTransactionsSum = -1 * payeeTransactionsToReconcile.Sum(t => t.Amount ?? 0);
+
+                if ((accountTransactionsSum + payeeTransactionsSum) == amount)
                 {
                     var tasks = new List<Task>();
                     foreach (var transaction in accountTransactionsToReconcile)
                     {
                         transaction.Posted = true;
-                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? now;
+                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
+                        tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
+                    }
+
+                    foreach (var transaction in payeeTransactionsToReconcile)
+                    {
+                        transaction.Posted = true;
+                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
                         tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
                     }
 

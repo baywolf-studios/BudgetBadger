@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.Settings.SettingsPage"
     BackgroundColor="White">
 	<uc:RootPage.BodyContent>
@@ -17,13 +18,30 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource ListGroupHeaderHeight}"/>
                 <RowDefinition Height="{StaticResource ListItemHeight}"/>
-                <!--<RowDefinition Height="{StaticResource ListItemHeight}"/>-->
+                <RowDefinition Height="{StaticResource ListGroupHeaderHeight}"/>
+                <RowDefinition Height="{StaticResource ListItemHeight}"/>
+                <RowDefinition Height="{StaticResource ListItemHeight}"/>
+                <RowDefinition Height="{StaticResource ListItemHeight}"/>
+                <RowDefinition Height="{StaticResource ListItemHeight}"/>
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="3"
                 Text="Sync"
                 Style="{StaticResource ListGroupHeaderLabelStyle}"/>
+            <svg:SvgCachedImage
+                Grid.Row="1"
+                Grid.Column="0"
+                HeightRequest="24"
+                WidthRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="dropbox.svg">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SyncToggleCommand}"/>
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
@@ -38,6 +56,103 @@
                     <b:EventToCommandBehavior EventName="Toggled" Command="{Binding SyncToggleCommand}" />
                 </Switch.Behaviors>
             </Switch>
+            <Label
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Text="Deleted"
+                Style="{StaticResource ListGroupHeaderLabelStyle}"/>
+            <svg:SvgCachedImage
+                Grid.Row="3"
+                Grid.Column="0"
+                HeightRequest="24"
+                WidthRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="envelopegroup.svg">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage"/>
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Text="Envelope Groups"
+                Style="{StaticResource ListItemLabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <svg:SvgCachedImage
+                Grid.Row="4"
+                Grid.Column="0"
+                HeightRequest="24"
+                WidthRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="envelope.svg">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage"/>
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="4"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Text="Envelopes"
+                Style="{StaticResource ListItemLabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <svg:SvgCachedImage
+                Grid.Row="5"
+                Grid.Column="0"
+                HeightRequest="24"
+                WidthRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="account.svg">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage"/>
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="5"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Text="Accounts"
+                Style="{StaticResource ListItemLabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <svg:SvgCachedImage
+                Grid.Row="6"
+                Grid.Column="0"
+                HeightRequest="24"
+                WidthRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="payees.svg">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage"/>
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="6"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Text="Payees"
+                Style="{StaticResource ListItemLabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage"/>
+                </Label.GestureRecognizers>
+            </Label>
         </Grid>
 	</uc:RootPage.BodyContent>
 </uc:RootPage>
