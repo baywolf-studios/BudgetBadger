@@ -7,6 +7,7 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string AccountSelectionPage = "AccountSelectionPage";
         public static readonly string AccountInfoPage = "AccountInfoPage";
         public static readonly string AccountEditPage = "AccountEditPage";
+        public static readonly string AccountReconcilePage = "AccountReconcilePage";
         public static readonly string EnvelopesPage = "EnvelopesPage";
         public static readonly string EnvelopeSelectionPage = "EnvelopeSelectionPage";
         public static readonly string EnvelopeInfoPage = "EnvelopeInfoPage";
