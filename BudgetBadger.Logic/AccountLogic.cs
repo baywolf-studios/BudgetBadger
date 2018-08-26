@@ -64,7 +64,10 @@ namespace BudgetBadger.Logic
 				account.ModifiedDateTime = DateTime.Now;
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
-                result.Success = true;
+
+                var reconcileResult = await ReconcileAccount(account.Id, DateTime.Now, 0);
+
+                return reconcileResult;
             }
             catch (Exception ex)
             {
