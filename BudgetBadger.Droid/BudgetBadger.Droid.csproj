@@ -273,6 +273,13 @@
     <AndroidResource Include="Resources\drawable\helperpayee.svg" />
     <AndroidResource Include="Resources\drawable\helpertransaction.svg" />
     <AndroidResource Include="Resources\drawable\reconciled.svg" />
+    <AndroidResource Include="Resources\drawable\account.svg" />
+    <AndroidResource Include="Resources\drawable\envelope.svg" />
+    <AndroidResource Include="Resources\drawable\envelopegroup.svg" />
+    <AndroidResource Include="Resources\drawable\payees.svg" />
+    <AndroidResource Include="Resources\drawable\report.svg" />
+    <AndroidResource Include="Resources\drawable\settings.svg" />
+    <AndroidResource Include="Resources\drawable\dropbox.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

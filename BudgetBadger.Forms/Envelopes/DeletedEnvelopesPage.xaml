@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uc:ChildSearchPage
+    Title="Deleted Envelopes"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    x:Class="BudgetBadger.Forms.Envelopes.DeletedEnvelopesPage"
+    SearchCommand="{Binding SearchCommand}">
+    <uc:ChildSearchPage.BodyContent>
+        <uc:HelperControl
+            ShowHelper="{Binding NoEnvelopes}"
+            ImagePath="helperenvelope.svg"
+            HelperText="No deleted envelopes">
+            <ListView
+                x:Name="envelopeList"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                RefreshCommand="{Binding RefreshCommand}"
+                ItemsSource="{Binding FilteredEnvelopes}"
+                SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
+                HasUnevenRows="true">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="{StaticResource Key=ListDoubleItemHeight}">
+                            <Grid
+                                HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
+                                RowSpacing="4"
+                                ColumnSpacing="16"
+                                Margin="-1"
+                                Padding="1"
+                                BackgroundColor="{StaticResource BackgroundColor}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>   
+                                </Grid.RowDefinitions>
+                                <Label
+                                    x:Name="primaryLabel"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Margin="16,0"
+                                    Text="{Binding Description}"
+                                    Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                                    VerticalOptions="End"/>
+                                <Label
+                                    x:Name="secondaryLabel"
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Margin="16,0"
+                                    Text="{Binding Group.Description}"
+                                    Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                                    VerticalOptions="Start"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </uc:HelperControl>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

@@ -81,7 +81,26 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Account.IsNew}" Value="true">
+                                <DataTrigger TargetType="Button" Binding="{Binding Account.IsActive}" Value="false">
+                                    <Setter Property="IsVisible" Value="false"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button
+                            Grid.Row="4"
+                            Margin="16,0"
+                            Command="{Binding UndoDeleteCommand}"
+                            Text="Undo Delete"
+                            Style="{StaticResource SecondaryActionButtonStyle}">
+                            <Button.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Button.IsVisible>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Account.IsDeleted}" Value="false">
                                     <Setter Property="IsVisible" Value="false"/>
                                 </DataTrigger>
                             </Button.Triggers>
@@ -136,7 +155,22 @@
                         VerticalOptions="Center"
                         HorizontalOptions="EndAndExpand">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Account.IsNew}" Value="true">
+                            <DataTrigger TargetType="Button" Binding="{Binding Account.IsActive}" Value="false">
+                                <Setter Property="IsVisible" Value="false"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Command="{Binding UndoDeleteCommand}"
+                        Text="Undo Delete"
+                        Style="{StaticResource SecondaryActionButtonStyle}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Account.IsDeleted}" Value="false">
                                 <Setter Property="IsVisible" Value="false"/>
                             </DataTrigger>
                         </Button.Triggers>

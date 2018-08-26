@@ -300,9 +300,14 @@
     <BundleResource Include="Resources\helperaccount.svg" />
     <BundleResource Include="Resources\helperpayee.svg" />
     <BundleResource Include="Resources\helpertransaction.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\reconciled.svg" />
+    <BundleResource Include="Resources\reconciled.svg" />
+    <BundleResource Include="Resources\envelopegroup.svg" />
+    <BundleResource Include="Resources\envelope.svg" />
+    <BundleResource Include="Resources\account.svg" />
+    <BundleResource Include="Resources\payees.svg" />
+    <BundleResource Include="Resources\report.svg" />
+    <BundleResource Include="Resources\settings.svg" />
+    <BundleResource Include="Resources\dropbox.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

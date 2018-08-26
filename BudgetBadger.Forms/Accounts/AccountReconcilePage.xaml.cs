@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public partial class AccountReconcilePage : ChildSearchPage
+    public partial class AccountReconcilePage : ChildPage
     {
         public AccountReconcilePage()
         {

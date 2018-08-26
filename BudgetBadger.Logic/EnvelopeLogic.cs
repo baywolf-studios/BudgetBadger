@@ -211,6 +211,27 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result> UndoDeleteEnvelopeAsync(Guid id)
+        {
+            var result = new Result();
+
+            try
+            {
+                var envelopeToDelete = await _envelopeDataAccess.ReadEnvelopeAsync(id);
+                envelopeToDelete.ModifiedDateTime = DateTime.Now;
+                envelopeToDelete.DeletedDateTime = null;
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelopeToDelete);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync()
         {
             var result = new Result<IReadOnlyList<Envelope>>();
@@ -222,6 +243,31 @@ namespace BudgetBadger.Logic
 
                 result.Success = true;
                 result.Data = activeEnvelopes.ToList();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Envelope>>> GetDeletedEnvelopesAsync()
+        {
+            var result = new Result<IReadOnlyList<Envelope>>();
+
+            try
+            {
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync();
+                var deletedEnvelopes = envelopes.Where(e => !e.IsSystem
+                                                      && !e.Group.IsIncome
+                                                      && !e.Group.IsSystem
+                                                      && !e.Group.IsDebt
+                                                      && e.IsDeleted);
+
+                result.Success = true;
+                result.Data = deletedEnvelopes.ToList();
             }
             catch (Exception ex)
             {
@@ -279,6 +325,28 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result> UndoDeleteEnvelopeGroupAsync(Guid id)
+        {
+            var result = new Result();
+
+
+            try
+            {
+                var envelopeGroupToDelete = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id);
+                envelopeGroupToDelete.ModifiedDateTime = DateTime.Now;
+                envelopeGroupToDelete.DeletedDateTime = null;
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroupToDelete);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
         {
             var result = new Result<IReadOnlyList<EnvelopeGroup>>();
@@ -286,7 +354,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => !e.IsSystem && !e.IsIncome && !e.IsDebt);
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt);
                 result.Success = true;
                 result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
             }
@@ -297,6 +365,36 @@ namespace BudgetBadger.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetDeletedEnvelopeGroupsAsync()
+        {
+            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
+
+            try
+            {
+                var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsDeleted && !e.IsSystem && !e.IsIncome && !e.IsDebt);
+                result.Success = true;
+                result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public IReadOnlyList<Envelope> SearchEnvelopes(IEnumerable<Envelope> envelopes, string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return envelopes.ToList();
+            }
+
+            return OrderEnvelopes(envelopes.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
         }
 
         public IReadOnlyList<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText)
@@ -322,6 +420,11 @@ namespace BudgetBadger.Logic
         public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
         {
             return envelopeGroups.OrderBy(a => a.Description).ToList();
+        }
+
+        public IReadOnlyList<Envelope> OrderEnvelopes(IEnumerable<Envelope> envelopes)
+        {
+            return envelopes.OrderBy(b => b.Group.Description).ThenBy(a => a.Description).ToList();
         }
 
         public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)

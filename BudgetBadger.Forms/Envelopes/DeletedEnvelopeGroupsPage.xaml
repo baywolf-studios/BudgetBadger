@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uc:ChildSearchPage
+    Title="Deleted Envelope Groups"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Envelopes.DeletedEnvelopeGroupsPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
+	<uc:ChildSearchPage.BodyContent>
+        <uc:HelperControl
+            ShowHelper="{Binding NoEnvelopeGroups}"
+            ImagePath="helperenvelope.svg"
+            HelperText="No deleted envelope groups">
+            <ListView 
+                HasUnevenRows="true"
+                BackgroundColor="{StaticResource BackgroundColor}" 
+                SeparatorVisibility="None" 
+                IsPullToRefreshEnabled="true" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                RefreshCommand="{Binding RefreshCommand}" 
+                ItemsSource="{Binding FilteredEnvelopeGroups}" 
+                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
+                Header="{x:Null}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:EnvelopeGroupViewCell/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </uc:HelperControl>
+	</uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

@@ -106,7 +106,16 @@
                                 VerticalOptions="Center"
                                 HeightRequest="16"
                                 Text="Status"/>
-                            <uc:Checkbox Label="Cleared" IsChecked="{Binding Transaction.Posted}"/>
+                            <uc:Checkbox
+                                Label="Cleared"
+                                IsChecked="{Binding Transaction.Posted}">
+                                <uc:Checkbox.Triggers>
+                                    <DataTrigger TargetType="uc:Checkbox" Binding="{Binding Transaction.Reconciled}" Value="true">
+                                        <Setter Property="IsEnabled" Value="false"/>
+                                        <Setter Property="Label" Value="Reconciled"/>
+                                    </DataTrigger>
+                                </uc:Checkbox.Triggers>
+                            </uc:Checkbox>
                         </StackLayout>
                         <uc:MultilineTextEntry
                             Grid.Row="6"

@@ -54,6 +54,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand QuickBudgetCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand UndoDeleteCommand { get; set; }
         public ICommand GroupSelectedCommand { get; set; }
 
         public EnvelopeEditPageViewModel(INavigationService navigationService,
@@ -71,6 +72,7 @@ namespace BudgetBadger.Forms.Envelopes
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand(), CanExecuteDeleteCommand).ObservesProperty(() => Budget);
+            UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
             QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
         }
         
@@ -184,6 +186,43 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 BusyText = "Deleting";
                 var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncTask = _syncService.FullSync();
+
+                    await _navigationService.GoBackToRootAsync();
+
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteUndoDeleteCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                BusyText = "Undoing Delete";
+                var result = await _envelopeLogic.UndoDeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
                     BusyText = "Syncing";

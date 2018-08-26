@@ -82,6 +82,28 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result> UndoDeletePayeeAsync(Guid id)
+        {
+            var result = new Result();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id);
+                payee.ModifiedDateTime = DateTime.Now;
+                payee.DeletedDateTime = null;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<Payee>> GetPayeeAsync(Guid id)
         {
             var result = new Result<Payee>();
@@ -114,10 +136,40 @@ namespace BudgetBadger.Logic
                                              !p.IsStartingBalance
                                              && p.IsActive);
 
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
+                var tasks = payees.Select(GetPopulatedPayee);
 
                 result.Success = true;
 				result.Data = OrderPayees(await Task.WhenAll(tasks));
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync();
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsDeleted);
+
+                var tasks = payees.Select(GetPopulatedPayee);
+
+                var populatedPayees = await Task.WhenAll(tasks);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
+
+                result.Success = true;
+                result.Data = OrderPayees(filteredPopulatedPayees);
             }
             catch (Exception ex)
             {
@@ -170,11 +222,6 @@ namespace BudgetBadger.Logic
                 // may move to a "Payee Group" type setup
                 var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance).ToList();
 
-                var includeDeleted = false; //will get this from settings dataaccess
-                if (includeDeleted)
-                {
-                    payees.AddRange(allPayees.Where(p => p.IsDeleted));
-                }
 
                 var tasks = payees.Select(GetPopulatedPayee);
 
@@ -310,7 +357,7 @@ namespace BudgetBadger.Logic
 
             var payeeAccount = await _accountDataAccess.ReadAccountAsync(payee.Id);
 
-            payeeToPopulate.IsAccount = payeeAccount.IsActive;
+            payeeToPopulate.IsAccount = !payeeAccount.IsNew;
 
             return payeeToPopulate;
         }

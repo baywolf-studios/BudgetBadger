@@ -61,8 +61,7 @@
                 WidthRequest="16"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                Source="pending.svg">
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}">
                 <svg:SvgCachedImage.Triggers>
                     <DataTrigger Binding="{Binding Pending}" Value="true" TargetType="svg:SvgCachedImage">
                         <Setter Property="Source" Value="pending.svg"/>

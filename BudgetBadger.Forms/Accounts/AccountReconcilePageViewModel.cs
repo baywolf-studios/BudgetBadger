@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
 using Prism.Commands;
@@ -19,9 +20,11 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IAccountLogic _accountLogic;
         readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         public ICommand ReconcileCommand { get; set; }
         public ICommand ToggleReconcileModeCommand { get; set; }
+        public ICommand TogglePostedTransactionCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -44,8 +47,20 @@ namespace BudgetBadger.Forms.Accounts
             set
             {
                 SetProperty(ref _transactions, value);
-                RaisePropertyChanged(nameof(PendingTotal));
                 RaisePropertyChanged(nameof(PostedTotal));
+                RaisePropertyChanged(nameof(Difference));
+            }
+        }
+
+        IReadOnlyList<Transaction> _filteredTransactions;
+        public IReadOnlyList<Transaction> FilteredTransactions
+        {
+            get => _filteredTransactions;
+            set
+            {
+                SetProperty(ref _filteredTransactions, value);
+                RaisePropertyChanged(nameof(PostedTotal));
+                RaisePropertyChanged(nameof(Difference));
             }
         }
 
@@ -63,15 +78,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        public decimal PendingTotal { get => Transactions?.Where(t => t.Pending).Sum(t2 => t2.Amount ?? 0) ?? 0; }
-        public decimal PostedTotal { get => Transactions?.Where(t => t.Posted).Sum(t2 => t2.Amount ?? 0) ?? 0; }
-
-        string _searchText;
-        public string SearchText
-        {
-            get => _searchText;
-            set => SetProperty(ref _searchText, value);
-        }
+        public decimal PostedTotal { get => Transactions?.Where(t => t.Posted && t.ServiceDate <= StatementDate).Sum(t2 => t2.Amount ?? 0) ?? 0; }
+        public decimal Difference { get => StatementAmount - PostedTotal; }
 
         bool _noTransactions;
         public bool NoTransactions
@@ -80,18 +88,26 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noTransactions, value);
         }
 
-        DateTime _reconcileDate;
-        public DateTime ReconcileDate
+        DateTime _statementDate;
+        public DateTime StatementDate
         {
-            get => _reconcileDate;
-            set => SetProperty(ref _reconcileDate, value);
+            get => _statementDate;
+            set
+            {
+                SetProperty(ref _statementDate, value);
+                UpdateStatementTransactions();
+            }
         }
 
-        decimal _reconcileAmount;
-        public decimal ReconcileAmount
+        decimal _statementAmount;
+        public decimal StatementAmount
         {
-            get => _reconcileAmount;
-            set => SetProperty(ref _reconcileAmount, value);
+            get => _statementAmount;
+            set
+            {
+                SetProperty(ref _statementAmount, value);
+                RaisePropertyChanged(nameof(Difference));
+            }
         }
 
         bool _reconcileMode;
@@ -113,22 +129,26 @@ namespace BudgetBadger.Forms.Accounts
         public AccountReconcilePageViewModel(INavigationService navigationService,
                                              ITransactionLogic transactionLogic, 
                                              IAccountLogic accountLogic, 
-                                             IPageDialogService dialogService)
+                                             IPageDialogService dialogService,
+                                             ISync syncService)
         {
             _navigationService = navigationService;
             _transactionLogic = transactionLogic;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
+            _syncService = syncService;
 
             Account = new Account();
             Transactions = new List<Transaction>();
+            FilteredTransactions = new List<Transaction>();
             GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
-            ReconcileDate = DateTime.Now;
-            ReconcileAmount = 0;
+            StatementDate = DateTime.Now;
+            StatementAmount = 0;
 
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
             ToggleReconcileModeCommand = new DelegateCommand(ExecuteToggleReconcileModeCommand);
+            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -169,12 +189,13 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
+                        FilteredTransactions = result.Data;
+                        GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
                         SelectedTransaction = null;
                     }
                 }
 
-                NoTransactions = (Transactions?.Count ?? 0) == 0;
+                UpdateStatementTransactions();
             }
             finally
             {
@@ -182,18 +203,20 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
+        public void UpdateStatementTransactions()
+        {
+            FilteredTransactions = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
+            GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
+            NoTransactions = (FilteredTransactions?.Count ?? 0) == 0;
+        }
+
         public async Task ExecuteReconcileCommand()
         {
-            var reconcileResult = await _accountLogic.ReconcileAccount(Account.Id, ReconcileDate, PostedTotal);
+            var reconcileResult = await _accountLogic.ReconcileAccount(Account.Id, StatementDate, StatementAmount);
 
             if (reconcileResult.Success)
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.ReconcileCompleted , true }
-                };
-
-                await _navigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync();
             }
             else
             {
@@ -204,6 +227,41 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteToggleReconcileModeCommand()
         {
             ReconcileMode = !ReconcileMode;
+        }
+
+        public async Task ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null && !transaction.Reconciled)
+            {
+                transaction.Posted = !transaction.Posted;
+
+                Result result = new Result();
+
+                if (transaction.IsCombined)
+                {
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                }
+                else
+                {
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                }
+
+                if (result.Success)
+                {
+                    var syncTask = _syncService.FullSync();
+
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                }
+                else
+                {
+                    transaction.Posted = !transaction.Posted;
+                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                }
+            }
         }
     }
 }

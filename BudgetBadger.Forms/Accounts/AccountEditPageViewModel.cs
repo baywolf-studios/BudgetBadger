@@ -59,6 +59,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand UndoDeleteCommand { get; set; }
 
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
@@ -76,6 +77,7 @@ namespace BudgetBadger.Forms.Accounts
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
@@ -163,6 +165,43 @@ namespace BudgetBadger.Forms.Accounts
 				}
 			}
 			finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteUndoDeleteCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                BusyText = "Undoing Delete";
+                var result = await _accountLogic.UndoDeleteAccountAsync(Account.Id);
+                if (result.Success)
+                {
+                    BusyText = "Syncing";
+                    var syncTask = _syncService.FullSync();
+
+                    await _navigationService.GoBackToRootAsync();
+
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                }
+            }
+            finally
             {
                 IsBusy = false;
             }

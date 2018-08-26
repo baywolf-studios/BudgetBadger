@@ -220,7 +220,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
         {
-            if (transaction != null)
+            if (transaction != null && !transaction.Reconciled)
             {
                 transaction.Posted = !transaction.Posted;
 
