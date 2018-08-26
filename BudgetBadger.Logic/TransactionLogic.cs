@@ -342,7 +342,7 @@ namespace BudgetBadger.Logic
             var dateTimeNow = DateTime.Now;
 
             // removes the transaction from being reconciled if changed
-            if (transactionToUpsert.IsReconciled)
+            if (transactionToUpsert.Reconciled)
             {
                 transactionToUpsert.ReconciledDateTime = null;
             }

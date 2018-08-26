@@ -10,6 +10,7 @@ using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IAccountLogic _accountLogic;
         readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -27,6 +29,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand AddTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand ReconcileCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -51,7 +54,6 @@ namespace BudgetBadger.Forms.Accounts
                 SetProperty(ref _transactions, value);
                 RaisePropertyChanged(nameof(PendingTotal));
                 RaisePropertyChanged(nameof(PostedTotal));
-                RaisePropertyChanged("TransactionsTotal");
             }
         }
 
@@ -69,8 +71,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        public decimal PendingTotal { get => Transactions.Where(t => t.Pending).Sum(t2 => t2.Amount ?? 0); }
-        public decimal PostedTotal { get => Transactions.Where(t => t.Posted).Sum(t2 => t2.Amount ?? 0); }
+        public decimal PendingTotal { get => Transactions?.Where(t => t.Pending).Sum(t2 => t2.Amount ?? 0) ?? 0; }
+        public decimal PostedTotal { get => Transactions?.Where(t => t.Posted).Sum(t2 => t2.Amount ?? 0) ?? 0; }
 
         string _searchText;
         public string SearchText
@@ -86,12 +88,17 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public AccountInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IAccountLogic accountLogic, IPageDialogService dialogService)
+        public AccountInfoPageViewModel(INavigationService navigationService,
+                                        ITransactionLogic transactionLogic,
+                                        IAccountLogic accountLogic,
+                                        IPageDialogService dialogService,
+                                        ISync syncService)
         {
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
+            _syncService = syncService;
 
             Account = new Account();
             Transactions = new List<Transaction>();
@@ -105,6 +112,7 @@ namespace BudgetBadger.Forms.Accounts
             PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             SearchCommand = new DelegateCommand(ExecuteSearchCommand);
+            ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -229,13 +237,13 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    //var syncTask = _syncService.FullSync();
+                    var syncTask = _syncService.FullSync();
 
-                    //var syncResult = await syncTask;
-                    //if (!syncResult.Success)
-                    //{
-                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    //}
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
                 }
                 else
                 {
@@ -248,6 +256,16 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteSearchCommand()
         {
             GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
+        }
+
+        public async Task ExecuteReconcileCommand()
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, Account }
+            };
+
+            await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
         }
     }
 }

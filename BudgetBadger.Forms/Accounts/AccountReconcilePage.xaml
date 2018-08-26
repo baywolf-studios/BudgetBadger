@@ -7,10 +7,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Accounts.AccountInfoPage"
-    ToolbarItemCommand="{Binding EditCommand}"
-    ToolbarItemIcon="edit.svg"
-    ToolbarItemText="Edit"
+    x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage"
+    ToolbarItemCommand="{Binding ReconcileCommand}"
+    ToolbarItemIcon="save.svg"
+    ToolbarItemText="Save"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
@@ -63,7 +63,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Row="0"
@@ -89,48 +88,6 @@
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"/>
-                        <Button
-                            Grid.Column="2"
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            BackgroundColor="Transparent"
-                            BorderWidth="2"
-                            Command="{Binding PaymentCommand}">
-                            <Button.BorderColor>
-                                <OnPlatform x:TypeArguments="Color" Default="Transparent">
-                                    <On Platform="macOS" Value="White"/>
-                                </OnPlatform>
-                            </Button.BorderColor>
-                        </Button>
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Text="Payment"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            InputTransparent="true">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
-                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            InputTransparent="true">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="false">
-                                    <Setter Property="Text" Value="Not Needed"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
-                                    <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}"/>
-                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -139,11 +96,44 @@
                 HeightRequest="1"
                 BackgroundColor="{StaticResource DividerColor}"
                 Margin="0"/>
+            <Grid
+                Grid.Row="2"
+                Margin="0"
+                RowSpacing="16"
+                ColumnSpacing="16"
+                IsVisible="{Binding StatementMode}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <uc:DateSelector
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Label="Statement Date"
+                    Date="{Binding ReconcileDate}"/>
+                <uc:CalculatorEntry
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Prefix="$"
+                    Label="Statement Balance"
+                    Number="{Binding ReconcileAmount}"/>
+            </Grid>
             <uc:HelperControl
                 Grid.Row="2"
                 ShowHelper="{Binding NoTransactions}"
-                ImagePath="helpertransaction.svg"
-                HelperText="No transactions yet">
+                ImagePath="reconciled.svg"
+                HelperText="All transactions reconciled"
+                IsVisible="{Binding ReconcileMode}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger TargetType="uc:HelperControl" Binding="{Binding NoTransactions}" Value="true">
                         <Setter Property="Margin" Value="0,0,0,56"/>
@@ -160,9 +150,6 @@
                     IsGroupingEnabled="true"
                     GroupDisplayBinding="{Binding Key}"
                     HasUnevenRows="true">
-                    <ListView.Behaviors>
-                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
-                    </ListView.Behaviors>
                     <ListView.Header>
                         <dt:TransactionColumnHeaders TransactionViewCellType="Account">
                             <dt:TransactionColumnHeaders.Triggers>
@@ -234,22 +221,6 @@
                     </ListView.Footer>
                 </ListView>
             </uc:HelperControl>
-            <Button
-                x:Name="NewTransactionButton"
-                Grid.Row="2"
-                Margin="16,0,16,16"
-                Style="{StaticResource PrimaryActionButtonStyle}"
-                Text="Add Transaction" 
-                VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}">
-                <Button.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Button.IsVisible>
-            </Button>
             <BoxView
                 Grid.Row="3"
                 HeightRequest="1"
@@ -276,22 +247,20 @@
                     <ColumnDefinition Width="0"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Balance"
+                    Text="Statement Balance"
                     HorizontalTextAlignment="Start"
                     VerticalOptions="Center"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                    Text="{Binding ReconcileAmount, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
                     VerticalOptions="Center"
                     Style="{StaticResource PageHeaderLabelStyle}"/>
@@ -324,67 +293,14 @@
                     VerticalOptions="Start"
                     Style="{StaticResource PageSubheaderLabelStyle}"/>
                 <Button
-                    Grid.Column="4"
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    BackgroundColor="Transparent"
-                    BorderWidth="2"
-                    Command="{Binding PaymentCommand}">
-                    <Button.BorderColor>
-                        <OnPlatform x:TypeArguments="Color" Default="Transparent">
-                            <On Platform="macOS" Value="White"/>
-                        </OnPlatform>
-                    </Button.BorderColor>
-                </Button>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    Text="Payment"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    InputTransparent="true">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="4"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    InputTransparent="true">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="false">
-                            <Setter Property="Text" Value="Not Needed"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label" Binding="{Binding Account.PaymentRequired}" Value="true">
-                            <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="6"
+                    Grid.Column="5"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Reconcile" 
+                    Text="Change Date/Amount" 
                     VerticalOptions="Center"
                     HorizontalOptions="EndAndExpand"
-                    Command="{Binding ReconcileCommand}"/>
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="7"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction" 
-                    VerticalOptions="Center"
-                    HorizontalOptions="EndAndExpand"
-                    Command="{Binding AddTransactionCommand}"/>
+                    Command="{Binding ToggleReconcileModeCommand}"/>
             </Grid>
         </Grid>
     </uc:ChildSearchPage.BodyContent>

@@ -64,11 +64,14 @@
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="pending.svg">
                 <svg:SvgCachedImage.Triggers>
+                    <DataTrigger Binding="{Binding Pending}" Value="true" TargetType="svg:SvgCachedImage">
+                        <Setter Property="Source" Value="pending.svg"/>
+                    </DataTrigger>
                     <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
                         <Setter Property="Source" Value="posted.svg"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Posted}" Value="false" TargetType="svg:SvgCachedImage">
-                        <Setter Property="Source" Value="pending.svg"/>
+                    <DataTrigger Binding="{Binding Reconciled}" Value="true" TargetType="svg:SvgCachedImage">
+                        <Setter Property="Source" Value="reconciled.svg"/>
                     </DataTrigger>
                 </svg:SvgCachedImage.Triggers>
             </svg:SvgCachedImage>

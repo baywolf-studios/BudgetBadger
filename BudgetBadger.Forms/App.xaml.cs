@@ -191,6 +191,7 @@ namespace BudgetBadger.Forms
                 containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
                 containerRegistry.RegisterForNavigation<AccountInfoPage, AccountInfoPageViewModel>();
                 containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
+                containerRegistry.RegisterForNavigation<AccountReconcilePage, AccountReconcilePageViewModel>();
                 containerRegistry.RegisterForNavigation<PayeesPage, PayeesPageViewModel>();
                 containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
                 containerRegistry.RegisterForNavigation<PayeeInfoPage, PayeeInfoPageViewModel>();
