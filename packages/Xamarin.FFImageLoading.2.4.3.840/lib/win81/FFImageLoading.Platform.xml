@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FFImageLoading.Platform</name>
+    </assembly>
+    <members>
+        <member name="T:FFImageLoading.Cache.FFSourceBindingCache">
+            <summary>
+            This class optimizes the call to "StorageFile.GetFileFromPathAsync" that is time consuming.
+            The source of each image is the key of the cache... once a source has been checked the first time, any other control can be skipped
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.#ctor(System.String,FFImageLoading.Config.Configuration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FFImageLoading.Cache.SimpleDiskCache"/> class. This constructor attempts
+            to create a folder of the given name under the <see cref="P:Windows.Storage.ApplicationData.TemporaryFolder"/>.
+            </summary>
+            <param name="cacheFolderName">The name of the cache folder.</param>
+            <param name="configuration">The configuration object.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.#ctor(Windows.Storage.StorageFolder,System.String,FFImageLoading.Config.Configuration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FFImageLoading.Cache.SimpleDiskCache"/> class. This constructor attempts
+            to create a folder of the given name under the given root <see cref="T:Windows.Storage.StorageFolder"/>.
+            </summary>
+            <param name="rootFolder">The root folder where the cache folder will be created.</param>
+            <param name="cacheFolderName">The cache folder name.</param>
+            <param name="configuration">The configuration object.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.GetFilePathAsync(System.String)">
+            <summary>
+            GetFilePath
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.ExistsAsync(System.String)">
+            <summary>
+            Checks if cache entry exists/
+            </summary>
+            <returns>The async.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.AddToSavingQueueIfNotExistsAsync(System.String,System.Byte[],System.TimeSpan,System.Action)">
+            <summary>
+            Adds the file to cache and file saving queue if not exists.
+            </summary>
+            <param name="key">Key.</param>
+            <param name="bytes">Bytes.</param>
+            <param name="duration">Duration.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.TryGetStreamAsync(System.String)">
+            <summary>
+            Tries to get cached file as stream.
+            </summary>
+            <returns>The get async.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.RemoveAsync(System.String)">
+            <summary>
+            Removes the specified cache entry.
+            </summary>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.ClearAsync">
+            <summary>
+            Clears all cache entries.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Views.MvxCachedImageView.#ctor">
+            <summary>
+            MvxCachedImageView by Daniel Luberda
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Views.MvxCachedImageView.SetupOnBeforeImageLoading(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Setups the on before image loading.
+            You can add additional logic here to configure image loader settings before loading
+            eg. custom cache keys, svg data resolvers, etc
+            </summary>
+            <param name="imageLoader">Image loader.</param>
+        </member>
+        <member name="T:FFImageLoading.ImageService">
+            <summary>
+            FFImageLoading by Daniel Luberda
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.ImageService.Instance">
+            <summary>
+            FFImageLoading instance.
+            </summary>
+            <value>The instance.</value>
+        </member>
+        <member name="T:FFImageLoading.TaskParameterExtensions">
+            <summary>
+            TaskParameterExtensions
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.InvalidateAsync(FFImageLoading.Work.TaskParameter,FFImageLoading.Cache.CacheType)">
+            <summary>
+            Invalidate the image corresponding to given parameters from given caches.
+            </summary>
+            <param name="parameters">Image parameters.</param>
+            <param name="cacheType">Cache type.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.Preload(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Preloads the image request into memory cache/disk cache for future use.
+            </summary>
+            <param name="parameters">Image parameters.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.PreloadAsync(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Preloads the image request into memory cache/disk cache for future use.
+            IMPORTANT: It throws image loading exceptions - you should handle them
+            </summary>
+            <param name="parameters">Image parameters.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.DownloadOnly(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Downloads the image request into disk cache for future use if not already exists.
+            Only Url Source supported.
+            </summary>
+            <param name="parameters">Image parameters.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterExtensions.DownloadOnlyAsync(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Downloads the image request into disk cache for future use if not already exists.
+            Only Url Source supported.
+            IMPORTANT: It throws image loading exceptions - you should handle them
+            </summary>
+            <param name="parameters">Image parameters.</param>
+        </member>
+        <member name="T:FFImageLoading.TaskParameterPlatformExtensions">
+            <summary>
+            TaskParameterPlatformExtensions
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterPlatformExtensions.AsPNGStreamAsync(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Loads the image into PNG Stream
+            </summary>
+            <returns>The PNG Stream async.</returns>
+            <param name="parameters">Parameters.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterPlatformExtensions.AsJPGStreamAsync(FFImageLoading.Work.TaskParameter,System.Int32)">
+            <summary>
+            Loads the image into JPG Stream
+            </summary>
+            <returns>The JPG Stream async.</returns>
+            <param name="parameters">Parameters.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterPlatformExtensions.Into(FFImageLoading.Work.TaskParameter,Windows.UI.Xaml.Controls.Image)">
+            <summary>
+            Loads the image into given Image using defined parameters.
+            </summary>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterPlatformExtensions.IntoAsync(FFImageLoading.Work.TaskParameter,Windows.UI.Xaml.Controls.Image)">
+            <summary>
+            Loads the image into given Image using defined parameters.
+            IMPORTANT: It throws image loading exceptions - you should handle them
+            </summary>
+            <returns>An awaitable Task.</returns>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="M:FFImageLoading.TaskParameterPlatformExtensions.AsWriteableBitmapAsync(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Loads and gets WriteableBitmap using defined parameters.
+            IMPORTANT: It throws image loading exceptions - you should handle them
+            </summary>
+            <returns>The WriteableBitmap.</returns>
+            <param name="parameters">Parameters.</param>
+        </member>
+    </members>
+</doc>

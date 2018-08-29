@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FFImageLoading.Forms.Platform</name>
+    </assembly>
+    <members>
+        <member name="T:FFImageLoading.Forms.Platform.CachedImageRenderer">
+            <summary>
+            CachedImage Implementation
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Forms.Platform.CachedImageRenderer.Init(System.Nullable{System.Boolean})">
+            <summary>
+              Used for registration with dependency service
+            </summary>
+        </member>
+        <member name="T:FFImageLoading.Forms.Platform.CachedImageFastRenderer">
+            <summary>
+            CachedImage Implementation
+            </summary>
+        </member>
+    </members>
+</doc>

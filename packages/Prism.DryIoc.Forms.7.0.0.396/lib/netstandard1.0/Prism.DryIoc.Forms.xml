@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Prism.DryIoc.Forms</name>
+    </assembly>
+    <members>
+        <member name="T:Prism.DryIoc.PrismApplication">
+            <summary>
+            Application base class using DryIoc
+            </summary>
+        </member>
+        <member name="M:Prism.DryIoc.PrismApplication.CreateContainerExtension">
+            <summary>
+            Creates the <see cref="T:Prism.Ioc.IContainerExtension"/> for DryIoc
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Prism.DryIoc.PrismApplication.CreateContainerRules">
+            <summary>
+            Create <see cref="T:DryIoc.Rules" /> to alter behavior of <see cref="T:DryIoc.IContainer" />
+            </summary>
+            <returns>An instance of <see cref="T:DryIoc.Rules" /></returns>
+        </member>
+        <member name="M:Prism.DryIoc.PrismApplication.RegisterRequiredTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Configures the Container.
+            </summary>
+            <param name="containerRegistry"></param>
+        </member>
+    </members>
+</doc>
