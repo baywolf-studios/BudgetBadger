@@ -71,6 +71,7 @@ namespace BudgetBadger.Forms.UserControls
         public StepperPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             LabelControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;

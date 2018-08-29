@@ -25,7 +25,15 @@ namespace BudgetBadger.UWP
         public MainPage()
         {
             this.InitializeComponent();
-            LoadApplication(new BudgetBadger.Forms.App());
+            try
+            {
+                LoadApplication(new BudgetBadger.Forms.App());
+            }
+            catch(Exception ex)
+            {
+                var test = ex;
+                throw;
+            }
         }
     }
 }

@@ -107,6 +107,33 @@
     <None Include="BudgetBadger.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\account.svg" />
+    <Content Include="Assets\back.svg" />
+    <Content Include="Assets\buttonselector.svg" />
+    <Content Include="Assets\cancel.svg" />
+    <Content Include="Assets\checkedcheckbox.svg" />
+    <Content Include="Assets\dropbox.svg" />
+    <Content Include="Assets\dropdownselector.svg" />
+    <Content Include="Assets\edit.svg" />
+    <Content Include="Assets\envelope.svg" />
+    <Content Include="Assets\envelopegroup.svg" />
+    <Content Include="Assets\helperaccount.svg" />
+    <Content Include="Assets\helperenvelope.svg" />
+    <Content Include="Assets\helperpayee.svg" />
+    <Content Include="Assets\helpertransaction.svg" />
+    <Content Include="Assets\info.svg" />
+    <Content Include="Assets\newicon.svg" />
+    <Content Include="Assets\next.svg" />
+    <Content Include="Assets\payees.svg" />
+    <Content Include="Assets\pending.svg" />
+    <Content Include="Assets\posted.svg" />
+    <Content Include="Assets\previous.svg" />
+    <Content Include="Assets\reconciled.svg" />
+    <Content Include="Assets\report.svg" />
+    <Content Include="Assets\save.svg" />
+    <Content Include="Assets\search.svg" />
+    <Content Include="Assets\settings.svg" />
+    <Content Include="Assets\uncheckedcheckbox.svg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

@@ -39,8 +39,9 @@ namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
     {
-        public App() :base(null){}
-        public App(IPlatformInitializer initializer = null) : base(initializer) { }
+        public App() : this(null) {}
+        public App(IPlatformInitializer initializer) : base(initializer) {}
+        //public App(IPlatformInitializer initializer, bool setFormsDependencyResolver) : base(initializer, setFormsDependencyResolver){ }
 
         protected async override void OnStart()
         {
@@ -94,6 +95,7 @@ namespace BudgetBadger.Forms
             catch (Exception ex)
             {
                 var test = ex;
+                throw;
             }
         }
 
@@ -113,7 +115,10 @@ namespace BudgetBadger.Forms
                 var dataDirectory = Path.Combine(appDataDirectory, "data");
                 Directory.CreateDirectory(dataDirectory);
                 var syncDirectory = Path.Combine(appDataDirectory, "sync");
-                Directory.Delete(syncDirectory, true);
+                if (Directory.Exists(syncDirectory))
+                {
+                    Directory.Delete(syncDirectory, true);
+                }
                 Directory.CreateDirectory(syncDirectory);
 
                 var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
@@ -222,6 +227,7 @@ namespace BudgetBadger.Forms
             catch (Exception ex)
             {
                 var test = ex;
+                throw;
             }
         }
 
