@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FFImageLoading.Svg.Forms</name>
+    </assembly>
+    <members>
+        <member name="T:FFImageLoading.Svg.Forms.SvgImageSource">
+            <summary>
+            SVG image source.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromFile(System.String,System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromFile.
+            By default it uses view size as vectorWidth / vectorHeight
+            </summary>
+            <returns>The file.</returns>
+            <param name="file">File.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromStream(System.Func{System.IO.Stream},System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromStream.
+            By default it uses view size as vectorWidth / vectorHeight
+            </summary>
+            <returns>The stream.</returns>
+            <param name="stream">Stream.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromUri(System.Uri,System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromUri.
+            By default it uses view size as vectorWidth / vectorHeight
+            </summary>
+            <returns>The URI.</returns>
+            <param name="uri">URI.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromResource(System.String,System.Type,System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromResource.
+            By default it uses view size as vectorWidth / vectorHeight
+            </summary>
+            <returns>The resource.</returns>
+            <param name="resource">Resource.</param>
+            <param name="resolvingType">Resolving type.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromResource(System.String,System.Reflection.Assembly,System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromResource.
+            By default it uses view size as vectorWidth / vectorHeight
+            </summary>
+            <returns>The resource.</returns>
+            <param name="resource">Resource.</param>
+            <param name="sourceAssembly">Source assembly.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSource.FromSvgString(System.String,System.Int32,System.Int32,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            SvgImageSource FromSvgString.
+            </summary>
+            <returns>The svg string.</returns>
+            <param name="svg">Svg.</param>
+            <param name="vectorWidth">Vector width.</param>
+            <param name="vectorHeight">Vector height.</param>
+            <param name="useDipUnits">If set to <c>true</c> use dip units.</param>
+            <param name="replaceStringMap">Replace string map.</param>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSourceConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgImageSourceConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            ConvertBack
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgCachedImage.#ctor">
+            <summary>
+            SvgCachedImage by Daniel Luberda
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.Svg.Forms.SvgCachedImage.ReplaceStringMapProperty">
+            <summary>
+            The error placeholder property.
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.Svg.Forms.SvgCachedImage.ReplaceStringMap">
+            <summary>
+            Used to define replacement map which will be used to
+            replace text inside SVG file (eg. changing colors values)
+            </summary>
+            <value>The replace string map.</value>
+        </member>
+        <member name="M:FFImageLoading.Svg.Forms.SvgCachedImage.SetupOnBeforeImageLoading(FFImageLoading.Work.TaskParameter)">
+            <summary>
+            Setups the on before image loading.
+            You can add additional logic here to configure image loader settings before loading
+            </summary>
+            <param name="imageLoader">Image loader.</param>
+        </member>
+    </members>
+</doc>

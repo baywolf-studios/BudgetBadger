@@ -28,7 +28,8 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignEntitlements></CodesignEntitlements>
+    <CodesignEntitlements>
+    </CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -71,7 +72,8 @@
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchFloat32>true</MtouchFloat32>
-    <CodesignEntitlements></CodesignEntitlements>
+    <CodesignEntitlements>
+    </CodesignEntitlements>
     <IOSDebuggerPort>41639</IOSDebuggerPort>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
@@ -180,47 +182,129 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-30-2.png" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-60-2.png" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-90.png" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-30.png" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-60.png" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-90.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-90.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-60.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-30.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-30.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-60.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-90.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-24.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-48.png" />
-    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-72.png" />
-    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-24.png" />
-    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-48.png" />
-    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-72.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-24-2.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-48-2.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-72.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-24.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-48.png" />
-    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-72.png" />
-    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-24.png" />
-    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-48.png" />
-    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-72.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-30-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-60-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-24.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-48.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\buttonselectorblackicon.png.imageset\icons8-forward-72.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-24.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-48.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\checkedblackicon.png.imageset\icons8-checked-checkbox-72.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-24-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-48-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-expand-arrow-72.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-24.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-48.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\dropdownselectorblackicon.png.imageset\icons8-sort-down-72.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-24.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-48.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\uncheckedblackicon.png.imageset\icons8-unchecked-checkbox-72.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

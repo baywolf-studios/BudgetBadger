@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FFImageLoading.Platform</name>
+    </assembly>
+    <members>
+        <member name="T:FFImageLoading.Cache.SimpleDiskCache">
+            <summary>
+            Disk cache iOS/Android implementation.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.#ctor(System.String,FFImageLoading.Config.Configuration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FFImageLoading.Cache.SimpleDiskCache"/> class.
+            </summary>
+            <param name="cachePath">Cache path.</param>
+            <param name="configuration">Configuration.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.CreateCache(System.String,FFImageLoading.Config.Configuration)">
+            <summary>
+            Creates the cache.
+            </summary>
+            <returns>The cache.</returns>
+            <param name="cacheName">Cache name.</param>
+            <param name="configuration">Configuration.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.AddToSavingQueueIfNotExistsAsync(System.String,System.Byte[],System.TimeSpan,System.Action)">
+            <summary>
+            Adds the file to cache and file saving queue if it does not exists.
+            </summary>
+            <param name="key">Key to store/retrieve the file.</param>
+            <param name="bytes">File data in bytes.</param>
+            <param name="duration">Specifies how long an item should remain in the cache.</param>
+            <param name="writeFinished">Write finished.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.RemoveAsync(System.String)">
+            <summary>
+            Removes the specified cache entry.
+            </summary>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.ClearAsync">
+            <summary>
+            Clears all cache entries.
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.ExistsAsync(System.String)">
+            <summary>
+            Checks if cache entry exists/
+            </summary>
+            <returns>The async.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:FFImageLoading.Cache.SimpleDiskCache.TryGetStreamAsync(System.String)">
+            <summary>
+            Tries to get cached file as stream.
+            </summary>
+            <returns>The get stream.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="T:FFImageLoading.Extensions.TaskParameterPlatformExtensions">
+            <summary>
+            TaskParameterPlatformExtensions
+            </summary>
+        </member>
+        <member name="M:FFImageLoading.Extensions.TaskParameterPlatformExtensions.Into(FFImageLoading.Work.TaskParameter,FFImageLoading.Views.EvasImageContainer)">
+            <summary>
+            Loads the image into given ImageViewAsync using defined parameters.
+            </summary>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="M:FFImageLoading.Extensions.TaskParameterPlatformExtensions.IntoAsync(FFImageLoading.Work.TaskParameter,FFImageLoading.Views.EvasImageContainer)">
+            <summary>
+            Loads the image into given imageView using defined parameters.
+            IMPORTANT: It throws image loading exceptions - you should handle them
+            </summary>
+            <returns>An awaitable Task.</returns>
+            <param name="parameters">Parameters for loading the image.</param>
+            <param name="imageView">Image view that should receive the image.</param>
+        </member>
+        <member name="T:FFImageLoading.ImageService">
+            <summary>
+            FFImageLoading for Tizen
+            </summary>
+        </member>
+        <member name="P:FFImageLoading.ImageService.Instance">
+            <summary>
+            FFImageLoading instance.
+            </summary>
+            <value>The instance.</value>
+        </member>
+        <member name="F:FFImageLoading.Views.EvasImageAspect.AspectFit">
+            <summary>
+            Scale the image to fit the view. Some parts may be left empty (letter boxing).
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.Views.EvasImageAspect.AspectFill">
+            <summary>
+            Scale the image to fill the view. Some parts may be clipped in order to fill the view.
+            </summary>
+        </member>
+        <member name="F:FFImageLoading.Views.EvasImageAspect.Fill">
+            <summary>
+            Scale the image so it exactly fills the view. Scaling may not be uniform in X and Y
+            </summary>
+        </member>
+    </members>
+</doc>

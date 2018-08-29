@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Plugin.Settings.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:Plugin.Settings.Abstractions.ISettings">
+            <summary>
+            Main interface for settings
+            </summary>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Decimal,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Boolean,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Int64,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.String,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Int32,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Single,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.DateTime,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Guid,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.GetValueOrDefault(System.String,System.Double,System.String)">
+            <summary>
+            Gets the current value or the default that you specify.
+            </summary>
+            <param name="key">Key for settings</param>
+            <param name="defaultValue">default value if not set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>Value or default</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Decimal,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Boolean,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Int64,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.String,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Int32,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Single,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.DateTime,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Guid,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.AddOrUpdateValue(System.String,System.Double,System.String)">
+            <summary>
+            Adds or updates the value 
+            </summary>
+            <param name="key">Key for settting</param>
+            <param name="value">Value to set</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True of was added or updated and you need to save it.</returns>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.Remove(System.String,System.String)">
+            <summary>
+            Removes a desired key from the settings
+            </summary>
+            <param name="key">Key for setting</param>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.Clear(System.String)">
+            <summary>
+            Clear all keys from settings
+            </summary>
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+        </member>
+        <member name="M:Plugin.Settings.Abstractions.ISettings.Contains(System.String,System.String)">
+            <summary>
+            Checks to see if the key has been added.
+            </summary>
+            <param name="key">Key to check</param> 
+            <param name="fileName">Name of file for settings to be stored and retrieved </param>
+            <returns>True if contains key, else false</returns>
+        </member>
+    </members>
+</doc>

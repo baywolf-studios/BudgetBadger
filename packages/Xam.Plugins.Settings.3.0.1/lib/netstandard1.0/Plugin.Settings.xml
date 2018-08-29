@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Plugin.Settings</name>
+    </assembly>
+    <members>
+        <member name="T:Plugin.Settings.CrossSettings">
+            <summary>
+            Cross Platform settings
+            </summary>
+        </member>
+        <member name="P:Plugin.Settings.CrossSettings.IsSupported">
+            <summary>
+            Gets if the plugin is supported on the current platform.
+            </summary>
+        </member>
+        <member name="P:Plugin.Settings.CrossSettings.Current">
+            <summary>
+            Current plugin implementation to use
+            </summary>
+        </member>
+    </members>
+</doc>
