@@ -23,15 +23,15 @@
             </Grid.ColumnDefinitions>
             <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
             <Label
-                x:Name="LabelControl"
+                x:Name="TitleControl"
                 TextColor="White"
+                Text="{Binding PageTitle}"
                 Grid.Column="2"
                 Grid.Row="0"
                 LineBreakMode="TailTruncation"
                 VerticalOptions="Center"
                 FontSize="17"
                 FontAttributes="Bold"
-                Text="{Binding Title}"
                 Margin="0"
                 HorizontalOptions="Center">
             </Label>
