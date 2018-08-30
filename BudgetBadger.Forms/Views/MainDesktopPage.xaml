@@ -11,6 +11,10 @@
     <MasterDetailPage.Master>
         <ContentPage Title="Default" BackgroundColor="{StaticResource BackgroundColor}" NavigationPage.HasNavigationBar="false">
             <Grid RowSpacing="8" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64"/>
                     <RowDefinition Height="48"/>
@@ -157,6 +161,12 @@
                         </Label>
                     </StackLayout>
                 </Frame>
+                <BoxView
+                    Grid.RowSpan="7"
+                    Grid.Column="1"
+                    WidthRequest="1"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    Margin="0"/>
             </Grid>
         </ContentPage>
     </MasterDetailPage.Master>

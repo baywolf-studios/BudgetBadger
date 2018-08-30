@@ -9,6 +9,13 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
+        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
+        public string PageTitle
+        {
+            get => (string)GetValue(PageTitleProperty);
+            set => SetValue(PageTitleProperty, value);
+        }
+
         public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
         public string SearchText
         {
@@ -71,8 +78,7 @@ namespace BudgetBadger.Forms.UserControls
         public StepperPage()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
-            LabelControl.BindingContext = this;
+            TitleControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             PreviousFrame.BindingContext = this;
