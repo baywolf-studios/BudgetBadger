@@ -20,9 +20,9 @@
                 <DataTemplate>
                         <ViewCell Height="48">
                                 <Label
-                                    Margin="16, 8"
+                                    Margin="16,0"
                                     Text="{Binding .}"
-                                    HeightRequest="32"
+                                    HeightRequest="48"
                                     Style="{StaticResource ListItemLabelStyle}"/>
                         </ViewCell>
                     </DataTemplate>

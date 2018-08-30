@@ -7,10 +7,9 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
-    Title="Default"
-    IsPresented="true">
+    BackgroundColor="{StaticResource BackgroundColor}" NavigationPage.HasNavigationBar="false">
     <MasterDetailPage.Master>
-        <ContentPage Title="Default">
+        <ContentPage Title="Default" BackgroundColor="{StaticResource BackgroundColor}" NavigationPage.HasNavigationBar="false">
             <Grid RowSpacing="8" Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64"/>
