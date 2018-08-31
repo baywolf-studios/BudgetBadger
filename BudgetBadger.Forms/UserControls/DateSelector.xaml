@@ -15,6 +15,19 @@
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
+    <DatePicker
+        x:Name="DateControl"
+        TextColor="{StaticResource PrimaryTextColor}"
+        FontSize="16"
+        BackgroundColor="Transparent"
+        VerticalOptions="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        Margin="0,0,24,0"
+        AbsoluteLayout.LayoutFlags="WidthProportional">
+        <DatePicker.Effects>
+            <effects:BorderlessDatePickerEffect/>
+        </DatePicker.Effects>
+    </DatePicker>
     <Label
         x:Name="LabelControl"
         Text="{Binding Label}"
@@ -23,21 +36,10 @@
         AbsoluteLayout.LayoutBounds="0,0,1,16"
         AbsoluteLayout.LayoutFlags="WidthProportional"
         InputTransparent="true"/>
-    <DatePicker
-        x:Name="DateControl"
-        TextColor="{StaticResource PrimaryTextColor}"
-        FontSize="16"
-        BackgroundColor="Transparent"
-        VerticalOptions="Center"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional">
-        <DatePicker.Effects>
-            <effects:BorderlessDatePickerEffect/>
-            <effects:FontSizeDatePickerEffect FontSize="16"/>
-        </DatePicker.Effects>
-    </DatePicker>
     <svg:SvgCachedImage
         x:Name="IconControl"
+        HeightRequest="24"
+        WidthRequest="24"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
         ReplaceStringMap="{Binding ReplaceColor}"

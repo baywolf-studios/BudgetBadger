@@ -7,7 +7,8 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.UserControls.StepperPage"
     ios:Page.UseSafeArea="true"
-    NavigationPage.HasNavigationBar="false">
+    NavigationPage.HasNavigationBar="false"
+    NavigationPage.HasBackButton="false">
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -23,7 +24,7 @@
             </Grid.ColumnDefinitions>
             <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
             <Label
-                x:Name="TitleControl"
+                x:Name="LabelControl"
                 TextColor="White"
                 Text="{Binding PageTitle}"
                 Grid.Column="2"

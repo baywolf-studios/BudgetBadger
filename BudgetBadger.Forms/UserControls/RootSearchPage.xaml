@@ -7,7 +7,8 @@
     x:Class="BudgetBadger.Forms.UserControls.RootSearchPage"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
-    NavigationPage.HasNavigationBar="false">
+    NavigationPage.HasNavigationBar="false"
+    NavigationPage.HasBackButton="false">
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -29,10 +30,11 @@
                 VerticalOptions="Center"
                 FontSize="17"
                 FontAttributes="Bold"
-                Text="{Binding Title}">
+                Text="{Binding PageTitle}">
                 <Label.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="16,0,0,0"/>
+                        <On Platform="UWP" Value="16,0,0,0"/>
                         <On Platform="iOS" Value="0"/>
                         <On Platform="macOS" Value="0"/>
                     </OnPlatform>
@@ -40,6 +42,7 @@
                 <Label.HorizontalOptions>
                     <OnPlatform x:TypeArguments="LayoutOptions">
                         <On Platform="Android" Value="Start"/>
+                        <On Platform="UWP" Value="Start"/>
                         <On Platform="iOS" Value="Center"/>
                         <On Platform="macOS" Value="Center"/>
                     </OnPlatform>
@@ -94,6 +97,7 @@
                         HorizontalOptions="FillAndExpand"
                         TextColor="White"
                         FontSize="17"
+                        BackgroundColor="Transparent"
                         Text="{Binding SearchText}">
                         <Entry.Keyboard>
                             <Keyboard x:FactoryMethod="Create">
