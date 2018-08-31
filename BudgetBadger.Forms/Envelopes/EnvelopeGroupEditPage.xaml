@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
-    Title="Edit Envelope Group"
+    PageTitle="Edit Envelope Group"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupEditPage"
@@ -10,7 +10,7 @@
     ToolbarItemCommand="{Binding SaveCommand}">
     <uc:ChildPage.Triggers>
         <DataTrigger TargetType="uc:ChildPage" Binding="{Binding EnvelopeGroup.IsNew}" Value="True">
-            <Setter Property="Title" Value="New Envelope Group" />
+            <Setter Property="PageTitle" Value="New Envelope Group" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>

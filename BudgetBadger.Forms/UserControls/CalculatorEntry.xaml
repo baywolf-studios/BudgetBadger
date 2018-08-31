@@ -37,6 +37,7 @@
         IsPassword="false"
         FontSize="16"
         TextColor="{StaticResource PrimaryTextColor}"
+        Keyboard="Telephone"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"

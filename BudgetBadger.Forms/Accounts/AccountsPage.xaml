@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:RootSearchPage
-    Title="Accounts"
+    PageTitle="Accounts"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -123,10 +123,6 @@
                             <OnIdiom.Desktop>
                                 <DataTemplate>
                                     <dt:AccountDetailedViewCell>
-                                        <dt:AccountViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference accountList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                        </dt:AccountViewCell.ContextActions>
                                     </dt:AccountDetailedViewCell>
                                 </DataTemplate>
                             </OnIdiom.Desktop>

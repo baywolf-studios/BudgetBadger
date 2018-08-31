@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
     x:Name="this"
-    Title="{Binding Account.Description}"
+    PageTitle="{Binding Account.Description}"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"

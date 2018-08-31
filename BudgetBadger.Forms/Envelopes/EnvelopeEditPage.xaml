@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uc:ChildPage
-    Title="Edit Budget"
+    PageTitle="Edit Budget"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
@@ -11,7 +11,7 @@
     ToolbarItemCommand="{Binding SaveCommand}">
     <uc:ChildPage.Triggers>
         <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Budget.Envelope.IsNew}" Value="True">
-            <Setter Property="Title" Value="New Envelope" />
+            <Setter Property="PageTitle" Value="New Envelope" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>

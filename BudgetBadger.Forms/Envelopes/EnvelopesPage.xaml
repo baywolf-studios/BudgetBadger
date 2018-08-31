@@ -190,10 +190,6 @@
                             <OnIdiom.Desktop>
                                 <DataTemplate>
                                     <dt:EnvelopeDetailedViewCell>
-                                        <dt:EnvelopeDetailedViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
-                                        </dt:EnvelopeDetailedViewCell.ContextActions>
                                     </dt:EnvelopeDetailedViewCell>
                                 </DataTemplate>
                             </OnIdiom.Desktop>

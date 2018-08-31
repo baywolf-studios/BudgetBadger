@@ -7,6 +7,13 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ChildPage : ContentPage
     {
+        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
+        public string PageTitle
+        {
+            get => (string)GetValue(PageTitleProperty);
+            set => SetValue(PageTitleProperty, value);
+        }
+
         public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
         public string ToolbarItemText
         {

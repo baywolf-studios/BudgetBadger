@@ -7,7 +7,8 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
-    NavigationPage.HasNavigationBar="false">
+    NavigationPage.HasNavigationBar="false"
+    NavigationPage.HasBackButton="false">
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0">
             <Grid.RowDefinitions>
@@ -30,17 +31,19 @@
                 VerticalOptions="Center"
                 FontSize="17"
                 FontAttributes="Bold"
-                Text="{Binding Title}">
+                Text="{Binding PageTitle}">
                 <Grid.Column>
                     <OnPlatform x:TypeArguments="x:Int32">
                         <On Platform="Android" Value="1"/>
+                        <On Platform="UWP" Value="1"/>
                         <On Platform="iOS" Value="2"/>
                         <On Platform="macOS" Value="2"/>
                     </OnPlatform>     
                 </Grid.Column>        
                 <Grid.ColumnSpan>     
                     <OnPlatform x:TypeArguments="x:Int32">        
-                        <On Platform="Android" Value="2"/>     
+                        <On Platform="Android" Value="2"/>
+                        <On Platform="UWP" Value="2"/>
                         <On Platform="iOS" Value="1"/>
                         <On Platform="macOS" Value="1"/>
                     </OnPlatform>     
@@ -48,6 +51,7 @@
                 <Label.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="16,0,0,0"/>
+                        <On Platform="UWP" Value="16,0,0,0"/>
                         <On Platform="iOS" Value="0"/>
                         <On Platform="macOS" Value="0"/>
                     </OnPlatform>
@@ -55,6 +59,7 @@
                 <Label.HorizontalOptions>
                     <OnPlatform x:TypeArguments="LayoutOptions">
                         <On Platform="Android" Value="Start"/>
+                        <On Platform="UWP" Value="Start"/>
                         <On Platform="iOS" Value="Center"/>
                         <On Platform="macOS" Value="Center"/>
                     </OnPlatform>
@@ -122,6 +127,7 @@
                         x:Name="EntryControl"
                         Margin="8,0"
                         VerticalOptions="Center"
+                        BackgroundColor="Transparent"
                         HorizontalOptions="FillAndExpand"
                         TextColor="White"
                         FontSize="17"

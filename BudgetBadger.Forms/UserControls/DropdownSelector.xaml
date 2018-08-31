@@ -15,15 +15,6 @@
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
-    <Label
-        x:Name="LabelControl"
-        Text="{Binding Label}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalTextAlignment="Center"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"/>
     <Picker
         x:Name="PickerControl"
         FontSize="16"
@@ -39,6 +30,15 @@
             <effects:BorderlessPickerEffect/>
         </Picker.Effects>
     </Picker>
+    <Label
+        x:Name="LabelControl"
+        Text="{Binding Label}"
+        FontSize="16"
+        TextColor="{StaticResource IdleColor}"
+        VerticalTextAlignment="Center"
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        InputTransparent="true"/>
     <svg:SvgCachedImage
         x:Name="IconControl"
         HeightRequest="24"

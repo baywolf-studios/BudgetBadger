@@ -23,6 +23,7 @@ namespace BudgetBadger.UWP.Effects
 
                 control.Padding = new Windows.UI.Xaml.Thickness(0);
 
+                control.MinWidth = 0;
             }
         }
 

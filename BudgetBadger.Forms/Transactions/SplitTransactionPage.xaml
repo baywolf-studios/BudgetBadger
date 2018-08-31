@@ -7,7 +7,7 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage"
-    Title="Split Transaction"
+    PageTitle="Split Transaction"
     ToolbarItemIcon="save.svg"
     ToolbarItemText="Save"
     ToolbarItemCommand="{Binding SaveCommand}">
