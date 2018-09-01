@@ -173,7 +173,9 @@ namespace BudgetBadger.Logic
             {
                 return transaction.Envelope.Description.ToLower().Contains(searchText.ToLower())
                     || transaction.Payee.Description.ToLower().Contains(searchText.ToLower())
-                    || transaction.Account.Description.ToLower().Contains(searchText.ToLower());
+                    || transaction.Account.Description.ToLower().Contains(searchText.ToLower())
+                    || transaction.Amount.ToString().ToLower().Contains(searchText.ToLower())
+                    || transaction.ServiceDate.ToString().ToLower().Contains(searchText.ToLower());
             }
             else
             {
