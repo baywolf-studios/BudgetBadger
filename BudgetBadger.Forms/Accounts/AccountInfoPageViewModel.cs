@@ -57,6 +57,13 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
+        IReadOnlyList<Transaction> _filteredTransactions;
+        public IReadOnlyList<Transaction> FilteredTransactions
+        {
+            get => _filteredTransactions;
+            set => SetProperty(ref _filteredTransactions, value);
+        }
+
         IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
         public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
         {
@@ -102,6 +109,7 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
             Transactions = new List<Transaction>();
+            FilteredTransactions = new List<Transaction>();
             GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
 
@@ -190,6 +198,7 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success)
                     {
                         Transactions = result.Data;
+                        FilteredTransactions = result.Data;
                         GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
@@ -255,7 +264,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public void ExecuteSearchCommand()
         {
-            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
+            FilteredTransactions = _transactionLogic.SearchTransactions(Transactions, SearchText);
+            GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
         }
 
         public async Task ExecuteReconcileCommand()
