@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ViewCell
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="BudgetBadger.Forms.DataTemplates.TransactionDetailedViewCell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     Height="{StaticResource Key=ListItemHeight}">
     <ContentView
         Margin="-1"
@@ -11,66 +11,75 @@
         BackgroundColor="{StaticResource BackgroundColor}">
         <Grid
             x:Name="transactionGrid"
-            HeightRequest="{StaticResource Key=ListItemHeight}"
+            Margin="16,0"
             ColumnSpacing="16"
-            Margin="16,0">
+            HeightRequest="{StaticResource Key=ListItemHeight}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>  
-                <ColumnDefinition Width="*"/> 
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/> 
-                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="48" />
             </Grid.ColumnDefinitions>
             <Label
                 x:Name="serviceDateLabel"
                 Grid.Column="0"
-                Text="{Binding ServiceDate, StringFormat='{0:d}'}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                VerticalTextAlignment="Center"/>
+                Text="{Binding ServiceDate, StringFormat='{0:d}'}"
+                VerticalTextAlignment="Center" />
             <Label
                 x:Name="accountLabel"
                 Grid.Column="1"
-                Text="{Binding Account.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                VerticalTextAlignment="Center"/>
+                Text="{Binding Account.Description}"
+                VerticalTextAlignment="Center" />
             <Label
                 x:Name="payeeLabel"
                 Grid.Column="2"
-                Text="{Binding Payee.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                VerticalTextAlignment="Center"/>
+                Text="{Binding Payee.Description}"
+                VerticalTextAlignment="Center" />
             <Label
                 x:Name="envelopeLabel"
                 Grid.Column="3"
-                Text="{Binding Envelope.Description}"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                VerticalTextAlignment="Center"/>
+                Text="{Binding Envelope.Description}"
+                VerticalTextAlignment="Center" />
             <Label
                 x:Name="amountLabel"
                 Grid.Column="4"
-                Text="{Binding Amount, StringFormat='{0:C}'}"
-                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 HorizontalTextAlignment="End"
-                VerticalTextAlignment="Center"/>
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                Text="{Binding Amount, StringFormat='{0:C}'}"
+                VerticalTextAlignment="Center" />
             <svg:SvgCachedImage
                 x:Name="clearedImage"
-                InputTransparent="true"
                 Grid.Column="5"
                 HeightRequest="16"
-                WidthRequest="16"
                 HorizontalOptions="Center"
+                InputTransparent="true"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 VerticalOptions="Center"
-                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}">
+                WidthRequest="16">
                 <svg:SvgCachedImage.Triggers>
-                    <DataTrigger Binding="{Binding Pending}" Value="true" TargetType="svg:SvgCachedImage">
-                        <Setter Property="Source" Value="pending.svg"/>
+                    <DataTrigger
+                        Binding="{Binding Pending}"
+                        TargetType="svg:SvgCachedImage"
+                        Value="true">
+                        <Setter Property="Source" Value="pending.svg" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
-                        <Setter Property="Source" Value="posted.svg"/>
+                    <DataTrigger
+                        Binding="{Binding Posted}"
+                        TargetType="svg:SvgCachedImage"
+                        Value="true">
+                        <Setter Property="Source" Value="posted.svg" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Reconciled}" Value="true" TargetType="svg:SvgCachedImage">
-                        <Setter Property="Source" Value="reconciled.svg"/>
+                    <DataTrigger
+                        Binding="{Binding Reconciled}"
+                        TargetType="svg:SvgCachedImage"
+                        Value="true">
+                        <Setter Property="Source" Value="reconciled.svg" />
                     </DataTrigger>
                 </svg:SvgCachedImage.Triggers>
             </svg:SvgCachedImage>
@@ -79,14 +88,14 @@
                 Grid.Column="5"
                 BackgroundColor="Transparent"
                 BorderWidth="2"
-                HeightRequest="{StaticResource Key=ListItemHeight}"
-                CommandParameter="{Binding .}">
+                CommandParameter="{Binding .}"
+                HeightRequest="{StaticResource Key=ListItemHeight}">
                 <Button.BorderColor>
                     <OnPlatform x:TypeArguments="Color" Default="Transparent">
-                        <On Platform="macOS" Value="White"/>
+                        <On Platform="macOS" Value="White" />
                     </OnPlatform>
                 </Button.BorderColor>
             </Button>
         </Grid>
-    </ContentView>  
+    </ContentView>
 </ViewCell>

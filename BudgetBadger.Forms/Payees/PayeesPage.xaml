@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:RootSearchPage
-    PageTitle="Payees"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Payees.PayeesPage"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Payees"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
@@ -14,34 +14,34 @@
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
         <uc:HelperControl
-                ShowHelper="{Binding NoPayees}"
-                ImagePath="helperpayee.svg"
-                HelperText="Add a Payee using the + button">
+            HelperText="Add a Payee using the + button"
+            ImagePath="helperpayee.svg"
+            ShowHelper="{Binding NoPayees}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
+                BackgroundColor="{StaticResource BackgroundColor}"
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ListView
-                    x:Name="payeeList" 
+                    x:Name="payeeList"
                     Grid.Row="0"
-                    BackgroundColor="{StaticResource BackgroundColor}" 
-                    SeparatorVisibility="None" 
-                    IsPullToRefreshEnabled="true" 
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                    RefreshCommand="{Binding RefreshCommand}" 
-                    ItemsSource="{Binding GroupedPayees}" 
-                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}" 
-                    IsGroupingEnabled="true" 
+                    BackgroundColor="{StaticResource BackgroundColor}"
                     GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true">
+                    HasUnevenRows="true"
+                    IsGroupingEnabled="true"
+                    IsPullToRefreshEnabled="true"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    ItemsSource="{Binding GroupedPayees}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}"
+                    SeparatorVisibility="None">
                     <ListView.Behaviors>
-                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                        <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                     </ListView.Behaviors>
                     <ListView.Header>
                         <dt:PayeeColumnHeaders>
@@ -61,7 +61,7 @@
                     </ListView.Header>
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
-                            <dt:GroupHeaderViewCell/>
+                            <dt:GroupHeaderViewCell />
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                     <ListView.ItemTemplate>
@@ -70,8 +70,15 @@
                                 <DataTemplate>
                                     <dt:PayeeViewCell>
                                         <dt:PayeeViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:PayeeViewCell.ContextActions>
                                     </dt:PayeeViewCell>
                                 </DataTemplate>
@@ -80,34 +87,38 @@
                                 <DataTemplate>
                                     <dt:PayeeDetailedViewCell>
                                         <dt:PayeeDetailedViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:PayeeDetailedViewCell.ContextActions>
                                     </dt:PayeeDetailedViewCell>
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
-                                    <dt:PayeeDetailedViewCell>
-                                    </dt:PayeeDetailedViewCell>
+                                    <dt:PayeeDetailedViewCell />
                                 </DataTemplate>
                             </OnIdiom.Desktop>
                         </OnIdiom>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <BoxView
-                            BackgroundColor="{StaticResource BackgroundColor}"
-                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
                     </ListView.Footer>
                 </ListView>
                 <Button
                     x:Name="NewTransactionButton"
                     Grid.Row="0"
                     Margin="16,0,16,16"
+                    Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction" 
-                    VerticalOptions="End"
-                    Command="{Binding AddTransactionCommand}">
+                    Text="Add Transaction"
+                    VerticalOptions="End">
                     <Button.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
                             <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -118,14 +129,14 @@
                 </Button>
                 <BoxView
                     Grid.Row="1"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="2"
+                    Margin="16"
                     ColumnSpacing="16"
-                    RowSpacing="8"
-                    Margin="16">
+                    RowSpacing="8">
                     <Grid.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
                             <OnIdiom.Phone>false</OnIdiom.Phone>
@@ -134,38 +145,38 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="0"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalOptions="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalOptions="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalOptions="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="3"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction" 
-                        VerticalOptions="Center"
+                        Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
-                        Command="{Binding AddTransactionCommand}"/>
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        Text="Add Transaction"
+                        VerticalOptions="Center" />
                 </Grid>
             </Grid>
         </uc:HelperControl>

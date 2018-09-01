@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <prism:PrismApplication
-    xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+    x:Class="BudgetBadger.Forms.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
-    x:Class="BudgetBadger.Forms.App">
-	<Application.Resources>
+    xmlns:local="clr-namespace:BudgetBadger.Forms"
+    xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    <Application.Resources>
         <ResourceDictionary>
-            <converters:ReplaceColorConverter x:Key="ReplaceColorMap"/>
+            <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
+            <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
@@ -28,9 +30,9 @@
                 </x:Arguments>
             </Color>
             <Color x:Key="SecondaryTextColor" x:FactoryMethod="FromHex">
-              <x:Arguments>
-                <x:String>#737373</x:String>
-              </x:Arguments>
+                <x:Arguments>
+                    <x:String>#737373</x:String>
+                </x:Arguments>
             </Color>
             <Color x:Key="PrimaryColor" x:FactoryMethod="FromHex">
                 <x:Arguments>
@@ -59,15 +61,15 @@
                     <x:String>#e7eff5</x:String>
                 </x:Arguments>
             </Color>
-            
+
             <x:Double x:Key="ListHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListHeaderHeight">48</x:Double>
             <Style x:Key="ListHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=ListHeaderFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=ListHeaderFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
             </Style>
-            
+
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListGroupHeaderHeight">32</x:Double>
             <Color x:Key="ListGroupHeaderTextColor" x:FactoryMethod="FromHex">
@@ -76,18 +78,18 @@
                 </x:Arguments>
             </Color>
             <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
-            
+
             <x:Double x:Key="ListItemFontSize">16</x:Double>
             <x:Double x:Key="ListItemHeight">48</x:Double>
             <Style x:Key="ListItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=ListItemFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=ListItemFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
             </Style>
 
             <x:Double x:Key="DenseListGroupHeaderFontSize">12</x:Double>
@@ -98,31 +100,34 @@
                 </x:Arguments>
             </Color>
             <Style x:Key="DenseListGroupHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=DenseListGroupHeaderFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=DenseListGroupHeaderTextColor}"/>
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=DenseListGroupHeaderFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=DenseListGroupHeaderTextColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
 
             <x:Double x:Key="ListDoubleItemHeight">64</x:Double>
             <x:Double x:Key="ListDoubleItemFontSize">14</x:Double>
             <Style x:Key="ListDoubleItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleItemFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleItemFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
             </Style>
             <x:Double x:Key="ListDoubleSubItemFontSize">12</x:Double>
             <Style x:Key="ListDoubleSubItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleSubItemFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleSubItemFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
 
             <x:Double x:Key="FooterHiddenButtonHeight">56</x:Double>
             <x:Double x:Key="MinimumButtonWidth">64</x:Double>
-            
+
             <x:Double x:Key="PrimaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="PrimaryActionButtonHeight">40</x:Double>
             <Color x:Key="PrimaryActionButtonTextColor">white</Color>
-            <OnPlatform x:Key="PrimaryActionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+            <OnPlatform
+                x:Key="PrimaryActionButtonBorderWidth"
+                x:TypeArguments="x:Double"
+                Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
             <Color x:Key="PrimaryActionButtonBackgroundColor" x:FactoryMethod="FromHex">
@@ -131,39 +136,45 @@
                 </x:Arguments>
             </Color>
             <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
-                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}"/>
-                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}"/>
-                <Setter Property="BorderRadius" Value="4"/>
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}" />
+                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
             <x:Double x:Key="PrimaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="PrimaryDestructionButtonTextColor">white</Color>
-            <OnPlatform x:Key="PrimaryDestructionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+            <OnPlatform
+                x:Key="PrimaryDestructionButtonBorderWidth"
+                x:TypeArguments="x:Double"
+                Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
             <Color x:Key="PrimaryDestructionButtonBackgroundColor">red</Color>
             <Style x:Key="PrimaryDestructionButtonStyle" TargetType="Button">
-                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}"/>
-                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}"/>
-                <Setter Property="BorderRadius" Value="4"/>
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}" />
+                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
-            
+
             <x:Double x:Key="SecondaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
-            <OnPlatform x:Key="SecondaryActionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+            <OnPlatform
+                x:Key="SecondaryActionButtonBorderWidth"
+                x:TypeArguments="x:Double"
+                Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
             <Color x:Key="SecondaryActionButtonTextColor" x:FactoryMethod="FromHex">
@@ -178,74 +189,77 @@
                 </x:Arguments>
             </Color>
             <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
-                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryActionButtonTextColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}"/>
-                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}"/>
-                <Setter Property="BorderRadius" Value="4"/>
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryActionButtonTextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}" />
+                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 
             <x:Double x:Key="SecondaryDestructionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="SecondaryDestructionButtonTextColor">red</Color>
-            <OnPlatform x:Key="SecondaryDestructionButtonBorderWidth" x:TypeArguments="x:Double" Default="1">
+            <OnPlatform
+                x:Key="SecondaryDestructionButtonBorderWidth"
+                x:TypeArguments="x:Double"
+                Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
             <Color x:Key="SecondaryDestructionButtonBackgroundColor">white</Color>
             <Color x:Key="SecondaryDestructionButtonBorderColor">red</Color>
             <Style x:Key="SecondaryDestructionButtonStyle" TargetType="Button">
-                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryDestructionButtonTextColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonBackgroundColor}"/>
-                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryDestructionButtonBorderColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryDestructionButtonHeight}"/>
-                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}"/>
-                <Setter Property="BorderRadius" Value="4"/>
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryDestructionButtonTextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonBackgroundColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryDestructionButtonBorderColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryDestructionButtonHeight}" />
+                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
-            
+
             <x:Double x:Key="PageHeaderFontSize">20</x:Double>
             <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageHeaderFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=PageHeaderFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
-            
+
             <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
             <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
 
             <x:Double x:Key="MasterDetailTitleFontSize">17</x:Double>
             <Style x:Key="MasterDetailTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailTitleFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailTitleFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
 
             <x:Double x:Key="MasterDetailItemFontSize">14</x:Double>
             <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailItemFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailItemFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
 
             <x:Double x:Key="HelperControlFontSize">16</x:Double>
             <Style x:Key="HelperControlLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=HelperControlFontSize}"/>
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource Key=HelperControlFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
-            
-            <FileImageSource x:Key="SettingsTabIcon" File="settingswhitetabicon.png"/>
-            <FileImageSource x:Key="AccountsTabIcon" File="accountswhitetabicon.png"/>
-            <FileImageSource x:Key="EnvelopesTabIcon" File="envelopeswhitetabicon.png"/>
-            <FileImageSource x:Key="PayeesTabIcon" File="payeeswhitetabicon.png"/>
-            <FileImageSource x:Key="ReportsTabIcon" File="reportswhitetabicon.png"/>
+
+            <FileImageSource x:Key="SettingsTabIcon" File="settingswhitetabicon.png" />
+            <FileImageSource x:Key="AccountsTabIcon" File="accountswhitetabicon.png" />
+            <FileImageSource x:Key="EnvelopesTabIcon" File="envelopeswhitetabicon.png" />
+            <FileImageSource x:Key="PayeesTabIcon" File="payeeswhitetabicon.png" />
+            <FileImageSource x:Key="ReportsTabIcon" File="reportswhitetabicon.png" />
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

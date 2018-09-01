@@ -58,6 +58,30 @@
     </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Syncfusion.Core.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.Core.16.2.0.50\lib\Xamarin.Mac\Syncfusion.Core.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Core.XForms.macOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.Core.16.2.0.50\lib\Xamarin.Mac\Syncfusion.Core.XForms.macOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Data.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\Xamarin.Mac\Syncfusion.Data.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.GridCommon.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.GridCommon.16.2.0.50\lib\Xamarin.Mac\Syncfusion.GridCommon.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=16.2.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.16.2.0.50\lib\Xamarin.Mac\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfDataGrid.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfDataGrid.XForms.macOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.macOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNumericTextBox.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.2.0.50\lib\netstandard1.0\Syncfusion.SfNumericTextBox.XForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

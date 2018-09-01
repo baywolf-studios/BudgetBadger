@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="{Binding Budget.Envelope.Description}"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
-    ToolbarItemText="Edit"
+    PageTitle="{Binding Budget.Envelope.Description}"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding EditCommand}"
     ToolbarItemIcon="edit.svg"
-    SearchCommand="{Binding SearchCommand}"
-    SearchText="{Binding SearchText}">
+    ToolbarItemText="Edit">
     <uc:ChildSearchPage.BodyContent>
         <Grid
-            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
-            ColumnSpacing="16" 
+            BackgroundColor="{StaticResource BackgroundColor}"
+            ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0">
                 <uc:Expander.IsVisible>
@@ -37,101 +37,104 @@
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            Text="Remaining"
-                            VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
-                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="Remaining"
+                            VerticalTextAlignment="Center" />
                         <Label
                             Grid.Column="1"
-                            Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
-                            VerticalTextAlignment="Center"
                             HorizontalTextAlignment="End"
-                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Past"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Past" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="{Binding Budget.Past, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding Budget.Past, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="Activity"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Activity" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="2"
-                            Text="Budget"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Budget" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="2"
-                            Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding Budget.Amount, StringFormat='{0:c}'}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
             <BoxView
                 Grid.Row="1"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <uc:HelperControl
                 Grid.Row="2"
-                ShowHelper="{Binding NoTransactions}"
+                HelperText="No transactions yet"
                 ImagePath="helpertransaction.svg"
-                HelperText="No transactions yet">
+                ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
-                    <DataTrigger TargetType="uc:HelperControl" Binding="{Binding NoTransactions}" Value="true">
-                        <Setter Property="Margin" Value="0,0,0,56"/>
+                    <DataTrigger
+                        Binding="{Binding NoTransactions}"
+                        TargetType="uc:HelperControl"
+                        Value="true">
+                        <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
                 </uc:HelperControl.Triggers>
                 <ListView
                     BackgroundColor="{StaticResource BackgroundColor}"
-                    SeparatorVisibility="None"
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="true"
+                    IsGroupingEnabled="true"
                     IsPullToRefreshEnabled="true"
                     IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    RefreshCommand="{Binding RefreshCommand}"
                     ItemsSource="{Binding GroupedTransactions}"
+                    RefreshCommand="{Binding RefreshCommand}"
                     SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    IsGroupingEnabled="true"
-                    GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true">
+                    SeparatorVisibility="None">
                     <ListView.Behaviors>
-                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="ItemSelected" />
                     </ListView.Behaviors>
                     <ListView.Header>
                         <dt:TransactionColumnHeaders TransactionViewCellType="Envelope">
@@ -153,20 +156,28 @@
                         <OnIdiom x:TypeArguments="DataTemplate">
                             <OnIdiom.Phone>
                                 <DataTemplate>
-                                    <dt:DenseGroupHeaderViewCell/>
+                                    <dt:DenseGroupHeaderViewCell />
                                 </DataTemplate>
                             </OnIdiom.Phone>
                             <OnIdiom.Tablet>
                                 <DataTemplate>
                                     <ViewCell Height="0">
-                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                        <ContentView
+                                            Margin="-1"
+                                            Padding="1"
+                                            BackgroundColor="{StaticResource BackgroundColor}"
+                                            HeightRequest="1" />
                                     </ViewCell>
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
                                     <ViewCell Height="0">
-                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                        <ContentView
+                                            Margin="-1"
+                                            Padding="1"
+                                            BackgroundColor="{StaticResource BackgroundColor}"
+                                            HeightRequest="1" />
                                     </ViewCell>
                                 </DataTemplate>
                             </OnIdiom.Desktop>
@@ -176,31 +187,23 @@
                         <OnIdiom x:TypeArguments="DataTemplate">
                             <OnIdiom.Phone>
                                 <DataTemplate>
-                                    <dt:TransactionViewCell
-                                        TransactionViewCellType="Envelope"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Envelope" />
                                 </DataTemplate>
                             </OnIdiom.Phone>
                             <OnIdiom.Tablet>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Envelope"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Envelope" />
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Envelope"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Envelope" />
                                 </DataTemplate>
                             </OnIdiom.Desktop>
                         </OnIdiom>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <BoxView
-                            BackgroundColor="{StaticResource BackgroundColor}"
-                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
                     </ListView.Footer>
                 </ListView>
             </uc:HelperControl>
@@ -208,10 +211,10 @@
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,16"
+                Command="{Binding AddTransactionCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
-                Text="Add Transaction" 
-                VerticalOptions="End"
-                Command="{Binding AddTransactionCommand}">
+                Text="Add Transaction"
+                VerticalOptions="End">
                 <Button.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -222,14 +225,14 @@
             </Button>
             <BoxView
                 Grid.Row="3"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <Grid
                 Grid.Row="4"
+                Margin="16"
                 ColumnSpacing="16"
-                RowSpacing="8"
-                Margin="16">
+                RowSpacing="8">
                 <Grid.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>false</OnIdiom.Phone>
@@ -238,84 +241,84 @@
                     </OnIdiom>
                 </Grid.IsVisible>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Remaining"
                     HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="Remaining"
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Past"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding Budget.Past, StringFormat='{0:c}'}"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Activity"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="4"
-                    Text="Budget"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Budget"
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="4"
-                    Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="7"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction" 
-                    VerticalOptions="Center"
+                    Command="{Binding AddTransactionCommand}"
                     HorizontalOptions="EndAndExpand"
-                    Command="{Binding AddTransactionCommand}"/>
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction"
+                    VerticalOptions="Center" />
             </Grid>
         </Grid>
     </uc:ChildSearchPage.BodyContent>

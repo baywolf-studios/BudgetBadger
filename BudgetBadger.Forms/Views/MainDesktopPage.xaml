@@ -1,35 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <MasterDetailPage
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="BudgetBadger.Forms.Views.MainDesktopPage"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
-    BackgroundColor="{StaticResource BackgroundColor}" NavigationPage.HasNavigationBar="false">
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackgroundColor="{StaticResource BackgroundColor}"
+    NavigationPage.HasNavigationBar="false">
     <MasterDetailPage.Master>
-        <ContentPage Title="Default" BackgroundColor="{StaticResource BackgroundColor}" NavigationPage.HasNavigationBar="false">
-            <Grid RowSpacing="8" Margin="0">
+        <ContentPage
+            Title="Default"
+            BackgroundColor="{StaticResource BackgroundColor}"
+            NavigationPage.HasNavigationBar="false">
+            <Grid Margin="0" RowSpacing="8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="64"/>
-                    <RowDefinition Height="48"/>
-                    <RowDefinition Height="48"/>
-                    <RowDefinition Height="48"/>
-                    <RowDefinition Height="48"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="64" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="48" />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
-                    Text="Budget Badger"
                     Margin="16"
                     Style="{StaticResource MasterDetailTitleLabelStyle}"
-                    VerticalTextAlignment="Center"/>
+                    Text="Budget Badger"
+                    VerticalTextAlignment="Center" />
                 <Frame
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
@@ -37,24 +41,25 @@
                     Padding="0"
                     BackgroundColor="{StaticResource SelectedNavigationItemColor}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/EnvelopesPage"/>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NavigationPage/EnvelopesPage"
+                            Tapped="Handle_Tapped" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="EnvelopesIcon"
-                            HeightRequest="24"
-                            WidthRequest="24"
                             Margin="8,12"
+                            HeightRequest="24"
                             ReplaceStringMap="{Binding Source={StaticResource PrimaryColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="envelope.svg">
-                        </svg:SvgCachedImage>
+                            Source="envelope.svg"
+                            WidthRequest="24" />
                         <Label
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
+                            Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Envelopes"
-                            VerticalTextAlignment="Center"
-                            Style="{StaticResource MasterDetailItemLabelStyle}">
-                        </Label>
+                            VerticalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
                 <Frame
@@ -63,24 +68,25 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/AccountsPage"/>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NavigationPage/AccountsPage"
+                            Tapped="Handle_Tapped" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="AccountsIcon"
-                            HeightRequest="24"
-                            WidthRequest="24"
                             Margin="8,12"
+                            HeightRequest="24"
                             ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="account.svg">
-                        </svg:SvgCachedImage>
+                            Source="account.svg"
+                            WidthRequest="24" />
                         <Label
                             x:Name="AccountsLabel"
                             Margin="8,0"
+                            Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Accounts"
-                            VerticalTextAlignment="Center"
-                            Style="{StaticResource MasterDetailItemLabelStyle}">
-                        </Label>
+                            VerticalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
                 <Frame
@@ -89,24 +95,25 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/PayeesPage"/>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NavigationPage/PayeesPage"
+                            Tapped="Handle_Tapped" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="PayeesIcon"
-                            HeightRequest="24"
-                            WidthRequest="24"
                             Margin="8,12"
+                            HeightRequest="24"
                             ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="payees.svg">
-                        </svg:SvgCachedImage>
+                            Source="payees.svg"
+                            WidthRequest="24" />
                         <Label
                             x:Name="PayeesLabel"
                             Margin="8,0"
+                            Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Payees"
-                            VerticalTextAlignment="Center"
-                            Style="{StaticResource MasterDetailItemLabelStyle}">
-                        </Label>
+                            VerticalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
                 <Frame
@@ -115,24 +122,25 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/ReportsPage"/>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NavigationPage/ReportsPage"
+                            Tapped="Handle_Tapped" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="ReportsIcon"
-                            HeightRequest="24"
-                            WidthRequest="24"
                             Margin="8,12"
+                            HeightRequest="24"
                             ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="report.svg">
-                        </svg:SvgCachedImage>
+                            Source="report.svg"
+                            WidthRequest="24" />
                         <Label
                             x:Name="ReportsLabel"
                             Margin="8,0"
+                            Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Reports"
-                            VerticalTextAlignment="Center"
-                            Style="{StaticResource MasterDetailItemLabelStyle}">
-                        </Label>
+                            VerticalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
                 <Frame
@@ -141,32 +149,33 @@
                     Margin="8,0"
                     Padding="0">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Handle_Tapped" Command="{Binding NavigateCommand}" CommandParameter="NavigationPage/SettingsPage"/>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NavigationPage/SettingsPage"
+                            Tapped="Handle_Tapped" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="SettingsIcon"
-                            HeightRequest="24"
-                            WidthRequest="24"
                             Margin="8,12"
+                            HeightRequest="24"
                             ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="settings.svg">
-                        </svg:SvgCachedImage>
+                            Source="settings.svg"
+                            WidthRequest="24" />
                         <Label
                             x:Name="SettingsLabel"
                             Margin="8,0"
+                            Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Settings"
-                            VerticalTextAlignment="Center"
-                            Style="{StaticResource MasterDetailItemLabelStyle}">
-                        </Label>
+                            VerticalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
                 <BoxView
                     Grid.RowSpan="7"
                     Grid.Column="1"
-                    WidthRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    WidthRequest="1" />
             </Grid>
         </ContentPage>
     </MasterDetailPage.Master>

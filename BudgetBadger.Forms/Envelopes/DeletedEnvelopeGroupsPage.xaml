@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="Deleted Envelope Groups"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Envelopes.DeletedEnvelopeGroupsPage"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Deleted Envelope Groups"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}">
-	<uc:ChildSearchPage.BodyContent>
+    <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
-            ShowHelper="{Binding NoEnvelopeGroups}"
+            HelperText="No deleted envelope groups"
             ImagePath="helperenvelope.svg"
-            HelperText="No deleted envelope groups">
-            <ListView 
+            ShowHelper="{Binding NoEnvelopeGroups}">
+            <ListView
+                BackgroundColor="{StaticResource BackgroundColor}"
                 HasUnevenRows="true"
-                BackgroundColor="{StaticResource BackgroundColor}" 
-                SeparatorVisibility="None" 
-                IsPullToRefreshEnabled="true" 
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                RefreshCommand="{Binding RefreshCommand}" 
-                ItemsSource="{Binding FilteredEnvelopeGroups}" 
+                Header="{x:Null}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                ItemsSource="{Binding FilteredEnvelopeGroups}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
-                Header="{x:Null}">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <dt:EnvelopeGroupViewCell/>
+                        <dt:EnvelopeGroupViewCell />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </uc:HelperControl>
-	</uc:ChildSearchPage.BodyContent>
+    </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

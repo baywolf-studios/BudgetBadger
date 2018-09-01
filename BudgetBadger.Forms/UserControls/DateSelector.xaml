@@ -1,62 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <AbsoluteLayout
-    HeightRequest="48"
-    VerticalOptions="Start" 
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
-    xmlns="http://xamarin.com/schemas/2014/forms" 
+    x:Class="BudgetBadger.Forms.UserControls.DateSelector"
+    xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    x:Class="BudgetBadger.Forms.UserControls.DateSelector">
+    HeightRequest="48"
+    VerticalOptions="Start">
     <BoxView
-        BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All">
+        AbsoluteLayout.LayoutFlags="All"
+        BackgroundColor="Transparent">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
     <DatePicker
         x:Name="DateControl"
-        TextColor="{StaticResource PrimaryTextColor}"
-        FontSize="16"
-        BackgroundColor="Transparent"
-        VerticalOptions="Center"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
         Margin="0,0,24,0"
-        AbsoluteLayout.LayoutFlags="WidthProportional">
+        AbsoluteLayout.LayoutBounds="0,16,1,32"
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="Transparent"
+        FontSize="16"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="Center">
         <DatePicker.Effects>
-            <effects:BorderlessDatePickerEffect/>
+            <effects:BorderlessDatePickerEffect />
         </DatePicker.Effects>
     </DatePicker>
     <Label
         x:Name="LabelControl"
-        Text="{Binding Label}"
-        FontSize="12"
-        TextColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,0,1,16"
         AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"/>
+        FontSize="12"
+        InputTransparent="true"
+        Text="{Binding Label}"
+        TextColor="{StaticResource IdleColor}" />
     <svg:SvgCachedImage
         x:Name="IconControl"
-        HeightRequest="24"
-        WidthRequest="24"
         AbsoluteLayout.LayoutBounds="1,16,24,24"
         AbsoluteLayout.LayoutFlags="XProportional"
+        HeightRequest="24"
+        InputTransparent="true"
         ReplaceStringMap="{Binding ReplaceColor}"
         Source="dropdownselector.svg"
-        InputTransparent="true"/>
+        WidthRequest="24" />
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="1"/>
+        Opacity="1" />
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="0"/>
+        Opacity="0" />
 </AbsoluteLayout>

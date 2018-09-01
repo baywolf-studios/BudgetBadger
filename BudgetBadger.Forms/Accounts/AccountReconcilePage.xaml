@@ -1,37 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    x:Name="this"
-    PageTitle="{Binding Account.Description}"
+    x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage">
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
+    PageTitle="{Binding Account.Description}">
     <uc:ChildPage.BodyContent>
         <Grid
-            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
+            BackgroundColor="{StaticResource BackgroundColor}"
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
                 <uc:Expander.Triggers>
-                    <DataTrigger TargetType="uc:Expander" Binding="{Binding StatementMode}" Value="true">
-                        <Setter Property="IsExpanded" Value="false"/>
+                    <DataTrigger
+                        Binding="{Binding StatementMode}"
+                        TargetType="uc:Expander"
+                        Value="true">
+                        <Setter Property="IsExpanded" Value="false" />
                     </DataTrigger>
-                    <DataTrigger TargetType="uc:Expander" Binding="{Binding ReconcileMode}" Value="true">
-                        <Setter Property="IsExpanded" Value="true"/>
+                    <DataTrigger
+                        Binding="{Binding ReconcileMode}"
+                        TargetType="uc:Expander"
+                        Value="true">
+                        <Setter Property="IsExpanded" Value="true" />
                     </DataTrigger>
                 </uc:Expander.Triggers>
                 <uc:Expander.IsVisible>
@@ -44,116 +50,119 @@
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            Text="Statement"
-                            VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
-                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="Statement"
+                            VerticalTextAlignment="Center" />
                         <Label
                             Grid.Column="1"
-                            Text="{Binding StatementAmount, StringFormat='{0:c}'}"
-                            VerticalTextAlignment="Center"
                             HorizontalTextAlignment="End"
-                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="{Binding StatementAmount, StringFormat='{0:c}'}"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Cleared"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Cleared" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="Difference"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Difference" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding Difference, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding Difference, StringFormat='{0:c}'}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
             <BoxView
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <ScrollView
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 Margin="0"
                 Padding="16"
-                Orientation="Vertical"
-                IsVisible="{Binding StatementMode}">
+                IsVisible="{Binding StatementMode}"
+                Orientation="Vertical">
                 <Grid
                     Margin="0"
-                    RowSpacing="16"
-                    ColumnSpacing="16">
+                    ColumnSpacing="16"
+                    RowSpacing="16">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <uc:DateSelector
                         Grid.Row="0"
-                        Label="Statement Date"
-                        Date="{Binding StatementDate}"/>
+                        Date="{Binding StatementDate}"
+                        Label="Statement Date" />
                     <uc:CalculatorEntry
                         Grid.Row="1"
-                        Prefix="$"
                         Label="Statement Balance"
-                        Number="{Binding StatementAmount}"/>
+                        Number="{Binding StatementAmount}"
+                        Prefix="$" />
                 </Grid>
             </ScrollView>
             <uc:HelperControl
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                ShowHelper="{Binding NoTransactions}"
-                ImagePath="reconciled.svg"
                 HelperText="All transactions reconciled"
-                IsVisible="{Binding ReconcileMode}">
+                ImagePath="reconciled.svg"
+                IsVisible="{Binding ReconcileMode}"
+                ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
-                    <DataTrigger TargetType="uc:HelperControl" Binding="{Binding NoTransactions}" Value="true">
-                        <Setter Property="Margin" Value="0,0,0,56"/>
+                    <DataTrigger
+                        Binding="{Binding NoTransactions}"
+                        TargetType="uc:HelperControl"
+                        Value="true">
+                        <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
                 </uc:HelperControl.Triggers>
                 <ListView
                     BackgroundColor="{StaticResource BackgroundColor}"
-                    SeparatorVisibility="None"
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="true"
+                    IsGroupingEnabled="true"
                     IsPullToRefreshEnabled="true"
                     IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    RefreshCommand="{Binding RefreshCommand}"
                     ItemsSource="{Binding GroupedTransactions}"
+                    RefreshCommand="{Binding RefreshCommand}"
                     SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    IsGroupingEnabled="true"
-                    GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true">
+                    SeparatorVisibility="None">
                     <ListView.Header>
                         <dt:TransactionColumnHeaders TransactionViewCellType="Account">
                             <dt:TransactionColumnHeaders.Triggers>
@@ -174,20 +183,28 @@
                         <OnIdiom x:TypeArguments="DataTemplate">
                             <OnIdiom.Phone>
                                 <DataTemplate>
-                                    <dt:DenseGroupHeaderViewCell/>
+                                    <dt:DenseGroupHeaderViewCell />
                                 </DataTemplate>
                             </OnIdiom.Phone>
                             <OnIdiom.Tablet>
                                 <DataTemplate>
                                     <ViewCell Height="0">
-                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                        <ContentView
+                                            Margin="-1"
+                                            Padding="1"
+                                            BackgroundColor="{StaticResource BackgroundColor}"
+                                            HeightRequest="1" />
                                     </ViewCell>
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
                                     <ViewCell Height="0">
-                                        <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                        <ContentView
+                                            Margin="-1"
+                                            Padding="1"
+                                            BackgroundColor="{StaticResource BackgroundColor}"
+                                            HeightRequest="1" />
                                     </ViewCell>
                                 </DataTemplate>
                             </OnIdiom.Desktop>
@@ -197,40 +214,32 @@
                         <OnIdiom x:TypeArguments="DataTemplate">
                             <OnIdiom.Phone>
                                 <DataTemplate>
-                                    <dt:TransactionViewCell
-                                        TransactionViewCellType="Account"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
                                 </DataTemplate>
                             </OnIdiom.Phone>
                             <OnIdiom.Tablet>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Account"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Account"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
                                 </DataTemplate>
                             </OnIdiom.Desktop>
                         </OnIdiom>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <BoxView
-                            BackgroundColor="{StaticResource BackgroundColor}"
-                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
                     </ListView.Footer>
                 </ListView>
             </uc:HelperControl>
             <Grid
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
+                Margin="0"
                 ColumnSpacing="16"
                 RowSpacing="16"
-                Margin="0"
                 VerticalOptions="End">
                 <Grid.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
@@ -240,46 +249,46 @@
                     </OnIdiom>
                 </Grid.IsVisible>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Button
                     Grid.ColumnSpan="2"
                     Margin="16,0,16,16"
+                    Command="{Binding ToggleReconcileModeCommand}"
+                    IsVisible="{Binding StatementMode}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="Show Transactions"
-                    VerticalOptions="End"
-                    Command="{Binding ToggleReconcileModeCommand}"
-                    IsVisible="{Binding StatementMode}"/>
+                    VerticalOptions="End" />
                 <Button
                     Grid.Column="0"
                     Margin="16,0,0,16"
+                    Command="{Binding ToggleReconcileModeCommand}"
+                    IsVisible="{Binding ReconcileMode}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Statement"
-                    VerticalOptions="End"
-                    Command="{Binding ToggleReconcileModeCommand}"
-                    IsVisible="{Binding ReconcileMode}"/>
+                    VerticalOptions="End" />
                 <Button
                     Grid.Column="1"
                     Margin="0,0,16,16"
-                    Style="{StaticResource PrimaryActionButtonStyle}" 
-                    Text="Reconcile"
-                    VerticalOptions="End"
                     Command="{Binding ReconcileCommand}"
-                    IsVisible="{Binding ReconcileMode}"/>
+                    IsVisible="{Binding ReconcileMode}"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Reconcile"
+                    VerticalOptions="End" />
             </Grid>
             <BoxView
                 Grid.Row="3"
                 Grid.ColumnSpan="2"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <Grid
                 Grid.Row="4"
                 Grid.ColumnSpan="2"
+                Margin="16"
                 ColumnSpacing="16"
-                RowSpacing="8"
-                Margin="16">
+                RowSpacing="8">
                 <Grid.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>false</OnIdiom.Phone>
@@ -288,75 +297,81 @@
                     </OnIdiom>
                 </Grid.IsVisible>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Statement"
                     HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="Statement"
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Cleared"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    Text="Difference"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Difference"
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    Text="{Binding Difference, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding Difference, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
-                    VerticalOptions="Center"
+                    Command="{Binding ToggleReconcileModeCommand}"
                     HorizontalOptions="EndAndExpand"
-                    Command="{Binding ToggleReconcileModeCommand}">
+                    VerticalOptions="Center">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding ReconcileMode}" Value="true">
-                            <Setter Property="Text" Value="Statement"/>
-                            <Setter Property="Style" Value="{StaticResource SecondaryActionButtonStyle}"/>
+                        <DataTrigger
+                            Binding="{Binding ReconcileMode}"
+                            TargetType="Button"
+                            Value="true">
+                            <Setter Property="Text" Value="Statement" />
+                            <Setter Property="Style" Value="{StaticResource SecondaryActionButtonStyle}" />
                         </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding StatementMode}" Value="true">
-                            <Setter Property="Text" Value="Show Transactions"/>
-                            <Setter Property="Style" Value="{StaticResource PrimaryActionButtonStyle}"/>
+                        <DataTrigger
+                            Binding="{Binding StatementMode}"
+                            TargetType="Button"
+                            Value="true">
+                            <Setter Property="Text" Value="Show Transactions" />
+                            <Setter Property="Style" Value="{StaticResource PrimaryActionButtonStyle}" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
@@ -364,12 +379,12 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="6"
-                    Style="{StaticResource PrimaryActionButtonStyle}" 
-                    Text="Reconcile"
-                    VerticalOptions="Center"
-                    HorizontalOptions="EndAndExpand"
                     Command="{Binding ReconcileCommand}"
-                    IsVisible="{Binding ReconcileMode}"/>
+                    HorizontalOptions="EndAndExpand"
+                    IsVisible="{Binding ReconcileMode}"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Reconcile"
+                    VerticalOptions="Center" />
             </Grid>
         </Grid>
     </uc:ChildPage.BodyContent>

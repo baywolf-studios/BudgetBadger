@@ -1,36 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:StepperPage
-    x:Name="envelopesPage"
-    PageTitle="{Binding Schedule.Description}"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="envelopesPage"
+    NextCommand="{Binding NextCommand}"
+    PageTitle="{Binding Schedule.Description}"
+    PreviousCommand="{Binding PreviousCommand}"
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding AddCommand}"
-    ToolbarItemText="New"
     ToolbarItemIcon="newicon.svg"
-    NextCommand="{Binding NextCommand}"
-    PreviousCommand="{Binding PreviousCommand}">
+    ToolbarItemText="New">
     <uc:StepperPage.BodyContent>
         <uc:HelperControl
-                Grid.Row="2"
-                ShowHelper="{Binding NoEnvelopes}"
-                ImagePath="helperenvelope.svg"
-                HelperText="Add an Envelope using the + button">
+            Grid.Row="2"
+            HelperText="Add an Envelope using the + button"
+            ImagePath="helperenvelope.svg"
+            ShowHelper="{Binding NoEnvelopes}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
+                BackgroundColor="{StaticResource BackgroundColor}"
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <uc:Expander Grid.Row="0">
                     <uc:Expander.IsVisible>
@@ -43,106 +43,106 @@
                     <uc:Expander.HeaderContent>
                         <Grid ColumnSpacing="8">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label
                                 Grid.Column="0"
-                                Text="To Budget"
-                                VerticalTextAlignment="Center"
                                 HorizontalTextAlignment="Start"
-                                Style="{StaticResource PageHeaderLabelStyle}"/>
+                                Style="{StaticResource PageHeaderLabelStyle}"
+                                Text="To Budget"
+                                VerticalTextAlignment="Center" />
                             <Label
                                 Grid.Column="1"
-                                Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
-                                VerticalTextAlignment="Center"
                                 HorizontalTextAlignment="End"
-                                Style="{StaticResource PageHeaderLabelStyle}"/>
+                                Style="{StaticResource PageHeaderLabelStyle}"
+                                Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                                VerticalTextAlignment="Center" />
                         </Grid>
                     </uc:Expander.HeaderContent>
                     <uc:Expander.BodyContent>
                         <Grid ColumnSpacing="16" RowSpacing="8">
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Text="Past"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Past" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Text="Income"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Income" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Schedule.Income, StringFormat='{0:c}'}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="2"
-                                Text="Budgeted"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Budgeted" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="2"
-                                Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="3"
-                                Text="Over"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Over" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="3"
-                                Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
                                 HorizontalTextAlignment="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"/>
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}" />
                         </Grid>
                     </uc:Expander.BodyContent>
                 </uc:Expander>
                 <BoxView
                     Grid.Row="1"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <ListView
                     x:Name="envelopeList"
                     Grid.Row="2"
                     BackgroundColor="{StaticResource BackgroundColor}"
-                    SeparatorVisibility="None"
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="true"
+                    IsGroupingEnabled="true"
                     IsPullToRefreshEnabled="true"
                     IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    RefreshCommand="{Binding RefreshCommand}"
                     ItemsSource="{Binding GroupedBudgets}"
+                    RefreshCommand="{Binding RefreshCommand}"
                     SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
-                    IsGroupingEnabled="true"
-                    GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true">
+                    SeparatorVisibility="None">
                     <ListView.Behaviors>
-                        <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                        <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                     </ListView.Behaviors>
                     <ListView.Header>
                         <dt:EnvelopeColumnHeaders>
@@ -162,7 +162,7 @@
                     </ListView.Header>
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
-                            <dt:GroupHeaderViewCell/>
+                            <dt:GroupHeaderViewCell />
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                     <ListView.ItemTemplate>
@@ -171,8 +171,15 @@
                                 <DataTemplate>
                                     <dt:EnvelopeViewCell>
                                         <dt:EnvelopeViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:EnvelopeViewCell.ContextActions>
                                     </dt:EnvelopeViewCell>
                                 </DataTemplate>
@@ -181,34 +188,38 @@
                                 <DataTemplate>
                                     <dt:EnvelopeDetailedViewCell>
                                         <dt:EnvelopeDetailedViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference envelopeList}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference envelopeList}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:EnvelopeDetailedViewCell.ContextActions>
                                     </dt:EnvelopeDetailedViewCell>
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
-                                    <dt:EnvelopeDetailedViewCell>
-                                    </dt:EnvelopeDetailedViewCell>
+                                    <dt:EnvelopeDetailedViewCell />
                                 </DataTemplate>
                             </OnIdiom.Desktop>
                         </OnIdiom>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <BoxView
-                            BackgroundColor="{StaticResource BackgroundColor}"
-                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
                     </ListView.Footer>
                 </ListView>
                 <Button
                     x:Name="NewTransactionButton"
                     Grid.Row="2"
                     Margin="16,0,16,16"
+                    Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction" 
-                    VerticalOptions="End"
-                    Command="{Binding AddTransactionCommand}">
+                    Text="Add Transaction"
+                    VerticalOptions="End">
                     <Button.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
                             <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -219,14 +230,14 @@
                 </Button>
                 <BoxView
                     Grid.Row="3"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="4"
+                    Margin="16"
                     ColumnSpacing="16"
-                    RowSpacing="8"
-                    Margin="16">
+                    RowSpacing="8">
                     <Grid.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
                             <OnIdiom.Phone>false</OnIdiom.Phone>
@@ -235,98 +246,98 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="0"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="To Budget"
                         HorizontalTextAlignment="Start"
-                        VerticalOptions="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="To Budget"
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
                         HorizontalTextAlignment="Start"
-                        VerticalOptions="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Past"
-                        HorizontalTextAlignment="Center"
-                        VerticalOptions="End"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
-                        HorizontalTextAlignment="Center"
-                        VerticalOptions="Start"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Income"
-                        HorizontalTextAlignment="Center"
-                        VerticalOptions="End"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
-                        HorizontalTextAlignment="Center"
-                        VerticalOptions="Start"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="4"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Budgeted"
-                        HorizontalTextAlignment="Center"
-                        VerticalOptions="End"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="4"
-                        Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
                         HorizontalTextAlignment="Center"
-                        VerticalOptions="Start"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
+                        VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="5"
-                        Text="Over"
                         HorizontalTextAlignment="Center"
-                        VerticalOptions="End"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Over"
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="5"
-                        Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
                         HorizontalTextAlignment="Center"
-                        VerticalOptions="Start"
-                        Style="{StaticResource PageSubheaderLabelStyle}"/>
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
+                        VerticalOptions="Start" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="7"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction" 
-                        VerticalOptions="Center"
+                        Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
-                        Command="{Binding AddTransactionCommand}"/>
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        Text="Add Transaction"
+                        VerticalOptions="Center" />
                 </Grid>
             </Grid>
         </uc:HelperControl>

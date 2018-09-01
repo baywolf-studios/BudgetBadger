@@ -1,64 +1,69 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="Envelope Groups"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupSelectionPage"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Envelope Groups"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
-	<uc:ChildSearchPage.BodyContent>
+    <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
-            ShowHelper="{Binding NoEnvelopeGroups}"
+            HelperText="Add an Envelope Group using the + button"
             ImagePath="helperenvelope.svg"
-            HelperText="Add an Envelope Group using the + button">
-            <ListView 
+            ShowHelper="{Binding NoEnvelopeGroups}">
+            <ListView
+                BackgroundColor="{StaticResource BackgroundColor}"
                 HasUnevenRows="true"
-                BackgroundColor="{StaticResource BackgroundColor}" 
-                SeparatorVisibility="None" 
-                IsPullToRefreshEnabled="true" 
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                RefreshCommand="{Binding RefreshCommand}" 
-                ItemsSource="{Binding FilteredEnvelopeGroups}" 
+                Header="{x:Null}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                ItemsSource="{Binding FilteredEnvelopeGroups}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
-                Header="{x:Null}">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.Triggers>
-                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="False">
-                      <Setter Property="Header" Value="{x:Null}"/>
-                   </DataTrigger>
-                   <DataTrigger TargetType="ListView" Binding="{Binding HasSearchText}" Value="True">
-                      <Setter Property="Header" Value="{Binding .}"/>
-                   </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding HasSearchText}"
+                        TargetType="ListView"
+                        Value="False">
+                        <Setter Property="Header" Value="{x:Null}" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding HasSearchText}"
+                        TargetType="ListView"
+                        Value="True">
+                        <Setter Property="Header" Value="{Binding .}" />
+                    </DataTrigger>
                 </ListView.Triggers>
                 <ListView.HeaderTemplate>
                     <DataTemplate>
                         <ContentView
-                            BackgroundColor="{StaticResource BackgroundColor}"
                             Margin="-1"
-                            Padding="1">
+                            Padding="1"
+                            BackgroundColor="{StaticResource BackgroundColor}">
                             <Button
                                 Margin="16,8"
-                                Text="{Binding SearchText, StringFormat='Add Group: {0}'}"
                                 Command="{Binding SaveCommand}"
-                                Style="{StaticResource SecondaryActionButtonStyle}">
-                            </Button>
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Text="{Binding SearchText, StringFormat='Add Group: {0}'}" />
                         </ContentView>
                     </DataTemplate>
                 </ListView.HeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <dt:EnvelopeGroupViewCell/>
+                        <dt:EnvelopeGroupViewCell />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </uc:HelperControl>
-	</uc:ChildSearchPage.BodyContent>
+    </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

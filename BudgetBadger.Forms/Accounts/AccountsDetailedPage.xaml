@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<uc:RootSearchPage
+    x:Class="BudgetBadger.Forms.Accounts.AccountsDetailedPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Accounts"
+    ToolbarItemCommand="{Binding AddCommand}"
+    ToolbarItemIcon="newicon.svg"
+    ToolbarItemText="New">
+    <uc:RootSearchPage.BodyContent>
+        <uc:HelperControl
+            HelperText="Add an Account using the + button"
+            ImagePath="helperaccount.svg"
+            ShowHelper="{Binding NoAccounts}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <syncfusion:SfDataGrid
+                    Grid.Row="0"
+                    Margin="16,0"
+                    AllowPullToRefresh="True"
+                    AutoGenerateColumns="False"
+                    BackgroundColor="{StaticResource BackgroundColor}"
+                    ColumnSizer="Star"
+                    GridStyle="{StaticResource sfDataGridStyle}"
+                    HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
+                    IsBusy="{Binding IsBusy}"
+                    ItemsSource="{Binding Accounts, Mode=TwoWay}"
+                    PullToRefreshCommand="{Binding RefreshCommand}"
+                    RowHeight="{StaticResource Key=ListItemHeight}"
+                    SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <syncfusion:SfDataGrid.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
+                    </syncfusion:SfDataGrid.Behaviors>
+                    <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Type"
+                            HeaderTextAlignment="Start"
+                            MappingName="Type"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Name"
+                            HeaderTextAlignment="Start"
+                            MappingName="Description"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            Format="c"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Pending"
+                            HeaderTextAlignment="End"
+                            MappingName="Pending"
+                            TextAlignment="End" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            Format="c"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Posted"
+                            HeaderTextAlignment="End"
+                            MappingName="Posted"
+                            TextAlignment="End" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            Format="c"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Balance"
+                            HeaderTextAlignment="End"
+                            MappingName="Balance"
+                            TextAlignment="End" />
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+                <BoxView
+                    Grid.Row="1"
+                    Margin="0"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    HeightRequest="1" />
+                <Grid
+                    Grid.Row="2"
+                    Margin="16"
+                    ColumnSpacing="16">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="Net Worth"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Center" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Command="{Binding AddTransactionCommand}"
+                        HorizontalOptions="EndAndExpand"
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        Text="Add Transaction"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Grid>
+        </uc:HelperControl>
+    </uc:RootSearchPage.BodyContent>
+</uc:RootSearchPage>

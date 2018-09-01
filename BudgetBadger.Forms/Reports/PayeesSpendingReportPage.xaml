@@ -1,28 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    PageTitle="Payees Spending Report"
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
+    x:Class="BudgetBadger.Forms.Reports.PayeesSpendingReportPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.Reports.PayeesSpendingReportPage">
+    PageTitle="Payees Spending Report">
     <uc:ChildPage.BodyContent>
         <Grid
-            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
+            BackgroundColor="{StaticResource BackgroundColor}"
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <uc:Expander
-                Grid.Row="0"
-                IsExpanded="true">
+            <uc:Expander Grid.Row="0" IsExpanded="true">
                 <uc:Expander.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -33,77 +31,75 @@
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Label
-                            Text="Filter"
-                            VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start"
-                            Style="{StaticResource PageHeaderLabelStyle}"/>
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="Filter"
+                            VerticalTextAlignment="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <uc:DateSelector
                             Grid.Column="0"
-                            Label="Begin Date"
-                            Date="{Binding BeginDate}">
-                        </uc:DateSelector>
+                            Date="{Binding BeginDate}"
+                            Label="Begin Date" />
                         <uc:DateSelector
                             Grid.Column="1"
-                            Label="End Date"
-                            Date="{Binding EndDate}">
-                        </uc:DateSelector>
+                            Date="{Binding EndDate}"
+                            Label="End Date" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
             <BoxView
                 Grid.Row="1"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <ListView
                 Grid.Row="2"
                 BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
+                HasUnevenRows="true"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
                 ItemsSource="{Binding Payees}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedPayee, Mode=TwoWay}"
-                HasUnevenRows="true">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="{StaticResource Key=ListItemHeight}">
                             <Grid
-                                HeightRequest="{StaticResource Key=ListItemHeight}"
-                                RowSpacing="0"
-                                ColumnSpacing="16"
                                 Margin="-1"
                                 Padding="1"
-                                BackgroundColor="{StaticResource BackgroundColor}">
+                                BackgroundColor="{StaticResource BackgroundColor}"
+                                ColumnSpacing="16"
+                                HeightRequest="{StaticResource Key=ListItemHeight}"
+                                RowSpacing="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>   
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label
                                     Grid.Column="0"
                                     Margin="16,0,0,0"
-                                    Text="{Binding XLabel}"
-                                    Style="{StaticResource Key=ListItemLabelStyle}"/>
-                                <Label 
+                                    Style="{StaticResource Key=ListItemLabelStyle}"
+                                    Text="{Binding XLabel}" />
+                                <Label
                                     Grid.Column="1"
                                     Margin="0,0,16,0"
-                                    Text="{Binding YValue, StringFormat='{0:C}'}"
+                                    HorizontalTextAlignment="End"
                                     Style="{StaticResource Key=ListItemLabelStyle}"
-                                    HorizontalTextAlignment="End"/>
+                                    Text="{Binding YValue, StringFormat='{0:C}'}" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -111,14 +107,14 @@
             </ListView>
             <BoxView
                 Grid.Row="3"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <Grid
                 Grid.Row="4"
+                Margin="16"
                 ColumnSpacing="16"
-                RowSpacing="8"
-                Margin="16">
+                RowSpacing="8">
                 <Grid.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>false</OnIdiom.Phone>
@@ -127,28 +123,26 @@
                     </OnIdiom>
                 </Grid.IsVisible>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Column="0"
-                    Text="Filters"
                     HorizontalTextAlignment="Start"
-                    VerticalOptions="Center"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="Filters"
+                    VerticalOptions="Center" />
                 <uc:DateSelector
                     Grid.Column="2"
-                    Label="Begin Date"
-                    Date="{Binding BeginDate}">
-                </uc:DateSelector>
+                    Date="{Binding BeginDate}"
+                    Label="Begin Date" />
                 <uc:DateSelector
                     Grid.Column="3"
-                    Label="End Date"
-                    Date="{Binding EndDate}">
-                </uc:DateSelector>
+                    Date="{Binding EndDate}"
+                    Label="End Date" />
             </Grid>
         </Grid>
     </uc:ChildPage.BodyContent>

@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    x:Name="this"
+    x:Class="BudgetBadger.Forms.Transactions.TransactionSelectionPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Transactions.TransactionSelectionPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
         <ListView
             BackgroundColor="{StaticResource BackgroundColor}"
-            SeparatorVisibility="None"
+            GroupDisplayBinding="{Binding Key}"
+            HasUnevenRows="true"
+            IsGroupingEnabled="true"
             IsPullToRefreshEnabled="true"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            RefreshCommand="{Binding RefreshCommand}"
             ItemsSource="{Binding GroupedTransactions}"
+            RefreshCommand="{Binding RefreshCommand}"
             SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-            IsGroupingEnabled="true"
-            GroupDisplayBinding="{Binding Key}"
-            HasUnevenRows="true">
+            SeparatorVisibility="None">
             <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
             </ListView.Behaviors>
             <ListView.Header>
                 <dt:TransactionColumnHeaders TransactionViewCellType="Full">
@@ -44,20 +44,28 @@
                 <OnIdiom x:TypeArguments="DataTemplate">
                     <OnIdiom.Phone>
                         <DataTemplate>
-                            <dt:DenseGroupHeaderViewCell/>
+                            <dt:DenseGroupHeaderViewCell />
                         </DataTemplate>
                     </OnIdiom.Phone>
                     <OnIdiom.Tablet>
                         <DataTemplate>
                             <ViewCell Height="0">
-                                <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                <ContentView
+                                    Margin="-1"
+                                    Padding="1"
+                                    BackgroundColor="{StaticResource BackgroundColor}"
+                                    HeightRequest="1" />
                             </ViewCell>
                         </DataTemplate>
                     </OnIdiom.Tablet>
                     <OnIdiom.Desktop>
                         <DataTemplate>
                             <ViewCell Height="0">
-                                <ContentView HeightRequest="1" Margin="-1" Padding="1" BackgroundColor="{StaticResource BackgroundColor}"/>
+                                <ContentView
+                                    Margin="-1"
+                                    Padding="1"
+                                    BackgroundColor="{StaticResource BackgroundColor}"
+                                    HeightRequest="1" />
                             </ViewCell>
                         </DataTemplate>
                     </OnIdiom.Desktop>
@@ -67,23 +75,17 @@
                 <OnIdiom x:TypeArguments="DataTemplate">
                     <OnIdiom.Phone>
                         <DataTemplate>
-                            <dt:TransactionViewCell
-                                TransactionViewCellType="Full"
-                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full" />
                         </DataTemplate>
                     </OnIdiom.Phone>
                     <OnIdiom.Tablet>
                         <DataTemplate>
-                            <dt:TransactionDetailedViewCell
-                                TransactionViewCellType="Full"
-                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full" />
                         </DataTemplate>
                     </OnIdiom.Tablet>
                     <OnIdiom.Desktop>
                         <DataTemplate>
-                            <dt:TransactionDetailedViewCell
-                                TransactionViewCellType="Full"
-                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                            <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full" />
                         </DataTemplate>
                     </OnIdiom.Desktop>
                 </OnIdiom>

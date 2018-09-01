@@ -1,49 +1,55 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout VerticalOptions="StartAndExpand" xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry">
+<?xml version="1.0" encoding="UTF-8" ?>
+<AbsoluteLayout
+    x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    VerticalOptions="StartAndExpand">
     <BoxView
-        BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All">
+        AbsoluteLayout.LayoutFlags="All"
+        BackgroundColor="Transparent">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
     <Label
         x:Name="LabelControl"
-        Text="{Binding Label}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"/>
+        FontSize="16"
+        InputTransparent="true"
+        Text="{Binding Label}"
+        TextColor="{StaticResource IdleColor}"
+        VerticalTextAlignment="Center" />
     <controls:ExpandingEditor
         x:Name="TextControl"
-        Text="{Binding Text}"
-        Keyboard="{Binding Keyboard, Mode=TwoWay}"
-        FontSize="16"
-        TextColor="{StaticResource PrimaryTextColor}"
-        BackgroundColor="Transparent"
         Margin="0,0,0,7"
-        VerticalOptions="StartAndExpand"
         AbsoluteLayout.LayoutBounds="0,22,1,1"
-        AbsoluteLayout.LayoutFlags="WidthProportional, HeightProportional">
+        AbsoluteLayout.LayoutFlags="WidthProportional, HeightProportional"
+        BackgroundColor="Transparent"
+        FontSize="16"
+        Keyboard="{Binding Keyboard, Mode=TwoWay}"
+        Text="{Binding Text}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="StartAndExpand">
         <controls:ExpandingEditor.Effects>
             <effects:BorderlessEditorEffect />
         </controls:ExpandingEditor.Effects>
     </controls:ExpandingEditor>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,1,1,1"
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="1"/>
+        Opacity="1" />
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,1,1,2"
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="0"/>
+        Opacity="0" />
 </AbsoluteLayout>

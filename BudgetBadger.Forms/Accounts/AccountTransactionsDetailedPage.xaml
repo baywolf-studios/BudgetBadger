@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<uc:ChildSearchPage
+    x:Class="BudgetBadger.Forms.Accounts.AccountTransactionsDetailedPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
+    PageTitle="{Binding Account.Description}"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
+    ToolbarItemCommand="{Binding EditCommand}"
+    ToolbarItemIcon="edit.svg"
+    ToolbarItemText="Edit">
+    <uc:ChildSearchPage.BodyContent>
+        <Grid
+            Margin="0"
+            BackgroundColor="{StaticResource BackgroundColor}"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <uc:HelperControl
+                Grid.Row="0"
+                HelperText="No transactions yet"
+                ImagePath="helpertransaction.svg"
+                ShowHelper="{Binding NoTransactions}">
+                <uc:HelperControl.Triggers>
+                    <DataTrigger
+                        Binding="{Binding NoTransactions}"
+                        TargetType="uc:HelperControl"
+                        Value="true">
+                        <Setter Property="Margin" Value="0,0,0,56" />
+                    </DataTrigger>
+                </uc:HelperControl.Triggers>
+                <syncfusion:SfDataGrid
+                    Margin="16,0"
+                    AllowPullToRefresh="True"
+                    AutoGenerateColumns="False"
+                    BackgroundColor="{StaticResource BackgroundColor}"
+                    ColumnSizer="Star"
+                    GridStyle="{StaticResource sfDataGridStyle}"
+                    HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
+                    IsBusy="{Binding IsBusy}"
+                    ItemsSource="{Binding Transactions, Mode=TwoWay}"
+                    PullToRefreshCommand="{Binding RefreshCommand}"
+                    RowHeight="{StaticResource Key=ListItemHeight}"
+                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <syncfusion:SfDataGrid.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
+                    </syncfusion:SfDataGrid.Behaviors>
+                    <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            Format="d"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="ServiceDate"
+                            HeaderTextAlignment="Start"
+                            MappingName="ServiceDate"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Account"
+                            HeaderTextAlignment="Start"
+                            MappingName="Account.Description"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Payee"
+                            HeaderTextAlignment="Start"
+                            MappingName="Payee.Description"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Envelope"
+                            HeaderTextAlignment="Start"
+                            MappingName="Envelope.Description"
+                            TextAlignment="Start" />
+                        <syncfusion:GridTextColumn
+                            CellTextSize="{StaticResource ListItemFontSize}"
+                            Format="c"
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Amount"
+                            HeaderTextAlignment="End"
+                            MappingName="Amount"
+                            TextAlignment="End" />
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+            </uc:HelperControl>
+            <BoxView
+                Grid.Row="1"
+                Margin="0"
+                BackgroundColor="{StaticResource DividerColor}"
+                HeightRequest="1" />
+            <Grid
+                Grid.Row="2"
+                Margin="16"
+                ColumnSpacing="16"
+                RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalTextAlignment="Start"
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="Balance"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalTextAlignment="Start"
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Pending"
+                    VerticalOptions="End" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Posted"
+                    VerticalOptions="End" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="4"
+                    BackgroundColor="Transparent"
+                    BorderWidth="2"
+                    Command="{Binding PaymentCommand}">
+                    <Button.BorderColor>
+                        <OnPlatform x:TypeArguments="Color" Default="Transparent">
+                            <On Platform="macOS" Value="White" />
+                        </OnPlatform>
+                    </Button.BorderColor>
+                </Button>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="true"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Payment"
+                    VerticalOptions="End">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Account.PaymentRequired}"
+                            TargetType="Label"
+                            Value="true">
+                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="true"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    VerticalOptions="Start">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Account.PaymentRequired}"
+                            TargetType="Label"
+                            Value="false">
+                            <Setter Property="Text" Value="Not Needed" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding Account.PaymentRequired}"
+                            TargetType="Label"
+                            Value="true">
+                            <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}" />
+                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="6"
+                    Command="{Binding ReconcileCommand}"
+                    HorizontalOptions="EndAndExpand"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="Reconcile"
+                    VerticalOptions="Center" />
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="7"
+                    Command="{Binding AddTransactionCommand}"
+                    HorizontalOptions="EndAndExpand"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add Transaction"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Grid>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

@@ -180,6 +180,9 @@
     <PackageReference Include="Prism.DryIoc.Forms">
       <Version>7.0.0.396</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfDataGrid">
+      <Version>16.2.0.50</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
       <Version>2.4.3.840</Version>
     </PackageReference>

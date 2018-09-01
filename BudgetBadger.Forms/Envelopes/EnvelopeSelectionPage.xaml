@@ -1,46 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="Select an Envelope"
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeSelectionPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Select an Envelope"
     SearchCommand="{Binding SearchCommand}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
-            ShowHelper="{Binding NoEnvelopes}"
+            HelperText="Add an Envelope using the + button"
             ImagePath="helperenvelope.svg"
-            HelperText="Add an Envelope using the + button">
+            ShowHelper="{Binding NoEnvelopes}">
             <ListView
                 x:Name="envelopeList"
                 BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true"
+                IsGroupingEnabled="true"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
                 ItemsSource="{Binding GroupedBudgets}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
-                IsGroupingEnabled="true"
-                GroupDisplayBinding="{Binding Key}"
-                HasUnevenRows="true">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <dt:GroupHeaderViewCell/>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <dt:EnvelopeViewCell/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:GroupHeaderViewCell />
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:EnvelopeViewCell />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
