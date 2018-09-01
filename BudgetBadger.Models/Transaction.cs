@@ -84,25 +84,6 @@ namespace BudgetBadger.Models
 
         public bool Reconciled { get => ReconciledDateTime.HasValue; }
 
-        public TransactionStatus Status
-        {
-            get
-            {
-                if (Reconciled)
-                {
-                    return TransactionStatus.Reconciled;
-                }
-                else if (Posted)
-                {
-                    return TransactionStatus.Posted;
-                }
-                else
-                {
-                    return TransactionStatus.Pending;
-                }
-            }
-        }
-
         Account account;
         public Account Account
         {
