@@ -167,6 +167,20 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public bool FilterTransaction(Transaction transaction, string searchText)
+        {
+            if (transaction != null)
+            {
+                return transaction.Envelope.Description.ToLower().Contains(searchText.ToLower())
+                    || transaction.Payee.Description.ToLower().Contains(searchText.ToLower())
+                    || transaction.Account.Description.ToLower().Contains(searchText.ToLower());
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -174,9 +188,7 @@ namespace BudgetBadger.Logic
                 return transactions.ToList();
             }
 
-            var searchResults = transactions.Where(t => t.Envelope.Description.ToLower().Contains(searchText.ToLower())
-                                                   || t.Payee.Description.ToLower().Contains(searchText.ToLower())
-                                                   || t.Account.Description.ToLower().Contains(searchText.ToLower()));
+            var searchResults = transactions.Where(t => FilterTransaction(t, searchText));
 
 			return OrderTransactions(searchResults);
         }

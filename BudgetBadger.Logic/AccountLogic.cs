@@ -50,13 +50,13 @@ namespace BudgetBadger.Logic
             if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now)
                 || payeeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
-                errors.Add("Cannot delete account with future transactions"); 
+                errors.Add("Cannot delete account with future transactions");
             }
 
-            if (accountTransactions.Any(t => t.IsActive && t.Pending) 
+            if (accountTransactions.Any(t => t.IsActive && t.Pending)
                 || payeeTransactions.Any(t => t.IsActive && t.Pending))
             {
-                errors.Add("Cannot delete account with pending transactions"); 
+                errors.Add("Cannot delete account with pending transactions");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -75,7 +75,7 @@ namespace BudgetBadger.Logic
                 }
 
                 var account = await AccountDataAccess.ReadAccountAsync(id);
-				account.ModifiedDateTime = DateTime.Now;
+                account.ModifiedDateTime = DateTime.Now;
                 account.DeletedDateTime = DateTime.Now;
                 await AccountDataAccess.UpdateAccountAsync(account);
 
@@ -164,7 +164,7 @@ namespace BudgetBadger.Logic
             var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-			result.Data = OrderAccounts(await Task.WhenAll(tasks));
+            result.Data = OrderAccounts(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -180,7 +180,7 @@ namespace BudgetBadger.Logic
             var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-			result.Data = OrderAccounts(await Task.WhenAll(tasks));
+            result.Data = OrderAccounts(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -206,6 +206,18 @@ namespace BudgetBadger.Logic
             return new List<string> { "Budget", "Reporting" };
         }
 
+        public bool FilterAccount(Account account, string searchText)
+        {
+            if (account != null)
+            {
+                return account.Description.ToLower().Contains(searchText.ToLower());
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -213,7 +225,7 @@ namespace BudgetBadger.Logic
                 return accounts.ToList();
             }
             
-			return OrderAccounts(accounts.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+			return OrderAccounts(accounts.Where(a => FilterAccount(a, searchText)));
         }
         
 		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)

@@ -21,6 +21,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result> SaveSplitTransactionAsync(IEnumerable<Transaction> transactions);
         Task<Result> UpdateSplitTransactionPostedAsync(Guid splitID, bool posted);
 
+        bool FilterTransaction(Transaction transaction, string searchText);
         IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText);
         IReadOnlyList<IGrouping<string, Transaction>> GroupTransactions(IEnumerable<Transaction> transactions);
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);

@@ -28,7 +28,6 @@
     <Folder Include="Transactions\" />
     <Folder Include="Enums\" />
     <Folder Include="Settings\" />
-    <Folder Include="UserControls\" />
     <Folder Include="Converters\" />
     <Folder Include="Reports\" />
     <Folder Include="Effects\" />
@@ -184,6 +183,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Accounts\AccountTransactionsDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UserControls\DataGrid.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -16,6 +16,14 @@ namespace BudgetBadger.Forms.Accounts
 		public AccountsDetailedPage ()
 		{
 			InitializeComponent ();
+            PropertyChanged += AccountsDetailedPage_PropertyChanged;
 		}
-	}
+
+        private void AccountsDetailedPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SearchText))
+            {
+            }
+        }
+    }
 }

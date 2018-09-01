@@ -38,20 +38,16 @@
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
                 </uc:HelperControl.Triggers>
-                <syncfusion:SfDataGrid
+                <uc:DataGrid
                     Margin="16,0"
                     AllowPullToRefresh="True"
-                    AutoGenerateColumns="False"
-                    BackgroundColor="{StaticResource BackgroundColor}"
                     ColumnSizer="Star"
-                    GridStyle="{StaticResource sfDataGridStyle}"
-                    HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
+                    Filter="{Binding Filter}"
+                    FilterText="{Binding SearchText}"
                     IsBusy="{Binding IsBusy}"
-                    ItemsSource="{Binding FilteredTransactions, Mode=TwoWay}"
+                    ItemsSource="{Binding Transactions, Mode=TwoWay}"
                     PullToRefreshCommand="{Binding RefreshCommand}"
-                    RowHeight="{StaticResource Key=ListItemHeight}"
-                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    SelectionMode="Single">
+                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
@@ -94,7 +90,7 @@
                             MappingName="Amount"
                             TextAlignment="End" />
                     </syncfusion:SfDataGrid.Columns>
-                </syncfusion:SfDataGrid>
+                </uc:DataGrid>
             </uc:HelperControl>
             <BoxView
                 Grid.Row="1"
