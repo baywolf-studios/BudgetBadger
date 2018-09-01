@@ -18,6 +18,16 @@ namespace BudgetBadger.Forms
             return (Color)Application.Current.Resources["SecondaryTextColor"];
         }
 
+        public override Color GetCaptionSummaryRowBackgroundColor()
+        {
+            return (Color)Application.Current.Resources["BackgroundColor"];
+        }
+
+        public override Color GetCaptionSummaryRowForegroundColor()
+        {
+            return (Color)Application.Current.Resources["PrimaryTextColor"];
+        }
+
         public override Color GetRecordBackgroundColor()
         {
             return (Color)Application.Current.Resources["BackgroundColor"];
@@ -35,7 +45,7 @@ namespace BudgetBadger.Forms
 
         public override Color GetSelectionBackgroundColor()
         {
-            return (Color)Application.Current.Resources["BackgroundColor"];
+            return Color.AliceBlue;
         }
 
         public override Color GetBorderColor()

@@ -16,7 +16,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, INavigatedAware
+    public class AccountsPageViewModel : BindableBase, INavigatingAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -91,15 +91,10 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-        }
-
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
-
 
         public async Task ExecuteSelectedCommand()
         {

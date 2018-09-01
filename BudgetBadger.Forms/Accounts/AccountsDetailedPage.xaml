@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <uc:RootSearchPage
     x:Class="BudgetBadger.Forms.Accounts.AccountsDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -35,18 +35,15 @@
                     PullToRefreshCommand="{Binding RefreshCommand}"
                     RowHeight="{StaticResource Key=ListItemHeight}"
                     SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                    SelectionMode="Single">
+                    SelectionMode="Single"
+                    GroupCaptionTextFormat="Type: {Key}">
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
+                    <syncfusion:SfDataGrid.GroupColumnDescriptions>
+                        <syncfusion:GroupColumnDescription ColumnName="Type" />
+                    </syncfusion:SfDataGrid.GroupColumnDescriptions>
                     <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Type"
-                            HeaderTextAlignment="Start"
-                            MappingName="Type"
-                            TextAlignment="Start" />
                         <syncfusion:GridTextColumn
                             CellTextSize="{StaticResource ListItemFontSize}"
                             HeaderCellTextSize="{StaticResource ListHeaderFontSize}"

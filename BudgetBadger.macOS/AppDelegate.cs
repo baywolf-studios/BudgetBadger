@@ -33,6 +33,7 @@ namespace BudgetBadger.macOS
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
             SimpleAuth.NativeSafariAuthenticator.Activate();
+            Syncfusion.SfDataGrid.XForms.MacOS.SfDataGridRenderer.Init();
 
             LoadApplication(new App());
             base.DidFinishLaunching(notification);

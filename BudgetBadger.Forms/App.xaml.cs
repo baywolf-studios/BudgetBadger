@@ -33,6 +33,7 @@ using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
 using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms.Xaml;
+using Prism.Navigation;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -257,5 +258,7 @@ namespace BudgetBadger.Forms
                
             return new Result { Success = true }; 
         }
+
+        public INavigationService GetNavigationService() => Container.Resolve<INavigationService>();
     }
 }
