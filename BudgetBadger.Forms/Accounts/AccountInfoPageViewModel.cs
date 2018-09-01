@@ -14,7 +14,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountInfoPageViewModel : BindableBase, INavigatingAware
+    public class AccountInfoPageViewModel : BindableBase, INavigatedAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -115,7 +115,11 @@ namespace BudgetBadger.Forms.Accounts
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public async void OnNavigatedTo(NavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

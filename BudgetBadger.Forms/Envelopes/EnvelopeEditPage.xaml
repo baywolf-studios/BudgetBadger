@@ -1,32 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    PageTitle="Edit Budget"
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeEditPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    ToolbarItemText="Save"
+    PageTitle="Edit Budget"
+    ToolbarItemCommand="{Binding SaveCommand}"
     ToolbarItemIcon="save.svg"
-    ToolbarItemCommand="{Binding SaveCommand}">
+    ToolbarItemText="Save">
     <uc:ChildPage.Triggers>
-        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Budget.Envelope.IsNew}" Value="True">
+        <DataTrigger
+            Binding="{Binding Budget.Envelope.IsNew}"
+            TargetType="uc:ChildPage"
+            Value="True">
             <Setter Property="PageTitle" Value="New Envelope" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
-        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
-                ColumnSpacing="16" 
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Margin="16" ColumnSpacing="8">
                     <Grid.IsVisible>
@@ -37,51 +40,51 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Column="0"
-                        Text="To Budget"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="Start"
+                        FontAttributes="Bold"
                         FontSize="{StaticResource PageHeaderFontSize}"
+                        HorizontalTextAlignment="Start"
+                        Text="To Budget"
                         TextColor="{StaticResource PrimaryTextColor}"
-                        FontAttributes="Bold"/>
+                        VerticalTextAlignment="Center" />
                     <Label
                         Grid.Column="1"
-                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Center"
-                        HorizontalTextAlignment="End"
+                        FontAttributes="Bold"
                         FontSize="{StaticResource PageHeaderFontSize}"
+                        HorizontalTextAlignment="End"
+                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
                         TextColor="{StaticResource PrimaryTextColor}"
-                        FontAttributes="Bold"/>
+                        VerticalTextAlignment="Center" />
                 </Grid>
                 <BoxView
                     Grid.Row="1"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
-                <ScrollView 
+                    HeightRequest="1" />
+                <ScrollView
                     Grid.Row="2"
                     Margin="0"
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        RowSpacing="16"
+                        Margin="0,16"
                         ColumnSpacing="0"
-                        Margin="0,16">
+                        RowSpacing="16">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="40" />
                         </Grid.RowDefinitions>
                         <uc:ButtonSelector
                             Grid.Row="0"
@@ -90,30 +93,30 @@
                             Margin="16,0"
                             Command="{Binding GroupSelectedCommand}"
                             Label="Group"
-                            Text="{Binding Budget.Envelope.Group.Description}"/>
+                            Text="{Binding Budget.Envelope.Group.Description}" />
                         <uc:TextEntry
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Name"
-                            Text="{Binding Budget.Envelope.Description}"/>
+                            Text="{Binding Budget.Envelope.Description}" />
                         <uc:CalculatorEntry
                             Grid.Row="2"
                             Grid.Column="0"
                             Margin="16,0"
-                            Prefix="$"
                             Label="Amount"
-                            Number="{Binding Budget.Amount}"/>
+                            Number="{Binding Budget.Amount}"
+                            Prefix="$" />
                         <Button
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="16,0"
-                            Text="Quick Budget"
-                            VerticalOptions="End"
-                            Style="{StaticResource SecondaryActionButtonStyle}"
                             Command="{Binding QuickBudgetCommand}"
-                            IsVisible="{Binding Budget.IsActive}"/>
+                            IsVisible="{Binding Budget.IsActive}"
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="Quick Budget"
+                            VerticalOptions="End" />
                         <StackLayout
                             Grid.Row="3"
                             Grid.Column="0"
@@ -122,15 +125,15 @@
                             Orientation="Vertical"
                             Spacing="0">
                             <uc:Checkbox
+                                IsChecked="{Binding Budget.IgnoreOverspend}"
                                 IsEnabled="{Binding IsNotDebt}"
-                                Label="Ignore Overspend"
-                                IsChecked="{Binding Budget.IgnoreOverspend}"/>
+                                Label="Ignore Overspend" />
                             <uc:Checkbox
-                                IsEnabled="{Binding IsNotDebt}"
                                 Margin="32,0,0,0"
-                                Label="Always"
                                 IsChecked="{Binding Budget.Envelope.IgnoreOverspend}"
-                                IsVisible="{Binding Budget.IgnoreOverspend}"/>
+                                IsEnabled="{Binding IsNotDebt}"
+                                IsVisible="{Binding Budget.IgnoreOverspend}"
+                                Label="Always" />
                         </StackLayout>
                         <uc:MultilineTextEntry
                             Grid.Row="4"
@@ -138,15 +141,15 @@
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Notes"
-                            Text="{Binding Budget.Envelope.Notes}"/>
+                            Text="{Binding Budget.Envelope.Notes}" />
                         <Button
                             Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
-                            Text="Delete Envelope"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}">
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="Delete Envelope">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -155,8 +158,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsActive}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Budget.Envelope.IsActive}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -166,8 +172,8 @@
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
-                            Text="Undo Delete"
-                            Style="{StaticResource SecondaryActionButtonStyle}">
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="Undo Delete">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -176,8 +182,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsDeleted}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Budget.Envelope.IsDeleted}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -185,9 +194,9 @@
                 </ScrollView>
                 <BoxView
                     Grid.Row="3"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="4"
                     Margin="16"
@@ -200,39 +209,42 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="To Budget"
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="To Budget"
+                        VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding DeleteCommand}"
-                        Text="Delete Envelope"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Delete Envelope"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsActive}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Budget.Envelope.IsActive}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
@@ -241,13 +253,16 @@
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding UndoDeleteCommand}"
-                        Text="Undo Delete"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Undo Delete"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Budget.Envelope.IsDeleted}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Budget.Envelope.IsDeleted}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>

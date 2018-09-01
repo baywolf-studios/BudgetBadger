@@ -1,50 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
+    x:Class="BudgetBadger.Forms.UserControls.RootSearchPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    x:Class="BudgetBadger.Forms.UserControls.RootSearchPage"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
-    NavigationPage.HasNavigationBar="false"
-    NavigationPage.HasBackButton="false">
+    NavigationPage.HasBackButton="false"
+    NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
-        <Grid RowSpacing="0" ColumnSpacing="0">
+        <Grid ColumnSpacing="0" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="{StaticResource AppBarGridSize}"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="{StaticResource AppBarGridSize}" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{StaticResource AppBarGridSize}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="{StaticResource AppBarGridSize}"/>
+                <ColumnDefinition Width="{StaticResource AppBarGridSize}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="{StaticResource AppBarGridSize}" />
             </Grid.ColumnDefinitions>
-            <BoxView BackgroundColor="{StaticResource AppBarColor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+            <BoxView
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                BackgroundColor="{StaticResource AppBarColor}" />
             <Label
                 x:Name="LabelControl"
-                TextColor="White"
                 Grid.Row="0"
                 Grid.Column="1"
-                LineBreakMode="TailTruncation"
-                VerticalOptions="Center"
-                FontSize="17"
                 FontAttributes="Bold"
-                Text="{Binding PageTitle}">
+                FontSize="17"
+                LineBreakMode="TailTruncation"
+                Text="{Binding PageTitle}"
+                TextColor="White"
+                VerticalOptions="Center">
                 <Label.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
-                        <On Platform="Android" Value="16,0,0,0"/>
-                        <On Platform="UWP" Value="16,0,0,0"/>
-                        <On Platform="iOS" Value="0"/>
-                        <On Platform="macOS" Value="0"/>
+                        <On Platform="Android" Value="16,0,0,0" />
+                        <On Platform="UWP" Value="16,0,0,0" />
+                        <On Platform="iOS" Value="0" />
+                        <On Platform="macOS" Value="0" />
                     </OnPlatform>
                 </Label.Margin>
                 <Label.HorizontalOptions>
                     <OnPlatform x:TypeArguments="LayoutOptions">
-                        <On Platform="Android" Value="Start"/>
-                        <On Platform="UWP" Value="Start"/>
-                        <On Platform="iOS" Value="Center"/>
-                        <On Platform="macOS" Value="Center"/>
+                        <On Platform="Android" Value="Start" />
+                        <On Platform="UWP" Value="Start" />
+                        <On Platform="iOS" Value="Center" />
+                        <On Platform="macOS" Value="Center" />
                     </OnPlatform>
                 </Label.HorizontalOptions>
             </Label>
@@ -52,53 +56,53 @@
                 x:Name="ToolbarItemFrame"
                 Grid.Row="0"
                 Grid.Column="0"
-                Padding="0"
                 Margin="0"
+                Padding="0"
                 BackgroundColor="{StaticResource AppBarColor}">
                 <ContentView.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToolbarItemCommand}"/>
+                    <TapGestureRecognizer Command="{Binding ToolbarItemCommand}" />
                 </ContentView.GestureRecognizers>
-                <svg:SvgCachedImage 
+                <svg:SvgCachedImage
                     x:Name="ToolbarItemImage"
                     HeightRequest="24"
-                    WidthRequest="24"
-                    VerticalOptions="Center"
                     HorizontalOptions="Center"
                     ReplaceStringMap="{Binding ReplaceColor}"
-                    Source="{Binding ToolbarItemIcon}"/>
+                    Source="{Binding ToolbarItemIcon}"
+                    VerticalOptions="Center"
+                    WidthRequest="24" />
             </ContentView>
             <ContentView
                 x:Name="SearchBoxFrame"
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                BackgroundColor="{StaticResource AppBarColor}"
                 Padding="0"
-                TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}"
-                IsVisible="false">
+                BackgroundColor="{StaticResource AppBarColor}"
+                IsVisible="false"
+                TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}">
                 <ContentView
                     x:Name="EntryFrame"
                     Margin="8"
                     Padding="0">
                     <ContentView.BackgroundColor>
                         <Color x:FactoryMethod="FromRgba">
-                          <x:Arguments>
-                            <x:Int32>0</x:Int32>
-                            <x:Int32>0</x:Int32>
-                            <x:Int32>0</x:Int32>                      
-                            <x:Int32>31</x:Int32>
-                          </x:Arguments>
+                            <x:Arguments>
+                                <x:Int32>0</x:Int32>
+                                <x:Int32>0</x:Int32>
+                                <x:Int32>0</x:Int32>
+                                <x:Int32>31</x:Int32>
+                            </x:Arguments>
                         </Color>
                     </ContentView.BackgroundColor>
                     <Entry
                         x:Name="EntryControl"
                         Margin="8,0"
-                        VerticalOptions="Center"
-                        HorizontalOptions="FillAndExpand"
-                        TextColor="White"
-                        FontSize="17"
                         BackgroundColor="Transparent"
-                        Text="{Binding SearchText}">
+                        FontSize="17"
+                        HorizontalOptions="FillAndExpand"
+                        Text="{Binding SearchText}"
+                        TextColor="White"
+                        VerticalOptions="Center">
                         <Entry.Keyboard>
                             <Keyboard x:FactoryMethod="Create">
                                 <x:Arguments>
@@ -107,27 +111,30 @@
                             </Keyboard>
                         </Entry.Keyboard>
                         <Entry.Effects>
-                            <effects:BorderlessEntryEffect/>
+                            <effects:BorderlessEntryEffect />
                         </Entry.Effects>
                     </Entry>
                 </ContentView>
             </ContentView>
             <ContentView
                 x:Name="SearchButtonFrame"
-                Padding="0"
-                BackgroundColor="{StaticResource AppBarColor}"
                 Grid.Row="0"
-                Grid.Column="2">
+                Grid.Column="2"
+                Padding="0"
+                BackgroundColor="{StaticResource AppBarColor}">
                 <svg:SvgCachedImage
                     x:Name="svgSearch"
                     HeightRequest="24"
-                    WidthRequest="24"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center"
                     ReplaceStringMap="{Binding ReplaceColor}"
-                    Source="search.svg"/>
+                    Source="search.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="24" />
             </ContentView>
-            <ContentView x:Name="BodyView" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <ContentView
+                x:Name="BodyView"
+                Grid.Row="1"
+                Grid.ColumnSpan="3" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

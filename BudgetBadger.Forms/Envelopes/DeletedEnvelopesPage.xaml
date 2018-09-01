@@ -1,61 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="Deleted Envelopes"
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     x:Class="BudgetBadger.Forms.Envelopes.DeletedEnvelopesPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Deleted Envelopes"
     SearchCommand="{Binding SearchCommand}">
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
-            ShowHelper="{Binding NoEnvelopes}"
+            HelperText="No deleted envelopes"
             ImagePath="helperenvelope.svg"
-            HelperText="No deleted envelopes">
+            ShowHelper="{Binding NoEnvelopes}">
             <ListView
                 x:Name="envelopeList"
                 BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
+                HasUnevenRows="true"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
                 ItemsSource="{Binding FilteredEnvelopes}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedBudget, Mode=TwoWay}"
-                HasUnevenRows="true">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="{StaticResource Key=ListDoubleItemHeight}">
                             <Grid
-                                HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
-                                RowSpacing="4"
-                                ColumnSpacing="16"
                                 Margin="-1"
                                 Padding="1"
-                                BackgroundColor="{StaticResource BackgroundColor}">
+                                BackgroundColor="{StaticResource BackgroundColor}"
+                                ColumnSpacing="16"
+                                HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
+                                RowSpacing="4">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>   
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Label
                                     x:Name="primaryLabel"
-                                    Grid.Column="0"
                                     Grid.Row="0"
+                                    Grid.Column="0"
                                     Margin="16,0"
-                                    Text="{Binding Description}"
                                     Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                                    VerticalOptions="End"/>
+                                    Text="{Binding Description}"
+                                    VerticalOptions="End" />
                                 <Label
                                     x:Name="secondaryLabel"
-                                    Grid.Column="0"
                                     Grid.Row="1"
+                                    Grid.Column="0"
                                     Margin="16,0"
-                                    Text="{Binding Group.Description}"
                                     Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                                    VerticalOptions="Start"/>
+                                    Text="{Binding Group.Description}"
+                                    VerticalOptions="Start" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

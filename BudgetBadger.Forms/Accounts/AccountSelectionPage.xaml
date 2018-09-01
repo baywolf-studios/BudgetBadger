@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    PageTitle="Select an Account"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Accounts.AccountSelectionPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    PageTitle="Select an Account"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
@@ -14,34 +14,34 @@
     ToolbarItemText="New">
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
-            ShowHelper="{Binding NoAccounts}"
+            HelperText="Add an Account using the + button"
             ImagePath="helperaccount.svg"
-            HelperText="Add an Account using the + button">
+            ShowHelper="{Binding NoAccounts}">
             <ListView
                 x:Name="accountList"
                 BackgroundColor="{StaticResource BackgroundColor}"
-                SeparatorVisibility="None"
+                GroupDisplayBinding="{Binding Key}"
+                HasUnevenRows="true"
+                IsGroupingEnabled="true"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                RefreshCommand="{Binding RefreshCommand}"
                 ItemsSource="{Binding GroupedAccounts}"
+                RefreshCommand="{Binding RefreshCommand}"
                 SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                IsGroupingEnabled="true"
-                GroupDisplayBinding="{Binding Key}"
-                HasUnevenRows="true">
+                SeparatorVisibility="None">
                 <ListView.Behaviors>
-                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" />
+                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
                 </ListView.Behaviors>
                 <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <dt:GroupHeaderViewCell/>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <dt:AccountViewCell/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:GroupHeaderViewCell />
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <dt:AccountViewCell />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>

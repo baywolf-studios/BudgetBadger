@@ -1,64 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <AbsoluteLayout
-    HeightRequest="48" 
-    VerticalOptions="Start" 
-    xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls" 
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    x:Class="BudgetBadger.Forms.UserControls.CalculatorEntry">
+    x:Class="BudgetBadger.Forms.UserControls.CalculatorEntry"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    HeightRequest="48"
+    VerticalOptions="Start">
     <BoxView
-        BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All">
+        AbsoluteLayout.LayoutFlags="All"
+        BackgroundColor="Transparent">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
     <Label
         x:Name="PrefixControl"
-        Text="{Binding Prefix}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalOptions="Center"
         AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
-        InputTransparent="true"/>
+        FontSize="16"
+        InputTransparent="true"
+        Text="{Binding Prefix}"
+        TextColor="{StaticResource IdleColor}"
+        VerticalOptions="Center" />
     <Label
         x:Name="LabelControl"
-        Text="{Binding Label}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalTextAlignment="Center"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
         AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"/>
+        FontSize="16"
+        InputTransparent="true"
+        Text="{Binding Label}"
+        TextColor="{StaticResource IdleColor}"
+        VerticalTextAlignment="Center" />
     <control:MathKeyboardEntry
         x:Name="TextControl"
-        IsPassword="false"
-        FontSize="16"
-        TextColor="{StaticResource PrimaryTextColor}"
-        Keyboard="Telephone"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional">
+        AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="Transparent"
+        FontSize="16"
+        IsPassword="false"
+        Keyboard="Telephone"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="CenterAndExpand">
         <Entry.Effects>
-            <effects:CalculatorKeyboardEntryEffect/>
+            <effects:CalculatorKeyboardEntryEffect />
             <effects:BorderlessEntryEffect />
         </Entry.Effects>
     </control:MathKeyboardEntry>
     <BoxView
         x:Name="BottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="1"/>
+        Opacity="1" />
     <BoxView
         x:Name="ThickBottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
         AbsoluteLayout.LayoutBounds="0,46,1,2"
         AbsoluteLayout.LayoutFlags="WidthProportional"
+        BackgroundColor="{StaticResource IdleColor}"
         InputTransparent="true"
-        Opacity="0"/>
+        Opacity="0" />
 </AbsoluteLayout>

@@ -1,34 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    PageTitle="Edit Transaction"
+    x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage"
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters" 
-    ToolbarItemText="Save"
+    PageTitle="Edit Transaction"
     ToolbarItemCommand="{Binding SaveCommand}"
-    ToolbarItemIcon="save.svg">
+    ToolbarItemIcon="save.svg"
+    ToolbarItemText="Save">
     <uc:ChildPage.Triggers>
-        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Transaction.IsNew}" Value="True">
+        <DataTrigger
+            Binding="{Binding Transaction.IsNew}"
+            TargetType="uc:ChildPage"
+            Value="True">
             <Setter Property="PageTitle" Value="New Transaction" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
-        <uc:BusyIndicator
-            IsBusy="{Binding IsBusy}"
-            BusyText="{Binding BusyText}">
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
-                ColumnSpacing="16" 
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ScrollView
                     Grid.Row="2"
@@ -36,64 +37,64 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        RowSpacing="16"
+                        Margin="0,16"
                         ColumnSpacing="16"
-                        Margin="0,16">
+                        RowSpacing="16">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <uc:CalculatorEntry
                             Grid.Row="0"
                             Grid.Column="0"
                             Margin="16,0,0,0"
-                            Prefix="$"
                             Label="Outflow"
-                            Number="{Binding Transaction.Outflow}"/>
+                            Number="{Binding Transaction.Outflow}"
+                            Prefix="$" />
                         <uc:CalculatorEntry
-                            Grid.Row="0" 
+                            Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,0,16,0"
-                            Prefix="$"
                             Label="Inflow"
-                            Number="{Binding Transaction.Inflow}"/>
+                            Number="{Binding Transaction.Inflow}"
+                            Prefix="$" />
                         <uc:ButtonSelector
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
+                            Command="{Binding AccountSelectedCommand}"
                             Label="Account"
-                            Text="{Binding Transaction.Account.Description}"
-                            Command="{Binding AccountSelectedCommand}"/>
+                            Text="{Binding Transaction.Account.Description}" />
                         <uc:ButtonSelector
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
+                            Command="{Binding PayeeSelectedCommand}"
                             Label="Payee"
-                            Text="{Binding Transaction.Payee.Description}"
-                            Command="{Binding PayeeSelectedCommand}"/>
+                            Text="{Binding Transaction.Payee.Description}" />
                         <uc:ButtonSelector
                             Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
+                            Command="{Binding EnvelopeSelectedCommand}"
                             Label="Envelope"
-                            Text="{Binding Transaction.Envelope.Description}"
-                            Command="{Binding EnvelopeSelectedCommand}"/>
+                            Text="{Binding Transaction.Envelope.Description}" />
                         <uc:DateSelector
                             Grid.Row="4"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Service Date"
-                            Date="{Binding Transaction.ServiceDate}"/>
+                            Date="{Binding Transaction.ServiceDate}"
+                            Label="Service Date" />
                         <StackLayout
                             Grid.Row="5"
                             Grid.ColumnSpan="2"
@@ -102,17 +103,18 @@
                             Spacing="0">
                             <Label
                                 FontSize="12"
-                                TextColor="{StaticResource SecondaryTextColor}"
-                                VerticalOptions="Center"
                                 HeightRequest="16"
-                                Text="Status"/>
-                            <uc:Checkbox
-                                Label="Cleared"
-                                IsChecked="{Binding Transaction.Posted}">
+                                Text="Status"
+                                TextColor="{StaticResource SecondaryTextColor}"
+                                VerticalOptions="Center" />
+                            <uc:Checkbox IsChecked="{Binding Transaction.Posted}" Label="Cleared">
                                 <uc:Checkbox.Triggers>
-                                    <DataTrigger TargetType="uc:Checkbox" Binding="{Binding Transaction.Reconciled}" Value="true">
-                                        <Setter Property="IsEnabled" Value="false"/>
-                                        <Setter Property="Label" Value="Reconciled"/>
+                                    <DataTrigger
+                                        Binding="{Binding Transaction.Reconciled}"
+                                        TargetType="uc:Checkbox"
+                                        Value="true">
+                                        <Setter Property="IsEnabled" Value="false" />
+                                        <Setter Property="Label" Value="Reconciled" />
                                     </DataTrigger>
                                 </uc:Checkbox.Triggers>
                             </uc:Checkbox>
@@ -122,13 +124,13 @@
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Notes"
-                            Text="{Binding Transaction.Notes}"/>
+                            Text="{Binding Transaction.Notes}" />
                         <Grid
                             Grid.Row="7"
                             Grid.ColumnSpan="2"
+                            Margin="0"
                             ColumnSpacing="16"
-                            RowSpacing="16"
-                            Margin="0">
+                            RowSpacing="16">
                             <Grid.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -137,24 +139,24 @@
                                 </OnIdiom>
                             </Grid.IsVisible>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Button
                                 Grid.Row="0"
                                 Grid.ColumnSpan="2"
                                 Margin="16,0"
                                 Command="{Binding DeleteCommand}"
-                                Text="Delete Transaction"
+                                IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                IsVisible="false">
+                                Text="Delete Transaction">
                                 <Button.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="true"/>
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="true" />
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true"/>
+                                        <Setter Property="IsVisible" Value="true" />
                                     </MultiTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -163,16 +165,16 @@
                                 Grid.ColumnSpan="2"
                                 Margin="16,0"
                                 Command="{Binding SplitCommand}"
-                                Text="Split Transaction"
+                                IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"
-                                IsVisible="false">
+                                Text="Split Transaction">
                                 <Button.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                            <BindingCondition Binding="{Binding Transaction.IsNew}" Value="true"/>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
+                                            <BindingCondition Binding="{Binding Transaction.IsNew}" Value="true" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="True"/>
+                                        <Setter Property="IsVisible" Value="True" />
                                     </MultiTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -181,16 +183,16 @@
                                 Grid.Column="0"
                                 Margin="16,0,0,0"
                                 Command="{Binding DeleteCommand}"
-                                Text="Delete Transaction"
+                                IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                IsVisible="false">
+                                Text="Delete Transaction">
                                 <Button.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true"/>
+                                        <Setter Property="IsVisible" Value="true" />
                                     </MultiTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -199,16 +201,16 @@
                                 Grid.Column="1"
                                 Margin="0,0,16,0"
                                 Command="{Binding SplitCommand}"
-                                Text="Split Transaction"
+                                IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"
-                                IsVisible="false">
+                                Text="Split Transaction">
                                 <Button.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false"/>
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true"/>
+                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
+                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true"/>
+                                        <Setter Property="IsVisible" Value="true" />
                                     </MultiTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -217,9 +219,9 @@
                 </ScrollView>
                 <BoxView
                     Grid.Row="3"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="4"
                     Margin="16"
@@ -232,41 +234,44 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="2"
                         Command="{Binding DeleteCommand}"
-                        Text="Delete Transaction"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Delete Transaction"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Transaction.IsNew}" Value="true">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Transaction.IsNew}"
+                                TargetType="Button"
+                                Value="true">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
@@ -275,13 +280,16 @@
                         Grid.RowSpan="2"
                         Grid.Column="3"
                         Command="{Binding SplitCommand}"
-                        Text="Split Transaction"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Split Transaction"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding SplitTransactionMode}" Value="true">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding SplitTransactionMode}"
+                                TargetType="Button"
+                                Value="true">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>

@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:RootPage
-    PageTitle="Reports"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    x:Class="BudgetBadger.Forms.Reports.ReportsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.Reports.ReportsPage">
-	<uc:RootPage.BodyContent>
-        <ListView 
+    PageTitle="Reports">
+    <uc:RootPage.BodyContent>
+        <ListView
             BackgroundColor="{StaticResource BackgroundColor}"
-            SeparatorVisibility="None"
-            IsPullToRefreshEnabled="false" 
-            ItemsSource="{Binding Reports}" 
-            SelectedItem="{Binding SelectedReport, Mode=TwoWay}">
+            IsPullToRefreshEnabled="false"
+            ItemsSource="{Binding Reports}"
+            SelectedItem="{Binding SelectedReport, Mode=TwoWay}"
+            SeparatorVisibility="None">
             <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ReportCommand}"/>
+                <b:EventToCommandBehavior Command="{Binding ReportCommand}" EventName="ItemSelected" />
             </ListView.Behaviors>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                        <ViewCell Height="48">
-                                <Label
-                                    Margin="16,0"
-                                    Text="{Binding .}"
-                                    HeightRequest="48"
-                                    Style="{StaticResource ListItemLabelStyle}"/>
-                        </ViewCell>
-                    </DataTemplate>
+                    <ViewCell Height="48">
+                        <Label
+                            Margin="16,0"
+                            HeightRequest="48"
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="{Binding .}" />
+                    </ViewCell>
+                </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-	</uc:RootPage.BodyContent>
+    </uc:RootPage.BodyContent>
 </uc:RootPage>

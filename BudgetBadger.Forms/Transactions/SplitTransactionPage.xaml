@@ -1,35 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<uc:ChildPage 
-    x:Name="this"
+<?xml version="1.0" encoding="UTF-8" ?>
+<uc:ChildPage
+    x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    x:Class="BudgetBadger.Forms.Transactions.SplitTransactionPage"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     PageTitle="Split Transaction"
+    ToolbarItemCommand="{Binding SaveCommand}"
     ToolbarItemIcon="save.svg"
-    ToolbarItemText="Save"
-    ToolbarItemCommand="{Binding SaveCommand}">
+    ToolbarItemText="Save">
     <uc:ChildPage.BodyContent>
         <Grid
-            BackgroundColor="{StaticResource BackgroundColor}"
             Margin="0"
+            BackgroundColor="{StaticResource BackgroundColor}"
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <uc:Expander
-                Grid.Row="0"
-                IsExpanded="true">
+            <uc:Expander Grid.Row="0" IsExpanded="true">
                 <uc:Expander.Triggers>
-                    <DataTrigger TargetType="uc:Expander" Binding="{Binding NoTransactions}" Value="true">
-                        <Setter Property="IsExpanded" Value="false"/>
+                    <DataTrigger
+                        Binding="{Binding NoTransactions}"
+                        TargetType="uc:Expander"
+                        Value="true">
+                        <Setter Property="IsExpanded" Value="false" />
                     </DataTrigger>
                 </uc:Expander.Triggers>
                 <uc:Expander.IsVisible>
@@ -40,95 +41,94 @@
                     </OnIdiom>
                 </uc:Expander.IsVisible>
                 <uc:Expander.HeaderContent>
-                    <Grid
-                        ColumnSpacing="8">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>true</OnIdiom.Phone>
-                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Grid.Column="0"
-                        Text="Total"
-                        HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
-                    <Label
-                        Grid.Column="1"
-                        Text="{Binding Total, StringFormat='{0:c}'}"
-                        HorizontalTextAlignment="End"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
-                </Grid>
+                    <Grid ColumnSpacing="8">
+                        <Grid.IsVisible>
+                            <OnIdiom x:TypeArguments="x:Boolean">
+                                <OnIdiom.Phone>true</OnIdiom.Phone>
+                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                            </OnIdiom>
+                        </Grid.IsVisible>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="Total"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            HorizontalTextAlignment="End"
+                            Style="{StaticResource PageHeaderLabelStyle}"
+                            Text="{Binding Total, StringFormat='{0:c}'}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Running Total"
                             HorizontalTextAlignment="Center"
-                            VerticalOptions="End"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Running Total"
+                            VerticalOptions="End" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="{Binding RunningTotal, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            VerticalOptions="Start"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding RunningTotal, StringFormat='{0:c}'}"
+                            VerticalOptions="Start" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="Remaining"
                             HorizontalTextAlignment="Center"
-                            VerticalOptions="End"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="Remaining"
+                            VerticalOptions="End" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding Remaining, StringFormat='{0:c}'}"
                             HorizontalTextAlignment="Center"
-                            VerticalOptions="Start"
-                            Style="{StaticResource PageSubheaderLabelStyle}"/>
+                            Style="{StaticResource PageSubheaderLabelStyle}"
+                            Text="{Binding Remaining, StringFormat='{0:c}'}"
+                            VerticalOptions="Start" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
-             <BoxView
+            <BoxView
                 Grid.Row="1"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <uc:HelperControl
                 Grid.Row="2"
-                ShowHelper="{Binding NoTransactions}"
+                HelperText="No transactions yet"
                 ImagePath="helpertransaction.svg"
-                HelperText="No transactions yet">
+                ShowHelper="{Binding NoTransactions}">
                 <ListView
                     BackgroundColor="{StaticResource BackgroundColor}"
-                    SeparatorVisibility="None"
+                    HasUnevenRows="true"
                     IsPullToRefreshEnabled="true"
                     IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    RefreshCommand="{Binding RefreshCommand}"
                     ItemsSource="{Binding Transactions}"
+                    RefreshCommand="{Binding RefreshCommand}"
                     SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    HasUnevenRows="true">
+                    SeparatorVisibility="None">
                     <ListView.Behaviors>
-                            <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding TransactionSelectedCommand}" />
+                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="ItemSelected" />
                     </ListView.Behaviors>
                     <ListView.Header>
                         <dt:TransactionColumnHeaders TransactionViewCellType="Full">
@@ -150,36 +150,51 @@
                         <OnIdiom x:TypeArguments="DataTemplate">
                             <OnIdiom.Phone>
                                 <DataTemplate>
-                                    <dt:TransactionViewCell
-                                        TransactionViewCellType="Full"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
                                         <dt:TransactionViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:TransactionViewCell.ContextActions>
                                     </dt:TransactionViewCell>
                                 </DataTemplate>
                             </OnIdiom.Phone>
                             <OnIdiom.Tablet>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Full"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
                                         <dt:TransactionDetailedViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:TransactionDetailedViewCell.ContextActions>
                                     </dt:TransactionDetailedViewCell>
                                 </DataTemplate>
                             </OnIdiom.Tablet>
                             <OnIdiom.Desktop>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell
-                                        TransactionViewCellType="Full"
-                                        Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}">
+                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
                                         <dt:TransactionDetailedViewCell.ContextActions>
-                                            <MenuItem Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Edit" />
-                                            <MenuItem Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                Text="Edit" />
+                                            <MenuItem
+                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
+                                                CommandParameter="{Binding .}"
+                                                IsDestructive="True"
+                                                Text="Delete" />
                                         </dt:TransactionDetailedViewCell.ContextActions>
                                     </dt:TransactionDetailedViewCell>
                                 </DataTemplate>
@@ -187,9 +202,7 @@
                         </OnIdiom>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <BoxView
-                            BackgroundColor="{StaticResource BackgroundColor}"
-                            HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
                     </ListView.Footer>
                 </ListView>
             </uc:HelperControl>
@@ -197,10 +210,10 @@
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,16"
-                Text="Add Transaction" 
-                VerticalOptions="End"
                 Command="{Binding AddNewCommand}"
-                Style="{StaticResource PrimaryActionButtonStyle}">
+                Style="{StaticResource PrimaryActionButtonStyle}"
+                Text="Add Transaction"
+                VerticalOptions="End">
                 <Button.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -211,9 +224,9 @@
             </Button>
             <BoxView
                 Grid.Row="3"
-                HeightRequest="1"
+                Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
-                Margin="0"/>
+                HeightRequest="1" />
             <Grid
                 Grid.Row="4"
                 Margin="16"
@@ -226,65 +239,65 @@
                     </OnIdiom>
                 </Grid.IsVisible>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Total"
                     HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="Total" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{Binding Total, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"/>
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{Binding Total, StringFormat='{0:c}'}" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Running Total"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    Text="{Binding RunningTotal, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding RunningTotal, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    Text="Remaining"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="End"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="Remaining"
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    Text="{Binding Remaining, StringFormat='{0:c}'}"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
-                    Style="{StaticResource PageSubheaderLabelStyle}"/>
+                    Style="{StaticResource PageSubheaderLabelStyle}"
+                    Text="{Binding Remaining, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
-                    Text="Add New" 
-                    VerticalOptions="Center"
                     Command="{Binding AddNewCommand}"
-                    Style="{StaticResource PrimaryActionButtonStyle}"/>
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="Add New"
+                    VerticalOptions="Center" />
             </Grid>
         </Grid>
     </uc:ChildPage.BodyContent>

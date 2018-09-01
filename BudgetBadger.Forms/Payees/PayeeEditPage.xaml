@@ -1,29 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    PageTitle="Edit Payee"
+    x:Class="BudgetBadger.Forms.Payees.PayeeEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.Payees.PayeeEditPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    ToolbarItemText="Save"
+    PageTitle="Edit Payee"
+    ToolbarItemCommand="{Binding SaveCommand}"
     ToolbarItemIcon="save.svg"
-    ToolbarItemCommand="{Binding SaveCommand}">
+    ToolbarItemText="Save">
     <uc:ChildPage.Triggers>
-        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Payee.IsNew}" Value="True">
+        <DataTrigger
+            Binding="{Binding Payee.IsNew}"
+            TargetType="uc:ChildPage"
+            Value="True">
             <Setter Property="PageTitle" Value="New Payee" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
-        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
-                ColumnSpacing="16" 
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ScrollView
                     Grid.Row="0"
@@ -31,30 +34,40 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        RowSpacing="16"
+                        Margin="0,16"
                         ColumnSpacing="0"
-                        Margin="0,16">
+                        RowSpacing="16">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <uc:TextEntry
+                        <StackLayout
                             Grid.Row="0"
                             Margin="16,0"
-                            Label="Name"
-                            Text="{Binding Payee.Description}"/>
+                            Padding="0"
+                            Orientation="Vertical"
+                            Spacing="4">
+                            <Label
+                                FontSize="12"
+                                Text="Name"
+                                TextColor="{StaticResource SecondaryTextColor}" />
+                            <Entry
+                                FontSize="16"
+                                Text="{Binding Payee.Description}"
+                                TextColor="{StaticResource PrimaryTextColor}" />
+                        </StackLayout>
                         <uc:MultilineTextEntry
                             Grid.Row="1"
                             Margin="16,0"
                             Label="Notes"
-                            Text="{Binding Payee.Notes}"/>
+                            Text="{Binding Payee.Notes}" />
                         <Button
                             Grid.Row="2"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
-                            Text="Delete Payee"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}">
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="Delete Payee">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -63,8 +76,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Payee.IsActive}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Payee.IsActive}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -72,8 +88,8 @@
                             Grid.Row="2"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
-                            Text="Undo Delete"
-                            Style="{StaticResource SecondaryActionButtonStyle}">
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="Undo Delete">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -82,8 +98,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Payee.IsDeleted}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Payee.IsDeleted}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -91,9 +110,9 @@
                 </ScrollView>
                 <BoxView
                     Grid.Row="1"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="2"
                     Margin="16"
@@ -106,39 +125,42 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding DeleteCommand}"
-                        Text="Delete Payee"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Delete Payee"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Payee.IsActive}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Payee.IsActive}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
@@ -147,13 +169,16 @@
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding UndoDeleteCommand}"
-                        Text="Undo Delete"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Undo Delete"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Payee.IsDeleted}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Payee.IsDeleted}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>

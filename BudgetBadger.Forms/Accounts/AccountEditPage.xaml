@@ -1,29 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
-    PageTitle="Edit Account"
+    x:Class="BudgetBadger.Forms.Accounts.AccountEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.Accounts.AccountEditPage"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    ToolbarItemText="Save"
+    PageTitle="Edit Account"
     ToolbarItemCommand="{Binding SaveCommand}"
-    ToolbarItemIcon="save.svg">
+    ToolbarItemIcon="save.svg"
+    ToolbarItemText="Save">
     <uc:ChildPage.Triggers>
-        <DataTrigger TargetType="uc:ChildPage" Binding="{Binding Account.IsNew}" Value="True">
+        <DataTrigger
+            Binding="{Binding Account.IsNew}"
+            TargetType="uc:ChildPage"
+            Value="True">
             <Setter Property="PageTitle" Value="New Account" />
         </DataTrigger>
     </uc:ChildPage.Triggers>
     <uc:ChildPage.BodyContent>
-        <uc:BusyIndicator IsBusy="{Binding IsBusy}" BusyText="{Binding BusyText}">
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
-                BackgroundColor="{StaticResource BackgroundColor}"
                 Margin="0"
-                ColumnSpacing="16" 
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ScrollView
                     Grid.Row="0"
@@ -31,15 +34,15 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        RowSpacing="16"
+                        Margin="0,16"
                         ColumnSpacing="0"
-                        Margin="0,16">
+                        RowSpacing="16">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="48"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="48" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <uc:TextEntry
                             Grid.Row="0"
@@ -49,30 +52,30 @@
                         <uc:DropdownSelector
                             Grid.Row="1"
                             Margin="16,0"
-                            Label="Type"
                             IsEnabled="{Binding Account.IsNew}"
-                            SelectedItem="{Binding SelectedAccountType}"
+                            ItemDisplayBinding="{Binding .}"
                             ItemsSource="{Binding AccountTypes}"
-                            ItemDisplayBinding="{Binding .}"/>
+                            Label="Type"
+                            SelectedItem="{Binding SelectedAccountType}" />
                         <uc:CalculatorEntry
                             Grid.Row="2"
                             Margin="16,0"
-                            Prefix="$"
                             IsEnabled="{Binding Account.IsNew}"
                             Label="Balance"
-                            Number="{Binding Account.Balance}" />
+                            Number="{Binding Account.Balance}"
+                            Prefix="$" />
                         <uc:MultilineTextEntry
                             Grid.Row="3"
                             Margin="16,0"
                             Keyboard="Text"
                             Label="Notes"
-                            Text="{Binding Account.Notes}"/>
+                            Text="{Binding Account.Notes}" />
                         <Button
                             Grid.Row="4"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
-                            Text="Delete Account"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}">
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="Delete Account">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -81,8 +84,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Account.IsActive}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Account.IsActive}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -90,8 +96,8 @@
                             Grid.Row="4"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
-                            Text="Undo Delete"
-                            Style="{StaticResource SecondaryActionButtonStyle}">
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="Undo Delete">
                             <Button.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -100,8 +106,11 @@
                                 </OnIdiom>
                             </Button.IsVisible>
                             <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding Account.IsDeleted}" Value="false">
-                                    <Setter Property="IsVisible" Value="false"/>
+                                <DataTrigger
+                                    Binding="{Binding Account.IsDeleted}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
@@ -109,9 +118,9 @@
                 </ScrollView>
                 <BoxView
                     Grid.Row="1"
-                    HeightRequest="1"
+                    Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
-                    Margin="0"/>
+                    HeightRequest="1" />
                 <Grid
                     Grid.Row="2"
                     Margin="16"
@@ -124,39 +133,42 @@
                         </OnIdiom>
                     </Grid.IsVisible>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text=""
                         HorizontalTextAlignment="Start"
-                        VerticalTextAlignment="Center"
-                        Style="{StaticResource PageHeaderLabelStyle}"/>
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text=""
+                        VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding DeleteCommand}"
-                        Text="Delete Account"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Delete Account"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Account.IsActive}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Account.IsActive}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
@@ -165,13 +177,16 @@
                         Grid.RowSpan="2"
                         Grid.Column="1"
                         Command="{Binding UndoDeleteCommand}"
-                        Text="Undo Delete"
+                        HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand">
+                        Text="Undo Delete"
+                        VerticalOptions="Center">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Account.IsDeleted}" Value="false">
-                                <Setter Property="IsVisible" Value="false"/>
+                            <DataTrigger
+                                Binding="{Binding Account.IsDeleted}"
+                                TargetType="Button"
+                                Value="false">
+                                <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>

@@ -79,10 +79,12 @@ namespace BudgetBadger.Forms
         {
             try
             {
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTk3ODNAMzEzNjJlMzIyZTMwTHZ0OVVOQXBHVlJUR2s1WFJHVDZ1QUZnUkx2Q3ZGcDRQcFlLVnozY043cz0=");
                 InitializeComponent();
 
                 SQLitePCL.Batteries_V2.Init();
-
+               
+                
                 if (Device.Idiom == TargetIdiom.Desktop)
                 {
                     await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
@@ -192,9 +194,9 @@ namespace BudgetBadger.Forms
                     containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
                 }
                 containerRegistry.RegisterForNavigation<NavigationPage>();
-                containerRegistry.RegisterForNavigation<AccountsPage, AccountsPageViewModel>();
+                containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
                 containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigation<AccountInfoPage, AccountInfoPageViewModel>();
+                containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountTransactionsDetailedPage), tabletView: typeof(AccountTransactionsDetailedPage));
                 containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
                 containerRegistry.RegisterForNavigation<AccountReconcilePage, AccountReconcilePageViewModel>();
                 containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
