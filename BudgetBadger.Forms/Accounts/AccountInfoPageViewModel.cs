@@ -22,6 +22,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
         readonly ISync _syncService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }

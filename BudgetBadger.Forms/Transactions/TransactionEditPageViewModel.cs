@@ -48,6 +48,7 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _splitTransactionMode, value);
         }
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
         public ICommand EnvelopeSelectedCommand { get; set; }

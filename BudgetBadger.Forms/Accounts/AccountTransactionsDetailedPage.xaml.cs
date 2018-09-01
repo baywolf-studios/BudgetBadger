@@ -1,4 +1,5 @@
 ﻿using BudgetBadger.Forms.UserControls;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace BudgetBadger.Forms.Accounts
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AccountTransactionsDetailedPage : ChildSearchPage
 	{
-		public AccountTransactionsDetailedPage ()
-		{
+		public AccountTransactionsDetailedPage()
+        {
 			InitializeComponent ();
 		}
 	}

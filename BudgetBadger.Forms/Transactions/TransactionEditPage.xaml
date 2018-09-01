@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackCommand="{Binding BackCommand}"
     PageTitle="Edit Transaction"
     ToolbarItemCommand="{Binding SaveCommand}"
     ToolbarItemIcon="save.svg"

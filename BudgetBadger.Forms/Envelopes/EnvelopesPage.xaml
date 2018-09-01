@@ -11,6 +11,7 @@
     PageTitle="{Binding Schedule.Description}"
     PreviousCommand="{Binding PreviousCommand}"
     SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">

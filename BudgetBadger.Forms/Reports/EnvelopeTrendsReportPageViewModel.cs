@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Reports
         readonly IReportLogic _reportLogic;
         readonly IEnvelopeLogic _envelopeLogic;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
 
         bool _isBusy;

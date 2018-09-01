@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly ITransactionLogic _transLogic;
 		readonly ISync _syncService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddNewCommand { get; set; }
         public ICommand EditCommand { get; set; }

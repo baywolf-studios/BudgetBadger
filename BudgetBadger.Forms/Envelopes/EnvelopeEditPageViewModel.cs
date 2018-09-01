@@ -51,6 +51,7 @@ namespace BudgetBadger.Forms.Envelopes
 			get { return !Budget.Envelope.Group.IsDebt; }
 		}
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand QuickBudgetCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }

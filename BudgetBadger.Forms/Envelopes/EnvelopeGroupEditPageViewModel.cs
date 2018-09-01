@@ -40,6 +40,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _envelopeGroup, value);
         }
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand UndoDeleteCommand { get; set; }

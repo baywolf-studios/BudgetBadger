@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackCommand="{Binding BackCommand}"
     PageTitle="Net Worth Report">
     <uc:ChildPage.BodyContent>
         <Grid
