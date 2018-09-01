@@ -31,6 +31,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand DeleteCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -67,6 +68,13 @@ namespace BudgetBadger.Forms.Accounts
         {
             get => _noAccounts;
             set => SetProperty(ref _noAccounts, value);
+        }
+
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
         }
 
         public AccountsPageViewModel(INavigationService navigationService,

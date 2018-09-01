@@ -21,6 +21,7 @@ namespace BudgetBadger.Core.Logic
 
         IReadOnlyList<string> GetAccountTypes();
 
+        bool FilterAccount(Account account, string searchText);
         IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText);
         IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts);
     }

@@ -7,6 +7,8 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     PageTitle="Accounts"
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
@@ -21,22 +23,18 @@
                     <RowDefinition Height="1" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <syncfusion:SfDataGrid
+                <uc:DataGrid
                     Grid.Row="0"
                     Margin="16,0"
                     AllowPullToRefresh="True"
-                    AutoGenerateColumns="False"
-                    BackgroundColor="{StaticResource BackgroundColor}"
                     ColumnSizer="Star"
-                    GridStyle="{StaticResource sfDataGridStyle}"
+                    Filter="{Binding Filter}"
+                    FilterText="{Binding SearchText}"
                     GroupCaptionTextFormat="Type: {Key}"
-                    HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
                     IsBusy="{Binding IsBusy}"
                     ItemsSource="{Binding Accounts, Mode=TwoWay}"
                     PullToRefreshCommand="{Binding RefreshCommand}"
-                    RowHeight="{StaticResource Key=ListItemHeight}"
-                    SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                    SelectionMode="Single">
+                    SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
@@ -76,7 +74,7 @@
                             MappingName="Balance"
                             TextAlignment="End" />
                     </syncfusion:SfDataGrid.Columns>
-                </syncfusion:SfDataGrid>
+                </uc:DataGrid>
                 <BoxView
                     Grid.Row="1"
                     Margin="0"

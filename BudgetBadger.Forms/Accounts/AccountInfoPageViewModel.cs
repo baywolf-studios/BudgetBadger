@@ -31,6 +31,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand PaymentCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
+        public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -56,13 +57,6 @@ namespace BudgetBadger.Forms.Accounts
                 RaisePropertyChanged(nameof(PendingTotal));
                 RaisePropertyChanged(nameof(PostedTotal));
             }
-        }
-
-        IReadOnlyList<Transaction> _filteredTransactions;
-        public IReadOnlyList<Transaction> FilteredTransactions
-        {
-            get => _filteredTransactions;
-            set => SetProperty(ref _filteredTransactions, value);
         }
 
         IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
@@ -110,7 +104,6 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
             Transactions = new List<Transaction>();
-            FilteredTransactions = new List<Transaction>();
             GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
 
@@ -199,7 +192,6 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        FilteredTransactions = result.Data;
                         GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
@@ -265,8 +257,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void ExecuteSearchCommand()
         {
-            FilteredTransactions = _transactionLogic.SearchTransactions(Transactions, SearchText);
-            GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
+            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
 
         public async Task ExecuteReconcileCommand()
