@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly ISync _syncService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }

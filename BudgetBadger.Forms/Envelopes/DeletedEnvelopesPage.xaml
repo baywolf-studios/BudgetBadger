@@ -6,8 +6,10 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackCommand="{Binding BackCommand}"
     PageTitle="Deleted Envelopes"
-    SearchCommand="{Binding SearchCommand}">
+    SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted envelopes"

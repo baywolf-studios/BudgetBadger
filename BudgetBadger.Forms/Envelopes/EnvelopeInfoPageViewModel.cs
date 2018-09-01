@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }

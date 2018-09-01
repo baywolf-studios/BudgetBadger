@@ -7,6 +7,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
+    BackCommand="{Binding BackCommand}"
     PageTitle="{Binding Payee.Description}"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"

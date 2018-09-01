@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackCommand="{Binding BackCommand}"
     PageTitle="Select a Payee"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"

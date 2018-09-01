@@ -20,6 +20,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }

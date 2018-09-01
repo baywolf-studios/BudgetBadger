@@ -57,6 +57,7 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _accountTypes, value);
         }
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand UndoDeleteCommand { get; set; }

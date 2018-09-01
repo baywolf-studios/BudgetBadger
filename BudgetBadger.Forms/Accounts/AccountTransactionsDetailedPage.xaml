@@ -8,6 +8,7 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
+    BackCommand="{Binding BackCommand}"
     PageTitle="{Binding Account.Description}"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"

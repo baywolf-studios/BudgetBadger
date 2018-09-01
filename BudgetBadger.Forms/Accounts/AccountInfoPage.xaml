@@ -8,6 +8,7 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
+    BackCommand="{Binding BackCommand}"
     PageTitle="{Binding Account.Description}"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"

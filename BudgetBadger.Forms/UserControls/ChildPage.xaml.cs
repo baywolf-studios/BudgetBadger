@@ -34,6 +34,13 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
+        public static BindableProperty BackCommandProperty = BindableProperty.Create(nameof(BackCommand), typeof(ICommand), typeof(ChildSearchPage), defaultBindingMode: BindingMode.TwoWay);
+        public ICommand BackCommand
+        {
+            get => (ICommand)GetValue(BackCommandProperty);
+            set => SetValue(BackCommandProperty, value);
+        }
+
         public View BodyContent
         {
             get => BodyView.Content;
@@ -51,11 +58,12 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
+            BackButtonFrame.BindingContext = this;
             BackButtonImage.BindingContext = this;
 
-            var backGestureRecognizer = new TapGestureRecognizer();
-            backGestureRecognizer.Tapped += BackButtonTapped;
-            BackButtonFrame.GestureRecognizers.Add(backGestureRecognizer);
+            //var backGestureRecognizer = new TapGestureRecognizer();
+            //backGestureRecognizer.Tapped += BackButtonTapped;
+            //BackButtonFrame.GestureRecognizers.Add(backGestureRecognizer);
         }
 
         async void BackButtonTapped(object sender, System.EventArgs e)

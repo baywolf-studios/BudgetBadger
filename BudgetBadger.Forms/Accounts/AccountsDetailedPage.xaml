@@ -29,14 +29,14 @@
                     BackgroundColor="{StaticResource BackgroundColor}"
                     ColumnSizer="Star"
                     GridStyle="{StaticResource sfDataGridStyle}"
+                    GroupCaptionTextFormat="Type: {Key}"
                     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
                     IsBusy="{Binding IsBusy}"
                     ItemsSource="{Binding Accounts, Mode=TwoWay}"
                     PullToRefreshCommand="{Binding RefreshCommand}"
                     RowHeight="{StaticResource Key=ListItemHeight}"
                     SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                    SelectionMode="Single"
-                    GroupCaptionTextFormat="Type: {Key}">
+                    SelectionMode="Single">
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>

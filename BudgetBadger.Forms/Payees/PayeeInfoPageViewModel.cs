@@ -21,6 +21,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly IPageDialogService _dialogService;
 
+        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }

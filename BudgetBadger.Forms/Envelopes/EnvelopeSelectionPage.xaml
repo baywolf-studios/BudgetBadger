@@ -6,8 +6,10 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    BackCommand="{Binding BackCommand}"
     PageTitle="Select an Envelope"
     SearchCommand="{Binding SearchCommand}"
+    SearchText="{Binding SearchTex}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
