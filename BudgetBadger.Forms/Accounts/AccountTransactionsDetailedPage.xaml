@@ -89,6 +89,48 @@
                             HeaderTextAlignment="End"
                             MappingName="Amount"
                             TextAlignment="End" />
+                        <syncfusion:GridTemplateColumn
+                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                            HeaderText="Status"
+                            HeaderTextAlignment="Center"
+                            MappingName=".">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentView>
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <svg:SvgCachedImage
+                                            HeightRequest="24"
+                                            HorizontalOptions="Center"
+                                            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="24">
+                                            <svg:SvgCachedImage.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Pending}"
+                                                    TargetType="svg:SvgCachedImage"
+                                                    Value="true">
+                                                    <Setter Property="Source" Value="pending.svg" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Posted}"
+                                                    TargetType="svg:SvgCachedImage"
+                                                    Value="true">
+                                                    <Setter Property="Source" Value="posted.svg" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Reconciled}"
+                                                    TargetType="svg:SvgCachedImage"
+                                                    Value="true">
+                                                    <Setter Property="Source" Value="reconciled.svg" />
+                                                </DataTrigger>
+                                            </svg:SvgCachedImage.Triggers>
+                                        </svg:SvgCachedImage>
+                                    </ContentView>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
                     </syncfusion:SfDataGrid.Columns>
                 </uc:DataGrid>
             </uc:HelperControl>

@@ -1,106 +1,115 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ViewCell
+    x:Class="BudgetBadger.Forms.DataTemplates.TransactionViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    x:Class="BudgetBadger.Forms.DataTemplates.TransactionViewCell"
     Height="{StaticResource Key=ListDoubleItemHeight}">
     <Grid
-        HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
-        RowSpacing="4"
-        ColumnSpacing="16"
         Margin="-1"
         Padding="1"
-        BackgroundColor="{StaticResource BackgroundColor}">
+        BackgroundColor="{StaticResource BackgroundColor}"
+        ColumnSpacing="16"
+        HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
+        RowSpacing="4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="56"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="56" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>   
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <svg:SvgCachedImage
-            InputTransparent="true"
-            Grid.Column="0"
             Grid.Row="0"
             Grid.RowSpan="2"
+            Grid.Column="0"
             HeightRequest="24"
-            WidthRequest="24"
             HorizontalOptions="Center"
+            InputTransparent="true"
+            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
             VerticalOptions="Center"
-            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}">
+            WidthRequest="24">
             <svg:SvgCachedImage.Triggers>
-                <DataTrigger Binding="{Binding Pending}" Value="true" TargetType="svg:SvgCachedImage">
-                    <Setter Property="Source" Value="pending.svg"/>
+                <DataTrigger
+                    Binding="{Binding Pending}"
+                    TargetType="svg:SvgCachedImage"
+                    Value="true">
+                    <Setter Property="Source" Value="pending.svg" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Posted}" Value="true" TargetType="svg:SvgCachedImage">
-                    <Setter Property="Source" Value="posted.svg"/>
+                <DataTrigger
+                    Binding="{Binding Posted}"
+                    TargetType="svg:SvgCachedImage"
+                    Value="true">
+                    <Setter Property="Source" Value="posted.svg" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Reconciled}" Value="true" TargetType="svg:SvgCachedImage">
-                    <Setter Property="Source" Value="reconciled.svg"/>
+                <DataTrigger
+                    Binding="{Binding Reconciled}"
+                    TargetType="svg:SvgCachedImage"
+                    Value="true">
+                    <Setter Property="Source" Value="reconciled.svg" />
                 </DataTrigger>
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
         <Button
             x:Name="hiddenButton"
-            Grid.Column="0"
             Grid.Row="0"
             Grid.RowSpan="2"
+            Grid.Column="0"
             BackgroundColor="Transparent"
             BorderWidth="2"
             CommandParameter="{Binding .}">
             <Button.BorderColor>
                 <OnPlatform x:TypeArguments="Color" Default="Transparent">
-                    <On Platform="macOS" Value="White"/>
+                    <On Platform="macOS" Value="White" />
                 </OnPlatform>
             </Button.BorderColor>
         </Button>
         <Label
             x:Name="primaryLabel"
-            Grid.Column="1"
             Grid.Row="0"
-            Text="{Binding Payee.Description}"
+            Grid.Column="1"
             Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-            VerticalOptions="End"/>
+            Text="{Binding Payee.Description}"
+            VerticalOptions="End" />
         <Label
             x:Name="secondaryLabel"
-            Grid.Column="1"
             Grid.Row="1"
-            Text="{Binding Account.Description}"
+            Grid.Column="1"
             Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-            VerticalOptions="Start"/>
+            Text="{Binding Account.Description}"
+            VerticalOptions="Start" />
         <Label
             x:Name="rightSingleLabel"
-            Grid.Column="2"
             Grid.Row="0"
             Grid.RowSpan="2"
+            Grid.Column="2"
             Margin="0,0,16,0"
-            Text="{Binding Amount, StringFormat='{0:C}'}"
-            Style="{StaticResource Key=ListItemLabelStyle}"
             HorizontalTextAlignment="End"
-            VerticalOptions="Center"/>
+            Style="{StaticResource Key=ListItemLabelStyle}"
+            Text="{Binding Amount, StringFormat='{0:C}'}"
+            VerticalOptions="Center" />
 
         <Label
             x:Name="rightPrimaryLabel"
-            IsVisible="false"
-            Grid.Column="2"
             Grid.Row="0"
+            Grid.Column="2"
             Margin="0,0,16,0"
-            Text="{Binding Amount, StringFormat='{0:C}'}"
-            Style="{StaticResource Key=ListDoubleItemLabelStyle}"
             HorizontalTextAlignment="End"
-            VerticalOptions="End"/>
+            IsVisible="false"
+            Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+            Text="{Binding Amount, StringFormat='{0:C}'}"
+            VerticalOptions="End" />
         <Label
             x:Name="rightSecondaryLabel"
-            IsVisible="false"
-            Grid.Column="2"
             Grid.Row="1"
+            Grid.Column="2"
             Margin="0,0,16,0"
-            Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
-            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
             HorizontalTextAlignment="End"
-            VerticalOptions="Start"/>
+            IsVisible="false"
+            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+            Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
+            VerticalOptions="Start" />
     </Grid>
 </ViewCell>
