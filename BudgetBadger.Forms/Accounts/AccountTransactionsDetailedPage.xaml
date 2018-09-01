@@ -46,7 +46,7 @@
                     GridStyle="{StaticResource sfDataGridStyle}"
                     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
                     IsBusy="{Binding IsBusy}"
-                    ItemsSource="{Binding Transactions, Mode=TwoWay}"
+                    ItemsSource="{Binding FilteredTransactions, Mode=TwoWay}"
                     PullToRefreshCommand="{Binding RefreshCommand}"
                     RowHeight="{StaticResource Key=ListItemHeight}"
                     SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
