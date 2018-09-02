@@ -63,12 +63,12 @@ namespace BudgetBadger.Forms.Views
             SettingsLabel.TextColor = _secondaryTextColor;
         }
 
-        async void Handle_Tapped(object sender, EventArgs e)
+        void Handle_Tapped(object sender, EventArgs e)
         {
             SetAllInactive();
 
-            var frame = (Frame)sender;
-            frame.BackgroundColor = (Color)Application.Current.Resources["SelectedNavigationItemColor"];
+            var frame = (ContentView)sender;
+            frame.BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
 
             var stackLayout = (StackLayout)frame.Content;
 

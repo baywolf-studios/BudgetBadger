@@ -56,7 +56,7 @@
             </Color>
             <Color x:Key="ErrorColor">Red</Color>
 
-            <Color x:Key="SelectedNavigationItemColor" x:FactoryMethod="FromHex">
+            <Color x:Key="SelectedItemColor" x:FactoryMethod="FromHex">
                 <x:Arguments>
                     <x:String>#e7eff5</x:String>
                 </x:Arguments>
@@ -117,6 +117,18 @@
                 <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleSubItemFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
+
+            <x:Double x:Key="DataGridItemFontSize">16</x:Double>
+            <x:Double x:Key="DataGridItemHeight">48</x:Double>
+
+            <x:Double x:Key="DataGridContextActionSize">48</x:Double>
+            <Color x:Key="DataGridContextActionTextColor">white</Color>
+            <Color x:Key="DataGridContextActionBackgroundColor" x:FactoryMethod="FromHex">
+                <x:Arguments>
+                    <x:String>#3678AF</x:String>
+                </x:Arguments>
+            </Color>
+            <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
 
             <x:Double x:Key="FooterHiddenButtonHeight">56</x:Double>
             <x:Double x:Key="MinimumButtonWidth">64</x:Double>
