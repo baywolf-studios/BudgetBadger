@@ -4,8 +4,10 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     PageTitle="Accounts"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
@@ -27,6 +29,7 @@
                     Grid.Row="0"
                     Margin="16,0"
                     AllowPullToRefresh="True"
+                    AllowSwiping="True"
                     ColumnSizer="Star"
                     Filter="{Binding Filter}"
                     FilterText="{Binding SearchText}"
@@ -38,6 +41,40 @@
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
+                    <syncfusion:SfDataGrid.RightSwipeTemplate>
+                        <DataTemplate>
+                            <Grid ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ContentView Grid.Column="0" BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                    <ContentView.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                    </ContentView.GestureRecognizers>
+                                    <svg:SvgCachedImage
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                        Source="edit.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24" />
+                                </ContentView>
+                                <ContentView Grid.Column="1" BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                    <ContentView.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                    </ContentView.GestureRecognizers>
+                                    <svg:SvgCachedImage
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                        Source="delete.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24" />
+                                </ContentView>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:SfDataGrid.RightSwipeTemplate>
                     <syncfusion:SfDataGrid.GroupColumnDescriptions>
                         <syncfusion:GroupColumnDescription ColumnName="Type" />
                     </syncfusion:SfDataGrid.GroupColumnDescriptions>

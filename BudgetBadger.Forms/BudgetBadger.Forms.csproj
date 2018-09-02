@@ -53,6 +53,9 @@
     <EmbeddedResource Remove="Sync\SyncModesPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Accounts\AccountInfoDetailedPage.xaml.cs">
+      <DependentUpon>AccountInfoDetailedPage.xaml</DependentUpon>
+    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeEditPage.xaml.cs">
       <DependentUpon>..\Views\Views\PayeeEditPage.xaml</DependentUpon>
     </Compile>
@@ -182,7 +185,7 @@
     <EmbeddedResource Update="Accounts\AccountsDetailedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Accounts\AccountTransactionsDetailedPage.xaml">
+    <EmbeddedResource Update="Accounts\AccountInfoDetailedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UserControls\DataGrid.xaml">

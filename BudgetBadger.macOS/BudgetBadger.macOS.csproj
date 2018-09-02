@@ -195,7 +195,9 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\delete.svg" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Info.plist" />

@@ -18,6 +18,7 @@
             HelperText="Add an Account using the + button"
             ImagePath="helperaccount.svg"
             ShowHelper="{Binding NoAccounts}">
+            
             <ListView
                 x:Name="accountList"
                 BackgroundColor="{StaticResource BackgroundColor}"

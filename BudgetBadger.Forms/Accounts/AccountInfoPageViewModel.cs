@@ -25,6 +25,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
+        public ICommand DeleteTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
@@ -108,6 +109,7 @@ namespace BudgetBadger.Forms.Accounts
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
+            DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
@@ -135,6 +137,27 @@ namespace BudgetBadger.Forms.Accounts
                 { PageParameter.Account, Account }
             };
             await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+        }
+
+        public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
+        {
+            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
+
+            if (result.Success)
+            {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
         }
 
         public async Task ExecuteTransactionSelectedCommand()

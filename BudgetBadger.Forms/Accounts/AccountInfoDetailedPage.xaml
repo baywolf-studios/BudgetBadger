@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
-    x:Class="BudgetBadger.Forms.Accounts.AccountTransactionsDetailedPage"
+    x:Class="BudgetBadger.Forms.Accounts.AccountInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -41,6 +41,7 @@
                 <uc:DataGrid
                     Margin="16,0"
                     AllowPullToRefresh="True"
+                    AllowSwiping="True"
                     ColumnSizer="Star"
                     Filter="{Binding Filter}"
                     FilterText="{Binding SearchText}"
@@ -51,25 +52,22 @@
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
-                    <syncfusion:SfDataGrid.LeftSwipeTemplate>
+                    <syncfusion:SfDataGrid.RightSwipeTemplate>
                         <DataTemplate>
-                            <Grid Padding="9" BackgroundColor="#009EDA">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <Label
-                                    Grid.Column="1"
-                                    BackgroundColor="Transparent"
-                                    HorizontalTextAlignment="Start"
-                                    LineBreakMode="NoWrap"
-                                    Text="EDIT"
-                                    TextColor="White"
-                                    VerticalTextAlignment="Center" />
-                            </Grid>
+                            <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                </ContentView.GestureRecognizers>
+                                <svg:SvgCachedImage
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                    Source="delete.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="24" />
+                            </ContentView>
                         </DataTemplate>
-                    </syncfusion:SfDataGrid.LeftSwipeTemplate>
+                    </syncfusion:SfDataGrid.RightSwipeTemplate>
                     <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                         <syncfusion:GridTextColumn
                             CellTextSize="{StaticResource ListItemFontSize}"
@@ -115,7 +113,7 @@
                             MappingName=".">
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ContentView>
+                                    <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
                                         <ContentView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>

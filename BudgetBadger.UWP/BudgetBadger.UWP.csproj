@@ -116,6 +116,7 @@
     <Content Include="Assets\buttonselector.svg" />
     <Content Include="Assets\cancel.svg" />
     <Content Include="Assets\checkedcheckbox.svg" />
+    <Content Include="Assets\delete.svg" />
     <Content Include="Assets\dropbox.svg" />
     <Content Include="Assets\dropdownselector.svg" />
     <Content Include="Assets\edit.svg" />

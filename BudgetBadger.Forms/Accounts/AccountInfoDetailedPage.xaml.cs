@@ -12,9 +12,9 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Accounts
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AccountTransactionsDetailedPage : ChildSearchPage
+	public partial class AccountInfoDetailedPage : ChildSearchPage
 	{
-		public AccountTransactionsDetailedPage()
+		public AccountInfoDetailedPage()
         {
 			InitializeComponent ();
 		}

@@ -34,18 +34,18 @@
                     Style="{StaticResource MasterDetailTitleLabelStyle}"
                     Text="Budget Badger"
                     VerticalTextAlignment="Center" />
-                <Frame
+                <ContentView
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
                     Margin="8,0"
                     Padding="0"
-                    BackgroundColor="{StaticResource SelectedNavigationItemColor}">
-                    <Frame.GestureRecognizers>
+                    BackgroundColor="{StaticResource SelectedItemColor}">
+                    <ContentView.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NavigationPage/EnvelopesPage"
                             Tapped="Handle_Tapped" />
-                    </Frame.GestureRecognizers>
+                    </ContentView.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="EnvelopesIcon"
@@ -61,18 +61,18 @@
                             Text="Envelopes"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
-                <Frame
+                </ContentView>
+                <ContentView
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
                     Padding="0">
-                    <Frame.GestureRecognizers>
+                    <ContentView.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NavigationPage/AccountsPage"
                             Tapped="Handle_Tapped" />
-                    </Frame.GestureRecognizers>
+                    </ContentView.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="AccountsIcon"
@@ -88,18 +88,18 @@
                             Text="Accounts"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
-                <Frame
+                </ContentView>
+                <ContentView
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
                     Padding="0">
-                    <Frame.GestureRecognizers>
+                    <ContentView.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NavigationPage/PayeesPage"
                             Tapped="Handle_Tapped" />
-                    </Frame.GestureRecognizers>
+                    </ContentView.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="PayeesIcon"
@@ -115,18 +115,18 @@
                             Text="Payees"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
-                <Frame
+                </ContentView>
+                <ContentView
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
                     Padding="0">
-                    <Frame.GestureRecognizers>
+                    <ContentView.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NavigationPage/ReportsPage"
                             Tapped="Handle_Tapped" />
-                    </Frame.GestureRecognizers>
+                    </ContentView.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="ReportsIcon"
@@ -142,18 +142,18 @@
                             Text="Reports"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
-                <Frame
+                </ContentView>
+                <ContentView
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
                     Padding="0">
-                    <Frame.GestureRecognizers>
+                    <ContentView.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NavigationPage/SettingsPage"
                             Tapped="Handle_Tapped" />
-                    </Frame.GestureRecognizers>
+                    </ContentView.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="SettingsIcon"
@@ -169,7 +169,7 @@
                             Text="Settings"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
+                </ContentView>
                 <BoxView
                     Grid.RowSpan="7"
                     Grid.Column="1"
