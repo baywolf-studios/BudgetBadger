@@ -1,9 +1,12 @@
-﻿using FFImageLoading.Forms.WinUWP;
+﻿using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
+using Syncfusion.ListView.XForms.UWP;
+using Syncfusion.SfDataGrid.XForms.UWP;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -53,8 +56,18 @@ namespace BudgetBadger.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
+                // you'll need to add `using System.Reflection;`
+                List<Assembly> assembliesToInclude = new List<Assembly>();
+
+                //Now, add all the assemblies your app uses
+                assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
+                assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
+
                 // add this line
-                Xamarin.Forms.Forms.Init(e); // requires the `e` parameter
+                Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
+                Syncfusion.SfDataGrid.XForms.UWP.SfDataGridRenderer.Init();
+                Syncfusion.ListView.XForms.UWP.SfListViewRenderer.Init();
+                Syncfusion.SfPullToRefresh.XForms.UWP.SfPullToRefreshRenderer.Init();
                 CachedImageRenderer.Init();
                 var ignore = typeof(SvgCachedImage);
 

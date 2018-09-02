@@ -30,10 +30,11 @@ namespace BudgetBadger.macOS
         public override void DidFinishLaunching(NSNotification notification)
         {
             Xamarin.Forms.Forms.Init();
-            CachedImageRenderer.Init();
-            var ignore = typeof(SvgCachedImage);
             SimpleAuth.NativeSafariAuthenticator.Activate();
             Syncfusion.SfDataGrid.XForms.MacOS.SfDataGridRenderer.Init();
+            Syncfusion.ListView.XForms.MacOS.SfListViewRenderer.Init();
+            CachedImageRenderer.Init();
+            var ignore = typeof(SvgCachedImage);
 
             LoadApplication(new App());
             base.DidFinishLaunching(notification);

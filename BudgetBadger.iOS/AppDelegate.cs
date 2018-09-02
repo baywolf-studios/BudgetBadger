@@ -19,13 +19,14 @@ namespace BudgetBadger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-
+            SimpleAuth.NativeSafariAuthenticator.Activate();
+            Syncfusion.SfDataGrid.XForms.iOS.SfDataGridRenderer.Init();
+            Syncfusion.ListView.XForms.iOS.SfListViewRenderer.Init();
+            Syncfusion.SfPullToRefresh.XForms.iOS.SfPullToRefreshRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
 
-            LoadApplication(new App(new iOSInitializer()));
-
-            SimpleAuth.NativeSafariAuthenticator.Activate();
+            LoadApplication(new App(new iOSInitializer()));            
 
             UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(54, 120, 175);
             var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
