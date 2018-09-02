@@ -230,7 +230,7 @@ namespace BudgetBadger.Logic
         
 		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
         {
-            return accounts.OrderBy(a => a.Description).ToList();
+            return accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
         }
 
         public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
