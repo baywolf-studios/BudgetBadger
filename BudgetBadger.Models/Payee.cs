@@ -68,6 +68,21 @@ namespace BudgetBadger.Models
             get => Id == Constants.StartingBalancePayee.Id;
         }
 
+        public string FirstLetter
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Description))
+                {
+                    return "";
+                }
+                else
+                {
+                    return Description[0].ToString().ToUpper();
+                }
+            }
+        }
+
         public Payee()
         {
             Id = Guid.Empty;

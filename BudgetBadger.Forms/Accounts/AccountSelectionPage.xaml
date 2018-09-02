@@ -21,12 +21,17 @@
             HelperText="Add an Account using the + button"
             ImagePath="helperaccount.svg"
             ShowHelper="{Binding NoAccounts}">
-            <pulltoRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}">
+            <pulltoRefresh:SfPullToRefresh
+                IsRefreshing="{Binding IsBusy}"
+                ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
                 <pulltoRefresh:SfPullToRefresh.Behaviors>
                     <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
                 </pulltoRefresh:SfPullToRefresh.Behaviors>
                 <pulltoRefresh:SfPullToRefresh.PullableContent>
-                    <syncfusion:SfListView
+                    <uc:ListView
+                        Filter="{Binding Filter}"
+                        FilterText="{Binding SearchText}"
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Accounts, Mode=TwoWay}"
@@ -36,6 +41,10 @@
                         </syncfusion:SfListView.Behaviors>
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
+                                <data:DataSource.SortDescriptors>
+                                    <data:SortDescriptor Direction="Ascending" PropertyName="Type" />
+                                    <data:SortDescriptor Direction="Ascending" PropertyName="Description" />
+                                </data:DataSource.SortDescriptors>
                                 <data:DataSource.GroupDescriptors>
                                     <data:GroupDescriptor PropertyName="Type" />
                                 </data:DataSource.GroupDescriptors>
@@ -51,7 +60,7 @@
                                 <dt:AccountViewCell />
                             </DataTemplate>
                         </syncfusion:SfListView.ItemTemplate>
-                    </syncfusion:SfListView>
+                    </uc:ListView>
                 </pulltoRefresh:SfPullToRefresh.PullableContent>
             </pulltoRefresh:SfPullToRefresh>
         </uc:HelperControl>
