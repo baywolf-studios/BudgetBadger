@@ -50,6 +50,9 @@
     <Reference Include="Syncfusion.Data.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\MonoAndroid10\Syncfusion.Data.Portable.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.DataSource.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.DataSource.16.2.0.50\lib\MonoAndroid10\Syncfusion.DataSource.Portable.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.GridCommon.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.GridCommon.16.2.0.50\lib\MonoAndroid10\Syncfusion.GridCommon.Portable.dll</HintPath>
     </Reference>
@@ -62,6 +65,12 @@
     <Reference Include="Syncfusion.SfDataGrid.XForms.Android, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfDataGrid.XForms.Android.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfListView.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms.Android, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfListView.XForms.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.SfNumericTextBox.Android, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfNumericTextBox.Android.dll</HintPath>
     </Reference>
@@ -70,6 +79,12 @@
     </Reference>
     <Reference Include="Syncfusion.SfNumericTextBox.XForms.Android, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfNumericTextBox.XForms.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfPullToRefresh.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfPullToRefresh.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfPullToRefresh.XForms.Android, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.16.2.0.50\lib\MonoAndroid10\Syncfusion.SfPullToRefresh.XForms.Android.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

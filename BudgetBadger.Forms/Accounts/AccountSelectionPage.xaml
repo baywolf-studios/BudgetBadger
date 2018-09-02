@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackCommand="{Binding BackCommand}"
     PageTitle="Select an Account"
@@ -18,33 +20,27 @@
             HelperText="Add an Account using the + button"
             ImagePath="helperaccount.svg"
             ShowHelper="{Binding NoAccounts}">
+            <pulltoRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                <pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                </pulltoRefresh:SfPullToRefresh.Behaviors>
+                <pulltoRefresh:SfPullToRefresh.PullableContent>
+                    <syncfusion:SfListView
+                ItemsSource="{Binding Accounts, Mode=TwoWay}"
+                SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+                        <syncfusion:SfListView.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
+                        </syncfusion:SfListView.Behaviors>
+                        <syncfusion:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <dt:AccountViewCell />
+                            </DataTemplate>
+                        </syncfusion:SfListView.ItemTemplate>
+                    </syncfusion:SfListView>
+                </pulltoRefresh:SfPullToRefresh.PullableContent>
+            </pulltoRefresh:SfPullToRefresh>
             
-            <ListView
-                x:Name="accountList"
-                BackgroundColor="{StaticResource BackgroundColor}"
-                GroupDisplayBinding="{Binding Key}"
-                HasUnevenRows="true"
-                IsGroupingEnabled="true"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                ItemsSource="{Binding GroupedAccounts}"
-                RefreshCommand="{Binding RefreshCommand}"
-                SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                SeparatorVisibility="None">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
-                </ListView.Behaviors>
-                <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <dt:GroupHeaderViewCell />
-                    </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <dt:AccountViewCell />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            
         </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

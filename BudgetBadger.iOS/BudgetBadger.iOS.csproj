@@ -89,6 +89,9 @@
     <Reference Include="Syncfusion.Data.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.Data.Portable.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.DataSource.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.DataSource.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.DataSource.Portable.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.GridCommon.Portable, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.GridCommon.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.GridCommon.Portable.dll</HintPath>
     </Reference>
@@ -101,6 +104,12 @@
     <Reference Include="Syncfusion.SfDataGrid.XForms.iOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfDataGrid.XForms.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms.iOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.iOS.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.SfNumericTextBox.iOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfNumericTextBox.iOS.dll</HintPath>
     </Reference>
@@ -109,6 +118,12 @@
     </Reference>
     <Reference Include="Syncfusion.SfNumericTextBox.XForms.iOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfNumericTextBox.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfPullToRefresh.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfPullToRefresh.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfPullToRefresh.XForms.iOS, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.16.2.0.50\lib\Xamarin.iOS10\Syncfusion.SfPullToRefresh.XForms.iOS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
