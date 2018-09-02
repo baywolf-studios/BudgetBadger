@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentView
+    x:Class="BudgetBadger.Forms.UserControls.BusyIndicator"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.UserControls.BusyIndicator"
-    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters" 
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     x:Name="this">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -14,7 +14,11 @@
         <ControlTemplate>
             <Grid>
                 <ContentPresenter IsVisible="{Binding Source={x:Reference this}, Path=IsBusy, Converter={StaticResource invertedBool}}" />
-                <StackLayout IsVisible="{Binding Source={x:Reference this}, Path=IsBusy}" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <StackLayout
+                    HorizontalOptions="CenterAndExpand"
+                    IsVisible="{Binding Source={x:Reference this}, Path=IsBusy}"
+                    Orientation="Vertical"
+                    VerticalOptions="CenterAndExpand">
                     <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" />
                     <Label HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
                 </StackLayout>

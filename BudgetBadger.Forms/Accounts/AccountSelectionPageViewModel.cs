@@ -115,13 +115,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
             try
             {
                 var result = await _accountLogic.GetAccountsForSelectionAsync();
@@ -133,7 +126,6 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
                 }
 

@@ -2,6 +2,7 @@
 using FFImageLoading.Svg.Forms;
 using Syncfusion.ListView.XForms.UWP;
 using Syncfusion.SfDataGrid.XForms.UWP;
+using Syncfusion.SfPullToRefresh.XForms.UWP;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,6 +63,7 @@ namespace BudgetBadger.UWP
                 //Now, add all the assemblies your app uses
                 assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
+                assembliesToInclude.Add(typeof(SfPullToRefreshRenderer).GetTypeInfo().Assembly);
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
