@@ -51,6 +51,25 @@
                     <syncfusion:SfDataGrid.Behaviors>
                         <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
                     </syncfusion:SfDataGrid.Behaviors>
+                    <syncfusion:SfDataGrid.LeftSwipeTemplate>
+                        <DataTemplate>
+                            <Grid Padding="9" BackgroundColor="#009EDA">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Label
+                                    Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    HorizontalTextAlignment="Start"
+                                    LineBreakMode="NoWrap"
+                                    Text="EDIT"
+                                    TextColor="White"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:SfDataGrid.LeftSwipeTemplate>
                     <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                         <syncfusion:GridTextColumn
                             CellTextSize="{StaticResource ListItemFontSize}"
