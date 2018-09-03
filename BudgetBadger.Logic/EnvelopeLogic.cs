@@ -403,7 +403,8 @@ namespace BudgetBadger.Logic
         {
             if (envelope != null)
             {
-                return envelope.Description.ToLower().Contains(searchText.ToLower());
+                return envelope.Group.Description.ToLower().Contains(searchText.ToLower())
+                    || envelope.Description.ToLower().Contains(searchText.ToLower());
             }
             else
             {
@@ -415,7 +416,8 @@ namespace BudgetBadger.Logic
         {
             if (budget != null && budget.Envelope != null)
             {
-                return budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
+                return budget.Envelope.Group.Description.ToLower().Contains(searchText.ToLower())
+                             || budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
             }
             else
             {
