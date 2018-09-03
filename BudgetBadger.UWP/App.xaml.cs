@@ -68,9 +68,9 @@ namespace BudgetBadger.UWP
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
-                Syncfusion.SfDataGrid.XForms.UWP.SfDataGridRenderer.Init();
-                Syncfusion.ListView.XForms.UWP.SfListViewRenderer.Init();
-                Syncfusion.SfPullToRefresh.XForms.UWP.SfPullToRefreshRenderer.Init();
+                SfDataGridRenderer.Init();
+                SfListViewRenderer.Init();
+                SfPullToRefreshRenderer.Init();
                 CachedImageRenderer.Init();
                 var ignore = typeof(SvgCachedImage);
 
