@@ -24,7 +24,6 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddNewCommand { get; set; }
-        public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
@@ -103,7 +102,6 @@ namespace BudgetBadger.Forms.Transactions
             Transactions = new List<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
-            EditCommand = new DelegateCommand<Transaction>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
@@ -206,25 +204,15 @@ namespace BudgetBadger.Forms.Transactions
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
-        public async Task ExecuteEditCommand(Transaction transaction)
-        {
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.Transaction, transaction },
-                { PageParameter.SplitTransactionMode, true }
-            };
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
-        }
-
         public async Task ExecuteDeleteCommand(Transaction transaction)
         {
             if (transaction.IsActive)
             {
-                if (IsBusy)
+                if (!IsBusy)
                 {
-                    return;
+                    IsBusy = true;
                 }
-                IsBusy = true;
+                
                 try
                 {
                     var result = await _transLogic.DeleteTransactionAsync(transaction.Id);
@@ -254,12 +242,10 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {

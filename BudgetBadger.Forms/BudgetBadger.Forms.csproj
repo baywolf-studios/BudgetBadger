@@ -24,9 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
-    <Folder Include="Payees\" />
-    <Folder Include="Envelopes\" />
-    <Folder Include="Transactions\" />
     <Folder Include="Enums\" />
     <Folder Include="Settings\" />
     <Folder Include="Reports\" />
@@ -58,6 +55,9 @@
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeEditPage.xaml.cs">
       <DependentUpon>..\Views\Views\PayeeEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Payees\PayeeInfoDetailedPage.xaml.cs">
+      <DependentUpon>PayeeInfoDetailedPage.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeInfoPage.xaml.cs">
       <DependentUpon>..\Views\Views\PayeeInfoPage.xaml</DependentUpon>
@@ -189,6 +189,21 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Accounts\AccountInfoDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Envelopes\EnvelopeInfoDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Envelopes\EnvelopesDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Payees\PayeeInfoDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Payees\PayeesDetailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Transactions\SplitTransactionDetailedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UserControls\DataGrid.xaml">

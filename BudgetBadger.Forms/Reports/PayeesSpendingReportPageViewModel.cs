@@ -103,12 +103,10 @@ namespace BudgetBadger.Forms.Reports
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {

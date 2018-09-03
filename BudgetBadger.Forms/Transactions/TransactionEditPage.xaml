@@ -46,6 +46,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="16" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -54,48 +55,49 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="16" />
                         </Grid.RowDefinitions>
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="0"
+                            Grid.Row="1"
                             Grid.Column="0"
                             Margin="16,0,0,0"
                             Label="Outflow"
                             Number="{Binding Transaction.Outflow}" />
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="0"
+                            Grid.Row="1"
                             Grid.Column="1"
                             Margin="0,0,16,0"
                             Label="Inflow"
                             Number="{Binding Transaction.Inflow}" />
                         <uc:ButtonSelector
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding AccountSelectedCommand}"
                             Label="Account"
                             Text="{Binding Transaction.Account.Description}" />
                         <uc:ButtonSelector
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding PayeeSelectedCommand}"
                             Label="Payee"
                             Text="{Binding Transaction.Payee.Description}" />
                         <uc:ButtonSelector
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding EnvelopeSelectedCommand}"
                             Label="Envelope"
                             Text="{Binding Transaction.Envelope.Description}" />
                         <uc:DateSelector
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Date="{Binding Transaction.ServiceDate}"
                             Label="Service Date" />
                         <StackLayout
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Orientation="Vertical"
@@ -119,13 +121,13 @@
                             </uc:Checkbox>
                         </StackLayout>
                         <uc:MultilineTextEntry
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Notes"
                             Text="{Binding Transaction.Notes}" />
                         <Grid
-                            Grid.Row="7"
+                            Grid.Row="8"
                             Grid.ColumnSpan="2"
                             Margin="0"
                             ColumnSpacing="16"
@@ -247,14 +249,16 @@
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"

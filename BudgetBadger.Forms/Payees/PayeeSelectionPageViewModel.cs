@@ -22,9 +22,9 @@ namespace BudgetBadger.Forms.Payees
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 		public ICommand AddCommand { get; set; }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -47,20 +47,13 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _selectedPayee, value);
         }
 
-        IReadOnlyList<IGrouping<string, Payee>> _groupedPayees;
-        public IReadOnlyList<IGrouping<string, Payee>> GroupedPayees
-        {
-            get => _groupedPayees;
-            set => SetProperty(ref _groupedPayees, value);
-        }
-
         public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
         }
 
         bool _noPayees;
@@ -78,12 +71,10 @@ namespace BudgetBadger.Forms.Payees
 
             Payees = new List<Payee>();
             SelectedPayee = null;
-            GroupedPayees = Payees.GroupBy(p => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
@@ -124,12 +115,10 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -138,7 +127,6 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     Payees = result.Data;
-                    GroupedPayees = _payeeLogic.GroupPayees(Payees);
                 }
                 else
                 {
@@ -176,11 +164,6 @@ namespace BudgetBadger.Forms.Payees
             {
                 //show error
             }
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            GroupedPayees = _payeeLogic.GroupPayees(_payeeLogic.SearchPayees(Payees, SearchText));
         }
     }
 }

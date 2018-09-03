@@ -35,23 +35,25 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        Margin="0,16"
+                        Margin="0"
                         ColumnSpacing="0"
                         RowSpacing="16">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="16" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="16" />
                         </Grid.RowDefinitions>
                         <uc:TextEntry
-                            Grid.Row="0"
+                            Grid.Row="1"
                             Margin="16,0"
                             Label="Name"
                             Text="{Binding Account.Description}" />
                         <uc:DropdownSelector
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
                             ItemDisplayBinding="{Binding .}"
@@ -59,19 +61,19 @@
                             Label="Type"
                             SelectedItem="{Binding SelectedAccountType}" />
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
                             Label="Balance"
                             Number="{Binding Account.Balance}" />
                         <uc:MultilineTextEntry
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Margin="16,0"
                             Keyboard="Text"
                             Label="Notes"
                             Text="{Binding Account.Notes}" />
                         <Button
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -93,7 +95,7 @@
                             </Button.Triggers>
                         </Button>
                         <Button
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
@@ -145,14 +147,16 @@
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"

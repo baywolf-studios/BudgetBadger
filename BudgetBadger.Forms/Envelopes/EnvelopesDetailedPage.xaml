@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<uc:RootSearchPage
-    x:Class="BudgetBadger.Forms.Accounts.AccountsDetailedPage"
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<uc:StepperPage
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -9,18 +9,24 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
-    PageTitle="Accounts"
-    SearchCommand="{Binding SearchCommand}"
+    NextCommand="{Binding NextCommand}"
+    PageTitle="{Binding Schedule.Description}"
+    PreviousCommand="{Binding PreviousCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
-    <uc:RootSearchPage.BodyContent>
+    <uc:StepperPage.BodyContent>
         <uc:HelperControl
-            HelperText="Add an Account using the + button"
-            ImagePath="helperaccount.svg"
-            ShowHelper="{Binding NoAccounts}">
-            <Grid>
+            Grid.Row="2"
+            HelperText="Add an Envelope using the + button"
+            ImagePath="helperenvelope.svg"
+            ShowHelper="{Binding NoEnvelopes}">
+            <Grid
+                Margin="0"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
+                RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="1" />
@@ -41,12 +47,12 @@
                             ColumnSizer="Star"
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
-                            GroupCaptionTextFormat="Type: {Key}"
-                            ItemsSource="{Binding Accounts}"
-                            SelectedItem="{Binding SelectedAccount}">
+                            ItemsSource="{Binding Budgets}"
+                            SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfDataGrid.Behaviors>
                                 <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                             </syncfusion:SfDataGrid.Behaviors>
+                            <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">
@@ -82,7 +88,7 @@
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
-                                <syncfusion:GroupColumnDescription ColumnName="Type" />
+                                <syncfusion:GroupColumnDescription ColumnName="Envelope.Group.Description" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
@@ -90,31 +96,39 @@
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Name"
                                     HeaderTextAlignment="Start"
-                                    MappingName="Description"
+                                    MappingName="Envelope.Description"
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Pending"
+                                    HeaderText="Past"
                                     HeaderTextAlignment="End"
-                                    MappingName="Pending"
+                                    MappingName="Past"
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Posted"
+                                    HeaderText="Activity"
                                     HeaderTextAlignment="End"
-                                    MappingName="Posted"
+                                    MappingName="Activity"
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Balance"
+                                    HeaderText="Amount"
                                     HeaderTextAlignment="End"
-                                    MappingName="Balance"
+                                    MappingName="Amount"
+                                    TextAlignment="End" />
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    Format="c"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Remaining"
+                                    HeaderTextAlignment="End"
+                                    MappingName="Remaining"
                                     TextAlignment="End" />
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
@@ -128,40 +142,96 @@
                 <Grid
                     Grid.Row="2"
                     Margin="16"
-                    ColumnSpacing="16">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
+                    ColumnSpacing="16"
+                    RowSpacing="8">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="Net Worth"
+                        Text="To Budget"
                         VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Past"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Income"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Budgeted"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="5"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Over"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="5"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="7"
                         Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
@@ -170,5 +240,5 @@
                 </Grid>
             </Grid>
         </uc:HelperControl>
-    </uc:RootSearchPage.BodyContent>
-</uc:RootSearchPage>
+    </uc:StepperPage.BodyContent>
+</uc:StepperPage>

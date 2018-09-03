@@ -72,7 +72,7 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        Margin="0,16"
+                        Margin="0"
                         ColumnSpacing="0"
                         RowSpacing="16">
                         <Grid.ColumnDefinitions>
@@ -80,15 +80,17 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48" />
-                            <RowDefinition Height="48" />
-                            <RowDefinition Height="48" />
+                            <RowDefinition Height="16" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="40" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="16" />
                         </Grid.RowDefinitions>
                         <uc:ButtonSelector
-                            Grid.Row="0"
+                            Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
@@ -96,29 +98,21 @@
                             Label="Group"
                             Text="{Binding Budget.Envelope.Group.Description}" />
                         <uc:TextEntry
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Name"
                             Text="{Binding Budget.Envelope.Description}" />
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Grid.Column="0"
+                            Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Amount"
                             Number="{Binding Budget.Amount}" />
-                        <Button
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="16,0"
-                            Command="{Binding QuickBudgetCommand}"
-                            IsVisible="{Binding Budget.IsActive}"
-                            Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="Quick Budget"
-                            VerticalOptions="End" />
                         <StackLayout
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
@@ -136,16 +130,15 @@
                                 Label="Always" />
                         </StackLayout>
                         <uc:MultilineTextEntry
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="Notes"
                             Text="{Binding Budget.Envelope.Notes}" />
                         <Button
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -167,9 +160,8 @@
                             </Button.Triggers>
                         </Button>
                         <Button
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
@@ -184,6 +176,30 @@
                             <Button.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Budget.Envelope.IsDeleted}"
+                                    TargetType="Button"
+                                    Value="false">
+                                    <Setter Property="IsVisible" Value="false" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Margin="16,0"
+                            Command="{Binding QuickBudgetCommand}"
+                            IsVisible="{Binding Budget.IsActive}"
+                            Style="{StaticResource PrimaryActionButtonStyle}"
+                            Text="Quick Budget">
+                            <Button.IsVisible>
+                                <OnIdiom x:TypeArguments="x:Boolean">
+                                    <OnIdiom.Phone>true</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </Button.IsVisible>
+                            <Button.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding Budget.Envelope.IsActive}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
@@ -215,6 +231,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Row="0"
@@ -233,7 +251,7 @@
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -251,7 +269,7 @@
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Command="{Binding UndoDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
@@ -266,6 +284,17 @@
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Margin="16,0"
+                        Command="{Binding QuickBudgetCommand}"
+                        IsVisible="{Binding Budget.IsActive}"
+                        Style="{StaticResource PrimaryActionButtonStyle}"
+                        Text="Quick Budget"
+                        VerticalOptions="Center" />
+
                 </Grid>
             </Grid>
         </uc:BusyIndicator>

@@ -31,11 +31,9 @@ namespace BudgetBadger.Core.Logic
         Task<Result> DeleteEnvelopeGroupAsync(Guid id);
         Task<Result> UndoDeleteEnvelopeGroupAsync(Guid id);
 
-        IReadOnlyList<Envelope> SearchEnvelopes(IEnumerable<Envelope> envelopes, string searchText);
-        IReadOnlyList<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText);
-        IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets);
-
-        IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText);
+        bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText);
+        bool FilterEnvelope(Envelope envelope, string searchText);
+        bool FilterBudget(Budget budget, string searchText);
 
         Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Budget budget);
     }

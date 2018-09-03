@@ -218,40 +218,9 @@ namespace BudgetBadger.Logic
             }
         }
 
-        public IReadOnlyList<Account> SearchAccounts(IEnumerable<Account> accounts, string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return accounts.ToList();
-            }
-            
-			return OrderAccounts(accounts.Where(a => FilterAccount(a, searchText)));
-        }
-        
 		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
         {
             return accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
-        }
-
-        public IReadOnlyList<IGrouping<string, Account>> GroupAccounts(IEnumerable<Account> accounts)
-        {
-			var groupedAccounts = OrderAccounts(accounts).GroupBy(a => a.Type);
-
-			var orderedAndGroupedAccounts = new List<IGrouping<string, Account>>();
-
-			var budgetAccounts = groupedAccounts.FirstOrDefault(g => g.Any(a => a.OnBudget));
-			if (budgetAccounts != null)
-			{
-				orderedAndGroupedAccounts.Add(budgetAccounts);
-			}
-
-			var reportingAccounts = groupedAccounts.FirstOrDefault(g => g.Any(a => a.OffBudget));
-			if (reportingAccounts != null)
-			{
-				orderedAndGroupedAccounts.Add(reportingAccounts);
-			}
-
-			return orderedAndGroupedAccounts;
         }
 
         public Task<Result> ValidateAccountAsync(Account account)

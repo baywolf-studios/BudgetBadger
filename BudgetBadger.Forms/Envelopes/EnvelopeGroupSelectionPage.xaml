@@ -4,11 +4,14 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     BackCommand="{Binding BackCommand}"
     PageTitle="Envelope Groups"
-    SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
@@ -18,53 +21,51 @@
             HelperText="Add an Envelope Group using the + button"
             ImagePath="helperenvelope.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <ListView
-                BackgroundColor="{StaticResource BackgroundColor}"
-                HasUnevenRows="true"
-                Header="{x:Null}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                ItemsSource="{Binding FilteredEnvelopeGroups}"
-                RefreshCommand="{Binding RefreshCommand}"
-                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
-                SeparatorVisibility="None">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
-                </ListView.Behaviors>
-                <ListView.Triggers>
-                    <DataTrigger
-                        Binding="{Binding HasSearchText}"
-                        TargetType="ListView"
-                        Value="False">
-                        <Setter Property="Header" Value="{x:Null}" />
-                    </DataTrigger>
-                    <DataTrigger
-                        Binding="{Binding HasSearchText}"
-                        TargetType="ListView"
-                        Value="True">
-                        <Setter Property="Header" Value="{Binding .}" />
-                    </DataTrigger>
-                </ListView.Triggers>
-                <ListView.HeaderTemplate>
-                    <DataTemplate>
-                        <ContentView
-                            Margin="-1"
-                            Padding="1"
-                            BackgroundColor="{StaticResource BackgroundColor}">
-                            <Button
-                                Margin="16,8"
-                                Command="{Binding SaveCommand}"
-                                Style="{StaticResource SecondaryActionButtonStyle}"
-                                Text="{Binding SearchText, StringFormat='Add Group: {0}'}" />
-                        </ContentView>
-                    </DataTemplate>
-                </ListView.HeaderTemplate>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <dt:EnvelopeGroupViewCell />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <pulltoRefresh:SfPullToRefresh
+                IsRefreshing="{Binding IsBusy}"
+                ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                <pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                </pulltoRefresh:SfPullToRefresh.Behaviors>
+                <pulltoRefresh:SfPullToRefresh.PullableContent>
+                    <uc:ListView
+                        Filter="{Binding Filter}"
+                        FilterText="{Binding SearchText}"
+                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                        HeaderSize="0"
+                        ItemSize="{StaticResource ListItemHeight}"
+                        ItemsSource="{Binding EnvelopeGroups}"
+                        SelectedItem="{Binding SelectedEnvelopeGroup}">
+                        <syncfusion:SfListView.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
+                        </syncfusion:SfListView.Behaviors>
+                        <syncfusion:SfListView.Triggers>
+                            <DataTrigger
+                                Binding="{Binding HasSearchText}"
+                                TargetType="syncfusion:SfListView"
+                                Value="true">
+                                <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
+                            </DataTrigger>
+                        </syncfusion:SfListView.Triggers>
+                        <syncfusion:SfListView.HeaderTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="16,8"
+                                    Command="{Binding SaveCommand}"
+                                    IsVisible="{Binding HasSearchText}"
+                                    Style="{StaticResource SecondaryActionButtonStyle}"
+                                    Text="{Binding SearchText, StringFormat='Add Group: {0}'}" />
+                            </DataTemplate>
+                        </syncfusion:SfListView.HeaderTemplate>
+                        <syncfusion:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <dt:EnvelopeGroupViewCell />
+                            </DataTemplate>
+                        </syncfusion:SfListView.ItemTemplate>
+                    </uc:ListView>
+                </pulltoRefresh:SfPullToRefresh.PullableContent>
+            </pulltoRefresh:SfPullToRefresh>
         </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

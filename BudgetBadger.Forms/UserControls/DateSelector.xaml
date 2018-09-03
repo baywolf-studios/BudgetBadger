@@ -23,7 +23,7 @@
         <DatePicker.HorizontalOptions>
             <OnPlatform x:TypeArguments="LayoutOptions">
                 <On Platform="Android, macOS, iOS" Value="Fill" />
-                <On Platform="UWP" Value="Start" />
+                <On Platform="UWP" Value="Fill" />
             </OnPlatform>
         </DatePicker.HorizontalOptions>
     </DatePicker>

@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class EnvelopeViewCell : ViewCell
+    public partial class EnvelopeViewCell : Grid
     {
         public EnvelopeViewCell()
         {

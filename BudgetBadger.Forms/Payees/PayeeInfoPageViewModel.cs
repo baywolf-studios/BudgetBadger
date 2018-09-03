@@ -27,7 +27,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
+        public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -48,13 +48,6 @@ namespace BudgetBadger.Forms.Payees
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
-        }
-
-        IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
-        public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
-        {
-            get => _groupedTransactions;
-            set => SetProperty(ref _groupedTransactions, value);
         }
 
         Transaction _selectedTransaction;
@@ -89,7 +82,6 @@ namespace BudgetBadger.Forms.Payees
 
             Payee = new Payee();
             Transactions = new List<Transaction>();
-            GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -97,7 +89,6 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -149,12 +140,10 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -174,7 +163,6 @@ namespace BudgetBadger.Forms.Payees
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
 
@@ -225,11 +213,6 @@ namespace BudgetBadger.Forms.Payees
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
     }
 }

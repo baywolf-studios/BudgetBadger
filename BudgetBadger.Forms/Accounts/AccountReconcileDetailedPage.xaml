@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
@@ -67,122 +68,126 @@
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
                 </uc:HelperControl.Triggers>
-                <uc:DataGrid
+                <pulltoRefresh:SfPullToRefresh
                     Margin="16,0"
-                    AllowPullToRefresh="True"
-                    AllowSwiping="True"
-                    ColumnSizer="Star"
-                    Filter="{Binding Filter}"
-                    FilterText="{Binding SearchText}"
-                    IsBusy="{Binding IsBusy}"
-                    ItemsSource="{Binding StatementTransactions}"
-                    PullToRefreshCommand="{Binding RefreshCommand}"
-                    SelectedItem="{Binding SelectedTransaction}">
-                    <syncfusion:SfDataGrid.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
-                    </syncfusion:SfDataGrid.Behaviors>
-                    <syncfusion:SfDataGrid.RightSwipeTemplate>
-                        <DataTemplate>
-                            <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                <ContentView.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                </ContentView.GestureRecognizers>
-                                <svg:SvgCachedImage
-                                    HeightRequest="24"
-                                    HorizontalOptions="Center"
-                                    ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                    Source="delete.svg"
-                                    VerticalOptions="Center"
-                                    WidthRequest="24" />
-                            </ContentView>
-                        </DataTemplate>
-                    </syncfusion:SfDataGrid.RightSwipeTemplate>
-                    <syncfusion:SfDataGrid.SortColumnDescriptions>
-                        <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Descending" />
-                    </syncfusion:SfDataGrid.SortColumnDescriptions>
-                    <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            Format="d"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="ServiceDate"
-                            HeaderTextAlignment="Start"
-                            MappingName="ServiceDate"
-                            TextAlignment="Start" />
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Account"
-                            HeaderTextAlignment="Start"
-                            MappingName="Account.Description"
-                            TextAlignment="Start" />
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Payee"
-                            HeaderTextAlignment="Start"
-                            MappingName="Payee.Description"
-                            TextAlignment="Start" />
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Envelope"
-                            HeaderTextAlignment="Start"
-                            MappingName="Envelope.Description"
-                            TextAlignment="Start" />
-                        <syncfusion:GridTextColumn
-                            CellTextSize="{StaticResource ListItemFontSize}"
-                            Format="c"
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Amount"
-                            HeaderTextAlignment="End"
-                            MappingName="Amount"
-                            TextAlignment="End" />
-                        <syncfusion:GridTemplateColumn
-                            HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                            HeaderText="Status"
-                            HeaderTextAlignment="Center"
-                            MappingName=".">
-                            <syncfusion:GridTemplateColumn.CellTemplate>
+                    IsRefreshing="{Binding IsBusy}"
+                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                    <pulltoRefresh:SfPullToRefresh.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                    </pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                        <uc:DataGrid
+                            AllowSwiping="True"
+                            ColumnSizer="Star"
+                            Filter="{Binding Filter}"
+                            FilterText="{Binding SearchText}"
+                            ItemsSource="{Binding StatementTransactions}"
+                            SelectedItem="{Binding SelectedTransaction}">
+                            <syncfusion:SfDataGrid.Behaviors>
+                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
+                            </syncfusion:SfDataGrid.Behaviors>
+                            <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
                                         <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>
                                         <svg:SvgCachedImage
                                             HeightRequest="24"
                                             HorizontalOptions="Center"
-                                            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                            Source="pending.svg"
+                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                            Source="delete.svg"
                                             VerticalOptions="Center"
-                                            WidthRequest="24">
-                                            <svg:SvgCachedImage.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding Posted}"
-                                                    TargetType="svg:SvgCachedImage"
-                                                    Value="true">
-                                                    <Setter Property="Source" Value="posted.svg" />
-                                                </DataTrigger>
-                                                <DataTrigger
-                                                    Binding="{Binding Reconciled}"
-                                                    TargetType="svg:SvgCachedImage"
-                                                    Value="true">
-                                                    <Setter Property="Source" Value="reconciled.svg" />
-                                                </DataTrigger>
-                                                <DataTrigger
-                                                    Binding="{Binding Pending}"
-                                                    TargetType="svg:SvgCachedImage"
-                                                    Value="true">
-                                                    <Setter Property="Source" Value="pending.svg" />
-                                                </DataTrigger>
-                                            </svg:SvgCachedImage.Triggers>
-                                        </svg:SvgCachedImage>
+                                            WidthRequest="24" />
                                     </ContentView>
                                 </DataTemplate>
-                            </syncfusion:GridTemplateColumn.CellTemplate>
-                        </syncfusion:GridTemplateColumn>
-                    </syncfusion:SfDataGrid.Columns>
-                </uc:DataGrid>
+                            </syncfusion:SfDataGrid.RightSwipeTemplate>
+                            <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    Format="d"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="ServiceDate"
+                                    HeaderTextAlignment="Start"
+                                    MappingName="ServiceDate"
+                                    TextAlignment="Start" />
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Account"
+                                    HeaderTextAlignment="Start"
+                                    MappingName="Account.Description"
+                                    TextAlignment="Start" />
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Payee"
+                                    HeaderTextAlignment="Start"
+                                    MappingName="Payee.Description"
+                                    TextAlignment="Start" />
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Envelope"
+                                    HeaderTextAlignment="Start"
+                                    MappingName="Envelope.Description"
+                                    TextAlignment="Start" />
+                                <syncfusion:GridTextColumn
+                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    Format="c"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Amount"
+                                    HeaderTextAlignment="End"
+                                    MappingName="Amount"
+                                    TextAlignment="End" />
+                                <syncfusion:GridTemplateColumn
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText="Status"
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
+                                                <ContentView.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                                </ContentView.GestureRecognizers>
+                                                <svg:SvgCachedImage
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    Source="pending.svg"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24">
+                                                    <svg:SvgCachedImage.Triggers>
+                                                        <DataTrigger
+                                                            Binding="{Binding Posted}"
+                                                            TargetType="svg:SvgCachedImage"
+                                                            Value="true">
+                                                            <Setter Property="Source" Value="posted.svg" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Reconciled}"
+                                                            TargetType="svg:SvgCachedImage"
+                                                            Value="true">
+                                                            <Setter Property="Source" Value="reconciled.svg" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Pending}"
+                                                            TargetType="svg:SvgCachedImage"
+                                                            Value="true">
+                                                            <Setter Property="Source" Value="pending.svg" />
+                                                        </DataTrigger>
+                                                    </svg:SvgCachedImage.Triggers>
+                                                </svg:SvgCachedImage>
+                                            </ContentView>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                            </syncfusion:SfDataGrid.Columns>
+                        </uc:DataGrid>
+                    </pulltoRefresh:SfPullToRefresh.PullableContent>
+                </pulltoRefresh:SfPullToRefresh>
             </uc:HelperControl>
             <BoxView
                 Grid.Row="1"
@@ -215,42 +220,42 @@
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Statement"
-                    VerticalOptions="Center" />
+                    VerticalTextAlignment="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding StatementAmount, StringFormat='{0:c}'}"
-                    VerticalOptions="Center" />
+                    VerticalTextAlignment="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Cleared"
-                    VerticalOptions="End" />
+                    VerticalTextAlignment="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
+                    VerticalTextAlignment="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Difference"
-                    VerticalOptions="End" />
+                    VerticalTextAlignment="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding Difference, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
+                    VerticalTextAlignment="Start" />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"

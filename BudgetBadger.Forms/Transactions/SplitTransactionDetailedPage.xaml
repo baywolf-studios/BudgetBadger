@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<uc:ChildSearchPage
-    x:Class="BudgetBadger.Forms.Accounts.AccountInfoDetailedPage"
+<uc:ChildPage
+    x:Class="BudgetBadger.Forms.Transactions.SplitTransactionDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -10,16 +10,15 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
     BackCommand="{Binding BackCommand}"
-    PageTitle="{Binding Account.Description}"
-    SearchCommand="{Binding SearchCommand}"
-    SearchText="{Binding SearchText}"
-    ToolbarItemCommand="{Binding EditCommand}"
-    ToolbarItemIcon="edit.svg"
-    ToolbarItemText="Edit">
-    <uc:ChildSearchPage.BodyContent>
+    PageTitle="Split Transaction"
+    ToolbarItemCommand="{Binding SaveCommand}"
+    ToolbarItemIcon="save.svg"
+    ToolbarItemText="Save">
+    <uc:ChildPage.BodyContent>
         <Grid
             Margin="0"
             BackgroundColor="{StaticResource BackgroundColor}"
+            ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -31,14 +30,6 @@
                 HelperText="No transactions yet"
                 ImagePath="helpertransaction.svg"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
-                    <DataTrigger
-                        Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
-                        Value="true">
-                        <Setter Property="Margin" Value="0,0,0,56" />
-                    </DataTrigger>
-                </uc:HelperControl.Triggers>
                 <pulltoRefresh:SfPullToRefresh
                     Margin="16,0"
                     IsRefreshing="{Binding IsBusy}"
@@ -51,8 +42,6 @@
                         <uc:DataGrid
                             AllowSwiping="True"
                             ColumnSizer="Star"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Transactions}"
                             SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.Behaviors>
@@ -62,7 +51,7 @@
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
                                         <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>
                                         <svg:SvgCachedImage
                                             HeightRequest="24"
@@ -167,8 +156,7 @@
             <Grid
                 Grid.Row="2"
                 Margin="16"
-                ColumnSpacing="16"
-                RowSpacing="8">
+                ColumnSpacing="16">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -178,9 +166,7 @@
                     <ColumnDefinition Width="0" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
@@ -188,110 +174,50 @@
                     Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Balance"
-                    VerticalTextAlignment="Center" />
+                    Text="Total" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding Account.Balance, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Center" />
+                    Text="{Binding Total, StringFormat='{0:c}'}" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Pending"
+                    Text="Running Total"
                     VerticalTextAlignment="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PendingTotal, StringFormat='{0:c}'}"
+                    Text="{Binding RunningTotal, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Posted"
-                    VerticalTextAlignment="End" />
+                    Text="Remaining"
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
-                <ContentView
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="4">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PaymentCommand}" />
-                    </ContentView.GestureRecognizers>
-                </ContentView>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="true"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Payment"
-                    VerticalOptions="End">
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="4"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="true"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    VerticalOptions="Start">
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="false">
-                            <Setter Property="Text" Value="Not Needed" />
-                        </DataTrigger>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}" />
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
+                    Text="{Binding Remaining, StringFormat='{0:c}'}"
+                    VerticalOptions="Start" />
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="6"
-                    Command="{Binding ReconcileCommand}"
-                    HorizontalOptions="EndAndExpand"
-                    Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Reconcile"
-                    VerticalOptions="Center" />
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="7"
-                    Command="{Binding AddTransactionCommand}"
-                    HorizontalOptions="EndAndExpand"
+                    Grid.Column="5"
+                    Command="{Binding AddNewCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction"
+                    Text="Add New"
                     VerticalOptions="Center" />
             </Grid>
         </Grid>
-    </uc:ChildSearchPage.BodyContent>
-</uc:ChildSearchPage>
+    </uc:ChildPage.BodyContent>
+</uc:ChildPage>

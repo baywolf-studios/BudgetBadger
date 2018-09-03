@@ -387,83 +387,73 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IReadOnlyList<Envelope> SearchEnvelopes(IEnumerable<Envelope> envelopes, string searchText)
+        public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
+            if (envelopeGroup != null)
             {
-                return envelopes.ToList();
+                return envelopeGroup.Description.ToLower().Contains(searchText.ToLower());
             }
-
-            return OrderEnvelopes(envelopes.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+            else
+            {
+                return false;
+            }
         }
 
-        public IReadOnlyList<Budget> SearchBudgets(IEnumerable<Budget> budgets, string searchText)
+        public bool FilterEnvelope(Envelope envelope, string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
+            if (envelope != null)
             {
-                return budgets.ToList();
+                return envelope.Description.ToLower().Contains(searchText.ToLower());
             }
-
-            return OrderBudgets(budgets.Where(a => a.Envelope.Description.ToLower().Contains(searchText.ToLower())));
+            else
+            {
+                return false;
+            }
         }
 
-        public IReadOnlyList<EnvelopeGroup> SearchEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups, string searchText)
+        public bool FilterBudget(Budget budget, string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
+            if (budget != null && budget.Envelope != null)
             {
-                return envelopeGroups.ToList();
+                return budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
             }
-
-            return OrderEnvelopeGroups(envelopeGroups.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+            else
+            {
+                return false;
+            }
         }
 
         public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
         {
-            return envelopeGroups.OrderBy(a => a.Description).ToList();
+            return envelopeGroups
+                .OrderByDescending(b => b.IsDebt)
+                .ThenByDescending(b => b.IsIncome)
+                .ThenByDescending(b => !b.IsDebt && !b.IsIncome)
+                .ThenBy(b => b.Description)
+                .ToList();
         }
 
         public IReadOnlyList<Envelope> OrderEnvelopes(IEnumerable<Envelope> envelopes)
         {
-            return envelopes.OrderBy(b => b.Group.Description).ThenBy(a => a.Description).ToList();
+            return envelopes.OrderByDescending(b => b.Group.IsDebt && !b.IsGenericDebtEnvelope)
+                .ThenByDescending(b => b.Group.IsIncome)
+                .ThenByDescending(b => !b.Group.IsDebt && !b.Group.IsIncome)
+                .ThenByDescending(b => b.IsGenericDebtEnvelope)
+                .ThenBy(b => b.Group.Description)
+                .ThenBy(a => a.Description)
+                .ToList();
         }
 
         public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
         {
-            return budgets.OrderBy(b => b.Envelope.Group.Description).ThenBy(a => a.Envelope.Description).ToList();
-        }
-
-        public IReadOnlyList<IGrouping<string, Budget>> GroupBudgets(IEnumerable<Budget> budgets)
-        {
-            var groupedBudgets = OrderBudgets(budgets).GroupBy(b => b.Envelope.Group.Description).ToList();
-
-            var orderedAndGroupedBudgets = new List<IGrouping<string, Budget>>();
-
-            var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope);
-            if (debtBudgets != null)
-            {
-                orderedAndGroupedBudgets.AddRange(OrderBudgets(debtBudgets).GroupBy(b => b.Envelope.Group.Description));
-            }
-
-            var incomeBudgets = budgets.Where(b => b.Envelope.Group.IsIncome);
-            if (incomeBudgets != null)
-            {
-                orderedAndGroupedBudgets.AddRange(OrderBudgets(incomeBudgets).GroupBy(b => b.Envelope.Group.Description));
-            }
-
-            var userBudgets = budgets.Where(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome);
-            if (userBudgets != null)
-            {
-                var orderedUserBudgets = OrderBudgets(userBudgets);
-                    orderedAndGroupedBudgets.AddRange(orderedUserBudgets.GroupBy(b => b.Envelope.Group.Description));
-            }
-
-            var genericDebtBudget = budgets.Where(b => b.Envelope.IsGenericDebtEnvelope);
-            if (genericDebtBudget != null)
-            {
-                orderedAndGroupedBudgets.AddRange(OrderBudgets(genericDebtBudget).GroupBy(b => b.Envelope.Group.Description));
-            }
-
-            return orderedAndGroupedBudgets;
+            return budgets
+                .OrderByDescending(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope)
+                .ThenByDescending(b => b.Envelope.Group.IsIncome)
+                .ThenByDescending(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome)
+                .ThenByDescending(b => b.Envelope.IsGenericDebtEnvelope)
+                .ThenBy(b => b.Envelope.Group.Description)
+                .ThenBy(a => a.Envelope.Description)
+                .ToList();
         }
 
         public Task<Result> ValidateBudgetAsync(Budget budget)

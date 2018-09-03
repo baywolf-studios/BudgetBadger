@@ -56,13 +56,13 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        IReadOnlyList<Transaction> _filteredTransactions;
-        public IReadOnlyList<Transaction> FilteredTransactions
+        IReadOnlyList<Transaction> _statementTransactions;
+        public IReadOnlyList<Transaction> StatementTransactions
         {
-            get => _filteredTransactions;
+            get => _statementTransactions;
             set
             {
-                SetProperty(ref _filteredTransactions, value);
+                SetProperty(ref _statementTransactions, value);
                 RaisePropertyChanged(nameof(PostedTotal));
                 RaisePropertyChanged(nameof(Difference));
             }
@@ -144,7 +144,7 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
             Transactions = new List<Transaction>();
-            FilteredTransactions = new List<Transaction>();
+            StatementTransactions = new List<Transaction>();
             SelectedTransaction = null;
             StatementDate = DateTime.Now;
             StatementAmount = 0;
@@ -192,7 +192,7 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        FilteredTransactions = result.Data;
+                        StatementTransactions = result.Data;
                         SelectedTransaction = null;
                     }
                 }
@@ -207,8 +207,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public void UpdateStatementTransactions()
         {
-            FilteredTransactions = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
-            NoTransactions = (FilteredTransactions?.Count ?? 0) == 0;
+            StatementTransactions = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
+            NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
 
         public async Task ExecuteReconcileCommand()

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <uc:RootSearchPage
-    x:Class="BudgetBadger.Forms.Accounts.AccountsDetailedPage"
+    x:Class="BudgetBadger.Forms.Payees.PayeesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -9,18 +9,21 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
-    PageTitle="Accounts"
-    SearchCommand="{Binding SearchCommand}"
+    PageTitle="Payees"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
     <uc:RootSearchPage.BodyContent>
         <uc:HelperControl
-            HelperText="Add an Account using the + button"
-            ImagePath="helperaccount.svg"
-            ShowHelper="{Binding NoAccounts}">
-            <Grid>
+            HelperText="Add a Payee using the + button"
+            ImagePath="helperpayee.svg"
+            ShowHelper="{Binding NoPayees}">
+            <Grid
+                Margin="0"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                ColumnSpacing="16"
+                RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="1" />
@@ -41,9 +44,9 @@
                             ColumnSizer="Star"
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
-                            GroupCaptionTextFormat="Type: {Key}"
-                            ItemsSource="{Binding Accounts}"
-                            SelectedItem="{Binding SelectedAccount}">
+                            ItemsSource="{Binding Payees}"
+                            SelectedItem="{Binding SelectedPayee}">
+                            <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.Behaviors>
                                 <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                             </syncfusion:SfDataGrid.Behaviors>
@@ -82,7 +85,7 @@
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
-                                <syncfusion:GroupColumnDescription ColumnName="Type" />
+                                <syncfusion:GroupColumnDescription ColumnName="Group" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
@@ -94,28 +97,11 @@
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Pending"
-                                    HeaderTextAlignment="End"
-                                    MappingName="Pending"
-                                    TextAlignment="End" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Posted"
-                                    HeaderTextAlignment="End"
-                                    MappingName="Posted"
-                                    TextAlignment="End" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Balance"
-                                    HeaderTextAlignment="End"
-                                    MappingName="Balance"
-                                    TextAlignment="End" />
+                                    HeaderText="Notes"
+                                    HeaderTextAlignment="Start"
+                                    MappingName="Notes"
+                                    TextAlignment="Start" />
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </pulltoRefresh:SfPullToRefresh.PullableContent>
@@ -128,40 +114,38 @@
                 <Grid
                     Grid.Row="2"
                     Margin="16"
-                    ColumnSpacing="16">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                    ColumnSpacing="16"
+                    RowSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="Net Worth"
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                        Text="hidden"
+                        TextColor="Transparent"
                         VerticalTextAlignment="Center" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="3"
                         Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"

@@ -95,6 +95,14 @@ namespace BudgetBadger.Forms.Reports
             }
 
             SelectedReport = null;
+            Reports = new List<string>
+            {
+                _netWorthReport,
+                _envelopeSpendingReport,
+                _payeeSpendingReport,
+                _spendingTrendByEnvelopeReport,
+                _spendingTrendByPayeeReport
+            };
         }
 
         public async Task ExecuteNetWorthCommand()
