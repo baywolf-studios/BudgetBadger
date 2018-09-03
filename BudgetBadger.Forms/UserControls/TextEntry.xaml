@@ -1,70 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<AbsoluteLayout
-    HeightRequest="48"
-    VerticalOptions="Start"
+<?xml version="1.0" encoding="UTF-8" ?>
+<StackLayout
+    x:Class="BudgetBadger.Forms.UserControls.TextEntry"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.UserControls.TextEntry">
-    <BoxView
-        BackgroundColor="Transparent"
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All">
-        <BoxView.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </BoxView.GestureRecognizers>
-    </BoxView>
-    <Label
-        x:Name="PrefixControl"
-        Text="{Binding Prefix}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalOptions="Center"
-        AbsoluteLayout.LayoutBounds="0,22,AutoSize,32"
-        InputTransparent="true"/>
+    Orientation="Vertical">
+    <StackLayout.Spacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </StackLayout.Spacing>
     <Label
         x:Name="LabelControl"
+        FontSize="12"
         Text="{Binding Label}"
-        FontSize="16"
-        TextColor="{StaticResource IdleColor}"
-        VerticalOptions="Center"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"/>
+        TextColor="{StaticResource IdleColor}" />
     <Entry
         x:Name="TextControl"
-        Text="{Binding Text}"
-        IsPassword="{Binding IsPassword, Mode=TwoWay}"
-        Keyboard="{Binding Keyboard, Mode=TwoWay}"
-        FontSize="16"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent"
         AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional">
-        <Entry.Keyboard>
-            <Keyboard x:FactoryMethod="Create">
-                <x:Arguments>
-                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
-                </x:Arguments>
-            </Keyboard>
-        </Entry.Keyboard>
-        <Entry.Effects>
-            <effects:BorderlessEntryEffect />
-        </Entry.Effects>
-    </Entry>
-    <BoxView
-        x:Name="BottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
-        AbsoluteLayout.LayoutBounds="0,47,1,1"
         AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"
-        Opacity="1"/>
-    <BoxView
-        x:Name="ThickBottomBorderControl"
-        BackgroundColor="{StaticResource IdleColor}"
-        AbsoluteLayout.LayoutBounds="0,46,1,2"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        InputTransparent="true"
-        Opacity="0"/>
-</AbsoluteLayout>
+        BackgroundColor="Transparent"
+        FontSize="16"
+        IsPassword="{Binding IsPassword}"
+        Keyboard="{Binding Keyboard}"
+        Text="{Binding Text}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="CenterAndExpand" />
+</StackLayout>

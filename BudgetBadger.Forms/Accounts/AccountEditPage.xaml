@@ -39,9 +39,9 @@
                         ColumnSpacing="0"
                         RowSpacing="16">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48" />
-                            <RowDefinition Height="48" />
-                            <RowDefinition Height="48" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>

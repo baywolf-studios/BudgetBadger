@@ -23,7 +23,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -44,13 +44,6 @@ namespace BudgetBadger.Forms.Accounts
         {
             get => _selectedAccount;
             set => SetProperty(ref _selectedAccount, value);
-        }
-
-        IReadOnlyList<IGrouping<string, Account>> _groupedAccounts;
-        public IReadOnlyList<IGrouping<string, Account>> GroupedAccounts
-        {
-            get => _groupedAccounts;
-            set => SetProperty(ref _groupedAccounts, value);
         }
 
         string _searchText;
@@ -75,11 +68,9 @@ namespace BudgetBadger.Forms.Accounts
 
             Accounts = new List<Account>();
             SelectedAccount = null;
-            GroupedAccounts = Accounts.GroupBy(a => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -114,12 +105,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -128,7 +117,6 @@ namespace BudgetBadger.Forms.Accounts
                 if (result.Success)
                 {
                     Accounts = result.Data;
-                    GroupedAccounts = _accountLogic.GroupAccounts(Accounts);
                 }
                 else
                 {
@@ -142,11 +130,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 IsBusy = false;
             }
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, SearchText));
         }
     }
 }

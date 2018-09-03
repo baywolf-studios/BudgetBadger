@@ -74,8 +74,8 @@
                             GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                             IsStickyFooter="True"
                             ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding Accounts, Mode=TwoWay}"
-                            SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+                            ItemsSource="{Binding Accounts}"
+                            SelectedItem="{Binding SelectedAccount}">
                             <syncfusion:SfListView.Behaviors>
                                 <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                             </syncfusion:SfListView.Behaviors>
@@ -131,7 +131,15 @@
                             </syncfusion:SfListView.GroupHeaderTemplate>
                             <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
-                                    <dt:AccountViewCell />
+                                    <ContentView
+                                        x:Name="groupHeaderCell"
+                                        BackgroundColor="{StaticResource BackgroundColor}"
+                                        HeightRequest="{StaticResource Key=ListGroupHeaderHeight}">
+                                        <Label
+                                            Margin="16,12,16,0"
+                                            Style="{StaticResource Key=ListGroupHeaderLabelStyle}"
+                                            Text="{Binding Key}" />
+                                    </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>

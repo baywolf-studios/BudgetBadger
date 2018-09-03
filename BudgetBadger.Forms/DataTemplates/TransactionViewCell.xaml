@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ViewCell
+<Grid
     x:Class="BudgetBadger.Forms.DataTemplates.TransactionViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    Height="{StaticResource Key=ListDoubleItemHeight}">
-    <Grid
-        Margin="-1"
-        Padding="1"
-        BackgroundColor="{StaticResource BackgroundColor}"
-        ColumnSpacing="16"
-        HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
-        RowSpacing="4">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="56" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    BackgroundColor="{StaticResource BackgroundColor}"
+    ColumnSpacing="16"
+    HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
+    RowSpacing="4">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="56" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <ContentView
+        x:Name="toggleView"
+        Grid.Row="0"
+        Grid.RowSpan="2"
+        Grid.Column="0">
+        <ContentView.GestureRecognizers>
+            <TapGestureRecognizer CommandParameter="{Binding .}" />
+        </ContentView.GestureRecognizers>
         <svg:SvgCachedImage
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.Column="0"
             HeightRequest="24"
             HorizontalOptions="Center"
-            InputTransparent="true"
             ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
             VerticalOptions="Center"
             WidthRequest="24">
             <svg:SvgCachedImage.Triggers>
-                <DataTrigger
-                    Binding="{Binding Pending}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="pending.svg" />
-                </DataTrigger>
                 <DataTrigger
                     Binding="{Binding Posted}"
                     TargetType="svg:SvgCachedImage"
@@ -50,66 +44,58 @@
                     Value="true">
                     <Setter Property="Source" Value="reconciled.svg" />
                 </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding Pending}"
+                    TargetType="svg:SvgCachedImage"
+                    Value="true">
+                    <Setter Property="Source" Value="pending.svg" />
+                </DataTrigger>
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
-        <Button
-            x:Name="hiddenButton"
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.Column="0"
-            BackgroundColor="Transparent"
-            BorderWidth="2"
-            CommandParameter="{Binding .}">
-            <Button.BorderColor>
-                <OnPlatform x:TypeArguments="Color" Default="Transparent">
-                    <On Platform="macOS" Value="White" />
-                </OnPlatform>
-            </Button.BorderColor>
-        </Button>
-        <Label
-            x:Name="primaryLabel"
-            Grid.Row="0"
-            Grid.Column="1"
-            Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-            Text="{Binding Payee.Description}"
-            VerticalOptions="End" />
-        <Label
-            x:Name="secondaryLabel"
-            Grid.Row="1"
-            Grid.Column="1"
-            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-            Text="{Binding Account.Description}"
-            VerticalOptions="Start" />
-        <Label
-            x:Name="rightSingleLabel"
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.Column="2"
-            Margin="0,0,16,0"
-            HorizontalTextAlignment="End"
-            Style="{StaticResource Key=ListItemLabelStyle}"
-            Text="{Binding Amount, StringFormat='{0:C}'}"
-            VerticalOptions="Center" />
+    </ContentView>
+    <Label
+        x:Name="primaryLabel"
+        Grid.Row="0"
+        Grid.Column="1"
+        Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+        Text="{Binding Payee.Description}"
+        VerticalOptions="End" />
+    <Label
+        x:Name="secondaryLabel"
+        Grid.Row="1"
+        Grid.Column="1"
+        Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+        Text="{Binding Account.Description}"
+        VerticalOptions="Start" />
+    <Label
+        x:Name="rightSingleLabel"
+        Grid.Row="0"
+        Grid.RowSpan="2"
+        Grid.Column="2"
+        Margin="0,0,16,0"
+        HorizontalTextAlignment="End"
+        Style="{StaticResource Key=ListItemLabelStyle}"
+        Text="{Binding Amount, StringFormat='{0:C}'}"
+        VerticalOptions="Center" />
 
-        <Label
-            x:Name="rightPrimaryLabel"
-            Grid.Row="0"
-            Grid.Column="2"
-            Margin="0,0,16,0"
-            HorizontalTextAlignment="End"
-            IsVisible="false"
-            Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-            Text="{Binding Amount, StringFormat='{0:C}'}"
-            VerticalOptions="End" />
-        <Label
-            x:Name="rightSecondaryLabel"
-            Grid.Row="1"
-            Grid.Column="2"
-            Margin="0,0,16,0"
-            HorizontalTextAlignment="End"
-            IsVisible="false"
-            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-            Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
-            VerticalOptions="Start" />
-    </Grid>
-</ViewCell>
+    <Label
+        x:Name="rightPrimaryLabel"
+        Grid.Row="0"
+        Grid.Column="2"
+        Margin="0,0,16,0"
+        HorizontalTextAlignment="End"
+        IsVisible="false"
+        Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+        Text="{Binding Amount, StringFormat='{0:C}'}"
+        VerticalOptions="End" />
+    <Label
+        x:Name="rightSecondaryLabel"
+        Grid.Row="1"
+        Grid.Column="2"
+        Margin="0,0,16,0"
+        HorizontalTextAlignment="End"
+        IsVisible="false"
+        Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+        Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
+        VerticalOptions="Start" />
+</Grid>

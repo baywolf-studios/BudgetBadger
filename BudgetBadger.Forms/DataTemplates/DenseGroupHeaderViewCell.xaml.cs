@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class DenseGroupHeaderViewCell : ViewCell
+    public partial class DenseGroupHeaderViewCell : ContentView
     {
         public DenseGroupHeaderViewCell()
         {
