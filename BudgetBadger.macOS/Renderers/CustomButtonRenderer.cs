@@ -1,10 +1,10 @@
 ﻿using System;
-using BudgetBadger.macOS.Renderer;
+using BudgetBadger.macOS.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
 [assembly: ExportRenderer(typeof(Button), typeof(CustomButtonRenderer))]
-namespace BudgetBadger.macOS.Renderer
+namespace BudgetBadger.macOS.Renderers
 {
     public class CustomButtonRenderer : ButtonRenderer
     {

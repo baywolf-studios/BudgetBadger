@@ -372,6 +372,7 @@
     <Folder Include="Assets.xcassets\searchwhitetoolbaricon.png.imageset\" />
     <Folder Include="Assets.xcassets\settingswhitetabicon.png.imageset\" />
     <Folder Include="Assets.xcassets\uncheckedblackicon.png.imageset\" />
+    <Folder Include="Renderers\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -392,6 +393,7 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
+    <Compile Include="Renderers\CustomEditorRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

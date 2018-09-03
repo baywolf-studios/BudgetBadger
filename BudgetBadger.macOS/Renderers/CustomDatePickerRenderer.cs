@@ -1,12 +1,12 @@
 ﻿using System;
 using AppKit;
 using CoreGraphics;
-using BudgetBadger.macOS.Renderer;
+using BudgetBadger.macOS.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
 [assembly: ExportRenderer(typeof(DatePicker), typeof(CustomDatePickerRenderer))]
-namespace BudgetBadger.macOS.Renderer
+namespace BudgetBadger.macOS.Renderers
 {
     public class CustomDatePickerRenderer : DatePickerRenderer
     {
