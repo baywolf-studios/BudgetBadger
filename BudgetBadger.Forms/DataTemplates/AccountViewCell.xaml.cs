@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class AccountViewCell : ViewCell
+    public partial class AccountViewCell : Grid
     {
         public AccountViewCell()
         {

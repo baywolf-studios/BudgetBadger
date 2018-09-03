@@ -27,10 +27,7 @@ namespace BudgetBadger.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
-            SfPullToRefreshRenderer.Init();
-            Syncfusion.SfDataGrid.XForms.Droid.SfDataGridRenderer.Init();
-            Syncfusion.ListView.XForms.Droid.SfListViewRenderer.Init();
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(true);
             var ignore = typeof(SvgCachedImage);
             
 

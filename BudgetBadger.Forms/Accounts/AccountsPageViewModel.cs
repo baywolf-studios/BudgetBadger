@@ -114,12 +114,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -128,7 +126,6 @@ namespace BudgetBadger.Forms.Accounts
                 if (result.Success)
                 {
                     Accounts = result.Data;
-                    GroupedAccounts = _accountLogic.GroupAccounts(Accounts);
                 }
                 else
                 {
@@ -178,11 +175,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
-        }
-
-        public void ExecuteSearchCommand(string searchText)
-        {
-            GroupedAccounts = _accountLogic.GroupAccounts(_accountLogic.SearchAccounts(Accounts, searchText));
         }
 
         public async Task ExecuteAddTransactionCommand()
