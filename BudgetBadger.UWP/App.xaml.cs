@@ -64,6 +64,7 @@ namespace BudgetBadger.UWP
                 assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(SfPullToRefreshRenderer).GetTypeInfo().Assembly);
+                assembliesToInclude.Add(typeof(CachedImageRenderer).GetTypeInfo().Assembly);
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
