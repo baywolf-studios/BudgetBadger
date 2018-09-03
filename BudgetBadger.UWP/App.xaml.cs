@@ -34,8 +34,16 @@ namespace BudgetBadger.UWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            try
+            {
+                this.InitializeComponent();
+                this.Suspending += OnSuspending;
+            }
+            catch (Exception ex)
+            {
+                var test = ex;
+                throw new Exception(ex.Message + ex.StackTrace);
+            }
         }
 
 
@@ -46,54 +54,62 @@ namespace BudgetBadger.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (rootFrame == null)
+            try
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                Frame rootFrame = Window.Current.Content as Frame;
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                // you'll need to add `using System.Reflection;`
-                List<Assembly> assembliesToInclude = new List<Assembly>();
-
-                //Now, add all the assemblies your app uses
-                assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfPullToRefreshRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(CachedImageRenderer).GetTypeInfo().Assembly);
-
-                // add this line
-                Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
-                SfDataGridRenderer.Init();
-                SfListViewRenderer.Init();
-                SfPullToRefreshRenderer.Init();
-                CachedImageRenderer.Init();
-                var ignore = typeof(SvgCachedImage);
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                // Do not repeat app initialization when the Window already has content,
+                // just ensure that the window is active
+                if (rootFrame == null)
                 {
-                    //TODO: Load state from previously suspended application
+                    // Create a Frame to act as the navigation context and navigate to the first page
+                    rootFrame = new Frame();
+
+                    rootFrame.NavigationFailed += OnNavigationFailed;
+
+                    // you'll need to add `using System.Reflection;`
+                    List<Assembly> assembliesToInclude = new List<Assembly>();
+
+                    //Now, add all the assemblies your app uses
+                    assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
+                    assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
+                    assembliesToInclude.Add(typeof(SfPullToRefreshRenderer).GetTypeInfo().Assembly);
+                    assembliesToInclude.Add(typeof(CachedImageRenderer).GetTypeInfo().Assembly);
+
+                    // add this line
+                    Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
+                    SfDataGridRenderer.Init();
+                    SfListViewRenderer.Init();
+                    SfPullToRefreshRenderer.Init();
+                    CachedImageRenderer.Init();
+                    var ignore = typeof(SvgCachedImage);
+
+                    if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                    {
+                        //TODO: Load state from previously suspended application
+                    }
+
+                    // Place the frame in the current Window
+                    Window.Current.Content = rootFrame;
                 }
 
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
+                if (e.PrelaunchActivated == false)
+                {
+                    if (rootFrame.Content == null)
+                    {
+                        // When the navigation stack isn't restored navigate to the first page,
+                        // configuring the new page by passing required information as a navigation
+                        // parameter
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    }
+                    // Ensure the current window is active
+                    Window.Current.Activate();
+                }
             }
-
-            if (e.PrelaunchActivated == false)
+            catch(Exception ex)
             {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
+                var test = ex;
+                throw new Exception(ex.Message + ex.StackTrace);
             }
         }
 
