@@ -3,8 +3,13 @@
     x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects">
+    Orientation="Vertical">
+    <StackLayout.Spacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </StackLayout.Spacing>
     <Label
         x:Name="LabelControl"
         FontSize="12"
