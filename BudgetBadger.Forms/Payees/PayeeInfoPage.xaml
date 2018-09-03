@@ -53,6 +53,9 @@
                             ItemSize="{StaticResource ListDoubleItemHeight}"
                             ItemsSource="{Binding Transactions}"
                             SelectedItem="{Binding SelectedTransaction}">
+                            <syncfusion:SfListView.Behaviors>
+                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
+                            </syncfusion:SfListView.Behaviors>
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
@@ -91,11 +94,7 @@
                             </syncfusion:SfListView.GroupHeaderTemplate>
                             <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
-                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Payee">
-                                        <dt:TransactionViewCell.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding TransactionSelectedCommand}" />
-                                        </dt:TransactionViewCell.GestureRecognizers>
-                                    </dt:TransactionViewCell>
+                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Payee" />
                                 </DataTemplate>
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
