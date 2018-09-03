@@ -260,7 +260,6 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
-    <Compile Include="Renderers\BottomTabbedPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
