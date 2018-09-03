@@ -58,6 +58,7 @@
                     BackgroundColor="{StaticResource DividerColor}"
                     HeightRequest="1" />
                 <pulltoRefresh:SfPullToRefresh
+                    Grid.Row="2"
                     IsRefreshing="{Binding IsBusy}"
                     ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
                     ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
@@ -66,6 +67,7 @@
                     </pulltoRefresh:SfPullToRefresh.Behaviors>
                     <pulltoRefresh:SfPullToRefresh.PullableContent>
                         <uc:ListView
+                            AllowSwiping="true"
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
