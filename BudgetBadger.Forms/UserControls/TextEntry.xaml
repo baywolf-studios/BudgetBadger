@@ -17,13 +17,9 @@
         TextColor="{StaticResource IdleColor}" />
     <Entry
         x:Name="TextControl"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="Transparent"
         FontSize="16"
         IsPassword="{Binding IsPassword}"
         Keyboard="{Binding Keyboard}"
         Text="{Binding Text}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand" />
+        TextColor="{StaticResource PrimaryTextColor}" />
 </StackLayout>

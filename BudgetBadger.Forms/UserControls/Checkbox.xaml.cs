@@ -92,8 +92,6 @@ namespace BudgetBadger.Forms.UserControls
             {
                 IsChecked = !IsChecked;
             }
-
-            //UpdateVisualState();
         }
 
         async void UpdateVisualState()

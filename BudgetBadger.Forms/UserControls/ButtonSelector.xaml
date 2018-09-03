@@ -1,60 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AbsoluteLayout
+<StackLayout
     x:Class="BudgetBadger.Forms.UserControls.ButtonSelector"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Name="LayoutControl">
-    <BoxView
-        x:Name="BackgroundControl"
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All"
-        BackgroundColor="Transparent">
-        <BoxView.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
-        </BoxView.GestureRecognizers>
-    </BoxView>
     <Label
         x:Name="LabelControl"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        FontSize="16"
-        InputTransparent="true"
+        FontSize="12"
         Text="{Binding Label}"
-        TextColor="{StaticResource IdleColor}"
-        VerticalTextAlignment="Center" />
-    <Label
-        x:Name="TextControl"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
+        TextColor="{StaticResource IdleColor}" />
+    <Picker
+        x:Name="PickerControl"
         FontSize="16"
-        Text="{Binding Text}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalTextAlignment="Center">
-        <Label.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
-        </Label.GestureRecognizers>
-    </Label>
-    <svg:SvgCachedImage
-        x:Name="IconControl"
-        AbsoluteLayout.LayoutBounds="1,16,24,24"
-        AbsoluteLayout.LayoutFlags="XProportional"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColor}"
-        Source="buttonselector.svg" />
-    <BoxView
-        x:Name="BottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,47,1,1"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="1" />
-    <BoxView
-        x:Name="ThickBottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,46,1,2"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="0" />
-</AbsoluteLayout>
+        TextColor="{StaticResource PrimaryTextColor}" />
+</StackLayout>
 

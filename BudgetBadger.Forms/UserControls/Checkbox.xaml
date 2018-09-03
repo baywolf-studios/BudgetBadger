@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <AbsoluteLayout
-    HeightRequest="32"
-    VerticalOptions="Start"
+    x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    x:Class="BudgetBadger.Forms.UserControls.Checkbox">
-    <BoxView
-        x:Name="BackgroundControl"
-        AbsoluteLayout.LayoutBounds="0, 0, 32, 32">
+    HeightRequest="32"
+    VerticalOptions="Start">
+    <BoxView x:Name="BackgroundControl" AbsoluteLayout.LayoutBounds="0, 0, 32, 32">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
@@ -39,5 +37,5 @@
         AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
         FontSize="16"
         Text="{Binding Label}"
-        VerticalOptions="Center"/>
+        VerticalOptions="Center" />
 </AbsoluteLayout>

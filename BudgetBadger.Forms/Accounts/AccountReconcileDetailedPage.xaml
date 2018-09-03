@@ -46,11 +46,10 @@
                         Grid.Row="0"
                         Date="{Binding StatementDate}"
                         Label="Statement Date" />
-                    <uc:CalculatorEntry
+                    <uc:CurrencyCalculatorEntry
                         Grid.Row="1"
                         Label="Statement Balance"
-                        Number="{Binding StatementAmount}"
-                        Prefix="$" />
+                        Number="{Binding StatementAmount}" />
                 </Grid>
             </ScrollView>
             <uc:HelperControl

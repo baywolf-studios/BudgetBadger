@@ -102,13 +102,12 @@
                             Margin="16,0"
                             Label="Name"
                             Text="{Binding Budget.Envelope.Description}" />
-                        <uc:CalculatorEntry
+                        <uc:CurrencyCalculatorEntry
                             Grid.Row="2"
                             Grid.Column="0"
                             Margin="16,0"
                             Label="Amount"
-                            Number="{Binding Budget.Amount}"
-                            Prefix="$" />
+                            Number="{Binding Budget.Amount}" />
                         <Button
                             Grid.Row="2"
                             Grid.Column="1"

@@ -1,62 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AbsoluteLayout
+<StackLayout
     x:Class="BudgetBadger.Forms.UserControls.DateSelector"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    HeightRequest="48"
-    VerticalOptions="Start">
-    <BoxView
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All"
-        BackgroundColor="Transparent">
-        <BoxView.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </BoxView.GestureRecognizers>
-    </BoxView>
-    <DatePicker
-        x:Name="DateControl"
-        Margin="0,0,24,0"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="Transparent"
-        FontSize="16"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="Center">
-        <DatePicker.Effects>
-            <effects:BorderlessDatePickerEffect />
-        </DatePicker.Effects>
-    </DatePicker>
+    Orientation="Vertical">
+    <StackLayout.Spacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </StackLayout.Spacing>
     <Label
         x:Name="LabelControl"
-        AbsoluteLayout.LayoutBounds="0,0,1,16"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
         FontSize="12"
-        InputTransparent="true"
         Text="{Binding Label}"
         TextColor="{StaticResource IdleColor}" />
-    <svg:SvgCachedImage
-        x:Name="IconControl"
-        AbsoluteLayout.LayoutBounds="1,16,24,24"
-        AbsoluteLayout.LayoutFlags="XProportional"
-        HeightRequest="24"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColor}"
-        Source="dropdownselector.svg"
-        WidthRequest="24" />
-    <BoxView
-        x:Name="BottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,47,1,1"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="1" />
-    <BoxView
-        x:Name="ThickBottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,46,1,2"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="0" />
-</AbsoluteLayout>
+    <DatePicker
+        x:Name="DateControl"
+        Date="{Binding Date}"
+        FontSize="16"
+        TextColor="{StaticResource PrimaryTextColor}">
+        <DatePicker.HorizontalOptions>
+            <OnPlatform x:TypeArguments="LayoutOptions">
+                <On Platform="Android, macOS, iOS" Value="Fill" />
+                <On Platform="UWP" Value="Start" />
+            </OnPlatform>
+        </DatePicker.HorizontalOptions>
+    </DatePicker>
+</StackLayout>

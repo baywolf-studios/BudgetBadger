@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <StackLayout
-    x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry"
+    x:Class="BudgetBadger.Forms.UserControls.CurrencyCalculatorEntry"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects">
     <Label
         x:Name="LabelControl"
         FontSize="12"
         Text="{Binding Label}"
         TextColor="{StaticResource IdleColor}" />
-    <Editor
+    <Entry
         x:Name="TextControl"
-        AutoSize="TextChanges"
         FontSize="16"
-        Keyboard="{Binding Keyboard, Mode=TwoWay}"
-        Text="{Binding Text}"
-        TextColor="{StaticResource PrimaryTextColor}" />
+        IsPassword="false"
+        Keyboard="Telephone"
+        TextColor="{StaticResource PrimaryTextColor}">
+        <Entry.Effects>
+            <effects:CalculatorKeyboardEntryEffect />
+        </Entry.Effects>
+    </Entry>
 </StackLayout>
