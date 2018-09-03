@@ -37,9 +37,7 @@
                     Margin="0"
                     Padding="0"
                     Orientation="Vertical">
-                    <Grid
-                        ColumnSpacing="16"
-                        RowSpacing="16">
+                    <Grid ColumnSpacing="16" RowSpacing="16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -90,8 +88,11 @@
                             Label="Envelope"
                             Text="{Binding Transaction.Envelope.Description}">
                             <uc:ButtonSelector.Triggers>
-                                <DataTrigger TargetType="uc:ButtonSelector" Binding="{Binding Transaction.Envelope.IsSystem}" Value="false">
-                                    <Setter Property="IsEnabled" Value="False"/>
+                                <DataTrigger
+                                    Binding="{Binding Transaction.Envelope.IsSystem}"
+                                    TargetType="uc:ButtonSelector"
+                                    Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                             </uc:ButtonSelector.Triggers>
                         </uc:ButtonSelector>
