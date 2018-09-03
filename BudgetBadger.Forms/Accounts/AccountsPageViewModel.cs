@@ -29,7 +29,6 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
 
@@ -52,13 +51,6 @@ namespace BudgetBadger.Forms.Accounts
         {
             get => _selectedAccount;
             set => SetProperty(ref _selectedAccount, value);
-        }
-
-        IReadOnlyList<IGrouping<string, Account>> _groupedAccounts;
-        public IReadOnlyList<IGrouping<string, Account>> GroupedAccounts
-        {
-            get => _groupedAccounts;
-            set => SetProperty(ref _groupedAccounts, value);
         }
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
@@ -89,14 +81,12 @@ namespace BudgetBadger.Forms.Accounts
 
             Accounts = new List<Account>();
             SelectedAccount = null;
-            GroupedAccounts = Accounts.GroupBy(a => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
-            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
