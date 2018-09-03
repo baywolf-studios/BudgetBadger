@@ -5,6 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
     BackCommand="{Binding BackCommand}"
@@ -22,8 +25,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0" IsExpanded="true">
                 <uc:Expander.Triggers>
@@ -34,22 +35,8 @@
                         <Setter Property="IsExpanded" Value="false" />
                     </DataTrigger>
                 </uc:Expander.Triggers>
-                <uc:Expander.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </uc:Expander.IsVisible>
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
-                        <Grid.IsVisible>
-                            <OnIdiom x:TypeArguments="x:Boolean">
-                                <OnIdiom.Phone>true</OnIdiom.Phone>
-                                <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                            </OnIdiom>
-                        </Grid.IsVisible>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -119,93 +106,52 @@
                 HelperText="No transactions yet"
                 ImagePath="helpertransaction.svg"
                 ShowHelper="{Binding NoTransactions}">
-                <ListView
-                    BackgroundColor="{StaticResource BackgroundColor}"
-                    HasUnevenRows="true"
-                    IsPullToRefreshEnabled="true"
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    ItemsSource="{Binding Transactions}"
-                    RefreshCommand="{Binding RefreshCommand}"
-                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    SeparatorVisibility="None">
-                    <ListView.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="ItemSelected" />
-                    </ListView.Behaviors>
-                    <ListView.Header>
-                        <dt:TransactionColumnHeaders TransactionViewCellType="Full">
-                            <dt:TransactionColumnHeaders.Triggers>
-                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                    <Setter Property="HeightRequest" Value="0" />
-                                </Trigger>
-                            </dt:TransactionColumnHeaders.Triggers>
-                            <dt:TransactionColumnHeaders.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>false</OnIdiom.Phone>
-                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                                </OnIdiom>
-                            </dt:TransactionColumnHeaders.IsVisible>
-                        </dt:TransactionColumnHeaders>
-                    </ListView.Header>
-                    <ListView.ItemTemplate>
-                        <OnIdiom x:TypeArguments="DataTemplate">
-                            <OnIdiom.Phone>
+                <pulltoRefresh:SfPullToRefresh
+                    IsRefreshing="{Binding IsBusy}"
+                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                    <pulltoRefresh:SfPullToRefresh.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                    </pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                        <uc:ListView
+                            AllowSwiping="true"
+                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                            ItemSize="{StaticResource ListDoubleItemHeight}"
+                            ItemsSource="{Binding Transactions}"
+                            SelectedItem="{Binding SelectedTransaction}">
+                            <syncfusion:SfListView.Behaviors>
+                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
+                            </syncfusion:SfListView.Behaviors>
+                            <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
-                                        <!--<dt:TransactionViewCell.ContextActions>
-                                            <MenuItem
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                Text="Edit" />
-                                            <MenuItem
-                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                IsDestructive="True"
-                                                Text="Delete" />
-                                        </dt:TransactionViewCell.ContextActions>-->
-                                    </dt:TransactionViewCell>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <svg:SvgCachedImage
+                                            HeightRequest="24"
+                                            HorizontalOptions="Center"
+                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                            Source="delete.svg"
+                                            VerticalOptions="Center"
+                                            WidthRequest="24" />
+                                    </ContentView>
                                 </DataTemplate>
-                            </OnIdiom.Phone>
-                            <OnIdiom.Tablet>
+                            </syncfusion:SfListView.RightSwipeTemplate>
+                            <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
-                                        <dt:TransactionDetailedViewCell.ContextActions>
-                                            <MenuItem
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                Text="Edit" />
-                                            <MenuItem
-                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                IsDestructive="True"
-                                                Text="Delete" />
-                                        </dt:TransactionDetailedViewCell.ContextActions>
-                                    </dt:TransactionDetailedViewCell>
+                                    <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full" />
                                 </DataTemplate>
-                            </OnIdiom.Tablet>
-                            <OnIdiom.Desktop>
+                            </syncfusion:SfListView.ItemTemplate>
+                            <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
-                                        <dt:TransactionDetailedViewCell.ContextActions>
-                                            <MenuItem
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                Text="Edit" />
-                                            <MenuItem
-                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference this}}"
-                                                CommandParameter="{Binding .}"
-                                                IsDestructive="True"
-                                                Text="Delete" />
-                                        </dt:TransactionDetailedViewCell.ContextActions>
-                                    </dt:TransactionDetailedViewCell>
+                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
                                 </DataTemplate>
-                            </OnIdiom.Desktop>
-                        </OnIdiom>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
-                    </ListView.Footer>
-                </ListView>
+                            </syncfusion:SfListView.FooterTemplate>
+                        </uc:ListView>
+                    </pulltoRefresh:SfPullToRefresh.PullableContent>
+                </pulltoRefresh:SfPullToRefresh>
             </uc:HelperControl>
             <Button
                 x:Name="NewTransactionButton"
@@ -214,92 +160,7 @@
                 Command="{Binding AddNewCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="Add Transaction"
-                VerticalOptions="End">
-                <Button.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Button.IsVisible>
-            </Button>
-            <BoxView
-                Grid.Row="3"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
-            <Grid
-                Grid.Row="4"
-                Margin="16"
-                ColumnSpacing="16">
-                <Grid.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>false</OnIdiom.Phone>
-                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Grid.IsVisible>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="0" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Total" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding Total, StringFormat='{0:c}'}" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Running Total"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding RunningTotal, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Remaining"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Remaining, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="5"
-                    Command="{Binding AddNewCommand}"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add New"
-                    VerticalOptions="Center" />
-            </Grid>
+                VerticalOptions="End" />
         </Grid>
     </uc:ChildPage.BodyContent>
 </uc:ChildPage>

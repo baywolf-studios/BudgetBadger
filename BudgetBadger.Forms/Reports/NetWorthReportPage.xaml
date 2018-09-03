@@ -98,7 +98,7 @@
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Filters"
-                    VerticalOptions="Center" />
+                    VerticalTextAlignment="Center" />
                 <uc:DateSelector
                     Grid.Column="2"
                     Date="{Binding BeginDate}"

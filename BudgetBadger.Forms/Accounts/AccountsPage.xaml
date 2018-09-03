@@ -72,7 +72,6 @@
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                             GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                            IsStickyFooter="True"
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Accounts}"
                             SelectedItem="{Binding SelectedAccount}">
@@ -115,10 +114,6 @@
                             </syncfusion:SfListView.RightSwipeTemplate>
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
-                                    <data:DataSource.SortDescriptors>
-                                        <data:SortDescriptor Direction="Ascending" PropertyName="Type" />
-                                        <data:SortDescriptor Direction="Ascending" PropertyName="Description" />
-                                    </data:DataSource.SortDescriptors>
                                     <data:DataSource.GroupDescriptors>
                                         <data:GroupDescriptor PropertyName="Type" />
                                     </data:DataSource.GroupDescriptors>
@@ -131,15 +126,7 @@
                             </syncfusion:SfListView.GroupHeaderTemplate>
                             <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
-                                    <ContentView
-                                        x:Name="groupHeaderCell"
-                                        BackgroundColor="{StaticResource BackgroundColor}"
-                                        HeightRequest="{StaticResource Key=ListGroupHeaderHeight}">
-                                        <Label
-                                            Margin="16,12,16,0"
-                                            Style="{StaticResource Key=ListGroupHeaderLabelStyle}"
-                                            Text="{Binding Key}" />
-                                    </ContentView>
+                                    <dt:AccountViewCell />
                                 </DataTemplate>
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>

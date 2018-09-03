@@ -4,29 +4,27 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     PageTitle="Reports">
     <uc:RootPage.BodyContent>
-        <ListView
-            BackgroundColor="{StaticResource BackgroundColor}"
-            IsPullToRefreshEnabled="false"
+        <uc:ListView
+            ItemSize="{StaticResource ListItemHeight}"
             ItemsSource="{Binding Reports}"
-            SelectedItem="{Binding SelectedReport, Mode=TwoWay}"
-            SeparatorVisibility="None">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior Command="{Binding ReportCommand}" EventName="ItemSelected" />
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
+            SelectedItem="{Binding SelectedReport}">
+            <syncfusion:SfListView.Behaviors>
+                <b:EventToCommandBehavior Command="{Binding ReportCommand}" EventName="SelectionChanged" />
+            </syncfusion:SfListView.Behaviors>
+            <syncfusion:SfListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell Height="48">
-                        <Label
-                            Margin="16,0"
-                            HeightRequest="48"
-                            Style="{StaticResource ListItemLabelStyle}"
-                            Text="{Binding .}" />
-                    </ViewCell>
+                    <Label
+                        Margin="16,0"
+                        HeightRequest="48"
+                        Style="{StaticResource ListItemLabelStyle}"
+                        Text="{Binding .}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </syncfusion:SfListView.ItemTemplate>
+        </uc:ListView>
     </uc:RootPage.BodyContent>
 </uc:RootPage>

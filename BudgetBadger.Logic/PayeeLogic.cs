@@ -239,57 +239,21 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IReadOnlyList<Payee> SearchPayees(IEnumerable<Payee> payees, string searchText)
+        public bool FilterPayee(Payee payee, string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
+            if (payee != null)
             {
-                return payees.ToList();
+                return payee.Description.ToLower().Contains(searchText.ToLower());
             }
-
-			return OrderPayees(payees.Where(a => a.Description.ToLower().Contains(searchText.ToLower())));
+            else
+            {
+                return false;
+            }
         }
         
 		public IReadOnlyList<Payee> OrderPayees(IEnumerable<Payee> payees)
         {
-            return payees.OrderBy(a => a.Description).ToList();
-        }
-
-        public IReadOnlyList<IGrouping<string, Payee>> GroupPayees(IEnumerable<Payee> payees)
-        {
-			var groupedPayees = OrderPayees(payees).GroupBy(p =>
-            {
-                if (p.IsAccount)
-                {
-                    return "Transfer";
-                }
-                else if (p.DeletedDateTime.HasValue)
-                {
-                    return "Deleted";
-                }
-                else
-                {
-                    return p.Description[0].ToString().ToUpper();
-                }
-            });
-
-			var orderedAndGroupedPayees = new List<IGrouping<string, Payee>>();
-
-			var transferPayees = groupedPayees.FirstOrDefault(g => g.Key == "Transfer");
-			if (transferPayees != null)
-			{
-				orderedAndGroupedPayees.Add(transferPayees);
-			}
-
-			var userPayees = groupedPayees.Where(g => g.Key != "Transfer" && g.Key != "Deleted").OrderBy(g => g.Key);
-			orderedAndGroupedPayees.AddRange(userPayees);
-
-			var deletedPayees = groupedPayees.FirstOrDefault(g => g.Key == "Deleted");
-			if (deletedPayees != null)
-			{
-				orderedAndGroupedPayees.Add(deletedPayees);
-			}
-
-			return orderedAndGroupedPayees;
+            return payees.OrderByDescending(p => p.IsAccount).ThenBy(p => p.Group).ThenBy(a => a.Description).ToList();
         }
 
         public Task<Result> ValidatePayeeAsync(Payee payee)

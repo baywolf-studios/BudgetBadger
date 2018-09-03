@@ -4,36 +4,51 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackCommand="{Binding BackCommand}"
     PageTitle="Deleted Envelope Groups"
-    SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}">
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted envelope groups"
             ImagePath="helperenvelope.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <ListView
-                BackgroundColor="{StaticResource BackgroundColor}"
-                HasUnevenRows="true"
-                Header="{x:Null}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                ItemsSource="{Binding FilteredEnvelopeGroups}"
-                RefreshCommand="{Binding RefreshCommand}"
-                SelectedItem="{Binding SelectedEnvelopeGroup, Mode=TwoWay}"
-                SeparatorVisibility="None">
-                <ListView.Behaviors>
-                    <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
-                </ListView.Behaviors>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <dt:EnvelopeGroupViewCell />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <pulltoRefresh:SfPullToRefresh
+                Grid.Row="2"
+                IsRefreshing="{Binding IsBusy}"
+                ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                <pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                </pulltoRefresh:SfPullToRefresh.Behaviors>
+                <pulltoRefresh:SfPullToRefresh.PullableContent>
+                    <uc:ListView
+                        Filter="{Binding Filter}"
+                        FilterText="{Binding SearchText}"
+                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                        ItemSize="{StaticResource ListItemHeight}"
+                        ItemsSource="{Binding EnvelopeGroups}"
+                        SelectedItem="{Binding SelectedEnvelopeGroup}">
+                        <syncfusion:SfListView.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
+                        </syncfusion:SfListView.Behaviors>
+                        <syncfusion:SfListView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <dt:GroupHeaderViewCell />
+                            </DataTemplate>
+                        </syncfusion:SfListView.GroupHeaderTemplate>
+                        <syncfusion:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <dt:EnvelopeGroupViewCell />
+                            </DataTemplate>
+                        </syncfusion:SfListView.ItemTemplate>
+                    </uc:ListView>
+                </pulltoRefresh:SfPullToRefresh.PullableContent>
+            </pulltoRefresh:SfPullToRefresh>
         </uc:HelperControl>
     </uc:ChildSearchPage.BodyContent>
 </uc:ChildSearchPage>

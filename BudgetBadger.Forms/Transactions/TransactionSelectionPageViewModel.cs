@@ -24,7 +24,7 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
+        public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -47,13 +47,6 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
-        public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
-        {
-            get => _groupedTransactions;
-            set => SetProperty(ref _groupedTransactions, value);
-        }
-
         string _searchText;
         public string SearchText
         {
@@ -69,11 +62,9 @@ namespace BudgetBadger.Forms.Transactions
 
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
-            GroupedTransactions = Transactions.GroupBy(a => "").ToList();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
@@ -121,7 +112,6 @@ namespace BudgetBadger.Forms.Transactions
                 if (result.Success)
                 {
                     Transactions = result.Data;
-                    GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                 }
                 else
                 {
@@ -133,11 +123,6 @@ namespace BudgetBadger.Forms.Transactions
             {
                 IsBusy = false;
             }
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)

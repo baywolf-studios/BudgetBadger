@@ -109,7 +109,7 @@
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Filters"
-                    VerticalOptions="Center" />
+                    VerticalTextAlignment="Center" />
                 <uc:DropdownSelector
                     Grid.Column="2"
                     ItemDisplayBinding="{Binding ExtendedDescription}"

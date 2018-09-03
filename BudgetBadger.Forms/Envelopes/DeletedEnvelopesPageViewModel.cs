@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
+        public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelope((Envelope)env, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -36,13 +36,6 @@ namespace BudgetBadger.Forms.Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
-        }
-
-        IReadOnlyList<Envelope> _filteredEnvelopes;
-        public IReadOnlyList<Envelope> FilteredEnvelopes
-        {
-            get => _filteredEnvelopes;
-            set => SetProperty(ref _filteredEnvelopes, value);
         }
 
         Envelope _selectedEnvelope;
@@ -59,6 +52,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopes, value);
         }
 
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public DeletedEnvelopesPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
         {
             _envelopeLogic = envelopeLogic;
@@ -67,11 +67,9 @@ namespace BudgetBadger.Forms.Envelopes
 
             Envelopes = new List<Envelope>();
             SelectedEnvelope = null;
-            FilteredEnvelopes = new List<Envelope>();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
-            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -81,12 +79,10 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -95,7 +91,6 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
                     Envelopes = result.Data;
-                    FilteredEnvelopes = result.Data;
                 }
                 else
                 {
@@ -103,7 +98,7 @@ namespace BudgetBadger.Forms.Envelopes
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
 
-                NoEnvelopes = (FilteredEnvelopes?.Count ?? 0) == 0;
+                NoEnvelopes = (Envelopes?.Count ?? 0) == 0;
             }
             finally
             {
@@ -126,12 +121,6 @@ namespace BudgetBadger.Forms.Envelopes
 
 
             SelectedEnvelope = null;
-        }
-
-
-        public void ExecuteSearchCommand(string searchText)
-        {
-            FilteredEnvelopes = _envelopeLogic.SearchEnvelopes(Envelopes, searchText);
         }
     }
 }

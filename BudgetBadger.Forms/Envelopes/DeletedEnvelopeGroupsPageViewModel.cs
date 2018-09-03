@@ -23,8 +23,8 @@ namespace BudgetBadger.Forms.Envelopes
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroup)env, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -47,21 +47,12 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _envelopeGroups, value);
         }
 
-        IReadOnlyList<EnvelopeGroup> _filteredEnvelopeGroups;
-        public IReadOnlyList<EnvelopeGroup> FilteredEnvelopeGroups
-        {
-            get => _filteredEnvelopeGroups;
-            set => SetProperty(ref _filteredEnvelopeGroups, value);
-        }
-
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set { SetProperty(ref _searchText, value); RaisePropertyChanged(nameof(HasSearchText)); }
+            set => SetProperty(ref _searchText, value);
         }
-
-        public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
         bool _noEnvelopeGroups;
         public bool NoEnvelopeGroups
@@ -82,10 +73,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new List<EnvelopeGroup>();
-            FilteredEnvelopeGroups = new List<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
@@ -96,12 +85,10 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -110,7 +97,6 @@ namespace BudgetBadger.Forms.Envelopes
                 if (envelopeGroupsResult.Success)
                 {
                     EnvelopeGroups = envelopeGroupsResult.Data;
-                    FilteredEnvelopeGroups = envelopeGroupsResult.Data;
                 }
                 else
                 {
@@ -140,11 +126,6 @@ namespace BudgetBadger.Forms.Envelopes
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
 
             SelectedEnvelopeGroup = null;
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            FilteredEnvelopeGroups = _envelopeLogic.SearchEnvelopeGroups(EnvelopeGroups, SearchText);
         }
     }
 }

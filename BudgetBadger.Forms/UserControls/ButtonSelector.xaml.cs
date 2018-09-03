@@ -70,6 +70,7 @@ namespace BudgetBadger.Forms.UserControls
 
             PickerControl.Focused += (sender, e) =>
             {
+                PickerControl.Unfocus();
                 Command.Execute(CommandParameter);
             };
         }

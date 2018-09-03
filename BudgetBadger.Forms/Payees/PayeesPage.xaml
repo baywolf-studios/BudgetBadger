@@ -4,8 +4,13 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Name="this"
     PageTitle="Payees"
     SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
@@ -22,162 +27,111 @@
                 BackgroundColor="{StaticResource BackgroundColor}"
                 ColumnSpacing="16"
                 RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <ListView
-                    x:Name="payeeList"
-                    Grid.Row="0"
-                    BackgroundColor="{StaticResource BackgroundColor}"
-                    GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true"
-                    IsGroupingEnabled="true"
-                    IsPullToRefreshEnabled="true"
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    ItemsSource="{Binding GroupedPayees}"
-                    RefreshCommand="{Binding RefreshCommand}"
-                    SelectedItem="{Binding SelectedPayee, Mode=TwoWay}"
-                    SeparatorVisibility="None">
-                    <ListView.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="ItemSelected" />
-                    </ListView.Behaviors>
-                    <ListView.Header>
-                        <dt:PayeeColumnHeaders>
-                            <dt:PayeeColumnHeaders.Triggers>
-                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                    <Setter Property="HeightRequest" Value="0" />
-                                </Trigger>
-                            </dt:PayeeColumnHeaders.Triggers>
-                            <dt:PayeeColumnHeaders.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>false</OnIdiom.Phone>
-                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                                </OnIdiom>
-                            </dt:PayeeColumnHeaders.IsVisible>
-                        </dt:PayeeColumnHeaders>
-                    </ListView.Header>
-                    <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <dt:GroupHeaderViewCell />
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <OnIdiom x:TypeArguments="DataTemplate">
-                            <OnIdiom.Phone>
+                <pulltoRefresh:SfPullToRefresh
+                    IsRefreshing="{Binding IsBusy}"
+                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                    <pulltoRefresh:SfPullToRefresh.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                    </pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                        <uc:ListView
+                            AllowSwiping="true"
+                            Filter="{Binding Filter}"
+                            FilterText="{Binding SearchText}"
+                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                            HeaderSize="0"
+                            ItemSize="{StaticResource ListItemHeight}"
+                            ItemsSource="{Binding Payees}"
+                            SelectedItem="{Binding SelectedPayee}">
+                            <syncfusion:SfListView.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding HasSearchText}"
+                                    TargetType="syncfusion:SfListView"
+                                    Value="true">
+                                    <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
+                                </DataTrigger>
+                            </syncfusion:SfListView.Triggers>
+                            <syncfusion:SfListView.HeaderTemplate>
                                 <DataTemplate>
-                                    <dt:PayeeViewCell>
-                                        <dt:PayeeViewCell.ContextActions>
-                                            <MenuItem
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}"
-                                                CommandParameter="{Binding .}"
-                                                Text="Edit" />
-                                            <MenuItem
-                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}"
-                                                CommandParameter="{Binding .}"
-                                                IsDestructive="True"
-                                                Text="Delete" />
-                                        </dt:PayeeViewCell.ContextActions>
-                                    </dt:PayeeViewCell>
+                                    <Button
+                                        Margin="16,8"
+                                        Command="{Binding SaveCommand}"
+                                        IsVisible="{Binding HasSearchText}"
+                                        Style="{StaticResource SecondaryActionButtonStyle}"
+                                        Text="{Binding SearchText, StringFormat='Add Payee: {0}'}" />
                                 </DataTemplate>
-                            </OnIdiom.Phone>
-                            <OnIdiom.Tablet>
+                            </syncfusion:SfListView.HeaderTemplate>
+                            <syncfusion:SfListView.Behaviors>
+                                <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
+                            </syncfusion:SfListView.Behaviors>
+                            <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <dt:PayeeDetailedViewCell>
-                                        <dt:PayeeDetailedViewCell.ContextActions>
-                                            <MenuItem
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference payeeList}}"
-                                                CommandParameter="{Binding .}"
-                                                Text="Edit" />
-                                            <MenuItem
-                                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference payeeList}}"
-                                                CommandParameter="{Binding .}"
-                                                IsDestructive="True"
-                                                Text="Delete" />
-                                        </dt:PayeeDetailedViewCell.ContextActions>
-                                    </dt:PayeeDetailedViewCell>
+                                    <Grid ColumnSpacing="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <ContentView Grid.Column="0" BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                            <ContentView.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                            </ContentView.GestureRecognizers>
+                                            <svg:SvgCachedImage
+                                                HeightRequest="24"
+                                                HorizontalOptions="Center"
+                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                Source="edit.svg"
+                                                VerticalOptions="Center"
+                                                WidthRequest="24" />
+                                        </ContentView>
+                                        <ContentView Grid.Column="1" BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                            <ContentView.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                            </ContentView.GestureRecognizers>
+                                            <svg:SvgCachedImage
+                                                HeightRequest="24"
+                                                HorizontalOptions="Center"
+                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                Source="delete.svg"
+                                                VerticalOptions="Center"
+                                                WidthRequest="24" />
+                                        </ContentView>
+                                    </Grid>
                                 </DataTemplate>
-                            </OnIdiom.Tablet>
-                            <OnIdiom.Desktop>
+                            </syncfusion:SfListView.RightSwipeTemplate>
+                            <syncfusion:SfListView.DataSource>
+                                <data:DataSource>
+                                    <data:DataSource.GroupDescriptors>
+                                        <data:GroupDescriptor PropertyName="Group" />
+                                    </data:DataSource.GroupDescriptors>
+                                </data:DataSource>
+                            </syncfusion:SfListView.DataSource>
+                            <syncfusion:SfListView.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <dt:PayeeDetailedViewCell />
+                                    <dt:GroupHeaderViewCell />
                                 </DataTemplate>
-                            </OnIdiom.Desktop>
-                        </OnIdiom>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
-                    </ListView.Footer>
-                </ListView>
+                            </syncfusion:SfListView.GroupHeaderTemplate>
+                            <syncfusion:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <dt:PayeeViewCell />
+                                </DataTemplate>
+                            </syncfusion:SfListView.ItemTemplate>
+                            <syncfusion:SfListView.FooterTemplate>
+                                <DataTemplate>
+                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                                </DataTemplate>
+                            </syncfusion:SfListView.FooterTemplate>
+                        </uc:ListView>
+                    </pulltoRefresh:SfPullToRefresh.PullableContent>
+                </pulltoRefresh:SfPullToRefresh>
                 <Button
                     x:Name="NewTransactionButton"
-                    Grid.Row="0"
                     Margin="16,0,16,16"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="Add Transaction"
-                    VerticalOptions="End">
-                    <Button.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>true</OnIdiom.Phone>
-                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Button.IsVisible>
-                </Button>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <Grid
-                    Grid.Row="2"
-                    Margin="16"
-                    ColumnSpacing="16"
-                    RowSpacing="8">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="0" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        HorizontalTextAlignment="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        HorizontalTextAlignment="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text=""
-                        VerticalOptions="Center" />
-                    <Button
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="3"
-                        Command="{Binding AddTransactionCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction"
-                        VerticalOptions="Center" />
-                </Grid>
+                    VerticalOptions="End" />
             </Grid>
         </uc:HelperControl>
     </uc:RootSearchPage.BodyContent>

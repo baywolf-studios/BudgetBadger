@@ -27,10 +27,10 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand AddCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
+        public Predicate<object> Filter { get => (budget) => _envelopeLogic.FilterBudget((Budget)budget, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -52,10 +52,7 @@ namespace BudgetBadger.Forms.Envelopes
         public IReadOnlyList<Budget> Budgets
         {
             get => _budgets;
-            set
-            {
-                SetProperty(ref _budgets, value);
-            }
+            set => SetProperty(ref _budgets, value); 
         }
 
         Budget _selectedBudget;
@@ -65,18 +62,18 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedBudget, value);
         }
 
-        IReadOnlyList<IGrouping<string, Budget>> _groupedBudgets;
-        public IReadOnlyList<IGrouping<string, Budget>> GroupedBudgets
-        {
-            get => _groupedBudgets;
-            set => SetProperty(ref _groupedBudgets, value);
-        }
-
         bool _noEnvelopes;
         public bool NoEnvelopes
         {
             get => _noEnvelopes;
             set => SetProperty(ref _noEnvelopes, value);
+        }
+
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
         }
 
         public EnvelopesPageViewModel(INavigationService navigationService,
@@ -92,14 +89,12 @@ namespace BudgetBadger.Forms.Envelopes
             Schedule = null;
             Budgets = new List<Budget>();
             SelectedBudget = null;
-            GroupedBudgets = Budgets.GroupBy(b => "").ToList();
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            SearchCommand = new DelegateCommand<string>(ExecuteSearchCommand);
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
@@ -121,12 +116,10 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
-            }
-
-            IsBusy = true;
+                IsBusy = true;
+            }            
 
             try
             {
@@ -148,7 +141,6 @@ namespace BudgetBadger.Forms.Envelopes
                 if (budgetResult.Success)
                 {
                     Budgets = budgetResult.Data;
-                    GroupedBudgets = _envelopeLogic.GroupBudgets(Budgets);
                     Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
@@ -218,11 +210,6 @@ namespace BudgetBadger.Forms.Envelopes
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
 
             SelectedBudget = null;
-        }
-
-        public void ExecuteSearchCommand(string searchText)
-        {
-            GroupedBudgets = _envelopeLogic.GroupBudgets(_envelopeLogic.SearchBudgets(Budgets, searchText));
         }
 
         public async Task ExecuteEditCommand(Budget budget)

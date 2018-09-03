@@ -171,7 +171,6 @@
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                             GroupHeaderSize="{StaticResource DenseListGroupHeaderHeight}"
-                            IsStickyFooter="True"
                             ItemSize="{StaticResource ListDoubleItemHeight}"
                             ItemsSource="{Binding Transactions}"
                             SelectedItem="{Binding SelectedTransaction}">
@@ -196,9 +195,6 @@
                             </syncfusion:SfListView.RightSwipeTemplate>
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
-                                    <data:DataSource.SortDescriptors>
-                                        <data:SortDescriptor Direction="Descending" PropertyName="ServiceDate" />
-                                    </data:DataSource.SortDescriptors>
                                     <data:DataSource.GroupDescriptors>
                                         <data:GroupDescriptor PropertyName="ServiceDate" />
                                     </data:DataSource.GroupDescriptors>

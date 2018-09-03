@@ -37,10 +37,6 @@
                         </syncfusion:SfListView.Behaviors>
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
-                                <data:DataSource.SortDescriptors>
-                                    <data:SortDescriptor Direction="Ascending" PropertyName="Type" />
-                                    <data:SortDescriptor Direction="Ascending" PropertyName="Description" />
-                                </data:DataSource.SortDescriptors>
                                 <data:DataSource.GroupDescriptors>
                                     <data:GroupDescriptor PropertyName="Type" />
                                 </data:DataSource.GroupDescriptors>

@@ -200,15 +200,6 @@ namespace BudgetBadger.Logic
 			return transactions.OrderByDescending(a => a.ServiceDate).ToList();
         }
 
-        public IReadOnlyList<IGrouping<string, Transaction>> GroupTransactions(IEnumerable<Transaction> transactions)
-        {
-			var groupedTransactions = OrderTransactions(transactions).GroupBy(t => String.Format("{0:d}", t.ServiceDate));
-
-			var groupedAndOrderedTransactions = groupedTransactions.OrderByDescending(g => g.FirstOrDefault().ServiceDate).ToList();
-
-			return groupedAndOrderedTransactions;
-        }
-
         public async Task<Result> ValidateTransactionAsync(Transaction transaction)
         {
             if (!transaction.IsValid())
