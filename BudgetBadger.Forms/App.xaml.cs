@@ -186,14 +186,8 @@ namespace BudgetBadger.Forms
                                                                               Arg.Of<ITransactionSyncLogic>(),
                                                                               Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
-                if (Device.Idiom == TargetIdiom.Desktop)
-                {
-                    containerRegistry.RegisterForNavigation<MainDesktopPage, MainPageViewModel>("MainPage");
-                }
-                else
-                {
-                    containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("MainPage");
-                }
+               
+                containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
                 containerRegistry.RegisterForNavigation<NavigationPage>();
                 containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
                 containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();

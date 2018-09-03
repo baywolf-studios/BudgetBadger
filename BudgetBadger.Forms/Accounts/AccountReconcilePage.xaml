@@ -259,7 +259,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding StatementMode}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Show Transactions"
+                    Text="Back"
                     VerticalOptions="End" />
                 <Button
                     Grid.Column="0"
@@ -267,7 +267,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding ReconcileMode}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Statement"
+                    Text="Next"
                     VerticalOptions="End" />
                 <Button
                     Grid.Column="1"
@@ -364,14 +364,14 @@
                             Binding="{Binding ReconcileMode}"
                             TargetType="Button"
                             Value="true">
-                            <Setter Property="Text" Value="Statement" />
+                            <Setter Property="Text" Value="Back" />
                             <Setter Property="Style" Value="{StaticResource SecondaryActionButtonStyle}" />
                         </DataTrigger>
                         <DataTrigger
                             Binding="{Binding StatementMode}"
                             TargetType="Button"
                             Value="true">
-                            <Setter Property="Text" Value="Show Transactions" />
+                            <Setter Property="Text" Value="Next" />
                             <Setter Property="Style" Value="{StaticResource PrimaryActionButtonStyle}" />
                         </DataTrigger>
                     </Button.Triggers>

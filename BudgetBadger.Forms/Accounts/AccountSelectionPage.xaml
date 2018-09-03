@@ -11,7 +11,6 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackCommand="{Binding BackCommand}"
     PageTitle="Select an Account"
-    SearchCommand="{Binding SearchCommand}"
     SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
