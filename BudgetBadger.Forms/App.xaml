@@ -10,6 +10,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
+            <converters:CalculatorConverter x:Key="CalculatorConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">

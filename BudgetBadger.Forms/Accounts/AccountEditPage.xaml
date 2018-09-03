@@ -58,13 +58,12 @@
                             ItemsSource="{Binding AccountTypes}"
                             Label="Type"
                             SelectedItem="{Binding SelectedAccountType}" />
-                        <uc:CalculatorEntry
+                        <uc:CurrencyCalculatorEntry
                             Grid.Row="2"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
                             Label="Balance"
-                            Number="{Binding Account.Balance}"
-                            Prefix="$" />
+                            Number="{Binding Account.Balance}" />
                         <uc:MultilineTextEntry
                             Grid.Row="3"
                             Margin="16,0"
