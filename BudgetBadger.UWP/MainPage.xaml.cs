@@ -32,7 +32,7 @@ namespace BudgetBadger.UWP
             catch(Exception ex)
             {
                 var test = ex;
-                throw;
+                throw new Exception(ex.Message + ex.StackTrace);
             }
         }
     }
