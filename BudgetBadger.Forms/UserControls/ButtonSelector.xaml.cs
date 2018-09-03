@@ -59,6 +59,7 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
 
             LabelControl.BindingContext = this;
+            PickerContentView.BindingContext = this;
 
             PropertyChanged += (sender, e) =>
             {

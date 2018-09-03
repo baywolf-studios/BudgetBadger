@@ -214,7 +214,7 @@
                                 <DataTemplate>
                                     <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account">
                                         <dt:TransactionViewCell.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding TransactionSelectedCommand}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}" />
                                         </dt:TransactionViewCell.GestureRecognizers>
                                     </dt:TransactionViewCell>
                                 </DataTemplate>
