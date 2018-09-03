@@ -66,11 +66,18 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     PickerControl.IsEnabled = IsEnabled;
                 }
+
+                if (e.PropertyName == nameof(IsFocused))
+                {
+                    if (IsFocused)
+                    {
+                        PickerControl.Unfocus();
+                    }
+                }
             };
 
             PickerControl.Focused += (sender, e) =>
             {
-                PickerControl.Unfocus();
                 Command.Execute(CommandParameter);
             };
         }

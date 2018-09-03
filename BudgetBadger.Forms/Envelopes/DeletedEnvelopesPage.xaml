@@ -51,7 +51,27 @@
                         </syncfusion:SfListView.GroupHeaderTemplate>
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
-                                <dt:EnvelopeViewCell />
+                                <Grid
+                                    BackgroundColor="{StaticResource BackgroundColor}"
+                                    ColumnSpacing="16"
+                                    HeightRequest="{StaticResource Key=ListItemHeight}"
+                                    RowSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        Grid.Column="0"
+                                        Margin="16,0,0,0"
+                                        Style="{StaticResource Key=ListItemLabelStyle}"
+                                        Text="{Binding Envelope.Description}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Margin="0,0,16,0"
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource Key=ListItemLabelStyle}"
+                                        Text="{Binding Remaining, StringFormat='{0:C}'}" />
+                                </Grid>
                             </DataTemplate>
                         </syncfusion:SfListView.ItemTemplate>
                     </uc:ListView>

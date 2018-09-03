@@ -38,7 +38,6 @@
                     Padding="0"
                     Orientation="Vertical">
                     <Grid
-                        Margin="0,16"
                         ColumnSpacing="16"
                         RowSpacing="16">
                         <Grid.ColumnDefinitions>
@@ -89,7 +88,13 @@
                             Margin="16,0"
                             Command="{Binding EnvelopeSelectedCommand}"
                             Label="Envelope"
-                            Text="{Binding Transaction.Envelope.Description}" />
+                            Text="{Binding Transaction.Envelope.Description}">
+                            <uc:ButtonSelector.Triggers>
+                                <DataTrigger TargetType="uc:ButtonSelector" Binding="{Binding Transaction.Envelope.IsSystem}" Value="false">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </uc:ButtonSelector.Triggers>
+                        </uc:ButtonSelector>
                         <uc:DateSelector
                             Grid.Row="5"
                             Grid.ColumnSpan="2"
