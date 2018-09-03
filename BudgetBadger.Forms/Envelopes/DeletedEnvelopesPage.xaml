@@ -51,15 +51,13 @@
                         </syncfusion:SfListView.GroupHeaderTemplate>
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid
-                                    BackgroundColor="{StaticResource BackgroundColor}"
-                                    HeightRequest="{StaticResource Key=ListItemHeight}">
+                                <Grid BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=ListItemHeight}">
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         Margin="16,0"
                                         Style="{StaticResource Key=ListItemLabelStyle}"
-                                        Text="{Binding Description}"/>
+                                        Text="{Binding Description}" />
                                 </Grid>
                             </DataTemplate>
                         </syncfusion:SfListView.ItemTemplate>

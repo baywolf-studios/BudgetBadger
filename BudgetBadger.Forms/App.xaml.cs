@@ -114,6 +114,7 @@ namespace BudgetBadger.Forms
                 container.Register<ISettings, AppStoreSettings>();
 
                 var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
+                Directory.CreateDirectory(appDataDirectory);
 
                 var dataDirectory = Path.Combine(appDataDirectory, "data");
                 Directory.CreateDirectory(dataDirectory);
