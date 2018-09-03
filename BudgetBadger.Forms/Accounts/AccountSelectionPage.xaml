@@ -33,8 +33,8 @@
                         FilterText="{Binding SearchText}"
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding Accounts, Mode=TwoWay}"
-                        SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+                        ItemsSource="{Binding Accounts}"
+                        SelectedItem="{Binding SelectedAccount}">
                         <syncfusion:SfListView.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                         </syncfusion:SfListView.Behaviors>

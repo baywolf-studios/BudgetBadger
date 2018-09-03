@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class TransactionViewCell : ViewCell
+    public partial class TransactionViewCell : Grid
     {
         public static readonly BindableProperty CommandProperty =
             BindableProperty.Create("Command", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnCommandPropertyChanged);
@@ -71,7 +72,7 @@ namespace BudgetBadger.Forms.DataTemplates
         {
             if (newValue != oldValue)
             {
-                (bindable as TransactionViewCell).hiddenButton.Command = newValue as ICommand;
+                ((bindable as TransactionViewCell).toggleView.GestureRecognizers.Single() as TapGestureRecognizer).Command = newValue as ICommand;
             }
         }
     }

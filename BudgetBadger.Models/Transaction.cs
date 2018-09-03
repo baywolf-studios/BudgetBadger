@@ -70,7 +70,12 @@ namespace BudgetBadger.Models
         public bool Posted
         {
             get => posted;
-            set => SetProperty(ref posted, value);
+            set
+            {
+                SetProperty(ref posted, value);
+                OnPropertyChanged(nameof(Pending));
+                OnPropertyChanged(nameof(Reconciled));
+            }
         }
 
         public bool Pending { get => !Posted; }
@@ -79,7 +84,13 @@ namespace BudgetBadger.Models
         public DateTime? ReconciledDateTime
         {
             get => reconciledDateTime;
-            set { SetProperty(ref reconciledDateTime, value); OnPropertyChanged(nameof(Reconciled)); }
+            set
+            {
+                SetProperty(ref reconciledDateTime, value);
+                OnPropertyChanged(nameof(Pending));
+                OnPropertyChanged(nameof(Posted));
+                OnPropertyChanged(nameof(Reconciled));
+            }
         }
 
         public bool Reconciled { get => ReconciledDateTime.HasValue; }

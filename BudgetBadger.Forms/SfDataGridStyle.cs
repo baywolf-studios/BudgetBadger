@@ -8,6 +8,16 @@ namespace BudgetBadger.Forms
 {
     public class SfDataGridStyle : DataGridStyle
     {
+        public override ImageSource GetHeaderSortIndicatorUp()
+        {
+            return null;
+        }
+
+        public override ImageSource GetHeaderSortIndicatorDown()
+        {
+            return null;
+        }
+
         public override Color GetHeaderBackgroundColor()
         {
             return (Color)Application.Current.Resources["BackgroundColor"];

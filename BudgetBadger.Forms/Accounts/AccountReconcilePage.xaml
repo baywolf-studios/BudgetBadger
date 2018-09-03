@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:ChildPage
+<uc:ChildSearchPage
     x:Class="BudgetBadger.Forms.Accounts.AccountReconcilePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
     BackCommand="{Binding BackCommand}"
-    PageTitle="{Binding Account.Description}">
-    <uc:ChildPage.BodyContent>
+    PageTitle="{Binding Account.Description}"
+    SearchText="{Binding SearchText}">
+    <uc:ChildSearchPage.BodyContent>
         <Grid
             Margin="0"
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -23,8 +28,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
                 <uc:Expander.Triggers>
@@ -41,13 +44,6 @@
                         <Setter Property="IsExpanded" Value="true" />
                     </DataTrigger>
                 </uc:Expander.Triggers>
-                <uc:Expander.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </uc:Expander.IsVisible>
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
@@ -153,87 +149,79 @@
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
                 </uc:HelperControl.Triggers>
-                <ListView
-                    BackgroundColor="{StaticResource BackgroundColor}"
-                    GroupDisplayBinding="{Binding Key}"
-                    HasUnevenRows="true"
-                    IsGroupingEnabled="true"
-                    IsPullToRefreshEnabled="true"
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    ItemsSource="{Binding GroupedTransactions}"
-                    RefreshCommand="{Binding RefreshCommand}"
-                    SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                    SeparatorVisibility="None">
-                    <ListView.Header>
-                        <dt:TransactionColumnHeaders TransactionViewCellType="Account">
-                            <dt:TransactionColumnHeaders.Triggers>
-                                <Trigger TargetType="ContentView" Property="IsVisible" Value="False">
-                                    <Setter Property="HeightRequest" Value="0" />
-                                </Trigger>
-                            </dt:TransactionColumnHeaders.Triggers>
-                            <dt:TransactionColumnHeaders.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>false</OnIdiom.Phone>
-                                    <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                                    <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                                </OnIdiom>
-                            </dt:TransactionColumnHeaders.IsVisible>
-                        </dt:TransactionColumnHeaders>
-                    </ListView.Header>
-                    <ListView.GroupHeaderTemplate>
-                        <OnIdiom x:TypeArguments="DataTemplate">
-                            <OnIdiom.Phone>
+                <pulltoRefresh:SfPullToRefresh
+                    IsRefreshing="{Binding IsBusy}"
+                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+                    <pulltoRefresh:SfPullToRefresh.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
+                    </pulltoRefresh:SfPullToRefresh.Behaviors>
+                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                        <uc:ListView
+                            AllowSwiping="true"
+                            Filter="{Binding Filter}"
+                            FilterText="{Binding SearchText}"
+                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                            GroupHeaderSize="{StaticResource DenseListGroupHeaderHeight}"
+                            IsStickyFooter="True"
+                            ItemSize="{StaticResource ListDoubleItemHeight}"
+                            ItemsSource="{Binding StatementTransactions}"
+                            SelectedItem="{Binding SelectedTransaction}">
+                            <syncfusion:SfListView.Behaviors>
+                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
+                            </syncfusion:SfListView.Behaviors>
+                            <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <dt:DenseGroupHeaderViewCell />
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <svg:SvgCachedImage
+                                            HeightRequest="24"
+                                            HorizontalOptions="Center"
+                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                            Source="delete.svg"
+                                            VerticalOptions="Center"
+                                            WidthRequest="24" />
+                                    </ContentView>
                                 </DataTemplate>
-                            </OnIdiom.Phone>
-                            <OnIdiom.Tablet>
+                            </syncfusion:SfListView.RightSwipeTemplate>
+                            <syncfusion:SfListView.DataSource>
+                                <data:DataSource>
+                                    <data:DataSource.SortDescriptors>
+                                        <data:SortDescriptor Direction="Descending" PropertyName="ServiceDate" />
+                                    </data:DataSource.SortDescriptors>
+                                    <data:DataSource.GroupDescriptors>
+                                        <data:GroupDescriptor PropertyName="ServiceDate" />
+                                    </data:DataSource.GroupDescriptors>
+                                </data:DataSource>
+                            </syncfusion:SfListView.DataSource>
+                            <syncfusion:SfListView.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ViewCell Height="0">
-                                        <ContentView
-                                            Margin="-1"
-                                            Padding="1"
-                                            BackgroundColor="{StaticResource BackgroundColor}"
-                                            HeightRequest="1" />
-                                    </ViewCell>
+                                    <ContentView
+                                        x:Name="denseGroupHeaderCell"
+                                        BackgroundColor="{StaticResource BackgroundColor}"
+                                        HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
+                                        <Label
+                                            Margin="16,12,16,0"
+                                            Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
+                                            Text="{Binding Key, StringFormat='{0:d}'}" />
+                                    </ContentView>
                                 </DataTemplate>
-                            </OnIdiom.Tablet>
-                            <OnIdiom.Desktop>
-                                <DataTemplate>
-                                    <ViewCell Height="0">
-                                        <ContentView
-                                            Margin="-1"
-                                            Padding="1"
-                                            BackgroundColor="{StaticResource BackgroundColor}"
-                                            HeightRequest="1" />
-                                    </ViewCell>
-                                </DataTemplate>
-                            </OnIdiom.Desktop>
-                        </OnIdiom>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <OnIdiom x:TypeArguments="DataTemplate">
-                            <OnIdiom.Phone>
+                            </syncfusion:SfListView.GroupHeaderTemplate>
+                            <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
                                     <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
                                 </DataTemplate>
-                            </OnIdiom.Phone>
-                            <OnIdiom.Tablet>
+                            </syncfusion:SfListView.ItemTemplate>
+                            <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
+                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
                                 </DataTemplate>
-                            </OnIdiom.Tablet>
-                            <OnIdiom.Desktop>
-                                <DataTemplate>
-                                    <dt:TransactionDetailedViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Account" />
-                                </DataTemplate>
-                            </OnIdiom.Desktop>
-                        </OnIdiom>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <BoxView BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}" />
-                    </ListView.Footer>
-                </ListView>
+                            </syncfusion:SfListView.FooterTemplate>
+                        </uc:ListView>
+                    </pulltoRefresh:SfPullToRefresh.PullableContent>
+                </pulltoRefresh:SfPullToRefresh>
             </uc:HelperControl>
             <Grid
                 Grid.Row="2"
@@ -242,13 +230,6 @@
                 ColumnSpacing="16"
                 RowSpacing="16"
                 VerticalOptions="End">
-                <Grid.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Grid.IsVisible>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -259,7 +240,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding StatementMode}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Back"
+                    Text="Next"
                     VerticalOptions="End" />
                 <Button
                     Grid.Column="0"
@@ -267,7 +248,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding ReconcileMode}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Next"
+                    Text="Back"
                     VerticalOptions="End" />
                 <Button
                     Grid.Column="1"
@@ -278,115 +259,6 @@
                     Text="Reconcile"
                     VerticalOptions="End" />
             </Grid>
-            <BoxView
-                Grid.Row="3"
-                Grid.ColumnSpan="2"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
-            <Grid
-                Grid.Row="4"
-                Grid.ColumnSpan="2"
-                Margin="16"
-                ColumnSpacing="16"
-                RowSpacing="8">
-                <Grid.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>false</OnIdiom.Phone>
-                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Grid.IsVisible>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="0" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Statement"
-                    VerticalOptions="Center" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    HorizontalTextAlignment="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
-                    VerticalOptions="Center" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Cleared"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Difference"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Difference, StringFormat='{0:c}'}"
-                    VerticalOptions="Start" />
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="5"
-                    Command="{Binding ToggleReconcileModeCommand}"
-                    HorizontalOptions="EndAndExpand"
-                    VerticalOptions="Center">
-                    <Button.Triggers>
-                        <DataTrigger
-                            Binding="{Binding ReconcileMode}"
-                            TargetType="Button"
-                            Value="true">
-                            <Setter Property="Text" Value="Back" />
-                            <Setter Property="Style" Value="{StaticResource SecondaryActionButtonStyle}" />
-                        </DataTrigger>
-                        <DataTrigger
-                            Binding="{Binding StatementMode}"
-                            TargetType="Button"
-                            Value="true">
-                            <Setter Property="Text" Value="Next" />
-                            <Setter Property="Style" Value="{StaticResource PrimaryActionButtonStyle}" />
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-                <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="6"
-                    Command="{Binding ReconcileCommand}"
-                    HorizontalOptions="EndAndExpand"
-                    IsVisible="{Binding ReconcileMode}"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Reconcile"
-                    VerticalOptions="Center" />
-            </Grid>
         </Grid>
-    </uc:ChildPage.BodyContent>
-</uc:ChildPage>
+    </uc:ChildSearchPage.BodyContent>
+</uc:ChildSearchPage>

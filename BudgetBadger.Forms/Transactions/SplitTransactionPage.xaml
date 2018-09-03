@@ -152,7 +152,7 @@
                             <OnIdiom.Phone>
                                 <DataTemplate>
                                     <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full">
-                                        <dt:TransactionViewCell.ContextActions>
+                                        <!--<dt:TransactionViewCell.ContextActions>
                                             <MenuItem
                                                 Command="{Binding BindingContext.EditCommand, Source={x:Reference this}}"
                                                 CommandParameter="{Binding .}"
@@ -162,7 +162,7 @@
                                                 CommandParameter="{Binding .}"
                                                 IsDestructive="True"
                                                 Text="Delete" />
-                                        </dt:TransactionViewCell.ContextActions>
+                                        </dt:TransactionViewCell.ContextActions>-->
                                     </dt:TransactionViewCell>
                                 </DataTemplate>
                             </OnIdiom.Phone>

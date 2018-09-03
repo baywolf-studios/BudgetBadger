@@ -30,7 +30,6 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
@@ -58,13 +57,6 @@ namespace BudgetBadger.Forms.Accounts
                 RaisePropertyChanged(nameof(PendingTotal));
                 RaisePropertyChanged(nameof(PostedTotal));
             }
-        }
-
-        IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
-        public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
-        {
-            get => _groupedTransactions;
-            set => SetProperty(ref _groupedTransactions, value);
         }
 
         Transaction _selectedTransaction;
@@ -105,7 +97,6 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
             Transactions = new List<Transaction>();
-            GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -115,7 +106,6 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
-            SearchCommand = new DelegateCommand(ExecuteSearchCommand);
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
         }
 
@@ -190,12 +180,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -215,7 +203,6 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success)
                     {
                         Transactions = result.Data;
-                        GroupedTransactions = _transactionLogic.GroupTransactions(Transactions);
                         SelectedTransaction = null;
                     }
                 }
@@ -235,12 +222,15 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecutePaymentCommand()
         {
-            var parameters = new NavigationParameters
+            if (Account.PaymentRequired)
             {
-                { PageParameter.Account, Account },
-                { PageParameter.TransactionAmount, Account.Payment }
-            };
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, Account },
+                    { PageParameter.TransactionAmount, Account.Payment }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
+            }
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
@@ -276,11 +266,6 @@ namespace BudgetBadger.Forms.Accounts
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
-        }
-
-        public void ExecuteSearchCommand()
-        {
-            GroupedTransactions = _transactionLogic.GroupTransactions(_transactionLogic.SearchTransactions(Transactions, SearchText));
         }
 
         public async Task ExecuteReconcileCommand()

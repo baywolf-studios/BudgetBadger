@@ -1,65 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AbsoluteLayout
+<StackLayout
     x:Class="BudgetBadger.Forms.UserControls.DropdownSelector"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    HeightRequest="48"
-    VerticalOptions="Start">
-    <BoxView
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All"
-        BackgroundColor="Transparent">
-        <BoxView.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </BoxView.GestureRecognizers>
-    </BoxView>
+    Orientation="Vertical">
+    <StackLayout.Spacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </StackLayout.Spacing>
+    <Label
+        x:Name="LabelControl"
+        FontSize="12"
+        Text="{Binding Label}"
+        TextColor="{StaticResource IdleColor}" />
     <Picker
         x:Name="PickerControl"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="Transparent"
         FontSize="16"
         ItemsSource="{Binding ItemsSource}"
         SelectedIndex="{Binding SelectedIndex}"
         SelectedItem="{Binding SelectedItem}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand">
-        <Picker.Effects>
-            <effects:BorderlessPickerEffect />
-        </Picker.Effects>
-    </Picker>
-    <Label
-        x:Name="LabelControl"
-        AbsoluteLayout.LayoutBounds="0,16,1,32"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        FontSize="16"
-        InputTransparent="true"
-        Text="{Binding Label}"
-        TextColor="{StaticResource IdleColor}"
-        VerticalTextAlignment="Center" />
-    <svg:SvgCachedImage
-        x:Name="IconControl"
-        AbsoluteLayout.LayoutBounds="1,16,24,24"
-        AbsoluteLayout.LayoutFlags="XProportional"
-        HeightRequest="24"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColor}"
-        Source="dropdownselector.svg"
-        WidthRequest="24" />
-    <BoxView
-        x:Name="BottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,47,1,1"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="1" />
-    <BoxView
-        x:Name="ThickBottomBorderControl"
-        AbsoluteLayout.LayoutBounds="0,46,1,2"
-        AbsoluteLayout.LayoutFlags="WidthProportional"
-        BackgroundColor="{StaticResource IdleColor}"
-        InputTransparent="true"
-        Opacity="0" />
-</AbsoluteLayout>
+        TextColor="{StaticResource PrimaryTextColor}" />
+</StackLayout>

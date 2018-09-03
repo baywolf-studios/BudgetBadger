@@ -26,6 +26,9 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand ReconcileCommand { get; set; }
         public ICommand ToggleReconcileModeCommand { get; set; }
         public ICommand TogglePostedTransactionCommand { get; set; }
+        public ICommand DeleteTransactionCommand { get; set; }
+        public ICommand TransactionSelectedCommand { get; set; }
+        public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -63,13 +66,6 @@ namespace BudgetBadger.Forms.Accounts
                 RaisePropertyChanged(nameof(PostedTotal));
                 RaisePropertyChanged(nameof(Difference));
             }
-        }
-
-        IReadOnlyList<IGrouping<string, Transaction>> _groupedTransactions;
-        public IReadOnlyList<IGrouping<string, Transaction>> GroupedTransactions
-        {
-            get => _groupedTransactions;
-            set => SetProperty(ref _groupedTransactions, value);
         }
 
         Transaction _selectedTransaction;
@@ -127,6 +123,13 @@ namespace BudgetBadger.Forms.Accounts
             get => !ReconcileMode;
         }
 
+        string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
         public AccountReconcilePageViewModel(INavigationService navigationService,
                                              ITransactionLogic transactionLogic, 
                                              IAccountLogic accountLogic, 
@@ -142,7 +145,6 @@ namespace BudgetBadger.Forms.Accounts
             Account = new Account();
             Transactions = new List<Transaction>();
             FilteredTransactions = new List<Transaction>();
-            GroupedTransactions = Transactions.GroupBy(t => "").ToList();
             SelectedTransaction = null;
             StatementDate = DateTime.Now;
             StatementAmount = 0;
@@ -150,6 +152,8 @@ namespace BudgetBadger.Forms.Accounts
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
             ToggleReconcileModeCommand = new DelegateCommand(ExecuteToggleReconcileModeCommand);
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
+            TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -165,12 +169,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (IsBusy)
+            if (!IsBusy)
             {
-                return;
+                IsBusy = true;
             }
-
-            IsBusy = true;
 
             try
             {
@@ -191,7 +193,6 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         Transactions = result.Data;
                         FilteredTransactions = result.Data;
-                        GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
                         SelectedTransaction = null;
                     }
                 }
@@ -207,7 +208,6 @@ namespace BudgetBadger.Forms.Accounts
         public void UpdateStatementTransactions()
         {
             FilteredTransactions = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
-            GroupedTransactions = _transactionLogic.GroupTransactions(FilteredTransactions);
             NoTransactions = (FilteredTransactions?.Count ?? 0) == 0;
         }
 
@@ -263,6 +263,55 @@ namespace BudgetBadger.Forms.Accounts
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
+        }
+
+        public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
+        {
+            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
+
+            if (result.Success)
+            {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+            }
+        }
+
+        public async Task ExecuteTransactionSelectedCommand()
+        {
+            if (SelectedTransaction == null)
+            {
+                return;
+            }
+
+
+            if (SelectedTransaction.IsSplit)
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.SplitTransactionId, SelectedTransaction.SplitId }
+                };
+                await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Transaction, SelectedTransaction }
+                };
+                await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
+            }
+
+            SelectedTransaction = null;
         }
     }
 }
