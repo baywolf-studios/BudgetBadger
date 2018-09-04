@@ -20,7 +20,8 @@ namespace BudgetBadger.Forms.UserControls
             BindableProperty.Create(nameof(Date),
                                     typeof(DateTime),
                                     typeof(DateSelector),
-                                    defaultValue: DateTime.Now);
+                                    defaultValue: DateTime.Now,
+                                    defaultBindingMode: BindingMode.TwoWay);
         public DateTime Date
         {
             get => (DateTime)GetValue(DateProperty);
