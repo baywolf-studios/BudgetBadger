@@ -72,6 +72,7 @@ namespace BudgetBadger.Forms.Accounts
 
             SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)

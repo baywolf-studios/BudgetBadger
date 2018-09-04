@@ -122,6 +122,7 @@
                     <Entry
                         x:Name="EntryControl"
                         Margin="8,0"
+                        BackgroundColor="Transparent"
                         FontSize="17"
                         HorizontalOptions="FillAndExpand"
                         Text="{Binding SearchText}"

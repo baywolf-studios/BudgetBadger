@@ -217,7 +217,12 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteAddTransactionCommand()
         {
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, Account }
+            };
+
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
         public async Task ExecutePaymentCommand()
