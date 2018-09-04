@@ -177,7 +177,12 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteAddTransactionCommand()
         {
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Payee, Payee }
+            };
+
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)

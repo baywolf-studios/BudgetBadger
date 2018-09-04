@@ -77,7 +77,7 @@
                     <uc:ListView
                         ItemSize="{StaticResource ListDoubleItemHeight}"
                         ItemsSource="{Binding Envelopes}"
-                        SelectedItem="{Binding SelectedEnvleope}">
+                        SelectedItem="{Binding SelectedEnvelope}">
                         <syncfusion:SfListView.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
                         </syncfusion:SfListView.Behaviors>

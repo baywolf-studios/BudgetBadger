@@ -138,7 +138,12 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteAddTransactionCommand()
         {
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Envelope, Budget.Envelope }
+            };
+
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
         public async Task ExecuteRefreshCommand()

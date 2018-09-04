@@ -139,7 +139,7 @@
                         <Button
                             Grid.Row="6"
                             Grid.Column="0"
-                            Margin="16,0"
+                            Margin="16,0,0,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
                             Text="Delete Envelope">
@@ -162,6 +162,7 @@
                         <Button
                             Grid.Row="6"
                             Grid.Column="0"
+                            Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
@@ -185,7 +186,7 @@
                         <Button
                             Grid.Row="6"
                             Grid.Column="1"
-                            Margin="16,0"
+                            Margin="0,0,16,0"
                             Command="{Binding QuickBudgetCommand}"
                             IsVisible="{Binding Budget.IsActive}"
                             Style="{StaticResource PrimaryActionButtonStyle}"
