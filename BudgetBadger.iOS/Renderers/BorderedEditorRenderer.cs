@@ -4,10 +4,10 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(Editor), typeof(CustomEditorRenderer))]
+[assembly: ExportRenderer(typeof(Editor), typeof(BorderedEditorRenderer))]
 namespace BudgetBadger.iOS.Renderers
 {
-    public class CustomEditorRenderer : EditorRenderer
+    public class BorderedEditorRenderer : EditorRenderer
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
@@ -15,10 +15,10 @@ namespace BudgetBadger.iOS.Renderers
 
             if (Control != null && Control is UITextView textView)
             {
-                var borderColor = UIColor.FromRGBA((byte)0.8, (byte)0.8, (byte)0.8, (byte)1.0);
+                var lightGray = Color.FromRgb(205, 205, 205);
 
-                textView.Layer.BorderColor = borderColor.CGColor;
-                textView.Layer.BorderWidth = 1f;
+                textView.Layer.BorderColor = lightGray.ToCGColor();
+                textView.Layer.BorderWidth = 0.5f;
                 textView.Layer.CornerRadius = 5f;
             }
         }
