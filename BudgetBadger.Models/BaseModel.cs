@@ -12,10 +12,10 @@ namespace BudgetBadger.Models
 
         protected virtual bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
         {
-            if (EqualityComparer<T>.Default.Equals(property, value))
-            {
-                return false;
-            }
+            //if (EqualityComparer<T>.Default.Equals(property, value))
+            //{
+            //    return false;
+            //}
 
             property = value;
             OnPropertyChanged(propertyName);

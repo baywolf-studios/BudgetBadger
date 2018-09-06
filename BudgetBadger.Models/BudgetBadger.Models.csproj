@@ -4,11 +4,4 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Extensions\SortingExtensions.cs" />
-  </ItemGroup>
 </Project>
