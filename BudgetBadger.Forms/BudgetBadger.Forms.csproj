@@ -4,243 +4,32 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Dropbox.Api" Version="4.9.0" />
     <PackageReference Include="Clancey.SimpleAuth" Version="1.0.49" />
-    <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
+    <PackageReference Include="Dropbox.Api" Version="4.9.0" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
-    <PackageReference Include="Syncfusion.Xamarin.GridCommon" Version="16.2.0.50" />
+    <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
     <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="16.2.0.50" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="16.2.0.50" />
-    <PackageReference Include="Syncfusion.Xamarin.SfNumericTextBox" Version="16.2.0.50" />
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="16.2.0.50" />
-    <PackageReference Include="System.AppContext" Version="4.3.0" />
-    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
-    <PackageReference Include="System.Console" Version="4.3.1" />
-    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
-    <PackageReference Include="System.Globalization" Version="4.3.0" />
-    <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
-    <PackageReference Include="System.IO" Version="4.3.0" />
-    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
-    <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
-    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Extensions" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageReference Include="System.Runtime" Version="4.3.0" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
-    <PackageReference Include="Prism.Forms" Version="7.0.0.396" />
-    <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.396" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.0.0.396" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Settings\" />
-    <Folder Include="Reports\" />
-    <Folder Include="Effects\" />
-    <Folder Include="Animation\" />
-    <Folder Include="DataTemplates\" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
     <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
+    <ProjectReference Include="..\BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj" />
     <ProjectReference Include="..\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
-    <ProjectReference Include="..\BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Remove="Views\PayeeInfoPage.xaml" />
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="ViewModels\PayeesPageViewModel.cs" />
-    <Compile Remove="Views\PayeesPage.xaml.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Views\PayeesPage.xaml" />
-    <EmbeddedResource Remove="Sync\SyncModesPage.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Accounts\AccountInfoDetailedPage.xaml.cs">
-      <DependentUpon>AccountInfoDetailedPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeEditPage.xaml.cs">
-      <DependentUpon>..\Views\Views\PayeeEditPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Payees\PayeeInfoDetailedPage.xaml.cs">
-      <DependentUpon>PayeeInfoDetailedPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeInfoPage.xaml.cs">
-      <DependentUpon>..\Views\Views\PayeeInfoPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountEditPage.xaml.cs">
-      <DependentUpon>..\Views\Views\AccountEditPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountInfoPage.xaml.cs">
-      <DependentUpon>..\Views\Views\AccountInfoPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountsPage.xaml.cs">
-      <DependentUpon>..\Views\Views\AccountsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeInfoPage.xaml.cs">
-      <DependentUpon>..\Views\Views\EnvelopeInfoPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopesPage.xaml.cs">
-      <DependentUpon>..\Views\Views\EnvelopesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Transactions\TransactionPage.xaml.cs">
-      <DependentUpon>..\Views\Views\TransactionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupSelectionPage.xaml.cs">
-      <DependentUpon>EnvelopeGroupSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupsPage.xaml.cs">
-      <DependentUpon>EnvelopeGroupsSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Settings\SettingsPage.xaml.cs">
-      <DependentUpon>..\Views\Views\SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Sync\SyncModesPage.xaml.cs">
-      <DependentUpon>SyncModesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Reports\EnvelopesSpendingReportPage.xaml.cs">
-      <DependentUpon>EnvelopesSpendingReportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Reports\PayeesSpendingReportPage.xaml.cs">
-      <DependentUpon>PayeesSpendingReportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Transactions\SplitTransactionPage.xaml.cs">
-      <DependentUpon>SplitTransactionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Accounts\AccountSelectionPage.xaml.cs">
-      <DependentUpon>AccountSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Reports\EnvelopesTrendReportPage.xaml.cs">
-      <DependentUpon>EnvelopeTrendReportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Reports\PayeeTrendReportPage.xaml.cs">
-      <DependentUpon>PayeeTrendReportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Reports\EnvelopeTrendReportPage.xaml.cs">
-      <DependentUpon>EnvelopeTrendsReportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Transactions\TransactionEditPage.xaml.cs">
-      <DependentUpon>TransactionEditPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Envelopes\EnvelopeSelectionPage.xaml.cs">
-      <DependentUpon>EnvelopeSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\WolfEntry.xaml.cs">
-      <DependentUpon>TextEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\TextEntry.xaml.cs">
-      <DependentUpon>TextEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\SelectorButton.xaml.cs">
-      <DependentUpon>SelectorButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\ButtonSelector.xaml.cs">
-      <DependentUpon>ButtonSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\DateSelector.xaml.cs">
-      <DependentUpon>DateSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\MultilineTextEntry.xaml.cs">
-      <DependentUpon>MultilineTextEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\CalculatorTextEntry.xaml.cs">
-      <DependentUpon>CalculatorEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\CurrencyCalculatorEntry.xaml.cs">
-      <DependentUpon>CurrencyCalculatorEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\ParentPage.xaml.cs">
-      <DependentUpon>RootPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\StepperPage.xaml.cs">
-      <DependentUpon>StepperPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\BlankPage.xaml.cs">
-      <DependentUpon>RootTitleOnlyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootTitleOnlyPage.xaml.cs">
-      <DependentUpon>RootPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootPage.xaml.cs">
-      <DependentUpon>RootPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\RootSearchPage.xaml.cs">
-      <DependentUpon>RootSearchPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Accounts\AccountSelectionPage.xaml %28copy%29.cs">
-      <DependentUpon>Accounts\AccountSelectionPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeGroupSelectionPage.xaml %28copy%29.cs">
-      <DependentUpon>Envelopes\EnvelopeGroupSelectionPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Envelopes\EnvelopeSelectionPage.xaml %28copy%29.cs">
-      <DependentUpon>Envelopes\EnvelopeSelectionPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Payees\PayeeSelectionPage.xaml %28copy%29.cs">
-      <DependentUpon>Payees\PayeeSelectionPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\MainTabletPage.xaml.cs">
-      <DependentUpon>MainTabletPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Accounts\AccountReconcileDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Accounts\AccountsDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Accounts\AccountInfoDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Envelopes\EnvelopeInfoDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Envelopes\EnvelopesDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Payees\PayeeInfoDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Payees\PayeesDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Transactions\SplitTransactionDetailedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UserControls\DataGrid.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UserControls\ListView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UserControls\PullToRefresh.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+
 </Project>

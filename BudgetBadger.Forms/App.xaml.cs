@@ -25,22 +25,42 @@ using BudgetBadger.Forms.Enums;
 using System.IO;
 using SimpleAuth.Providers;
 using Prism.Services;
-using System.Threading.Tasks;
-using SimpleAuth;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Prism.Navigation;
+using System.Threading.Tasks;
+using BudgetBadger.Models;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
     {
-        public App() : this(null) {}
-        public App(IPlatformInitializer initializer) : base(initializer) {}
-        //public App(IPlatformInitializer initializer, bool setFormsDependencyResolver) : base(initializer, setFormsDependencyResolver){ }
+        /* 
+         * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
+         * This imposes a limitation in which the App class must have a default constructor. 
+         * App(IPlatformInitializer initializer = null) cannot be handled by the Activator.
+         */
+        public App() : this(null) { }
+
+        public App(IPlatformInitializer initializer) : base(initializer) { }
+
+        protected override async void OnInitialized()
+        {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTk3ODNAMzEzNjJlMzIyZTMwTHZ0OVVOQXBHVlJUR2s1WFJHVDZ1QUZnUkx2Q3ZGcDRQcFlLVnozY043cz0=");
+            InitializeComponent();
+
+            SQLitePCL.Batteries_V2.Init();
+
+            if (Device.Idiom == TargetIdiom.Desktop)
+            {
+                await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
+            }
+            else
+            {
+                await NavigationService.NavigateAsync("MainPage");
+            }
+        }
 
         protected async override void OnStart()
         {
@@ -74,157 +94,123 @@ namespace BudgetBadger.Forms
             }
         }
 
-        protected async override void OnInitialized()
-        {
-            try
-            {
-                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTk3ODNAMzEzNjJlMzIyZTMwTHZ0OVVOQXBHVlJUR2s1WFJHVDZ1QUZnUkx2Q3ZGcDRQcFlLVnozY043cz0=");
-                InitializeComponent();
-
-                SQLitePCL.Batteries_V2.Init();
-               
-                
-                if (Device.Idiom == TargetIdiom.Desktop)
-                {
-                    await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
-                }
-                else
-                {
-                    await NavigationService.NavigateAsync("MainPage");
-                }
-            }
-            catch (Exception ex)
-            {
-                var test = ex;
-                throw;
-            }
-        }
-
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            try
+            var timer = Stopwatch.StartNew();
+
+            var container = containerRegistry.GetContainer();
+
+            container.Register<IApplicationStore, ApplicationStore>();
+            container.Register<ISettings, AppStoreSettings>();
+
+            var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
+            Directory.CreateDirectory(appDataDirectory);
+
+            var dataDirectory = Path.Combine(appDataDirectory, "data");
+            Directory.CreateDirectory(dataDirectory);
+            var syncDirectory = Path.Combine(appDataDirectory, "sync");
+            if (Directory.Exists(syncDirectory))
             {
-                var timer = Stopwatch.StartNew();
-
-                var container = containerRegistry.GetContainer();
-
-                container.Register<IApplicationStore, ApplicationStore>();
-                container.Register<ISettings, AppStoreSettings>();
-
-                var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
-                Directory.CreateDirectory(appDataDirectory);
-
-                var dataDirectory = Path.Combine(appDataDirectory, "data");
-                Directory.CreateDirectory(dataDirectory);
-                var syncDirectory = Path.Combine(appDataDirectory, "sync");
-                if (Directory.Exists(syncDirectory))
-                {
-                    Directory.Delete(syncDirectory, true);
-                }
-                Directory.CreateDirectory(syncDirectory);
-
-                var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
-                var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
-
-                //default dataaccess
-                container.RegisterInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
-                container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-                container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-                container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-                container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-
-                //default logic
-                container.Register<ITransactionLogic, TransactionLogic>();
-                container.Register<IAccountLogic, AccountLogic>();
-                container.Register<IPayeeLogic, PayeeLogic>();
-                container.Register<IEnvelopeLogic, EnvelopeLogic>();
-                container.Register<IReportLogic, ReportLogic>();
-
-                //sync dataaccess
-                container.RegisterInstance(syncConnectionString, serviceKey: "syncConnectionString");
-                container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
-                                                       serviceKey: "syncAccountDataAccess");
-                container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
-                                                     serviceKey: "syncPayeeDataAccess");
-                container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
-                                                        serviceKey: "syncEnvelopeDataAccess");
-                container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
-                                                           serviceKey: "syncTransactionDataAccess");
-
-                //sync directory for filesyncproviders
-                container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
-
-                //sync logics
-                container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IAccountDataAccess>(),
-                                                                                               Arg.Of<IAccountDataAccess>("syncAccountDataAccess"))));
-                container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IPayeeDataAccess>(),
-                                                                                           Arg.Of<IPayeeDataAccess>("syncPayeeDataAccess"))));
-                container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IEnvelopeDataAccess>(),
-                                                                                                 Arg.Of<IEnvelopeDataAccess>("syncEnvelopeDataAccess"))));
-                container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
-                                                                                                       Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
-
-                container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
-
-                container.Register(made: Made.Of(() => new DropBoxApi(
-                    Arg.Index<string>(0),
-                    Arg.Index<string>(1),
-                    Arg.Index<string>(2),
-                    Arg.Index<string>(3),
-                    null),
-                    _ => SyncMode.DropboxSync,
-                    _ => "***REMOVED***",
-                    _ => "",
-                    _ => "budgetbadger://authorize"));
-
-                container.Register(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
-                                                                              Arg.Of<IDirectoryInfo>(),
-                                                                              Arg.Of<IAccountSyncLogic>(),
-                                                                              Arg.Of<IPayeeSyncLogic>(),
-                                                                              Arg.Of<IEnvelopeSyncLogic>(),
-                                                                              Arg.Of<ITransactionSyncLogic>(),
-                                                                              Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
-
-               
-                containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
-                containerRegistry.RegisterForNavigation<NavigationPage>();
-                containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
-                containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage),  tabletView: typeof(AccountInfoDetailedPage));
-                containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
-                containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(desktopView: typeof(PayeesDetailedPage), tabletView: typeof(PayeesDetailedPage));
-                containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(desktopView: typeof(PayeeInfoDetailedPage), tabletView: typeof(PayeeInfoDetailedPage));
-                containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
-                containerRegistry.RegisterForNavigation<DeletedPayeesPage, DeletedPayeesPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(desktopView: typeof(EnvelopesDetailedPage), tabletView: typeof(EnvelopesDetailedPage));
-                containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
-                containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
-                containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
-                containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
-                containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();
-                containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
-                containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
-                containerRegistry.RegisterForNavigation<TransactionSelectionPage, TransactionSelectionPageViewModel>();
-                containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
-                containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
-                containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();
-                containerRegistry.RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportPageViewModel>();
-                containerRegistry.RegisterForNavigation<EnvelopeTrendsReportPage, EnvelopeTrendsReportsPageViewModel>();
-                containerRegistry.RegisterForNavigation<PayeesSpendingReportPage, PayeesSpendingReportPageViewModel>();
-                containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
-
-                timer.Stop();
+                Directory.Delete(syncDirectory, true);
             }
-            catch (Exception ex)
-            {
-                var test = ex;
-                throw;
-            }
+            Directory.CreateDirectory(syncDirectory);
+
+            var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
+            var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
+
+            //default dataaccess
+            container.RegisterInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+
+            //default logic
+            container.Register<ITransactionLogic, TransactionLogic>();
+            container.Register<IAccountLogic, AccountLogic>();
+            container.Register<IPayeeLogic, PayeeLogic>();
+            container.Register<IEnvelopeLogic, EnvelopeLogic>();
+            container.Register<IReportLogic, ReportLogic>();
+
+            //sync dataaccess
+            container.RegisterInstance(syncConnectionString, serviceKey: "syncConnectionString");
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                   serviceKey: "syncAccountDataAccess");
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                 serviceKey: "syncPayeeDataAccess");
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                    serviceKey: "syncEnvelopeDataAccess");
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+                                                       serviceKey: "syncTransactionDataAccess");
+
+            //sync directory for filesyncproviders
+            container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
+
+            //sync logics
+            container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IAccountDataAccess>(),
+                                                                                           Arg.Of<IAccountDataAccess>("syncAccountDataAccess"))));
+            container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IPayeeDataAccess>(),
+                                                                                       Arg.Of<IPayeeDataAccess>("syncPayeeDataAccess"))));
+            container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IEnvelopeDataAccess>(),
+                                                                                             Arg.Of<IEnvelopeDataAccess>("syncEnvelopeDataAccess"))));
+            container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
+                                                                                                   Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
+
+            container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
+
+            container.Register(made: Made.Of(() => new DropBoxApi(
+                Arg.Index<string>(0),
+                Arg.Index<string>(1),
+                Arg.Index<string>(2),
+                Arg.Index<string>(3),
+                null),
+                _ => SyncMode.DropboxSync,
+                _ => "***REMOVED***",
+                _ => "",
+                _ => "budgetbadger://authorize"));
+
+            container.Register(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
+                                                                          Arg.Of<IDirectoryInfo>(),
+                                                                          Arg.Of<IAccountSyncLogic>(),
+                                                                          Arg.Of<IPayeeSyncLogic>(),
+                                                                          Arg.Of<IEnvelopeSyncLogic>(),
+                                                                          Arg.Of<ITransactionSyncLogic>(),
+                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
+
+
+            containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
+            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
+            containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage), tabletView: typeof(AccountInfoDetailedPage));
+            containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
+            containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(desktopView: typeof(PayeesDetailedPage), tabletView: typeof(PayeesDetailedPage));
+            containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(desktopView: typeof(PayeeInfoDetailedPage), tabletView: typeof(PayeeInfoDetailedPage));
+            containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
+            containerRegistry.RegisterForNavigation<DeletedPayeesPage, DeletedPayeesPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(desktopView: typeof(EnvelopesDetailedPage), tabletView: typeof(EnvelopesDetailedPage));
+            containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
+            containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
+            containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
+            containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();
+            containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
+            containerRegistry.RegisterForNavigation<TransactionSelectionPage, TransactionSelectionPageViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
+            containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
+            containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopeTrendsReportPage, EnvelopeTrendsReportsPageViewModel>();
+            containerRegistry.RegisterForNavigation<PayeesSpendingReportPage, PayeesSpendingReportPageViewModel>();
+            containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
+
+            timer.Stop();
         }
 
         async Task<Result> RefreshSyncCredentials()
@@ -239,19 +225,17 @@ namespace BudgetBadger.Forms
             if (currentSyncMode == SyncMode.DropboxSync)
             {
                 var dropboxApi = Container.Resolve<DropBoxApi>();
-                var account = await dropboxApi.Authenticate() as OAuthAccount;
+                var account = await dropboxApi.Authenticate() as SimpleAuth.OAuthAccount;
                 if (account.IsValid())
                 {
                     await settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
-                    return new Result { Success = true }; 
+                    return new Result { Success = true };
                 }
 
-                return new Result { Success = false, Message = "Could not validate sync credentials. Please try again." }; 
+                return new Result { Success = false, Message = "Could not validate sync credentials. Please try again." };
             }
-               
-            return new Result { Success = true }; 
-        }
 
-        public INavigationService GetNavigationService() => Container.Resolve<INavigationService>();
+            return new Result { Success = true };
+        }
     }
 }

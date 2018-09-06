@@ -5,14 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataAccess\" />
-    <Folder Include="Logic\" />
-    <Folder Include="Logging\" />
-    <Folder Include="Sync\" />
-    <Folder Include="Files\" />
-    <Folder Include="Settings\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
+
 </Project>

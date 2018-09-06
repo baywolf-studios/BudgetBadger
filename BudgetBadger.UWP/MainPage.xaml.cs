@@ -1,4 +1,11 @@
-﻿using System;
+﻿using FFImageLoading.Forms.Platform;
+using FFImageLoading.Svg.Forms;
+using Prism;
+using Prism.Ioc;
+using Syncfusion.ListView.XForms.UWP;
+using Syncfusion.SfDataGrid.XForms.UWP;
+using Syncfusion.SfPullToRefresh.XForms.UWP;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,27 +20,27 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace BudgetBadger.UWP
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage
     {
         public MainPage()
         {
             this.InitializeComponent();
-            try
-            {
-                LoadApplication(new BudgetBadger.Forms.App());
-            }
-            catch(Exception ex)
-            {
-                var test = ex;
-                throw new Exception(ex.Message + ex.StackTrace);
-            }
+            SfDataGridRenderer.Init();
+            SfListViewRenderer.Init();
+            SfPullToRefreshRenderer.Init();
+            CachedImageRenderer.Init();
+            var ignore = typeof(SvgCachedImage);
+            LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
+        }
+    }
+
+    public class UwpInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry container)
+        {
+
         }
     }
 }

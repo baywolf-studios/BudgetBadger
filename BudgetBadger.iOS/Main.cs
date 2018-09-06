@@ -14,16 +14,7 @@ namespace BudgetBadger.iOS
         {
             // if you want to use a different Application Delegate class from "AppDelegate"
             // you can specify it here.
-            try
-            {
-                UIApplication.Main(args, null, "AppDelegate");
-            }
-            catch (Exception ex)
-            {
-                var test = ex.Message;
-                throw;
-            }
-
+            UIApplication.Main(args, null, "AppDelegate");
         }
     }
 }
