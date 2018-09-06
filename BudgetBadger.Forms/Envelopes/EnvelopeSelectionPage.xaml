@@ -12,7 +12,7 @@
     x:Name="this"
     BackCommand="{Binding BackCommand}"
     PageTitle="Select an Envelope"
-    SearchText="{Binding SearchTex}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
