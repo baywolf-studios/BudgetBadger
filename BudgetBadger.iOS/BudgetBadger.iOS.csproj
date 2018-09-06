@@ -393,7 +393,7 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
-    <Compile Include="Renderers\CustomEditorRenderer.cs" />
+    <Compile Include="Renderers\BorderedEditorRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
