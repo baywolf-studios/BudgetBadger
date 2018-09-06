@@ -24,14 +24,12 @@ using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
 using SimpleAuth.Providers;
-using System.Linq;
 using Prism.Services;
 using System.Threading.Tasks;
 using SimpleAuth;
 using BudgetBadger.Models;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
-using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms.Xaml;
 using Prism.Navigation;
 
