@@ -7,19 +7,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.UWP", "BudgetB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.iOS", "BudgetBadger.iOS\BudgetBadger.iOS.csproj", "{FF648A12-E24C-49BD-AC35-8D1ABDC327C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Forms", "BudgetBadger.Forms\BudgetBadger.Forms.csproj", "{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Forms", "BudgetBadger.Forms\BudgetBadger.Forms.csproj", "{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Android", "BudgetBadger.Android\BudgetBadger.Android.csproj", "{C28CE6CA-7E7A-44FB-BCE8-B86BF8C08A5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Models", "BudgetBadger.Models\BudgetBadger.Models.csproj", "{685BDEEC-970C-4EBD-A723-F316912D0594}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Models", "BudgetBadger.Models\BudgetBadger.Models.csproj", "{685BDEEC-970C-4EBD-A723-F316912D0594}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Core", "BudgetBadger.Core\BudgetBadger.Core.csproj", "{33C66195-8BAC-4B2E-9DFE-D73B42F99FFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Core", "BudgetBadger.Core\BudgetBadger.Core.csproj", "{33C66195-8BAC-4B2E-9DFE-D73B42F99FFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.DataAccess.Sqlite", "BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj", "{459C84A1-DF60-406F-9CCB-E5E62E337829}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.DataAccess.Sqlite", "BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj", "{459C84A1-DF60-406F-9CCB-E5E62E337829}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.FileSyncProvider.Dropbox", "BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj", "{9427CB6A-E738-418B-8BC2-87959C4B6C4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.FileSyncProvider.Dropbox", "BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj", "{9427CB6A-E738-418B-8BC2-87959C4B6C4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Logic", "BudgetBadger.Logic\BudgetBadger.Logic.csproj", "{983F3769-B3A2-4B20-B8F5-045007680CCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Logic", "BudgetBadger.Logic\BudgetBadger.Logic.csproj", "{983F3769-B3A2-4B20-B8F5-045007680CCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.macOS", "BudgetBadger.macOS\BudgetBadger.macOS.csproj", "{64193ED8-32BA-4391-8C1A-1C33E31B70AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -505,6 +507,54 @@ Global
 		{983F3769-B3A2-4B20-B8F5-045007680CCD}.Release|x64.Build.0 = Release|Any CPU
 		{983F3769-B3A2-4B20-B8F5-045007680CCD}.Release|x86.ActiveCfg = Release|Any CPU
 		{983F3769-B3A2-4B20-B8F5-045007680CCD}.Release|x86.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|ARM.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|ARM.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|x64.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|x64.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|x86.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Ad-Hoc|x86.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|ARM.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|ARM.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|x64.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|x64.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|x86.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.AppStore|x86.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|ARM.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|x64.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|ARM.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|iPhone.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|x64.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|x64.Build.0 = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{64193ED8-32BA-4391-8C1A-1C33E31B70AB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
