@@ -12,7 +12,7 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
     PageTitle="Accounts"
-    SearchText="{Binding SearcText}"
+    SearchText="{Binding SearchText}"
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">

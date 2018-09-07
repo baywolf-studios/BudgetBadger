@@ -61,5 +61,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleName</key>
+	<string>BudgetBadger</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

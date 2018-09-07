@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <prism:PrismApplication
     x:Class="BudgetBadger.Forms.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -11,6 +11,7 @@
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
+            
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
                 <On Platform="Android">56</On>
