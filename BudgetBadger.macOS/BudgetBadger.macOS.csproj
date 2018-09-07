@@ -188,6 +188,9 @@
       <HintPath>..\packages\Xamarin.Forms.3.1.0.697729\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="WebP.Mac">
+      <HintPath>..\packages\WebP.Touch.1.0.8\lib\Xamarin.Mac20\WebP.Mac.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -223,6 +226,12 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
+      <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
+      <Name>BudgetBadger.Forms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

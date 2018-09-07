@@ -9,7 +9,7 @@ using Xamarin.Forms.Platform.MacOS;
 namespace BudgetBadger.macOS
 {
     [Register("AppDelegate")]
-    public class AppDelegate : NSApplicationDelegate
+    public class AppDelegate : FormsApplicationDelegate
     {
         NSWindow window;
 
