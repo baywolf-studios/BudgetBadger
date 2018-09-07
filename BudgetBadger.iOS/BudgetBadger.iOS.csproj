@@ -33,7 +33,7 @@
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>i386, x86_64</MtouchArch>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
@@ -100,9 +100,6 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <ITunesArtwork Include="iTunesArtwork@1x.png" />
-    <ITunesArtwork Include="iTunesArtwork@2x.png" />
-    <ITunesArtwork Include="iTunesArtwork@3x.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -180,6 +177,26 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ItunesArtwork@2x.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-30.png" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-60.png" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-90.png" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-30.png" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-60.png" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-90.png" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-30.png" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-60.png" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-90.png" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-30-2.png" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-60-2.png" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-90.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />
@@ -315,6 +332,13 @@
       <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
       <Name>BudgetBadger.Forms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\accountswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\payeeswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\reportswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\settingswhitetabicon.png.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
