@@ -177,26 +177,66 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ItunesArtwork@2x.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-30.png" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-60.png" />
-    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-90.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-30.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-60.png" />
-    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-90.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-30.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-60.png" />
-    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-90.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png" />
-    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-30-2.png" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-60-2.png" />
-    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-90.png" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-museum-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-30-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-60-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />
