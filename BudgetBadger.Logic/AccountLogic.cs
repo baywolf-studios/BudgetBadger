@@ -201,11 +201,6 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public IReadOnlyList<string> GetAccountTypes()
-        {
-            return new List<string> { "Budget", "Reporting" };
-        }
-
         public bool FilterAccount(Account account, string searchText)
         {
             if (account != null)

@@ -19,8 +19,6 @@ namespace BudgetBadger.Core.Logic
 
         Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount);
 
-        IReadOnlyList<string> GetAccountTypes();
-
         bool FilterAccount(Account account, string searchText);
     }
 }

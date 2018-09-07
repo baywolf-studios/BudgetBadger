@@ -206,9 +206,7 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Info.plist" />
@@ -232,6 +230,36 @@
       <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
       <Name>BudgetBadger.Forms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\account.svg" />
+    <Content Include="Resources\back.svg" />
+    <Content Include="Resources\buttonselector.svg" />
+    <Content Include="Resources\cancel.svg" />
+    <Content Include="Resources\checkedcheckbox.svg" />
+    <Content Include="Resources\delete.svg" />
+    <Content Include="Resources\dropbox.svg" />
+    <Content Include="Resources\dropdownselector.svg" />
+    <Content Include="Resources\edit.svg" />
+    <Content Include="Resources\envelope.svg" />
+    <Content Include="Resources\envelopegroup.svg" />
+    <Content Include="Resources\helperaccount.svg" />
+    <Content Include="Resources\helperenvelope.svg" />
+    <Content Include="Resources\helperpayee.svg" />
+    <Content Include="Resources\helpertransaction.svg" />
+    <Content Include="Resources\info.svg" />
+    <Content Include="Resources\newicon.svg" />
+    <Content Include="Resources\next.svg" />
+    <Content Include="Resources\payees.svg" />
+    <Content Include="Resources\pending.svg" />
+    <Content Include="Resources\posted.svg" />
+    <Content Include="Resources\previous.svg" />
+    <Content Include="Resources\reconciled.svg" />
+    <Content Include="Resources\report.svg" />
+    <Content Include="Resources\save.svg" />
+    <Content Include="Resources\search.svg" />
+    <Content Include="Resources\settings.svg" />
+    <Content Include="Resources\uncheckedcheckbox.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

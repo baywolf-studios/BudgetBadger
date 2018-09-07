@@ -80,30 +80,30 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="16" />
+                            <RowDefinition Height="0" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="16" />
+                            <RowDefinition Height="0" />
                         </Grid.RowDefinitions>
-                        <uc:ButtonSelector
+                        <uc:TextEntry
                             Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="16,0"
+                            Label="Name"
+                            Text="{Binding Budget.Envelope.Description}" />
+                        <uc:ButtonSelector
+                            Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding GroupSelectedCommand}"
                             Label="Group"
                             Text="{Binding Budget.Envelope.Group.Description}" />
-                        <uc:TextEntry
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Label="Name"
-                            Text="{Binding Budget.Envelope.Description}" />
                         <uc:CurrencyCalculatorEntry
                             Grid.Row="3"
                             Grid.Column="0"
@@ -111,24 +111,15 @@
                             Margin="16,0"
                             Label="Amount"
                             Number="{Binding Budget.Amount}" />
-                        <StackLayout
+                        <uc:DropdownSelector
                             Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Orientation="Vertical"
-                            Spacing="0">
-                            <uc:Checkbox
-                                IsChecked="{Binding Budget.IgnoreOverspend}"
-                                IsEnabled="{Binding IsNotDebt}"
-                                Label="Ignore Overspend" />
-                            <uc:Checkbox
-                                Margin="32,0,0,0"
-                                IsChecked="{Binding Budget.Envelope.IgnoreOverspend}"
-                                IsEnabled="{Binding IsNotDebt}"
-                                IsVisible="{Binding Budget.IgnoreOverspend}"
-                                Label="Always" />
-                        </StackLayout>
+                            IsEnabled="{Binding IsNotDebt}"
+                            ItemsSource="{Binding OverspendingTypes}"
+                            Label="Overspending"
+                            SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnum}}" />
                         <uc:MultilineTextEntry
                             Grid.Row="5"
                             Grid.Column="0"

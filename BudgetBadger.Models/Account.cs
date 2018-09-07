@@ -28,13 +28,13 @@ namespace BudgetBadger.Models
             get => notes;
             set => SetProperty(ref notes, value);
         }
-
-        public string Type
+        
+        public AccountType Type
         {
-            get => OnBudget ? "Budget" : "Reporting";
+            get => OnBudget ? AccountType.Budget : AccountType.Reporting;
             set 
             {
-                if (value == "Budget")
+                if (value == AccountType.Budget)
                 {
                     OnBudget = true;
                 }

@@ -56,10 +56,9 @@
                             Grid.Row="2"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
-                            ItemDisplayBinding="{Binding .}"
                             ItemsSource="{Binding AccountTypes}"
                             Label="Type"
-                            SelectedItem="{Binding SelectedAccountType}" />
+                            SelectedIndex="{Binding Account.Type, Converter={StaticResource IntEnum}}" />
                         <uc:CurrencyCalculatorEntry
                             Grid.Row="3"
                             Margin="16,0"

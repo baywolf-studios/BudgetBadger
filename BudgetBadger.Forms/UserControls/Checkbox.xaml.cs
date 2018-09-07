@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class Checkbox : AbsoluteLayout
+    public partial class Checkbox : Grid
     {
         uint _animationLength = 150;
 
@@ -24,11 +24,18 @@ namespace BudgetBadger.Forms.UserControls
             get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
-        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox));
         public string Label
         {
             get => (string)GetValue(LabelProperty);
             set => SetValue(LabelProperty, value);
+        }
+
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(Checkbox));
+        public string Text
+        {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
         public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(Checkbox), false, BindingMode.TwoWay);
@@ -72,6 +79,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
+            TextControl.BindingContext = this;
             UncheckedImage.BindingContext = this;
             CheckedImage.BindingContext = this;
 

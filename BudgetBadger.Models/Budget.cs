@@ -29,6 +29,52 @@ namespace BudgetBadger.Models
             set => SetProperty(ref envelope, value);
         }
 
+        public OverspendingType HandleOverspend
+        {
+            get
+            {
+                if (Envelope != null && Envelope.IgnoreOverspend)
+                {
+                    return OverspendingType.AlwaysIgnore;
+                }
+                else if (IgnoreOverspend)
+                {
+                    return OverspendingType.Ignore;
+                }
+                else
+                {
+                    return OverspendingType.Auto;
+                }
+            }
+            set
+            {
+                switch (value)
+                {
+                    case OverspendingType.Auto:
+                        IgnoreOverspend = false;
+                        if (Envelope != null)
+                        {
+                            Envelope.IgnoreOverspend = false;
+                        }
+                        break;
+                    case OverspendingType.Ignore:
+                        IgnoreOverspend = true;
+                        if (Envelope != null)
+                        {
+                            Envelope.IgnoreOverspend = false;
+                        }
+                        break;
+                    case OverspendingType.AlwaysIgnore:
+                        IgnoreOverspend = true;
+                        if (Envelope != null)
+                        {
+                            Envelope.IgnoreOverspend = true;
+                        }
+                        break;
+                }
+            }
+        }
+
         bool ignoreOverspend;
         public bool IgnoreOverspend
         {

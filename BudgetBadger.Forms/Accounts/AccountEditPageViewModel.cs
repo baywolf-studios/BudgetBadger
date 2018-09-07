@@ -12,6 +12,7 @@ using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -21,6 +22,9 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISync _syncService;
+
+        readonly string _onBudgetAccountType = "Budget";
+        readonly string _offBudgetAccountType = "Reporting";
 
         bool _isBusy;
         public bool IsBusy
@@ -43,18 +47,12 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        string _selectedAccountType;
-        public string SelectedAccountType
+        public IList<string> AccountTypes
         {
-            get => _selectedAccountType;
-            set { SetProperty(ref _selectedAccountType, value); Account.OnBudget = (value == "Budget"); }
-        }
-
-        IEnumerable<string> _accountTypes;
-        public IEnumerable<string> AccountTypes
-        {
-            get => _accountTypes;
-            set => SetProperty(ref _accountTypes, value);
+            get
+            {
+                return Enum.GetNames(typeof(AccountType)).Select(b => b.SplitCamelCase()).ToList();
+            }
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
@@ -72,8 +70,6 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _syncService = syncService;
 
-            AccountTypes = _accountLogic.GetAccountTypes();
-
             Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
@@ -87,7 +83,6 @@ namespace BudgetBadger.Forms.Accounts
             if (account != null)
             {
                 Account = account.DeepCopy();
-                SelectedAccountType = AccountTypes.FirstOrDefault(t => t == Account.Type);
             }
         }
 

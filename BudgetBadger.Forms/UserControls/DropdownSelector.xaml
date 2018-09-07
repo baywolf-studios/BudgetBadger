@@ -19,7 +19,7 @@
         x:Name="PickerControl"
         FontSize="16"
         ItemsSource="{Binding ItemsSource}"
-        SelectedIndex="{Binding SelectedIndex}"
-        SelectedItem="{Binding SelectedItem}"
+        SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
         TextColor="{StaticResource PrimaryTextColor}" />
 </StackLayout>

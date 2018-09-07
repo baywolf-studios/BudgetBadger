@@ -1,41 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AbsoluteLayout
+<Grid
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    HeightRequest="32"
-    VerticalOptions="Start">
-    <BoxView x:Name="BackgroundControl" AbsoluteLayout.LayoutBounds="0, 0, 32, 32">
+    ColumnSpacing="0"
+    RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="48" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="48" />
+        <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <BoxView
+        x:Name="BackgroundControl"
+        Grid.Row="0"
+        Grid.RowSpan="2"
+        Grid.Column="0"
+        Grid.ColumnSpan="2">
         <BoxView.GestureRecognizers>
             <TapGestureRecognizer Tapped="Handle_Tapped" />
         </BoxView.GestureRecognizers>
     </BoxView>
-    <svg:SvgCachedImage
-        x:Name="UncheckedImage"
-        AbsoluteLayout.LayoutBounds="0,4,24,24"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColorUnchecked}"
-        Source="uncheckedcheckbox.svg">
-        <svg:SvgCachedImage.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </svg:SvgCachedImage.GestureRecognizers>
-    </svg:SvgCachedImage>
-    <svg:SvgCachedImage
-        x:Name="CheckedImage"
-        AbsoluteLayout.LayoutBounds="0,4,24,24"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColorChecked}"
-        Source="checkedcheckbox.svg">
-        <svg:SvgCachedImage.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </svg:SvgCachedImage.GestureRecognizers>
-    </svg:SvgCachedImage>
     <Label
         x:Name="LabelControl"
-        AbsoluteLayout.LayoutBounds="32,0,1,32"
-        AbsoluteLayout.LayoutFlags="YProportional, WidthProportional"
-        FontSize="16"
+        Grid.Row="0"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
+        FontSize="12"
+        IsVisible="{Binding Label, Converter={StaticResource StringNullOrEmptyBool}}"
         Text="{Binding Label}"
-        VerticalOptions="Center" />
-</AbsoluteLayout>
+        TextColor="{StaticResource SecondaryTextColor}" />
+    <svg:SvgCachedImage
+        x:Name="UncheckedImage"
+        Grid.Row="1"
+        Grid.Column="0"
+        HeightRequest="24"
+        HorizontalOptions="Center"
+        InputTransparent="true"
+        ReplaceStringMap="{Binding ReplaceColorUnchecked}"
+        Source="uncheckedcheckbox.svg"
+        VerticalOptions="Center"
+        WidthRequest="24" />
+    <svg:SvgCachedImage
+        x:Name="CheckedImage"
+        Grid.Row="1"
+        Grid.Column="0"
+        HeightRequest="24"
+        HorizontalOptions="Center"
+        InputTransparent="true"
+        ReplaceStringMap="{Binding ReplaceColorChecked}"
+        Source="checkedcheckbox.svg"
+        VerticalOptions="Center"
+        WidthRequest="24" />
+    <Label
+        x:Name="TextControl"
+        Grid.Row="1"
+        Grid.Column="1"
+        FontSize="16"
+        Text="{Binding Text}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalTextAlignment="Center" />
+</Grid>

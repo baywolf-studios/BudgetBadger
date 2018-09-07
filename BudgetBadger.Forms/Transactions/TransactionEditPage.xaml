@@ -102,30 +102,23 @@
                             Margin="16,0"
                             Date="{Binding Transaction.ServiceDate}"
                             Label="Service Date" />
-                        <StackLayout
+                        <uc:Checkbox
                             Grid.Row="6"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Orientation="Vertical"
-                            Spacing="0">
-                            <Label
-                                FontSize="12"
-                                HeightRequest="16"
-                                Text="Status"
-                                TextColor="{StaticResource SecondaryTextColor}"
-                                VerticalOptions="Center" />
-                            <uc:Checkbox IsChecked="{Binding Transaction.Posted}" Label="Cleared">
-                                <uc:Checkbox.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding Transaction.Reconciled}"
-                                        TargetType="uc:Checkbox"
-                                        Value="true">
-                                        <Setter Property="IsEnabled" Value="false" />
-                                        <Setter Property="Label" Value="Reconciled" />
-                                    </DataTrigger>
-                                </uc:Checkbox.Triggers>
-                            </uc:Checkbox>
-                        </StackLayout>
+                            IsChecked="{Binding Transaction.Posted}"
+                            Label="Status"
+                            Text="Cleared">
+                            <uc:Checkbox.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding Transaction.Reconciled}"
+                                    TargetType="uc:Checkbox"
+                                    Value="true">
+                                    <Setter Property="IsEnabled" Value="false" />
+                                    <Setter Property="Text" Value="Reconciled" />
+                                </DataTrigger>
+                            </uc:Checkbox.Triggers>
+                        </uc:Checkbox>
                         <uc:MultilineTextEntry
                             Grid.Row="7"
                             Grid.ColumnSpan="2"
@@ -188,7 +181,7 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Margin="16,0,0,0"
+                                Margin="16,0,8,0"
                                 Command="{Binding DeleteCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -206,7 +199,7 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Margin="0,0,16,0"
+                                Margin="8,0,16,0"
                                 Command="{Binding SplitCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"
