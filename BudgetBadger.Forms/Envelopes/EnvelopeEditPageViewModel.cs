@@ -11,6 +11,7 @@ using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -48,8 +49,16 @@ namespace BudgetBadger.Forms.Envelopes
         
         public bool IsNotDebt
 		{
-			get { return !Budget.Envelope.Group.IsDebt; }
+			get => !Budget.Envelope.Group.IsDebt;
 		}
+
+        public IList<string> OverspendingTypes
+        {
+            get
+            {
+                return Enum.GetNames(typeof(OverspendingType)).Select(b => b.SplitCamelCase()).ToList();
+            }
+        }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand QuickBudgetCommand { get; set; }
@@ -61,7 +70,7 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopeEditPageViewModel(INavigationService navigationService,
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
-                                        ISync syncService)
+                                         ISync syncService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;

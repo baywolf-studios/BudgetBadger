@@ -8,10 +8,11 @@
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:IntEnumConverter x:Key="IntEnum" />
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
-            
+
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
                 <On Platform="Android">56</On>

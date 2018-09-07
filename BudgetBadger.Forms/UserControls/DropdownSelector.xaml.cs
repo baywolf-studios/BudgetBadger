@@ -25,37 +25,25 @@ namespace BudgetBadger.Forms.UserControls
             set => PickerControl.ItemDisplayBinding = value;
         }
 
-        public static readonly BindableProperty SelectedIndexProperty =
-            BindableProperty.Create(nameof(SelectedIndex),
-                                    typeof(int),
-                                    typeof(DropdownSelector),
-                                    -1);
+        public static BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(DropdownSelector), -1, BindingMode.TwoWay);
         public int SelectedIndex
         {
             get => (int)GetValue(SelectedIndexProperty);
             set => SetValue(SelectedIndexProperty, value);
         }
 
-        public static readonly BindableProperty ItemsSourceProperty =
-            BindableProperty.Create(nameof(ItemsSource),
-                                    typeof(IList),
-                                    typeof(DropdownSelector),
-                                    default(IList));
-        public IList ItemsSource
-        {
-            get => (IList)GetValue(ItemsSourceProperty);
-            set => SetValue(ItemsSourceProperty, value);
-        }
-
-        public static readonly BindableProperty SelectedItemProperty =
-            BindableProperty.Create(nameof(SelectedItem),
-                                    typeof(object),
-                                    typeof(DropdownSelector),
-                                    null);
+        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DropdownSelector), null, BindingMode.TwoWay);
         public object SelectedItem
         {
             get => GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
+        }
+
+        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(DropdownSelector), null);
+        public IList ItemsSource
+        {
+            get => (IList)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
 
         public event EventHandler<EventArgs> SelectedIndexChanged;
@@ -69,6 +57,14 @@ namespace BudgetBadger.Forms.UserControls
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
                 SelectedIndexChanged?.Invoke(this, e);
+                if (SelectedItem != PickerControl.SelectedItem)
+                {
+                    SelectedItem = PickerControl.SelectedItem;
+                }
+                if (SelectedIndex != PickerControl.SelectedIndex)
+                {
+                    SelectedIndex = PickerControl.SelectedIndex;
+                }
             };
 
             PropertyChanged += (sender, e) =>
