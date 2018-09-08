@@ -19,7 +19,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="Add an Envelope Group using the + button"
-            ImagePath="helperenvelope.svg"
+            ImagePath="helperenvelopegroup.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"
@@ -36,8 +36,8 @@
                         HeaderSize="0"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedEnvelopeGroup}">
                         <syncfusion:SfListView.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasSearchText}"
