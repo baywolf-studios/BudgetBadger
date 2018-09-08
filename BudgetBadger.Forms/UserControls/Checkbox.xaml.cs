@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class Checkbox : StackLayout
+    public partial class Checkbox : Grid
     {
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox));
         public string Label
@@ -33,14 +33,12 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             CaptionControl.BindingContext = this;
             switchControl.BindingContext = this;
-            checkBoxControl.BindingContext = this;
 
             PropertyChanged += (sender, e) => 
             {
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     switchControl.IsEnabled = IsEnabled;
-                    checkBoxControl.IsEnabled = IsEnabled;
                 }
             };
         }
