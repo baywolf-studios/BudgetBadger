@@ -55,7 +55,7 @@ namespace BudgetBadger.Forms
 
         public override Color GetSelectionBackgroundColor()
         {
-            return Color.AliceBlue;
+            return (Color)Application.Current.Resources["SelectedItemColor"];
         }
 
         public override Color GetBorderColor()
