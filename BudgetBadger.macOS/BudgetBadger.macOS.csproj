@@ -137,9 +137,6 @@
     <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=1.1.11.121, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.provider.e_sqlite3.macos.1.1.11\lib\Xamarin.Mac20\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Buttons.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Buttons.16.2.0.50\lib\netstandard1.0\Syncfusion.Buttons.XForms.dll</HintPath>
-    </Reference>
     <Reference Include="Syncfusion.Core.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.Core.16.2.0.50\lib\Xamarin.Mac\Syncfusion.Core.XForms.dll</HintPath>
     </Reference>
