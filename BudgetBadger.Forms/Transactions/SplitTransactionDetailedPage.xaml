@@ -108,7 +108,8 @@
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Status"
                                     HeaderTextAlignment="Center"
-                                    MappingName=".">
+                                    MappingName="."
+                                    Width="56">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
@@ -116,6 +117,7 @@
                                                     <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                                 </ContentView.GestureRecognizers>
                                                 <svg:SvgCachedImage
+                                                    Margin="16"
                                                     HeightRequest="24"
                                                     HorizontalOptions="Center"
                                                     ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
