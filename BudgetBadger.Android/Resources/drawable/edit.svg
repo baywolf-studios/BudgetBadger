@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="24px" height="24px">
+    <path d="M 4 2 C 2.895 2 2 2.895 2 4 L 2 14 L 4 14 L 4 4 L 14 4 L 14 2 L 4 2 z M 8 6 C 6.895 6 6 6.895 6 8 L 6 18 L 8 18 L 8 8 L 18 8 L 18 6 L 8 6 z M 12 10 C 10.895 10 10 10.895 10 12 L 10 20 C 10 21.105 10.895 22 12 22 L 17.171875 22 L 15.171875 20 L 12 20 L 12 12 L 20 12 L 20 15.171875 L 22 17.171875 L 22 12 C 22 10.895 21.105 10 20 10 L 12 10 z M 15 15 L 15 17 L 20.146484 22.146484 L 22.146484 20.146484 L 17 15 L 15 15 z M 22.853516 20.853516 L 20.853516 22.853516 L 21.853516 23.853516 C 22.048516 24.048516 22.365547 24.048516 22.560547 23.853516 L 23.853516 22.560547 C 24.048516 22.364547 24.048516 22.048516 23.853516 21.853516 L 22.853516 20.853516 z" fill="#ffffff"/>
+</svg>

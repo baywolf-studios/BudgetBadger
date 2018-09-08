@@ -244,12 +244,9 @@
   <ItemGroup>
     <Content Include="Resources\account.svg" />
     <Content Include="Resources\back.svg" />
-    <Content Include="Resources\buttonselector.svg" />
     <Content Include="Resources\cancel.svg" />
-    <Content Include="Resources\checkedcheckbox.svg" />
     <Content Include="Resources\delete.svg" />
     <Content Include="Resources\dropbox.svg" />
-    <Content Include="Resources\dropdownselector.svg" />
     <Content Include="Resources\edit.svg" />
     <Content Include="Resources\envelope.svg" />
     <Content Include="Resources\envelopegroup.svg" />
@@ -269,11 +266,13 @@
     <Content Include="Resources\save.svg" />
     <Content Include="Resources\search.svg" />
     <Content Include="Resources\settings.svg" />
-    <Content Include="Resources\uncheckedcheckbox.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
     <Folder Include="Effects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\helperenvelopegroup.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

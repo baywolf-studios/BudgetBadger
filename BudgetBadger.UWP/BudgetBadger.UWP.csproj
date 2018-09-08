@@ -111,12 +111,9 @@
   <ItemGroup>
     <Content Include="account.svg" />
     <Content Include="back.svg" />
-    <Content Include="buttonselector.svg" />
     <Content Include="cancel.svg" />
-    <Content Include="checkedcheckbox.svg" />
     <Content Include="delete.svg" />
     <Content Include="dropbox.svg" />
-    <Content Include="dropdownselector.svg" />
     <Content Include="edit.svg" />
     <Content Include="envelope.svg" />
     <Content Include="envelopegroup.svg" />
@@ -136,7 +133,6 @@
     <Content Include="save.svg" />
     <Content Include="search.svg" />
     <Content Include="settings.svg" />
-    <Content Include="uncheckedcheckbox.svg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -190,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BudgetBadger.UWP_TemporaryKey.pfx" />
+    <None Include="helperenvelopegroup.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

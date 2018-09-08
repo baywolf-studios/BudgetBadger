@@ -12,6 +12,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using SkiaSharp;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -161,20 +162,20 @@ namespace BudgetBadger.Forms.Reports
 
             try
             {
-                var envelopeEntries = new List<Entry>();
+                var envelopeEntries = new List<Microcharts.Entry>();
 
                 var envelopeReportResult = await _reportLogic.GetEnvelopeTrendsReport(SelectedEnvelope.Id, BeginDate, EndDate);
                 if (envelopeReportResult.Success)
                 {
                     foreach (var datapoint in envelopeReportResult.Data)
                     {
-                        var color = SKColor.Parse("#4CAF50");
+                        var color = SKColor.Parse(Application.Current.Resources["SuccessColor"].ToString());
                         if (datapoint.YValue < 0)
                         {
-                            color = SKColor.Parse("#F44336");
+                            color = SKColor.Parse(Application.Current.Resources["DangerColor"].ToString());
                         }
 
-                        envelopeEntries.Add(new Entry((float)datapoint.YValue)
+                        envelopeEntries.Add(new Microcharts.Entry((float)datapoint.YValue)
                         {
                             Label = datapoint.XLabel,
                             ValueLabel = datapoint.YLabel,

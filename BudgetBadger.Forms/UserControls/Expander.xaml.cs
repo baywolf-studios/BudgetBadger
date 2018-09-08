@@ -51,7 +51,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             get
             {
-                return new Dictionary<string, string> { { "currentColor", _idleColor.GetHexString() } };
+                return new Dictionary<string, string> { { "#ffffff", _idleColor.GetHexString() } };
             }
         }
 

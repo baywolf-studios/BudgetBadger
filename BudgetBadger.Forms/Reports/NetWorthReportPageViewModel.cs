@@ -10,6 +10,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using SkiaSharp;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -104,20 +105,20 @@ namespace BudgetBadger.Forms.Reports
 
             try
             {
-                var entries = new List<Entry>();
+                var entries = new List<Microcharts.Entry>();
 
                 var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
                 if (netWorthReportResult.Success)
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
                     {
-                        var color = SKColor.Parse("#4CAF50");
+                        var color = SKColor.Parse(Application.Current.Resources["SuccessColor"].ToString());
                         if (dataPoint.YValue < 0)
                         {
-                            color = SKColor.Parse("#F44336");
+                            color = SKColor.Parse(Application.Current.Resources["DangerColor"].ToString());
                         }
 
-                        entries.Add(new Entry((float)dataPoint.YValue)
+                        entries.Add(new Microcharts.Entry((float)dataPoint.YValue)
                         {
                             ValueLabel = dataPoint.YLabel,
                             Label = dataPoint.XLabel,

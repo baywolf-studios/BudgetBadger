@@ -8,7 +8,7 @@
     HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
     RowSpacing="4">
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="56" />
+        <ColumnDefinition Width="40" />
         <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
     <ContentView
@@ -19,7 +19,7 @@
         </ContentView.GestureRecognizers>
         <svg:SvgCachedImage
             HeightRequest="24"
-            HorizontalOptions="Center"
+            HorizontalOptions="End"
             ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
             VerticalOptions="Center"
             WidthRequest="24">

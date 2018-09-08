@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" version="1.1" fill="#ffffff" width="26px" height="26px">
+<g id="surface1" fill="#ffffff">
+<path style=" " d="M 13 0 L 1 6 C 0.398438 6.300781 0 6.398438 0 7 L 0 8 C 0 8.601563 0.398438 9 1 9 L 25 9 C 25.601563 9 26 8.601563 26 8 L 26 7 C 26 6.398438 25.601563 6.300781 25 6 Z M 2 10 L 2 11 C 2 11.601563 2.398438 12 3 12 L 3 21 L 7 21 L 7 12 C 7.601563 12 8 11.601563 8 11 L 8 10 Z M 10 10 L 10 11 C 10 11.601563 10.398438 12 11 12 L 11 21 L 15 21 L 15 12 C 15.601563 12 16 11.601563 16 11 L 16 10 Z M 18 10 L 18 11 C 18 11.601563 18.398438 12 19 12 L 19 21 L 23 21 L 23 12 C 23.601563 12 24 11.601563 24 11 L 24 10 Z M 1 22 C 0.398438 22 0 22.398438 0 23 L 0 25 C 0 25.601563 0.398438 26 1 26 L 25 26 C 25.601563 26 26 25.601563 26 25 L 26 23 C 26 22.398438 25.601563 22 25 22 Z " fill="#ffffff"/>
+</g>
+</svg>
