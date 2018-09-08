@@ -61,15 +61,19 @@ namespace BudgetBadger.Forms.UserControls
 
         void UpdateFilter()
         {
-            if (string.IsNullOrEmpty(FilterText))
+
+            if (sfListView != null && sfListView.DataSource != null)
             {
-                sfListView.DataSource.Filter = null;
+                if (string.IsNullOrEmpty(FilterText))
+                {
+                    sfListView.DataSource.Filter = null;
+                }
+                else
+                {
+                    sfListView.DataSource.Filter = Filter;
+                }
+                sfListView.DataSource.RefreshFilter();
             }
-            else
-            {
-                sfListView.DataSource.Filter = Filter;
-            }
-            sfListView.DataSource.RefreshFilter();
         }
 	}
 }
