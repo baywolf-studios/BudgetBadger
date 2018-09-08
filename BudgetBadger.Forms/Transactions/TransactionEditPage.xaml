@@ -106,16 +106,16 @@
                             Grid.Row="6"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
+                            Caption="Cleared"
                             IsChecked="{Binding Transaction.Posted}"
-                            Label="Status"
-                            Text="Cleared">
+                            Label="Status">
                             <uc:Checkbox.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Transaction.Reconciled}"
                                     TargetType="uc:Checkbox"
                                     Value="true">
                                     <Setter Property="IsEnabled" Value="false" />
-                                    <Setter Property="Text" Value="Reconciled" />
+                                    <Setter Property="Caption" Value="Reconciled" />
                                 </DataTrigger>
                             </uc:Checkbox.Triggers>
                         </uc:Checkbox>

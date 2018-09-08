@@ -5,6 +5,7 @@ using Prism.Ioc;
 using Syncfusion.ListView.XForms.UWP;
 using Syncfusion.SfDataGrid.XForms.UWP;
 using Syncfusion.SfPullToRefresh.XForms.UWP;
+using Syncfusion.XForms.UWP.Buttons;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,7 @@ namespace BudgetBadger.UWP
             SfDataGridRenderer.Init();
             SfListViewRenderer.Init();
             SfPullToRefreshRenderer.Init();
+            SfCheckBoxRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
             LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
