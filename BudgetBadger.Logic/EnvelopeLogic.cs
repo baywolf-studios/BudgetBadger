@@ -983,7 +983,7 @@ namespace BudgetBadger.Logic
                     var balance = new QuickBudget
                     {
                         Description = "Balance",
-                        Amount = budget.Remaining * -1
+                        Amount = (budget.Amount ?? 0) + (budget.Remaining * -1)
                     };
                     if (balance.Amount != 0)
                     {
