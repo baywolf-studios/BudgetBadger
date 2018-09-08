@@ -182,7 +182,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoPage), tabletView: typeof(AccountInfoDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage), tabletView: typeof(AccountInfoDetailedPage));
             containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
             containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
