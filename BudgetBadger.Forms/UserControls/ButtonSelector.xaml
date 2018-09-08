@@ -17,28 +17,28 @@
         Text="{Binding Label}"
         TextColor="{StaticResource IdleColor}" />
     <Grid>
-    <Picker
-        x:Name="PickerControl"
-        FontSize="16"
-        TextColor="{StaticResource PrimaryTextColor}">
+        <Picker
+            x:Name="PickerControl"
+            FontSize="16"
+            TextColor="{StaticResource PrimaryTextColor}">
             <Picker.InputTransparent>
                 <OnPlatform x:TypeArguments="x:Boolean">
                     <On Platform="UWP, macOS" Value="false" />
                     <On Platform="Android, iOS" Value="true" />
                 </OnPlatform>
             </Picker.InputTransparent>
-            </Picker>
-    <ContentView x:Name="PickerContentView">
+        </Picker>
+        <ContentView x:Name="PickerContentView">
             <ContentView.InputTransparent>
                 <OnPlatform x:TypeArguments="x:Boolean">
                     <On Platform="UWP, macOS" Value="true" />
                     <On Platform="Android, iOS" Value="false" />
                 </OnPlatform>
             </ContentView.InputTransparent>
-        <ContentView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
-            </ContentView.GestureRecognizers> 
-    </ContentView>
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
+            </ContentView.GestureRecognizers>
+        </ContentView>
     </Grid>
 </StackLayout>
 

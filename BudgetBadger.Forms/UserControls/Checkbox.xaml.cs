@@ -5,25 +5,8 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class Checkbox : Grid
+    public partial class Checkbox : StackLayout
     {
-        uint _animationLength = 150;
-
-        Color _disabledColor
-        {
-            get => (Color)Application.Current.Resources["DisabledColor"];
-        }
-
-        Color _idleColor
-        {
-            get => (Color)Application.Current.Resources["IdleColor"];
-        }
-
-        Color _focusedColor
-        {
-            get => (Color)Application.Current.Resources["PrimaryTextColor"];
-        }
-
         public static BindableProperty LabelProperty = BindableProperty.Create(nameof(Label), typeof(string), typeof(Checkbox));
         public string Label
         {
@@ -31,11 +14,11 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(LabelProperty, value);
         }
 
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(Checkbox));
-        public string Text
+        public static BindableProperty CaptionProperty = BindableProperty.Create(nameof(Caption), typeof(string), typeof(Checkbox));
+        public string Caption
         {
-            get => (string)GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
+            get => (string)GetValue(CaptionProperty);
+            set => SetValue(CaptionProperty, value);
         }
 
         public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(Checkbox), false, BindingMode.TwoWay);
@@ -44,110 +27,22 @@ namespace BudgetBadger.Forms.UserControls
             get => (bool)GetValue(IsCheckedProperty);
             set => SetValue(IsCheckedProperty, value);
         }
-
-        public Dictionary<string, string> ReplaceColorUnchecked
-        {
-            get
-            {
-                if (IsEnabled)
-                {
-                    return new Dictionary<string, string> { { "currentColor", _idleColor.GetHexString() } };
-                }
-                else
-                {
-                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
-                }
-            }
-        }
-
-        public Dictionary<string, string> ReplaceColorChecked
-        {
-            get
-            {
-                if (IsEnabled)
-                {
-                    return new Dictionary<string, string> { { "currentColor", _focusedColor.GetHexString() } };
-                }
-                else
-                {
-                    return new Dictionary<string, string> { { "currentColor", _disabledColor.GetHexString() } };
-                }
-            }
-        }
-
         public Checkbox()
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
-            TextControl.BindingContext = this;
-            UncheckedImage.BindingContext = this;
-            CheckedImage.BindingContext = this;
-
-            UpdateVisualState();
+            CaptionControl.BindingContext = this;
+            switchControl.BindingContext = this;
+            checkBoxControl.BindingContext = this;
 
             PropertyChanged += (sender, e) => 
             {
-                if (e.PropertyName == nameof(IsEnabled) || e.PropertyName == nameof(IsChecked) || e.PropertyName == nameof(IsFocused))
+                if (e.PropertyName == nameof(IsEnabled))
                 {
-                    UpdateVisualState();
+                    switchControl.IsEnabled = IsEnabled;
+                    checkBoxControl.IsEnabled = IsEnabled;
                 }
             };
-        }
-
-        void Handle_Tapped(object sender, System.EventArgs e)
-        {
-            if (IsEnabled)
-            {
-                IsChecked = !IsChecked;
-            }
-        }
-
-        async void UpdateVisualState()
-        {
-            var tasks = new List<Task>();
-
-            if (IsEnabled)
-            {
-                if (IsChecked)
-                {
-                    // show the checked image
-                    tasks.Add(CheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
-
-                    // hide the unchecked image
-                    tasks.Add(UncheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
-                }
-                else
-                {
-                    // show the unchecked image
-                    tasks.Add(UncheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
-
-                    // hide the checked image
-                    tasks.Add(CheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
-                }
-            }
-            else
-            {
-                if (IsChecked)
-                {
-                    // show the checked image
-                    tasks.Add(CheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
-
-                    // hide the unchecked image
-                    tasks.Add(UncheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
-                }
-                else
-                {
-                    // show the unchecked image
-                    tasks.Add(UncheckedImage.FadeTo(1, _animationLength, Easing.CubicInOut));
-
-                    // hide the checked image
-                    tasks.Add(CheckedImage.FadeTo(0, _animationLength, Easing.CubicInOut));
-                }
-            }
-
-            await Task.WhenAll(tasks);
-            OnPropertyChanged(nameof(ReplaceColorUnchecked));
-            OnPropertyChanged(nameof(ReplaceColorChecked));
         }
     }
 }

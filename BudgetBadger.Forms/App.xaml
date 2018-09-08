@@ -12,6 +12,19 @@
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
+            <OnPlatform x:Key="ControlCornerRadiusDouble" x:TypeArguments="x:Double">
+                <On Platform="iOS">5</On>
+                <On Platform="Android">2</On>
+                <On Platform="UWP">0</On>
+                <On Platform="macOS">5</On>
+            </OnPlatform>
+
+            <OnPlatform x:Key="ControlCornerRadius" x:TypeArguments="x:Int32">
+                <On Platform="iOS">5</On>
+                <On Platform="Android">2</On>
+                <On Platform="UWP">0</On>
+                <On Platform="macOS">5</On>
+            </OnPlatform>
 
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
@@ -165,7 +178,7 @@
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 
@@ -187,7 +200,7 @@
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 
@@ -218,7 +231,7 @@
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 
@@ -241,7 +254,7 @@
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryDestructionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
             </Style>
 

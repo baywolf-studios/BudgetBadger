@@ -1,66 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Grid
+<StackLayout
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    ColumnSpacing="0"
-    RowSpacing="0">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="48" />
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="48" />
-        <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-    <BoxView
-        x:Name="BackgroundControl"
-        Grid.Row="0"
-        Grid.RowSpan="2"
-        Grid.Column="0"
-        Grid.ColumnSpan="2">
-        <BoxView.GestureRecognizers>
-            <TapGestureRecognizer Tapped="Handle_Tapped" />
-        </BoxView.GestureRecognizers>
-    </BoxView>
+    xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    Spacing="0">
     <Label
         x:Name="LabelControl"
-        Grid.Row="0"
-        Grid.Column="0"
-        Grid.ColumnSpan="2"
         FontSize="12"
-        IsVisible="{Binding Label, Converter={StaticResource StringNullOrEmptyBool}}"
         Text="{Binding Label}"
         TextColor="{StaticResource SecondaryTextColor}" />
-    <svg:SvgCachedImage
-        x:Name="UncheckedImage"
-        Grid.Row="1"
-        Grid.Column="0"
-        HeightRequest="24"
-        HorizontalOptions="Center"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColorUnchecked}"
-        Source="uncheckedcheckbox.svg"
-        VerticalOptions="Center"
-        WidthRequest="24" />
-    <svg:SvgCachedImage
-        x:Name="CheckedImage"
-        Grid.Row="1"
-        Grid.Column="0"
-        HeightRequest="24"
-        HorizontalOptions="Center"
-        InputTransparent="true"
-        ReplaceStringMap="{Binding ReplaceColorChecked}"
-        Source="checkedcheckbox.svg"
-        VerticalOptions="Center"
-        WidthRequest="24" />
-    <Label
-        x:Name="TextControl"
-        Grid.Row="1"
-        Grid.Column="1"
+    <syncfusion:SfCheckBox
+        x:Name="checkBoxControl"
+        CheckedColor="{StaticResource PrimaryColor}"
+        CornerRadius="{StaticResource ControlCornerRadiusDouble}"
         FontSize="16"
-        Text="{Binding Text}"
+        IsChecked="{Binding IsChecked}"
+        Text="{Binding Caption}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalTextAlignment="Center" />
-</Grid>
+        UncheckedColor="{StaticResource IdleColor}">
+        <syncfusion:SfCheckBox.IsVisible>
+            <OnPlatform x:TypeArguments="x:Boolean">
+                <On Platform="UWP, Android, iOS" Value="True" />
+                <On Platform="macOS" Value="False" />
+            </OnPlatform>
+        </syncfusion:SfCheckBox.IsVisible>
+    </syncfusion:SfCheckBox>
+    <StackLayout Orientation="Horizontal">
+        <StackLayout.IsVisible>
+            <OnPlatform x:TypeArguments="x:Boolean">
+                <On Platform="UWP, Android, iOS" Value="False" />
+                <On Platform="macOS" Value="True" />
+            </OnPlatform>
+        </StackLayout.IsVisible>
+        <Switch
+            x:Name="switchControl"
+            IsToggled="{Binding IsChecked}"
+            OnColor="{StaticResource PrimaryColor}" />
+        <Label
+            x:Name="CaptionControl"
+            FontSize="16"
+            Text="{Binding Caption}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            VerticalTextAlignment="Center" />
+    </StackLayout>
+</StackLayout>
