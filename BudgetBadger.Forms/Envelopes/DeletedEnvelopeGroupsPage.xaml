@@ -15,7 +15,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted envelope groups"
-            ImagePath="helperenvelope.svg"
+            ImagePath="helperenvelopegroup.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <pulltoRefresh:SfPullToRefresh
                 Grid.Row="2"
@@ -32,8 +32,8 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedEnvelopeGroup}">
                         <syncfusion:SfListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <dt:GroupHeaderViewCell />
