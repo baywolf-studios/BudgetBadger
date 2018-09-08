@@ -45,8 +45,8 @@
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Payees}"
-                            SelectedItem="{Binding SelectedPayee}"
-                            SelectedCommand="{Binding SelectedCommand}">
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedPayee}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
@@ -91,17 +91,17 @@
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Name"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Description"
-                                    TextAlignment="Start"
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Notes"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Notes"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </pulltoRefresh:SfPullToRefresh.PullableContent>

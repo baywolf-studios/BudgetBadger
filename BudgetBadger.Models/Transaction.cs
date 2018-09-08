@@ -137,7 +137,11 @@ namespace BudgetBadger.Models
         public DateTime ServiceDate
         {
             get => serviceDate;
-            set => SetProperty(ref serviceDate, value);
+            set
+            {
+                SetProperty(ref serviceDate, value);
+                OnPropertyChanged(nameof(GroupingKey));
+            }
         }
 
         string notes;
@@ -175,6 +179,8 @@ namespace BudgetBadger.Models
         public bool IsDeleted { get => DeletedDateTime != null; }
 
         public bool IsActive { get => !IsNew && !IsDeleted; }
+
+        public string GroupingKey { get => ServiceDate.ToShortDateString(); }
 
         public Transaction()
         {

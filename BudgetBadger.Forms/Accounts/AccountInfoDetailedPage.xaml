@@ -54,8 +54,8 @@
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}">
+                            SelectedCommand="{Binding TransactionSelectedCommand}"
+                            SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
@@ -79,42 +79,42 @@
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="ServiceDate"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="ServiceDate"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Account"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Account.Description"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Payee"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Payee.Description"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Envelope"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Envelope.Description"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Amount"
                                     HeaderTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Amount"
-                                    TextAlignment="End" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Status"

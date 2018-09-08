@@ -171,11 +171,11 @@
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                             GroupHeaderSize="{StaticResource DenseListGroupHeaderHeight}"
+                            HasOtherTapGestureRecognizers="true"
                             ItemSize="{StaticResource ListDoubleItemHeight}"
                             ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}"
                             SelectedCommand="{Binding TransactionSelectedCommand}"
-                            HasOtherTapGestureRecognizers="true">
+                            SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
@@ -195,7 +195,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="ServiceDate" />
+                                        <data:GroupDescriptor PropertyName="GroupingKey" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
@@ -215,9 +215,9 @@
                             <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
                                     <dt:TransactionViewCell
-                                        ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                         SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                        TransactionViewCellType="Account"/>
+                                        ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                        TransactionViewCellType="Account" />
                                 </DataTemplate>
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>

@@ -43,8 +43,8 @@
                             FilterText="{Binding SearchText}"
                             GroupCaptionTextFormat="Type: {Key}"
                             ItemsSource="{Binding Accounts}"
-                            SelectedItem="{Binding SelectedAccount}"
-                            SelectedCommand="{Binding SelectedCommand}">
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedAccount}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">
@@ -88,36 +88,36 @@
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Name"
                                     HeaderTextAlignment="Start"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Description"
-                                    TextAlignment="Start" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Pending"
                                     HeaderTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Pending"
-                                    TextAlignment="End" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Posted"
                                     HeaderTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Posted"
-                                    TextAlignment="End" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Balance"
                                     HeaderTextAlignment="End"
+                                    LineBreakMode="TailTruncation"
                                     MappingName="Balance"
-                                    TextAlignment="End" 
-                                    LineBreakMode="TailTruncation"/>
+                                    TextAlignment="End" />
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </pulltoRefresh:SfPullToRefresh.PullableContent>
