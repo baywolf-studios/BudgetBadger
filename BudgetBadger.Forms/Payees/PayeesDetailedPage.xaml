@@ -92,14 +92,16 @@
                                     HeaderText="Name"
                                     HeaderTextAlignment="Start"
                                     MappingName="Description"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start"
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Notes"
                                     HeaderTextAlignment="Start"
                                     MappingName="Notes"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </pulltoRefresh:SfPullToRefresh.PullableContent>

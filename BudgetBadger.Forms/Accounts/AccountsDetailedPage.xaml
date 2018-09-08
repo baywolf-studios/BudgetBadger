@@ -89,7 +89,8 @@
                                     HeaderText="Name"
                                     HeaderTextAlignment="Start"
                                     MappingName="Description"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
@@ -97,7 +98,8 @@
                                     HeaderText="Pending"
                                     HeaderTextAlignment="End"
                                     MappingName="Pending"
-                                    TextAlignment="End" />
+                                    TextAlignment="End" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
@@ -105,7 +107,8 @@
                                     HeaderText="Posted"
                                     HeaderTextAlignment="End"
                                     MappingName="Posted"
-                                    TextAlignment="End" />
+                                    TextAlignment="End" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
@@ -113,7 +116,8 @@
                                     HeaderText="Balance"
                                     HeaderTextAlignment="End"
                                     MappingName="Balance"
-                                    TextAlignment="End" />
+                                    TextAlignment="End" 
+                                    LineBreakMode="TailTruncation"/>
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </pulltoRefresh:SfPullToRefresh.PullableContent>
