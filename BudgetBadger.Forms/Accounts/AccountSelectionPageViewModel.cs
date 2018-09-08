@@ -14,7 +14,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountSelectionPageViewModel : BindableBase, INavigatingAware
+    public class AccountSelectionPageViewModel : BindableBase, INavigationAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -75,17 +75,22 @@ namespace BudgetBadger.Forms.Accounts
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
+        public async void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public async void OnNavigatedTo(NavigationParameters parameters)
+        {
+            var account = parameters.GetValue<Account>(PageParameter.Account);
+            if (account != null)
+            {
+                await _navigationService.GoBackAsync(parameters);
+            }
+        }
+
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
-			var account = parameters.GetValue<Account>(PageParameter.Account);
-			if (account != null)
-			{
-				await _navigationService.GoBackAsync(parameters);
-			}
-			else
-			{
-				await ExecuteRefreshCommand();
-			}
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteSelectedCommand(Account account)
