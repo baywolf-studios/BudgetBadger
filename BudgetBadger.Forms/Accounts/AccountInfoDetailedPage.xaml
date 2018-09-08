@@ -80,28 +80,32 @@
                                     HeaderText="ServiceDate"
                                     HeaderTextAlignment="Start"
                                     MappingName="ServiceDate"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Account"
                                     HeaderTextAlignment="Start"
                                     MappingName="Account.Description"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Payee"
                                     HeaderTextAlignment="Start"
                                     MappingName="Payee.Description"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Envelope"
                                     HeaderTextAlignment="Start"
                                     MappingName="Envelope.Description"
-                                    TextAlignment="Start" />
+                                    TextAlignment="Start" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     Format="c"
@@ -109,7 +113,8 @@
                                     HeaderText="Amount"
                                     HeaderTextAlignment="End"
                                     MappingName="Amount"
-                                    TextAlignment="End" />
+                                    TextAlignment="End" 
+                                    LineBreakMode="TailTruncation"/>
                                 <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Status"
