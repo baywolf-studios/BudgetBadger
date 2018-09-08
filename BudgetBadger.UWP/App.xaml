@@ -11,6 +11,11 @@
                 <Setter Property="MinWidth" Value="0" />
                 <Setter Property="MaxWidth" Value="9999" />
             </Style>
+            <Style TargetType="ToggleSwitch">
+                <Setter Property="OnContent" Value="" />
+                <Setter Property="OffContent" Value="" />
+                <Setter Property="MinWidth" Value="0" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

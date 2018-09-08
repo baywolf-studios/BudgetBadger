@@ -34,14 +34,7 @@ namespace BudgetBadger.Models
             get => OnBudget ? AccountType.Budget : AccountType.Reporting;
             set 
             {
-                if (value == AccountType.Budget)
-                {
-                    OnBudget = true;
-                }
-                else
-                {
-                    OnBudget = false;
-                }
+                OnBudget = value == AccountType.Budget;
             }
         }
 

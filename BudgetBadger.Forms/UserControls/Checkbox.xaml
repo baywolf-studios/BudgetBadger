@@ -3,5 +3,37 @@
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    ColumnSpacing="0"
     RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Label
+        x:Name="LabelControl"
+        Grid.Row="0"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
+        FontSize="12"
+        Text="{Binding Label}"
+        TextColor="{StaticResource SecondaryTextColor}" />
+    <Switch
+        x:Name="SwitchControl"
+        Grid.Row="1"
+        Grid.Column="0"
+        HorizontalOptions="Start"
+        IsToggled="{Binding IsChecked}"
+        OnColor="{StaticResource PrimaryColor}" />
+    <Label
+        x:Name="CaptionControl"
+        Grid.Row="1"
+        Grid.Column="1"
+        FontSize="16"
+        Text="{Binding Caption}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalTextAlignment="Center" />
 </Grid>

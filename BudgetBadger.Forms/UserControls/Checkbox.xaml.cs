@@ -32,13 +32,13 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
             LabelControl.BindingContext = this;
             CaptionControl.BindingContext = this;
-            switchControl.BindingContext = this;
+            SwitchControl.BindingContext = this;
 
             PropertyChanged += (sender, e) => 
             {
                 if (e.PropertyName == nameof(IsEnabled))
                 {
-                    switchControl.IsEnabled = IsEnabled;
+                    SwitchControl.IsEnabled = IsEnabled;
                 }
             };
         }
