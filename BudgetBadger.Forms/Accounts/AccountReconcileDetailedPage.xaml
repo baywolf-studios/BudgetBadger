@@ -137,7 +137,6 @@
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    ColumnSizer="Auto"
                                     Format="c"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Amount"
@@ -146,7 +145,6 @@
                                     MappingName="Amount"
                                     TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
-                                    ColumnSizer="Auto"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
                                     HeaderTextAlignment="Center"
