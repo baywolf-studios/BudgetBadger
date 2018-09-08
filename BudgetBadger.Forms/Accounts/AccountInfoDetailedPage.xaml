@@ -129,7 +129,6 @@
                                                 </ContentView.GestureRecognizers>
                                                 <svg:SvgCachedImage
                                                     HeightRequest="24"
-                                                    Margin="16"
                                                     HorizontalOptions="Center"
                                                     ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                                                     VerticalOptions="Center"
