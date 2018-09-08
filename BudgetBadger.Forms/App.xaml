@@ -44,7 +44,7 @@
             <Color x:Key="ErrorColor">#de1b1b</Color>
             <Color x:Key="SuccessColor">#2a854e</Color>
             <Color x:Key="FailureColor">#de1b1b</Color>
-            
+
             <Color x:Key="SelectedItemColor">#8dd4f7</Color>
 
             <Color x:Key="BusyIndicatorColor">white</Color>

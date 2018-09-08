@@ -27,15 +27,15 @@
                     Filter="{Binding Filter}"
                     FilterText="{Binding SearchText}"
                     FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                    HasOtherTapGestureRecognizers="true"
                     ItemSize="{StaticResource ListDoubleItemHeight}"
                     ItemsSource="{Binding Transactions}"
-                    SelectedItem="{Binding SelectedTransaction}"
                     SelectedCommand="{Binding TransactionSelectedCommand}"
-                    HasOtherTapGestureRecognizers="true">
+                    SelectedItem="{Binding SelectedTransaction}">
                     <syncfusion:SfListView.DataSource>
                         <data:DataSource>
                             <data:DataSource.GroupDescriptors>
-                                <data:GroupDescriptor PropertyName="ServiceDate" />
+                                <data:GroupDescriptor PropertyName="GroupingKey" />
                             </data:DataSource.GroupDescriptors>
                         </data:DataSource>
                     </syncfusion:SfListView.DataSource>
@@ -55,8 +55,8 @@
                     <syncfusion:SfListView.ItemTemplate>
                         <DataTemplate>
                             <dt:TransactionViewCell
-                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                 TransactionViewCellType="Full" />
                         </DataTemplate>
                     </syncfusion:SfListView.ItemTemplate>
