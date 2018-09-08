@@ -52,12 +52,9 @@ namespace BudgetBadger.Forms.Envelopes
 			get => !Budget.Envelope.Group.IsDebt;
 		}
 
-        public IList<string> OverspendingTypes
+        public IList<OverspendingType> OverspendingTypes
         {
-            get
-            {
-                return Enum.GetNames(typeof(OverspendingType)).Select(b => b.SplitCamelCase()).ToList();
-            }
+            get => Enumeration.GetAll<OverspendingType>().ToList();
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }

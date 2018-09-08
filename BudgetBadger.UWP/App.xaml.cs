@@ -5,7 +5,6 @@ using Microsoft.Data.Sqlite;
 using Syncfusion.ListView.XForms.UWP;
 using Syncfusion.SfDataGrid.XForms.UWP;
 using Syncfusion.SfPullToRefresh.XForms.UWP;
-using Syncfusion.XForms.UWP.Buttons;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,7 +72,6 @@ namespace BudgetBadger.UWP
                 assembliesToInclude.Add(typeof(SqliteConnection).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(GZipStream).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(DropboxClient).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfCheckBoxRenderer).GetTypeInfo().Assembly);
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter

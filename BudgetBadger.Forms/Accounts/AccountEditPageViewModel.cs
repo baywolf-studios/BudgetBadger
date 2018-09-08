@@ -23,9 +23,6 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
         readonly ISync _syncService;
 
-        readonly string _onBudgetAccountType = "Budget";
-        readonly string _offBudgetAccountType = "Reporting";
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -47,12 +44,9 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        public IList<string> AccountTypes
+        public IList<AccountType> AccountTypes
         {
-            get
-            {
-                return Enum.GetNames(typeof(AccountType)).Select(b => b.SplitCamelCase()).ToList();
-            }
+            get => Enumeration.GetAll<AccountType>().ToList();
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
