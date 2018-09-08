@@ -34,56 +34,22 @@
                 <On Platform="macOS">64</On>
             </OnPlatform>
             <Color x:Key="BackgroundColor">White</Color>
-            <Color x:Key="AppBarColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="PrimaryTextColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#191919</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="SecondaryTextColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#737373</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="PrimaryColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="IdleColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#737373</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="DisabledColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#999999</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="DividerColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#E0E0E0</x:String>
-                </x:Arguments>
-            </Color>
-            <Color x:Key="ErrorColor">Red</Color>
-
-            <Color x:Key="SelectedItemColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#e7eff5</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="AppBarColor">#0c7bb3</Color>
+            <Color x:Key="PrimaryTextColor">#191919</Color>
+            <Color x:Key="SecondaryTextColor">#737373</Color>
+            <Color x:Key="PrimaryColor">#0c7bb3</Color>
+            <Color x:Key="IdleColor">#737373</Color>
+            <Color x:Key="DisabledColor">#999999</Color>
+            <Color x:Key="DividerColor">#E0E0E0</Color>
+            <Color x:Key="ErrorColor">#de1b1b</Color>
+            <Color x:Key="SuccessColor">#2a854e</Color>
+            <Color x:Key="FailureColor">#de1b1b</Color>
+            
+            <Color x:Key="SelectedItemColor">#8dd4f7</Color>
 
             <Color x:Key="BusyIndicatorColor">white</Color>
 
-            <Color x:Key="BusyIndicatorBackgroundColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="BusyIndicatorBackgroundColor">#0c7bb3</Color>
 
             <x:Double x:Key="ListHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListHeaderHeight">48</x:Double>
@@ -95,11 +61,7 @@
 
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListGroupHeaderHeight">32</x:Double>
-            <Color x:Key="ListGroupHeaderTextColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#004d7f</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="ListGroupHeaderTextColor">#064d70</Color>
             <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}" />
@@ -117,11 +79,7 @@
 
             <x:Double x:Key="DenseListGroupHeaderFontSize">12</x:Double>
             <x:Double x:Key="DenseListGroupHeaderHeight">32</x:Double>
-            <Color x:Key="DenseListGroupHeaderTextColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#004d7f</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="DenseListGroupHeaderTextColor">#064d70</Color>
             <Style x:Key="DenseListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=DenseListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=DenseListGroupHeaderTextColor}" />
@@ -146,11 +104,7 @@
 
             <x:Double x:Key="DataGridContextActionSize">48</x:Double>
             <Color x:Key="DataGridContextActionTextColor">white</Color>
-            <Color x:Key="DataGridContextActionBackgroundColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
             <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
 
             <x:Double x:Key="HeaderHiddenButtonHeight">56</x:Double>
@@ -166,11 +120,7 @@
                 Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
-            <Color x:Key="PrimaryActionButtonBackgroundColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="PrimaryActionButtonBackgroundColor">#0c7bb3</Color>
             <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}" />
@@ -192,7 +142,7 @@
                 Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
-            <Color x:Key="PrimaryDestructionButtonBackgroundColor">red</Color>
+            <Color x:Key="PrimaryDestructionButtonBackgroundColor">#de1b1b</Color>
             <Style x:Key="PrimaryDestructionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}" />
@@ -213,17 +163,9 @@
                 Default="1">
                 <On Platform="macOS">2</On>
             </OnPlatform>
-            <Color x:Key="SecondaryActionButtonTextColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
             <Color x:Key="SecondaryActionButtonBackgroundColor">white</Color>
-            <Color x:Key="SecondaryActionButtonBorderColor" x:FactoryMethod="FromHex">
-                <x:Arguments>
-                    <x:String>#3678AF</x:String>
-                </x:Arguments>
-            </Color>
+            <Color x:Key="SecondaryActionButtonBorderColor">#0c7bb3</Color>
             <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryActionButtonTextColor}" />
@@ -238,7 +180,7 @@
 
             <x:Double x:Key="SecondaryDestructionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
-            <Color x:Key="SecondaryDestructionButtonTextColor">red</Color>
+            <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>
             <OnPlatform
                 x:Key="SecondaryDestructionButtonBorderWidth"
                 x:TypeArguments="x:Double"
@@ -246,7 +188,7 @@
                 <On Platform="macOS">2</On>
             </OnPlatform>
             <Color x:Key="SecondaryDestructionButtonBackgroundColor">white</Color>
-            <Color x:Key="SecondaryDestructionButtonBorderColor">red</Color>
+            <Color x:Key="SecondaryDestructionButtonBorderColor">#de1b1b</Color>
             <Style x:Key="SecondaryDestructionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryDestructionButtonTextColor}" />

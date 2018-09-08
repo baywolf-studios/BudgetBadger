@@ -116,6 +116,7 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable\helperenvelopegroup.svg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -164,9 +165,6 @@
     <AndroidResource Include="Resources\drawable\settingswhitetabicon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\uncheckedcheckbox.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\account.svg" />
   </ItemGroup>
   <ItemGroup>
@@ -176,22 +174,13 @@
     <AndroidResource Include="Resources\drawable\back.svg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\buttonselector.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\cancel.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\checkedcheckbox.svg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\delete.svg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\dropbox.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\dropdownselector.svg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\edit.svg" />

@@ -72,7 +72,7 @@ namespace BudgetBadger.Forms.UserControls
 
         public Dictionary<string, string> ReplaceColor
         {
-            get => new Dictionary<string, string> { { "currentColor", "#FFFFFF" } };
+            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
         }
 
         public StepperPage()

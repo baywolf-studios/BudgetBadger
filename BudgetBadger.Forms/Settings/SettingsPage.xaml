@@ -9,9 +9,9 @@
     BackgroundColor="White"
     PageTitle="Settings">
     <uc:RootPage.BodyContent>
-        <Grid Margin="0,8">
+        <Grid Margin="0,8" RowSpacing="0" ColumnSpacing="16">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="56" />
+                <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -34,7 +34,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 HeightRequest="24"
-                HorizontalOptions="Center"
+                HorizontalOptions="End"
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="dropbox.svg"
                 VerticalOptions="Center"
@@ -69,7 +69,7 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 HeightRequest="24"
-                HorizontalOptions="Center"
+                HorizontalOptions="End"
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="envelopegroup.svg"
                 VerticalOptions="Center"
@@ -92,7 +92,7 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 HeightRequest="24"
-                HorizontalOptions="Center"
+                HorizontalOptions="End"
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="envelope.svg"
                 VerticalOptions="Center"
@@ -115,7 +115,7 @@
                 Grid.Row="5"
                 Grid.Column="0"
                 HeightRequest="24"
-                HorizontalOptions="Center"
+                HorizontalOptions="End"
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="account.svg"
                 VerticalOptions="Center"
@@ -138,7 +138,7 @@
                 Grid.Row="6"
                 Grid.Column="0"
                 HeightRequest="24"
-                HorizontalOptions="Center"
+                HorizontalOptions="End"
                 ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                 Source="payees.svg"
                 VerticalOptions="Center"

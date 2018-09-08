@@ -6,7 +6,7 @@
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="SystemAccentColor">#3678AF</Color>
+            <Color x:Key="SystemAccentColor">#0c7bb3</Color>
             <Style TargetType="DatePicker">
                 <Setter Property="MinWidth" Value="0" />
                 <Setter Property="MaxWidth" Value="9999" />

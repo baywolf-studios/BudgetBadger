@@ -14,13 +14,13 @@ namespace BudgetBadger.Forms.Converters
                 var PreferredColor = (Color)value;
                 var ReplaceMap = new Dictionary<string, string>
                 {
-                    { "currentColor", PreferredColor.GetHexString() }
+                    { "#ffffff", PreferredColor.GetHexString() }
                 };
 
                 return ReplaceMap;
             }
 
-            return "currentColor";
+            return "#ffffff";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

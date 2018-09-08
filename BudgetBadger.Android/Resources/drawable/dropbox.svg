@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1-1.1-1.8V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2.32 6.16 12 11 21.68 6.16"></polyline><line x1="12" y1="22.76" x2="12" y2="11"></line></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1" fill="#ffffff" width="24px" height="24px">
+<g id="surface1" fill="#ffffff">
+<path style=" " d="M 8.09375 2 L 2 6 L 6.1875 9.1875 L 12 5.40625 Z M 12 5.40625 L 18.09375 9 L 22 5.8125 L 16.09375 2 Z M 18.09375 9 L 12 12.90625 L 16 16 L 22 12.40625 Z M 12 12.90625 L 6.1875 9.1875 L 2 12.40625 L 8.09375 16 Z M 12 14.5 L 8 17.5 L 6 16.3125 L 6 18 L 12 22 L 18 18.09375 L 18 16.3125 L 16 17.5 Z " fill="#ffffff"/>
+</g>
+</svg>

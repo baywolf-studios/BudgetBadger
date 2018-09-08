@@ -9,9 +9,9 @@
             Orientation="Vertical"
             Spacing="16"
             Margin="16">
-            <Grid>
+            <Grid RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="36"/>
+                    <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <svg:SvgCachedImage
@@ -21,6 +21,7 @@
                     Grid.Column="0"
                     ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                     Source="info.svg"
+                    HorizontalOptions="Start"
                     InputTransparent="true"/>
                 <ContentView
                     x:Name="HeaderView"

@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16" version="1.1" fill="#ffffff" width="16px" height="16px">
+<g id="surface1" fill="#ffffff">
+<path style=" " d="M 2.5 2 C 2.113281 2 1.769531 2.148438 1.5 2.390625 L 8 6.890625 L 14.496094 2.386719 C 14.230469 2.148438 13.882813 2 13.5 2 Z M 14.976563 3.269531 L 8 8.109375 L 1.023438 3.273438 C 1.011719 3.347656 1 3.421875 1 3.5 L 1 11.5 C 1 12.328125 1.671875 13 2.5 13 L 13.5 13 C 14.328125 13 15 12.328125 15 11.5 L 15 3.5 C 15 3.421875 14.988281 3.34375 14.976563 3.269531 Z " fill="#ffffff"/>
+</g>
+</svg>
