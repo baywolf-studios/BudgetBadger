@@ -113,7 +113,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Type" />
+                                        <data:GroupDescriptor PropertyName="Type.Name" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>

@@ -11,6 +11,12 @@
             <On Platform="UWP" Value="0" />
         </OnPlatform>
     </Grid.RowSpacing>
+    <Grid.ColumnSpacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="Android, macOS, iOS" Value="8" />
+            <On Platform="UWP" Value="0" />
+        </OnPlatform>
+    </Grid.ColumnSpacing>
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
