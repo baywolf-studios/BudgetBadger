@@ -78,13 +78,6 @@ namespace BudgetBadger.Forms.Transactions
 
 		public async void OnNavigatingTo(NavigationParameters parameters)
 		{
-            var goBack = parameters.GetValue<bool>(PageParameter.SplitTransactionCompleted);
-            if (goBack)
-            {
-                await _navigationService.GoBackAsync();
-                return;
-            }
-
             if (!SplitTransactionMode)
             {
                 SplitTransactionMode = parameters.GetValue<bool>(PageParameter.SplitTransactionMode);

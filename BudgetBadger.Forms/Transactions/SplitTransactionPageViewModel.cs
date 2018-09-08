@@ -254,11 +254,7 @@ namespace BudgetBadger.Forms.Transactions
                 {
 					var syncTask = _syncService.FullSync();
 
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.SplitTransactionCompleted, true }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    await _navigationService.GoBackToRootAsync();
 
 					var syncResult = await syncTask;
                     if (!syncResult.Success)
