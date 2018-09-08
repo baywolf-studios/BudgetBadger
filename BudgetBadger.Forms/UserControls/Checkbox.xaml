@@ -1,47 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<StackLayout
+<Grid
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-    Spacing="0">
-    <Label
-        x:Name="LabelControl"
-        FontSize="12"
-        Text="{Binding Label}"
-        TextColor="{StaticResource SecondaryTextColor}" />
-    <syncfusion:SfCheckBox
-        x:Name="checkBoxControl"
-        CheckedColor="{StaticResource PrimaryColor}"
-        CornerRadius="{StaticResource ControlCornerRadiusDouble}"
-        FontSize="16"
-        IsChecked="{Binding IsChecked}"
-        Text="{Binding Caption}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        UncheckedColor="{StaticResource IdleColor}">
-        <syncfusion:SfCheckBox.IsVisible>
-            <OnPlatform x:TypeArguments="x:Boolean">
-                <On Platform="UWP, Android, iOS" Value="True" />
-                <On Platform="macOS" Value="False" />
-            </OnPlatform>
-        </syncfusion:SfCheckBox.IsVisible>
-    </syncfusion:SfCheckBox>
-    <StackLayout Orientation="Horizontal">
-        <StackLayout.IsVisible>
-            <OnPlatform x:TypeArguments="x:Boolean">
-                <On Platform="UWP, Android, iOS" Value="False" />
-                <On Platform="macOS" Value="True" />
-            </OnPlatform>
-        </StackLayout.IsVisible>
-        <Switch
-            x:Name="switchControl"
-            IsToggled="{Binding IsChecked}"
-            OnColor="{StaticResource PrimaryColor}" />
-        <Label
-            x:Name="CaptionControl"
-            FontSize="16"
-            Text="{Binding Caption}"
-            TextColor="{StaticResource PrimaryTextColor}"
-            VerticalTextAlignment="Center" />
-    </StackLayout>
-</StackLayout>
+    RowSpacing="0">
+</Grid>
