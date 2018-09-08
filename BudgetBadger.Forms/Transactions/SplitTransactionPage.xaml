@@ -106,54 +106,44 @@
                 HelperText="No transactions yet"
                 ImagePath="helpertransaction.svg"
                 ShowHelper="{Binding NoTransactions}">
-                <pulltoRefresh:SfPullToRefresh
-                    IsRefreshing="{Binding IsBusy}"
-                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-                    <pulltoRefresh:SfPullToRefresh.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
-                    </pulltoRefresh:SfPullToRefresh.Behaviors>
-                    <pulltoRefresh:SfPullToRefresh.PullableContent>
-                        <uc:ListView
-                            AllowSwiping="true"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            ItemSize="{StaticResource ListDoubleItemHeight}"
-                            ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
-                            HasOtherTapGestureRecognizers="true">
-                            <syncfusion:SfListView.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <svg:SvgCachedImage
-                                            HeightRequest="24"
-                                            HorizontalOptions="Center"
-                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                            Source="delete.svg"
-                                            VerticalOptions="Center"
-                                            WidthRequest="24" />
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:TransactionViewCell
-                                        ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                        SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                        TransactionViewCellType="Full" />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
-                    </pulltoRefresh:SfPullToRefresh.PullableContent>
-                </pulltoRefresh:SfPullToRefresh>
+                <uc:ListView
+                    AllowSwiping="true"
+                    FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                    HasOtherTapGestureRecognizers="true"
+                    ItemSize="{StaticResource ListDoubleItemHeight}"
+                    ItemsSource="{Binding Transactions}"
+                    SelectedCommand="{Binding TransactionSelectedCommand}"
+                    SelectedItem="{Binding SelectedTransaction}">
+                    <syncfusion:SfListView.RightSwipeTemplate>
+                        <DataTemplate>
+                            <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                </ContentView.GestureRecognizers>
+                                <svg:SvgCachedImage
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                    Source="delete.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="24" />
+                            </ContentView>
+                        </DataTemplate>
+                    </syncfusion:SfListView.RightSwipeTemplate>
+                    <syncfusion:SfListView.ItemTemplate>
+                        <DataTemplate>
+                            <dt:TransactionViewCell
+                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                TransactionViewCellType="Full" />
+                        </DataTemplate>
+                    </syncfusion:SfListView.ItemTemplate>
+                    <syncfusion:SfListView.FooterTemplate>
+                        <DataTemplate>
+                            <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                        </DataTemplate>
+                    </syncfusion:SfListView.FooterTemplate>
+                </uc:ListView>
             </uc:HelperControl>
             <Button
                 x:Name="NewTransactionButton"
