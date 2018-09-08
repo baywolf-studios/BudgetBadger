@@ -81,7 +81,7 @@ namespace BudgetBadger.Forms.Accounts
             Accounts = new List<Account>();
             SelectedAccount = null;
 
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
@@ -94,21 +94,19 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(Account account)
         {
-            if (SelectedAccount == null)
+            if (account == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Account, SelectedAccount }
+                { PageParameter.Account, account }
             };
 
             await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
-
-            SelectedAccount = null;
         }
 
         public async Task ExecuteRefreshCommand()

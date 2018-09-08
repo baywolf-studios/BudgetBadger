@@ -29,10 +29,9 @@
                     FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                     ItemSize="{StaticResource ListDoubleItemHeight}"
                     ItemsSource="{Binding Transactions}"
-                    SelectedItem="{Binding SelectedTransaction}">
-                    <syncfusion:SfListView.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
-                    </syncfusion:SfListView.Behaviors>
+                    SelectedItem="{Binding SelectedTransaction}"
+                    SelectedCommand="{Binding TransactionSelectedCommand}"
+                    HasOtherTapGestureRecognizers="true">
                     <syncfusion:SfListView.DataSource>
                         <data:DataSource>
                             <data:DataSource.GroupDescriptors>
@@ -55,7 +54,10 @@
                     </syncfusion:SfListView.GroupHeaderTemplate>
                     <syncfusion:SfListView.ItemTemplate>
                         <DataTemplate>
-                            <dt:TransactionViewCell Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" TransactionViewCellType="Full" />
+                            <dt:TransactionViewCell
+                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                TransactionViewCellType="Full" />
                         </DataTemplate>
                     </syncfusion:SfListView.ItemTemplate>
                     <syncfusion:SfListView.FooterTemplate>

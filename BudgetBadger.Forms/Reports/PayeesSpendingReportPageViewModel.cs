@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
 
             var now = DateTime.Now;
             EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
@@ -128,22 +128,20 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(DataPoint<Payee, decimal> dataPoint)
         {
-            if (SelectedPayee == null)
+            if (dataPoint == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Payee, SelectedPayee.XValue },
+                { PageParameter.Payee, dataPoint.XValue },
                 { PageParameter.ReportBeginDate, BeginDate },
                 { PageParameter.ReportEndDate, EndDate }
             };
             await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage, parameters);
-
-            SelectedPayee = null;
         }
     }
 }

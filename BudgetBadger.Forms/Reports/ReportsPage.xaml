@@ -12,10 +12,8 @@
         <uc:ListView
             ItemSize="{StaticResource ListItemHeight}"
             ItemsSource="{Binding Reports}"
-            SelectedItem="{Binding SelectedReport}">
-            <syncfusion:SfListView.Behaviors>
-                <b:EventToCommandBehavior Command="{Binding ReportCommand}" EventName="SelectionChanged" />
-            </syncfusion:SfListView.Behaviors>
+            SelectedItem="{Binding SelectedReport}"
+            SelectedCommand="{Binding ReportCommand}">
             <syncfusion:SfListView.ItemTemplate>
                 <DataTemplate>
                     <Label

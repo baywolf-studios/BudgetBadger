@@ -43,10 +43,8 @@
                             FilterText="{Binding SearchText}"
                             GroupCaptionTextFormat="Type: {Key}"
                             ItemsSource="{Binding Accounts}"
-                            SelectedItem="{Binding SelectedAccount}">
-                            <syncfusion:SfDataGrid.Behaviors>
-                                <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
-                            </syncfusion:SfDataGrid.Behaviors>
+                            SelectedItem="{Binding SelectedAccount}"
+                            SelectedCommand="{Binding SelectedCommand}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">

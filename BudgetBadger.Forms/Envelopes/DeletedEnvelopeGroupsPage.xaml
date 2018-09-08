@@ -32,10 +32,8 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}">
-                        <syncfusion:SfListView.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
-                        </syncfusion:SfListView.Behaviors>
+                        SelectedItem="{Binding SelectedEnvelopeGroup}"
+                        SelectedCommand="{Binding SelectedCommand}">
                         <syncfusion:SfListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <dt:GroupHeaderViewCell />

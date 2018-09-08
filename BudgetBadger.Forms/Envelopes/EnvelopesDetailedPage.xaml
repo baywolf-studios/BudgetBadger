@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:StepperPage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -48,10 +48,8 @@
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Budgets}"
-                            SelectedItem="{Binding SelectedBudget}">
-                            <syncfusion:SfDataGrid.Behaviors>
-                                <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
-                            </syncfusion:SfDataGrid.Behaviors>
+                            SelectedItem="{Binding SelectedBudget}"
+                            SelectedCommand="{Binding SelectedCommand}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>

@@ -58,7 +58,7 @@ namespace BudgetBadger.Forms.Reports
                 _spendingTrendByPayeeReport
             };
 
-            ReportCommand = new DelegateCommand(async () => await ExecuteReportCommand());
+            ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
             NetWorthCommand = new DelegateCommand(async () => await ExecuteNetWorthCommand());
             EnvelopesSpendingCommand = new DelegateCommand(async () => await ExecuteEnvelopesSpendingCommand());
             PayeesSpendingCommand = new DelegateCommand(async () => await ExecutePayeesSpendingCommand());
@@ -66,35 +66,34 @@ namespace BudgetBadger.Forms.Reports
             PayeeTrendCommand = new DelegateCommand(async () => await ExecutePayeeTrendCommand());
         }
 
-        public async Task ExecuteReportCommand()
+        public async Task ExecuteReportCommand(string report)
         {
-            if (SelectedReport == null)
+            if (report == null)
             {
                 return;
             }
 
-            if (SelectedReport == _netWorthReport)
+            if (report == _netWorthReport)
             {
                 await _navigationService.NavigateAsync(PageName.NetWorthReportPage);
             }
-            else if (SelectedReport == _envelopeSpendingReport)
+            else if (report == _envelopeSpendingReport)
             {
                 await _navigationService.NavigateAsync(PageName.EnvelopesSpendingReportPage);
             }
-            else if (SelectedReport == _payeeSpendingReport)
+            else if (report == _payeeSpendingReport)
             {
                 await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
             }
-            else if (SelectedReport == _spendingTrendByEnvelopeReport)
+            else if (report == _spendingTrendByEnvelopeReport)
             {
                 await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
             }
-            else if (SelectedReport == _spendingTrendByPayeeReport)
+            else if (report == _spendingTrendByPayeeReport)
             {
                 await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
             }
 
-            SelectedReport = null;
             Reports = new List<string>
             {
                 _netWorthReport,

@@ -83,7 +83,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
-            TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
+            TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
@@ -109,18 +109,18 @@ namespace BudgetBadger.Forms.Envelopes
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
 
-        public async Task ExecuteTransactionSelectedCommand()
+        public async Task ExecuteTransactionSelectedCommand(Transaction transaction)
         {
-            if (SelectedTransaction == null)
+            if (transaction == null)
             {
                 return;
             }
 
-            if (SelectedTransaction.IsSplit)
+            if (transaction.IsSplit)
             {
                 var parameters = new NavigationParameters
                 {
-                    { PageParameter.SplitTransactionId, SelectedTransaction.SplitId }
+                    { PageParameter.SplitTransactionId, transaction.SplitId }
                 };
                 await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
             }
@@ -128,12 +128,10 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 var parameters = new NavigationParameters
                 {
-                    { PageParameter.Transaction, SelectedTransaction }
+                    { PageParameter.Transaction, transaction }
                 };
                 await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
             }
-
-            SelectedTransaction = null;
         }
 
         public async Task ExecuteAddTransactionCommand()

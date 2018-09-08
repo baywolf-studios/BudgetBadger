@@ -104,7 +104,7 @@ namespace BudgetBadger.Forms.Transactions
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             DeleteCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteCommand(a));
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            TransactionSelectedCommand = new DelegateCommand(async () => await ExecuteTransactionSelectedCommand());
+            TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
@@ -277,22 +277,20 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public async Task ExecuteTransactionSelectedCommand()
+        public async Task ExecuteTransactionSelectedCommand(Transaction transaction)
         {
-            if (SelectedTransaction == null)
+            if (transaction == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Transaction, SelectedTransaction },
+                { PageParameter.Transaction, transaction },
                 { PageParameter.SplitTransactionMode, true }
             };
 
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
-
-            SelectedTransaction = null;
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
