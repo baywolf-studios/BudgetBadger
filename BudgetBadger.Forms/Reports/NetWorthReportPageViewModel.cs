@@ -115,7 +115,7 @@ namespace BudgetBadger.Forms.Reports
                         var color = SKColor.Parse(((Color)Application.Current.Resources["SuccessColor"]).GetHexString());
                         if (dataPoint.YValue < 0)
                         {
-                            color = SKColor.Parse(((Color)Application.Current.Resources["DangerColor"]).GetHexString());
+                            color = SKColor.Parse(((Color)Application.Current.Resources["FailureColor"]).GetHexString());
                         }
 
                         entries.Add(new Microcharts.Entry((float)dataPoint.YValue)

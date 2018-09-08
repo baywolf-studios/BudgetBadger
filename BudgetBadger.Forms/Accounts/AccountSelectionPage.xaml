@@ -34,12 +34,12 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Accounts}"
-                        SelectedItem="{Binding SelectedAccount}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedAccount}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>
-                                    <data:GroupDescriptor PropertyName="Type" />
+                                    <data:GroupDescriptor PropertyName="Type.Name" />
                                 </data:DataSource.GroupDescriptors>
                             </data:DataSource>
                         </syncfusion:SfListView.DataSource>
