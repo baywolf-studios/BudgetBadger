@@ -112,10 +112,10 @@ namespace BudgetBadger.Forms.Reports
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
                     {
-                        var color = SKColor.Parse(Application.Current.Resources["SuccessColor"].ToString());
+                        var color = SKColor.Parse(((Color)Application.Current.Resources["SuccessColor"]).GetHexString());
                         if (dataPoint.YValue < 0)
                         {
-                            color = SKColor.Parse(Application.Current.Resources["DangerColor"].ToString());
+                            color = SKColor.Parse(((Color)Application.Current.Resources["DangerColor"]).GetHexString());
                         }
 
                         entries.Add(new Microcharts.Entry((float)dataPoint.YValue)
