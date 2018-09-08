@@ -169,10 +169,10 @@ namespace BudgetBadger.Forms.Reports
                 {
                     foreach (var datapoint in payeeReportResult.Data)
                     {
-                        var color = SKColor.Parse(Application.Current.Resources["SuccessColor"].ToString());
+                        var color = SKColor.Parse(((Color)Application.Current.Resources["SuccessColor"]).GetHexString());
                         if (datapoint.YValue < 0)
                         {
-                            color = SKColor.Parse(Application.Current.Resources["DangerColor"].ToString());
+                            color = SKColor.Parse(((Color)Application.Current.Resources["DangerColor"]).GetHexString());
                         }
 
                         payeeEntries.Add(new Microcharts.Entry((float)datapoint.YValue)
