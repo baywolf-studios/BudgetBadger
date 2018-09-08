@@ -78,14 +78,11 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Payees}"
-                        SelectedItem="{Binding SelectedPayee}">
-                        <syncfusion:SfListView.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
-                        </syncfusion:SfListView.Behaviors>
+                        SelectedItem="{Binding SelectedPayee}"
+                        SelectedCommand="{Binding SelectedCommand}">
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid
-                                    BackgroundColor="{StaticResource BackgroundColor}"
                                     ColumnSpacing="16"
                                     HeightRequest="{StaticResource Key=ListItemHeight}"
                                     RowSpacing="0">

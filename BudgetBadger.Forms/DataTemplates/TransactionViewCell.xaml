@@ -4,26 +4,18 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    BackgroundColor="{StaticResource BackgroundColor}"
     ColumnSpacing="16"
     HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
     RowSpacing="4">
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="56" />
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
     <ContentView
-        x:Name="toggleView"
         Grid.Row="0"
-        Grid.RowSpan="2"
         Grid.Column="0">
         <ContentView.GestureRecognizers>
-            <TapGestureRecognizer CommandParameter="{Binding .}" />
+            <TapGestureRecognizer x:Name="ToggleGestureRecognizer" CommandParameter="{Binding .}" />
         </ContentView.GestureRecognizers>
         <svg:SvgCachedImage
             HeightRequest="24"
@@ -53,49 +45,71 @@
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
     </ContentView>
-    <Label
-        x:Name="primaryLabel"
-        Grid.Row="0"
-        Grid.Column="1"
-        Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-        Text="{Binding Payee.Description}"
-        VerticalOptions="End" />
-    <Label
-        x:Name="secondaryLabel"
-        Grid.Row="1"
-        Grid.Column="1"
-        Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-        Text="{Binding Account.Description}"
-        VerticalOptions="Start" />
-    <Label
-        x:Name="rightSingleLabel"
-        Grid.Row="0"
-        Grid.RowSpan="2"
-        Grid.Column="2"
-        Margin="0,0,16,0"
-        HorizontalTextAlignment="End"
-        Style="{StaticResource Key=ListItemLabelStyle}"
-        Text="{Binding Amount, StringFormat='{0:C}'}"
-        VerticalOptions="Center" />
-
-    <Label
-        x:Name="rightPrimaryLabel"
-        Grid.Row="0"
-        Grid.Column="2"
-        Margin="0,0,16,0"
-        HorizontalTextAlignment="End"
-        IsVisible="false"
-        Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-        Text="{Binding Amount, StringFormat='{0:C}'}"
-        VerticalOptions="End" />
-    <Label
-        x:Name="rightSecondaryLabel"
-        Grid.Row="1"
-        Grid.Column="2"
-        Margin="0,0,16,0"
-        HorizontalTextAlignment="End"
-        IsVisible="false"
-        Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-        Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
-        VerticalOptions="Start" />
+    <ContentView Grid.Column="1">
+        <ContentView.InputTransparent>
+            <OnPlatform x:TypeArguments="x:Boolean">
+                <On Platform="Android, macOS" Value="False"/>
+                <On Platform="iOS, UWP" Value="True"/>
+            </OnPlatform>
+        </ContentView.InputTransparent>
+        <ContentView.GestureRecognizers>
+            <TapGestureRecognizer x:Name="SelectedGestureRecognizer" CommandParameter="{Binding .}" />
+        </ContentView.GestureRecognizers>
+        <Grid
+            RowSpacing="4"
+            ColumnSpacing="16">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+            <Label
+                x:Name="primaryLabel"
+                Grid.Row="0"
+                Grid.Column="0"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                Text="{Binding Payee.Description}"
+                VerticalOptions="End"/>
+            <Label
+                x:Name="secondaryLabel"
+                Grid.Row="1"
+                Grid.Column="0"
+                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                Text="{Binding Account.Description}"
+                VerticalOptions="Start"/>
+            <Label
+                x:Name="rightSingleLabel"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Margin="0,0,16,0"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource Key=ListItemLabelStyle}"
+                Text="{Binding Amount, StringFormat='{0:C}'}"
+                VerticalOptions="Center"/>
+            <Label
+                x:Name="rightPrimaryLabel"
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="0,0,16,0"
+                HorizontalTextAlignment="End"
+                IsVisible="false"
+                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                Text="{Binding Amount, StringFormat='{0:C}'}"
+                VerticalOptions="End"/>
+            <Label
+                x:Name="rightSecondaryLabel"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,0,16,0"
+                HorizontalTextAlignment="End"
+                IsVisible="false"
+                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
+                VerticalOptions="Start"/>
+        </Grid>
+    </ContentView>
 </Grid>

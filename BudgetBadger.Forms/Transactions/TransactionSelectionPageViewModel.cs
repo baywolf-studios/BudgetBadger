@@ -63,7 +63,7 @@ namespace BudgetBadger.Forms.Transactions
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteSelectedCommand(t));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
@@ -77,21 +77,19 @@ namespace BudgetBadger.Forms.Transactions
         {
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(Transaction transaction)
         {
-            if (SelectedTransaction == null)
+            if (transaction == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Transaction, SelectedTransaction }
+                { PageParameter.Transaction, transaction }
             };
 
             await _navigationService.GoBackAsync(parameters);
-
-            SelectedTransaction = null;
         }
 
         public async Task ExecuteRefreshCommand()

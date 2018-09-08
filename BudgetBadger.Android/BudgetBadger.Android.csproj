@@ -102,6 +102,9 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
+    <Compile Include="Effects\BorderlessPickerEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

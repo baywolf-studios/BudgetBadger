@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelope = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
         public async void OnNavigatingTo(NavigationParameters parameters)
@@ -106,21 +106,18 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(Envelope envelope)
         {
-            if (SelectedEnvelope == null)
+            if (envelope == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Envelope, SelectedEnvelope }
+                { PageParameter.Envelope, envelope }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
-
-
-            SelectedEnvelope = null;
         }
     }
 }

@@ -181,7 +181,7 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Margin="16,0,8,0"
+                                Margin="16,0,0,0"
                                 Command="{Binding DeleteCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -199,7 +199,7 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Margin="8,0,16,0"
+                                Margin="0,0,16,0"
                                 Command="{Binding SplitCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"

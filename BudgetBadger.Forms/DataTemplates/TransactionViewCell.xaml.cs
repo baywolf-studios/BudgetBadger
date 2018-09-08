@@ -8,13 +8,22 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class TransactionViewCell : Grid
     {
-        public static readonly BindableProperty CommandProperty =
-            BindableProperty.Create("Command", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnCommandPropertyChanged);
+        public static readonly BindableProperty ToggleCommandProperty =
+            BindableProperty.Create("ToggleCommand", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnToggleCommandPropertyChanged);
 
-        public ICommand Command
+        public ICommand ToggleCommand
         {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get { return (ICommand)GetValue(ToggleCommandProperty); }
+            set { SetValue(ToggleCommandProperty, value); }
+        }
+
+        public static readonly BindableProperty SelectedCommandProperty =
+            BindableProperty.Create("SelectedCommand", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnSelectedCommandPropertyChanged);
+
+        public ICommand SelectedCommand
+        {
+            get { return (ICommand)GetValue(SelectedCommandProperty); }
+            set { SetValue(SelectedCommandProperty, value); }
         }
 
         TransactionViewCellType transactionViewCellType;
@@ -68,11 +77,19 @@ namespace BudgetBadger.Forms.DataTemplates
             InitializeComponent();
         }
 
-        static void OnCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        static void OnToggleCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if (newValue != oldValue)
             {
-                ((bindable as TransactionViewCell).toggleView.GestureRecognizers.Single() as TapGestureRecognizer).Command = newValue as ICommand;
+                (bindable as TransactionViewCell).ToggleGestureRecognizer.Command = newValue as ICommand;
+            }
+        }
+
+        static void OnSelectedCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (newValue != oldValue)
+            {
+                (bindable as TransactionViewCell).SelectedGestureRecognizer.Command = newValue as ICommand;
             }
         }
     }

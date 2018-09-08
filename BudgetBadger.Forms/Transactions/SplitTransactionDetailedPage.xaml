@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildPage
     x:Class="BudgetBadger.Forms.Transactions.SplitTransactionDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -43,10 +43,8 @@
                             AllowSwiping="True"
                             ColumnSizer="Star"
                             ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}">
-                            <syncfusion:SfDataGrid.Behaviors>
-                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
-                            </syncfusion:SfDataGrid.Behaviors>
+                            SelectedItem="{Binding SelectedTransaction}"
+                            SelectedCommand="{Binding TransactionSelectedCommand}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">

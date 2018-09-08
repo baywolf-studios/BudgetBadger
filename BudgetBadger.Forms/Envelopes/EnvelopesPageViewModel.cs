@@ -93,7 +93,7 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
@@ -184,20 +184,18 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(Budget budget)
         {
-            if (SelectedBudget == null)
+            if (budget == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Budget, SelectedBudget }
+                { PageParameter.Budget, budget }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
-
-            SelectedBudget = null;
         }
 
         public async Task ExecuteAddCommand()

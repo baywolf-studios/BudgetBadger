@@ -72,7 +72,7 @@ namespace BudgetBadger.Forms.Payees
             Payees = new List<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand(async () => await ExecuteSelectedCommand());
+            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
@@ -96,21 +96,19 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.NavigateAsync(PageName.PayeeEditPage);
         }
 
-        public async Task ExecuteSelectedCommand()
+        public async Task ExecuteSelectedCommand(Payee payee)
         {
-            if (SelectedPayee == null)
+            if (payee == null)
             {
                 return;
             }
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Payee, SelectedPayee }
+                { PageParameter.Payee, payee }
             };
 
             await _navigationService.GoBackAsync(parameters);
-
-            SelectedPayee = null;
         }
 
         public async Task ExecuteRefreshCommand()

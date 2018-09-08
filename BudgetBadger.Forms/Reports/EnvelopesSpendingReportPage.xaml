@@ -77,14 +77,11 @@
                     <uc:ListView
                         ItemSize="{StaticResource ListDoubleItemHeight}"
                         ItemsSource="{Binding Envelopes}"
-                        SelectedItem="{Binding SelectedEnvelope}">
-                        <syncfusion:SfListView.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding SelectedCommand}" EventName="SelectionChanged" />
-                        </syncfusion:SfListView.Behaviors>
+                        SelectedItem="{Binding SelectedEnvelope}"
+                        SelectedCommand="{Binding SelectedCommand}">
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid
-                                    BackgroundColor="{StaticResource BackgroundColor}"
                                     ColumnSpacing="16"
                                     HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
                                     RowSpacing="4">

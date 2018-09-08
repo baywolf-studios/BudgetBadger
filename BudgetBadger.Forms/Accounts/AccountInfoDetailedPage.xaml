@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ChildSearchPage
     x:Class="BudgetBadger.Forms.Accounts.AccountInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -54,10 +54,8 @@
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}">
-                            <syncfusion:SfDataGrid.Behaviors>
-                                <b:EventToCommandBehavior Command="{Binding TransactionSelectedCommand}" EventName="SelectionChanged" />
-                            </syncfusion:SfDataGrid.Behaviors>
+                            SelectedItem="{Binding SelectedTransaction}"
+                            SelectedCommand="{Binding TransactionSelectedCommand}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">

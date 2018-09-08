@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,12 +30,37 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(FilterProperty, value);
         }
 
+        public static BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(ListView));
+        public ICommand SelectedCommand
+        {
+            get => (ICommand)GetValue(SelectedCommandProperty);
+            set => SetValue(SelectedCommandProperty, value);
+        }
+
+        public bool HasOtherTapGestureRecognizers { get; set; }
+
         public DataGrid ()
 		{
-			InitializeComponent ();         
+			InitializeComponent ();    
+
+            SelectionChanging += (sender, e) =>
+            {
+                // may have to add macos later
+                if (HasOtherTapGestureRecognizers && Device.RuntimePlatform == Device.Android)
+                {
+                    e.Cancel = true;
+                }
+            };
+            SelectionChanged += (sender, e) =>
+            {
+                if (SelectedCommand != null)
+                {
+                    SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
+                }
+            };
 		}
 
-        private void UpdateFilter()
+        void UpdateFilter()
         {
             if (sfGrid != null && sfGrid.View != null)
             {

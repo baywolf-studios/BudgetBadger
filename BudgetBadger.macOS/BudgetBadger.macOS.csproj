@@ -224,6 +224,13 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderers\CustomButtonRenderer.cs" />
+    <Compile Include="Renderers\CustomDatePickerRenderer.cs" />
+    <Compile Include="Renderers\CustomListViewRenderer.cs" />
+    <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
+    <Compile Include="Effects\BorderlessEntryEffect.cs" />
+    <Compile Include="Effects\BorderlessPickerEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -263,6 +270,10 @@
     <Content Include="Resources\search.svg" />
     <Content Include="Resources\settings.svg" />
     <Content Include="Resources\uncheckedcheckbox.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -4,7 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Name="envelopeCell"
-    BackgroundColor="{StaticResource BackgroundColor}"
     ColumnSpacing="16"
     HeightRequest="{StaticResource Key=ListItemHeight}"
     RowSpacing="0">

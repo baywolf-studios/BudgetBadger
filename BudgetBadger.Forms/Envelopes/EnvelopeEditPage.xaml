@@ -73,7 +73,7 @@
                     Orientation="Vertical">
                     <Grid
                         Margin="0"
-                        ColumnSpacing="0"
+                        ColumnSpacing="16"
                         RowSpacing="16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
