@@ -10,7 +10,6 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string SplitTransactionId = "splitTransactionId";
         public static readonly string InitialSplitTransaction = "initialSplitTransaction";
         public static readonly string SplitTransactionMode = "splitTransactionMode";
-        public static readonly string SplitTransactionCompleted = "splitTransactionCompleted";
         public static readonly string EnvelopeGroup = "envelopeGroup";
         public static readonly string Envelope = "envelope";
         public static readonly string BudgetSchedule = "budgetSchedule";
