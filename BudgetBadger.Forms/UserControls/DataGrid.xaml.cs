@@ -64,15 +64,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (sfGrid != null && sfGrid.View != null)
             {
-                if (string.IsNullOrEmpty(FilterText))
-                {
-
-                    sfGrid.View.Filter = null;
-                }
-                else
-                {
-                    sfGrid.View.Filter = Filter;
-                }
+                sfGrid.View.Filter = Filter;
                 sfGrid.View.RefreshFilter();
             }
         }
