@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms.UserControls
             {
                 sfListView.DataSource.Filter = Filter;
                 sfListView.DataSource.RefreshFilter();
-            }
+            } 
         }
 	}
 }
