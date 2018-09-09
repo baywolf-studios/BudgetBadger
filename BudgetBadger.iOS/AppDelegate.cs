@@ -5,7 +5,8 @@ using Foundation;
 using Prism;
 using Prism.Ioc;
 using UIKit;
-
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace BudgetBadger.iOS
 {
@@ -34,13 +35,14 @@ namespace BudgetBadger.iOS
 
             LoadApplication(new App(new iOSInitializer()));
 
+            var statusBarColor = ((Color)Xamarin.Forms.Application.Current.Resources["AppBarColor"]).ToUIColor();
 
-            UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(54, 120, 175);
+            UITabBar.Appearance.SelectedImageTintColor = statusBarColor;
 
             var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
             if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
             {
-                statusBar.BackgroundColor = UIColor.FromRGB(54, 120, 175);
+                statusBar.BackgroundColor = statusBarColor;
             }
 
             return base.FinishedLaunching(app, options);
