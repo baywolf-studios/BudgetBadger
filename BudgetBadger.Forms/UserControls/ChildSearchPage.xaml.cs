@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Navigation;
 using Xamarin.Forms;
@@ -109,7 +110,12 @@ namespace BudgetBadger.Forms.UserControls
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
-                await SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
+                var translationTask = SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
+                if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
+                {
+                    ViewExtensions.CancelAnimations(SearchBoxFrame);
+                    SearchBoxFrame.TranslationX = SearchBoxFrame.Width;
+                }
                 EntryControl.Focus();
             }
             else //currently showing
@@ -120,7 +126,12 @@ namespace BudgetBadger.Forms.UserControls
                 svgSearch.Source = "search.svg";
 
                 //hide it
-                await SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
+                var translationTask = SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
+                if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
+                {
+                    ViewExtensions.CancelAnimations(SearchBoxFrame);
+                    SearchBoxFrame.TranslationX = SearchBoxFrame.Width;
+                }
                 SearchBoxFrame.IsVisible = false;
             }
         }
