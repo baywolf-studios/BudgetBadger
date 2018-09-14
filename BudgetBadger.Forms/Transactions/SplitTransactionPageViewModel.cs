@@ -184,6 +184,7 @@ namespace BudgetBadger.Forms.Transactions
                 return;
             }
 
+            Transactions = Transactions.ToList();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 

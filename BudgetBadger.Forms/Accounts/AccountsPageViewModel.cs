@@ -13,10 +13,11 @@ using Prism.Mvvm;
 using Prism.AppModel;
 using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
+using Prism;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, INavigatingAware
+    public class AccountsPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -89,9 +90,13 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnAppearing()
         {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnDisappearing()
+        {
         }
 
         public async Task ExecuteSelectedCommand(Account account)

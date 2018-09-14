@@ -12,10 +12,11 @@ using Prism.Mvvm;
 using Prism.AppModel;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
+using Prism;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopesPageViewModel : BindableBase, INavigatingAware, IPageLifecycleAware
+    public class EnvelopesPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -98,11 +99,6 @@ namespace BudgetBadger.Forms.Envelopes
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-        }
-
-        public async void OnNavigatingTo(NavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
         }
 
         public async void OnAppearing()
