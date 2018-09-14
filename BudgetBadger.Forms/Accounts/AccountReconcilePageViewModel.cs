@@ -23,6 +23,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly ISync _syncService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand RefreshCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
         public ICommand ToggleReconcileModeCommand { get; set; }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -149,7 +150,9 @@ namespace BudgetBadger.Forms.Accounts
             StatementDate = DateTime.Now;
             StatementAmount = 0;
 
+
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
+            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             ToggleReconcileModeCommand = new DelegateCommand(ExecuteToggleReconcileModeCommand);
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
@@ -263,6 +266,8 @@ namespace BudgetBadger.Forms.Accounts
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
             }
+
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)

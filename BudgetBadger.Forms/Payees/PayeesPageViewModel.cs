@@ -12,10 +12,11 @@ using System.Linq;
 using Prism.Mvvm;
 using Prism.AppModel;
 using BudgetBadger.Core.Sync;
+using Prism;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, INavigatingAware
+    public class PayeesPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
@@ -90,9 +91,13 @@ namespace BudgetBadger.Forms.Payees
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnAppearing()
         {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnDisappearing()
+        {
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
