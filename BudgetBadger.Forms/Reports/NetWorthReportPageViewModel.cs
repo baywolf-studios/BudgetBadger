@@ -14,7 +14,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, IPageLifecycleAware
+    public class NetWorthReportPageViewModel : BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -87,12 +87,7 @@ namespace BudgetBadger.Forms.Reports
                 BeginDate = EndDate.AddMonths(-6);
             }
         }
-
-        public void OnDisappearing()
-        {
-        }
-
-        public async void OnAppearing()
+        public async void OnNavigatingTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

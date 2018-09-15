@@ -19,7 +19,7 @@
                     HeightRequest="24"
                     WidthRequest="24"
                     Grid.Column="0"
-                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                    ReplaceStringMap="{Binding Source={StaticResource IdleColor}, Converter={StaticResource ReplaceColorMap}}"
                     Source="expander.svg"
                     HorizontalOptions="Start"
                     InputTransparent="true"/>
