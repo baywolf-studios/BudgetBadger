@@ -112,6 +112,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var payeeEntries = new List<Entry>();
 
+                await Task.Yield();
                 var payeeReportResult = await _reportLogic.GetPayeesSpendingReport(BeginDate, EndDate);
                 if (payeeReportResult.Success)
                 {
