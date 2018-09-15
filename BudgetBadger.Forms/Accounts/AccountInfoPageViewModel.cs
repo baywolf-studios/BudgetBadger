@@ -254,6 +254,14 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
+                    var transactionFromList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                    if (transactionFromList != null)
+                    {
+                        transactionFromList.Posted = transaction.Posted;
+                    }
+                    RaisePropertyChanged(nameof(PendingTotal));
+                    RaisePropertyChanged(nameof(PostedTotal));
+
                     var syncTask = _syncService.FullSync();
 
                     var syncResult = await syncTask;
@@ -267,14 +275,6 @@ namespace BudgetBadger.Forms.Accounts
                     transaction.Posted = !transaction.Posted;
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
-
-                var transactionFromList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-                if (transactionFromList != null)
-                {
-                    transactionFromList.Posted = transaction.Posted;
-                }
-                RaisePropertyChanged(nameof(PendingTotal));
-                RaisePropertyChanged(nameof(PostedTotal));
             }
         }
 

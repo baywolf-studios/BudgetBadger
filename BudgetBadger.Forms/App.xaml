@@ -35,12 +35,12 @@
             </OnPlatform>
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>
-            <Color x:Key="PrimaryTextColor">#191919</Color>
-            <Color x:Key="SecondaryTextColor">#737373</Color>
+            <Color x:Key="PrimaryTextColor">#1d1f24</Color>
+            <Color x:Key="SecondaryTextColor">#58606e</Color>
             <Color x:Key="PrimaryColor">#0c7bb3</Color>
             <Color x:Key="IdleColor">#737373</Color>
             <Color x:Key="DisabledColor">#999999</Color>
-            <Color x:Key="DividerColor">#E0E0E0</Color>
+            <Color x:Key="DividerColor">#dde3ed</Color>
             <Color x:Key="ErrorColor">#de1b1b</Color>
             <Color x:Key="SuccessColor">#2a854e</Color>
             <Color x:Key="FailureColor">#de1b1b</Color>
