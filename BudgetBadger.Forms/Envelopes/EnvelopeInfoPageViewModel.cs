@@ -11,6 +11,7 @@ using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -20,9 +21,11 @@ namespace BudgetBadger.Forms.Envelopes
         readonly INavigationService _navigationService;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
+        public ICommand DeleteTransactionCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -71,18 +74,24 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public EnvelopeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
+        public EnvelopeInfoPageViewModel(INavigationService navigationService,
+                                         ITransactionLogic transactionLogic,
+                                         IEnvelopeLogic envelopeLogic,
+                                         IPageDialogService dialogService,
+                                         ISync syncService)
         {
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _envelopeLogic = envelopeLogic;
             _dialogService = dialogService;
+            _syncService = syncService;
 
             Budget = new Budget();
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
+            DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -155,14 +164,14 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Budget.IsActive)
                 {
-                    var budgetResult = await _envelopeLogic.GetBudgetAsync(Budget.Id);
+                    var budgetResult = await Task.Run(() => _envelopeLogic.GetBudgetAsync(Budget.Id));
                     if (budgetResult.Success)
                     {
                         Budget = budgetResult.Data;
                     }
                 }
 
-                var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
+                var result = await Task.Run(() => _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope));
                 if (result.Success)
                 {
                     Transactions = result.Data;
@@ -187,28 +196,49 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (transaction.IsCombined)
                 {
-                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                    result = await Task.Run(() => _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted));
                 }
                 else
                 {
-                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                    result = await Task.Run(() => _transactionLogic.SaveTransactionAsync(transaction));
                 }
 
                 if (result.Success)
                 {
-                    //var syncTask = _syncService.FullSync();
+                    var syncTask = _syncService.FullSync();
 
-                    //var syncResult = await syncTask;
-                    //if (!syncResult.Success)
-                    //{
-                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    //}
+                    var syncResult = await syncTask;
+                    if (!syncResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    }
                 }
                 else
                 {
                     transaction.Posted = !transaction.Posted;
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
+            }
+        }
+
+        public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
+        {
+            var result = await Task.Run(() => _transactionLogic.DeleteTransactionAsync(transaction.Id));
+
+            if (result.Success)
+            {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
         }
     }

@@ -117,7 +117,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await _accountLogic.GetAccountsForSelectionAsync();
+                var result = await Task.Run(() => _accountLogic.GetAccountsForSelectionAsync());
 
                 if (result.Success)
                 {

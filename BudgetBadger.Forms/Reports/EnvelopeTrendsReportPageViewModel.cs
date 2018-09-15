@@ -164,7 +164,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var envelopeEntries = new List<Microcharts.Entry>();
 
-                var envelopeReportResult = await _reportLogic.GetEnvelopeTrendsReport(SelectedEnvelope.Id, BeginDate, EndDate);
+                var envelopeReportResult = await Task.Run(() => _reportLogic.GetEnvelopeTrendsReport(SelectedEnvelope.Id, BeginDate, EndDate));
                 if (envelopeReportResult.Success)
                 {
                     foreach (var datapoint in envelopeReportResult.Data)

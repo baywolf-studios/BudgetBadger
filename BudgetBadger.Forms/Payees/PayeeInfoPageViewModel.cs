@@ -11,6 +11,7 @@ using Prism.Navigation;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
+using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -20,9 +21,11 @@ namespace BudgetBadger.Forms.Payees
         readonly INavigationService _navigationService;
         readonly IPayeeLogic _payeeLogic;
         readonly IPageDialogService _dialogService;
+        readonly ISync _syncService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
+        public ICommand DeleteTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -73,18 +76,24 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public PayeeInfoPageViewModel(INavigationService navigationService, ITransactionLogic transactionLogic, IPayeeLogic payeeLogic, IPageDialogService dialogService)
+        public PayeeInfoPageViewModel(INavigationService navigationService,
+                                      ITransactionLogic transactionLogic,
+                                      IPayeeLogic payeeLogic,
+                                      IPageDialogService dialogService,
+                                      ISync syncService)
         {
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _payeeLogic = payeeLogic;
             _dialogService = dialogService;
+            _syncService = syncService;
 
             Payee = new Payee();
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
+            DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
@@ -147,7 +156,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 if (Payee.IsActive)
                 {
-                    var payeeResult = await _payeeLogic.GetPayeeAsync(Payee.Id);
+                    var payeeResult = await Task.Run(() => _payeeLogic.GetPayeeAsync(Payee.Id));
                     if (payeeResult.Success)
                     {
                         Payee = payeeResult.Data;
@@ -157,7 +166,7 @@ namespace BudgetBadger.Forms.Payees
                         //show alert that account data may be stale
                     }
 
-                    var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
+                    var result = await Task.Run(() => _transactionLogic.GetPayeeTransactionsAsync(Payee));
                     if (result.Success)
                     {
                         Transactions = result.Data;
@@ -193,11 +202,11 @@ namespace BudgetBadger.Forms.Payees
 
                 if (transaction.IsCombined)
                 {
-                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                    result = await Task.Run(() => _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted));
                 }
                 else
                 {
-                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                    result = await Task.Run(() => _transactionLogic.SaveTransactionAsync(transaction));
                 }
 
                 if (result.Success)
@@ -215,6 +224,27 @@ namespace BudgetBadger.Forms.Payees
                     transaction.Posted = !transaction.Posted;
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
+            }
+        }
+
+        public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
+        {
+            var result = await Task.Run(() => _transactionLogic.DeleteTransactionAsync(transaction.Id));
+
+            if (result.Success)
+            {
+                var syncResult = await _syncService.FullSync();
+
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
+
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
             }
         }
     }

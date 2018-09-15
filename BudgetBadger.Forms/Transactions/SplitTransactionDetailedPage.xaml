@@ -49,7 +49,7 @@
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
                                         <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>
                                         <svg:SvgCachedImage
                                             HeightRequest="24"
@@ -105,11 +105,11 @@
                                     MappingName="Amount"
                                     TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
+                                    Width="56"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Status"
                                     HeaderTextAlignment="Center"
-                                    MappingName="."
-                                    Width="56">
+                                    MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
