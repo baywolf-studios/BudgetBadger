@@ -16,7 +16,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeeTrendsReportPageViewModel: BindableBase, IPageLifecycleAware
+    public class PayeeTrendsReportPageViewModel: BindableBase, INavigatingAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
