@@ -51,13 +51,14 @@
                             x:Name="EnvelopesIcon"
                             Margin="8,12"
                             HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource PrimaryColor}, Converter={StaticResource ReplaceColorMap}}"
+                            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
                             Source="envelope.svg"
                             WidthRequest="24" />
                         <Label
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
+                            TextColor="{StaticResource PrimaryTextColor}"
                             Text="Envelopes"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
