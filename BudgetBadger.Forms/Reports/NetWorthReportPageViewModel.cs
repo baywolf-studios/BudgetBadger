@@ -107,7 +107,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var entries = new List<Microcharts.Entry>();
 
-                var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
+                var netWorthReportResult = await Task.Run(() => _reportLogic.GetNetWorthReport(BeginDate, EndDate));
                 if (netWorthReportResult.Success)
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
