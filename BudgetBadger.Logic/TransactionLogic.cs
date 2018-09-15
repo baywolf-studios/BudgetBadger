@@ -28,8 +28,8 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transactionId);
-            var transaction = await GetPopulatedTransaction(tempTransaction);
+            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transactionId).ConfigureAwait(false);
+            var transaction = await GetPopulatedTransaction(tempTransaction).ConfigureAwait(false);
 
             if (transaction.IsTransfer && transaction.Payee.IsDeleted)
             {
@@ -55,19 +55,19 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var validationResult = await ValidateDeleteTransactionAsync(id);
+                var validationResult = await ValidateDeleteTransactionAsync(id).ConfigureAwait(false);
                 if (!validationResult.Success)
                 {
                     return validationResult;
                 }
 
-                var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id);
+                var transactionToDelete = await TransactionDataAccess.ReadTransactionAsync(id).ConfigureAwait(false);
 
-                await CleanupRelatedSplitTransactions(transactionToDelete);
+                await CleanupRelatedSplitTransactions(transactionToDelete).ConfigureAwait(false);
 
                 transactionToDelete.ModifiedDateTime = DateTime.Now;
                 transactionToDelete.DeletedDateTime = DateTime.Now;
-                await TransactionDataAccess.UpdateTransactionAsync(transactionToDelete);
+                await TransactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -84,9 +84,9 @@ namespace BudgetBadger.Logic
             var result = new Result<IReadOnlyList<Transaction>>();
             var transactions = new List<Transaction>();
 
-            transactions.AddRange(await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id));
+            transactions.AddRange(await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false));
 
-            var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id);
+            var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
 
             foreach (var transaction in payeeTransactions)
             {
@@ -108,7 +108,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Transaction>>();
 
-            var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id);
+            var transactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id).ConfigureAwait(false);
 
 			var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
@@ -122,7 +122,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Transaction>>();
 
-            var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id);
+            var transactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(payee.Id).ConfigureAwait(false);
 
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
                      
@@ -138,8 +138,8 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transaction = await TransactionDataAccess.ReadTransactionAsync(id);
-                var populatedTransaction = await GetPopulatedTransaction(transaction);
+                var transaction = await TransactionDataAccess.ReadTransactionAsync(id).ConfigureAwait(false);
+                var populatedTransaction = await GetPopulatedTransaction(transaction).ConfigureAwait(false);
 
                 result.Success = true;
                 result.Data = populatedTransaction;
@@ -157,7 +157,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Transaction>>();
 
-            var transactions = await TransactionDataAccess.ReadTransactionsAsync();
+            var transactions = await TransactionDataAccess.ReadTransactionsAsync().ConfigureAwait(false);
 
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
@@ -209,7 +209,7 @@ namespace BudgetBadger.Logic
 
             var errors = new List<string>();
 
-            var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
+            var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
             // check for existance of payee
             if (transactionPayee.IsNew)
             {
@@ -217,21 +217,21 @@ namespace BudgetBadger.Logic
             }
 
             // check for existance of account
-            var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
+            var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
             if (transactionAccount.IsNew)
             {
                 errors.Add("Account does not exist");
             }
 
             // check for existance of envelope
-            var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
+            var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
             if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsNew)
             {
                 errors.Add("Envelope does not exist");
             }
 
-            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transaction.Id);
-            var existingTransaction = await GetPopulatedTransaction(tempTransaction);
+            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transaction.Id).ConfigureAwait(false);
+            var existingTransaction = await GetPopulatedTransaction(tempTransaction).ConfigureAwait(false);
 
             if (existingTransaction.IsActive) // already exists need to compare
             {
@@ -336,7 +336,7 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction)
         {
-            var validationResult = await ValidateTransactionAsync(transaction);
+            var validationResult = await ValidateTransactionAsync(transaction).ConfigureAwait(false);
             if (!validationResult.Success)
             {
                 return validationResult.ToResult<Transaction>();
@@ -357,10 +357,10 @@ namespace BudgetBadger.Logic
                 // business rule forces account to be the on budget one
                 try
                 {
-                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToUpsert.Payee.Id);
+                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToUpsert.Payee.Id).ConfigureAwait(false);
                     if (transactionToUpsert.Account.OffBudget && payeeAccount.OnBudget)
                     {
-                        transactionToUpsert.Payee = await PayeeDataAccess.ReadPayeeAsync(transactionToUpsert.Account.Id);
+                        transactionToUpsert.Payee = await PayeeDataAccess.ReadPayeeAsync(transactionToUpsert.Account.Id).ConfigureAwait(false);
                         transactionToUpsert.Account = payeeAccount;
                         transactionToUpsert.Amount = -1 * transactionToUpsert.Amount;
                     }
@@ -377,7 +377,7 @@ namespace BudgetBadger.Logic
             {
                 try
                 {
-                    var accountDebtEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transactionToUpsert.Account.Id);
+                    var accountDebtEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transactionToUpsert.Account.Id).ConfigureAwait(false);
                     transactionToUpsert.Envelope = accountDebtEnvelope;
                 }
                 catch (Exception ex)
@@ -396,7 +396,7 @@ namespace BudgetBadger.Logic
 
                 try
                 {
-                    await TransactionDataAccess.CreateTransactionAsync(transactionToUpsert);
+                    await TransactionDataAccess.CreateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
                     result.Data = transactionToUpsert;
                 }
@@ -412,7 +412,7 @@ namespace BudgetBadger.Logic
 
                 try
                 {
-                    await TransactionDataAccess.UpdateTransactionAsync(transactionToUpsert);
+                    await TransactionDataAccess.UpdateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
                     result.Data = transactionToUpsert;
                 }
@@ -430,7 +430,7 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Transaction>>();
 
-            var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId);
+            var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId).ConfigureAwait(false);
 
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
@@ -455,14 +455,14 @@ namespace BudgetBadger.Logic
             {
                 var transaction = transactions.Single();
                 transaction.SplitId = null;
-                return await SaveTransactionAsync(transaction);
+                return await SaveTransactionAsync(transaction).ConfigureAwait(false);
             }
 
             var splitId = Guid.NewGuid();
             try
             {
                 // extra validation so we don't save one and then fail validation later
-                var validationResults = await Task.WhenAll(transactions.Select(ValidateTransactionAsync));
+                var validationResults = await Task.WhenAll(transactions.Select(ValidateTransactionAsync)).ConfigureAwait(false);
                 if (validationResults.Any(v => !v.Success))
                 {
                     return new Result { Success = false, Message = string.Join(Environment.NewLine, validationResults.Select(m => m.Message)) };
@@ -470,11 +470,11 @@ namespace BudgetBadger.Logic
 
                 foreach (var transaction in transactions)
                 {
-                    await CleanupRelatedSplitTransactions(transaction);
+                    await CleanupRelatedSplitTransactions(transaction).ConfigureAwait(false);
 
                     transaction.SplitId = splitId;
 
-                    var saveResult = await SaveTransactionAsync(transaction);
+                    var saveResult = await SaveTransactionAsync(transaction).ConfigureAwait(false);
                     if (!saveResult.Success)
                     {
                         return saveResult;
@@ -498,13 +498,13 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId);
+                var transactions = await TransactionDataAccess.ReadSplitTransactionsAsync(splitId).ConfigureAwait(false);
 
                 foreach (var transaction in transactions)
                 {
                     transaction.Posted = posted;
                     transaction.ModifiedDateTime = DateTime.Now;
-                    await TransactionDataAccess.UpdateTransactionAsync(transaction);
+                    await TransactionDataAccess.UpdateTransactionAsync(transaction).ConfigureAwait(false);
                 }
 
                 result.Success = true;
@@ -522,13 +522,13 @@ namespace BudgetBadger.Logic
         {
             if (transaction.IsSplit)
             {
-                var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value);
+                var relatedTransactions = await TransactionDataAccess.ReadSplitTransactionsAsync(transaction.SplitId.Value).ConfigureAwait(false);
                 if (relatedTransactions.Count() == 2) //need to unsplit, need better logic here!!!
                 {
                     var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transaction.Id);
                     relatedTransaction.SplitId = null;
                     relatedTransaction.ModifiedDateTime = DateTime.Now;
-                    await TransactionDataAccess.UpdateTransactionAsync(relatedTransaction);
+                    await TransactionDataAccess.UpdateTransactionAsync(relatedTransaction).ConfigureAwait(false);
                 }
             }
         }
@@ -545,7 +545,7 @@ namespace BudgetBadger.Logic
                 // if it is a transfer (aka account to account)
                 if (transactionToPopulate.IsTransfer)
                 {
-                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Payee.Id);
+                    var payeeAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Payee.Id).ConfigureAwait(false);
                     // determine if both accounts are the same budget type
                     if (transactionToPopulate.Account.OnBudget == payeeAccount.OnBudget)
                     {
@@ -571,7 +571,7 @@ namespace BudgetBadger.Logic
             // handle logic to set envelope to the generic debt envelope
             if (transactionToPopulate.Envelope.Group.IsDebt && !transactionToPopulate.Envelope.IsGenericDebtEnvelope)
             {
-                var debtAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Envelope.Id);
+                var debtAccount = await AccountDataAccess.ReadAccountAsync(transactionToPopulate.Envelope.Id).ConfigureAwait(false);
                 transactionToPopulate.Account = debtAccount;
                 transactionToPopulate.Envelope = Constants.GenericDebtEnvelope;
             }
@@ -581,13 +581,13 @@ namespace BudgetBadger.Logic
 
         public async Task<Transaction> GetPopulatedTransaction(Transaction transaction)
         {
-            transaction.Payee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id);
-            var payeeAccount = await AccountDataAccess.ReadAccountAsync(transaction.Payee.Id);
+            transaction.Payee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
+            var payeeAccount = await AccountDataAccess.ReadAccountAsync(transaction.Payee.Id).ConfigureAwait(false);
             transaction.Payee.IsAccount = payeeAccount.IsActive;
 
-            transaction.Envelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id);
+            transaction.Envelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
 
-            transaction.Account = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id);
+            transaction.Account = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
 
             return transaction;
         }

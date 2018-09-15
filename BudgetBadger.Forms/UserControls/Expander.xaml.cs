@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
@@ -69,12 +70,32 @@ namespace BudgetBadger.Forms.UserControls
             {
                 // show the body
                 BodyView.IsVisible = isVisible;
-                await BodyView.FadeTo(1, _animationLength, Easing.CubicInOut);
+                var fadeTask = BodyView.FadeTo(1, _animationLength, Easing.CubicInOut);
+                var rotateTask = IconControl.RotateTo(90, _animationLength, Easing.CubicInOut);
+                var combinedTask = Task.WhenAll(fadeTask, rotateTask);
+
+                if (await Task.WhenAny(combinedTask, Task.Delay((int)_animationLength + 50)) != combinedTask)
+                {
+                    ViewExtensions.CancelAnimations(BodyView);
+                    ViewExtensions.CancelAnimations(IconControl);
+                    BodyView.Opacity = 1;
+                    IconControl.Rotation = 90;
+                }
             }
             else
             {
                 // hide the body
-                await BodyView.FadeTo(0, _animationLength, Easing.CubicInOut);
+                var fadeTask = BodyView.FadeTo(0, _animationLength, Easing.CubicInOut);
+                var rotateTask = IconControl.RotateTo(00, _animationLength, Easing.CubicInOut);
+                var combinedTask = Task.WhenAll(fadeTask, rotateTask);
+
+                if (await Task.WhenAny(combinedTask, Task.Delay((int)_animationLength + 50)) != combinedTask)
+                {
+                    ViewExtensions.CancelAnimations(BodyView);
+                    ViewExtensions.CancelAnimations(IconControl);
+                    BodyView.Opacity = 0;
+                    IconControl.Rotation = 0;
+                }
                 BodyView.IsVisible = isVisible;
 
             }

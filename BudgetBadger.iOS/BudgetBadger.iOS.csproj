@@ -181,6 +181,7 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
     <BundleResource Include="Resources\helperenvelopegroup.svg" />
     <BundleResource Include="Resources\payees.svg" />
+    <BundleResource Include="Resources\expander.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
