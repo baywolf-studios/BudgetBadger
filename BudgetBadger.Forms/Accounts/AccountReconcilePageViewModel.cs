@@ -265,9 +265,15 @@ namespace BudgetBadger.Forms.Accounts
                     transaction.Posted = !transaction.Posted;
                     await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
                 }
-            }
 
-            await ExecuteRefreshCommand();
+                var transactionFromList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                if (transactionFromList != null)
+                {
+                    transactionFromList.Posted = transaction.Posted;
+                }
+                RaisePropertyChanged(nameof(PostedTotal));
+                RaisePropertyChanged(nameof(Difference));
+            }
         }
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)

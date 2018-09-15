@@ -34,7 +34,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await _transactionLogic.GetTransactionsAsync();
+                var transactions = await _transactionLogic.GetTransactionsAsync().ConfigureAwait(false);
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
