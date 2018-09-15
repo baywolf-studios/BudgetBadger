@@ -131,7 +131,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await Task.Run(() => _transactionLogic.DeleteTransactionAsync(transaction.Id));
+            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {
@@ -186,7 +186,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 if (Account.IsActive)
                 {
-                    var accountResult = await Task.Run(() => _accountLogic.GetAccountAsync(Account.Id));
+                    var accountResult = await _accountLogic.GetAccountAsync(Account.Id);
                     if (accountResult.Success)
                     {
                         Account = accountResult.Data;
@@ -196,7 +196,7 @@ namespace BudgetBadger.Forms.Accounts
                         //show alert that account data may be stale
                     }
 
-                    var result = await Task.Run(() => _transactionLogic.GetAccountTransactionsAsync(Account));
+                    var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
                         Transactions = result.Data;
@@ -245,11 +245,11 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (transaction.IsCombined)
                 {
-                    result = await Task.Run(() => _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted));
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
                 }
                 else
                 {
-                    result = await Task.Run(() => _transactionLogic.SaveTransactionAsync(transaction));
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
                 }
 
                 if (result.Success)

@@ -121,7 +121,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Schedule == null)
                 {
-                    var scheduleResult = await Task.Run(() => _envelopeLogic.GetCurrentBudgetScheduleAsync());
+                    var scheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
                     if (scheduleResult.Success)
                     {
                         Schedule = scheduleResult.Data;
@@ -132,7 +132,7 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                 }
 
-                var budgetResult = await Task.Run(() => _envelopeLogic.GetBudgetsAsync(Schedule));
+                var budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule);
 
                 if (budgetResult.Success)
                 {

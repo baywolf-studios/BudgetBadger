@@ -129,7 +129,7 @@ namespace BudgetBadger.Forms.Envelopes
             try
             {
                 BusyText = "Saving";
-                var result = await Task.Run(() => _envelopeLogic.SaveBudgetAsync(Budget));
+                var result = await _envelopeLogic.SaveBudgetAsync(Budget);
 
                 if (result.Success)
                 {
@@ -192,7 +192,7 @@ namespace BudgetBadger.Forms.Envelopes
             try
             {
                 BusyText = "Deleting";
-                var result = await Task.Run(() => _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id));
+                var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
                     BusyText = "Syncing";
@@ -229,7 +229,7 @@ namespace BudgetBadger.Forms.Envelopes
             try
             {
                 BusyText = "Undoing Delete";
-                var result = await Task.Run(() => _envelopeLogic.UndoDeleteEnvelopeAsync(Budget.Envelope.Id));
+                var result = await _envelopeLogic.UndoDeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
                     BusyText = "Syncing";
@@ -256,7 +256,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteQuickBudgetCommand()
         {
-            var quickBudgetResult = await Task.Run(() => _envelopeLogic.GetQuickBudgetsAsync(Budget));
+            var quickBudgetResult = await _envelopeLogic.GetQuickBudgetsAsync(Budget);
 
             if (quickBudgetResult.Success)
             {

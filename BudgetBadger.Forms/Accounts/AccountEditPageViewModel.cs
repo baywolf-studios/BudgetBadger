@@ -92,7 +92,7 @@ namespace BudgetBadger.Forms.Accounts
             try
             {
                 BusyText = "Saving";
-                var result = await Task.Run(() => _accountLogic.SaveAccountAsync(Account));
+                var result = await _accountLogic.SaveAccountAsync(Account);
 
                 if (result.Success)
                 {
@@ -135,7 +135,7 @@ namespace BudgetBadger.Forms.Accounts
 			try
 			{
 				BusyText = "Deleting";
-				var result = await Task.Run(() => _accountLogic.DeleteAccountAsync(Account.Id));
+				var result = await _accountLogic.DeleteAccountAsync(Account.Id);
 				if (result.Success)
 				{
 					BusyText = "Syncing";
@@ -172,7 +172,7 @@ namespace BudgetBadger.Forms.Accounts
             try
             {
                 BusyText = "Undoing Delete";
-                var result = await Task.Run(() => _accountLogic.UndoDeleteAccountAsync(Account.Id));
+                var result = await _accountLogic.UndoDeleteAccountAsync(Account.Id);
                 if (result.Success)
                 {
                     BusyText = "Syncing";

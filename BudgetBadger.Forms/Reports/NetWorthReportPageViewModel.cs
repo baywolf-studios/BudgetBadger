@@ -14,7 +14,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, INavigatingAware
+    public class NetWorthReportPageViewModel : BindableBase, INavigatedAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -88,7 +88,11 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatedFrom(NavigationParameters parameters)
+        {
+        }
+
+        public async void OnNavigatedTo(NavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
@@ -107,7 +111,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var entries = new List<Microcharts.Entry>();
 
-                var netWorthReportResult = await Task.Run(() => _reportLogic.GetNetWorthReport(BeginDate, EndDate));
+                var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
                 if (netWorthReportResult.Success)
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
