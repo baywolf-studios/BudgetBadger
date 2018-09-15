@@ -124,7 +124,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                var result = await Task.Run(() => _payeeLogic.GetPayeesAsync());
 
                 if (result.Success)
                 {
@@ -151,7 +151,7 @@ namespace BudgetBadger.Forms.Payees
                 Description = SearchText
             };
 
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+            var result = await Task.Run(() => _payeeLogic.SavePayeeAsync(newPayee));
 
             if (result.Success)
             {
@@ -186,7 +186,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteCommand(Payee payee)
         {
-            var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
+            var result = await Task.Run(() => _payeeLogic.DeletePayeeAsync(payee.Id));
 
 			if (result.Success)
             {

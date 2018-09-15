@@ -86,7 +86,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeLogic.GetDeletedEnvelopesAsync();
+                var result = await Task.Run(() => _envelopeLogic.GetDeletedEnvelopesAsync());
 
                 if (result.Success)
                 {

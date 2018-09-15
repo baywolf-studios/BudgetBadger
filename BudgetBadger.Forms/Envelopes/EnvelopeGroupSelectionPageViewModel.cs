@@ -111,7 +111,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var envelopeGroupsResult = await _envelopeLogic.GetEnvelopeGroupsAsync();
+                var envelopeGroupsResult = await Task.Run(() => _envelopeLogic.GetEnvelopeGroupsAsync());
 
                 if (envelopeGroupsResult.Success)
                 {
@@ -161,7 +161,7 @@ namespace BudgetBadger.Forms.Envelopes
                     Description = SearchText
                 };
 
-                var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+                var result = await Task.Run(() => _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup));
 
                 if (result.Success)
                 {

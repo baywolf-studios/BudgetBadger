@@ -145,11 +145,11 @@
                                     MappingName="Amount"
                                     TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
+                                    Width="56"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
                                     HeaderTextAlignment="Center"
-                                    MappingName="."
-                                    Width="56">
+                                    MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">

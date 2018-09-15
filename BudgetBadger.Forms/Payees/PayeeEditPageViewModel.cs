@@ -83,7 +83,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Saving";
-                var result = await _payeeLogic.SavePayeeAsync(Payee);
+                var result = await Task.Run(() => _payeeLogic.SavePayeeAsync(Payee));
 
                 if (result.Success)
                 {
@@ -128,7 +128,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Deleting";
-                var result = await _payeeLogic.DeletePayeeAsync(Payee.Id);
+                var result = await Task.Run(() => _payeeLogic.DeletePayeeAsync(Payee.Id));
                 if (result.Success)
                 {
                     BusyText = "Syncing";
@@ -165,7 +165,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Undoing Delete";
-                var result = await _payeeLogic.UndoDeletePayeeAsync(Payee.Id);
+                var result = await Task.Run(() => _payeeLogic.UndoDeletePayeeAsync(Payee.Id));
                 if (result.Success)
                 {
                     BusyText = "Syncing";

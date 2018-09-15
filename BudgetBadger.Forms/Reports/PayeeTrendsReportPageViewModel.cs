@@ -164,7 +164,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var payeeEntries = new List<Microcharts.Entry>();
 
-                var payeeReportResult = await _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, BeginDate, EndDate);
+                var payeeReportResult = await Task.Run(() => _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, BeginDate, EndDate));
                 if (payeeReportResult.Success)
                 {
                     foreach (var datapoint in payeeReportResult.Data)

@@ -102,12 +102,12 @@ namespace BudgetBadger.Forms.Envelopes
             try
             {
 
-                var scheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+                var scheduleResult = await Task.Run(() => _envelopeLogic.GetCurrentBudgetScheduleAsync());
                 if (scheduleResult.Success)
                 {
                     var schedule = scheduleResult.Data;
 
-                    var budgetResult = await _envelopeLogic.GetBudgetsForSelectionAsync(schedule);
+                    var budgetResult = await Task.Run(() => _envelopeLogic.GetBudgetsForSelectionAsync(schedule));
 
                     if (budgetResult.Success)
                     {

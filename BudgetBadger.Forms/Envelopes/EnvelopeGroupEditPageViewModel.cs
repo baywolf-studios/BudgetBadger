@@ -83,7 +83,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Saving";
-				var result = await _envelopeLogic.SaveEnvelopeGroupAsync(EnvelopeGroup);
+				var result = await Task.Run(() => _envelopeLogic.SaveEnvelopeGroupAsync(EnvelopeGroup));
 
                 if (result.Success)
                 {
@@ -128,7 +128,7 @@ namespace BudgetBadger.Forms.Payees
             try
             {
                 BusyText = "Deleting";
-                var result = await _envelopeLogic.DeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
+                var result = await Task.Run(() => _envelopeLogic.DeleteEnvelopeGroupAsync(EnvelopeGroup.Id));
                 if (result.Success)
                 {
                     BusyText = "Syncing";
