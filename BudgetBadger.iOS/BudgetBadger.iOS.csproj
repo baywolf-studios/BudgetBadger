@@ -166,7 +166,7 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\BudgetBadgerTestIcon.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\TestBadger.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />
