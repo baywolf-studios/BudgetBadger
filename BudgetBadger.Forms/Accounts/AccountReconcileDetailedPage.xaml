@@ -27,32 +27,27 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ScrollView
+            <Grid
                 Grid.Row="0"
                 Grid.ColumnSpan="2"
-                Margin="0"
-                Padding="16"
+                Margin="16"
+                ColumnSpacing="16"
                 IsVisible="{Binding StatementMode}"
-                Orientation="Vertical">
-                <Grid
-                    Margin="0"
-                    ColumnSpacing="16"
-                    RowSpacing="16">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <uc:DateSelector
-                        Grid.Row="0"
-                        Date="{Binding StatementDate}"
-                        Label="Statement Date" />
-                    <uc:CurrencyCalculatorEntry
-                        Grid.Row="1"
-                        Label="Statement Balance"
-                        Number="{Binding StatementAmount}" />
-                </Grid>
-            </ScrollView>
+                RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <uc:DateSelector
+                    Grid.Row="0"
+                    Date="{Binding StatementDate}"
+                    Label="Statement Date" />
+                <uc:CurrencyCalculatorEntry
+                    Grid.Row="1"
+                    Label="Statement Balance"
+                    Number="{Binding StatementAmount}" />
+            </Grid>
             <uc:HelperControl
                 Grid.Row="0"
                 Grid.ColumnSpan="2"
