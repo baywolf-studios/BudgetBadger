@@ -112,6 +112,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var envelopeEntries = new List<Entry>();
 
+                await Task.Yield();
                 var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(BeginDate, EndDate);
                 if (envelopeReportResult.Success)
                 {

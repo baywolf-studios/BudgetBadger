@@ -16,7 +16,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeeTrendsReportPageViewModel: BindableBase, INavigatingAware
+    public class PayeeTrendsReportPageViewModel: BindableBase, IPageLifecycleAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -112,6 +112,7 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
+
         public async void OnNavigatingTo(NavigationParameters parameters)
         {
             var payeesResult = await _payeeLogic.GetPayeesForReportAsync();
@@ -164,6 +165,7 @@ namespace BudgetBadger.Forms.Reports
             {
                 var payeeEntries = new List<Microcharts.Entry>();
 
+                await Task.Yield();
                 var payeeReportResult = await _reportLogic.GetPayeeTrendsReport(SelectedPayee.Id, BeginDate, EndDate);
                 if (payeeReportResult.Success)
                 {
