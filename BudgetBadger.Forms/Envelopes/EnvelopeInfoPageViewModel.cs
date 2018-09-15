@@ -164,14 +164,14 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Budget.IsActive)
                 {
-                    var budgetResult = await Task.Run(() => _envelopeLogic.GetBudgetAsync(Budget.Id));
+                    var budgetResult = await _envelopeLogic.GetBudgetAsync(Budget.Id);
                     if (budgetResult.Success)
                     {
                         Budget = budgetResult.Data;
                     }
                 }
 
-                var result = await Task.Run(() => _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope));
+                var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                 if (result.Success)
                 {
                     Transactions = result.Data;
@@ -196,11 +196,11 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (transaction.IsCombined)
                 {
-                    result = await Task.Run(() => _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted));
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
                 }
                 else
                 {
-                    result = await Task.Run(() => _transactionLogic.SaveTransactionAsync(transaction));
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
                 }
 
                 if (result.Success)
@@ -223,7 +223,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await Task.Run(() => _transactionLogic.DeleteTransactionAsync(transaction.Id));
+            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {

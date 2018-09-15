@@ -125,7 +125,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await Task.Run(() => _payeeLogic.GetPayeesForSelectionAsync());
+                var result = await _payeeLogic.GetPayeesForSelectionAsync();
 
                 if (result.Success)
                 {

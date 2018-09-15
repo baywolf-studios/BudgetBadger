@@ -123,7 +123,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await Task.Run(() => _accountLogic.GetAccountsAsync());
+                var result = await _accountLogic.GetAccountsAsync();
 
                 if (result.Success)
                 {
@@ -159,7 +159,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteCommand(Account account)
         {
-            var result = await Task.Run(() => _accountLogic.DeleteAccountAsync(account.Id));
+            var result = await _accountLogic.DeleteAccountAsync(account.Id);
 
             if (result.Success)
             {

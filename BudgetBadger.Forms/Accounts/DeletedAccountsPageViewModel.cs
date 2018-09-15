@@ -111,7 +111,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await Task.Run(() => _accountLogic.GetDeletedAccountsAsync());
+                var result = await _accountLogic.GetDeletedAccountsAsync();
 
                 if (result.Success)
                 {

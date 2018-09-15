@@ -156,7 +156,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 if (Payee.IsActive)
                 {
-                    var payeeResult = await Task.Run(() => _payeeLogic.GetPayeeAsync(Payee.Id));
+                    var payeeResult = await _payeeLogic.GetPayeeAsync(Payee.Id);
                     if (payeeResult.Success)
                     {
                         Payee = payeeResult.Data;
@@ -166,7 +166,7 @@ namespace BudgetBadger.Forms.Payees
                         //show alert that account data may be stale
                     }
 
-                    var result = await Task.Run(() => _transactionLogic.GetPayeeTransactionsAsync(Payee));
+                    var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
                     if (result.Success)
                     {
                         Transactions = result.Data;
@@ -202,11 +202,11 @@ namespace BudgetBadger.Forms.Payees
 
                 if (transaction.IsCombined)
                 {
-                    result = await Task.Run(() => _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted));
+                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
                 }
                 else
                 {
-                    result = await Task.Run(() => _transactionLogic.SaveTransactionAsync(transaction));
+                    result = await _transactionLogic.SaveTransactionAsync(transaction);
                 }
 
                 if (result.Success)
@@ -229,7 +229,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await Task.Run(() => _transactionLogic.DeleteTransactionAsync(transaction.Id));
+            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {
