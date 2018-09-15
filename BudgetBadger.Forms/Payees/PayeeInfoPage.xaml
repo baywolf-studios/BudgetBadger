@@ -26,7 +26,7 @@
             <uc:HelperControl
                 Grid.Row="0"
                 HelperText="No transactions yet"
-                ImagePath="helpertransaction.svg"
+                ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger

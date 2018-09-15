@@ -15,7 +15,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted accounts"
-            ImagePath="helperaccount.svg"
+            ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"

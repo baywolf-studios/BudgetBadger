@@ -18,7 +18,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="Add an Account using the + button"
-            ImagePath="helperaccount.svg"
+            ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"

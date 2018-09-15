@@ -274,6 +274,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\helperenvelopegroup.svg" />
     <BundleResource Include="Resources\expander.svg" />
+    <BundleResource Include="Resources\transaction.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -147,7 +147,7 @@
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 HelperText="No transactions yet"
-                ImagePath="helpertransaction.svg"
+                ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger
