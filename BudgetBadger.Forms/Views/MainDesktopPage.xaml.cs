@@ -22,9 +22,9 @@ namespace BudgetBadger.Forms.Views
             get => (Color)Application.Current.Resources["SecondaryTextColor"];
         }
 
-        Color _primaryColor
+        Color _primaryTextColor
         {
-            get => (Color)Application.Current.Resources["PrimaryColor"];
+            get => (Color)Application.Current.Resources["PrimaryTextColor"];
         }
 
         string _replaceColorMap;
@@ -74,11 +74,11 @@ namespace BudgetBadger.Forms.Views
 
             var currentIcon = (SvgCachedImage)stackLayout.Children.FirstOrDefault(c => c is SvgCachedImage);
             currentIcon.ReplaceStringMap.Clear();
-            currentIcon.ReplaceStringMap.Add(_replaceColorMap, _primaryColor.GetHexString());
+            currentIcon.ReplaceStringMap.Add(_replaceColorMap, _primaryTextColor.GetHexString());
             currentIcon.ReloadImage();
 
             var currentLabel = (Label)stackLayout.Children.FirstOrDefault(c => c is Label);
-            currentLabel.TextColor = _primaryColor;
+            currentLabel.TextColor = _primaryTextColor;
 
         }
 
