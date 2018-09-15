@@ -54,13 +54,13 @@
                             Grid.Column="0"
                             HorizontalTextAlignment="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Statement"
+                            Text="Difference"
                             VerticalTextAlignment="Center" />
                         <Label
                             Grid.Column="1"
                             HorizontalTextAlignment="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="{Binding StatementAmount, StringFormat='{0:c}'}"
+                            Text="{Binding Difference, StringFormat='{0:c}'}"
                             VerticalTextAlignment="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -79,25 +79,25 @@
                             Grid.Column="0"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Cleared" />
+                            Text="Statement" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
+                            Text="{Binding StatementAmount, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Difference" />
+                            Text="Cleared" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding Difference, StringFormat='{0:c}'}" />
+                            Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>

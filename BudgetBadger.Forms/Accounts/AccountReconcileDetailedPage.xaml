@@ -223,42 +223,42 @@
                     Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Statement"
+                    Text="Difference"
                     VerticalTextAlignment="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
+                    Text="{Binding Difference, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Cleared"
+                    Text="Statement"
                     VerticalTextAlignment="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
+                    Text="{Binding StatementAmount, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Difference"
+                    Text="Cleared"
                     VerticalTextAlignment="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
                     HorizontalTextAlignment="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Difference, StringFormat='{0:c}'}"
+                    Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Start" />
                 <Button
                     Grid.Row="0"

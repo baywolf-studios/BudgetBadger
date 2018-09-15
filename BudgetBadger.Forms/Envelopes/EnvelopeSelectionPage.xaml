@@ -19,7 +19,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="Add an Envelope using the + button"
-            ImagePath="helperenvelope.svg"
+            ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"

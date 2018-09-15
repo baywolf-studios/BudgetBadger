@@ -104,7 +104,7 @@
             <uc:HelperControl
                 Grid.Row="2"
                 HelperText="No transactions yet"
-                ImagePath="helpertransaction.svg"
+                ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:ListView
                     AllowSwiping="true"

@@ -182,6 +182,7 @@
     <BundleResource Include="Resources\helperenvelopegroup.svg" />
     <BundleResource Include="Resources\payees.svg" />
     <BundleResource Include="Resources\expander.svg" />
+    <BundleResource Include="Resources\transaction.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

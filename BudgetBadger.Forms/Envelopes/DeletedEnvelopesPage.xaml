@@ -16,7 +16,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted envelopes"
-            ImagePath="helperenvelope.svg"
+            ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <pulltoRefresh:SfPullToRefresh
                 Grid.Row="2"

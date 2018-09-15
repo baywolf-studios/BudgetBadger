@@ -22,7 +22,7 @@
         <uc:HelperControl
             Grid.Row="2"
             HelperText="Add an Envelope using the + button"
-            ImagePath="helperenvelope.svg"
+            ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <Grid
                 Margin="0"

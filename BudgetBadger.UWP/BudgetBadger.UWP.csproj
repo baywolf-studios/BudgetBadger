@@ -195,6 +195,7 @@
     <None Include="BudgetBadger.UWP_TemporaryKey.pfx" />
     <None Include="helperenvelopegroup.svg" />
     <None Include="expander.svg" />
+    <None Include="transaction.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
