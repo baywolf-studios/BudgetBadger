@@ -17,7 +17,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="No deleted payees"
-            ImagePath="payee.svg"
+            ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"
