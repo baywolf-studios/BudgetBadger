@@ -166,25 +166,63 @@
     <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-filled-30.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\01a-iPhone-Notification-20%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\01b-iPhone-Notification-20%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\02b-iPhone-Spotlight-Settings-29%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\02c-iPhone-Spotlight-Settings-29%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\03a-iPhone-Spotlight-40%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\03b-iPhone-Spotlight-40%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\05a-iPhone-App-60%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\05b-iPhone-App-60%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\06a-iPad-Notifications-20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\06b-iPad-Notifications-20%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\07a-iPad-Settings-29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\07b-iPad-Settings-29%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\08a-iPad-Spotlight-40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\08b-iPad-Spotlight-40%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\11a-iPad-App-76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\11b-iPad-App-76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\12a-iPad-Pro-App-83_5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\13a-iOS-Marketing-1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\01a-iPhone-Notification-20%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\01b-iPhone-Notification-20%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\02b-iPhone-Spotlight-Settings-29%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\02c-iPhone-Spotlight-Settings-29%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\03a-iPhone-Spotlight-40%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\03b-iPhone-Spotlight-40%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\05a-iPhone-App-60%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\05b-iPhone-App-60%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\06a-iPad-Notifications-20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\06b-iPad-Notifications-20%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\07a-iPad-Settings-29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\07b-iPad-Settings-29%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\08a-iPad-Spotlight-40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\08b-iPad-Spotlight-40%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\11a-iPad-App-76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\11b-iPad-App-76%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\12a-iPad-Pro-App-83_5%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\13a-iOS-Marketing-1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />

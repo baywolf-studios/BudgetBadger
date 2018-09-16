@@ -167,7 +167,6 @@
     <Content Include="Assets\Wide\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide\Wide310x150Logo.scale-400.png" />
     <Content Include="back.svg" />
-    <Content Include="BudgetBadgerUWP.svg" />
     <Content Include="cancel.svg" />
     <Content Include="delete.svg" />
     <Content Include="dropbox.svg" />
