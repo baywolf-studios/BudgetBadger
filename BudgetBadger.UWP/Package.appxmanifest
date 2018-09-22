@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="31e6402e-0407-4419-a6c3-7c6d18576017" Publisher="CN=baywolf-studios" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="31e6402e-0407-4419-a6c3-7c6d18576017" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="BayWolfStudiosLLC.BudgetBadger" Publisher="CN=2C7DBB1A-4A39-467C-896C-4D3A7A61A339" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="15c69a3b-fa1e-4b2f-a10b-043493c01a4e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Budget Badger</DisplayName>
-    <PublisherDisplayName>Bay Wolf Studios</PublisherDisplayName>
+    <PublisherDisplayName>Bay Wolf Studios LLC</PublisherDisplayName>
     <Logo>assets\Store\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -16,7 +16,8 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BudgetBadger.App">
       <uap:VisualElements DisplayName="Budget Badger" Square150x150Logo="assets\Medium\Medium150x150Logo.png" Square44x44Logo="assets\AppList\AppList.png" Description="Budget Badger" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="assets\Wide\Wide310x150Logo.png" Square71x71Logo="assets\Small\Small71x71Logo.png" Square310x310Logo="assets\Large\Large310x310Logo.png"></uap:DefaultTile>
+        <uap:DefaultTile Wide310x150Logo="assets\Wide\Wide310x150Logo.png" Square71x71Logo="assets\Small\Small71x71Logo.png" Square310x310Logo="assets\Large\Large310x310Logo.png">
+        </uap:DefaultTile>
         <uap:SplashScreen Image="assets\SplashScreen\SplashScreen.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="portrait" />
