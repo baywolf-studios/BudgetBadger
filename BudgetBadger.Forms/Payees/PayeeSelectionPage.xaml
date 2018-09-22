@@ -19,7 +19,7 @@
     <uc:ChildSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="Add a Payee using the + button"
-            ImagePath="payee.svg"
+            ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <pulltoRefresh:SfPullToRefresh
                 IsRefreshing="{Binding IsBusy}"

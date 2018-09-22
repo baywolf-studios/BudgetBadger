@@ -17,7 +17,7 @@
     <uc:RootSearchPage.BodyContent>
         <uc:HelperControl
             HelperText="Add a Payee using the + button"
-            ImagePath="payee.svg"
+            ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
