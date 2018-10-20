@@ -76,7 +76,7 @@ namespace BudgetBadger.Forms.Transactions
             SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
         }
 
-		public async void OnNavigatingTo(NavigationParameters parameters)
+		public async void OnNavigatingTo(INavigationParameters parameters)
 		{
             if (!SplitTransactionMode)
             {

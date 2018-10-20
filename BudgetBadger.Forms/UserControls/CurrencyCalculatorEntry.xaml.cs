@@ -43,6 +43,25 @@ namespace BudgetBadger.Forms.UserControls
 
             TextControl.Completed += UpdateCalculation;
 
+            TextControl.Focused += (sender, e) =>
+            {
+                if (!Number.HasValue)
+                {
+                    TextControl.CursorPosition = 0;
+                    TextControl.SelectionLength = 0;
+                }
+                else if (Number.Value == 0)
+                {
+                    TextControl.CursorPosition = 0;
+                    TextControl.SelectionLength = TextControl.Text.Length;
+                }
+                else
+                {
+                    TextControl.CursorPosition = TextControl.Text.Length;
+                    TextControl.SelectionLength = 0;
+                }
+            };
+
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsEnabled))

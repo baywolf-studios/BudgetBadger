@@ -62,7 +62,7 @@ namespace BudgetBadger.Forms.Payees
             UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(INavigationParameters parameters)
         {
             var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)

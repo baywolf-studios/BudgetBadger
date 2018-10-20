@@ -74,11 +74,11 @@ namespace BudgetBadger.Forms.Envelopes
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
             if (envelope != null)
@@ -87,7 +87,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

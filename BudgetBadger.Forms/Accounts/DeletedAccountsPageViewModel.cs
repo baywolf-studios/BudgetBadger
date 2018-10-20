@@ -73,7 +73,7 @@ namespace BudgetBadger.Forms.Accounts
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
 			var account = parameters.GetValue<Account>(PageParameter.Account);
 			if (account != null)

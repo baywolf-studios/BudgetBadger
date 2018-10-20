@@ -72,7 +72,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
 			await ExecuteRefreshCommand();
         }
