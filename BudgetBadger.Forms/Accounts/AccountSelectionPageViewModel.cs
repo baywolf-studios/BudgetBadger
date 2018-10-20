@@ -75,11 +75,11 @@ namespace BudgetBadger.Forms.Accounts
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
@@ -88,7 +88,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

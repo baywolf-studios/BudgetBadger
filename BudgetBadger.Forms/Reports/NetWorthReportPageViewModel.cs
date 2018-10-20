@@ -88,7 +88,7 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

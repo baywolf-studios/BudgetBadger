@@ -131,6 +131,7 @@
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
+                <Setter Property="Padding" Value="16,0"/>
             </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
@@ -153,6 +154,7 @@
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
+                <Setter Property="Padding" Value="16,0"/>
             </Style>
 
             <x:Double x:Key="SecondaryActionButtonFontSize">14</x:Double>
@@ -176,6 +178,7 @@
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
+                <Setter Property="Padding" Value="16,0"/>
             </Style>
 
             <x:Double x:Key="SecondaryDestructionButtonFontSize">14</x:Double>
@@ -199,6 +202,7 @@
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
+                <Setter Property="Padding" Value="16,0"/>
             </Style>
 
             <x:Double x:Key="PageHeaderFontSize">20</x:Double>

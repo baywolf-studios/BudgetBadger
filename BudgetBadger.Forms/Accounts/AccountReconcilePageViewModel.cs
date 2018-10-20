@@ -159,7 +159,7 @@ namespace BudgetBadger.Forms.Accounts
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

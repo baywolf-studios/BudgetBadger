@@ -98,7 +98,7 @@ namespace BudgetBadger.Forms.Envelopes
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)

@@ -109,7 +109,7 @@ namespace BudgetBadger.Forms.Accounts
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

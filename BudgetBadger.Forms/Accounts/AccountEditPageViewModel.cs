@@ -71,7 +71,7 @@ namespace BudgetBadger.Forms.Accounts
             UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
         }
 
-        public void OnNavigatingTo(NavigationParameters parameters)
+        public void OnNavigatingTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

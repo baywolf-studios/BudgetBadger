@@ -100,7 +100,7 @@ namespace BudgetBadger.Forms.Payees
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)

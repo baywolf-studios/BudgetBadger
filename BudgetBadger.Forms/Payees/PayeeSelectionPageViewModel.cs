@@ -78,11 +78,11 @@ namespace BudgetBadger.Forms.Payees
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
@@ -91,7 +91,7 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async void OnNavigatingTo(NavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
