@@ -49,7 +49,7 @@ namespace BudgetBadger.Forms
 
         protected override async void OnInitialized()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTk3ODNAMzEzNjJlMzIyZTMwTHZ0OVVOQXBHVlJUR2s1WFJHVDZ1QUZnUkx2Q3ZGcDRQcFlLVnozY043cz0=");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzU5NjRAMzEzNjJlMzMyZTMwaWlVT0Z2Yzd1ak5XUSsxVkZhTXJ5RHhLdWJvQ3VJYmxJdnZrMGhjMDExND0=");
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
@@ -66,34 +66,14 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
-            var refreshResult = await RefreshSyncCredentials();
-
-            if (refreshResult.Success)
-            {
-                var syncService = Container.Resolve<ISync>();
-                await syncService.FullSync();
-            }
-            else
-            {
-                var dialogService = Container.Resolve<IPageDialogService>();
-                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
-            }
+            await VerifyPurchases();
+            await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
         {
-            var refreshResult = await RefreshSyncCredentials();
-
-            if (refreshResult.Success)
-            {
-                var syncService = Container.Resolve<ISync>();
-                await syncService.FullSync();
-            }
-            else
-            {
-                var dialogService = Container.Resolve<IPageDialogService>();
-                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
-            }
+            await VerifyPurchases();
+            await SyncOnStartOrResume();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -214,6 +194,35 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
 
             timer.Stop();
+        }
+
+        async Task VerifyPurchases()
+        {
+            var purchaseService = Container.Resolve<IPurchaseService>();
+
+            var proResult = await purchaseService.VerifyPurchaseAsync(Purchases.Pro);
+
+            if (!proResult.Success)
+            {
+                var settings = Container.Resolve<ISettings>();
+                await settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+            }
+        }
+
+        async Task SyncOnStartOrResume()
+        {
+            var refreshResult = await RefreshSyncCredentials();
+
+            if (refreshResult.Success)
+            {
+                var syncService = Container.Resolve<ISync>();
+                await syncService.FullSync();
+            }
+            else
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
+            }
         }
 
         async Task<Result> RefreshSyncCredentials()
