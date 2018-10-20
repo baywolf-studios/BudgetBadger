@@ -11,12 +11,14 @@ using BudgetBadger.Core.Logic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Reports
 {
     public class ReportsPageViewModel : BindableBase
     {
         readonly INavigationService _navigationService;
+        readonly IPurchaseService _purchaseService;
         readonly string _netWorthReport = "Net Worth";
         readonly string _envelopeSpendingReport = "Envelopes Spending";
         readonly string _payeeSpendingReport = "Payees Spending";
@@ -45,9 +47,10 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _reports, value);
         }
 
-        public ReportsPageViewModel(INavigationService navigationService)
+        public ReportsPageViewModel(INavigationService navigationService, IPurchaseService purchaseService)
         {
             _navigationService = navigationService;
+            _purchaseService = purchaseService;
 
             Reports = new List<string>
             {
@@ -71,6 +74,18 @@ namespace BudgetBadger.Forms.Reports
             if (report == null)
             {
                 return;
+            }
+
+            var allowedReports = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
+            if (!allowedReports.Success)
+            {
+                // show some dialog asking if they would like to purchase
+                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                if (!purchaseResult.Success)
+                {
+                    //show dialog of not allowing
+                    return;
+                }
             }
 
             if (report == _netWorthReport)

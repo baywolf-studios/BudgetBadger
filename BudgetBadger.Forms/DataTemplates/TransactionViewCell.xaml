@@ -24,12 +24,13 @@
             VerticalOptions="Center"
             WidthRequest="24">
             <svg:SvgCachedImage.Triggers>
-                <DataTrigger
-                    Binding="{Binding Posted}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="posted.svg" />
-                </DataTrigger>
+                <MultiTrigger TargetType="svg:SvgCachedImage">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding Posted}" Value="true" />
+                        <BindingCondition Binding="{Binding Reconciled}" Value="false" />
+                    </MultiTrigger.Conditions>
+                  <Setter Property="Source" Value="posted.svg" />
+                </MultiTrigger>
                 <DataTrigger
                     Binding="{Binding Reconciled}"
                     TargetType="svg:SvgCachedImage"
@@ -44,6 +45,7 @@
                 </DataTrigger>
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
+        
     </ContentView>
     <ContentView Grid.Column="1">
         <ContentView.InputTransparent>

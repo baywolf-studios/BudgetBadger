@@ -26,6 +26,9 @@
                 <RowDefinition Height="{StaticResource ListItemHeight}" />
                 <RowDefinition Height="{StaticResource ListItemHeight}" />
                 <RowDefinition Height="{StaticResource ListItemHeight}" />
+                <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
+                <RowDefinition Height="{StaticResource ListItemHeight}" />
+                <RowDefinition Height="{StaticResource ListItemHeight}" />
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"
@@ -158,6 +161,58 @@
                 Text="Payees">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label
+                Grid.Row="7"
+                Grid.ColumnSpan="3"
+                Margin="16,12,16,0"
+                Style="{StaticResource ListGroupHeaderLabelStyle}"
+                Text="Purchases" />
+            <svg:SvgCachedImage
+                Grid.Row="8"
+                Grid.Column="0"
+                HeightRequest="24"
+                HorizontalOptions="End"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="envelopegroup.svg"
+                VerticalOptions="Center"
+                WidthRequest="24">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="8"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource ListItemLabelStyle}"
+                Text="Purchase Pro">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <svg:SvgCachedImage
+                Grid.Row="9"
+                Grid.Column="0"
+                HeightRequest="24"
+                HorizontalOptions="End"
+                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                Source="envelopegroup.svg"
+                VerticalOptions="Center"
+                WidthRequest="24">
+                <svg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
+                </svg:SvgCachedImage.GestureRecognizers>
+            </svg:SvgCachedImage>
+            <Label
+                Grid.Row="9"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource ListItemLabelStyle}"
+                Text="Restore Pro Purchase">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
                 </Label.GestureRecognizers>
             </Label>
         </Grid>

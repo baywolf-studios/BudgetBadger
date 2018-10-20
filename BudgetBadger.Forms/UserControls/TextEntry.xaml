@@ -21,5 +21,13 @@
         IsPassword="{Binding IsPassword}"
         Keyboard="{Binding Keyboard}"
         Text="{Binding Text}"
-        TextColor="{StaticResource PrimaryTextColor}" />
+        TextColor="{StaticResource PrimaryTextColor}">
+        <Entry.Keyboard>
+            <Keyboard x:FactoryMethod="Create">
+                <x:Arguments>
+                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
+                </x:Arguments>
+            </Keyboard>
+        </Entry.Keyboard>
+    </Entry>
 </StackLayout>

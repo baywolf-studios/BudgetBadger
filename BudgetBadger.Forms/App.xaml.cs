@@ -30,6 +30,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
+using BudgetBadger.Core.Purchase;
+using BudgetBadger.Forms.Purchase;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -102,6 +104,7 @@ namespace BudgetBadger.Forms
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
+			container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
             Directory.CreateDirectory(appDataDirectory);
