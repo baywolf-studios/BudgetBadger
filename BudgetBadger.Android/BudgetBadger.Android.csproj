@@ -105,6 +105,7 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
+    <Compile Include="SimpleAuthActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

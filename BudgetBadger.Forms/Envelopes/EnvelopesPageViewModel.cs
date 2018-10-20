@@ -221,14 +221,14 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                await ExecuteRefreshCommand();
+
                 var syncResult = await _syncService.FullSync();
 
                 if (!syncResult.Success)
                 {
                     await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
                 }
-
-                await ExecuteRefreshCommand();
             }
             else
             {

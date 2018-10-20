@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.FileSyncProvider.Dropbox;
@@ -23,9 +24,12 @@ namespace BudgetBadger.Forms.Settings
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
         readonly DropBoxApi _dropboxApi;
+        readonly IPurchaseService _purchaseService;
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand ShowDeletedCommand { get; set; }
+        public ICommand RestoreProPurchaseCommand { get; set; }
+        public ICommand PurchaseProCommand { get; set; }
 
         bool _dropboxEnabled;
         public bool DropboxEnabled
@@ -34,18 +38,46 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _dropboxEnabled, value);
         }
 
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
         public SettingsPageViewModel(INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       ISettings settings,
-                                      DropBoxApi dropboxApi)
+                                      DropBoxApi dropboxApi,
+                                      IPurchaseService purchaseService)
         {
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
             _dropboxApi = dropboxApi;
+            _purchaseService = purchaseService;
+
+            HasPro = false;
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
             ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
+            RestoreProPurchaseCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
+            PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
+        }
+
+        public async void OnAppearing()
+        {
+            var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
+
+            HasPro = purchasedPro.Success;
+
+            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+
+            DropboxEnabled = (syncMode == SyncMode.DropboxSync);
+        }
+
+        public void OnDisappearing()
+        {
         }
 
         public async Task ExecuteSyncToggleCommand()
@@ -54,6 +86,20 @@ namespace BudgetBadger.Forms.Settings
 
 			if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
+                var verifyPurchase = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
+                if (!verifyPurchase.Success)
+                {
+                    // ask if they'd like to purchase
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                    if (!purchaseResult.Success)
+                    {
+                        await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                        await _dialogService.DisplayAlertAsync("Not Purchased", "You did not purchase this feature", "Ok");
+                        DropboxEnabled = false;
+                        return;
+                    }
+                }
+
                 try
                 {
                     _dropboxApi.ForceRefresh = true;
@@ -90,22 +136,24 @@ namespace BudgetBadger.Forms.Settings
             await _navigationService.NavigateAsync(pageName);
         }
 
-        public void OnAppearing()
+        public async Task ExecuteRestoreProCommand()
         {
-            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+            var result = await _purchaseService.RestorePurchaseAsync(Purchases.Pro);
 
-            if (syncMode == SyncMode.DropboxSync)
+            HasPro = result.Success;
+
+            if (!HasPro)
             {
-                DropboxEnabled = true;
-            }
-            else
-            {
-                DropboxEnabled = false;
+                await _dialogService.DisplayAlertAsync("Restore Purchase Unsuccessful", result.Message, "Ok");
             }
         }
 
-        public void OnDisappearing()
+        public async Task ExecutePurchaseProCommand()
         {
+            if (!HasPro)
+            {
+                await _purchaseService.PurchaseAsync(Purchases.Pro);
+            }
         }
     }
 }
