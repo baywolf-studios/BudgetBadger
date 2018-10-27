@@ -15,6 +15,7 @@
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
+    <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
     <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="16.3.0.21" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="16.3.0.21" />
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="16.3.0.21" />
