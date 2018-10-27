@@ -42,7 +42,7 @@ namespace BudgetBadger.Forms.Purchase
                 {
                     //did not purchase
                     result.Success = false;
-                    result.Message = "Did not purchase";
+                    result.Message = "The purchase was unsuccessful";
                     return result;
                 }
                 else
