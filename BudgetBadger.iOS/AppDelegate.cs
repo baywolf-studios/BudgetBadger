@@ -68,7 +68,6 @@ namespace BudgetBadger.iOS
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-            container.Register<IInAppBilling, InAppBillingImplementation>();
         }
     }
 }

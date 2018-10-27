@@ -168,49 +168,36 @@
                 Grid.ColumnSpan="3"
                 Margin="16,12,16,0"
                 Style="{StaticResource ListGroupHeaderLabelStyle}"
-                Text="Purchases" />
-            <svg:SvgCachedImage
-                Grid.Row="8"
-                Grid.Column="0"
-                HeightRequest="24"
-                HorizontalOptions="End"
-                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                Source="envelopegroup.svg"
-                VerticalOptions="Center"
-                WidthRequest="24">
-                <svg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
-                </svg:SvgCachedImage.GestureRecognizers>
-            </svg:SvgCachedImage>
+                Text="Purchases"/>
             <Label
                 Grid.Row="8"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="16,0"
                 Style="{StaticResource ListItemLabelStyle}"
-                Text="Purchase Pro">
+                Text="Thank you for purchasing Budget Badger Pro!"
+                IsVisible="{Binding HasPro}">
+            </Label>
+            <Label
+                Grid.Row="8"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="16,0"
+                Style="{StaticResource ListItemLabelStyle}"
+                Text="Upgrade your budget - Go Pro!"
+                IsVisible="{Binding DoesNotHavePro}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
                 </Label.GestureRecognizers>
             </Label>
-            <svg:SvgCachedImage
-                Grid.Row="9"
-                Grid.Column="0"
-                HeightRequest="24"
-                HorizontalOptions="End"
-                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                Source="envelopegroup.svg"
-                VerticalOptions="Center"
-                WidthRequest="24">
-                <svg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
-                </svg:SvgCachedImage.GestureRecognizers>
-            </svg:SvgCachedImage>
             <Label
                 Grid.Row="9"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="16,0"
                 Style="{StaticResource ListItemLabelStyle}"
-                Text="Restore Pro Purchase">
+                Text="Restore Purchase"
+                IsVisible="{Binding DoesNotHavePro}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
                 </Label.GestureRecognizers>

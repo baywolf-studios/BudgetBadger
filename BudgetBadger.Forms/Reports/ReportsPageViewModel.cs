@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Core.Purchase;
+using Prism.Services;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -19,6 +20,7 @@ namespace BudgetBadger.Forms.Reports
     {
         readonly INavigationService _navigationService;
         readonly IPurchaseService _purchaseService;
+        readonly IPageDialogService _dialogService;
         readonly string _netWorthReport = "Net Worth";
         readonly string _envelopeSpendingReport = "Envelopes Spending";
         readonly string _payeeSpendingReport = "Payees Spending";
@@ -47,11 +49,26 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _reports, value);
         }
 
-        public ReportsPageViewModel(INavigationService navigationService, IPurchaseService purchaseService)
+        public ReportsPageViewModel(INavigationService navigationService,
+                                    IPageDialogService dialogService, 
+                                    IPurchaseService purchaseService)
         {
             _navigationService = navigationService;
             _purchaseService = purchaseService;
+            _dialogService = dialogService;
 
+            ResetReports();
+
+            ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
+            NetWorthCommand = new DelegateCommand(async () => await ExecuteNetWorthCommand());
+            EnvelopesSpendingCommand = new DelegateCommand(async () => await ExecuteEnvelopesSpendingCommand());
+            PayeesSpendingCommand = new DelegateCommand(async () => await ExecutePayeesSpendingCommand());
+            EnvelopeTrendCommand = new DelegateCommand(async () => await ExecuteEnvelopeTrendCommand());
+            PayeeTrendCommand = new DelegateCommand(async () => await ExecutePayeeTrendCommand());
+        }
+
+        void ResetReports()
+        {
             Reports = new List<string>
             {
                 _netWorthReport,
@@ -60,13 +77,6 @@ namespace BudgetBadger.Forms.Reports
                 _spendingTrendByEnvelopeReport,
                 _spendingTrendByPayeeReport
             };
-
-            ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
-            NetWorthCommand = new DelegateCommand(async () => await ExecuteNetWorthCommand());
-            EnvelopesSpendingCommand = new DelegateCommand(async () => await ExecuteEnvelopesSpendingCommand());
-            PayeesSpendingCommand = new DelegateCommand(async () => await ExecutePayeesSpendingCommand());
-            EnvelopeTrendCommand = new DelegateCommand(async () => await ExecuteEnvelopeTrendCommand());
-            PayeeTrendCommand = new DelegateCommand(async () => await ExecutePayeeTrendCommand());
         }
 
         public async Task ExecuteReportCommand(string report)
@@ -80,12 +90,25 @@ namespace BudgetBadger.Forms.Reports
             if (!allowedReports.Success)
             {
                 // show some dialog asking if they would like to purchase
-                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                if (!purchaseResult.Success)
+                var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
+
+                if (wantToPurchase)
                 {
-                    //show dialog of not allowing
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                    if (!purchaseResult.Success)
+                    {
+                        //show dialog of not allowing
+                        await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                        ResetReports();
+                        return;
+                    }
+                }
+                else
+                {
+                    ResetReports();
                     return;
                 }
+
             }
 
             if (report == _netWorthReport)
@@ -109,14 +132,7 @@ namespace BudgetBadger.Forms.Reports
                 await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
             }
 
-            Reports = new List<string>
-            {
-                _netWorthReport,
-                _envelopeSpendingReport,
-                _payeeSpendingReport,
-                _spendingTrendByEnvelopeReport,
-                _spendingTrendByPayeeReport
-            };
+            ResetReports();
         }
 
         public async Task ExecuteNetWorthCommand()

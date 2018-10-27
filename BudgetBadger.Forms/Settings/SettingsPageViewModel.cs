@@ -28,7 +28,7 @@ namespace BudgetBadger.Forms.Settings
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand ShowDeletedCommand { get; set; }
-        public ICommand RestoreProPurchaseCommand { get; set; }
+        public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
 
         bool _dropboxEnabled;
@@ -42,7 +42,16 @@ namespace BudgetBadger.Forms.Settings
         public bool HasPro
         {
             get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
+            set
+            {
+                SetProperty(ref _hasPro, value);
+                RaisePropertyChanged(nameof(DoesNotHavePro));
+            }
+        }
+
+        public bool DoesNotHavePro
+        {
+            get => !HasPro;
         }
 
         public SettingsPageViewModel(INavigationService navigationService,
@@ -61,7 +70,7 @@ namespace BudgetBadger.Forms.Settings
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
             ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
-            RestoreProPurchaseCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
+            RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
         }
 
@@ -90,11 +99,22 @@ namespace BudgetBadger.Forms.Settings
                 if (!verifyPurchase.Success)
                 {
                     // ask if they'd like to purchase
-                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                    if (!purchaseResult.Success)
+                    var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
+
+                    if (wantToPurchase)
+                    {
+                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                        if (!purchaseResult.Success)
+                        {
+                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                            DropboxEnabled = false;
+                            return;
+                        }
+                    }
+                    else
                     {
                         await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                        await _dialogService.DisplayAlertAsync("Not Purchased", "You did not purchase this feature", "Ok");
                         DropboxEnabled = false;
                         return;
                     }
@@ -152,7 +172,12 @@ namespace BudgetBadger.Forms.Settings
         {
             if (!HasPro)
             {
-                await _purchaseService.PurchaseAsync(Purchases.Pro);
+                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+
+                if (!purchaseResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
+                }
             }
         }
     }

@@ -27,14 +27,24 @@ namespace BudgetBadger.Forms.Purchase
 
         public override async Task<Result> VerifyPurchaseAsync(string productId)
         {
+            var result = new Result();
+
             var cachedSettingResult = _settings.GetValueOrDefault(_settingsKey + productId);
 
             Boolean.TryParse(cachedSettingResult, out bool cachedResult);
 
-            // verify will return true if not able to connect
-            var currentResult = await base.VerifyPurchaseAsync(productId);
+            if (cachedResult)
+            {
+                // verify will return true if not able to connect
+                result = await base.VerifyPurchaseAsync(productId);
+            }
+            else
+            {
+                result.Success = false;
+                result.Message = "Not purchased";
+            }
 
-            return new Result { Success = (cachedResult && currentResult.Success), Message = currentResult.Message };
+            return result;
         }
 
         public override async Task<Result> RestorePurchaseAsync(string productId)

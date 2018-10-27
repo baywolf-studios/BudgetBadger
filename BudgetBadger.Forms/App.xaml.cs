@@ -32,6 +32,8 @@ using System.Threading.Tasks;
 using BudgetBadger.Models;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Forms.Purchase;
+using Plugin.InAppBilling.Abstractions;
+using Plugin.InAppBilling;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -67,12 +69,12 @@ namespace BudgetBadger.Forms
         protected async override void OnStart()
         {
             await VerifyPurchases();
-            await SyncOnStartOrResume();
+            //await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
         {
-            await VerifyPurchases();
+            //await VerifyPurchases();
             await SyncOnStartOrResume();
         }
 
@@ -162,6 +164,7 @@ namespace BudgetBadger.Forms
 
 
             // inapp purchase 
+            container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
             container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
 
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
