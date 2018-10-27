@@ -56,17 +56,37 @@ namespace BudgetBadger.Forms.Purchase
             {
                 switch (purchaseEx.PurchaseError)
                 {
+                    case PurchaseError.AlreadyOwned:
+                        return await RestorePurchaseAsync(productId);
                     case PurchaseError.AppStoreUnavailable:
-                        result.Message = "Currently the app store seems to be unavailble. Try again later.";
+                        result.Message = "Currently the app store seems to be unavailble, please try again later.";
                         break;
                     case PurchaseError.BillingUnavailable:
                         result.Message = "Billing seems to be unavailable, please try again later.";
+                        break;
+                    case PurchaseError.GeneralError:
+                        result.Message = "There was an issue purchasing, please try again later.";
+                        break;
+                    case PurchaseError.InvalidProduct:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.ItemUnavailable:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
                         break;
                     case PurchaseError.PaymentInvalid:
                         result.Message = "Payment seems to be invalid, please try again.";
                         break;
                     case PurchaseError.PaymentNotAllowed:
                         result.Message = "Payment does not seem to be enabled/allowed, please try again.";
+                        break;
+                    case PurchaseError.ProductRequestFailed:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.ServiceUnavailable:
+                        result.Message = "The network connection seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.UserCancelled:
+                        result.Message = "Purchase Cancelled";
                         break;
                 }
 
@@ -119,10 +139,28 @@ namespace BudgetBadger.Forms.Purchase
                 {
                     //no purchases found
                     result.Success = false;
-                    result.Message = "Product purchase was not verified";
+                    result.Message = "Product purchase could not be verified";
                     return result;
                 }
-            }    
+            }
+            catch (InAppBillingPurchaseException purchaseEx)
+            {
+                switch (purchaseEx.PurchaseError)
+                {
+                    case PurchaseError.RestoreFailed:
+                        result.Message = "Purchase could not be verified";
+                        break;
+                    case PurchaseError.UserCancelled:
+                        result.Message = "Purchase could not be verified";
+                        break;
+                }
+
+                //Decide if it is an error we care about
+                result.Success = string.IsNullOrWhiteSpace(result.Message);
+
+                //Display message to user
+                return result;
+            }
             catch (Exception ex)
             {
                 // default to be verified
@@ -165,14 +203,60 @@ namespace BudgetBadger.Forms.Purchase
                 {
                     //no purchases found
                     result.Success = false;
-                    result.Message = "Product purchase was not verified";
+                    result.Message = "Product was not previously purchased";
                     return result;
                 }
             }
+            catch (InAppBillingPurchaseException purchaseEx)
+            {
+                switch (purchaseEx.PurchaseError)
+                {
+                    case PurchaseError.AlreadyOwned:
+                        result.Message = "";
+                        break;
+                    case PurchaseError.AppStoreUnavailable:
+                        result.Message = "Currently the app store seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.BillingUnavailable:
+                        result.Message = "Billing seems to be unavailable, please try again later.";
+                        break;
+                    case PurchaseError.GeneralError:
+                        result.Message = "There was an issue purchasing, please try again later.";
+                        break;
+                    case PurchaseError.InvalidProduct:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.ItemUnavailable:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.PaymentInvalid:
+                        result.Message = "Payment seems to be invalid, please try again.";
+                        break;
+                    case PurchaseError.PaymentNotAllowed:
+                        result.Message = "Payment does not seem to be enabled/allowed, please try again.";
+                        break;
+                    case PurchaseError.ProductRequestFailed:
+                        result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.ServiceUnavailable:
+                        result.Message = "The network connection seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.UserCancelled:
+                        result.Message = "Purchase Cancelled";
+                        break;
+                }
+
+                //Decide if it is an error we care about
+                result.Success = string.IsNullOrWhiteSpace(result.Message);
+
+                //Display message to user
+                return result;
+            }
             catch (Exception ex)
             {
-                // default to be verified
-                result.Success = true;
+                //Something else has gone wrong, log it
+                result.Success = false;
+                result.Message = "Unknown error";
                 return result;
             }
             finally

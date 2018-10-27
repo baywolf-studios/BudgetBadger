@@ -42,7 +42,6 @@ namespace BudgetBadger.UWP
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-			container.Register<IInAppBilling, InAppBillingImplementation>();
         }
     }
 }
