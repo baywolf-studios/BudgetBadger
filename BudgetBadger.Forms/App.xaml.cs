@@ -161,6 +161,9 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
 
+            // inapp purchase 
+            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
+
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Models;
+using Plugin.InAppBilling.Abstractions;
 
 namespace BudgetBadger.Forms.Purchase
 {
@@ -10,7 +11,7 @@ namespace BudgetBadger.Forms.Purchase
         readonly ISettings _settings;
         readonly string _settingsKey = "CachedInAppBillingPurchaseService";
 
-        public CachedInAppBillingPurchaseService(ISettings settings)
+        public CachedInAppBillingPurchaseService(IInAppBilling inAppBilling, ISettings settings) : base(inAppBilling)
         {
             _settings = settings;
         }
