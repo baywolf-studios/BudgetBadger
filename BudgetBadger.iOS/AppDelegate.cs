@@ -2,6 +2,8 @@
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
+using Plugin.InAppBilling;
+using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
 using UIKit;
@@ -66,7 +68,7 @@ namespace BudgetBadger.iOS
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-
+            container.Register<IInAppBilling, InAppBillingImplementation>();
         }
     }
 }

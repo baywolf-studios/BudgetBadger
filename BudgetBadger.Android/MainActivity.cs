@@ -8,6 +8,7 @@ using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
+using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
 
@@ -43,7 +44,7 @@ namespace BudgetBadger.Droid
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-            // Register any platform specific implementations
+            container.Register<IInAppBilling, InAppBillingImplementation>();
         }
     }
 }

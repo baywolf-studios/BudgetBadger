@@ -3,6 +3,9 @@ using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
+using Plugin.InAppBilling.Abstractions;
+using Prism;
+using Prism.Ioc;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
@@ -44,6 +47,13 @@ namespace BudgetBadger.macOS
         public override void WillTerminate(NSNotification notification)
         {
             // Insert code here to tear down your application
+        }
+    }
+
+    public class macOSInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry container)
+        {
         }
     }
 }

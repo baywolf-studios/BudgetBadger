@@ -1,5 +1,7 @@
 ﻿using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
+using Plugin.InAppBilling;
+using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
 using Syncfusion.ListView.XForms.UWP;
@@ -40,7 +42,7 @@ namespace BudgetBadger.UWP
     {
         public void RegisterTypes(IContainerRegistry container)
         {
-
+			container.Register<IInAppBilling, InAppBillingImplementation>();
         }
     }
 }
