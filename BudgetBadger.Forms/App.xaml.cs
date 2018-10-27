@@ -102,7 +102,7 @@ namespace BudgetBadger.Forms
             var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
 
             //default dataaccess
-            container.RegisterInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
+            container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
@@ -116,7 +116,7 @@ namespace BudgetBadger.Forms
             container.Register<IReportLogic, ReportLogic>();
 
             //sync dataaccess
-            container.RegisterInstance(syncConnectionString, serviceKey: "syncConnectionString");
+            container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                    serviceKey: "syncAccountDataAccess");
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),

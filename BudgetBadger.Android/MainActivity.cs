@@ -7,6 +7,7 @@ using BudgetBadger.Droid;
 using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
+using Plugin.InAppBilling;
 using Prism;
 using Prism.Ioc;
 
@@ -21,6 +22,7 @@ namespace BudgetBadger.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
@@ -32,6 +34,7 @@ namespace BudgetBadger.Droid
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            InAppBillingImplementation.HandleActivityResult(requestCode, resultCode, data);
             SimpleAuth.Native.OnActivityResult(requestCode, resultCode, data);
         }
     }
