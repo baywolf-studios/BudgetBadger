@@ -202,6 +202,11 @@ namespace BudgetBadger.Forms.Transactions
                 parameters.Add(PageParameter.TransactionServiceDate, Transactions.Last().ServiceDate);
 			}
 
+            if (Transactions.All(t2 => t2.Amount.HasValue && t2.Amount != 0) && Remaining != 0)
+            {
+                parameters.Add(PageParameter.TransactionAmount, Remaining);
+            }
+
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
 
@@ -286,6 +291,13 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.Transaction, transaction },
                 { PageParameter.SplitTransactionMode, true }
             };
+
+            if (Remaining != 0
+                && (!transaction.Amount.HasValue || transaction.Amount == 0)
+                && Transactions.Where(t => t.Id != transaction.Id).All(t2 => t2.Amount.HasValue && t2.Amount != 0))
+            {
+                parameters.Add(PageParameter.TransactionAmount, Remaining);
+            }
 
             await _navigationService.NavigateAsync(PageName.TransactionEditPage, parameters);
         }
