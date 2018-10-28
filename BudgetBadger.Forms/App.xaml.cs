@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms
         protected async override void OnStart()
         {
             await VerifyPurchases();
-            //await SyncOnStartOrResume();
+            await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
