@@ -82,11 +82,17 @@ namespace BudgetBadger.Forms.Purchase
                     case PurchaseError.ProductRequestFailed:
                         result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
                         break;
+                    case PurchaseError.RestoreFailed:
+                        result.Message = "The purchase was unable to be restored, please try again later.";
+                        break;
                     case PurchaseError.ServiceUnavailable:
                         result.Message = "The network connection seems to be unavailble, please try again later.";
                         break;
                     case PurchaseError.UserCancelled:
                         result.Message = "Purchase Cancelled";
+                        break;
+                    default:
+                        result.Message = "Unknown error";
                         break;
                 }
 
@@ -142,24 +148,6 @@ namespace BudgetBadger.Forms.Purchase
                     result.Message = "Product purchase could not be verified";
                     return result;
                 }
-            }
-            catch (InAppBillingPurchaseException purchaseEx)
-            {
-                switch (purchaseEx.PurchaseError)
-                {
-                    case PurchaseError.RestoreFailed:
-                        result.Message = "Purchase could not be verified";
-                        break;
-                    case PurchaseError.UserCancelled:
-                        result.Message = "Purchase could not be verified";
-                        break;
-                }
-
-                //Decide if it is an error we care about
-                result.Success = string.IsNullOrWhiteSpace(result.Message);
-
-                //Display message to user
-                return result;
             }
             catch (Exception ex)
             {
@@ -237,6 +225,9 @@ namespace BudgetBadger.Forms.Purchase
                         break;
                     case PurchaseError.ProductRequestFailed:
                         result.Message = "The product you are purchasing seems to be unavailble, please try again later.";
+                        break;
+                    case PurchaseError.RestoreFailed:
+                        result.Message = "The purchase was unable to be restored, please try again later.";
                         break;
                     case PurchaseError.ServiceUnavailable:
                         result.Message = "The network connection seems to be unavailble, please try again later.";

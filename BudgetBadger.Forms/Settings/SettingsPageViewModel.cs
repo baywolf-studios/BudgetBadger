@@ -174,7 +174,11 @@ namespace BudgetBadger.Forms.Settings
             {
                 var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
 
-                if (!purchaseResult.Success)
+                if (purchaseResult.Success)
+                {
+                    HasPro = true;
+                }
+                else
                 {
                     await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
                 }
