@@ -57,7 +57,8 @@ namespace BudgetBadger.Forms.Purchase
                 switch (purchaseEx.PurchaseError)
                 {
                     case PurchaseError.AlreadyOwned:
-                        return await RestorePurchaseAsync(productId);
+                        result.Message = "";
+                        break;
                     case PurchaseError.AppStoreUnavailable:
                         result.Message = "Currently the app store seems to be unavailble, please try again later.";
                         break;
@@ -135,7 +136,7 @@ namespace BudgetBadger.Forms.Purchase
                 var purchases = await _inAppBilling.GetPurchasesAsync(ItemType.InAppPurchase);
 
                 //check for null just incase
-                if(purchases?.Any(p => p.ProductId == productId) ?? false)
+                if(purchases?.Any(p => p.ProductId.ToLower() == productId.ToLower()) ?? false)
                 {
                     //Purchase verified
                     result.Success = true;
@@ -181,7 +182,7 @@ namespace BudgetBadger.Forms.Purchase
                 var purchases = await _inAppBilling.GetPurchasesAsync(ItemType.InAppPurchase);
 
                 //check for null just incase
-                if (purchases?.Any(p => p.ProductId == productId) ?? false)
+                if (purchases?.Any(p => p.ProductId.ToLower() == productId.ToLower()) ?? false)
                 {
                     //Purchase verified
                     result.Success = true;
