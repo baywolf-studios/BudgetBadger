@@ -319,14 +319,14 @@
                         Grid.Column="4"
                         HorizontalTextAlignment="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Budget"
+                        Text="Remaining"
                         VerticalTextAlignment="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="4"
                         HorizontalTextAlignment="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
+                        Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Start" />
                     <Button
                         Grid.Row="0"
