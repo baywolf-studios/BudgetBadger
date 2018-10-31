@@ -32,35 +32,77 @@
                     <RowDefinition Height="1" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid Margin="16" ColumnSpacing="8">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>true</OnIdiom.Phone>
-                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Grid.Column="0"
-                        FontAttributes="Bold"
-                        FontSize="{StaticResource PageHeaderFontSize}"
-                        HorizontalTextAlignment="Start"
-                        Text="To Budget"
-                        TextColor="{StaticResource PrimaryTextColor}"
-                        VerticalTextAlignment="Center" />
-                    <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        FontSize="{StaticResource PageHeaderFontSize}"
-                        HorizontalTextAlignment="End"
-                        Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
-                        TextColor="{StaticResource PrimaryTextColor}"
-                        VerticalTextAlignment="Center" />
-                </Grid>
+                <uc:Expander Grid.Row="0" IsExpanded="true">
+                    <uc:Expander.HeaderContent>
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                Grid.Column="0"
+                                HorizontalTextAlignment="Start"
+                                Style="{StaticResource PageHeaderLabelStyle}"
+                                Text="To Budget"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                HorizontalTextAlignment="End"
+                                Style="{StaticResource PageHeaderLabelStyle}"
+                                Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                    </uc:Expander.HeaderContent>
+                    <uc:Expander.BodyContent>
+                        <Grid ColumnSpacing="16" RowSpacing="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Past" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Budget.Past, StringFormat='{0:c}'}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Activity" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="Remaining" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource PageSubheaderLabelStyle}"
+                                Text="{Binding Budget.Remaining, StringFormat='{0:c}'}" />
+                        </Grid>
+                    </uc:Expander.BodyContent>
+                </uc:Expander>
                 <BoxView
                     Grid.Row="1"
                     Margin="0"
@@ -109,7 +151,7 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Amount"
+                            Label="Budget"
                             Number="{Binding Budget.Amount}" />
                         <uc:DropdownSelector
                             Grid.Row="4"
@@ -222,6 +264,10 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -240,10 +286,52 @@
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Past"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Budget.Past, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Activity"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="Budget"
+                        VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PageSubheaderLabelStyle}"
+                        Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
+                        VerticalTextAlignment="Start" />
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="2"
+                        Grid.Column="6"
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
@@ -261,7 +349,7 @@
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="2"
+                        Grid.Column="6"
                         Command="{Binding UndoDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
@@ -279,7 +367,7 @@
                     <Button
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="3"
+                        Grid.Column="7"
                         Margin="16,0"
                         Command="{Binding QuickBudgetCommand}"
                         IsVisible="{Binding Budget.IsActive}"

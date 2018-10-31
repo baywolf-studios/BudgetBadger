@@ -220,7 +220,15 @@ namespace BudgetBadger.Forms.Accounts
 
             if (reconcileResult.Success)
             {
+                var syncTask = _syncService.FullSync();
+
                 await _navigationService.GoBackAsync();
+
+                var syncResult = await syncTask;
+                if (!syncResult.Success)
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                }
             }
             else
             {
