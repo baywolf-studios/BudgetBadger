@@ -145,7 +145,7 @@ namespace BudgetBadger.Models
 
             if (!Amount.HasValue)
             {
-                errors.Add("Amount is required");
+                errors.Add("Budget amount is required");
             }
 
             if (Envelope == null)
