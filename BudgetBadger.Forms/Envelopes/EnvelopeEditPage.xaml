@@ -33,12 +33,13 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <uc:Expander Grid.Row="0" IsExpanded="true">
-                    <uc:Expander.IsVisible></uc:Expander.IsVisible>
+                    <uc:Expander.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
                             <OnIdiom.Phone>true</OnIdiom.Phone>
                             <OnIdiom.Tablet>false</OnIdiom.Tablet>
                             <OnIdiom.Desktop>false</OnIdiom.Desktop>
                         </OnIdiom>
+                    </uc:Expander.IsVisible>
                     <uc:Expander.HeaderContent>
                         <Grid ColumnSpacing="8">
                             <Grid.ColumnDefinitions>
