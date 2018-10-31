@@ -385,6 +385,7 @@ namespace BudgetBadger.Logic
                     foreach (var transaction in accountTransactionsToReconcile)
                     {
                         transaction.Posted = true;
+                        transaction.ModifiedDateTime = dateTime;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
                         tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
                     }
@@ -392,6 +393,7 @@ namespace BudgetBadger.Logic
                     foreach (var transaction in payeeTransactionsToReconcile)
                     {
                         transaction.Posted = true;
+                        transaction.ModifiedDateTime = dateTime;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
                         tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
                     }
