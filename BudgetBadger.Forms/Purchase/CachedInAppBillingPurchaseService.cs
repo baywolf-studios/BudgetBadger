@@ -25,7 +25,7 @@ namespace BudgetBadger.Forms.Purchase
             return purchaseResult;
         }
 
-        public override async Task<Result> VerifyPurchaseAsync(string productId)
+        public override Task<Result> VerifyPurchaseAsync(string productId)
         {
             var result = new Result();
 
@@ -35,8 +35,9 @@ namespace BudgetBadger.Forms.Purchase
 
             if (cachedResult)
             {
+                result.Success = cachedResult;
                 // verify will return true if not able to connect
-                result = await base.VerifyPurchaseAsync(productId);
+                // result = await base.VerifyPurchaseAsync(productId);
             }
             else
             {
@@ -44,7 +45,7 @@ namespace BudgetBadger.Forms.Purchase
                 result.Message = "Not purchased";
             }
 
-            return result;
+            return Task.FromResult<Result>(result);
         }
 
         public override async Task<Result> RestorePurchaseAsync(string productId)
