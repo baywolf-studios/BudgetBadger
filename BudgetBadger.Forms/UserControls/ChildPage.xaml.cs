@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
@@ -64,6 +65,31 @@ namespace BudgetBadger.Forms.UserControls
             //var backGestureRecognizer = new TapGestureRecognizer();
             //backGestureRecognizer.Tapped += BackButtonTapped;
             //BackButtonFrame.GestureRecognizers.Add(backGestureRecognizer);
+
+            DeviceDisplay.ScreenMetricsChanged += DeviceDisplay_ScreenMetricsChanged;
+            DeviceDisplay_ScreenMetricsChanged(null, null);
+        }
+
+        void DeviceDisplay_ScreenMetricsChanged(object sender, ScreenMetricsChangedEventArgs e)
+        {
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                var version = DeviceInfo.Version;
+                if (version.Major < 11)
+                {
+                    var metrics = DeviceDisplay.ScreenMetrics;
+                    var orientation = metrics.Orientation;
+
+                    if (orientation == ScreenOrientation.Portrait || Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        Padding = new Thickness(0, 20, 0, 0);
+                    }
+                    else
+                    {
+                        Padding = new Thickness();
+                    }
+                }
+            }
         }
 
         async void BackButtonTapped(object sender, System.EventArgs e)
