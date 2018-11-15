@@ -270,6 +270,9 @@
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh">
       <Version>16.3.0.21</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>0.11.0-preview</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
       <Version>2.4.3.840</Version>
     </PackageReference>
