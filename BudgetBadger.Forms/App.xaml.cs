@@ -164,8 +164,15 @@ namespace BudgetBadger.Forms
 
 
             // inapp purchase 
-            container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
-            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
+            }
+            else
+            {
+                container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
+                container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
+            }
 
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
             containerRegistry.RegisterForNavigation<NavigationPage>();
