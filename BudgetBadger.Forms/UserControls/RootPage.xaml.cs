@@ -6,7 +6,7 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class RootPage : ContentPage
     {
-        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
+        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperHeader));
         public string PageTitle
         {
             get => (string)GetValue(PageTitleProperty);

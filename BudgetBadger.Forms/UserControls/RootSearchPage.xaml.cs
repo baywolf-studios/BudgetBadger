@@ -12,7 +12,7 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
-        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
+        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperHeader));
         public string PageTitle
         {
             get => (string)GetValue(PageTitleProperty);
