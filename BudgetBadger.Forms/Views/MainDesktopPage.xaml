@@ -58,8 +58,8 @@
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            TextColor="{StaticResource PrimaryTextColor}"
                             Text="Envelopes"
+                            TextColor="{StaticResource PrimaryTextColor}"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
                 </ContentView>
@@ -180,4 +180,14 @@
             </Grid>
         </ContentPage>
     </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage
+            Title="Envelopes"
+            BarTextColor="White"
+            Icon="{StaticResource EnvelopesTabIcon}">
+            <x:Arguments>
+                <envelopes:EnvelopesPage />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
 </MasterDetailPage>

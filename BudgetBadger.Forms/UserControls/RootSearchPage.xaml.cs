@@ -93,6 +93,9 @@ namespace BudgetBadger.Forms.UserControls
 
         async void SearchTapped(object sender, EventArgs e)
         {
+            var margin = BodyView.Width - HeaderGrid.Width;
+            var height = HeaderGrid.Height;
+
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
                 svgSearch.ReplaceStringMap = ReplaceColor;
