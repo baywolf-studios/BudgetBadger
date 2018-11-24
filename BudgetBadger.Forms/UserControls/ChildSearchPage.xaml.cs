@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Navigation;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
@@ -86,10 +85,6 @@ namespace BudgetBadger.Forms.UserControls
             tapGestureRecognizer.Tapped += SearchTapped;
             SearchButtonFrame.GestureRecognizers.Add(tapGestureRecognizer);
 
-            //var backGestureRecognizer = new TapGestureRecognizer();
-            //backGestureRecognizer.Tapped += BackButtonTapped;
-            //BackButtonFrame.GestureRecognizers.Add(backGestureRecognizer);
-
             EntryControl.TextChanged += (sender, e) =>
             {
                 if (e.OldTextValue != e.NewTextValue)
@@ -100,31 +95,6 @@ namespace BudgetBadger.Forms.UserControls
                     }
                 }
             };
-
-            DeviceDisplay.ScreenMetricsChanged += DeviceDisplay_ScreenMetricsChanged;
-            DeviceDisplay_ScreenMetricsChanged(null, null);
-        }
-
-        void DeviceDisplay_ScreenMetricsChanged(object sender, ScreenMetricsChangedEventArgs e)
-        {
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                var version = DeviceInfo.Version;
-                if (version.Major < 11)
-                {
-                    var metrics = DeviceDisplay.ScreenMetrics;
-                    var orientation = metrics.Orientation;
-
-                    if (orientation == ScreenOrientation.Portrait || Device.Idiom == TargetIdiom.Tablet)
-                    {
-                        Padding = new Thickness(0, 20, 0, 0);
-                    }
-                    else
-                    {
-                        Padding = new Thickness();
-                    }
-                }
-            }
         }
 
         async void SearchTapped(object sender, EventArgs e)
@@ -160,11 +130,6 @@ namespace BudgetBadger.Forms.UserControls
                 }
                 SearchBoxFrame.IsVisible = false;
             }
-        }
-
-        async void BackButtonTapped(object sender, System.EventArgs e)
-        {
-            await Navigation.PopAsync();
         }
     }
 }

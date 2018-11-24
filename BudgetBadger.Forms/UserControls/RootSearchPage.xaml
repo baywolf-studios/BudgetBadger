@@ -7,7 +7,7 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
-    BackgroundColor="{StaticResource BackgroundColor}">
+    NavigationPage.HasBackButton="{StaticResource HasBackButtonKey}">
     <NavigationPage.TitleView>
         <Grid 
             ColumnSpacing="0"

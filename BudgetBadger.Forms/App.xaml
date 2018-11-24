@@ -64,9 +64,20 @@
                 <On Platform="Android"><Thickness>-16,0,0,0</Thickness></On>
             </OnPlatform>
             
+            <OnPlatform x:Key="HasBackButtonKey" x:TypeArguments="x:Boolean">
+                <On Platform="iOS">false</On>
+                <On Platform="Android">false</On>
+                <On Platform="UWP">true</On>
+                <On Platform="macOS">true</On>
+            </OnPlatform>
+            
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource FailureColor}" />
                 <Setter Property="BarTextColor" Value="White"/>
+            </Style>
+            
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}"/>
             </Style>
             
             <x:Double x:Key="ListHeaderFontSize">14</x:Double>

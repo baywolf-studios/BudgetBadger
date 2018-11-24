@@ -6,7 +6,7 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="true"
-    BackgroundColor="{StaticResource BackgroundColor}">
+    NavigationPage.HasBackButton="{StaticResource HasBackButtonKey}">
     <NavigationPage.TitleView>
         <Grid 
             ColumnSpacing="0"
