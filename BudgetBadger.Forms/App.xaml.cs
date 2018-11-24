@@ -58,7 +58,7 @@ namespace BudgetBadger.Forms
 
             if (Device.Idiom == TargetIdiom.Desktop)
             {
-                await NavigationService.NavigateAsync("MainPage");
+                await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
             }
             else
             {
