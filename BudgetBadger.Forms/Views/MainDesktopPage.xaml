@@ -180,14 +180,4 @@
             </Grid>
         </ContentPage>
     </MasterDetailPage.Master>
-    <MasterDetailPage.Detail>
-        <NavigationPage
-            Title="Envelopes"
-            BarTextColor="White"
-            Icon="{StaticResource EnvelopesTabIcon}">
-            <x:Arguments>
-                <envelopes:EnvelopesPage />
-            </x:Arguments>
-        </NavigationPage>
-    </MasterDetailPage.Detail>
 </MasterDetailPage>

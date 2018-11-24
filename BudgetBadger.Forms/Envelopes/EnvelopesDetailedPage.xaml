@@ -18,7 +18,7 @@
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New"/>
+            ToolbarItemText="New" />
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <uc:HelperControl

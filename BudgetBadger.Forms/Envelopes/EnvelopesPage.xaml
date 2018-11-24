@@ -19,7 +19,7 @@
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New"/>
+            ToolbarItemText="New" />
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <uc:HelperControl
@@ -143,8 +143,8 @@
                             GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Budgets}"
-                            SelectedItem="{Binding SelectedBudget}"
-                            SelectedCommand="{Binding SelectedCommand}">
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">
