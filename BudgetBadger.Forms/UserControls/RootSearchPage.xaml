@@ -7,19 +7,21 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ios:Page.UseSafeArea="true"
-    BackgroundColor="{StaticResource BackgroundColor}"
-    NavigationPage.HasBackButton="false"
-    NavigationPage.HasNavigationBar="false">
-    <ContentPage.Content>
-        <Grid ColumnSpacing="0" RowSpacing="0">
+    BackgroundColor="{StaticResource BackgroundColor}">
+    <NavigationPage.TitleView>
+        <Grid 
+            ColumnSpacing="0"
+            RowSpacing="0"
+            Margin="{StaticResource HeaderMargin}"
+            x:Name="HeaderGrid"
+            BackgroundColor="{StaticResource AppBarColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource AppBarGridSize}" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{StaticResource AppBarGridSize}" />
+                <ColumnDefinition Width="{StaticResource AppBarIconGridWidth}" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="{StaticResource AppBarGridSize}" />
+                <ColumnDefinition Width="{StaticResource AppBarIconGridWidth}" />
             </Grid.ColumnDefinitions>
             <BoxView
                 Grid.Row="0"
@@ -83,7 +85,7 @@
                 TranslationX="{Binding Source={x:Reference SearchBoxFrame}, Path=Width}">
                 <ContentView
                     x:Name="EntryFrame"
-                    Margin="8"
+                    Margin="16,8,8,8"
                     Padding="0">
                     <ContentView.BackgroundColor>
                         <Color x:FactoryMethod="FromRgba">
@@ -132,10 +134,9 @@
                     VerticalOptions="Center"
                     WidthRequest="24" />
             </ContentView>
-            <ContentView
-                x:Name="BodyView"
-                Grid.Row="1"
-                Grid.ColumnSpan="3" />
         </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <ContentView x:Name="BodyView"/>
     </ContentPage.Content>
 </ContentPage>

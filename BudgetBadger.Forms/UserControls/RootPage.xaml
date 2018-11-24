@@ -6,16 +6,17 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="true"
-    BackgroundColor="{StaticResource BackgroundColor}"
-    NavigationPage.HasBackButton="false"
-    NavigationPage.HasNavigationBar="false">
-    <ContentPage.Content>
-        <Grid ColumnSpacing="0" RowSpacing="0">
+    BackgroundColor="{StaticResource BackgroundColor}">
+    <NavigationPage.TitleView>
+        <Grid 
+            ColumnSpacing="0"
+            RowSpacing="0"
+            Margin="{StaticResource HeaderMargin}"
+            x:Name="HeaderGrid"
+            BackgroundColor="{StaticResource AppBarColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource AppBarGridSize}" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <BoxView Grid.Row="0" BackgroundColor="{StaticResource AppBarColor}" />
             <Label
                 x:Name="LabelControl"
                 Grid.Row="0"
@@ -42,7 +43,9 @@
                     </OnPlatform>
                 </Label.HorizontalOptions>
             </Label>
-            <ContentView x:Name="BodyView" Grid.Row="1" />
         </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <ContentView x:Name="BodyView"/>
     </ContentPage.Content>
 </ContentPage>
