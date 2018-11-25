@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public partial class EnvelopesPage : ContentPage
+    public partial class EnvelopesPage : StepperPage
     {
         public EnvelopesPage()
         {

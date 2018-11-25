@@ -6,15 +6,16 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    Title=" "
     ios:Page.UseSafeArea="true"
     NavigationPage.HasBackButton="{StaticResource HasBackButtonKey}">
     <NavigationPage.TitleView>
         <Grid
-            ColumnSpacing="0"
-            RowSpacing="0"
-            Margin="{StaticResource HeaderMargin}"
             x:Name="HeaderGrid"
-            BackgroundColor="{StaticResource AppBarColor}">
+            Margin="{StaticResource HeaderMargin}"
+            BackgroundColor="{StaticResource AppBarColor}"
+            ColumnSpacing="0"
+            RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource AppBarGridSize}" />
             </Grid.RowDefinitions>
@@ -96,6 +97,6 @@
         </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <ContentView x:Name="BodyView"/>
+        <ContentView x:Name="BodyView" />
     </ContentPage.Content>
 </ContentPage>

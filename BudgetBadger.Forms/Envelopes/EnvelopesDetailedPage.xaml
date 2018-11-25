@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ContentPage
+<uc:StepperPage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,18 +9,14 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
-    BackgroundColor="{StaticResource BackgroundColor}">
-    <NavigationPage.TitleView>
-        <uc:StepperHeader
-            NextCommand="{Binding NextCommand}"
-            PageTitle="{Binding Schedule.Description}"
-            PreviousCommand="{Binding PreviousCommand}"
-            SearchText="{Binding SearchText}"
-            ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New" />
-    </NavigationPage.TitleView>
-    <ContentPage.Content>
+    NextCommand="{Binding NextCommand}"
+    PageTitle="{Binding Schedule.Description}"
+    PreviousCommand="{Binding PreviousCommand}"
+    SearchText="{Binding SearchText}"
+    ToolbarItemCommand="{Binding AddCommand}"
+    ToolbarItemIcon="newicon.svg"
+    ToolbarItemText="New">
+    <uc:StepperPage.BodyContent>
         <uc:HelperControl
             Grid.Row="2"
             HelperText="Add an Envelope using the + button"
@@ -247,5 +243,5 @@
                 </Grid>
             </Grid>
         </uc:HelperControl>
-    </ContentPage.Content>
-</ContentPage>
+    </uc:StepperPage.BodyContent>
+</uc:StepperPage>

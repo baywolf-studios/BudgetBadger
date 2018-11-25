@@ -66,6 +66,9 @@
                 <On Platform="Android">
                     <Thickness>-16,0,0,0</Thickness>
                 </On>
+                <On Platform="UWP">
+                    <Thickness>-10,0,0,0</Thickness>
+                </On>
             </OnPlatform>
 
             <OnPlatform x:Key="HasBackButtonKey" x:TypeArguments="x:Boolean">

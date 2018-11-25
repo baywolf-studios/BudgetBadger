@@ -35,8 +35,8 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Budgets}"
-                        SelectedItem="{Binding SelectedBudget}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedBudget}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>
