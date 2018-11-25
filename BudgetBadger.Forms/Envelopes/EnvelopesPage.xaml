@@ -18,7 +18,6 @@
     ToolbarItemCommand="{Binding AddCommand}"
     ToolbarItemIcon="newicon.svg"
     ToolbarItemText="New">
-
     <uc:StepperPage.BodyContent>
         <uc:HelperControl
             Grid.Row="2"
