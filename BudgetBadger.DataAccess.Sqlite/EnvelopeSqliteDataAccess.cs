@@ -259,6 +259,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetAsync(Budget budget)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -293,11 +295,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -326,11 +331,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task CreateEnvelopeAsync(Envelope envelope)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -368,11 +376,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -404,11 +415,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteBudgetAsync(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -423,11 +437,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteBudgetScheduleAsync(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -442,11 +459,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteEnvelopeAsync(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -461,11 +481,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteEnvelopeGroupAsync(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -480,12 +503,15 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task<Budget> ReadBudgetAsync(Guid id)
         {
             var budget = new Budget();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -568,6 +594,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budget;
@@ -576,6 +603,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Budget>> ReadBudgetsAsync()
         {
             var budgets = new List<Budget>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -655,6 +684,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budgets;
@@ -663,6 +693,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
         {
             var budgets = new List<Budget>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -745,6 +777,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budgets;
@@ -753,6 +786,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
         {
             var budgets = new List<Budget>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -835,6 +870,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budgets;
@@ -843,6 +879,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id)
         {
             var budgetSchedule = new BudgetSchedule();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -877,6 +915,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budgetSchedule;
@@ -885,6 +924,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync()
         {
             var budgetSchedules = new List<BudgetSchedule>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -916,6 +957,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return budgetSchedules;
@@ -924,6 +966,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<Envelope> ReadEnvelopeAsync(Guid id)
         {
             var envelope = new Envelope();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -978,6 +1022,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return envelope;
@@ -986,6 +1031,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
         {
             var envelopeGroup = new EnvelopeGroup();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -1022,6 +1069,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return envelopeGroup;
@@ -1030,6 +1078,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
         {
             var envelopeGroups = new List<EnvelopeGroup>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -1063,6 +1113,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return envelopeGroups;
@@ -1071,6 +1122,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync()
         {
             var envelopes = new List<Envelope>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -1122,6 +1175,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return envelopes;
@@ -1129,6 +1183,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -1156,11 +1212,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -1184,11 +1243,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task UpdateEnvelopeAsync(Envelope envelope)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -1218,11 +1280,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -1248,6 +1313,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
     }
