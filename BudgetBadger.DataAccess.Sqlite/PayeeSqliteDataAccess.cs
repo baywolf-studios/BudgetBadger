@@ -10,21 +10,21 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class PayeeSqliteDataAccess : IPayeeDataAccess
     {
-        readonly string _connectionString;
+        readonly SqliteConnection _connection;
 
-        public PayeeSqliteDataAccess(string connectionString)
+        public PayeeSqliteDataAccess(SqliteConnection connection)
         {
-            _connectionString = connectionString;
+            _connection = connection;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                db.Open();
-                var command = db.CreateCommand();
+                _connection.Open();
+                var command = _connection.CreateCommand();
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS Payee 
                                       ( 
                                          Id               BLOB PRIMARY KEY NOT NULL, 
@@ -36,12 +36,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                       );
                                     ";
                 command.ExecuteNonQuery();
-            }
 
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO Payee 
                                                     (Id, 
@@ -66,14 +63,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.ExecuteNonQuery();
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreatePayeeAsync(Payee payee)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO Payee 
                                                     (Id, 
@@ -98,14 +99,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeletePayeeAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE Payee WHERE Id = @Id";
 
@@ -113,16 +118,20 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task<Payee> ReadPayeeAsync(Guid id)
         {
             var payee = new Payee();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Description,
@@ -151,6 +160,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return payee;
         }
@@ -159,10 +172,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var payees = new List<Payee>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Description, 
@@ -189,16 +202,20 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return payees;
         }
 
         public async Task UpdatePayeeAsync(Payee payee)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE Payee 
                                         SET    Description = @Description,
@@ -216,6 +233,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", payee.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
     }

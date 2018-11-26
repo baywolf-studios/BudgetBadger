@@ -10,93 +10,89 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class EnvelopeSqliteDataAccess : IEnvelopeDataAccess
     {
-        readonly string _connectionString;
+        readonly SqliteConnection _connection;
 
-        public EnvelopeSqliteDataAccess(string connectionString)
+        public EnvelopeSqliteDataAccess(SqliteConnection connection)
         {
-            _connectionString = connectionString;
+            _connection = connection;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                db.Open();
-                var command = db.CreateCommand();
+                _connection.Open();
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS EnvelopeGroup 
-                                          ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Description      TEXT NOT NULL, 
-                                             Notes            TEXT, 
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT 
-                                          ); 
+                                      ( 
+                                         Id               BLOB PRIMARY KEY NOT NULL, 
+                                         Description      TEXT NOT NULL, 
+                                         Notes            TEXT, 
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT 
+                                      ); 
 
-                                        CREATE TABLE IF NOT EXISTS Envelope 
-                                          ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Description      TEXT NOT NULL, 
-                                             EnvelopeGroupId  BLOB NOT NULL, 
-                                             Notes            TEXT, 
-                                             IgnoreOverspend  INTEGER NOT NULL,
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT,
-                                             FOREIGN KEY(EnvelopeGroupId) REFERENCES EnvelopeGroup(Id)
-                                          ); 
-                
-                                        CREATE TABLE IF NOT EXISTS BudgetSchedule 
-                                          ( 
-                                             Id          BLOB PRIMARY KEY NOT NULL, 
-                                             BeginDate   TEXT NOT NULL,
-                                             EndDate     TEXT NOT NULL,
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT
-                                          );
-                
-                                        CREATE TABLE IF NOT EXISTS Budget 
-                                          ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Amount           TEXT NOT NULL,
-                                             IgnoreOverspend  INTEGER NOT NULL, 
-                                             BudgetScheduleId BLOB NOT NULL, 
-                                             EnvelopeId       BLOB NOT NULL,
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT,
-                                             FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
-                                             FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id)
-                                          );
-                                        ";
+                                    CREATE TABLE IF NOT EXISTS Envelope 
+                                      ( 
+                                         Id               BLOB PRIMARY KEY NOT NULL, 
+                                         Description      TEXT NOT NULL, 
+                                         EnvelopeGroupId  BLOB NOT NULL, 
+                                         Notes            TEXT, 
+                                         IgnoreOverspend  INTEGER NOT NULL,
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT,
+                                         FOREIGN KEY(EnvelopeGroupId) REFERENCES EnvelopeGroup(Id)
+                                      ); 
+            
+                                    CREATE TABLE IF NOT EXISTS BudgetSchedule 
+                                      ( 
+                                         Id          BLOB PRIMARY KEY NOT NULL, 
+                                         BeginDate   TEXT NOT NULL,
+                                         EndDate     TEXT NOT NULL,
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT
+                                      );
+            
+                                    CREATE TABLE IF NOT EXISTS Budget 
+                                      ( 
+                                         Id               BLOB PRIMARY KEY NOT NULL, 
+                                         Amount           TEXT NOT NULL,
+                                         IgnoreOverspend  INTEGER NOT NULL, 
+                                         BudgetScheduleId BLOB NOT NULL, 
+                                         EnvelopeId       BLOB NOT NULL,
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT,
+                                         FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
+                                         FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id)
+                                      );
+                                    ";
 
                 command.ExecuteNonQuery();
-            }
 
 
-            // envelope groups
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+                // envelope groups
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                    (Id, 
-                                                     Description, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 Notes, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @Notes, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
                 command.Parameters.AddWithValue("@Description", Constants.DebtEnvelopeGroup.Description);
@@ -106,26 +102,23 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", Constants.DebtEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
 
                 command.ExecuteNonQuery();
-            }
 
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                    (Id, 
-                                                     Description, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 Notes, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @Notes, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
                 command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelopeGroup.Description);
@@ -135,26 +128,23 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", Constants.IncomeEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
 
                 command.ExecuteNonQuery();
-            }
 
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                    (Id, 
-                                                     Description, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 Notes, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @Notes, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
                 command.Parameters.AddWithValue("@Description", Constants.SystemEnvelopeGroup.Description);
@@ -164,31 +154,27 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", Constants.SystemEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
 
                 command.ExecuteNonQuery();
-            }
 
-            //envelopes
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                    (Id, 
-                                                     Description, 
-                                                     EnvelopeGroupId, 
-                                                     Notes, 
-                                                     IgnoreOverspend,
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @EnvelopeGroupId,
-                                                    @Notes, 
-                                                    @IgnoreOverspend,
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 EnvelopeGroupId, 
+                                                 Notes, 
+                                                 IgnoreOverspend,
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @EnvelopeGroupId,
+                                                @Notes, 
+                                                @IgnoreOverspend,
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
                 command.Parameters.AddWithValue("@Description", Constants.BufferEnvelope.Description);
@@ -200,30 +186,27 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", Constants.BufferEnvelope.DeletedDateTime ?? (object)DBNull.Value);
 
                 command.ExecuteNonQuery();
-            }
 
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                    (Id, 
-                                                     Description, 
-                                                     EnvelopeGroupId, 
-                                                     Notes, 
-                                                     IgnoreOverspend,
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @EnvelopeGroupId,
-                                                    @Notes, 
-                                                    @IgnoreOverspend,
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 EnvelopeGroupId, 
+                                                 Notes, 
+                                                 IgnoreOverspend,
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @EnvelopeGroupId,
+                                                @Notes, 
+                                                @IgnoreOverspend,
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
                 command.Parameters.AddWithValue("@Description", Constants.IgnoredEnvelope.Description);
@@ -235,30 +218,27 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", Constants.IgnoredEnvelope.DeletedDateTime ?? (object)DBNull.Value);
 
                 command.ExecuteNonQuery();
-            }
 
-            using (var db = new SqliteConnection(_connectionString))
-            {
-                db.Open();
-                var command = db.CreateCommand();
+
+                command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                    (Id, 
-                                                     Description, 
-                                                     EnvelopeGroupId, 
-                                                     Notes, 
-                                                     IgnoreOverspend,
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @EnvelopeGroupId,
-                                                    @Notes, 
-                                                    @IgnoreOverspend,
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 EnvelopeGroupId, 
+                                                 Notes, 
+                                                 IgnoreOverspend,
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @EnvelopeGroupId,
+                                                @Notes, 
+                                                @IgnoreOverspend,
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
                 command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelope.Description);
@@ -271,30 +251,34 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.ExecuteNonQuery();
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreateBudgetAsync(Budget budget)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO Budget
-                                                    (Id, 
-                                                     Amount, 
-                                                     IgnoreOverspend,
-                                                     BudgetScheduleId, 
-                                                     EnvelopeId, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime)  
-                                        VALUES     (@Id, 
-                                                    @Amount,
-                                                    @IgnoreOverspend, 
-                                                    @BudgetScheduleId, 
-                                                    @EnvelopeId, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime)";
+                                                (Id, 
+                                                 Amount, 
+                                                 IgnoreOverspend,
+                                                 BudgetScheduleId, 
+                                                 EnvelopeId, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime)  
+                                    VALUES     (@Id, 
+                                                @Amount,
+                                                @IgnoreOverspend, 
+                                                @BudgetScheduleId, 
+                                                @EnvelopeId, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", budget.Id);
                 command.Parameters.AddWithValue("@Amount", budget.Amount);
@@ -306,26 +290,30 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO BudgetSchedule
-                                                    (Id, 
-                                                     BeginDate,
-                                                     EndDate, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @BeginDate, 
-                                                    @EndDate, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime)";
+                                                (Id, 
+                                                 BeginDate,
+                                                 EndDate, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime) 
+                                    VALUES     (@Id, 
+                                                @BeginDate, 
+                                                @EndDate, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
                 command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
@@ -335,32 +323,36 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreateEnvelopeAsync(Envelope envelope)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO Envelope 
-                                                    (Id, 
-                                                     Description, 
-                                                     EnvelopeGroupId, 
-                                                     Notes, 
-                                                     IgnoreOverspend,
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @EnvelopeGroupId,
-                                                    @Notes, 
-                                                    @IgnoreOverspend,
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 EnvelopeGroupId, 
+                                                 Notes, 
+                                                 IgnoreOverspend,
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @EnvelopeGroupId,
+                                                @Notes, 
+                                                @IgnoreOverspend,
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", envelope.Id);
                 command.Parameters.AddWithValue("@Description", envelope.Description);
@@ -373,28 +365,32 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO EnvelopeGroup
-                                                    (Id, 
-                                                     Description, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                (Id, 
+                                                 Description, 
+                                                 Notes, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @Notes, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
 
                 command.Parameters.AddWithValue("@Id", envelopeGroup.Id);
                 command.Parameters.AddWithValue("@Description", envelopeGroup.Description);
@@ -405,14 +401,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteBudgetAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE Budget WHERE Id = @Id";
 
@@ -420,14 +420,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteBudgetScheduleAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE BudgetSchedule WHERE Id = @Id";
 
@@ -435,14 +439,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteEnvelopeAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE Envelope WHERE Id = @Id";
 
@@ -450,14 +458,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteEnvelopeGroupAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE EnvelopeGroup WHERE Id = @Id";
 
@@ -465,45 +477,49 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task<Budget> ReadBudgetAsync(Guid id)
         {
             var budget = new Budget();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT B.Id, 
-                                               B.Amount, 
-                                               B.IgnoreOverspend,
-                                               B.CreatedDateTime, 
-                                               B.ModifiedDateTime, 
-                                               B.BudgetScheduleId, 
-                                               BS.BeginDate        AS BudgetScheduleBeginDate, 
-                                               BS.EndDate          AS BudgetScheduleEndDate,
-                                               BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               B.EnvelopeId, 
-                                               E.Description       AS EnvelopeDescription, 
-                                               E.Notes             AS EnvelopeNotes, 
-                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
-                                               E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
-                                               E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                               E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
-                                               EG.Id               AS EnvelopeGroupId, 
-                                               EG.Description      AS EnvelopeGroupDescription,
-                                               EG.Notes            AS EnvelopeGroupNotes, 
-                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
-                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
-                                        FROM   Budget AS B 
-                                        JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
-                                        JOIN   Envelope AS E ON B.EnvelopeId = E.Id
-                                        JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
-                                        WHERE  B.Id = @Id";
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope AS E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  B.Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
@@ -549,6 +565,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budget;
         }
@@ -557,38 +577,38 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT B.Id, 
-                                               B.Amount, 
-                                               B.IgnoreOverspend,
-                                               B.CreatedDateTime, 
-                                               B.ModifiedDateTime, 
-                                               B.BudgetScheduleId, 
-                                               BS.BeginDate        AS BudgetScheduleBeginDate, 
-                                               BS.EndDate          AS BudgetScheduleEndDate,
-                                               BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               B.EnvelopeId, 
-                                               E.Description       AS EnvelopeDescription, 
-                                               E.Notes             AS EnvelopeNotes, 
-                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
-                                               E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
-                                               E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                               E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
-                                               EG.Id               AS EnvelopeGroupId, 
-                                               EG.Description      AS EnvelopeGroupDescription,
-                                               EG.Notes            AS EnvelopeGroupNotes, 
-                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
-                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
-                                        FROM   Budget AS B 
-                                        JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
-                                        JOIN   Envelope AS E ON B.EnvelopeId = E.Id
-                                        JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id";
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope AS E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id";
 
                 using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
@@ -632,6 +652,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budgets;
         }
@@ -640,39 +664,39 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT B.Id, 
-                                               B.Amount, 
-                                               B.IgnoreOverspend,
-                                               B.CreatedDateTime, 
-                                               B.ModifiedDateTime, 
-                                               B.BudgetScheduleId, 
-                                               BS.BeginDate        AS BudgetScheduleBeginDate, 
-                                               BS.EndDate          AS BudgetScheduleEndDate,
-                                               BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime,  
-                                               B.EnvelopeId, 
-                                               E.Description       AS EnvelopeDescription, 
-                                               E.Notes             AS EnvelopeNotes, 
-                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
-                                               E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
-                                               E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                               E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
-                                               EG.Id               AS EnvelopeGroupId, 
-                                               EG.Description      AS EnvelopeGroupDescription,
-                                               EG.Notes            AS EnvelopeGroupNotes, 
-                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
-                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
-                                        FROM   Budget AS B 
-                                        JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
-                                        JOIN   Envelope E ON B.EnvelopeId = E.Id
-                                        JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
-                                        WHERE  BS.Id = @ScheduleId";
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime,  
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  BS.Id = @ScheduleId";
 
                 command.Parameters.AddWithValue("@ScheduleId", scheduleId);
 
@@ -718,6 +742,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budgets;
         }
@@ -726,39 +754,39 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgets = new List<Budget>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT B.Id, 
-                                               B.Amount, 
-                                               B.IgnoreOverspend,
-                                               B.CreatedDateTime, 
-                                               B.ModifiedDateTime, 
-                                               B.BudgetScheduleId, 
-                                               BS.BeginDate        AS BudgetScheduleBeginDate, 
-                                               BS.EndDate          AS BudgetScheduleEndDate,
-                                               BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                               BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
-                                               B.EnvelopeId, 
-                                               E.Description       AS EnvelopeDescription, 
-                                               E.Notes             AS EnvelopeNotes, 
-                                               E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
-                                               E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
-                                               E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                               E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
-                                               EG.Id               AS EnvelopeGroupId, 
-                                               EG.Description      AS EnvelopeGroupDescription,
-                                               EG.Notes            AS EnvelopeGroupNotes, 
-                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
-                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
-                                        FROM   Budget AS B 
-                                        JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
-                                        JOIN   Envelope E ON B.EnvelopeId = E.Id
-                                        JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
-                                        WHERE  E.Id = @EnvelopeId";
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  E.Id = @EnvelopeId";
 
                 command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
 
@@ -804,6 +832,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budgets;
         }
@@ -812,18 +844,18 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgetSchedule = new BudgetSchedule();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id,
-                                               BeginDate, 
-                                               EndDate,
-                                               CreatedDateTime,
-                                               ModifiedDateTime
-                                        FROM   BudgetSchedule
-                                        WHERE  Id = @Id";
+                                           BeginDate, 
+                                           EndDate,
+                                           CreatedDateTime,
+                                           ModifiedDateTime
+                                    FROM   BudgetSchedule
+                                    WHERE  Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
@@ -842,6 +874,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budgetSchedule;
         }
@@ -850,17 +886,17 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var budgetSchedules = new List<BudgetSchedule>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id,
-                                               BeginDate, 
-                                               EndDate,
-                                               CreatedDateTime,
-                                               ModifiedDateTime
-                                        FROM   BudgetSchedule";
+                                           BeginDate, 
+                                           EndDate,
+                                           CreatedDateTime,
+                                           ModifiedDateTime
+                                    FROM   BudgetSchedule";
 
                 using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
@@ -877,6 +913,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return budgetSchedules;
         }
@@ -885,27 +925,27 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelope = new Envelope();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT E.Id, 
-                                               E.Description, 
-                                               E.Notes, 
-                                               E.IgnoreOverspend,
-                                               E.CreatedDateTime, 
-                                               E.ModifiedDateTime, 
-                                               E.DeletedDateTime, 
-                                               E.EnvelopeGroupId, 
-                                               EG.Description      AS EnvelopeGroupDescription, 
-                                               EG.Notes            AS EnvelopeGroupNotes, 
-                                               EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
-                                               EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
-                                        FROM   Envelope AS E
-                                        JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id
-                                        WHERE  E.Id = @Id";
+                                           E.Description, 
+                                           E.Notes, 
+                                           E.IgnoreOverspend,
+                                           E.CreatedDateTime, 
+                                           E.ModifiedDateTime, 
+                                           E.DeletedDateTime, 
+                                           E.EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription, 
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                    FROM   Envelope AS E
+                                    JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  E.Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
@@ -935,6 +975,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return envelope;
         }
@@ -943,10 +987,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopeGroup = new EnvelopeGroup();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id,
                                                Description,
@@ -975,6 +1019,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return envelopeGroup;
         }
@@ -983,10 +1031,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopeGroups = new List<EnvelopeGroup>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id,
                                                Description,
@@ -1012,6 +1060,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return envelopeGroups;
         }
@@ -1020,10 +1072,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var envelopes = new List<Envelope>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT E.Id, 
                                                E.Description, 
@@ -1067,16 +1119,20 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return envelopes;
         }
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE Budget 
                                         SET    Amount = @Amount, 
@@ -1097,14 +1153,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE BudgetSchedule
                                         SET    BeginDate = @BeginDate, 
@@ -1121,14 +1181,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task UpdateEnvelopeAsync(Envelope envelope)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE Envelope 
                                         SET    Description = @Description,
@@ -1151,14 +1215,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE EnvelopeGroup
                                         SET    Description = @Description,
@@ -1176,6 +1244,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", envelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
     }
