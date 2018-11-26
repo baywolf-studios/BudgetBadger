@@ -48,6 +48,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateAccountAsync(Account account)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -82,11 +84,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteAccountAsync(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -107,6 +112,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<Account> ReadAccountAsync(Guid id)
         {
             var account = new Account();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -145,6 +152,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return account;
@@ -153,6 +161,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Account>> ReadAccountsAsync()
         {
             var accounts = new List<Account>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -188,6 +198,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return accounts;
@@ -195,6 +206,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateAccountAsync(Account account)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -222,6 +235,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
     }

@@ -54,6 +54,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateTransactionAsync(Transaction transaction)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -106,12 +108,15 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task<Transaction> ReadTransactionAsync(Guid id)
         {
             var transaction = new Transaction();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -162,6 +167,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transaction;
@@ -170,6 +176,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Transaction>> ReadAccountTransactionsAsync(Guid accountId)
         {
             var transactions = new List<Transaction>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -220,6 +228,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transactions;
@@ -228,6 +237,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId)
         {
             var transactions = new List<Transaction>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -278,6 +289,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transactions;
@@ -286,6 +298,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId)
         {
             var transactions = new List<Transaction>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -336,6 +350,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transactions;
@@ -344,6 +359,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Transaction>> ReadSplitTransactionsAsync(Guid splitId)
         {
             var transactions = new List<Transaction>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -394,6 +411,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transactions;
@@ -402,6 +420,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public async Task<IReadOnlyList<Transaction>> ReadTransactionsAsync()
         {
             var transactions = new List<Transaction>();
+
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
 
             try
             {
@@ -449,6 +469,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
 
             return transactions;
@@ -456,6 +477,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -495,11 +518,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
 
         public async Task DeleteTransaction(Guid id)
         {
+            await MultiThreadLock.SemaphoreSlim.WaitAsync();
+
             try
             {
                 await _connection.OpenAsync().ConfigureAwait(false);
@@ -514,6 +540,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             finally
             {
                 _connection.Close();
+                MultiThreadLock.SemaphoreSlim.Release();
             }
         }
     }
