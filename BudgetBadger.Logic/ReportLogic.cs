@@ -34,7 +34,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await _transactionLogic.GetTransactionsAsync().ConfigureAwait(false);
+                var transactions = await Task.Run(() => _transactionLogic.GetTransactionsAsync());
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
@@ -77,13 +77,13 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var envelopeResult = await _envelopeLogic.GetEnvelopesForReportAsync().ConfigureAwait(false);
+                var envelopeResult = await Task.Run(() => _envelopeLogic.GetEnvelopesForReportAsync());
 
                 if (envelopeResult.Success)
                 {
                     foreach (var envelope in envelopeResult.Data)
                     {
-                        var envelopeTransactions = await _transactionLogic.GetEnvelopeTransactionsAsync(envelope).ConfigureAwait(false);
+                        var envelopeTransactions = await Task.Run(() => _transactionLogic.GetEnvelopeTransactionsAsync(envelope));
                         var activeEnvelopeTransactions = envelopeTransactions.Data.Where(t => t.IsActive);
                         activeEnvelopeTransactions = activeEnvelopeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
 
@@ -122,13 +122,13 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payeeResult = await _payeeLogic.GetPayeesForReportAsync().ConfigureAwait(false);
+                var payeeResult = await Task.Run(() => _payeeLogic.GetPayeesForReportAsync());
 
                 if (payeeResult.Success)
                 {
                     foreach (var payee in payeeResult.Data)
                     {
-                        var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee).ConfigureAwait(false);
+                        var payeeTransactions = await Task.Run(() => _transactionLogic.GetPayeeTransactionsAsync(payee));
                         var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
 
                         activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
@@ -168,7 +168,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }).ConfigureAwait(false);
+                var transactions = await Task.Run(() => _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }));
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
@@ -211,7 +211,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await _transactionLogic.GetPayeeTransactionsAsync(new Payee { Id = payeeId }).ConfigureAwait(false);
+                var transactions = await Task.Run(() => _transactionLogic.GetPayeeTransactionsAsync(new Payee { Id = payeeId }));
                 var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);

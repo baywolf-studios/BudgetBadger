@@ -10,61 +10,65 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class AccountSqliteDataAccess : IAccountDataAccess
     {
-        readonly string _connectionString;
+        readonly SqliteConnection _connection;
 
-        public AccountSqliteDataAccess(string connectionString)
+        public AccountSqliteDataAccess(SqliteConnection connection)
         {
-            _connectionString = connectionString;
+            _connection = connection;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using(var db = new SqliteConnection(_connectionString))
+            try
             {
-                db.Open();
-                var command = db.CreateCommand();
+                _connection.Open();
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS Account 
-                                          ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Description      TEXT NOT NULL, 
-                                             OnBudget         INTEGER NOT NULL, 
-                                             Notes            TEXT, 
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT
-                                          );
-                                        ";
-                
+                                      ( 
+                                         Id               BLOB PRIMARY KEY NOT NULL, 
+                                         Description      TEXT NOT NULL, 
+                                         OnBudget         INTEGER NOT NULL, 
+                                         Notes            TEXT, 
+                                         CreatedDateTime  TEXT NOT NULL, 
+                                         ModifiedDateTime TEXT NOT NULL, 
+                                         DeletedDateTime  TEXT
+                                      );
+                                    ";
+
                 command.ExecuteNonQuery();
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
 
         public async Task CreateAccountAsync(Account account)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO Account 
-                                                    (Id, 
-                                                     Description, 
-                                                     OnBudget, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @OnBudget, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
-                
+                                                (Id, 
+                                                 Description, 
+                                                 OnBudget, 
+                                                 Notes, 
+                                                 CreatedDateTime, 
+                                                 ModifiedDateTime, 
+                                                 DeletedDateTime) 
+                                    VALUES     (@Id, 
+                                                @Description, 
+                                                @OnBudget, 
+                                                @Notes, 
+                                                @CreatedDateTime, 
+                                                @ModifiedDateTime, 
+                                                @DeletedDateTime)";
+
                 command.Parameters.AddWithValue("@Id", account.Id);
                 command.Parameters.AddWithValue("@Description", account.Description);
                 command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
@@ -75,14 +79,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteAccountAsync(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE Account WHERE Id = @Id";
 
@@ -90,26 +98,30 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task<Account> ReadAccountAsync(Guid id)
         {
             var account = new Account();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT AC.Id, 
-                                               AC.Description, 
-                                               AC.OnBudget, 
-                                               AC.Notes, 
-                                               AC.CreatedDateTime, 
-                                               AC.ModifiedDateTime, 
-                                               AC.DeletedDateTime
-                                        FROM   Account AS AC 
-                                        WHERE  AC.Id = @Id";
+                                           AC.Description, 
+                                           AC.OnBudget, 
+                                           AC.Notes, 
+                                           AC.CreatedDateTime, 
+                                           AC.ModifiedDateTime, 
+                                           AC.DeletedDateTime
+                                    FROM   Account AS AC 
+                                    WHERE  AC.Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
@@ -130,6 +142,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return account;
         }
@@ -138,19 +154,19 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var accounts = new List<Account>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT A.Id, 
-                                               A.Description, 
-                                               A.OnBudget, 
-                                               A.Notes, 
-                                               A.CreatedDateTime, 
-                                               A.ModifiedDateTime, 
-                                               A.DeletedDateTime
-                                        FROM   Account AS A";
+                                           A.Description, 
+                                           A.OnBudget, 
+                                           A.Notes, 
+                                           A.CreatedDateTime, 
+                                           A.ModifiedDateTime, 
+                                           A.DeletedDateTime
+                                    FROM   Account AS A";
 
                 using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
                 {
@@ -169,25 +185,29 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return accounts;
         }
 
         public async Task UpdateAccountAsync(Account account)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE Account 
-                                        SET    Description = @Description, 
-                                               OnBudget = @OnBudget, 
-                                               Notes = @Notes, 
-                                               CreatedDateTime = @CreatedDateTime, 
-                                               ModifiedDateTime = @ModifiedDateTime, 
-                                               DeletedDateTime = @DeletedDateTime 
-                                        WHERE  Id = @Id ";
+                                    SET    Description = @Description, 
+                                           OnBudget = @OnBudget, 
+                                           Notes = @Notes, 
+                                           CreatedDateTime = @CreatedDateTime, 
+                                           ModifiedDateTime = @ModifiedDateTime, 
+                                           DeletedDateTime = @DeletedDateTime 
+                                    WHERE  Id = @Id ";
 
                 command.Parameters.AddWithValue("@Id", account.Id);
                 command.Parameters.AddWithValue("@Description", account.Description);
@@ -198,6 +218,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                 command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
     }

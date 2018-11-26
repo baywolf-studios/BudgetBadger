@@ -10,21 +10,21 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class TransactionSqliteDataAccess : ITransactionDataAccess
     {
-        readonly string _connectionString;
+        readonly SqliteConnection _connection;
 
-        public TransactionSqliteDataAccess(string connectionString)
+        public TransactionSqliteDataAccess(SqliteConnection connection)
         {
-            _connectionString = connectionString;
+            _connection = connection;
 
             Initialize();
         }
 
         void Initialize()
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                db.Open();
-                var command = db.CreateCommand();
+                _connection.Open();
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
                                           ( 
@@ -46,14 +46,18 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 command.ExecuteNonQuery();
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task CreateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"INSERT INTO [Transaction]
                                                     (Id, 
@@ -99,16 +103,20 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task<Transaction> ReadTransactionAsync(Guid id)
         {
             var transaction = new Transaction();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -151,6 +159,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transaction;
         }
@@ -159,10 +171,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -205,6 +217,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transactions;
         }
@@ -213,10 +229,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -259,6 +275,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transactions;
         }
@@ -267,10 +287,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -313,6 +333,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transactions;
         }
@@ -321,10 +345,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -367,6 +391,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transactions;
         }
@@ -375,10 +403,10 @@ namespace BudgetBadger.DataAccess.Sqlite
         {
             var transactions = new List<Transaction>();
 
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"SELECT Id, 
                                                Amount, 
@@ -418,16 +446,20 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 }
             }
+            finally
+            {
+                _connection.Close();
+            }
 
             return transactions;
         }
 
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"UPDATE [Transaction]
                                         SET    Amount = @Amount, 
@@ -460,20 +492,28 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public async Task DeleteTransaction(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            try
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await _connection.OpenAsync().ConfigureAwait(false);
+                var command = _connection.CreateCommand();
 
                 command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
                 command.Parameters.AddWithValue("@Id", id);
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
     }
