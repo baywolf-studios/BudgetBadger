@@ -50,7 +50,12 @@
             <Color x:Key="BusyIndicatorColor">white</Color>
 
             <Color x:Key="BusyIndicatorBackgroundColor">#0c7bb3</Color>
-
+            
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource AppBarColor}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+            
             <x:Double x:Key="ListHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListHeaderHeight">48</x:Double>
             <Style x:Key="ListHeaderLabelStyle" TargetType="Label">
