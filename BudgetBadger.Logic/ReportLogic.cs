@@ -35,31 +35,34 @@ namespace BudgetBadger.Logic
             try
             {
                 var transactions = await _transactionLogic.GetTransactionsAsync().ConfigureAwait(false);
-                var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
-
-                var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
-
-                while (startMonth <= endMonth)
+                await Task.Run(() =>
                 {
-                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
-                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(new DataPoint<DateTime, decimal>
+                    var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer);
+
+                    var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+
+                    while (startMonth <= endMonth)
                     {
-                        XLabel = startMonth.ToString("Y"),
-                        XValue = startMonth,
-                        YLabel = monthTotal.ToString("C"),
-                        YValue = monthTotal
-                    });
-                    startMonth = startMonth.AddMonths(1);
-                }
+                        var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth);
+                        var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
+                        dataPoints.Add(new DataPoint<DateTime, decimal>
+                        {
+                            XLabel = startMonth.ToString("Y"),
+                            XValue = startMonth,
+                            YLabel = monthTotal.ToString("C"),
+                            YValue = monthTotal
+                        });
+                        startMonth = startMonth.AddMonths(1);
+                    }
 
-                var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
-                var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
-                dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
+                    var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
 
-                result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
-                result.Success = true;
+                    result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
+                    result.Success = true;
+                });
             }
             catch (Exception ex)
             {

@@ -323,9 +323,20 @@ namespace BudgetBadger.Logic
         {
             
             var accountTransactions = await TransactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
-            var activeAccountTransactions = accountTransactions.Where(t => t.IsActive);
-
             var payeeTransactions = await TransactionDataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
+            var accountDebtBudgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
+            var debtTransactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(account.Id).ConfigureAwait(false);
+
+            return await Task.Run(() => PopulateAccount(account, accountTransactions, payeeTransactions, accountDebtBudgets, debtTransactions));
+        }
+
+        protected Account PopulateAccount(Account account,
+                                         IEnumerable<Transaction> accountTransactions,
+                                         IEnumerable<Transaction> payeeTransactions,
+                                         IEnumerable<Budget> accountDebtBudgets,
+                                         IEnumerable<Transaction> accountDebtTransactions)
+        {
+            var activeAccountTransactions = accountTransactions.Where(t => t.IsActive);
             var activePayeeTransactions = payeeTransactions.Where(t => t.IsActive);
 
             // pending
@@ -343,15 +354,12 @@ namespace BudgetBadger.Logic
             // payment 
             var dateTimeNow = DateTime.Now;
 
-            var accountDebtBudgets = await EnvelopeDataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
 
             var amountBudgetedToPayDownDebt = accountDebtBudgets
                 .Where(a => a.Schedule.BeginDate <= dateTimeNow)
                 .Sum(a => a.Amount);
 
-            var debtTransactions = await TransactionDataAccess.ReadEnvelopeTransactionsAsync(account.Id).ConfigureAwait(false);
-
-            var debtTransactionAmount = debtTransactions
+            var debtTransactionAmount = accountDebtTransactions
                 .Where(d => d.IsActive && d.ServiceDate <= dateTimeNow)
                 .Sum(d => d.Amount ?? 0);
 

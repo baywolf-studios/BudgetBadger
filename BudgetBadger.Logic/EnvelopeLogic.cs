@@ -658,40 +658,65 @@ namespace BudgetBadger.Logic
             }
 
             var transactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(budgetToPopulate.Envelope.Id).ConfigureAwait(false);
-            var activeTransactions = transactions.Where(t => t.IsActive);
             var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budgetToPopulate.Envelope.Id).ConfigureAwait(false);
 
-            budgetToPopulate.PastAmount = budgets
-                .Where(b => b.Schedule.EndDate < budgetToPopulate.Schedule.BeginDate)
-                    .Sum(b2 => b2.Amount ?? 0);
+            return await Task.Run(() => PopulateBudget(budgetToPopulate, transactions, budgets));
+        }
 
-            budgetToPopulate.PastActivity = activeTransactions
-                .Where(t => t.ServiceDate < budgetToPopulate.Schedule.BeginDate)
+        protected Budget PopulateBudget(Budget budget,
+                                        IEnumerable<Transaction> envelopeTransactions,
+                                        IEnumerable<Budget> envelopeBudgets)
+        {
+            var activeTransactions = envelopeTransactions.Where(t => t.IsActive);
+
+            budget.PastAmount = envelopeBudgets
+                .Where(b => b.Schedule.EndDate < budget.Schedule.BeginDate)
+                .Sum(b2 => b2.Amount ?? 0);
+
+            budget.PastActivity = activeTransactions
+                .Where(t => t.ServiceDate < budget.Schedule.BeginDate)
                 .Sum(t2 => t2.Amount ?? 0);
 
-            budgetToPopulate.Activity = activeTransactions
-                .Where(t => t.ServiceDate >= budgetToPopulate.Schedule.BeginDate && t.ServiceDate <= budgetToPopulate.Schedule.EndDate)
+            budget.Activity = activeTransactions
+                .Where(t => t.ServiceDate >= budget.Schedule.BeginDate && t.ServiceDate <= budget.Schedule.EndDate)
                 .Sum(t2 => t2.Amount ?? 0);
 
             // inheritance for ignore overspend
-            if (budgetToPopulate.Envelope.IgnoreOverspend)
+            if (budget.Envelope.IgnoreOverspend)
             {
-                budgetToPopulate.IgnoreOverspend = true;
+                budget.IgnoreOverspend = true;
             }
 
-            return budgetToPopulate;
+            return budget;
         }
 
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
         {
             var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+            var allTransactions = await _transactionDataAccess.ReadTransactionsAsync().ConfigureAwait(false);
+            var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
+            var budgets = await _envelopeDataAccess.ReadBudgetsAsync().ConfigureAwait(false);
+            var newBudgetSchedule = budgetSchedule.DeepCopy();
+            // get existing schedule from data access if exists
+            var schedule = await _envelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id).ConfigureAwait(false);
+            if (schedule.IsActive)
+            {
+                newBudgetSchedule = schedule.DeepCopy();
+            }
+
+            return await Task.Run(() => PopulateBudgetSchedule(newBudgetSchedule, allAccounts, allTransactions, envelopes, budgets));
+        }
+
+        protected BudgetSchedule PopulateBudgetSchedule(BudgetSchedule budgetSchedule,
+                                                       IEnumerable<Account> allAccounts,
+                                                       IEnumerable<Transaction> allTransactions,
+                                                       IEnumerable<Envelope> envelopes,
+                                                       IEnumerable<Budget> budgets)
+        {
             var budgetAccounts = allAccounts.Where(a => a.OnBudget);
 
-            var allTransactions = await _transactionDataAccess.ReadTransactionsAsync().ConfigureAwait(false);
             var budgetTransactions = allTransactions.Where(t => t.IsActive &&
                                                            budgetAccounts.Any(b => b.Id == t.Account.Id));
-
-            var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
 
             // get all income
             var incomeTransactions = budgetTransactions.Where(t => t.Envelope.IsIncome);
@@ -714,9 +739,6 @@ namespace BudgetBadger.Logic
             var currentBufferIncome = bufferTransactions
                 .Where(t => t.ServiceDate >= previousSchedule.BeginDate && t.ServiceDate <= previousSchedule.EndDate)
                 .Sum(t => t.Amount ?? 0);
-
-            // get all budget amounts
-            var budgets = await _envelopeDataAccess.ReadBudgetsAsync().ConfigureAwait(false);
 
             var currentBudgetAmount = budgets
                 .Where(b => !b.Envelope.IsIncome
@@ -767,21 +789,14 @@ namespace BudgetBadger.Logic
                 }
             }
 
-            var newBudgetSchedule = budgetSchedule.DeepCopy();
-            // get existing schedule from data access if exists
-            var schedule = await _envelopeDataAccess.ReadBudgetScheduleAsync(budgetSchedule.Id).ConfigureAwait(false);
-            if (schedule.IsActive)
-            {
-                newBudgetSchedule = schedule.DeepCopy();
-            }
-            newBudgetSchedule.Past = past;
-            newBudgetSchedule.Income = income;
-            newBudgetSchedule.Budgeted = budgeted;
-            newBudgetSchedule.Overspend = overspend;
+            budgetSchedule.Past = past;
+            budgetSchedule.Income = income;
+            budgetSchedule.Budgeted = budgeted;
+            budgetSchedule.Overspend = overspend;
             // could change this
-            newBudgetSchedule.Description = newBudgetSchedule.BeginDate.ToString("Y");
+            budgetSchedule.Description = budgetSchedule.BeginDate.ToString("Y");
 
-            return newBudgetSchedule;
+            return budgetSchedule;
         }
 
         BudgetSchedule GetBudgetScheduleFromDate(DateTime date)
