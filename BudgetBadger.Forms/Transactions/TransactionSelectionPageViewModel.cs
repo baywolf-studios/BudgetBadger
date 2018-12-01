@@ -14,7 +14,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionSelectionPageViewModel : BindableBase, IPageLifecycleAware
+    public class TransactionSelectionPageViewModel : BindableBase, INavigatingAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -68,13 +68,9 @@ namespace BudgetBadger.Forms.Transactions
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteSelectedCommand(Transaction transaction)
