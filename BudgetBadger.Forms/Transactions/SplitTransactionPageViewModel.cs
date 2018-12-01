@@ -214,11 +214,13 @@ namespace BudgetBadger.Forms.Transactions
         {
             if (transaction.IsActive)
             {
-                if (!IsBusy)
+                if (IsBusy)
                 {
-                    IsBusy = true;
+                    return;
                 }
-                
+
+                IsBusy = true;
+
                 try
                 {
                     var result = await _transLogic.DeleteTransactionAsync(transaction.Id);
@@ -248,10 +250,12 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteSaveCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
+                return;
             }
+
+            IsBusy = true;
 
             try
             {

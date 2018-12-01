@@ -96,11 +96,13 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteRefreshCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
+                return;
             }
-            
+
+            IsBusy = true;
+
             try
             {
                 var result = await _payeeLogic.GetDeletedPayeesAsync();

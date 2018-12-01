@@ -6,7 +6,6 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
@@ -26,14 +25,10 @@
                 BackgroundColor="{StaticResource BackgroundColor}"
                 ColumnSpacing="16"
                 RowSpacing="0">
-                <pulltoRefresh:SfPullToRefresh
-                    IsRefreshing="{Binding IsBusy}"
-                    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-                    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-                    <pulltoRefresh:SfPullToRefresh.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
-                    </pulltoRefresh:SfPullToRefresh.Behaviors>
-                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                <uc:PullToRefresh
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:PullToRefresh.PullableContent>
                         <uc:ListView
                             AllowSwiping="true"
                             Filter="{Binding Filter}"
@@ -120,8 +115,8 @@
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>
-                    </pulltoRefresh:SfPullToRefresh.PullableContent>
-                </pulltoRefresh:SfPullToRefresh>
+                    </uc:PullToRefresh.PullableContent>
+                </uc:PullToRefresh>
                 <Button
                     x:Name="NewTransactionButton"
                     Margin="16,0,16,16"

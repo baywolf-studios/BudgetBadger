@@ -3,5 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sf="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
-    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh">
+    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
+    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
 </sf:SfPullToRefresh>
