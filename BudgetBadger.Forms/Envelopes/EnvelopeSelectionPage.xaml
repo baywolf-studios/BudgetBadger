@@ -20,9 +20,7 @@
             HelperText="Add an Envelope using the + button"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
-            <uc:PullToRefresh
-                IsBusy="{Binding IsBusy}"
-                RefreshCommand="{Binding RefreshCommand}">
+            <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                 <uc:PullToRefresh.PullableContent>
                     <uc:ListView
                         Filter="{Binding Filter}"
@@ -30,8 +28,8 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Budgets}"
-                        SelectedItem="{Binding SelectedBudget}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedBudget}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>
