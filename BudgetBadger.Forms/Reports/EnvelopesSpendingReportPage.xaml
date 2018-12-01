@@ -4,7 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this"
@@ -65,15 +64,11 @@
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
-            <pulltoRefresh:SfPullToRefresh
+            <uc:PullToRefresh
                 Grid.Row="2"
-                IsRefreshing="{Binding IsBusy}"
-                ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-                ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-                <pulltoRefresh:SfPullToRefresh.Behaviors>
-                    <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
-                </pulltoRefresh:SfPullToRefresh.Behaviors>
-                <pulltoRefresh:SfPullToRefresh.PullableContent>
+                IsBusy="{Binding IsBusy}"
+                RefreshCommand="{Binding RefreshCommand}">
+                <uc:PullToRefresh.PullableContent>
                     <uc:ListView
                         ItemSize="{StaticResource ListDoubleItemHeight}"
                         ItemsSource="{Binding Envelopes}"
@@ -123,8 +118,8 @@
                             </DataTemplate>
                         </syncfusion:SfListView.ItemTemplate>
                     </uc:ListView>
-                </pulltoRefresh:SfPullToRefresh.PullableContent>
-            </pulltoRefresh:SfPullToRefresh>
+                </uc:PullToRefresh.PullableContent>
+            </uc:PullToRefresh>
             <BoxView
                 Grid.Row="3"
                 Margin="0"
