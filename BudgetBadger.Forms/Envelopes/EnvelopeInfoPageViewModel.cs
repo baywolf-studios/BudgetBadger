@@ -15,7 +15,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : BindableBase, INavigatingAware
+    public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -98,15 +98,22 @@ namespace BudgetBadger.Forms.Envelopes
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatingTo(INavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {
                 Budget = budget.DeepCopy();
             }
-
-            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteEditCommand()
