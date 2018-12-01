@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
+    xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
     x:Name="this">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -19,7 +20,10 @@
                     IsVisible="{Binding Source={x:Reference this}, Path=IsBusy}"
                     Orientation="Vertical"
                     VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" />
+                    <progressBar:SfCircularProgressBar
+                        IsIndeterminate="true"
+                        TrackColor="{StaticResource BusyIndicatorColor}"
+                        ProgressColor="{StaticResource BusyIndicatorBackgroundColor}"/>
                     <Label HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
                 </StackLayout>
             </Grid>

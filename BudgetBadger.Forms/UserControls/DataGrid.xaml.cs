@@ -62,7 +62,7 @@ namespace BudgetBadger.Forms.UserControls
 
         void UpdateFilter()
         {
-            if (sfGrid != null && sfGrid.View != null)
+            if (sfGrid != null && sfGrid.View != null && Filter != null)
             {
                 sfGrid.View.Filter = Filter;
                 sfGrid.View.RefreshFilter();
