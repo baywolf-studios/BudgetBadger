@@ -10,23 +10,27 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class AccountSqliteDataAccess : IAccountDataAccess
     {
-        readonly SqliteConnection _connection;
+        readonly string _connectionString;
 
-        public AccountSqliteDataAccess(SqliteConnection connection)
+        public AccountSqliteDataAccess(string connectionString)
         {
-            _connection = connection;
+            _connectionString = connectionString;
 
             Initialize();
         }
 
-        void Initialize()
+        async void Initialize()
         {
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
-                _connection.Open();
-                var command = _connection.CreateCommand();
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                command.CommandText = @"CREATE TABLE IF NOT EXISTS Account 
+                        command.CommandText = @"CREATE TABLE IF NOT EXISTS Account 
                                       ( 
                                          Id               BLOB PRIMARY KEY NOT NULL, 
                                          Description      TEXT NOT NULL, 
@@ -38,26 +42,25 @@ namespace BudgetBadger.DataAccess.Sqlite
                                       );
                                     ";
 
-                command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
+                });
             }
-            finally
-            {
-                _connection.Close();
-            }
+            
         }
 
         public async Task CreateAccountAsync(Account account)
         {
-            await MultiThreadLock.SemaphoreSlim.WaitAsync();
-
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
                 {
-                    _connection.Open();
-                    var command = _connection.CreateCommand();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                    command.CommandText = @"INSERT INTO Account 
+                        command.CommandText = @"INSERT INTO Account 
                                                 (Id, 
                                                  Description, 
                                                  OnBudget, 
@@ -73,61 +76,55 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime, 
                                                 @DeletedDateTime)";
 
-                    command.Parameters.AddWithValue("@Id", account.Id);
-                    command.Parameters.AddWithValue("@Description", account.Description);
-                    command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
-                    command.Parameters.AddWithValue("@Notes", account.Notes ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
-                    command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
-                    command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Description", account.Description);
+                        command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
+                        command.Parameters.AddWithValue("@Notes", account.Notes ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
+                        command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
+                        command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
 
-                    command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
                 });
             }
-            finally
-            {
-                _connection.Close();
-                MultiThreadLock.SemaphoreSlim.Release();
-            }
+            
         }
 
         public async Task DeleteAccountAsync(Guid id)
         {
-            await MultiThreadLock.SemaphoreSlim.WaitAsync();
-
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
                 {
-                    _connection.Open();
-                    var command = _connection.CreateCommand();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                    command.CommandText = @"DELETE Account WHERE Id = @Id";
+                        command.CommandText = @"DELETE Account WHERE Id = @Id";
 
-                    command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id);
 
-                    command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
                 });
-            }
-            finally
-            {
-                _connection.Close();
             }
         }
 
         public async Task<Account> ReadAccountAsync(Guid id)
         {
-            await MultiThreadLock.SemaphoreSlim.WaitAsync();
-
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
                     var account = new Account();
-                    _connection.Open();
-                    var command = _connection.CreateCommand();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                    command.CommandText = @"SELECT AC.Id, 
+                        command.CommandText = @"SELECT AC.Id, 
                                            AC.Description, 
                                            AC.OnBudget, 
                                            AC.Notes, 
@@ -137,48 +134,45 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     FROM   Account AS AC 
                                     WHERE  AC.Id = @Id";
 
-                    command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id);
 
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
+                        using (var reader = command.ExecuteReader())
                         {
-                            account = new Account
+                            if (reader.Read())
                             {
-                                Id = new Guid(reader["Id"] as byte[]),
-                                Description = reader["Description"].ToString(),
-                                OnBudget = Convert.ToBoolean(reader["OnBudget"]),
-                                Notes = reader["Notes"].ToString(),
-                                CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                            };
+                                account = new Account
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Description = reader["Description"].ToString(),
+                                    OnBudget = Convert.ToBoolean(reader["OnBudget"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                };
+                            }
                         }
                     }
 
                     return account;
                 });
             }
-            finally
-            {
-                _connection.Close();
-                MultiThreadLock.SemaphoreSlim.Release();
-            }
+            
         }
 
         public async Task<IReadOnlyList<Account>> ReadAccountsAsync()
         {
-            await MultiThreadLock.SemaphoreSlim.WaitAsync();
-
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
                     var accounts = new List<Account>();
-                    _connection.Open();
-                    var command = _connection.CreateCommand();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                    command.CommandText = @"SELECT A.Id, 
+                        command.CommandText = @"SELECT A.Id, 
                                            A.Description, 
                                            A.OnBudget, 
                                            A.Notes, 
@@ -187,45 +181,42 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            A.DeletedDateTime
                                     FROM   Account AS A";
 
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
+                        using (var reader = command.ExecuteReader())
                         {
-                            accounts.Add(new Account
+                            while (reader.Read())
                             {
-                                Id = new Guid(reader["Id"] as byte[]),
-                                Description = reader["Description"].ToString(),
-                                OnBudget = Convert.ToBoolean(reader["OnBudget"]),
-                                Notes = reader["Notes"].ToString(),
-                                CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                            });
+                                accounts.Add(new Account
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Description = reader["Description"].ToString(),
+                                    OnBudget = Convert.ToBoolean(reader["OnBudget"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
                         }
                     }
 
                     return accounts;
                 });
             }
-            finally
-            {
-                _connection.Close();
-                MultiThreadLock.SemaphoreSlim.Release();
-            }
+            
         }
 
         public async Task UpdateAccountAsync(Account account)
         {
-            await MultiThreadLock.SemaphoreSlim.WaitAsync();
-
-            try
+            using(await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
                 {
-                    _connection.Open();
-                    var command = _connection.CreateCommand();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                    command.CommandText = @"UPDATE Account 
+                        command.CommandText = @"UPDATE Account 
                                     SET    Description = @Description, 
                                            OnBudget = @OnBudget, 
                                            Notes = @Notes, 
@@ -234,22 +225,19 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            DeletedDateTime = @DeletedDateTime 
                                     WHERE  Id = @Id ";
 
-                    command.Parameters.AddWithValue("@Id", account.Id);
-                    command.Parameters.AddWithValue("@Description", account.Description);
-                    command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
-                    command.Parameters.AddWithValue("@Notes", account.Notes);
-                    command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
-                    command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
-                    command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Description", account.Description);
+                        command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
+                        command.Parameters.AddWithValue("@Notes", account.Notes);
+                        command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
+                        command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
+                        command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
 
-                    command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
                 });
             }
-            finally
-            {
-                _connection.Close();
-                MultiThreadLock.SemaphoreSlim.Release();
-            }
+            
         }
     }
 }

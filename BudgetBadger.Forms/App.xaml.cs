@@ -103,11 +103,12 @@ namespace BudgetBadger.Forms
 
             //default dataaccess
             var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
+            container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
             container.UseInstance(new SqliteConnection(defaultConnectionString), serviceKey: "defaultConnection");
-            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<SqliteConnection>("defaultConnection"))));
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<SqliteConnection>("defaultConnection"))));
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<SqliteConnection>("defaultConnection"))));
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<SqliteConnection>("defaultConnection"))));
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -118,14 +119,15 @@ namespace BudgetBadger.Forms
 
             //sync dataaccess
             var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
+            container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
             container.UseInstance(new SqliteConnection(syncConnectionString), serviceKey: "syncConnection");
-            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<SqliteConnection>("syncConnection"))),
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                    serviceKey: "syncAccountDataAccess");
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<SqliteConnection>("syncConnection"))),
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                  serviceKey: "syncPayeeDataAccess");
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<SqliteConnection>("syncConnection"))),
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                     serviceKey: "syncEnvelopeDataAccess");
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<SqliteConnection>("syncConnection"))),
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                        serviceKey: "syncTransactionDataAccess");
 
             //sync directory for filesyncproviders

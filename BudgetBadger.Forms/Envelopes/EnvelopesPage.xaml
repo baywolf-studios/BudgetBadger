@@ -123,15 +123,13 @@
                     Margin="0"
                     BackgroundColor="{StaticResource DividerColor}"
                     HeightRequest="1" />
-                <pulltoRefresh:SfPullToRefresh
+                <uc:PullToRefresh
                     Grid.Row="2"
-                    IsRefreshing="{Binding IsBusy}"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}"
                     ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
                     ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-                    <pulltoRefresh:SfPullToRefresh.Behaviors>
-                        <b:EventToCommandBehavior Command="{Binding RefreshCommand}" EventName="Refreshing" />
-                    </pulltoRefresh:SfPullToRefresh.Behaviors>
-                    <pulltoRefresh:SfPullToRefresh.PullableContent>
+                    <uc:PullToRefresh.PullableContent>
                         <uc:ListView
                             AllowSwiping="true"
                             Filter="{Binding Filter}"
@@ -199,8 +197,8 @@
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>
-                    </pulltoRefresh:SfPullToRefresh.PullableContent>
-                </pulltoRefresh:SfPullToRefresh>
+                    </uc:PullToRefresh.PullableContent>
+                </uc:PullToRefresh>
                 <Button
                     x:Name="NewTransactionButton"
                     Grid.Row="2"
