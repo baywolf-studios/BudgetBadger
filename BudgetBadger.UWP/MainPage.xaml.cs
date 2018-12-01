@@ -33,7 +33,6 @@ namespace BudgetBadger.UWP
             SfListViewRenderer.Init();
             SfPullToRefreshRenderer.Init();
             CachedImageRenderer.Init();
-            new Syncfusion.XForms.UWP.ProgressBar.SfCircularProgressBarRenderer();
             var ignore = typeof(SvgCachedImage);
             LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
         }

@@ -32,7 +32,6 @@ namespace BudgetBadger.iOS
             Syncfusion.SfDataGrid.XForms.iOS.SfDataGridRenderer.Init();
             Syncfusion.ListView.XForms.iOS.SfListViewRenderer.Init();
             Syncfusion.SfPullToRefresh.XForms.iOS.SfPullToRefreshRenderer.Init();
-            Syncfusion.XForms.iOS.ProgressBar.SfCircularProgressBarRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
 

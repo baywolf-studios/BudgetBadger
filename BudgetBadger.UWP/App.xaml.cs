@@ -73,7 +73,6 @@ namespace BudgetBadger.UWP
                 assembliesToInclude.Add(typeof(SqliteConnection).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(GZipStream).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(DropboxClient).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfCircularProgressBarRenderer).GetTypeInfo().Assembly);
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
