@@ -101,9 +101,9 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public void OnAppearing()
+        public async void OnAppearing()
         {
-            RefreshCommand.Execute(null);
+            await ExecuteRefreshCommand();
         }
 
         public void OnDisappearing()

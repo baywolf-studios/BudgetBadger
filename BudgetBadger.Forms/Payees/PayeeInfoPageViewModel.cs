@@ -15,7 +15,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : BindableBase, INavigatingAware
+    public class PayeeInfoPageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -100,6 +100,15 @@ namespace BudgetBadger.Forms.Payees
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
@@ -107,8 +116,6 @@ namespace BudgetBadger.Forms.Payees
             {
                 Payee = payee.DeepCopy();
             }
-
-            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteEditCommand()

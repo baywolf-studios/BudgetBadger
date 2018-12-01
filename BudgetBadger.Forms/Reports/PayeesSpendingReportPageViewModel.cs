@@ -16,7 +16,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeesSpendingReportPageViewModel : BindableBase, INavigatingAware
+    public class PayeesSpendingReportPageViewModel : BindableBase, INavigatedAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -85,20 +85,24 @@ namespace BudgetBadger.Forms.Reports
             SelectedCommand = new DelegateCommand<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
 
             var now = DateTime.Now;
-            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
             if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
             {
-                BeginDate = EndDate.AddMonths(-12);
+                _beginDate = EndDate.AddMonths(-12);
             }
             else if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Phone)
             {
-                BeginDate = EndDate.AddMonths(-6);
+                _beginDate = EndDate.AddMonths(-6);
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteRefreshCommand()
