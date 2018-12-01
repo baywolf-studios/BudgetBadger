@@ -140,13 +140,13 @@ namespace BudgetBadger.Forms.Reports
             }
 
             var beginDate = parameters.GetValue<DateTime?>(PageParameter.ReportBeginDate);
-            if (beginDate.HasValue)
+            if (beginDate.HasValue && beginDate != BeginDate)
             {
                 BeginDate = beginDate.GetValueOrDefault();
             }
 
             var endDate = parameters.GetValue<DateTime?>(PageParameter.ReportEndDate);
-            if (endDate.HasValue)
+            if (endDate.HasValue && endDate != EndDate)
             {
                 EndDate = endDate.GetValueOrDefault();
             }
