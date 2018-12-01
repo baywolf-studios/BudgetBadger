@@ -101,9 +101,9 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public async void OnAppearing()
+        public void OnAppearing()
         {
-            await ExecuteRefreshCommand();
+            RefreshCommand.Execute(null);
         }
 
         public void OnDisappearing()
@@ -112,10 +112,12 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
-            }            
+                return;
+            }
+
+            IsBusy = true;
 
             try
             {

@@ -1,34 +1,54 @@
-﻿using Syncfusion.SfPullToRefresh.XForms;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Syncfusion.SfPullToRefresh.XForms;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.UserControls
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PullToRefresh : SfPullToRefresh
+    public partial class PullToRefresh : SfPullToRefresh
     {
-        public static BindableProperty RefreshCommandProperty = BindableProperty.Create(nameof(RefreshCommand), typeof(ICommand), typeof(PullToRefresh));
+        public static BindableProperty RefreshCommandProperty = BindableProperty.Create(nameof(RefreshCommand), typeof(ICommand), typeof(PullToRefresh), defaultBindingMode: BindingMode.TwoWay);
         public ICommand RefreshCommand
         {
             get => (ICommand)GetValue(RefreshCommandProperty);
             set => SetValue(RefreshCommandProperty, value);
         }
 
-        public PullToRefresh ()
-		{
-			InitializeComponent ();
-            Refreshing += PullToRefresh_Refreshing;
-		}
-
-        private void PullToRefresh_Refreshing(object sender, EventArgs e)
+        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(PullToRefresh), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            RefreshCommand.Execute(null);
+            if ((bool)oldVal != (bool)newVal && (bool)newVal != ((PullToRefresh)bindable).IsRefreshing)
+            {
+                if ((bool)newVal == true)
+                {
+                    ((PullToRefresh)bindable).StartRefreshing();
+                }
+                else
+                {
+                    ((PullToRefresh)bindable).EndRefreshing();
+                }
+            }
+        });
+        public bool IsBusy
+        {
+            get => (bool)GetValue(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
         }
+
+        public PullToRefresh()
+        {
+            InitializeComponent();
+
+            Refreshing += PullToRefresh_Refreshing;
+        }
+
+        void PullToRefresh_Refreshing(object sender, EventArgs e)
+        {
+            if (RefreshCommand != null)
+            {
+                RefreshCommand.Execute(null);
+            }
+        }
+
     }
 }
