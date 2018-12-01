@@ -58,8 +58,8 @@
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            TextColor="{StaticResource PrimaryTextColor}"
                             Text="Envelopes"
+                            TextColor="{StaticResource PrimaryTextColor}"
                             VerticalTextAlignment="Center" />
                     </StackLayout>
                 </ContentView>
