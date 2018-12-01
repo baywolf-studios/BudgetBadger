@@ -5,7 +5,6 @@ using Microsoft.Data.Sqlite;
 using Syncfusion.ListView.XForms.UWP;
 using Syncfusion.SfDataGrid.XForms.UWP;
 using Syncfusion.SfPullToRefresh.XForms.UWP;
-using Syncfusion.XForms.UWP.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -135,7 +135,7 @@
                                                                 <BindingCondition Binding="{Binding Posted}" Value="true" />
                                                                 <BindingCondition Binding="{Binding Reconciled}" Value="false" />
                                                             </MultiTrigger.Conditions>
-                                                          <Setter Property="Source" Value="posted.svg" />
+                                                            <Setter Property="Source" Value="posted.svg" />
                                                         </MultiTrigger>
                                                         <DataTrigger
                                                             Binding="{Binding Reconciled}"
