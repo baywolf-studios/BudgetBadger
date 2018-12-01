@@ -82,9 +82,6 @@
     <PackageReference Include="Syncfusion.Xamarin.SfListView">
       <Version>16.3.0.36</Version>
     </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar">
-      <Version>16.3.0.36</Version>
-    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh">
       <Version>16.3.0.36</Version>
     </PackageReference>
