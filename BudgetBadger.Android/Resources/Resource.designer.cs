@@ -111,6 +111,13 @@ namespace BudgetBadger.Droid
 			global::Com.Syncfusion.Numerictextbox.Resource.Styleable.SfNumericTextBox_valueChangeMode = global::BudgetBadger.Droid.Resource.Styleable.SfNumericTextBox_valueChangeMode;
 			global::Com.Syncfusion.Numerictextbox.Resource.Styleable.SfNumericTextBox_watermark = global::BudgetBadger.Droid.Resource.Styleable.SfNumericTextBox_watermark;
 			global::Com.Syncfusion.Numerictextbox.Resource.Styleable.SfNumericTextBox_watermarkColor = global::BudgetBadger.Droid.Resource.Styleable.SfNumericTextBox_watermarkColor;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Drawable.sfprogressbar_determinate_linear = global::BudgetBadger.Droid.Resource.Drawable.sfprogressbar_determinate_linear;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Drawable.sfprogressbar_indeterminate_circular = global::BudgetBadger.Droid.Resource.Drawable.sfprogressbar_indeterminate_circular;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Drawable.sfprogressbar_indeterminate_linear = global::BudgetBadger.Droid.Resource.Drawable.sfprogressbar_indeterminate_linear;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Id.sfprogressbar_progress = global::BudgetBadger.Droid.Resource.Id.sfprogressbar_progress;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Id.sfprogressbar_secondary_progress = global::BudgetBadger.Droid.Resource.Id.sfprogressbar_secondary_progress;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.Id.sfprogressbar_track = global::BudgetBadger.Droid.Resource.Id.sfprogressbar_track;
+			global::Syncfusion.XForms.Android.ProgressBar.Resource.String.library_name = global::BudgetBadger.Droid.Resource.String.library_name;
 			global::Syncfusion.SfPullToRefresh.XForms.Android.Resource.Drawable.shadow_effect = global::BudgetBadger.Droid.Resource.Drawable.shadow_effect;
 			global::Syncfusion.SfPullToRefresh.XForms.Android.Resource.Id.ShadowEffectShape = global::BudgetBadger.Droid.Resource.Id.ShadowEffectShape;
 			global::Syncfusion.SfPullToRefresh.XForms.Android.Resource.String.ApplicationName = global::BudgetBadger.Droid.Resource.String.ApplicationName;
@@ -2467,26 +2474,26 @@ namespace BudgetBadger.Droid
 			// aapt resource value: 0x7f020055
 			public const int avd_hide_password = 2130837589;
 			
-			// aapt resource value: 0x7f020153
-			public const int avd_hide_password_1 = 2130837843;
+			// aapt resource value: 0x7f020156
+			public const int avd_hide_password_1 = 2130837846;
 			
-			// aapt resource value: 0x7f020154
-			public const int avd_hide_password_2 = 2130837844;
+			// aapt resource value: 0x7f020157
+			public const int avd_hide_password_2 = 2130837847;
 			
-			// aapt resource value: 0x7f020155
-			public const int avd_hide_password_3 = 2130837845;
+			// aapt resource value: 0x7f020158
+			public const int avd_hide_password_3 = 2130837848;
 			
 			// aapt resource value: 0x7f020056
 			public const int avd_show_password = 2130837590;
 			
-			// aapt resource value: 0x7f020156
-			public const int avd_show_password_1 = 2130837846;
+			// aapt resource value: 0x7f020159
+			public const int avd_show_password_1 = 2130837849;
 			
-			// aapt resource value: 0x7f020157
-			public const int avd_show_password_2 = 2130837847;
+			// aapt resource value: 0x7f02015a
+			public const int avd_show_password_2 = 2130837850;
 			
-			// aapt resource value: 0x7f020158
-			public const int avd_show_password_3 = 2130837848;
+			// aapt resource value: 0x7f02015b
+			public const int avd_show_password_3 = 2130837851;
 			
 			// aapt resource value: 0x7f020057
 			public const int back = 2130837591;
@@ -3184,11 +3191,11 @@ namespace BudgetBadger.Droid
 			// aapt resource value: 0x7f02013e
 			public const int notification_icon_background = 2130837822;
 			
-			// aapt resource value: 0x7f020151
-			public const int notification_template_icon_bg = 2130837841;
+			// aapt resource value: 0x7f020154
+			public const int notification_template_icon_bg = 2130837844;
 			
-			// aapt resource value: 0x7f020152
-			public const int notification_template_icon_low_bg = 2130837842;
+			// aapt resource value: 0x7f020155
+			public const int notification_template_icon_low_bg = 2130837845;
 			
 			// aapt resource value: 0x7f02013f
 			public const int notification_tile_bg = 2130837823;
@@ -3233,16 +3240,25 @@ namespace BudgetBadger.Droid
 			public const int settingswhitetabicon = 2130837836;
 			
 			// aapt resource value: 0x7f02014d
-			public const int shadow_effect = 2130837837;
+			public const int sfprogressbar_determinate_linear = 2130837837;
 			
 			// aapt resource value: 0x7f02014e
-			public const int tooltip_frame_dark = 2130837838;
+			public const int sfprogressbar_indeterminate_circular = 2130837838;
 			
 			// aapt resource value: 0x7f02014f
-			public const int tooltip_frame_light = 2130837839;
+			public const int sfprogressbar_indeterminate_linear = 2130837839;
 			
 			// aapt resource value: 0x7f020150
-			public const int transaction = 2130837840;
+			public const int shadow_effect = 2130837840;
+			
+			// aapt resource value: 0x7f020151
+			public const int tooltip_frame_dark = 2130837841;
+			
+			// aapt resource value: 0x7f020152
+			public const int tooltip_frame_light = 2130837842;
+			
+			// aapt resource value: 0x7f020153
+			public const int transaction = 2130837843;
 			
 			static Drawable()
 			{
@@ -3275,8 +3291,8 @@ namespace BudgetBadger.Droid
 			// aapt resource value: 0x7f090037
 			public const int SYM = 2131296311;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int ShadowEffectShape = 2131296465;
+			// aapt resource value: 0x7f0900d4
+			public const int ShadowEffectShape = 2131296468;
 			
 			// aapt resource value: 0x7f0900bc
 			public const int action0 = 2131296444;
@@ -3739,6 +3755,15 @@ namespace BudgetBadger.Droid
 			
 			// aapt resource value: 0x7f090090
 			public const int select_dialog_listview = 2131296400;
+			
+			// aapt resource value: 0x7f0900d3
+			public const int sfprogressbar_progress = 2131296467;
+			
+			// aapt resource value: 0x7f0900d2
+			public const int sfprogressbar_secondary_progress = 2131296466;
+			
+			// aapt resource value: 0x7f0900d1
+			public const int sfprogressbar_track = 2131296465;
 			
 			// aapt resource value: 0x7f09007a
 			public const int shortcut = 2131296378;
