@@ -179,6 +179,9 @@
     <Reference Include="Syncfusion.SfNumericTextBox.XForms, Version=16.3451.0.36, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.16.3.0.36\lib\netstandard1.0\Syncfusion.SfNumericTextBox.XForms.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfProgressBar.XForms, Version=16.3451.0.36, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfProgressBar.16.3.0.36\lib\netstandard1.0\Syncfusion.SfProgressBar.XForms.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.SfPullToRefresh.XForms, Version=16.3451.0.36, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.16.3.0.36\lib\netstandard1.0\Syncfusion.SfPullToRefresh.XForms.dll</HintPath>
     </Reference>
