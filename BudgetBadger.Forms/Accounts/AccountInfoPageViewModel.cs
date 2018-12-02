@@ -14,7 +14,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountInfoPageViewModel : BindableBase, INavigatingAware
+    public class AccountInfoPageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -109,15 +109,22 @@ namespace BudgetBadger.Forms.Accounts
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public void OnNavigatingTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
             }
+        }
 
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteEditCommand()
@@ -177,10 +184,12 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
+                return;
             }
+
+            IsBusy = true;
 
             try
             {

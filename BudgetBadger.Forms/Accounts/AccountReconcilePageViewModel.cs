@@ -14,7 +14,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountReconcilePageViewModel : BindableBase, INavigatingAware
+    public class AccountReconcilePageViewModel : BindableBase, INavigationAware
     {
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
@@ -166,16 +166,25 @@ namespace BudgetBadger.Forms.Accounts
             {
                 Account = account.DeepCopy();
             }
+        }
 
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteRefreshCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
+                return;
             }
+
+            IsBusy = true;
 
             try
             {

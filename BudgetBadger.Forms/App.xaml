@@ -44,7 +44,7 @@
             <Color x:Key="BusyIndicatorColor">white</Color>
 
             <Color x:Key="BusyIndicatorBackgroundColor">#0c7bb3</Color>
-
+            
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">44</On>
                 <On Platform="Android">56</On>

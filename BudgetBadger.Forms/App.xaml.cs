@@ -34,6 +34,7 @@ using BudgetBadger.Core.Purchase;
 using BudgetBadger.Forms.Purchase;
 using Plugin.InAppBilling.Abstractions;
 using Plugin.InAppBilling;
+using Microsoft.Data.Sqlite;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -100,11 +101,10 @@ namespace BudgetBadger.Forms
             }
             Directory.CreateDirectory(syncDirectory);
 
-            var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
-            var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
-
             //default dataaccess
+            var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
+            container.UseInstance(new SqliteConnection(defaultConnectionString), serviceKey: "defaultConnection");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
@@ -118,7 +118,9 @@ namespace BudgetBadger.Forms
             container.Register<IReportLogic, ReportLogic>();
 
             //sync dataaccess
+            var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
             container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
+            container.UseInstance(new SqliteConnection(syncConnectionString), serviceKey: "syncConnection");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                    serviceKey: "syncAccountDataAccess");
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),

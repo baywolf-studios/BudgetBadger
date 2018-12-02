@@ -19,14 +19,18 @@ namespace BudgetBadger.DataAccess.Sqlite
             Initialize();
         }
 
-        void Initialize()
+        async void Initialize()
         {
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                db.Open();
-                var command = db.CreateCommand();
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
+                        command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
                                           ( 
                                              Id                 BLOB PRIMARY KEY NOT NULL, 
                                              Amount             TEXT NOT NULL, 
@@ -44,18 +48,24 @@ namespace BudgetBadger.DataAccess.Sqlite
                                           );
                                         ";
 
-                command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
+                });
             }
         }
 
         public async Task CreateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                command.CommandText = @"INSERT INTO [Transaction]
+                        command.CommandText = @"INSERT INTO [Transaction]
                                                     (Id, 
                                                      Amount, 
                                                      Posted,
@@ -83,34 +93,40 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @ModifiedDateTime, 
                                                      @DeletedDateTime) ";
 
-                command.Parameters.AddWithValue("@Id", transaction.Id);
-                command.Parameters.AddWithValue("@Amount", transaction.Amount);
-                command.Parameters.AddWithValue("@Posted", transaction.Posted);
-                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
-                command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
-                command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@Id", transaction.Id);
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
+                        command.Parameters.AddWithValue("@Posted", transaction.Posted);
+                        command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
+                        command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
+                        command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
+                        command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        command.ExecuteNonQuery();
+                    }
+                });
             }
         }
 
         public async Task<Transaction> ReadTransactionAsync(Guid id)
         {
-            var transaction = new Transaction();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                    var transaction = new Transaction();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime, 
@@ -126,45 +142,50 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  Id = @Id";
 
-                command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id);
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    if (reader.Read())
-                    {
-                        transaction = new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        };
+                            if (reader.Read())
+                            {
+                                transaction = new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                };
+                            }
+                        }
                     }
-                }
+                    return transaction;
+                });
             }
-
-            return transaction;
         }
 
         public async Task<IReadOnlyList<Transaction>> ReadAccountTransactionsAsync(Guid accountId)
         {
-            var transactions = new List<Transaction>();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                var transactions = new List<Transaction>();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime, 
@@ -180,45 +201,51 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  AccountId = @AccountId";
 
-                command.Parameters.AddWithValue("@AccountId", accountId);
+                        command.Parameters.AddWithValue("@AccountId", accountId);
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        transactions.Add(new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        });
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
+                        }
                     }
-                }
-            }
 
-            return transactions;
+                    return transactions;
+                });
+            }
         }
 
         public async Task<IReadOnlyList<Transaction>> ReadPayeeTransactionsAsync(Guid payeeId)
         {
-            var transactions = new List<Transaction>();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                var transactions = new List<Transaction>();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime,  
@@ -234,45 +261,51 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  PayeeId = @PayeeId";
 
-                command.Parameters.AddWithValue("@PayeeId", payeeId);
+                        command.Parameters.AddWithValue("@PayeeId", payeeId);
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        transactions.Add(new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        });
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
+                        }
                     }
-                }
-            }
 
-            return transactions;
+                    return transactions;
+                });
+            }
         }
 
         public async Task<IReadOnlyList<Transaction>> ReadEnvelopeTransactionsAsync(Guid envelopeId)
         {
-            var transactions = new List<Transaction>();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                var transactions = new List<Transaction>();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime, 
@@ -288,45 +321,51 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  EnvelopeId = @EnvelopeId";
 
-                command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        transactions.Add(new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        });
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
+                        }
                     }
-                }
-            }
 
-            return transactions;
+                    return transactions;
+                });
+            }
         }
 
         public async Task<IReadOnlyList<Transaction>> ReadSplitTransactionsAsync(Guid splitId)
         {
-            var transactions = new List<Transaction>();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                var transactions = new List<Transaction>();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime, 
@@ -342,45 +381,51 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  SplitId = @SplitId";
 
-                command.Parameters.AddWithValue("@SplitId", splitId);
+                        command.Parameters.AddWithValue("@SplitId", splitId);
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        transactions.Add(new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        });
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
+                        }
                     }
-                }
-            }
 
-            return transactions;
+                    return transactions;
+                });
+            }
         }
 
         public async Task<IReadOnlyList<Transaction>> ReadTransactionsAsync()
         {
-            var transactions = new List<Transaction>();
-
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                return await Task.Run(() =>
+                {
+                var transactions = new List<Transaction>();
 
-                command.CommandText = @"SELECT Id, 
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
                                                Amount, 
                                                Posted,
                                                ReconciledDateTime,  
@@ -395,41 +440,47 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime
                                         FROM   [Transaction]";
 
-                using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        transactions.Add(new Transaction
+                        using (var reader = command.ExecuteReader())
                         {
-                            Id = new Guid(reader["Id"] as byte[]),
-                            Amount = Convert.ToDecimal(reader["Amount"]),
-                            Posted = Convert.ToBoolean(reader["Posted"]),
-                            ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
-                            Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
-                            Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
-                            Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
-                            SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                            ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                            ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                            DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
-                        });
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"]),
+                                    Posted = Convert.ToBoolean(reader["Posted"]),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
+                                    Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
+                                    Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
+                                    SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    Notes = reader["Notes"].ToString(),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                });
+                            }
+                        }
                     }
-                }
-            }
 
-            return transactions;
+                    return transactions;
+                });
+            }
         }
 
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                command.CommandText = @"UPDATE [Transaction]
+                        command.CommandText = @"UPDATE [Transaction]
                                         SET    Amount = @Amount, 
                                                Posted = @Posted,
                                                ReconciledDateTime = @ReconciledDateTime, 
@@ -444,36 +495,44 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id";
 
-                command.Parameters.AddWithValue("@Id", transaction.Id);
-                command.Parameters.AddWithValue("@Amount", transaction.Amount);
-                command.Parameters.AddWithValue("@Posted", transaction.Posted);
-                command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
-                command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
-                command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
-                command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@Id", transaction.Id);
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
+                        command.Parameters.AddWithValue("@Posted", transaction.Posted);
+                        command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
+                        command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
+                        command.Parameters.AddWithValue("@ModifiedDateTime", transaction.ModifiedDateTime);
+                        command.Parameters.AddWithValue("@DeletedDateTime", transaction.DeletedDateTime ?? (object)DBNull.Value);
 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        command.ExecuteNonQuery();
+                    }
+                });
             }
         }
 
         public async Task DeleteTransaction(Guid id)
         {
-            using (var db = new SqliteConnection(_connectionString))
+            using (await MultiThreadLock.UseWaitAsync())
             {
-                await db.OpenAsync().ConfigureAwait(false);
-                var command = db.CreateCommand();
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
 
-                command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
+                        command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
-                command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id);
 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        command.ExecuteNonQuery();
+                    }
+                });
             }
         }
     }

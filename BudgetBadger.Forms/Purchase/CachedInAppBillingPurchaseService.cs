@@ -27,6 +27,7 @@ namespace BudgetBadger.Forms.Purchase
 
         public override Task<Result> VerifyPurchaseAsync(string productId)
         {
+            return Task.FromResult(new Result { Success = true });
             var result = new Result();
 
             var cachedSettingResult = _settings.GetValueOrDefault(_settingsKey + productId);

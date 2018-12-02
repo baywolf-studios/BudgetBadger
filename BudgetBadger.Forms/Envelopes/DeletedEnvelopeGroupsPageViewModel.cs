@@ -14,7 +14,7 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class DeletedEnvelopeGroupsPageViewModel : BindableBase, INavigatingAware
+    public class DeletedEnvelopeGroupsPageViewModel : BindableBase, INavigatedAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -78,17 +78,23 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
 
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
         public async Task ExecuteRefreshCommand()
         {
-            if (!IsBusy)
+            if (IsBusy)
             {
-                IsBusy = true;
+                return;
             }
+
+            IsBusy = true;
 
             try
             {

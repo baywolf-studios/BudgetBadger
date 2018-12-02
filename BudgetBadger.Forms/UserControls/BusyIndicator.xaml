@@ -19,7 +19,7 @@
                     IsVisible="{Binding Source={x:Reference this}, Path=IsBusy}"
                     Orientation="Vertical"
                     VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" />
+                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" Color="{StaticResource BusyIndicatorBackgroundColor}"/>
                     <Label HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
                 </StackLayout>
             </Grid>

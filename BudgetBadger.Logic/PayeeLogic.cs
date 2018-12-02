@@ -315,7 +315,7 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        private async Task<Payee> GetPopulatedPayee(Payee payee)
+        async Task<Payee> GetPopulatedPayee(Payee payee)
         {
             var payeeToPopulate = payee.DeepCopy();
 

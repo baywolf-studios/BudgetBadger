@@ -14,7 +14,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, INavigatingAware
+    public class NetWorthReportPageViewModel : BindableBase, INavigatedAware
     {
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
@@ -77,20 +77,24 @@ namespace BudgetBadger.Forms.Reports
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
             var now = DateTime.Now;
-            EndDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
+            _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
             if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
             {
-                BeginDate = EndDate.AddMonths(-12);
+                _beginDate = EndDate.AddMonths(-12);
             }
             else if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Phone)
             {
-                BeginDate = EndDate.AddMonths(-6);
+                _beginDate = EndDate.AddMonths(-6);
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteRefreshCommand()

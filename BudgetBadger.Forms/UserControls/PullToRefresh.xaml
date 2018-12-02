@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<pulltoRefresh:SfPullToRefresh
-    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
+<?xml version="1.0" encoding="UTF-8"?>
+<sf:SfPullToRefresh
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:pulltoRefresh="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:sf="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
     ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-    ProgressStrokeColor="{StaticResource BusyIndicatorColor}" />
+    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+</sf:SfPullToRefresh>
