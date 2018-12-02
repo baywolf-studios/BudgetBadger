@@ -66,9 +66,9 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
 
-            SaveCommand = new DelegateCommand(ExecuteSaveCommand);
-            DeleteCommand = new DelegateCommand(ExecuteDeleteCommand);
-            UndoDeleteCommand = new DelegateCommand(ExecuteUndoDeleteCommand);
+            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
+            UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
         }
 
         public void OnNavigatingTo(INavigationParameters parameters)
@@ -80,7 +80,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async void ExecuteSaveCommand()
+        public async Task ExecuteSaveCommand()
         {
             if (IsBusy)
             {
@@ -123,7 +123,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async void ExecuteDeleteCommand()
+        public async Task ExecuteDeleteCommand()
         {
 			if (IsBusy)
             {
@@ -160,7 +160,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async void ExecuteUndoDeleteCommand()
+        public async Task ExecuteUndoDeleteCommand()
         {
             if (IsBusy)
             {
