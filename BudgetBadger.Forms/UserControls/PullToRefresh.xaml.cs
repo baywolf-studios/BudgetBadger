@@ -48,20 +48,34 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
 
             sfPull.Refreshing += PullToRefresh_Refreshing;
-            PropertyChanged += (sender, e) => 
+            PropertyChanged += async (sender, e) => 
             {
                 if (e.PropertyName == nameof(IsBusy))
                 {
-                    if (IsBusy != sfPull.IsRefreshing)
+                    if (!IsBusy)
                     {
-                        if (!_automaticRefresh)
-                        {
-                            activityIndicator.IsVisible = IsBusy;
-                            sfPull.IsVisible = !IsBusy;
-                        }
-
-                        sfPull.IsRefreshing = IsBusy;
+                        sfPull.IsRefreshing = false;
+                        activityIndicator.IsVisible = false;
+                        sfPull.IsVisible = true;
                     }
+                    else if (!sfPull.IsRefreshing)
+                    {
+                        sfPull.IsVisible = false;
+                        activityIndicator.IsVisible = true;
+                    }
+
+
+
+                    //if (IsBusy != sfPull.IsRefreshing)
+                    //{
+                    //    if (!_automaticRefresh)
+                    //    {
+                    //        activityIndicator.IsVisible = IsBusy;
+                    //        sfPull.IsVisible = !IsBusy;
+                    //    }
+
+                    //    sfPull.IsRefreshing = IsBusy;
+                    //}
                 }
             };
         }
