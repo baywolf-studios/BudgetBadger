@@ -95,11 +95,14 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _navigationService.GoBackAsync(parameters);
             }
+            else
+            {
+                await ExecuteRefreshCommand();
+            }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public void OnNavigatingTo(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteRefreshCommand()
