@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Syncfusion.SfPullToRefresh.XForms;
 using Xamarin.Forms;
@@ -47,6 +48,22 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
 
             sfPull.Refreshing += PullToRefresh_Refreshing;
+            PropertyChanged += (sender, e) => 
+            {
+                if (e.PropertyName == nameof(IsBusy))
+                {
+                    if (IsBusy != sfPull.IsRefreshing)
+                    {
+                        if (!_automaticRefresh)
+                        {
+                            activityIndicator.IsVisible = IsBusy;
+                            sfPull.IsVisible = !IsBusy;
+                        }
+
+                        sfPull.IsRefreshing = IsBusy;
+                    }
+                }
+            };
         }
 
         void PullToRefresh_Refreshing(object sender, EventArgs e)
