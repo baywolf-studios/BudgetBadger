@@ -18,19 +18,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(RefreshCommandProperty, value);
         }
 
-        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(PullToRefresh), propertyChanged: (bindable, oldVal, newVal) =>
-        {
-            if ((bool)oldVal != (bool)newVal && (bool)newVal != ((PullToRefresh)bindable).sfPull.IsRefreshing)
-            {
-                if (!((PullToRefresh)bindable)._automaticRefresh)
-                {
-                    ((PullToRefresh)bindable).activityIndicator.IsVisible = (bool)newVal;
-                    ((PullToRefresh)bindable).sfPull.IsVisible = !(bool)newVal;
-                }
-
-                ((PullToRefresh)bindable).sfPull.IsRefreshing = (bool)newVal;
-            }
-        });
+        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(PullToRefresh));
         public bool IsBusy
         {
             get => (bool)GetValue(IsBusyProperty);
@@ -46,6 +34,10 @@ namespace BudgetBadger.Forms.UserControls
         public PullToRefresh()
         {
             InitializeComponent();
+
+            sfPull.IsRefreshing = false;
+            activityIndicator.IsVisible = false;
+            sfPull.IsVisible = true;
 
             sfPull.Refreshing += PullToRefresh_Refreshing;
             PropertyChanged += (sender, e) => 
@@ -63,19 +55,6 @@ namespace BudgetBadger.Forms.UserControls
                         sfPull.IsVisible = false;
                         activityIndicator.IsVisible = true;
                     }
-
-
-
-                    //if (IsBusy != sfPull.IsRefreshing)
-                    //{
-                    //    if (!_automaticRefresh)
-                    //    {
-                    //        activityIndicator.IsVisible = IsBusy;
-                    //        sfPull.IsVisible = !IsBusy;
-                    //    }
-
-                    //    sfPull.IsRefreshing = IsBusy;
-                    //}
                 }
             };
         }

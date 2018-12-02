@@ -112,9 +112,8 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -150,6 +149,8 @@ namespace BudgetBadger.Forms.Reports
             {
                 EndDate = endDate.GetValueOrDefault();
             }
+
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteRefreshCommand()
