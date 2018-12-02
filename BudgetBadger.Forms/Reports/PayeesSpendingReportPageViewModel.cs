@@ -16,7 +16,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeesSpendingReportPageViewModel : BindableBase, INavigatedAware
+    public class PayeesSpendingReportPageViewModel : BindableBase, INavigationAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -96,7 +96,11 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

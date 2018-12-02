@@ -86,14 +86,11 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _navigationService.GoBackAsync(parameters);
             }
-            else
-            {
-                await ExecuteRefreshCommand();
-            }
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteSelectedCommand(Account account)

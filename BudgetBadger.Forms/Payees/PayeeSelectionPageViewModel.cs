@@ -89,14 +89,11 @@ namespace BudgetBadger.Forms.Payees
             {
                 await _navigationService.GoBackAsync(parameters);
             }
-            else
-            {
-                await ExecuteRefreshCommand();
-            }
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            await ExecuteRefreshCommand();
         }
 
 		public async Task ExecuteAddCommand()

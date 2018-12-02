@@ -13,7 +13,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class DeletedEnvelopesPageViewModel : BindableBase, INavigatedAware
+    public class DeletedEnvelopesPageViewModel : BindableBase, INavigationAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -72,7 +72,11 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

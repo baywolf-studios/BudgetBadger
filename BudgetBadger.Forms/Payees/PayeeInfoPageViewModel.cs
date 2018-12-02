@@ -100,9 +100,8 @@ namespace BudgetBadger.Forms.Payees
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -116,6 +115,8 @@ namespace BudgetBadger.Forms.Payees
             {
                 Payee = payee.DeepCopy();
             }
+
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteEditCommand()
