@@ -22,7 +22,8 @@
             HorizontalOptions="CenterAndExpand"
             x:Name="activityIndicator"
             Orientation="Vertical"
-            VerticalOptions="CenterAndExpand">
+            VerticalOptions="CenterAndExpand"
+            Spacing="8">
             <ActivityIndicator
                 IsRunning="true"
                 Color="{StaticResource BusyIndicatorBackgroundColor}"/>
