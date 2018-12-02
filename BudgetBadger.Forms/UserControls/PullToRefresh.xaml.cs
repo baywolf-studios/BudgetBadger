@@ -48,7 +48,7 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
 
             sfPull.Refreshing += PullToRefresh_Refreshing;
-            PropertyChanged += async (sender, e) => 
+            PropertyChanged += (sender, e) => 
             {
                 if (e.PropertyName == nameof(IsBusy))
                 {
