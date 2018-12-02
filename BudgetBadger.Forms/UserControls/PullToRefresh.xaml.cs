@@ -6,8 +6,10 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class PullToRefresh : SfPullToRefresh
+    public partial class PullToRefresh : ContentView
     {
+        bool _automaticRefresh { get; set; }
+
         public static BindableProperty RefreshCommandProperty = BindableProperty.Create(nameof(RefreshCommand), typeof(ICommand), typeof(PullToRefresh), defaultBindingMode: BindingMode.TwoWay);
         public ICommand RefreshCommand
         {
@@ -17,16 +19,15 @@ namespace BudgetBadger.Forms.UserControls
 
         public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(PullToRefresh), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if ((bool)oldVal != (bool)newVal && (bool)newVal != ((PullToRefresh)bindable).IsRefreshing)
+            if ((bool)oldVal != (bool)newVal && (bool)newVal != ((PullToRefresh)bindable).sfPull.IsRefreshing)
             {
-                if ((bool)newVal == true)
+                if (!((PullToRefresh)bindable)._automaticRefresh)
                 {
-                    ((PullToRefresh)bindable).StartRefreshing();
+                    ((PullToRefresh)bindable).activityIndicator.IsVisible = (bool)newVal;
+                    ((PullToRefresh)bindable).sfPull.IsVisible = !(bool)newVal;
                 }
-                else
-                {
-                    ((PullToRefresh)bindable).EndRefreshing();
-                }
+
+                ((PullToRefresh)bindable).sfPull.IsRefreshing = (bool)newVal;
             }
         });
         public bool IsBusy
@@ -35,18 +36,26 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsBusyProperty, value);
         }
 
+        public View PullableContent
+        {
+            get => sfPull.PullableContent;
+            set => sfPull.PullableContent = value;
+        }
+
         public PullToRefresh()
         {
             InitializeComponent();
 
-            Refreshing += PullToRefresh_Refreshing;
+            sfPull.Refreshing += PullToRefresh_Refreshing;
         }
 
         void PullToRefresh_Refreshing(object sender, EventArgs e)
         {
-            if (RefreshCommand != null)
+            if (RefreshCommand != null && RefreshCommand.CanExecute(null))
             {
+                _automaticRefresh = true;
                 RefreshCommand.Execute(null);
+                _automaticRefresh = false;
             }
         }
 
