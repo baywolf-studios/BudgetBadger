@@ -166,11 +166,12 @@ namespace BudgetBadger.Forms.Accounts
             {
                 Account = account.DeepCopy();
             }
+
+            await ExecuteRefreshCommand();
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

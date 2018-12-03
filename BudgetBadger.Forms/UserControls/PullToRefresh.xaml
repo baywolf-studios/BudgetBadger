@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sf:SfPullToRefresh
+<ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sf="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
-    ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-    ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-</sf:SfPullToRefresh>
+    x:Name="this">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="invertedBool" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Grid>
+        <sf:SfPullToRefresh
+            x:Name="sfPull"
+            ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
+            ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
+        </sf:SfPullToRefresh>
+        <StackLayout
+            HorizontalOptions="CenterAndExpand"
+            x:Name="activityIndicator"
+            Orientation="Vertical"
+            VerticalOptions="CenterAndExpand"
+            Spacing="8">
+            <ActivityIndicator
+                IsRunning="true"
+                Color="{StaticResource BusyIndicatorBackgroundColor}"/>
+            <Label HorizontalTextAlignment="Center" Text="Loading..." />
+        </StackLayout>
+    </Grid>
+</ContentView>
