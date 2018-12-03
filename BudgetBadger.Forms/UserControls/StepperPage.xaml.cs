@@ -8,7 +8,7 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class StepperPage : ContentPage
     {
-        uint _animationLength = 150;
+        StepperHeader _header { get; set; }
 
         public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
         public string PageTitle
@@ -40,8 +40,8 @@ namespace BudgetBadger.Forms.UserControls
 
         public ImageSource ToolbarItemIcon
         {
-            get => ToolbarItemImage.Source;
-            set  { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
+            get => _header.ToolbarItemIcon;
+            set => _header.ToolbarItemIcon = value;
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
@@ -71,82 +71,53 @@ namespace BudgetBadger.Forms.UserControls
             set => BodyView.Content = value;
         }
 
-        public Dictionary<string, string> ReplaceColor
-        {
-            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
-        }
-
         public StepperPage()
         {
             InitializeComponent();
-            LabelControl.BindingContext = this;
-            ToolbarItemFrame.BindingContext = this;
-            ToolbarItemImage.BindingContext = this;
-            PreviousFrame.BindingContext = this;
-            PreviousImage.BindingContext = this;
-            NextFrame.BindingContext = this;
-            NextImage.BindingContext = this;
-            EntryControl.BindingContext = this;
-            SearchImage.BindingContext = this;
 
-            var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += SearchTapped;
-            SearchButtonFrame.GestureRecognizers.Add(tapGestureRecognizer);
-
-            EntryControl.TextChanged += (sender, e) =>
+            _header = new StepperHeader
             {
-                if (e.OldTextValue != e.NewTextValue)
-                {
-                    if (SearchCommand?.CanExecute(SearchText) != false)
-                    {
-                        SearchCommand?.Execute(SearchText);
-                    }
-                }
+                BindingContext = this
             };
+            _header.SetBinding(StepperHeader.PreviousCommandProperty, "PreviousCommand");
+            _header.SetBinding(StepperHeader.NextCommandProperty, "NextCommand");
+            _header.SetBinding(StepperHeader.PageTitleProperty, "PageTitle");
+            _header.SetBinding(StepperHeader.ToolbarItemCommandProperty, "ToolbarItemCommand");
+            _header.SetBinding(StepperHeader.ToolbarItemTextProperty, "ToolberItemText");
+            _header.SetBinding(StepperHeader.SearchTextProperty, "SearchText");
+            _header.SetBinding(StepperHeader.SearchCommandProperty, "SearchCommand");
 
-            SizeChanged += StepperPage_SizeChanged;
-        }
-
-        private void StepperPage_SizeChanged(object sender, EventArgs e)
-        {
-            NavigationPage.SetTitleView(this, HeaderGrid);
-            Title = " ";
-        }
-
-        async void SearchTapped(object sender, EventArgs e)
-        {
-            if (!SearchBoxFrame.IsVisible) //currently hidden
+            if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.macOS)
             {
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "cancel.svg";
-
-                //show it
-                SearchBoxFrame.IsVisible = true;
-                var translationTask = SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
-                if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
-                {
-                    ViewExtensions.CancelAnimations(SearchBoxFrame);
-                    SearchBoxFrame.TranslationX = 0; 
-                }
-
-                EntryControl.Focus();
+                NavigationPage.SetHasNavigationBar(this, false);
+                MainGrid.Children.Add(_header);
+                Grid.SetRow(_header, 0);
             }
-            else //currently showing
+            else
             {
-                SearchText = string.Empty;
+                NavigationPage.SetHasNavigationBar(this, true);
+                NavigationPage.SetTitleView(this, _header);
 
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "search.svg";
+                MainGrid.SizeChanged += Header_SizeChanged;
+                _header.SizeChanged += Header_SizeChanged;
+                
+            }
+        }
 
-                //hide it
-                var translationTask = SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
-                if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
-                {
-                    ViewExtensions.CancelAnimations(SearchBoxFrame);
-                    SearchBoxFrame.TranslationX = SearchBoxFrame.Width;
-                }
+        void Header_SizeChanged(object sender, EventArgs e)
+        {
+            var headerWidth = _header.Width + _header.Margin.Left + _header.Margin.Right;
 
-                SearchBoxFrame.IsVisible = false;
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                var newPadding = (MainGrid.Width - headerWidth) * -1;
+                _header.Padding = new Thickness(newPadding, 0, 0, 0);
+            }
+
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                var newPadding = ((MainGrid.Width - headerWidth) / 2) * -1;
+                _header.Padding = new Thickness(newPadding, 0, newPadding, 0);
             }
         }
     }
