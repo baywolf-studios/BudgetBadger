@@ -100,7 +100,6 @@ namespace BudgetBadger.Forms.UserControls
 
                 MainGrid.SizeChanged += Header_SizeChanged;
                 _header.SizeChanged += Header_SizeChanged;
-                
             }
         }
 

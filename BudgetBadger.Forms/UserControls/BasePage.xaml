@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.UserControls.BasePage"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasBackButton="{StaticResource HasBackButtonKey}">
+    <ContentPage.Content>
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ContentView Grid.Row="1" x:Name="BodyView" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
