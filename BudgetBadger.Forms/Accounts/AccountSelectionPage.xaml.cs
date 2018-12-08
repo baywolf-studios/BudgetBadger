@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BudgetBadger.Forms.Pages;
 using BudgetBadger.Forms.UserControls;
 using Prism.Navigation;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public partial class AccountSelectionPage : ChildSearchPage
+    public partial class AccountSelectionPage : BasePage
     {
         public AccountSelectionPage()
         {

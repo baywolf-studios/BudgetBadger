@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:ChildSearchPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,15 +7,19 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this"
-    BackCommand="{Binding BackCommand}"
-    PageTitle="{Binding Budget.Envelope.Description}"
-    SearchCommand="{Binding SearchCommand}"
-    SearchText="{Binding SearchText}"
-    ToolbarItemCommand="{Binding EditCommand}"
-    ToolbarItemIcon="edit.svg"
-    ToolbarItemText="Edit">
-    <uc:ChildSearchPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    x:Name="this">
+    <p:BasePage.Header>
+        <p:ChildSearchHeader
+            BackCommand="{Binding BackCommand}"
+            PageTitle="{Binding Budget.Envelope.Description}"
+            SearchCommand="{Binding SearchCommand}"
+            SearchText="{Binding SearchText}"
+            ToolbarItemCommand="{Binding EditCommand}"
+            ToolbarItemIcon="edit.svg"
+            ToolbarItemText="Edit"/>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <Grid
             Margin="0"
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -251,5 +255,5 @@
                     VerticalOptions="Center" />
             </Grid>
         </Grid>
-    </uc:ChildSearchPage.BodyContent>
-</uc:ChildSearchPage>
+    </p:BasePage.Body>
+</p:BasePage>

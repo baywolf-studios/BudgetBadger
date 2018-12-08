@@ -1,4 +1,5 @@
-﻿using BudgetBadger.Forms.UserControls;
+﻿using BudgetBadger.Forms.Pages;
+using BudgetBadger.Forms.UserControls;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Accounts
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AccountInfoDetailedPage : ChildSearchPage
-	{
+	public partial class AccountInfoDetailedPage : BasePage
+    {
 		public AccountInfoDetailedPage()
         {
 			InitializeComponent ();

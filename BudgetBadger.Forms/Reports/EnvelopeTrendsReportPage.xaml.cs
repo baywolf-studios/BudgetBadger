@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using BudgetBadger.Forms.Pages;
 using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public partial class EnvelopeTrendsReportPage : ChildPage
+    public partial class EnvelopeTrendsReportPage : BasePage
     {
         public EnvelopeTrendsReportPage()
         {

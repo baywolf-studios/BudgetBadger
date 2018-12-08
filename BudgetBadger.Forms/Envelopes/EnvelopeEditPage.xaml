@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:ChildPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackCommand="{Binding BackCommand}"
-    PageTitle="Edit Budget"
-    ToolbarItemCommand="{Binding SaveCommand}"
-    ToolbarItemIcon="save.svg"
-    ToolbarItemText="Save">
-    <uc:ChildPage.Triggers>
-        <DataTrigger
-            Binding="{Binding Budget.Envelope.IsNew}"
-            TargetType="uc:ChildPage"
-            Value="True">
-            <Setter Property="PageTitle" Value="New Envelope" />
-        </DataTrigger>
-    </uc:ChildPage.Triggers>
-    <uc:ChildPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    <p:BasePage.Header>
+        <p:ChildHeader 
+            BackCommand="{Binding BackCommand}"
+            PageTitle="Edit Budget"
+            ToolbarItemCommand="{Binding SaveCommand}"
+            ToolbarItemIcon="save.svg"
+            ToolbarItemText="Save">
+            <p:ChildHeader.Triggers>
+                <DataTrigger
+                    Binding="{Binding Budget.Envelope.IsNew}"
+                    TargetType="p:ChildHeader"
+                    Value="True">
+                    <Setter Property="PageTitle" Value="New Envelope" />
+                </DataTrigger>
+            </p:ChildHeader.Triggers>
+        </p:ChildHeader>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
                 Margin="0"
@@ -385,5 +390,5 @@
                 </Grid>
             </Grid>
         </uc:BusyIndicator>
-    </uc:ChildPage.BodyContent>
-</uc:ChildPage>
+    </p:BasePage.Body>
+</p:BasePage>

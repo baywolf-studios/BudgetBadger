@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:ChildSearchPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.DeletedEnvelopeGroupsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,10 +8,14 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackCommand="{Binding BackCommand}"
-    PageTitle="Deleted Envelope Groups"
-    SearchText="{Binding SearchText}">
-    <uc:ChildSearchPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    <p:BasePage.Header>
+        <p:ChildSearchHeader
+            BackCommand="{Binding BackCommand}"
+            PageTitle="Deleted Envelope Groups"
+            SearchText="{Binding SearchText}"/>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <uc:HelperControl
             HelperText="No deleted envelope groups"
             ImagePath="envelopegroup.svg"
@@ -43,5 +47,5 @@
                 </uc:PullToRefresh.PullableContent>
             </uc:PullToRefresh>
         </uc:HelperControl>
-    </uc:ChildSearchPage.BodyContent>
-</uc:ChildSearchPage>
+    </p:BasePage.Body>
+</p:BasePage>

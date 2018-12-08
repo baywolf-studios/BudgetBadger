@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:RootSearchPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Payees.PayeesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,13 +9,17 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this"
-    PageTitle="Payees"
-    SearchText="{Binding SearchText}"
-    ToolbarItemCommand="{Binding AddCommand}"
-    ToolbarItemIcon="newicon.svg"
-    ToolbarItemText="New">
-    <uc:RootSearchPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    x:Name="this">
+    <p:BasePage.Header>
+        <p:RootSearchHeader
+            PageTitle="Payees"
+            SearchText="{Binding SearchText}"
+            ToolbarItemCommand="{Binding AddCommand}"
+            ToolbarItemIcon="newicon.svg"
+            ToolbarItemText="New"/>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <uc:HelperControl
             HelperText="Add a Payee using the + button"
             ImagePath="payees.svg"
@@ -126,5 +130,5 @@
                     VerticalOptions="End" />
             </Grid>
         </uc:HelperControl>
-    </uc:RootSearchPage.BodyContent>
-</uc:RootSearchPage>
+    </p:BasePage.Body>
+</p:BasePage>

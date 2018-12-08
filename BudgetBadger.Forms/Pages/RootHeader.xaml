@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Pages.RootHeader"
+    ColumnSpacing="0"
+    RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Label
+        x:Name="LabelControl"
+        Grid.Row="0"
+        FontAttributes="Bold"
+        FontSize="17"
+        LineBreakMode="TailTruncation"
+        Text="{Binding PageTitle}"
+        TextColor="White"
+        VerticalOptions="Center">
+        <Label.Margin>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android" Value="16,0,0,0" />
+                <On Platform="UWP" Value="16,0,0,0" />
+                <On Platform="iOS" Value="0" />
+                <On Platform="macOS" Value="0" />
+            </OnPlatform>
+        </Label.Margin>
+        <Label.HorizontalOptions>
+            <OnPlatform x:TypeArguments="LayoutOptions">
+                <On Platform="Android" Value="Start" />
+                <On Platform="UWP" Value="Start" />
+                <On Platform="iOS" Value="Center" />
+                <On Platform="macOS" Value="Center" />
+            </OnPlatform>
+        </Label.HorizontalOptions>
+    </Label>
+</Grid>

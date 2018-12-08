@@ -1,4 +1,5 @@
-﻿using BudgetBadger.Forms.UserControls;
+﻿using BudgetBadger.Forms.Pages;
+using BudgetBadger.Forms.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Payees
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PayeesDetailedPage : RootSearchPage
-	{
+	public partial class PayeesDetailedPage : BasePage
+    {
 		public PayeesDetailedPage ()
 		{
 			InitializeComponent ();
