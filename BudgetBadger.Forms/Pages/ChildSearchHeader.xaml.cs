@@ -88,6 +88,11 @@ namespace BudgetBadger.Forms.Pages
                     }
                 }
             };
+
+            SizeChanged += (sender, e) =>
+            {
+                EntryFrame.Margin = Height < 40 ? new Thickness(8, 0) : new Thickness(8);
+            };
         }
 
         async void SearchTapped(object sender, EventArgs e)
