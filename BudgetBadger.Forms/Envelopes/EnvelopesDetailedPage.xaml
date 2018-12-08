@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:StepperPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,15 +7,19 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this"
-    NextCommand="{Binding NextCommand}"
-    PageTitle="{Binding Schedule.Description}"
-    PreviousCommand="{Binding PreviousCommand}"
-    SearchText="{Binding SearchText}"
-    ToolbarItemCommand="{Binding AddCommand}"
-    ToolbarItemIcon="newicon.svg"
-    ToolbarItemText="New">
-    <uc:StepperPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    x:Name="this">
+    <p:BasePage.Header>
+        <p:StepperHeader
+            NextCommand="{Binding NextCommand}"
+            PageTitle="{Binding Schedule.Description}"
+            PreviousCommand="{Binding PreviousCommand}"
+            SearchText="{Binding SearchText}"
+            ToolbarItemCommand="{Binding AddCommand}"
+            ToolbarItemIcon="newicon.svg"
+            ToolbarItemText="New"/>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <uc:HelperControl
             Grid.Row="2"
             HelperText="Add an Envelope using the + button"
@@ -238,5 +242,5 @@
                 </Grid>
             </Grid>
         </uc:HelperControl>
-    </uc:StepperPage.BodyContent>
-</uc:StepperPage>
+    </p:BasePage.Body>
+</p:BasePage>

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uc:RootPage
+<p:BasePage
     x:Class="BudgetBadger.Forms.Settings.SettingsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackgroundColor="White"
-    PageTitle="Settings">
-    <uc:RootPage.BodyContent>
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    <p:BasePage.Header>
+        <p:RootHeader PageTitle="Settings"/>    
+    </p:BasePage.Header>
+    <p:BasePage.Body>
         <ScrollView
             Margin="0"
             Padding="0"
@@ -208,5 +210,5 @@
                 </Label>
             </Grid>
         </ScrollView>
-    </uc:RootPage.BodyContent>
-</uc:RootPage>
+    </p:BasePage.Body>
+</p:BasePage>

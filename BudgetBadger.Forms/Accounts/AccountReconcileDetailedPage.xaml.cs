@@ -1,4 +1,5 @@
-﻿using BudgetBadger.Forms.UserControls;
+﻿using BudgetBadger.Forms.Pages;
+using BudgetBadger.Forms.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Accounts
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AccountReconcileDetailedPage : ChildSearchPage
+	public partial class AccountReconcileDetailedPage : BasePage
     {
 		public AccountReconcileDetailedPage ()
 		{

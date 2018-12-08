@@ -2,37 +2,36 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace BudgetBadger.Forms.UserControls
+namespace BudgetBadger.Forms.Pages
 {
-    public partial class StepperPage : ContentPage
+    public partial class StepperHeader : Grid
     {
         uint _animationLength = 150;
 
-        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperPage));
+        public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperHeader));
         public string PageTitle
         {
             get => (string)GetValue(PageTitleProperty);
             set => SetValue(PageTitleProperty, value);
         }
 
-        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public string SearchText
         {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
         }
 
-        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty SearchCommandProperty = BindableProperty.Create(nameof(SearchCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public ICommand SearchCommand
         {
             get => (ICommand)GetValue(SearchCommandProperty);
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public string ToolbarItemText
         {
             get => (string)GetValue(ToolbarItemTextProperty);
@@ -42,34 +41,28 @@ namespace BudgetBadger.Forms.UserControls
         public ImageSource ToolbarItemIcon
         {
             get => ToolbarItemImage.Source;
-            set  { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
+            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
         }
 
-        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public ICommand ToolbarItemCommand
         {
             get => (ICommand)GetValue(ToolbarItemCommandProperty);
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
-        public static BindableProperty NextCommandProperty = BindableProperty.Create(nameof(NextCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty NextCommandProperty = BindableProperty.Create(nameof(NextCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public ICommand NextCommand
         {
             get => (ICommand)GetValue(NextCommandProperty);
             set => SetValue(NextCommandProperty, value);
         }
 
-        public static BindableProperty PreviousCommandProperty = BindableProperty.Create(nameof(PreviousCommand), typeof(ICommand), typeof(StepperPage), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty PreviousCommandProperty = BindableProperty.Create(nameof(PreviousCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
         public ICommand PreviousCommand
         {
             get => (ICommand)GetValue(PreviousCommandProperty);
             set => SetValue(PreviousCommandProperty, value);
-        }
-
-        public View BodyContent
-        {
-            get => BodyView.Content;
-            set => BodyView.Content = value;
         }
 
         public Dictionary<string, string> ReplaceColor
@@ -77,7 +70,8 @@ namespace BudgetBadger.Forms.UserControls
             get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
         }
 
-        public StepperPage()
+
+        public StepperHeader()
         {
             InitializeComponent();
             LabelControl.BindingContext = this;
@@ -105,30 +99,10 @@ namespace BudgetBadger.Forms.UserControls
                 }
             };
 
-            DeviceDisplay.ScreenMetricsChanged += DeviceDisplay_ScreenMetricsChanged;
-            DeviceDisplay_ScreenMetricsChanged(null, null);
-        }
-
-        void DeviceDisplay_ScreenMetricsChanged(object sender, ScreenMetricsChangedEventArgs e)
-        {
-            if (Device.RuntimePlatform == Device.iOS)
+            SizeChanged += (sender, e) => 
             {
-                var version = DeviceInfo.Version;
-                if (version.Major < 11)
-                {
-                    var metrics = DeviceDisplay.ScreenMetrics;
-                    var orientation = metrics.Orientation;
-
-                    if (orientation == ScreenOrientation.Portrait || Device.Idiom == TargetIdiom.Tablet)
-                    {
-                        Padding = new Thickness(0, 20, 0, 0);
-                    }
-                    else
-                    {
-                        Padding = new Thickness();
-                    }
-                }
-            }
+                EntryFrame.Margin = Height < 40 ? new Thickness(8, 0) : new Thickness(8);
+            };
         }
 
         async void SearchTapped(object sender, EventArgs e)
@@ -140,11 +114,11 @@ namespace BudgetBadger.Forms.UserControls
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
-                var translationTask = SearchBoxFrame.TranslateTo(0, 0, _animationLength, Easing.CubicOut);
+                var translationTask = SearchBoxFrame.FadeTo(1, _animationLength, Easing.CubicOut);
                 if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
                 {
                     ViewExtensions.CancelAnimations(SearchBoxFrame);
-                    SearchBoxFrame.TranslationX = 0; 
+                    SearchBoxFrame.Opacity = 1;
                 }
 
                 EntryControl.Focus();
@@ -157,11 +131,11 @@ namespace BudgetBadger.Forms.UserControls
                 SearchImage.Source = "search.svg";
 
                 //hide it
-                var translationTask = SearchBoxFrame.TranslateTo(SearchBoxFrame.Width, 0, _animationLength, Easing.CubicOut);
+                var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);
                 if (await Task.WhenAny(translationTask, Task.Delay((int)_animationLength + 50)) != translationTask)
                 {
                     ViewExtensions.CancelAnimations(SearchBoxFrame);
-                    SearchBoxFrame.TranslationX = SearchBoxFrame.Width;
+                    SearchBoxFrame.Opacity = 0;
                 }
 
                 SearchBoxFrame.IsVisible = false;
@@ -169,4 +143,3 @@ namespace BudgetBadger.Forms.UserControls
         }
     }
 }
-
