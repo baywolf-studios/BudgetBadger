@@ -25,9 +25,14 @@ namespace BudgetBadger.iOS.Effects
             if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
             {
                 var insets = UIApplication.SharedApplication.Windows[0].SafeAreaInsets; // Can't use KeyWindow this early
-                page.HeaderContentView.Padding = new Thickness(insets.Left, insets.Top, insets.Right, 0);
+                var topPadding = insets.Top;
+                if (topPadding <= 0)
+                {
+                    topPadding = UIApplication.SharedApplication.StatusBarFrame.Height;
+                }
+
+                page.HeaderContentView.Padding = new Thickness(insets.Left, topPadding, insets.Right, 0);
                 page.BodyContentView.Padding = new Thickness(insets.Left, 0, insets.Right, 0);
-                
             }
             else
             {
