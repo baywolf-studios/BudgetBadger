@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.3.0" package="com.BayWolfStudios.BudgetBadger" android:versionCode="8">
-	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="27" />
+	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="27" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="com.android.vending.BILLING" />
 	<application android:icon="@mipmap/ic_launcher" android:label="Budget Badger"></application>
-    <supports-screens android:largeScreens="true" android:xlargeScreens="true" />
+	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 </manifest>

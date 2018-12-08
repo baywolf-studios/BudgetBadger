@@ -41,11 +41,11 @@ namespace BudgetBadger.iOS
 
             UITabBar.Appearance.SelectedImageTintColor = statusBarColor;
 
-            var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
-            if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
-            {
-                statusBar.BackgroundColor = statusBarColor;
-            }
+            //var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
+            //if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
+            //{
+            //    statusBar.BackgroundColor = statusBarColor;
+            //}
 
             return base.FinishedLaunching(app, options);
         }
