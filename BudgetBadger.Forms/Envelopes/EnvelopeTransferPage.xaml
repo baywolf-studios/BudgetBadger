@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:BasePage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeTransferPage"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    <p:BasePage.Header>
+        <p:ChildHeader 
+            BackCommand="{Binding BackCommand}"
+            PageTitle="Envelope Transfer"
+            ToolbarItemCommand="{Binding SaveCommand}"
+            ToolbarItemIcon="save.svg"
+            ToolbarItemText="Save"/>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <ScrollView
+                Margin="0"
+                Padding="16"
+                Orientation="Vertical">
+                <Grid
+                    Margin="0"
+                    ColumnSpacing="16"
+                    RowSpacing="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <uc:ButtonSelector
+                        Grid.Row="0"
+                        Label="From" 
+                        Text="Test Envelope 1"/>
+                    <uc:ButtonSelector
+                        Grid.Row="1"
+                        Label="To"
+                        Text="Test Envelope 2"/>
+                    <uc:CurrencyCalculatorEntry
+                        Grid.Row="2"
+                        Label="Amount"
+                        Number="55"/>
+                </Grid>
+            </ScrollView>
+    </p:BasePage.Body>
+</p:BasePage>

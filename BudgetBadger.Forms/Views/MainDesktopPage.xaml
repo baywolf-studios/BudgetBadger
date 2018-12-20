@@ -20,7 +20,7 @@
                     <ColumnDefinition Width="1" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="64" />
+                    <RowDefinition Height="{StaticResource AppBarGridSize}" />
                     <RowDefinition Height="48" />
                     <RowDefinition Height="48" />
                     <RowDefinition Height="48" />

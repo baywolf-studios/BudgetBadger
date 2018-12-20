@@ -44,8 +44,8 @@
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">48</On>
                 <On Platform="Android">56</On>
-                <On Platform="UWP">64</On>
-                <On Platform="macOS">64</On>
+                <On Platform="UWP">48</On>
+                <On Platform="macOS">48</On>
             </OnPlatform>
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>
