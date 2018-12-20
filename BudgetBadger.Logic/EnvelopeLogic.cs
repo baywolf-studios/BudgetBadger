@@ -528,6 +528,46 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result> BudgetTransferAsync(Guid fromBudgetId, Guid toBudgetId, decimal amount)
+        {
+            var fromBudget = await _envelopeDataAccess.ReadBudgetAsync(fromBudgetId);
+            var toBudget = await _envelopeDataAccess.ReadBudgetAsync(toBudgetId);
+
+            if (fromBudget.Schedule.Id != toBudget.Schedule.Id)
+            {
+                return new Result { Success = false, Message = "Cannot transfer between envelopes from different schedules" };
+            }
+
+            fromBudget.Amount -= amount;
+            toBudget.Amount += amount;
+
+            var fromValidationResult = await ValidateBudgetAsync(fromBudget).ConfigureAwait(false);
+            if (!fromValidationResult.Success)
+            {
+                return fromValidationResult;
+            }
+
+            var toValidationResult = await ValidateBudgetAsync(toBudget).ConfigureAwait(false);
+            if (!toValidationResult.Success)
+            {
+                return toValidationResult;
+            }
+
+            var fromResult = await SaveBudgetAsync(fromBudget).ConfigureAwait(false);
+            if (!fromResult.Success)
+            {
+                return fromResult;
+            }
+
+            var toResult = await SaveBudgetAsync(toBudget).ConfigureAwait(false);
+            if (!toResult.Success)
+            {
+                return toResult;
+            }
+
+            return new Result { Success = true };
+        }
+
         public Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
             if (!envelopeGroup.IsValid())
