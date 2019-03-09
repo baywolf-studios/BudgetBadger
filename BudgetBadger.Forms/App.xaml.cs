@@ -57,7 +57,7 @@ namespace BudgetBadger.Forms
 
             SQLitePCL.Batteries_V2.Init();
 
-            if (Device.Idiom == TargetIdiom.Desktop)
+            if (Device.Idiom == TargetIdiom.Desktop && Device.RuntimePlatform != Device.macOS)
             {
                 await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
             }
@@ -87,7 +87,7 @@ namespace BudgetBadger.Forms
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
-			container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
+            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
             Directory.CreateDirectory(appDataDirectory);
@@ -176,7 +176,15 @@ namespace BudgetBadger.Forms
                 container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
             }
 
-            containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                containerRegistry.RegisterForNavigationOnIdiom<MainTabletPage, MainPageViewModel>(name: "MainPage");
+            }
+            else
+            {
+                containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
+            }
+                
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
@@ -193,6 +201,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
+            containerRegistry.RegisterForNavigation<EnvelopeTransferPage, EnvelopeTransferPageViewModel>();
             containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();

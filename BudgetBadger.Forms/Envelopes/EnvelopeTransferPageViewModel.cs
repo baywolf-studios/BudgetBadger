@@ -60,6 +60,10 @@ namespace BudgetBadger.Forms.Envelopes
             _toEnvelopeRequested = false;
             FromEnvelope = new Budget();
             ToEnvelope = new Budget();
+
+            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            FromEnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteFromEnvelopeSelectedCommand());
+            ToEnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteToEnvelopeSelectedCommand());
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -68,7 +72,7 @@ namespace BudgetBadger.Forms.Envelopes
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
-        {
+        { 
         }
 
         public void OnNavigatingTo(INavigationParameters parameters)

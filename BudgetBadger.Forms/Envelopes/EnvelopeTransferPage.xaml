@@ -32,11 +32,13 @@
                     <uc:ButtonSelector
                         Grid.Row="0"
                         Label="From" 
-                        Text="Test Envelope 1"/>
+                        Text="{Binding FromEnvelope.Envelope.Description}"
+                        Command="{Binding FromEnvelopeSelectedCommand}"/>
                     <uc:ButtonSelector
                         Grid.Row="1"
                         Label="To"
-                        Text="Test Envelope 2"/>
+                        Text="{Binding ToEnvelope.Envelope.Description}"
+                        Command="{Binding ToEnvelopeSelectedCommand}"/>
                     <uc:CurrencyCalculatorEntry
                         Grid.Row="2"
                         Label="Amount"

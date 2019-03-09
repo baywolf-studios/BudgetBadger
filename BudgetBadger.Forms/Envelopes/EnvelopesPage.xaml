@@ -141,6 +141,22 @@
                             ItemsSource="{Binding Budgets}"
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedBudget}">
+                            <syncfusion:SfListView.LeftSwipeTemplate>
+                                <DataTemplate>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <svg:SvgCachedImage
+                                            HeightRequest="24"
+                                            HorizontalOptions="Center"
+                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                            Source="envelope.svg"
+                                            VerticalOptions="Center"
+                                            WidthRequest="24" />
+                                    </ContentView>
+                                </DataTemplate>
+                            </syncfusion:SfListView.LeftSwipeTemplate>
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">

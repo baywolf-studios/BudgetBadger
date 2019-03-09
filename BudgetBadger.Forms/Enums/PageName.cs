@@ -13,6 +13,7 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string EnvelopeSelectionPage = "EnvelopeSelectionPage";
         public static readonly string EnvelopeInfoPage = "EnvelopeInfoPage";
         public static readonly string EnvelopeEditPage = "EnvelopeEditPage";
+        public static readonly string EnvelopeTransferPage = "EnvelopeTransferPage";
         public static readonly string DeletedEnvelopesPage = "DeletedEnvelopesPage";
 		public static readonly string EnvelopeGroupSelectionPage = "EnvelopeGroupSelectionPage";
 		public static readonly string EnvelopeGroupEditPage = "EnvelopeGroupEditPage";
