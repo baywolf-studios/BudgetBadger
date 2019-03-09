@@ -92,7 +92,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnAppearing()
         {
-            await ExecuteRefreshCommand();
+            //await ExecuteRefreshCommand();
         }
 
         public void OnDisappearing()

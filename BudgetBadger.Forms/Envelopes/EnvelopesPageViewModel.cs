@@ -31,6 +31,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
+        public ICommand TransferCommand { get; set; }
         public Predicate<object> Filter { get => (budget) => _envelopeLogic.FilterBudget((Budget)budget, SearchText); }
 
         bool _isBusy;
@@ -99,6 +100,7 @@ namespace BudgetBadger.Forms.Envelopes
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
+            TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
         }
 
         public async void OnAppearing()
@@ -241,6 +243,15 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteAddTransactionCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+        }
+
+        public async Task ExecuteTransferCommand(Budget budget)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Budget, budget }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
         }
     }
 }
