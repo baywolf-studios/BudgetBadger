@@ -26,21 +26,21 @@
                 <On Platform="UWP">0</On>
                 <On Platform="macOS">5</On>
             </OnPlatform>
-            
+
             <OnPlatform x:Key="AppBarPortraitHeight" x:TypeArguments="x:Double">
                 <On Platform="iOS">48</On>
                 <On Platform="Android">56</On>
                 <On Platform="UWP">48</On>
                 <On Platform="macOS">48</On>
             </OnPlatform>
-            
+
             <OnPlatform x:Key="AppBarLandscapeHeight" x:TypeArguments="x:Double">
                 <On Platform="iOS">32</On>
                 <On Platform="Android">48</On>
                 <On Platform="UWP">48</On>
                 <On Platform="macOS">48</On>
             </OnPlatform>
-            
+
             <OnPlatform x:Key="AppBarGridSize" x:TypeArguments="GridLength">
                 <On Platform="iOS">48</On>
                 <On Platform="Android">56</On>
