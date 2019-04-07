@@ -5,15 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-    xmlns:macos="clr-namespace:Xamarin.Forms.PlatformConfiguration.macOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
     xmlns:local="clr-namespace:BudgetBadger.Forms.Views"
     xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
     xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions"
-    android:TabbedPage.ToolbarPlacement="Bottom"
-    macos:TabbedPage.TabsStyle="Icons">
+    android:TabbedPage.ToolbarPlacement="Bottom">
     <TabbedPage.Children>
         <NavigationPage
             Title="Envelopes"
