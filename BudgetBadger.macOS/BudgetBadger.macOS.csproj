@@ -76,8 +76,8 @@
     <Reference Include="FFImageLoading.Platform, Version=2.4.5.880, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.FFImageLoading.2.4.5.880-pre\lib\Xamarin.Mac20\FFImageLoading.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="FFImageLoading.Svg.Forms, Version=2.4.5.880, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.Forms.2.4.5.880-pre\lib\Xamarin.Mac20\FFImageLoading.Svg.Forms.dll</HintPath>
+    <Reference Include="FFImageLoading.Svg.Forms, Version=2.4.3.840, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Svg.Forms.2.4.3.840\lib\Xamarin.Mac20\FFImageLoading.Svg.Forms.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Svg.Platform, Version=2.4.5.880, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.FFImageLoading.Svg.2.4.5.880-pre\lib\Xamarin.Mac20\FFImageLoading.Svg.Platform.dll</HintPath>
