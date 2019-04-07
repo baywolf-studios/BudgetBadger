@@ -214,6 +214,16 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\accountswhitetabicon.png.imageset\icons8-combo-chart-30.png" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\settingswhitetabicon.png.imageset\icons8-settings-filled-30.png" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\icons8-envelope-filled-30.png" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\payeeswhitetabicon.png.imageset\icons8-user-account-filled-30.png" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\reportswhitetabicon.png.imageset\icons8-combo-chart-filled-30.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -278,6 +288,13 @@
     <BundleResource Include="Resources\helperenvelopegroup.svg" />
     <BundleResource Include="Resources\expander.svg" />
     <BundleResource Include="Resources\transaction.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\accountswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\settingswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\envelopeswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\payeeswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\reportswhitetabicon.png.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
