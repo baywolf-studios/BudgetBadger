@@ -44,8 +44,7 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
             SelectionChanging += (sender, e) => 
             {
-                // may have to add macos later
-                if (HasOtherTapGestureRecognizers && Device.RuntimePlatform == Device.Android)
+                if (HasOtherTapGestureRecognizers && (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.macOS))
                 {
                     e.Cancel = true;
                 }
