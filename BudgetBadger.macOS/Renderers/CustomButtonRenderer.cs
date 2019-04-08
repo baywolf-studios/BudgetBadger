@@ -14,7 +14,7 @@ namespace BudgetBadger.macOS.Renderers
 
             if (Control != null)
             {
-                Control.Bordered = false;
+                //Control.Bordered = false;
             }
         }
     }

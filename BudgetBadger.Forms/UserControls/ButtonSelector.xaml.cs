@@ -26,11 +26,13 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     (bindable as ButtonSelector).PickerControl.ItemsSource = new List<string>() { newval.ToString() };
                     (bindable as ButtonSelector).PickerControl.SelectedIndex = 0;
+                    (bindable as ButtonSelector).TextControl.Text = newval.ToString();
                 }
                 else
                 {
                     (bindable as ButtonSelector).PickerControl.ItemsSource = new List<string>();
                     (bindable as ButtonSelector).PickerControl.SelectedIndex = -1;
+                    (bindable as ButtonSelector).TextControl.Text = "";
                 }
             }
         });
@@ -60,12 +62,14 @@ namespace BudgetBadger.Forms.UserControls
 
             LabelControl.BindingContext = this;
             PickerContentView.BindingContext = this;
+            TextControl.BindingContext = this;
 
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     PickerControl.IsEnabled = IsEnabled;
+                    TextControl.IsEnabled = IsEnabled;
                 }
 
                 if (e.PropertyName == nameof(IsFocused))

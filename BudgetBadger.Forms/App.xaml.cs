@@ -52,12 +52,12 @@ namespace BudgetBadger.Forms
 
         protected override async void OnInitialized()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzU5NjRAMzEzNjJlMzMyZTMwaWlVT0Z2Yzd1ak5XUSsxVkZhTXJ5RHhLdWJvQ3VJYmxJdnZrMGhjMDExND0=");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("ODcxNzdAMzEzNzJlMzEyZTMwZGczRU9RMGhIQmlNbGU1WG1aUzc3L1duaHNORTA0TFprZ2xVZE10TXJvQT0=");
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
 
-            if (Device.Idiom == TargetIdiom.Desktop && Device.RuntimePlatform != Device.macOS)
+            if (Device.Idiom == TargetIdiom.Desktop)
             {
                 await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
             }
@@ -176,15 +176,8 @@ namespace BudgetBadger.Forms
                 container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
             }
 
-            if (Device.RuntimePlatform == Device.macOS)
-            {
-                containerRegistry.RegisterForNavigationOnIdiom<MainTabletPage, MainPageViewModel>(name: "MainPage");
-            }
-            else
-            {
-                containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
-            }
-                
+            containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
+
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();

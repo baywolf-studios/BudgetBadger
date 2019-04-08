@@ -528,30 +528,32 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> BudgetTransferAsync(Guid fromBudgetId, Guid toBudgetId, decimal amount)
+        public async Task<Result> BudgetTransferAsync(BudgetSchedule schedule, Guid fromEnvelopeId, Guid toEnvelopeId, decimal amount)
         {
-            var fromBudget = await _envelopeDataAccess.ReadBudgetAsync(fromBudgetId);
-            var toBudget = await _envelopeDataAccess.ReadBudgetAsync(toBudgetId);
-
-            if (fromBudget.Schedule.Id != toBudget.Schedule.Id)
+            // getting latest version of schedule and saving it before getting budgets
+            // to fix issue with the budget schedule not being in the database
+            // when saving the updated budget amounts
+            var populatedSchedule = await GetPopulatedBudgetSchedule(schedule);
+            var scheduleSaveResult = await SaveBudgetScheduleAsync(populatedSchedule);
+            if (!scheduleSaveResult.Success)
             {
-                return new Result { Success = false, Message = "Cannot transfer between envelopes from different schedules" };
+                return scheduleSaveResult;
             }
+
+            var budgetsResult = await GetBudgetsAsync(populatedSchedule);
+
+            if (!budgetsResult.Success)
+            {
+                return budgetsResult;
+            }
+
+            var budgets = budgetsResult.Data;
+
+            var fromBudget = budgets.FirstOrDefault(b => b.Envelope.Id == fromEnvelopeId);
+            var toBudget = budgets.FirstOrDefault(b => b.Envelope.Id == toEnvelopeId);
 
             fromBudget.Amount -= amount;
             toBudget.Amount += amount;
-
-            var fromValidationResult = await ValidateBudgetAsync(fromBudget).ConfigureAwait(false);
-            if (!fromValidationResult.Success)
-            {
-                return fromValidationResult;
-            }
-
-            var toValidationResult = await ValidateBudgetAsync(toBudget).ConfigureAwait(false);
-            if (!toValidationResult.Success)
-            {
-                return toValidationResult;
-            }
 
             var fromResult = await SaveBudgetAsync(fromBudget).ConfigureAwait(false);
             if (!fromResult.Success)

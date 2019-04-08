@@ -16,7 +16,7 @@ namespace BudgetBadger.macOS.Renderers
 
             if (Control != null)
             {
-                Control.DatePickerStyle = NSDatePickerStyle.TextFieldAndStepper;
+                //Control.DatePickerStyle = NSDatePickerStyle.TextFieldAndStepper;
             }
         }
     }
