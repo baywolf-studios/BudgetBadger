@@ -5,16 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
     xmlns:local="clr-namespace:BudgetBadger.Forms.Views"
     xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
     xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     android:TabbedPage.ToolbarPlacement="Bottom">
     <TabbedPage.Effects>
-        <effects:BottomBarNoShiftEffect/>
+        <effects:BottomBarNoShiftEffect />
     </TabbedPage.Effects>
     <TabbedPage.Children>
         <NavigationPage
