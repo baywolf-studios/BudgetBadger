@@ -17,7 +17,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Budget>> GetBudgetAsync(Guid id);
         Task<Result> ValidateBudgetAsync(Budget budget);
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
-        Task<Result> BudgetTransferAsync(Guid fromBudgetId, Guid toBudgetId, decimal amount);
+        Task<Result> BudgetTransferAsync(BudgetSchedule schedule, Guid fromBudgetId, Guid toBudgetId, decimal amount);
 
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForReportAsync();

@@ -25,6 +25,8 @@ namespace BudgetBadger.Forms.Envelopes
 		public ICommand AddCommand { get; set; }
         public Predicate<object> Filter { get => (budget) => _envelopeLogic.FilterBudget((Budget)budget, SearchText); }
 
+        bool _transferEnvelopeSelection { get; set; }
+
         bool _isBusy;
         public bool IsBusy
         {
@@ -90,6 +92,8 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            _transferEnvelopeSelection = parameters.GetValue<bool>(PageParameter.TransferEnvelopeSelection);
+
             await ExecuteRefreshCommand();
         }
 
@@ -110,7 +114,16 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     var schedule = scheduleResult.Data;
 
-                    var budgetResult = await _envelopeLogic.GetBudgetsForSelectionAsync(schedule);
+                    Result<IReadOnlyList<Budget>> budgetResult;
+
+                    if (_transferEnvelopeSelection)
+                    {
+                        budgetResult = await _envelopeLogic.GetBudgetsAsync(schedule);
+                    }
+                    else
+                    {
+                        budgetResult = await _envelopeLogic.GetBudgetsForSelectionAsync(schedule);
+                    }
 
                     if (budgetResult.Success)
                     {

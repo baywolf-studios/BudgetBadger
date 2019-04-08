@@ -110,6 +110,7 @@
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="SimpleAuthActivity.cs" />
+    <Compile Include="Effects\BottomBarNoShiftEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -124,6 +125,7 @@
     <AndroidResource Include="Resources\drawable\helperenvelopegroup.svg" />
     <AndroidResource Include="Resources\drawable\expander.svg" />
     <AndroidResource Include="Resources\drawable\transaction.svg" />
+    <AndroidResource Include="Resources\values\dimens.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

@@ -370,6 +370,7 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount)
         {
+            var now = DateTime.Now;
             var result = new Result();
 
             try
@@ -393,7 +394,7 @@ namespace BudgetBadger.Logic
                     foreach (var transaction in accountTransactionsToReconcile)
                     {
                         transaction.Posted = true;
-                        transaction.ModifiedDateTime = dateTime;
+                        transaction.ModifiedDateTime = now;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
                         tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
                     }
@@ -401,7 +402,7 @@ namespace BudgetBadger.Logic
                     foreach (var transaction in payeeTransactionsToReconcile)
                     {
                         transaction.Posted = true;
-                        transaction.ModifiedDateTime = dateTime;
+                        transaction.ModifiedDateTime = now;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
                         tasks.Add(TransactionDataAccess.UpdateTransactionAsync(transaction));
                     }

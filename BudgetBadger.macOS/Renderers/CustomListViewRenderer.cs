@@ -14,7 +14,7 @@ namespace BudgetBadger.macOS.Renderers
 
             if (Control != null && Control is NSScrollView scrollView)
             {
-                scrollView.HasVerticalScroller = false;
+                //scrollView.HasVerticalScroller = false;
             }
         }
     }

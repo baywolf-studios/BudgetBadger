@@ -23,16 +23,34 @@
             TextColor="{StaticResource PrimaryTextColor}">
             <Picker.InputTransparent>
                 <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="UWP, macOS" Value="false" />
-                    <On Platform="Android, iOS" Value="true" />
+                    <On Platform="UWP" Value="false" />
+                    <On Platform="Android, iOS, macOS" Value="true" />
                 </OnPlatform>
             </Picker.InputTransparent>
+            <Picker.IsVisible>
+                <OnPlatform x:TypeArguments="x:Boolean">
+                    <On Platform="macOS" Value="false" />
+                    <On Platform="Android, iOS, UWP" Value="true" />
+                </OnPlatform>
+            </Picker.IsVisible>
         </Picker>
+        <Entry
+            x:Name="TextControl"
+            FontSize="16"
+            TextColor="{StaticResource PrimaryTextColor}"
+            IsReadOnly="true">
+            <Entry.IsVisible>
+                <OnPlatform x:TypeArguments="x:Boolean">
+                    <On Platform="macOS" Value="true" />
+                    <On Platform="Android, iOS, UWP" Value="false" />
+                </OnPlatform>
+            </Entry.IsVisible>
+        </Entry>
         <ContentView x:Name="PickerContentView">
             <ContentView.InputTransparent>
                 <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="UWP, macOS" Value="true" />
-                    <On Platform="Android, iOS" Value="false" />
+                    <On Platform="UWP" Value="true" />
+                    <On Platform="macOS, Android, iOS" Value="false" />
                 </OnPlatform>
             </ContentView.InputTransparent>
             <ContentView.GestureRecognizers>

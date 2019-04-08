@@ -26,15 +26,15 @@ namespace BudgetBadger.Forms.Envelopes
 
         bool _toEnvelopeRequested { get; set; }
 
-        Budget _fromEnvelope;
-        public Budget FromEnvelope
+        Envelope _fromEnvelope;
+        public Envelope FromEnvelope
         {
             get => _fromEnvelope;
             set => SetProperty(ref _fromEnvelope, value);
         }
 
-        Budget _toEnvelope;
-        public Budget ToEnvelope
+        Envelope _toEnvelope;
+        public Envelope ToEnvelope
         {
             get => _toEnvelope;
             set => SetProperty(ref _toEnvelope, value);
@@ -45,6 +45,13 @@ namespace BudgetBadger.Forms.Envelopes
         {
             get => _amount;
             set => SetProperty(ref _amount, value);
+        }
+
+        BudgetSchedule _schedule;
+        public BudgetSchedule Schedule
+        {
+            get => _schedule;
+            set => SetProperty(ref _schedule, value);
         }
 
         public EnvelopeTransferPageViewModel(INavigationService navigationService,
@@ -58,8 +65,9 @@ namespace BudgetBadger.Forms.Envelopes
             _syncService = syncService;
 
             _toEnvelopeRequested = false;
-            FromEnvelope = new Budget();
-            ToEnvelope = new Budget();
+            FromEnvelope = new Envelope();
+            ToEnvelope = new Envelope();
+            Schedule = new BudgetSchedule();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             FromEnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteFromEnvelopeSelectedCommand());
@@ -75,18 +83,32 @@ namespace BudgetBadger.Forms.Envelopes
         { 
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
-            var budget = parameters.GetValue<Budget>(PageParameter.Budget);
-            if (budget != null)
+            var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
+            if (envelope != null)
             {
                 if (_toEnvelopeRequested)
                 {
-                    ToEnvelope = budget.DeepCopy();
+                    ToEnvelope = envelope.DeepCopy();
                 }
                 else
                 {
-                    FromEnvelope = budget.DeepCopy();
+                    FromEnvelope = envelope.DeepCopy();
+                }
+            }
+
+            var schedule = parameters.GetValue<BudgetSchedule>(PageParameter.BudgetSchedule);
+            if (schedule != null)
+            {
+                Schedule = schedule.DeepCopy();
+            }
+            else if (Schedule.Id == Guid.Empty)
+            {
+                var scheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+                if (scheduleResult.Success)
+                {
+                    Schedule = scheduleResult.Data;
                 }
             }
         }
@@ -94,18 +116,28 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteFromEnvelopeSelectedCommand()
         {
             _toEnvelopeRequested = false;
-            await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage);
+
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.TransferEnvelopeSelection, true }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage, parameters);
         }
 
         public async Task ExecuteToEnvelopeSelectedCommand()
         {
             _toEnvelopeRequested = true;
-            await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage);
+
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.TransferEnvelopeSelection, true }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage, parameters);
         }
 
         public async Task ExecuteSaveCommand()
         {
-            var result = await _envelopeLogic.BudgetTransferAsync(FromEnvelope.Id, ToEnvelope.Id, Amount);
+            var result = await _envelopeLogic.BudgetTransferAsync(Schedule, FromEnvelope.Id, ToEnvelope.Id, Amount);
 
             if (result.Success)
             {

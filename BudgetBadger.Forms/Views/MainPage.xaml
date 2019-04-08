@@ -11,8 +11,12 @@
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
     xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     Title="Test"
     android:TabbedPage.ToolbarPlacement="Bottom">
+    <TabbedPage.Effects>
+        <effects:BottomBarNoShiftEffect/>
+    </TabbedPage.Effects>
     <TabbedPage.Children>
         <NavigationPage
             Title="Envelopes"

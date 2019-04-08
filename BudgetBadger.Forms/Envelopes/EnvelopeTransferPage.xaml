@@ -26,23 +26,29 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                        <RowDefinition />
+                    <RowDefinition />
                     </Grid.RowDefinitions>
                     <uc:ButtonSelector
                         Grid.Row="0"
-                        Label="From" 
-                        Text="{Binding FromEnvelope.Envelope.Description}"
-                        Command="{Binding FromEnvelopeSelectedCommand}"/>
+                        Label="Date"
+                        Text="{Binding Schedule.Description}"
+                        IsEnabled="false"/>
                     <uc:ButtonSelector
                         Grid.Row="1"
+                        Label="From" 
+                        Text="{Binding FromEnvelope.Description}"
+                        Command="{Binding FromEnvelopeSelectedCommand}"/>
+                    <uc:ButtonSelector
+                        Grid.Row="2"
                         Label="To"
-                        Text="{Binding ToEnvelope.Envelope.Description}"
+                        Text="{Binding ToEnvelope.Description}"
                         Command="{Binding ToEnvelopeSelectedCommand}"/>
                     <uc:CurrencyCalculatorEntry
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Label="Amount"
-                        Number="55"/>
+                        Number="{Binding Amount}"/>
                 </Grid>
             </ScrollView>
     </p:BasePage.Body>
