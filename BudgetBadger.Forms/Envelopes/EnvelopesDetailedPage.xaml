@@ -56,12 +56,12 @@
                                         <ContentView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>
-                                        <Label 
-                                            Text="Transfer"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center"
+                                        <Label
                                             FontSize="{StaticResource ListItemFontSize}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"/>
+                                            HorizontalOptions="Center"
+                                            Text="Transfer"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"
+                                            VerticalOptions="Center" />
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.LeftSwipeTemplate>

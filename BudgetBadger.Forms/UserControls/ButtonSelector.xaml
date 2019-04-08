@@ -37,8 +37,8 @@
         <Entry
             x:Name="TextControl"
             FontSize="16"
-            TextColor="{StaticResource PrimaryTextColor}"
-            IsReadOnly="true">
+            IsReadOnly="true"
+            TextColor="{StaticResource PrimaryTextColor}">
             <Entry.IsVisible>
                 <OnPlatform x:TypeArguments="x:Boolean">
                     <On Platform="macOS" Value="true" />
