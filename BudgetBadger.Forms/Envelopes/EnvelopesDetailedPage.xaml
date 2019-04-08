@@ -50,6 +50,21 @@
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
+                            <syncfusion:SfDataGrid.LeftSwipeTemplate>
+                                <DataTemplate>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <Label 
+                                            Text="Transfer"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            FontSize="{StaticResource ListItemFontSize}"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"/>
+                                    </ContentView>
+                                </DataTemplate>
+                            </syncfusion:SfDataGrid.LeftSwipeTemplate>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">

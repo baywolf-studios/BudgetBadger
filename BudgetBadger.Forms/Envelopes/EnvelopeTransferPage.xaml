@@ -33,8 +33,7 @@
                     <uc:ButtonSelector
                         Grid.Row="0"
                         Label="Date"
-                        Text="{Binding Schedule.Description}"
-                        IsEnabled="false"/>
+                        Text="{Binding Schedule.Description}"/>
                     <uc:ButtonSelector
                         Grid.Row="1"
                         Label="From" 

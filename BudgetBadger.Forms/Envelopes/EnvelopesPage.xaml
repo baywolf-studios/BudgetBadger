@@ -147,13 +147,12 @@
                                         <ContentView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
                                         </ContentView.GestureRecognizers>
-                                        <svg:SvgCachedImage
-                                            HeightRequest="24"
+                                        <Label 
+                                            Text="Transfer"
                                             HorizontalOptions="Center"
-                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                            Source="envelope.svg"
                                             VerticalOptions="Center"
-                                            WidthRequest="24" />
+                                            FontSize="{StaticResource ListItemFontSize}"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"/>
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.LeftSwipeTemplate>
