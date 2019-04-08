@@ -30,10 +30,10 @@
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
-                    Margin="16"
+                    Margin="16,0"
                     Style="{StaticResource MasterDetailTitleLabelStyle}"
                     Text="Budget Badger"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <ContentView
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
