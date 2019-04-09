@@ -12,12 +12,14 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BindableBase, INavigatingAware
+    public class PayeeEditPageViewModel : BindableBase, INavigationAware
     {
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -48,12 +50,12 @@ namespace BudgetBadger.Forms.Payees
         public PayeeEditPageViewModel(INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       IPayeeLogic payeeLogic,
-                                      ISync syncService)
+                                      ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _payeeLogic = payeeLogic;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             Payee = new Payee();
 
@@ -69,6 +71,24 @@ namespace BudgetBadger.Forms.Payees
             {
                 Payee = payee.DeepCopy();
             }
+        }
+
+        public async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteSaveCommand()
@@ -87,23 +107,13 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
 					var parameters = new NavigationParameters
                     {
                         { PageParameter.Payee, result.Data }
                     };               
                     await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
-
-
                 }
                 else
                 {
@@ -131,16 +141,9 @@ namespace BudgetBadger.Forms.Payees
                 var result = await _payeeLogic.DeletePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {
@@ -168,16 +171,9 @@ namespace BudgetBadger.Forms.Payees
                 var result = await _payeeLogic.UndoDeletePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {

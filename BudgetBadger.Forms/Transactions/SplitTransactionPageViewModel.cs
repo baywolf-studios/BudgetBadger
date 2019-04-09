@@ -14,12 +14,12 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class SplitTransactionPageViewModel : BindableBase, INavigatingAware
+    public class SplitTransactionPageViewModel : BindableBase, INavigationAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
-		readonly ISync _syncService;
+		readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -27,6 +27,8 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand DeleteTransactionCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -92,12 +94,12 @@ namespace BudgetBadger.Forms.Transactions
         public SplitTransactionPageViewModel(INavigationService navigationService,
                                              IPageDialogService dialogService,
                                              ITransactionLogic transLogic,
-		                                     ISync syncService)
+		                                     ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
-			_syncService = syncService;
+            _syncFactory = syncFactory;
 
             Transactions = new List<Transaction>();
 
@@ -188,6 +190,24 @@ namespace BudgetBadger.Forms.Transactions
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
+        public async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
         public async Task ExecuteAddNewCommand()
         {
             var parameters = new NavigationParameters
@@ -229,13 +249,9 @@ namespace BudgetBadger.Forms.Transactions
                     {
                         await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
                         return;
-                    }  
+                    }
 
-					var syncResult = await _syncService.FullSync();            
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    } 
+                    _needToSync = true;
                 }
                 finally
                 {
@@ -262,15 +278,9 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.SaveSplitTransactionAsync(Transactions);
                 if (result.Success)
                 {
-					var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-					var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }  
                 }
                 else
                 {
@@ -327,13 +337,7 @@ namespace BudgetBadger.Forms.Transactions
 
                     if (result.Success)
                     {
-                        var syncTask = _syncService.FullSync();
-
-                        var syncResult = await syncTask;
-                        if (!syncResult.Success)
-                        {
-                            await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                        }
+                        _needToSync = true;
                     }
                     else
                     {

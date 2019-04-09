@@ -19,12 +19,15 @@ namespace BudgetBadger.Forms.Transactions
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -54,11 +57,15 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _searchText, value);
         }
 
-        public TransactionSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, ITransactionLogic transactionLogic)
+        public TransactionSelectionPageViewModel(INavigationService navigationService,
+            IPageDialogService dialogService,
+            ITransactionLogic transactionLogic,
+            ISyncFactory syncFactory)
         {
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _syncFactory = syncFactory;
 
             Transactions = new List<Transaction>();
             SelectedTransaction = null;
@@ -68,8 +75,18 @@ namespace BudgetBadger.Forms.Transactions
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
         public async void OnNavigatingTo(INavigationParameters parameters)
@@ -146,13 +163,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    //var syncTask = _syncService.FullSync();
-
-                    //var syncResult = await syncTask;
-                    //if (!syncResult.Success)
-                    //{
-                    //    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    //}
+                    _needToSync = true;
                 }
                 else
                 {
