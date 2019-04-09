@@ -240,8 +240,10 @@ namespace BudgetBadger.Forms
 
             if (refreshResult.Success)
             {
-                var syncService = Container.Resolve<ISync>();
+                var syncFactory = Container.Resolve<ISyncFactory>();
+                var syncService = syncFactory.GetSyncService();
                 await syncService.FullSync();
+                await syncFactory.SetLastSyncDateTime(DateTime.Now);
             }
             else
             {
