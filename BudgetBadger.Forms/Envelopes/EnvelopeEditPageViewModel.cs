@@ -15,12 +15,14 @@ using System.Linq;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BindableBase, INavigatingAware
+    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -67,12 +69,12 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopeEditPageViewModel(INavigationService navigationService,
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
-                                         ISync syncService)
+                                         ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             Budget = new Budget();
 
@@ -117,6 +119,24 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
+        public async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
         public async Task ExecuteSaveCommand()
         {
             if (IsBusy)
@@ -134,8 +154,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
 
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
 					var parameters = new NavigationParameters
                     {
@@ -143,14 +162,6 @@ namespace BudgetBadger.Forms.Envelopes
                         { PageParameter.Envelope, result.Data.Envelope }
                     };
                     await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
-
-
                 }
                 else
                 {
@@ -195,16 +206,9 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {
@@ -232,16 +236,9 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.UndoDeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {

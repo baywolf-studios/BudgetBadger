@@ -34,7 +34,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
-        bool _needSync;
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -111,7 +111,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needSync)
+            if (_needToSync)
             {
                 var syncService = _syncFactory.GetSyncService();
                 var syncResult = await syncService.FullSync();
@@ -232,7 +232,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    _needSync = true;
+                    _needToSync = true;
                 }
                 else
                 {
@@ -250,7 +250,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await ExecuteRefreshCommand();
 
-                _needSync = true;
+                _needToSync = true;
             }
             else
             {

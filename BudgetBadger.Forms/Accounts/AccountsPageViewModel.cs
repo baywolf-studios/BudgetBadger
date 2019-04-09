@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISync _syncService;
+		readonly ISyncFactory _syncFactory;
         
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -72,12 +72,12 @@ namespace BudgetBadger.Forms.Accounts
         public AccountsPageViewModel(INavigationService navigationService,
 		                             IPageDialogService dialogService,
 		                             IAccountLogic accountLogic,
-		                             ISync syncService)
+		                             ISyncFactory syncFactory)
         {
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-			_syncService = syncService;
+            _syncFactory = syncFactory;
 
             Accounts = new List<Account>();
             SelectedAccount = null;
@@ -167,11 +167,12 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await ExecuteRefreshCommand();
 
-                var syncResult = await _syncService.FullSync();
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
 
-                if (!syncResult.Success)
+                if (syncResult.Success)
                 {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
                 }
             }
             else

@@ -21,7 +21,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
@@ -81,12 +81,12 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopesPageViewModel(INavigationService navigationService,
 		                              IEnvelopeLogic envelopeLogic,
 		                              IPageDialogService dialogService,
-		                              ISync syncService)
+		                              ISyncFactory syncFactory)
         {
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-			_syncService = syncService;
+            _syncFactory = syncFactory;
 
             Schedule = null;
             Budgets = new List<Budget>();
@@ -227,11 +227,12 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await ExecuteRefreshCommand();
 
-                var syncResult = await _syncService.FullSync();
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
 
-                if (!syncResult.Success)
+                if (syncResult.Success)
                 {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
                 }
             }
             else

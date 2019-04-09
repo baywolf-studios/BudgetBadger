@@ -20,7 +20,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IAccountLogic _accountLogic;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
@@ -30,6 +30,8 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand DeleteTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -135,13 +137,13 @@ namespace BudgetBadger.Forms.Accounts
                                              ITransactionLogic transactionLogic, 
                                              IAccountLogic accountLogic, 
                                              IPageDialogService dialogService,
-                                             ISync syncService)
+                                             ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _transactionLogic = transactionLogic;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             Account = new Account();
             Transactions = new List<Transaction>();
@@ -174,8 +176,18 @@ namespace BudgetBadger.Forms.Accounts
         {
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -230,15 +242,9 @@ namespace BudgetBadger.Forms.Accounts
 
             if (reconcileResult.Success)
             {
-                var syncTask = _syncService.FullSync();
+                _needToSync = true;
 
                 await _navigationService.GoBackAsync();
-
-                var syncResult = await syncTask;
-                if (!syncResult.Success)
-                {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                }
             }
             else
             {
@@ -278,13 +284,7 @@ namespace BudgetBadger.Forms.Accounts
                     RaisePropertyChanged(nameof(PostedTotal));
                     RaisePropertyChanged(nameof(Difference));
 
-                    var syncTask = _syncService.FullSync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
+                    _needToSync = true;
                 }
                 else
                 {
@@ -302,12 +302,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await ExecuteRefreshCommand();
 
-                var syncResult = await _syncService.FullSync();
-
-                if (!syncResult.Success)
-                {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                }
+                _needToSync = true;
             }
             else
             {

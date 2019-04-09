@@ -17,14 +17,15 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand FromEnvelopeSelectedCommand { get; set; }
         public ICommand ToEnvelopeSelectedCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        bool _toEnvelopeRequested { get; set; }
+        bool _needToSync;
+        bool _toEnvelopeRequested;
 
         Envelope _fromEnvelope;
         public Envelope FromEnvelope
@@ -57,12 +58,12 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopeTransferPageViewModel(INavigationService navigationService,
                                       IEnvelopeLogic envelopeLogic,
                                       IPageDialogService dialogService,
-                                      ISync syncService)
+                                      ISyncFactory syncFactory)
         {
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             _toEnvelopeRequested = false;
             FromEnvelope = new Envelope();
@@ -76,7 +77,16 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
-            await _syncService.FullSync();
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -141,6 +151,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                _needToSync = true;
                 await _navigationService.GoBackAsync();
             }
             else
