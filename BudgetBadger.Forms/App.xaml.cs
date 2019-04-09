@@ -156,7 +156,15 @@ namespace BudgetBadger.Forms
                 _ => "",
                 _ => "budgetbadger://authorize"));
 
-            container.Register(made: Made.Of(() => SyncFactory.CreateSync(Arg.Of<ISettings>(),
+            container.Register<ISyncFactory>(made: Made.Of(() => new SyncFactory(Arg.Of<ISettings>(),
+                                                                          Arg.Of<IDirectoryInfo>(),
+                                                                          Arg.Of<IAccountSyncLogic>(),
+                                                                          Arg.Of<IPayeeSyncLogic>(),
+                                                                          Arg.Of<IEnvelopeSyncLogic>(),
+                                                                          Arg.Of<ITransactionSyncLogic>(),
+                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
+
+            container.Register(made: Made.Of(() => StaticSyncFactory.CreateSync(Arg.Of<ISettings>(),
                                                                           Arg.Of<IDirectoryInfo>(),
                                                                           Arg.Of<IAccountSyncLogic>(),
                                                                           Arg.Of<IPayeeSyncLogic>(),

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Core.Settings;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -21,7 +22,8 @@ namespace BudgetBadger.Forms.Envelopes
         readonly INavigationService _navigationService;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
+        readonly ISettings _settings;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -31,6 +33,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand EditCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
+
+        bool _needSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -78,13 +82,15 @@ namespace BudgetBadger.Forms.Envelopes
                                          ITransactionLogic transactionLogic,
                                          IEnvelopeLogic envelopeLogic,
                                          IPageDialogService dialogService,
-                                         ISync syncService)
+                                         ISyncFactory syncFactory,
+                                         ISettings settings)
         {
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _envelopeLogic = envelopeLogic;
             _dialogService = dialogService;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
+            _settings = settings;
 
             Budget = new Budget();
             Transactions = new List<Transaction>();
@@ -103,8 +109,18 @@ namespace BudgetBadger.Forms.Envelopes
 
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            if (_needSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
         public async void OnNavigatingTo(INavigationParameters parameters)
@@ -216,13 +232,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    var syncTask = _syncService.FullSync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
+                    _needSync = true;
                 }
                 else
                 {
@@ -240,12 +250,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await ExecuteRefreshCommand();
 
-                var syncResult = await _syncService.FullSync();
-
-                if (!syncResult.Success)
-                {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                }
+                _needSync = true;
             }
             else
             {
