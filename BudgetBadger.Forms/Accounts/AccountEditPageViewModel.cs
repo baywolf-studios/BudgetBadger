@@ -16,12 +16,14 @@ using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigatingAware
+    public class AccountEditPageViewModel : BindableBase, INavigationAware
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -57,18 +59,36 @@ namespace BudgetBadger.Forms.Accounts
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
-                                       ISync syncService)
+                                        ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
             UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
+        }
+
+        public async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
         }
 
         public void OnNavigatingTo(INavigationParameters parameters)
@@ -96,21 +116,14 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+
+                    _needToSync = true;
 
 					var parameters = new NavigationParameters
                     {
                         { PageParameter.Account, result.Data }
                     };
                     await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }               
                 }
                 else
                 {
@@ -138,16 +151,9 @@ namespace BudgetBadger.Forms.Accounts
 				var result = await _accountLogic.DeleteAccountAsync(Account.Id);
 				if (result.Success)
 				{
-					BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
 				}
 				else
 				{
@@ -175,16 +181,9 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await _accountLogic.UndoDeleteAccountAsync(Account.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     await _navigationService.GoBackToRootAsync();
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {

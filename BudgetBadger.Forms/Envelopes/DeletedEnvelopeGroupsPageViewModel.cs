@@ -19,7 +19,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -63,13 +62,11 @@ namespace BudgetBadger.Forms.Envelopes
 
         public DeletedEnvelopeGroupsPageViewModel(INavigationService navigationService,
                                            IPageDialogService dialogService,
-                                           IEnvelopeLogic envelopeLogic,
-                                           ISync syncService)
+                                           IEnvelopeLogic envelopeLogic)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
-            _syncService = syncService;
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new List<EnvelopeGroup>();
@@ -78,7 +75,7 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
         }
 
