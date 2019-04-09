@@ -25,11 +25,27 @@ namespace BudgetBadger.Forms.Settings
         readonly ISettings _settings;
         readonly DropBoxApi _dropboxApi;
         readonly IPurchaseService _purchaseService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand ShowDeletedCommand { get; set; }
         public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
+        public ICommand SyncCommand { get; set; }
+
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
 
         bool _dropboxEnabled;
         public bool DropboxEnabled
@@ -54,24 +70,37 @@ namespace BudgetBadger.Forms.Settings
             get => !HasPro;
         }
 
+        string _lastSynced;
+        public string LastSynced
+        {
+            get => _lastSynced;
+            set => SetProperty(ref _lastSynced, value);
+        }
+
         public SettingsPageViewModel(INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       ISettings settings,
                                       DropBoxApi dropboxApi,
-                                      IPurchaseService purchaseService)
+                                      IPurchaseService purchaseService,
+                                      ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
             _dropboxApi = dropboxApi;
             _purchaseService = purchaseService;
+            _syncFactory = syncFactory;
 
             HasPro = false;
+            IsBusy = false;
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
             ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
+            SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
+
+            LastSynced = _syncFactory.GetLastSyncDateTime();
         }
 
         public async void OnAppearing()
@@ -91,9 +120,9 @@ namespace BudgetBadger.Forms.Settings
 
         public async Task ExecuteSyncToggleCommand()
         {
-			var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
 
-			if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
+            if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
                 var verifyPurchase = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
                 if (!verifyPurchase.Success)
@@ -130,6 +159,7 @@ namespace BudgetBadger.Forms.Settings
                     {
                         await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
                         await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
+                        await ExecuteSyncCommand();
                     }
                     else
                     {
@@ -145,7 +175,7 @@ namespace BudgetBadger.Forms.Settings
                     DropboxEnabled = false;
                 }
             }
-			else if (!DropboxEnabled) 
+            else if (!DropboxEnabled)
             {
                 await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
             }
@@ -182,6 +212,38 @@ namespace BudgetBadger.Forms.Settings
                 {
                     await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
                 }
+            }
+        }
+
+        public async Task ExecuteSyncCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+            BusyText = "Syncing...";
+
+            try
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "Ok");
+                }
+
+                LastSynced = _syncFactory.GetLastSyncDateTime();
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

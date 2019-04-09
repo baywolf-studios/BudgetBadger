@@ -11,6 +11,7 @@
         <p:RootHeader PageTitle="Settings"/>    
     </p:BasePage.Header>
     <p:BasePage.Body>
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
         <ScrollView
             Margin="0"
             Padding="0"
@@ -26,7 +27,8 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
-                    <RowDefinition Height="{StaticResource ListItemHeight}" />
+                    <RowDefinition Height="{StaticResource ListDoubleItemHeight}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                     <RowDefinition Height="{StaticResource ListItemHeight}" />
                     <RowDefinition Height="{StaticResource ListItemHeight}" />
@@ -41,7 +43,7 @@
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
-                    Text="Sync" />
+                    Text="Cloud Sync"/>
                 <svg:SvgCachedImage
                     Grid.Row="1"
                     Grid.Column="0"
@@ -55,11 +57,31 @@
                         <TapGestureRecognizer Command="{Binding SyncToggleCommand}" />
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
-                <Label
+                <Grid
                     Grid.Row="1"
                     Grid.Column="1"
-                    Style="{StaticResource ListItemLabelStyle}"
-                    Text="Dropbox" />
+                    RowSpacing="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Style="{StaticResource Key=ListDoubleItemLabelStyle}"
+                        Text="Dropbox"
+                        VerticalOptions="End"/>
+                    <Label
+                        Grid.Row="1"
+                        Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                        VerticalOptions="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Last synced: " />
+                                <Span Text="{Binding LastSynced}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
                 <Switch
                     Grid.Row="1"
                     Grid.Column="2"
@@ -71,14 +93,22 @@
                         <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
                     </Switch.Behaviors>
                 </Switch>
-                <Label
+                <Button
                     Grid.Row="2"
+                    Grid.Column="1"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="Sync"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding DropboxEnabled}"
+                    Command="{Binding SyncCommand}"/>
+                <Label
+                    Grid.Row="3"
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
                     Text="Deleted" />
                 <svg:SvgCachedImage
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -91,7 +121,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -101,7 +131,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -114,7 +144,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -124,7 +154,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -137,7 +167,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -147,7 +177,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -160,7 +190,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -170,13 +200,13 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
                     Text="Purchases"/>
                 <Label
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
                     Margin="16,0"
@@ -185,7 +215,7 @@
                     IsVisible="{Binding HasPro}">
                 </Label>
                 <Label
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
                     Margin="16,0"
@@ -197,7 +227,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
                     Margin="16,0"
@@ -210,5 +240,6 @@
                 </Label>
             </Grid>
         </ScrollView>
+        </uc:BusyIndicator>
     </p:BasePage.Body>
 </p:BasePage>
