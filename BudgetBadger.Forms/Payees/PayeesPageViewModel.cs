@@ -21,7 +21,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISync _syncService;
+		readonly ISyncFactory _syncFactory;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -31,6 +31,8 @@ namespace BudgetBadger.Forms.Payees
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -72,12 +74,12 @@ namespace BudgetBadger.Forms.Payees
         public PayeesPageViewModel(INavigationService navigationService,
 		                           IPageDialogService dialogService,
 		                           IPayeeLogic payeeLogic,
-		                           ISync syncService)
+		                           ISyncFactory syncFactory)
         {
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-			_syncService = syncService;
+            _syncFactory = syncFactory;
 
             Payees = new List<Payee>();
             SelectedPayee = null;
@@ -194,11 +196,12 @@ namespace BudgetBadger.Forms.Payees
             {
                 await ExecuteRefreshCommand();
 
-                var syncResult = await _syncService.FullSync();
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
 
-                if (!syncResult.Success)
+                if (syncResult.Success)
                 {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
                 }
             }
             else

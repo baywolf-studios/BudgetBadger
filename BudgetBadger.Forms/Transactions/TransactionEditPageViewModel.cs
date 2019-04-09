@@ -13,12 +13,14 @@ using BudgetBadger.Core.Sync;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionEditPageViewModel : BindableBase, INavigatingAware
+    public class TransactionEditPageViewModel : BindableBase, INavigationAware
     {
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -59,12 +61,12 @@ namespace BudgetBadger.Forms.Transactions
         public TransactionEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
-                                        ISync syncService)
+                                        ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             Transaction = new Transaction();
 
@@ -132,6 +134,24 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
+        public async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
         public async Task ExecuteSaveCommand()
         {
             if (SplitTransactionMode)
@@ -158,20 +178,13 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     var parameters = new NavigationParameters
                     {
                         { PageParameter.Transaction, result.Data }
                     };
                     await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {
@@ -219,20 +232,13 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.DeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
-                    BusyText = "Syncing";
-                    var syncTask = _syncService.FullSync();
+                    _needToSync = true;
 
                     var parameters = new NavigationParameters
                     {
                         { PageParameter.DeletedTransaction, Transaction }
                     };
                     await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
                 }
                 else
                 {
