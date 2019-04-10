@@ -277,7 +277,7 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="6"
@@ -286,7 +286,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Reconcile"
                     VerticalOptions="Center" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="7"

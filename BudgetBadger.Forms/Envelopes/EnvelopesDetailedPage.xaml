@@ -8,6 +8,7 @@
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     x:Name="this">
     <p:BasePage.Header>
         <p:StepperHeader
@@ -245,7 +246,7 @@
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Start" />
-                    <Button
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="7"
@@ -253,7 +254,8 @@
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
                         Text="Add Transaction"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+                    </uc:Button2>
                 </Grid>
             </Grid>
         </uc:HelperControl>

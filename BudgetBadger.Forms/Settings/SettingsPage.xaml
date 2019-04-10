@@ -93,7 +93,7 @@
                         <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
                     </Switch.Behaviors>
                 </Switch>
-                <Button
+                <uc:Button2
                     Grid.Row="2"
                     Grid.Column="1"
                     Style="{StaticResource SecondaryActionButtonStyle}"

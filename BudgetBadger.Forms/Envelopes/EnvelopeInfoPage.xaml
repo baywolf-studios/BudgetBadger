@@ -188,7 +188,7 @@
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
             </uc:HelperControl>
-            <Button
+            <uc:Button2
                 x:Name="NewTransactionButton"
                 Grid.Row="2"
                 Margin="16,0,16,16"
