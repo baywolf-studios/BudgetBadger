@@ -1,58 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeTransferPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeTransferPage"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
-        <p:ChildHeader 
+        <p:ChildHeader
             BackCommand="{Binding BackCommand}"
             PageTitle="Envelope Transfer"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save"/>
+            ToolbarItemText="Save" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <ScrollView
+            Margin="0"
+            Padding="0,16"
+            Orientation="Vertical">
+            <Grid
                 Margin="0"
-                Padding="0,16"
-                Orientation="Vertical">
-                <Grid
-                    Margin="0"
-                    ColumnSpacing="16"
-                    RowSpacing="16">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                ColumnSpacing="16"
+                RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <uc:ButtonSelector
-                        Grid.Row="0"
-                        Margin="16,0"
-                        Label="Date"
-                        Text="{Binding Schedule.Description}"/>
-                    <uc:ButtonSelector
-                        Grid.Row="1"
-                        Margin="16,0"
-                        Label="From" 
-                        Text="{Binding FromEnvelope.Description}"
-                        Command="{Binding FromEnvelopeSelectedCommand}"/>
-                    <uc:ButtonSelector
-                        Grid.Row="2"
-                        Margin="16,0"
-                        Label="To"
-                        Text="{Binding ToEnvelope.Description}"
-                        Command="{Binding ToEnvelopeSelectedCommand}"/>
-                    <uc:CurrencyCalculatorEntry
-                        Grid.Row="3"
-                        Margin="16,0"
-                        Label="Amount"
-                        Number="{Binding Amount}"/>
-                </Grid>
-            </ScrollView>
+                </Grid.RowDefinitions>
+                <uc:ButtonSelector
+                    Grid.Row="0"
+                    Margin="16,0"
+                    Label="Date"
+                    Text="{Binding Schedule.Description}" />
+                <uc:ButtonSelector
+                    Grid.Row="1"
+                    Margin="16,0"
+                    Command="{Binding FromEnvelopeSelectedCommand}"
+                    Label="From"
+                    Text="{Binding FromEnvelope.Description}" />
+                <uc:ButtonSelector
+                    Grid.Row="2"
+                    Margin="16,0"
+                    Command="{Binding ToEnvelopeSelectedCommand}"
+                    Label="To"
+                    Text="{Binding ToEnvelope.Description}" />
+                <uc:CurrencyCalculatorEntry
+                    Grid.Row="3"
+                    Margin="16,0"
+                    Label="Amount"
+                    Number="{Binding Amount}" />
+            </Grid>
+        </ScrollView>
     </p:BasePage.Body>
 </p:BasePage>

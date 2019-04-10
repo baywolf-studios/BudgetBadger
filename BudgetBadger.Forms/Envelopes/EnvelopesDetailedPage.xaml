@@ -4,11 +4,11 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     x:Name="this">
     <p:BasePage.Header>
         <p:StepperHeader
@@ -254,8 +254,7 @@
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
                         Text="Add Transaction"
-                        VerticalOptions="Center">
-                    </uc:Button2>
+                        VerticalOptions="Center" />
                 </Grid>
             </Grid>
         </uc:HelperControl>
