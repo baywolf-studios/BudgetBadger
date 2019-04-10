@@ -17,7 +17,7 @@
     <p:BasePage.Body>
         <ScrollView
                 Margin="0"
-                Padding="16"
+                Padding="0,16"
                 Orientation="Vertical">
                 <Grid
                     Margin="0"
@@ -32,20 +32,24 @@
                     </Grid.RowDefinitions>
                     <uc:ButtonSelector
                         Grid.Row="0"
+                        Margin="16,0"
                         Label="Date"
                         Text="{Binding Schedule.Description}"/>
                     <uc:ButtonSelector
                         Grid.Row="1"
+                        Margin="16,0"
                         Label="From" 
                         Text="{Binding FromEnvelope.Description}"
                         Command="{Binding FromEnvelopeSelectedCommand}"/>
                     <uc:ButtonSelector
                         Grid.Row="2"
+                        Margin="16,0"
                         Label="To"
                         Text="{Binding ToEnvelope.Description}"
                         Command="{Binding ToEnvelopeSelectedCommand}"/>
                     <uc:CurrencyCalculatorEntry
                         Grid.Row="3"
+                        Margin="16,0"
                         Label="Amount"
                         Number="{Binding Amount}"/>
                 </Grid>

@@ -552,6 +552,16 @@ namespace BudgetBadger.Logic
             var fromBudget = budgets.FirstOrDefault(b => b.Envelope.Id == fromEnvelopeId);
             var toBudget = budgets.FirstOrDefault(b => b.Envelope.Id == toEnvelopeId);
 
+            if (fromBudget == null)
+            {
+                return new Result { Success = false, Message = "Transfer does not contain a valid From Envelope" };
+            }
+
+            if (toBudget == null)
+            {
+                return new Result { Success = false, Message = "Transfer does not contain a valid To Envelope" };
+            }
+
             fromBudget.Amount -= amount;
             toBudget.Amount += amount;
 
