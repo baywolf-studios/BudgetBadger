@@ -13,11 +13,14 @@ namespace BudgetBadger.UWP.Effects
         {
             if (Control is FormsTextBox control)
             {
+                var margin = control.BorderThickness;
                 control.BorderThickness = new Windows.UI.Xaml.Thickness(0);
+                control.Margin = margin;
 
-                control.Margin = new Windows.UI.Xaml.Thickness(0);
-
-                control.Padding = new Windows.UI.Xaml.Thickness(0);
+                var padding = control.Padding;
+                padding.Left = 0;
+                padding.Right = 0;
+                control.Padding = padding;
             }
         }
 
