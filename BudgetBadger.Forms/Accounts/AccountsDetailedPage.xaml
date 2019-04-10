@@ -159,7 +159,7 @@
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="{Binding NetWorth, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Center" />
-                    <Button
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"

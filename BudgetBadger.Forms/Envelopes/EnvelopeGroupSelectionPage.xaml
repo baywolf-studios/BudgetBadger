@@ -47,7 +47,7 @@
                         </syncfusion:SfListView.Triggers>
                         <syncfusion:SfListView.HeaderTemplate>
                             <DataTemplate>
-                                <Button
+                                <uc:Button2
                                     Margin="16,8"
                                     Command="{Binding SaveCommand}"
                                     IsVisible="{Binding HasSearchText}"

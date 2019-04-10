@@ -200,7 +200,7 @@
                     Text="hidden"
                     TextColor="Transparent"
                     VerticalTextAlignment="Center" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="3"

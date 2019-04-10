@@ -230,7 +230,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button
+                <uc:Button2
                     Grid.ColumnSpan="2"
                     Margin="16,0,16,16"
                     Command="{Binding ToggleReconcileModeCommand}"
@@ -238,7 +238,7 @@
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="Next"
                     VerticalOptions="End" />
-                <Button
+                <uc:Button2
                     Grid.Column="0"
                     Margin="16,0,0,16"
                     Command="{Binding ToggleReconcileModeCommand}"
@@ -246,7 +246,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Back"
                     VerticalOptions="End" />
-                <Button
+                <uc:Button2
                     Grid.Column="1"
                     Margin="0,0,16,16"
                     Command="{Binding ReconcileCommand}"

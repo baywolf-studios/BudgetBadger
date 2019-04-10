@@ -215,7 +215,7 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-                <Button
+                <uc:Button2
                     x:Name="NewTransactionButton"
                     Grid.Row="2"
                     Margin="16,0,16,16"

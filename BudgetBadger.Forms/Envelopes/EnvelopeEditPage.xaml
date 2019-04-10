@@ -181,30 +181,30 @@
                             Margin="16,0"
                             Label="Notes"
                             Text="{Binding Budget.Envelope.Notes}" />
-                        <Button
+                        <uc:Button2
                             Grid.Row="6"
                             Grid.Column="0"
                             Margin="16,0,0,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
                             Text="Delete Envelope">
-                            <Button.IsVisible>
+                            <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
                                     <OnIdiom.Tablet>false</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.IsVisible>
-                            <Button.Triggers>
+                            </uc:Button2.IsVisible>
+                            <uc:Button2.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Budget.Envelope.IsActive}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
+                            </uc:Button2.Triggers>
+                        </uc:Button2>
+                        <uc:Button2
                             Grid.Row="6"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
@@ -212,23 +212,23 @@
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
                             Text="Undo Delete">
-                            <Button.IsVisible>
+                            <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
                                     <OnIdiom.Tablet>false</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.IsVisible>
-                            <Button.Triggers>
+                            </uc:Button2.IsVisible>
+                            <uc:Button2.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Budget.Envelope.IsDeleted}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
+                            </uc:Button2.Triggers>
+                        </uc:Button2>
+                        <uc:Button2
                             Grid.Row="6"
                             Grid.Column="1"
                             Margin="0,0,16,0"
@@ -236,22 +236,22 @@
                             IsVisible="{Binding Budget.IsActive}"
                             Style="{StaticResource PrimaryActionButtonStyle}"
                             Text="Quick Budget">
-                            <Button.IsVisible>
+                            <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
                                     <OnIdiom.Tablet>false</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.IsVisible>
-                            <Button.Triggers>
+                            </uc:Button2.IsVisible>
+                            <uc:Button2.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Budget.Envelope.IsActive}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                            </uc:Button2.Triggers>
+                        </uc:Button2>
                     </Grid>
                 </ScrollView>
                 <BoxView
@@ -340,7 +340,7 @@
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
                         VerticalTextAlignment="Start" />
-                    <Button
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="6"
@@ -349,16 +349,16 @@
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
                         Text="Delete Envelope"
                         VerticalOptions="Center">
-                        <Button.Triggers>
+                        <uc:Button2.Triggers>
                             <DataTrigger
                                 Binding="{Binding Budget.Envelope.IsActive}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button
+                        </uc:Button2.Triggers>
+                    </uc:Button2>
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="6"
@@ -367,16 +367,16 @@
                         Style="{StaticResource SecondaryActionButtonStyle}"
                         Text="Undo Delete"
                         VerticalOptions="Center">
-                        <Button.Triggers>
+                        <uc:Button2.Triggers>
                             <DataTrigger
                                 Binding="{Binding Budget.Envelope.IsDeleted}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button
+                        </uc:Button2.Triggers>
+                    </uc:Button2>
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="7"

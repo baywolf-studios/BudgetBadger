@@ -255,7 +255,7 @@
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding PostedTotal, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Start" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
@@ -265,7 +265,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Back"
                     VerticalOptions="Center" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="5"
@@ -275,7 +275,7 @@
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="Next"
                     VerticalOptions="Center" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="6"

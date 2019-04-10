@@ -244,7 +244,7 @@
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
                     VerticalTextAlignment="Start" />
-                <Button
+                <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="7"

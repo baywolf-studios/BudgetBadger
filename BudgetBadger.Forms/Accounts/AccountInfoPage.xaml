@@ -228,7 +228,7 @@
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
             </uc:HelperControl>
-            <Button
+            <uc:Button2
                 Grid.Row="2"
                 Grid.Column="0"
                 Margin="16,0,0,16"
@@ -236,7 +236,7 @@
                 Style="{StaticResource SecondaryActionButtonStyle}"
                 Text="Reconcile"
                 VerticalOptions="End" />
-            <Button
+            <uc:Button2
                 Grid.Row="2"
                 Grid.Column="1"
                 Margin="0,0,16,16"

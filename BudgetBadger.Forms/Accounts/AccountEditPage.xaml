@@ -76,50 +76,50 @@
                             Keyboard="Text"
                             Label="Notes"
                             Text="{Binding Account.Notes}" />
-                        <Button
+                        <uc:Button2
                             Grid.Row="5"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
                             Text="Delete Account">
-                            <Button.IsVisible>
+                            <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
                                     <OnIdiom.Tablet>false</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.IsVisible>
-                            <Button.Triggers>
+                            </uc:Button2.IsVisible>
+                            <uc:Button2.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Account.IsActive}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button
+                            </uc:Button2.Triggers>
+                        </uc:Button2>
+                        <uc:Button2
                             Grid.Row="5"
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
                             Text="Undo Delete">
-                            <Button.IsVisible>
+                            <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
                                     <OnIdiom.Tablet>false</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>false</OnIdiom.Desktop>
                                 </OnIdiom>
-                            </Button.IsVisible>
-                            <Button.Triggers>
+                            </uc:Button2.IsVisible>
+                            <uc:Button2.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Account.IsDeleted}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                            </uc:Button2.Triggers>
+                        </uc:Button2>
                     </Grid>
                 </ScrollView>
                 <BoxView
@@ -162,7 +162,7 @@
                         Text="hidden"
                         TextColor="Transparent"
                         VerticalTextAlignment="Center" />
-                    <Button
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"
@@ -171,16 +171,16 @@
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
                         Text="Delete Account"
                         VerticalOptions="Center">
-                        <Button.Triggers>
+                        <uc:Button2.Triggers>
                             <DataTrigger
                                 Binding="{Binding Account.IsActive}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button
+                        </uc:Button2.Triggers>
+                    </uc:Button2>
+                    <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="1"
@@ -189,15 +189,15 @@
                         Style="{StaticResource SecondaryActionButtonStyle}"
                         Text="Undo Delete"
                         VerticalOptions="Center">
-                        <Button.Triggers>
+                        <uc:Button2.Triggers>
                             <DataTrigger
                                 Binding="{Binding Account.IsDeleted}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
+                        </uc:Button2.Triggers>
+                    </uc:Button2>
                 </Grid>
             </Grid>
         </uc:BusyIndicator>
