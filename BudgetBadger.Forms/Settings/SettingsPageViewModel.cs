@@ -33,6 +33,8 @@ namespace BudgetBadger.Forms.Settings
         public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
         public ICommand SyncCommand { get; set; }
+        public ICommand HelpCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
+        public ICommand EmailCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
 
         bool _isBusy;
         public bool IsBusy

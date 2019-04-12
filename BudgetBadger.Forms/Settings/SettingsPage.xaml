@@ -27,6 +27,9 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
+                    <RowDefinition Height="{StaticResource ListItemHeight}" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                     <RowDefinition Height="{StaticResource ListDoubleItemHeight}" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
@@ -43,9 +46,73 @@
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
+                    Text="Budget Badger Pro"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="16,0"
+                    Style="{StaticResource ListItemLabelStyle}"
+                    Text="Thanks for purchasing Budget Badger Pro!"
+                    IsVisible="{Binding HasPro}">
+                </Label>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="16,0"
+                    Style="{StaticResource ListItemLabelStyle}"
+                    Text="Upgrade your budget - Go Pro!">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
+                    </Label.GestureRecognizers>
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="Label"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="16,0"
+                    Style="{StaticResource ListItemLabelStyle}"
+                    Text="Restore Purchase">
+                    <Label.IsVisible>
+                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
+                            <On Platform="macOS" Value="false"/>
+                        </OnPlatform>
+                    </Label.IsVisible>
+                    <Label.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double" Default="{StaticResource ListItemHeight}">
+                                <On Platform="macOS" Value="0"/>
+                            </OnPlatform>
+                    </Label.HeightRequest>
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="Label"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                            <Setter Property="HeightRequest" Value="0"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    Margin="16,12,16,0"
+                    Style="{StaticResource ListGroupHeaderLabelStyle}"
                     Text="Cloud Sync"/>
                 <svg:SvgCachedImage
-                    Grid.Row="1"
+                    Grid.Row="4"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -58,7 +125,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Grid
-                    Grid.Row="1"
+                    Grid.Row="4"
                     Grid.Column="1"
                     RowSpacing="4">
                     <Grid.RowDefinitions>
@@ -83,7 +150,7 @@
                     </Label>
                 </Grid>
                 <Switch
-                    Grid.Row="1"
+                    Grid.Row="4"
                     Grid.Column="2"
                     Margin="16,0"
                     IsToggled="{Binding DropboxEnabled}"
@@ -94,7 +161,7 @@
                     </Switch.Behaviors>
                 </Switch>
                 <uc:Button2
-                    Grid.Row="2"
+                    Grid.Row="5"
                     Grid.Column="1"
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Sync"
@@ -102,13 +169,13 @@
                     IsVisible="{Binding DropboxEnabled}"
                     Command="{Binding SyncCommand}"/>
                 <Label
-                    Grid.Row="3"
+                    Grid.Row="6"
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
                     Text="Deleted" />
                 <svg:SvgCachedImage
-                    Grid.Row="4"
+                    Grid.Row="7"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -121,7 +188,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="4"
+                    Grid.Row="7"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -131,7 +198,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="5"
+                    Grid.Row="8"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -144,7 +211,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="5"
+                    Grid.Row="8"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -154,7 +221,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="6"
+                    Grid.Row="9"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -167,7 +234,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="6"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -177,7 +244,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <svg:SvgCachedImage
-                    Grid.Row="7"
+                    Grid.Row="10"
                     Grid.Column="0"
                     HeightRequest="24"
                     HorizontalOptions="End"
@@ -190,7 +257,7 @@
                     </svg:SvgCachedImage.GestureRecognizers>
                 </svg:SvgCachedImage>
                 <Label
-                    Grid.Row="7"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource ListItemLabelStyle}"
@@ -200,63 +267,33 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label
-                    Grid.Row="8"
+                    Grid.Row="11"
                     Grid.ColumnSpan="3"
                     Margin="16,12,16,0"
                     Style="{StaticResource ListGroupHeaderLabelStyle}"
-                    Text="Budget Badger Pro"/>
+                    Text="Help"/>
                 <Label
-                    Grid.Row="9"
+                    Grid.Row="12"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
                     Margin="16,0"
                     Style="{StaticResource ListItemLabelStyle}"
-                    Text="Thanks for purchasing Budget Badger Pro!"
-                    IsVisible="{Binding HasPro}">
-                </Label>
-                <Label
-                    Grid.Row="9"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Margin="16,0"
-                    Style="{StaticResource ListItemLabelStyle}"
-                    Text="Upgrade your budget - Go Pro!">
+                    Text="BudgetBadger.io">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
-                    </Label.GestureRecognizers>
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding HasPro}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="IsVisible" Value="false" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Label
-                    Grid.Row="10"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Margin="16,0"
-                    Style="{StaticResource ListItemLabelStyle}"
-                    Text="Restore Purchase">
-                    <Label.IsVisible>
-                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                            <On Platform="macOS" Value="false"/>
-                        </OnPlatform>
-                    </Label.IsVisible>
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding HasPro}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="IsVisible" Value="false" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
+                        <TapGestureRecognizer Command="{Binding HelpCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
+                <Label
+                    Grid.Row="13"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="16,0"
+                    Style="{StaticResource ListItemLabelStyle}"
+                    Text="support@BudgetBadger.io">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EmailCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>    
             </Grid>
         </ScrollView>
         </uc:BusyIndicator>
