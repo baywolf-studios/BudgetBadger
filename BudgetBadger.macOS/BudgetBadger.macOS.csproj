@@ -244,7 +244,10 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Info.plist" />
+    <None Include="Info.plist" Condition=" '$(Configuration)' != 'ProRelease' " />
+    <None Include="InfoPro.plist" Condition=" '$(Configuration)' == 'ProRelease' ">
+        <LogicalName>Info.plist</LogicalName>
+    </None>
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
   </ItemGroup>
