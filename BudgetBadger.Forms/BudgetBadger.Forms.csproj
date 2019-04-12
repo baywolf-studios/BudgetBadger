@@ -9,6 +9,16 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
+    <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\ProRelease\netstandard2.0</OutputPath>
+    <DefineConstants>TRACE;PRORELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>1701;1702</NoWarn>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Clancey.SimpleAuth" Version="1.0.51" />
     <PackageReference Include="Dropbox.Api" Version="4.9.3" />
