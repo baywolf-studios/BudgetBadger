@@ -136,16 +136,14 @@ namespace BudgetBadger.Forms.Settings
                             DropboxEnabled = false;
                             return;
                         }
-                        else
+
+                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                        if (!purchaseResult.Success)
                         {
-                            var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                            if (!purchaseResult.Success)
-                            {
-                                await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                                await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
-                                DropboxEnabled = false;
-                                return;
-                            }
+                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                            DropboxEnabled = false;
+                            return;
                         }
                     }
                     else
@@ -185,6 +183,7 @@ namespace BudgetBadger.Forms.Settings
             else if (!DropboxEnabled)
             {
                 await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                LastSynced = _syncFactory.GetLastSyncDateTime();
             }
         }
 
