@@ -173,7 +173,7 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
 
-#if PRORELEASE
+#if PRORELEASE || DEBUG
             container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
 #else
             if (Device.RuntimePlatform == Device.macOS)

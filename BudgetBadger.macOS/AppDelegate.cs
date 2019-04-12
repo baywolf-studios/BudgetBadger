@@ -44,6 +44,7 @@ namespace BudgetBadger.macOS
             base.DidFinishLaunching(notification);
         }
 
+
         public override void WillTerminate(NSNotification notification)
         {
             // Insert code here to tear down your application
