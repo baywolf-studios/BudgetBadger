@@ -173,16 +173,19 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
 
 
-            // inapp purchase 
+#if RELEASE
             if (Device.RuntimePlatform == Device.macOS)
             {
-                container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
+                container.Register<IPurchaseService, FalseInAppBillingPurchaseService>();
             }
             else
             {
                 container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
                 container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
             }
+#else
+            container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
+#endif
 
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
 

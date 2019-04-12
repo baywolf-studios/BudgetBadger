@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Core.Purchase;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -94,13 +95,22 @@ namespace BudgetBadger.Forms.Reports
 
                 if (wantToPurchase)
                 {
-                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                    if (!purchaseResult.Success)
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        //show dialog of not allowing
-                        await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id402437824?mt=12"));
                         ResetReports();
                         return;
+                    }
+                    else
+                    {
+                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                        if (!purchaseResult.Success)
+                        {
+                            //show dialog of not allowing
+                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                            ResetReports();
+                            return;
+                        }
                     }
                 }
                 else

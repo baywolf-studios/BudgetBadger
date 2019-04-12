@@ -40,7 +40,7 @@ namespace BudgetBadger.macOS
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
 
-            LoadApplication(new App());
+            LoadApplication(new App(new macOSInitializer()));
             base.DidFinishLaunching(notification);
         }
 

@@ -15,6 +15,7 @@ using Prism.Navigation;
 using Prism.Services;
 using SimpleAuth;
 using SimpleAuth.Providers;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
@@ -58,11 +59,7 @@ namespace BudgetBadger.Forms.Settings
         public bool HasPro
         {
             get => _hasPro;
-            set
-            {
-                SetProperty(ref _hasPro, value);
-                RaisePropertyChanged(nameof(DoesNotHavePro));
-            }
+            set => SetProperty(ref _hasPro, value);
         }
 
         public bool DoesNotHavePro
@@ -132,13 +129,23 @@ namespace BudgetBadger.Forms.Settings
 
                     if (wantToPurchase)
                     {
-                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                        if (!purchaseResult.Success)
+                        if (Device.RuntimePlatform == Device.macOS)
                         {
+                            Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id402437824?mt=12"));
                             await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
                             DropboxEnabled = false;
                             return;
+                        }
+                        else
+                        {
+                            var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                            if (!purchaseResult.Success)
+                            {
+                                await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                                await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                                DropboxEnabled = false;
+                                return;
+                            }
                         }
                     }
                     else
@@ -202,15 +209,22 @@ namespace BudgetBadger.Forms.Settings
         {
             if (!HasPro)
             {
-                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-
-                if (purchaseResult.Success)
+                if (Device.RuntimePlatform == Device.macOS)
                 {
-                    HasPro = true;
+                    Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id402437824?mt=12"));
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+
+                    if (purchaseResult.Success)
+                    {
+                        HasPro = true;
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
+                    }
                 }
             }
         }
