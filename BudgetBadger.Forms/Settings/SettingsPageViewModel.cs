@@ -21,6 +21,8 @@ namespace BudgetBadger.Forms.Settings
 {
     public class SettingsPageViewModel : BindableBase, IPageLifecycleAware
     {
+        const string BudgetBadgerProMacAppLink = "macappstore://itunes.apple.com/app/id402437824?mt=12";
+
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
@@ -64,9 +66,11 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _hasPro, value);
         }
 
-        public bool DoesNotHavePro
+        bool _showSyncButton;
+        public bool ShowSync
         {
-            get => !HasPro;
+            get => _showSyncButton;
+            set => SetProperty(ref _showSyncButton, value);
         }
 
         string _lastSynced;
@@ -98,8 +102,6 @@ namespace BudgetBadger.Forms.Settings
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
-
-            LastSynced = _syncFactory.GetLastSyncDateTime();
         }
 
         public async void OnAppearing()
@@ -109,8 +111,9 @@ namespace BudgetBadger.Forms.Settings
             HasPro = purchasedPro.Success;
 
             var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
-
             DropboxEnabled = (syncMode == SyncMode.DropboxSync);
+            ShowSync = (syncMode == SyncMode.DropboxSync);
+            LastSynced = _syncFactory.GetLastSyncDateTime();
         }
 
         public void OnDisappearing()
@@ -124,69 +127,57 @@ namespace BudgetBadger.Forms.Settings
             if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
                 var verifyPurchase = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
-                if (!verifyPurchase.Success)
-                {
-                    // ask if they'd like to purchase
-                    var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
+                HasPro = verifyPurchase.Success;
 
+                if (!HasPro)
+                {
+                    var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
                     if (wantToPurchase)
                     {
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id402437824?mt=12"));
-                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                            DropboxEnabled = false;
-                            return;
-                        }
-
-                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                        if (!purchaseResult.Success)
-                        {
-                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
-                            DropboxEnabled = false;
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                        DropboxEnabled = false;
-                        return;
+                        await ExecutePurchaseProCommand();
                     }
                 }
 
-                try
+                if (HasPro)
                 {
-                    _dropboxApi.ForceRefresh = true;
-
-                    var account = await _dropboxApi.Authenticate() as OAuthAccount;
-
-                    if (account.IsValid())
+                    try
                     {
-                        await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                        await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
-                        await ExecuteSyncCommand();
+                        _dropboxApi.ForceRefresh = true;
+
+                        var account = await _dropboxApi.Authenticate() as OAuthAccount;
+
+                        if (account.IsValid())
+                        {
+                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
+                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
+                            await ExecuteSyncCommand();
+                            ShowSync = true;
+                        }
+                        else
+                        {
+                            DropboxEnabled = false;
+                            await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", "Did not authenticate with Dropbox. Sync disabled.", "Ok");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                        await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", "Did not authenticate with Dropbox. Sync disabled.", "Ok");
                         DropboxEnabled = false;
+                        await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", ex.Message, "Ok");
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                    await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", ex.Message, "Ok");
                     DropboxEnabled = false;
                 }
             }
-            else if (!DropboxEnabled)
+
+            if (!DropboxEnabled)
             {
                 await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-                LastSynced = _syncFactory.GetLastSyncDateTime();
             }
+
+            ShowSync = DropboxEnabled;
+            LastSynced = _syncFactory.GetLastSyncDateTime();
         }
 
         public async Task ExecuteShowDeletedCommand(string pageName)
@@ -212,7 +203,7 @@ namespace BudgetBadger.Forms.Settings
             {
                 if (Device.RuntimePlatform == Device.macOS)
                 {
-                    Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id402437824?mt=12"));
+                    Device.OpenUri(new Uri(BudgetBadgerProMacAppLink));
                 }
                 else
                 {

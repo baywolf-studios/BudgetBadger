@@ -166,7 +166,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="Sync"
                     HorizontalOptions="Start"
-                    IsVisible="{Binding DropboxEnabled}"
+                    IsVisible="{Binding ShowSync}"
                     Command="{Binding SyncCommand}"/>
                 <Label
                     Grid.Row="6"
@@ -289,7 +289,7 @@
                     Grid.ColumnSpan="3"
                     Margin="16,0"
                     Style="{StaticResource ListItemLabelStyle}"
-                    Text="support@BudgetBadger.io">
+                    Text="Support@BudgetBadger.io">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EmailCommand}" />
                     </Label.GestureRecognizers>
