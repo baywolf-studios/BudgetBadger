@@ -166,7 +166,7 @@ namespace BudgetBadger.Forms.Payees
                     { PageParameter.Payee, result.Data }
                 };
 
-                await _navigationService.GoBackAsync(parameters);
+                await ExecuteRefreshCommand();
             }
             else
             {
