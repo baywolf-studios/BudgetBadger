@@ -13,6 +13,7 @@ using Prism.Mvvm;
 using Prism.AppModel;
 using BudgetBadger.Core.Sync;
 using Prism;
+using System.Collections.ObjectModel;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -41,8 +42,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableListCollection<Payee> _payees;
+        public ObservableListCollection<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -81,7 +82,7 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableListCollection<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
@@ -132,11 +133,10 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.UpdateRange(result.Data, (existing, updated) => { existing.PropertyCopy(updated); } );
                 }
                 else
                 {
-                    await Task.Yield();
                     await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
                 }
 

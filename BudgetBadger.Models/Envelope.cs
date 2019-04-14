@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>
+    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IPropertyCopy<Envelope>
     {
         Guid id;
         public Guid Id
@@ -109,6 +109,17 @@ namespace BudgetBadger.Models
             return envelope;
         }
 
+        public void PropertyCopy(Envelope item)
+        {
+            Description = item.description;
+            Notes = item.Notes;
+            Group.PropertyCopy(item.Group);
+            IgnoreOverspend = item.IgnoreOverspend;
+            CreatedDateTime = item.CreatedDateTime;
+            ModifiedDateTime = item.ModifiedDateTime;
+            DeletedDateTime = item.DeletedDateTime;
+        }
+
         public Result Validate()
         {
             var errors = new List<string>();
@@ -128,6 +139,65 @@ namespace BudgetBadger.Models
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+        }
+
+        public bool Equals(Envelope p)
+        {
+            // If parameter is null, return false.
+            if (p is null)
+            {
+                return false;
+            }
+
+            // Optimization for a common success case.
+            if (Object.ReferenceEquals(this, p))
+            {
+                return true;
+            }
+
+            // If run-time types are not exactly the same, return false.
+            if (this.GetType() != p.GetType())
+            {
+                return false;
+            }
+
+            // Return true if the fields match.
+            // Note that the base class is not invoked because it is
+            // System.Object, which defines Equals as reference equality.
+            return Id == p.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Payee);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public static bool operator ==(Envelope lhs, Envelope rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Envelope lhs, Envelope rhs)
+        {
+            return !(lhs == rhs);
         }
     }
 }

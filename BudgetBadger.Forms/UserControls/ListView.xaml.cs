@@ -42,6 +42,20 @@ namespace BudgetBadger.Forms.UserControls
         public ListView()
         {
             InitializeComponent();
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(IsBusy))
+                {
+                    ResetSwipe();
+                }
+            };
+
+            ScrollStateChanged += (sender, e) =>
+            {
+                ResetSwipe();
+            };
+
             SelectionChanging += (sender, e) => 
             {
                 if (HasOtherTapGestureRecognizers && (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.macOS))
@@ -49,21 +63,25 @@ namespace BudgetBadger.Forms.UserControls
                     e.Cancel = true;
                 }
             };
+
             SelectionChanged += (sender, e) =>
             {
                 if (SelectedCommand != null)
                 {
                     SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
                 }
+
+                SelectedItem = null;
+                ResetSwipe();
             };
         }
 
         void UpdateFilter()
         {
-            if (sfListView != null && sfListView.DataSource != null && Filter != null)
+            if (this != null && this.DataSource != null && Filter != null)
             {
-                sfListView.DataSource.Filter = Filter;
-                sfListView.DataSource.RefreshFilter();
+                this.DataSource.Filter = Filter;
+                this.DataSource.RefreshFilter();
             } 
         }
 	}

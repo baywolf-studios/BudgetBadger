@@ -41,7 +41,20 @@ namespace BudgetBadger.Forms.UserControls
 
         public DataGrid ()
 		{
-			InitializeComponent ();    
+			InitializeComponent ();
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(IsBusy))
+                {
+                    ResetSwipeOffset();
+                }
+            };
+
+            ScrollStateChanged += (sender, e) =>
+            {
+                ResetSwipeOffset();
+            };
 
             SelectionChanging += (sender, e) =>
             {
@@ -56,15 +69,18 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
                 }
+
+                SelectionController.ClearSelection();
+                ResetSwipeOffset();
             };
 		}
 
         void UpdateFilter()
         {
-            if (sfGrid != null && sfGrid.View != null && Filter != null)
+            if (this != null && this.View != null && Filter != null)
             {
-                sfGrid.View.Filter = Filter;
-                sfGrid.View.RefreshFilter();
+                this.View.Filter = Filter;
+                this.View.RefreshFilter();
             }
         }
 	}
