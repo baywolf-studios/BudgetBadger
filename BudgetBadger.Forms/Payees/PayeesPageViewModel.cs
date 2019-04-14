@@ -14,6 +14,7 @@ using Prism.AppModel;
 using BudgetBadger.Core.Sync;
 using Prism;
 using System.Collections.ObjectModel;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -134,6 +135,7 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     Payees.UpdateRange(result.Data, (existing, updated) => { existing.PropertyCopy(updated); } );
+                    Payees.Sort((a, b) => { return a.Description.CompareTo(b.Description); });
                 }
                 else
                 {

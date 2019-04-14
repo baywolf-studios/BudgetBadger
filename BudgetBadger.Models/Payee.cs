@@ -18,8 +18,8 @@ namespace BudgetBadger.Models
         public string Description
         {
             get => description;
-            set => SetProperty(ref description, value);
-        }
+            set { SetProperty(ref description, value); OnPropertyChanged(nameof(Group)); }
+            }
 
         string notes;
         public string Notes
@@ -33,7 +33,7 @@ namespace BudgetBadger.Models
         public bool IsAccount
         {
             get => isAccount;
-            set => SetProperty(ref isAccount, value);
+            set { SetProperty(ref isAccount, value); OnPropertyChanged(nameof(Group)); }
         }
 
         DateTime? createdDateTime;
