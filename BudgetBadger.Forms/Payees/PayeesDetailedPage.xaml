@@ -45,7 +45,8 @@
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding Payees}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedPayee}">
+                            SelectedItem="{Binding SelectedPayee}"
+                            IsBusy="{Binding IsBusy}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>

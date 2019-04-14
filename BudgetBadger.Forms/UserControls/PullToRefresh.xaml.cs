@@ -68,6 +68,5 @@ namespace BudgetBadger.Forms.UserControls
                 _automaticRefresh = false;
             }
         }
-
     }
 }

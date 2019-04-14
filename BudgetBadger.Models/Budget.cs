@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>
+    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IPropertyCopy<Budget>
     {
         Guid id;
         public Guid Id
@@ -139,6 +139,19 @@ namespace BudgetBadger.Models
             return budget;
         }
 
+        public void PropertyCopy(Budget item)
+        {
+            Envelope.PropertyCopy(item.Envelope);
+            Schedule.PropertyCopy(item.Schedule);
+            IgnoreOverspend = item.IgnoreOverspend;
+            Amount = item.Amount;
+            PastAmount = item.PastAmount;
+            Activity = item.Activity;
+            PastActivity = item.PastActivity;
+            CreatedDateTime = item.CreatedDateTime;
+            ModifiedDateTime = item.ModifiedDateTime;
+        }
+
         public Result Validate()
         {
             var errors = new List<string>();
@@ -167,6 +180,65 @@ namespace BudgetBadger.Models
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+        }
+
+        public bool Equals(Budget p)
+        {
+            // If parameter is null, return false.
+            if (p is null)
+            {
+                return false;
+            }
+
+            // Optimization for a common success case.
+            if (Object.ReferenceEquals(this, p))
+            {
+                return true;
+            }
+
+            // If run-time types are not exactly the same, return false.
+            if (this.GetType() != p.GetType())
+            {
+                return false;
+            }
+
+            // Return true if the fields match.
+            // Note that the base class is not invoked because it is
+            // System.Object, which defines Equals as reference equality.
+            return Id == p.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Payee);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public static bool operator ==(Budget lhs, Budget rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Budget lhs, Budget rhs)
+        {
+            return !(lhs == rhs);
         }
     }
 }
