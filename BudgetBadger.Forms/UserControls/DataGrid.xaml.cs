@@ -42,7 +42,10 @@ namespace BudgetBadger.Forms.UserControls
         public DataGrid ()
 		{
 			InitializeComponent ();
-            //GridViewCreated += DataGrid_GridViewCreated;
+            if (Device.RuntimePlatform != Device.macOS)
+            {
+                GridViewCreated += DataGrid_GridViewCreated;
+            }
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsBusy))
