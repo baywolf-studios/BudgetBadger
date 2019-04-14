@@ -10,4 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <ItemGroup>
+    <Folder Include="Comparers\" />
+  </ItemGroup>
 </Project>

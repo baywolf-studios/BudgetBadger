@@ -42,7 +42,7 @@ namespace BudgetBadger.Forms.UserControls
         public DataGrid ()
 		{
 			InitializeComponent ();
-
+            //GridViewCreated += DataGrid_GridViewCreated;
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsBusy))
@@ -74,6 +74,11 @@ namespace BudgetBadger.Forms.UserControls
                 ResetSwipeOffset();
             };
 		}
+
+        private void DataGrid_GridViewCreated(object sender, GridViewCreatedEventArgs e)
+        {
+            View.LiveDataUpdateMode = Syncfusion.Data.LiveDataUpdateMode.AllowDataShaping;
+        }
 
         void UpdateFilter()
         {
