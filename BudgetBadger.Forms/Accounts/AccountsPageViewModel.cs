@@ -14,6 +14,7 @@ using Prism.AppModel;
 using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
 using Prism;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -39,8 +40,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set { SetProperty(ref _accounts, value); RaisePropertyChanged(nameof(NetWorth)); }
@@ -79,7 +80,7 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -129,7 +130,8 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts.UpdateRange(result.Data, Account.PropertyCopy);
+                    Accounts.Sort();
                 }
                 else
                 {

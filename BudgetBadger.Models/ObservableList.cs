@@ -44,6 +44,7 @@ namespace BudgetBadger.Models
             foreach (var i in changedItems)
                 Items.Add(i);
 
+
             OnPropertyChanged(new PropertyChangedEventArgs("Count"));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, changedItems, startIndex));
@@ -110,6 +111,13 @@ namespace BudgetBadger.Models
             int startIndex = Count;
 
             var updatedItems = collection.Where(item => Items.Any(item2 => item2.Equals(item))).ToList();
+            var newItems = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
+            var removedItems = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
+
+            //foreach (var newItem in newItems)
+            //{
+            //    Add(newItem);
+            //}
 
             foreach (var updateItem in updatedItems)
             {
@@ -117,13 +125,16 @@ namespace BudgetBadger.Models
                 updateFunction?.Invoke(existingItem, updateItem);
             }
 
-            var newItems = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
+            //foreach (var removedItem in removedItems)
+            //{
+            //    Remove(removedItem);
+            //}
+
             if (newItems.Any())
             {
                 this.AddRange(newItems);
             }
 
-            var removedItems = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
             if (removedItems.Any())
             {
                 this.RemoveRange(removedItems);

@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IPropertyCopy<Account>
+    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IPropertyCopy<Account>, IComparable
     {
         Guid id;
         public Guid Id
@@ -178,12 +178,35 @@ namespace BudgetBadger.Models
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Payee);
+            return this.Equals(obj as Account);
         }
 
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return 1;
+            }
+
+            //accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
+
+            var account = (Account)obj;
+            if (Type != null && account.Type != null)
+            {
+                if (Type.Id == account.Type.Id)
+                {
+                    return String.Compare(Description, account.Description);
+                }
+
+                return Type.Id.CompareTo(account.Type.Id);
+            }
+
+            return String.Compare(Description, account.Description);
         }
 
         public static bool operator ==(Account lhs, Account rhs)
@@ -207,6 +230,11 @@ namespace BudgetBadger.Models
         public static bool operator !=(Account lhs, Account rhs)
         {
             return !(lhs == rhs);
+        }
+
+        public static void PropertyCopy(Account existing, Account updated)
+        {
+            existing.PropertyCopy(updated);
         }
     }
 }

@@ -43,7 +43,8 @@
                             GroupCaptionTextFormat="Type: {Key}"
                             ItemsSource="{Binding Accounts}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedAccount}">
+                            SelectedItem="{Binding SelectedAccount}"
+                            IsBusy="{Binding IsBusy}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">

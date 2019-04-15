@@ -163,7 +163,18 @@ namespace BudgetBadger.Models
             }
 
             var payee = (Payee)obj;
-            return String.Compare(Description, payee.Description);
+
+            if (IsAccount == payee.IsAccount)
+            {
+                if (Group == payee.Group)
+                {
+                    return String.Compare(Description, payee.Description);
+                }
+
+                return String.Compare(Group, payee.Group);
+            }
+
+            return -1 * IsAccount.CompareTo(payee.IsAccount);
         }
 
         public static bool operator ==(Payee lhs, Payee rhs)

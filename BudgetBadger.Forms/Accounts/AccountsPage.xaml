@@ -74,7 +74,8 @@
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Accounts}"
                             SelectedItem="{Binding SelectedAccount}"
-                            SelectedCommand="{Binding SelectedCommand}">
+                            SelectedCommand="{Binding SelectedCommand}"
+                            IsBusy="{Binding IsBusy}">
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">

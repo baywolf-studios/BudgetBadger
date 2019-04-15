@@ -210,7 +210,7 @@ namespace BudgetBadger.Models
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Payee);
+            return this.Equals(obj as Budget);
         }
 
         public override int GetHashCode()
@@ -239,6 +239,11 @@ namespace BudgetBadger.Models
         public static bool operator !=(Budget lhs, Budget rhs)
         {
             return !(lhs == rhs);
+        }
+
+        public static void PropertyCopy(Budget existing, Budget updated)
+        {
+            existing.PropertyCopy(updated);
         }
     }
 }
