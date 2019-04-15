@@ -153,7 +153,7 @@ namespace BudgetBadger.Models
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Payee);
+            return this.Equals(obj as BudgetSchedule);
         }
 
         public override int GetHashCode()

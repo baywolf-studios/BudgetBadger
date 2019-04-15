@@ -50,8 +50,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _schedule, value);
         }
 
-        IReadOnlyList<Budget> _budgets;
-        public IReadOnlyList<Budget> Budgets
+        ObservableList<Budget> _budgets;
+        public ObservableList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value); 
@@ -89,7 +89,7 @@ namespace BudgetBadger.Forms.Envelopes
             _syncFactory = syncFactory;
 
             Schedule = null;
-            Budgets = new List<Budget>();
+            Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -140,7 +140,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (budgetResult.Success)
                 {
-                    Budgets = budgetResult.Data;
+                    Budgets.UpdateRange(budgetResult.Data, Budget.PropertyCopy);
                     Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else
