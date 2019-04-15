@@ -328,5 +328,10 @@ namespace BudgetBadger.Models
         {
             return !(lhs == rhs);
         }
+
+        public static void PropertyCopy(Transaction existing, Transaction updated)
+        {
+            existing.PropertyCopy(updated);
+        }
     }
 }

@@ -184,5 +184,10 @@ namespace BudgetBadger.Models
         {
             return !(lhs == rhs);
         }
+
+        public static void PropertyCopy(EnvelopeGroup existing, EnvelopeGroup updated)
+        {
+            existing.PropertyCopy(updated);
+        }
     }
 }

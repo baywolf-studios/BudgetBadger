@@ -13,6 +13,7 @@ using Prism.AppModel;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
 using Prism;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -141,6 +142,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (budgetResult.Success)
                 {
                     Budgets.UpdateRange(budgetResult.Data, Budget.PropertyCopy);
+                    Budgets.Sort();
                     Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else

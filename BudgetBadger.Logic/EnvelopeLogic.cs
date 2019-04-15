@@ -129,7 +129,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
 
                 result.Success = true;
-                result.Data = OrderBudgets(budgetsToReturn);
+                result.Data = budgetsToReturn;
             }
             catch (Exception ex)
             {
