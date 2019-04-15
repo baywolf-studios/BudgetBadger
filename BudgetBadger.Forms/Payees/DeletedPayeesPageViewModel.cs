@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -31,8 +32,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -67,7 +68,7 @@ namespace BudgetBadger.Forms.Payees
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
@@ -117,7 +118,8 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.UpdateRange(result.Data, Payee.PropertyCopy);
+                    Payees.Sort();
                 }
                 else
                 {
