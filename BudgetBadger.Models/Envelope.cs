@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IPropertyCopy<Envelope>
+    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IPropertyCopy<Envelope>, IComparable, IComparable<Envelope>
     {
         Guid id;
         public Guid Id
@@ -175,6 +175,31 @@ namespace BudgetBadger.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Envelope);
+        }
+
+        public int CompareTo(Envelope envelope)
+        {
+            if (envelope is null)
+            {
+                return 1;
+            }
+
+            if (IsGenericDebtEnvelope == envelope.IsGenericDebtEnvelope)
+            {
+                if (Group == envelope.Group)
+                {
+                    return String.Compare(Description, envelope.Description);
+                }
+
+                return Group.CompareTo(envelope.Group);
+            }
+
+            return -1 * IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
         }
 
         public static bool operator ==(Envelope lhs, Envelope rhs)

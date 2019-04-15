@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IPropertyCopy<Account>, IComparable
+    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IPropertyCopy<Account>, IComparable, IComparable<Account>
     {
         Guid id;
         public Guid Id
@@ -186,16 +186,13 @@ namespace BudgetBadger.Models
             return Id.GetHashCode();
         }
 
-        public int CompareTo(object obj)
+        public int CompareTo(Account account)
         {
-            if (obj is null)
+            if (account is null)
             {
                 return 1;
             }
 
-            //accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
-
-            var account = (Account)obj;
             if (Type != null && account.Type != null)
             {
                 if (Type.Id == account.Type.Id)
@@ -207,6 +204,11 @@ namespace BudgetBadger.Models
             }
 
             return String.Compare(Description, account.Description);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Account);
         }
 
         public static bool operator ==(Account lhs, Account rhs)

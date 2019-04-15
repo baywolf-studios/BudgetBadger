@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IPropertyCopy<Budget>
+    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IPropertyCopy<Budget>, IComparable, IComparable<Budget>
     {
         Guid id;
         public Guid Id
@@ -244,6 +244,21 @@ namespace BudgetBadger.Models
         public static void PropertyCopy(Budget existing, Budget updated)
         {
             existing.PropertyCopy(updated);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Budget);
+        }
+
+        public int CompareTo(Budget budget)
+        {
+            if (budget is null)
+            {
+                return 1;
+            }
+
+            return Envelope.CompareTo(budget.Envelope);
         }
     }
 }
