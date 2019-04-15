@@ -5,7 +5,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Payee : BaseModel, IValidatable, IDeepCopy<Payee>, IEquatable<Payee>, IPropertyCopy<Payee>, IComparable
+    public class Payee : BaseModel, IValidatable, IDeepCopy<Payee>, IEquatable<Payee>, IPropertyCopy<Payee>, IComparable, IComparable<Payee>
     {
         Guid id;
         public Guid Id
@@ -155,14 +155,12 @@ namespace BudgetBadger.Models
             return Id.GetHashCode();
         }
 
-        public int CompareTo(object obj)
+        public int CompareTo(Payee payee)
         {
-            if (obj is null)
+            if (payee is null)
             {
                 return 1;
             }
-
-            var payee = (Payee)obj;
 
             if (IsAccount == payee.IsAccount)
             {
@@ -175,6 +173,11 @@ namespace BudgetBadger.Models
             }
 
             return -1 * IsAccount.CompareTo(payee.IsAccount);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Payee);
         }
 
         public static bool operator ==(Payee lhs, Payee rhs)

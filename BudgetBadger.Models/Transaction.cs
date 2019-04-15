@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Transaction : BaseModel, IValidatable, IDeepCopy<Transaction>, IEquatable<Transaction>
+    public class Transaction : BaseModel, IValidatable, IDeepCopy<Transaction>, IEquatable<Transaction>, IComparable, IComparable<Transaction>
     {
         Guid id;
         public Guid Id
@@ -289,6 +289,21 @@ namespace BudgetBadger.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        public int CompareTo(Transaction transaction)
+        {
+            if (transaction is null)
+            {
+                return 1;
+            }
+
+            return -1 * ServiceDate.CompareTo(transaction.ServiceDate);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Transaction);
         }
 
         public static bool operator ==(Transaction lhs, Transaction rhs)
