@@ -183,5 +183,10 @@ namespace BudgetBadger.Models
         {
             return !(lhs == rhs);
         }
+
+        public static void PropertyCopy(BudgetSchedule existing, BudgetSchedule updated)
+        {
+            existing.PropertyCopy(updated);
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -48,8 +49,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _payee, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -91,7 +92,7 @@ namespace BudgetBadger.Forms.Payees
             _syncFactory = syncFactory;
 
             Payee = new Payee();
-            Transactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -191,7 +192,8 @@ namespace BudgetBadger.Forms.Payees
                     var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
                     if (result.Success)
                     {
-                        Transactions = result.Data;
+                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                        Transactions.Sort();
                         SelectedTransaction = null;
                     }
 
