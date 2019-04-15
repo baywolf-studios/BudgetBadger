@@ -36,7 +36,8 @@
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Payees}"
                         SelectedItem="{Binding SelectedPayee}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        IsBusy="{Binding IsBusy}">
                         <syncfusion:SfListView.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasSearchText}"

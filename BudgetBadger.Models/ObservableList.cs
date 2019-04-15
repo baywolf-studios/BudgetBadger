@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace BudgetBadger.Models
 {
-    public class ObservableListCollection<T> : ObservableCollection<T>
+    public class ObservableList<T> : ObservableCollection<T>
     {
-        public ObservableListCollection() : base()
+        public ObservableList() : base()
         {
         }
 
-        public ObservableListCollection(IEnumerable<T> collection)
+        public ObservableList(IEnumerable<T> collection)
             : base(collection)
         {
         }
