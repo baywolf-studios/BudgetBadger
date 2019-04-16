@@ -164,7 +164,7 @@ namespace BudgetBadger.Logic
             var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-            result.Data = OrderAccounts(await Task.WhenAll(tasks));
+            result.Data = await Task.WhenAll(tasks);
 
             return result;
         }
@@ -180,7 +180,7 @@ namespace BudgetBadger.Logic
             var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-            result.Data = OrderAccounts(await Task.WhenAll(tasks));
+            result.Data = await Task.WhenAll(tasks);
 
             return result;
         }
@@ -196,7 +196,7 @@ namespace BudgetBadger.Logic
             var tasks = accounts.Select(GetPopulatedAccount);
 
             result.Success = true;
-            result.Data = OrderAccounts(await Task.WhenAll(tasks));
+            result.Data = await Task.WhenAll(tasks);
 
             return result;
         }
@@ -213,10 +213,10 @@ namespace BudgetBadger.Logic
             }
         }
 
-		public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
-        {
-            return accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
-        }
+		//public IReadOnlyList<Account> OrderAccounts(IEnumerable<Account> accounts)
+        //{
+        //    return accounts.OrderBy(a => a.Type ).ThenBy(a => a.Description).ToList();
+        //}
 
         public Task<Result> ValidateAccountAsync(Account account)
         {
