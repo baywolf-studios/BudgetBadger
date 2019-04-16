@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -36,8 +37,8 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -67,7 +68,7 @@ namespace BudgetBadger.Forms.Transactions
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            Transactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
             SelectedTransaction = null;
 
             SelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteSelectedCommand(t));
@@ -130,7 +131,8 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    Transactions = result.Data;
+                    Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                    Transactions.Sort();
                 }
                 else
                 {
