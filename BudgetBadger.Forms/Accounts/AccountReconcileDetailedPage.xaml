@@ -78,7 +78,8 @@
                             FilterText="{Binding SearchText}"
                             ItemsSource="{Binding StatementTransactions}"
                             SelectedCommand="{Binding TransactionSelectedCommand}"
-                            SelectedItem="{Binding SelectedTransaction}">
+                            SelectedItem="{Binding SelectedTransaction}"
+                            IsBusy="{Binding IsBusy}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">

@@ -7,6 +7,7 @@ using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -47,8 +48,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -59,8 +60,8 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        IReadOnlyList<Transaction> _statementTransactions;
-        public IReadOnlyList<Transaction> StatementTransactions
+        ObservableList<Transaction> _statementTransactions;
+        public ObservableList<Transaction> StatementTransactions
         {
             get => _statementTransactions;
             set
@@ -146,8 +147,8 @@ namespace BudgetBadger.Forms.Accounts
             _syncFactory = syncFactory;
 
             Account = new Account();
-            Transactions = new List<Transaction>();
-            StatementTransactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
+            StatementTransactions = new ObservableList<Transaction>();
             SelectedTransaction = null;
             StatementDate = DateTime.Now;
             StatementAmount = 0;
@@ -216,8 +217,10 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions = result.Data;
-                        StatementTransactions = result.Data;
+                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                        Transactions.Sort();
+                        StatementTransactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                        StatementTransactions.Sort();
                         SelectedTransaction = null;
                     }
                 }
@@ -232,7 +235,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public void UpdateStatementTransactions()
         {
-            StatementTransactions = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
+            StatementTransactions.UpdateRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate), Transaction.PropertyCopy);
+            StatementTransactions.Sort();
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
 

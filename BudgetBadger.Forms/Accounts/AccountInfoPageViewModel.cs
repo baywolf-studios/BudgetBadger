@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -49,8 +50,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -98,7 +99,7 @@ namespace BudgetBadger.Forms.Accounts
             _syncFactory = syncFactory;
 
             Account = new Account();
-            Transactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -216,7 +217,8 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions = result.Data;
+                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                        Transactions.Sort();
                         SelectedTransaction = null;
                     }
                 }

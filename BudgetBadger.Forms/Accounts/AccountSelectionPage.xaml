@@ -34,7 +34,8 @@
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Accounts}"
                         SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedAccount}">
+                        SelectedItem="{Binding SelectedAccount}"
+                        IsBusy="{Binding IsBusy}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>
