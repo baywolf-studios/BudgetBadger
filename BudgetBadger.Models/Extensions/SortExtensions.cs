@@ -19,7 +19,9 @@ namespace BudgetBadger.Models.Extensions
                 var oldIndex = collection.IndexOf(sortableList[i]);
                 var newIndex = i;
                 if (oldIndex != newIndex)
+                {
                     collection.Move(oldIndex, newIndex);
+                }
             }
         }
     }

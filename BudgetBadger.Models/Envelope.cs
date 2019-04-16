@@ -199,7 +199,7 @@ namespace BudgetBadger.Models
                 return Group.CompareTo(envelope.Group);
             }
 
-            return -1 * IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
+            return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
         }
 
         public static bool operator ==(Envelope lhs, Envelope rhs)
