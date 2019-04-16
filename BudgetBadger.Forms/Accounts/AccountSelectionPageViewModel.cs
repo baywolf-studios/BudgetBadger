@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -33,8 +34,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -67,7 +68,7 @@ namespace BudgetBadger.Forms.Accounts
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -123,7 +124,8 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts.UpdateRange(result.Data, Account.PropertyCopy);
+                    Accounts.Sort();
                 }
                 else
                 {

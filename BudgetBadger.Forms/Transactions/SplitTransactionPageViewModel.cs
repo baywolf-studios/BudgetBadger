@@ -7,6 +7,7 @@ using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -19,7 +20,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
-		readonly ISyncFactory _syncFactory;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -51,16 +52,16 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
-			set
-			{
-				SetProperty(ref _transactions, value);
-				RaisePropertyChanged(nameof(RunningTotal));
+            set
+            {
+                SetProperty(ref _transactions, value);
+                RaisePropertyChanged(nameof(RunningTotal));
                 RaisePropertyChanged(nameof(Remaining));
-			}
+            }
         }
 
         public decimal RunningTotal
@@ -94,14 +95,14 @@ namespace BudgetBadger.Forms.Transactions
         public SplitTransactionPageViewModel(INavigationService navigationService,
                                              IPageDialogService dialogService,
                                              ITransactionLogic transLogic,
-		                                     ISyncFactory syncFactory)
+                                             ISyncFactory syncFactory)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
             _syncFactory = syncFactory;
 
-            Transactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteTransactionCommand(a));
@@ -120,7 +121,8 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions = result.Data;
+                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
+                        Transactions.Sort();
                         Total = RunningTotal;
                         NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
@@ -137,7 +139,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
-                Transactions = tempTransactions;
+                Transactions.UpdateRange(tempTransactions, Transaction.PropertyCopy);
+                Transactions.Sort();
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -167,7 +170,7 @@ namespace BudgetBadger.Forms.Transactions
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
 
-                        Transactions = new List<Transaction>
+                        Transactions = new ObservableList<Transaction>
                         {
                             split1,
                             split2
@@ -181,12 +184,13 @@ namespace BudgetBadger.Forms.Transactions
             var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
             if (deletedTransaction != null)
             {
-                Transactions = Transactions.Where(t => t.Id != deletedTransaction.Id).ToList();
+                Transactions.UpdateRange(Transactions.Where(t => t.Id != deletedTransaction.Id), Transaction.PropertyCopy);
+                Transactions.Sort();
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
 
-            Transactions = Transactions.ToList();
+            //Transactions = Transactions.ToList();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
@@ -215,12 +219,12 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.SplitTransactionMode, true }
             };
 
-			if (Transactions.Count > 0)
-			{
+            if (Transactions.Count > 0)
+            {
                 parameters.Add(PageParameter.Payee, Transactions.Last().Payee);
                 parameters.Add(PageParameter.Account, Transactions.Last().Account);
                 parameters.Add(PageParameter.TransactionServiceDate, Transactions.Last().ServiceDate);
-			}
+            }
 
             if (Transactions.All(t2 => t2.Amount.HasValue && t2.Amount != 0) && Remaining != 0)
             {
@@ -260,7 +264,8 @@ namespace BudgetBadger.Forms.Transactions
             }
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            Transactions = existingTransactions;
+            Transactions.UpdateRange(existingTransactions, Transaction.PropertyCopy);
+            Transactions.Sort();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
