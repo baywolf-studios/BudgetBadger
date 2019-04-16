@@ -140,7 +140,8 @@
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Budgets}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedBudget}">
+                            SelectedItem="{Binding SelectedBudget}"
+                            IsBusy="{Binding IsBusy}">
                             <syncfusion:SfListView.LeftSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">

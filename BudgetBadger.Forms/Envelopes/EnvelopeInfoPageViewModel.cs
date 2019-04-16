@@ -13,6 +13,7 @@ using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core.Settings;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -50,8 +51,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _budget, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -93,7 +94,7 @@ namespace BudgetBadger.Forms.Envelopes
             _settings = settings;
 
             Budget = new Budget();
-            Transactions = new List<Transaction>();
+            Transactions = new ObservableList<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -201,7 +202,8 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                 if (result.Success)
                 {
-                    Transactions = result.Data;
+                    Transactions.UpdateRange(result.Data, Transaction.PropertyCopy); 
+                    Transactions.Sort();
                     SelectedTransaction = null;
                 }
 

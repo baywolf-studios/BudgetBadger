@@ -32,7 +32,8 @@
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding EnvelopeGroups}"
                         SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}">
+                        SelectedItem="{Binding SelectedEnvelopeGroup}"
+                        IsBusy="{Binding IsBusy}">
                         <syncfusion:SfListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <dt:GroupHeaderViewCell />
