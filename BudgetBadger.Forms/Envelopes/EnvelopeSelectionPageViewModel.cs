@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
+using BudgetBadger.Models.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -34,8 +35,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Budget> _budgets;
-        public IReadOnlyList<Budget> Budgets
+        ObservableList<Budget> _budgets;
+        public ObservableList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value);
@@ -68,7 +69,7 @@ namespace BudgetBadger.Forms.Envelopes
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Budgets = new List<Budget>();
+            Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -127,7 +128,8 @@ namespace BudgetBadger.Forms.Envelopes
 
                     if (budgetResult.Success)
                     {
-                        Budgets = budgetResult.Data;
+                        Budgets.UpdateRange(budgetResult.Data, Budget.PropertyCopy);
+                        Budgets.Sort();
                     }
                     else
                     {

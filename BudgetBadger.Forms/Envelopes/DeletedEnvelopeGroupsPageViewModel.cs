@@ -11,6 +11,7 @@ using Prism.Services;
 using System.Collections.Generic;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -39,8 +40,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedEnvelopeGroup, value);
         }
 
-        IReadOnlyList<EnvelopeGroup> _envelopeGroups;
-        public IReadOnlyList<EnvelopeGroup> EnvelopeGroups
+        ObservableList<EnvelopeGroup> _envelopeGroups;
+        public ObservableList<EnvelopeGroup> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
@@ -69,7 +70,7 @@ namespace BudgetBadger.Forms.Envelopes
             _envelopeLogic = envelopeLogic;
 
             SelectedEnvelopeGroup = null;
-            EnvelopeGroups = new List<EnvelopeGroup>();
+            EnvelopeGroups = new ObservableList<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -103,7 +104,8 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (envelopeGroupsResult.Success)
                 {
-                    EnvelopeGroups = envelopeGroupsResult.Data;
+                    EnvelopeGroups.UpdateRange(envelopeGroupsResult.Data, EnvelopeGroup.PropertyCopy);
+                    EnvelopeGroups.Sort();
                 }
                 else
                 {
