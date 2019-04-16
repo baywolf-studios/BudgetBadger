@@ -85,7 +85,7 @@ namespace BudgetBadger.Logic
 
 
                 result.Success = true;
-                result.Data = OrderBudgets(budgetsToReturn);
+                result.Data = budgetsToReturn;
             }
             catch (Exception ex)
             {
@@ -356,7 +356,7 @@ namespace BudgetBadger.Logic
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt);
                 result.Success = true;
-                result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
+                result.Data = filteredEnvelopeGroups.ToList();
             }
             catch (Exception ex)
             {
@@ -376,7 +376,7 @@ namespace BudgetBadger.Logic
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsDeleted && !e.IsSystem && !e.IsIncome && !e.IsDebt);
                 result.Success = true;
-                result.Data = OrderEnvelopeGroups(filteredEnvelopeGroups);
+                result.Data = filteredEnvelopeGroups.ToList();
             }
             catch (Exception ex)
             {
@@ -425,38 +425,38 @@ namespace BudgetBadger.Logic
             }
         }
 
-        public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
-        {
-            return envelopeGroups
-                .OrderByDescending(b => b.IsDebt)
-                .ThenByDescending(b => b.IsIncome)
-                .ThenByDescending(b => !b.IsDebt && !b.IsIncome)
-                .ThenBy(b => b.Description)
-                .ToList();
-        }
+        //public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
+        //{
+        //    return envelopeGroups
+        //        .OrderByDescending(b => b.IsDebt)
+        //        .ThenByDescending(b => b.IsIncome)
+        //        .ThenByDescending(b => !b.IsDebt && !b.IsIncome)
+        //        .ThenBy(b => b.Description)
+        //        .ToList();
+        //}
 
-        public IReadOnlyList<Envelope> OrderEnvelopes(IEnumerable<Envelope> envelopes)
-        {
-            return envelopes.OrderByDescending(b => b.Group.IsDebt && !b.IsGenericDebtEnvelope)
-                .ThenByDescending(b => b.Group.IsIncome)
-                .ThenByDescending(b => !b.Group.IsDebt && !b.Group.IsIncome)
-                .ThenByDescending(b => b.IsGenericDebtEnvelope)
-                .ThenBy(b => b.Group.Description)
-                .ThenBy(a => a.Description)
-                .ToList();
-        }
+        //public IReadOnlyList<Envelope> OrderEnvelopes(IEnumerable<Envelope> envelopes)
+        //{
+        //    return envelopes.OrderByDescending(b => b.Group.IsDebt && !b.IsGenericDebtEnvelope)
+        //        .ThenByDescending(b => b.Group.IsIncome)
+        //        .ThenByDescending(b => !b.Group.IsDebt && !b.Group.IsIncome)
+        //        .ThenByDescending(b => b.IsGenericDebtEnvelope)
+        //        .ThenBy(b => b.Group.Description)
+        //        .ThenBy(a => a.Description)
+        //        .ToList();
+        //}
 
-        public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
-        {
-            return budgets
-                .OrderByDescending(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope)
-                .ThenByDescending(b => b.Envelope.Group.IsIncome)
-                .ThenByDescending(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome)
-                .ThenByDescending(b => b.Envelope.IsGenericDebtEnvelope)
-                .ThenBy(b => b.Envelope.Group.Description)
-                .ThenBy(a => a.Envelope.Description)
-                .ToList();
-        }
+        //public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
+        //{
+        //    return budgets
+        //        .OrderByDescending(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope)
+        //        .ThenByDescending(b => b.Envelope.Group.IsIncome)
+        //        .ThenByDescending(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome)
+        //        .ThenByDescending(b => b.Envelope.IsGenericDebtEnvelope)
+        //        .ThenBy(b => b.Envelope.Group.Description)
+        //        .ThenBy(a => a.Envelope.Description)
+        //        .ToList();
+        //}
 
         public Task<Result> ValidateBudgetAsync(Budget budget)
         {

@@ -99,7 +99,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
+			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -113,7 +113,7 @@ namespace BudgetBadger.Logic
 			var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
+			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -127,7 +127,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
                      
             result.Success = true;
-			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
+			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -162,7 +162,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = OrderTransactions(CombineSplitTransactions(await Task.WhenAll(tasks)));
+			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -192,13 +192,13 @@ namespace BudgetBadger.Logic
 
             var searchResults = transactions.Where(t => FilterTransaction(t, searchText));
 
-			return OrderTransactions(searchResults);
+			return searchResults.ToList();
         }
 
-		public IReadOnlyList<Transaction> OrderTransactions(IEnumerable<Transaction> transactions)
-        {
-			return transactions.OrderByDescending(a => a.ServiceDate).ToList();
-        }
+		//public IReadOnlyList<Transaction> OrderTransactions(IEnumerable<Transaction> transactions)
+   //     {
+			//return transactions.OrderByDescending(a => a.ServiceDate).ToList();
+        //}
 
         public async Task<Result> ValidateTransactionAsync(Transaction transaction)
         {
@@ -435,7 +435,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = OrderTransactions(await Task.WhenAll(tasks));
+            result.Data = await Task.WhenAll(tasks);
 
             return result;
         }

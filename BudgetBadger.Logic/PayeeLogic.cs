@@ -139,7 +139,7 @@ namespace BudgetBadger.Logic
                 var tasks = payees.Select(GetPopulatedPayee);
 
                 result.Success = true;
-				result.Data = OrderPayees(await Task.WhenAll(tasks));
+				result.Data = await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {
@@ -169,7 +169,7 @@ namespace BudgetBadger.Logic
                 var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
 
                 result.Success = true;
-                result.Data = OrderPayees(filteredPopulatedPayees);
+                result.Data = filteredPopulatedPayees.ToList();
             }
             catch (Exception ex)
             {
@@ -199,7 +199,7 @@ namespace BudgetBadger.Logic
                 var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
 
                 result.Success = true;
-                result.Data = OrderPayees(filteredPopulatedPayees);
+                result.Data = filteredPopulatedPayees.ToList();
             }
             catch (Exception ex)
             {
@@ -228,7 +228,7 @@ namespace BudgetBadger.Logic
                 var payeesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
 
                 result.Success = true;
-				result.Data = OrderPayees(payeesTemp.Where(p => !p.IsAccount));
+				result.Data = payeesTemp.Where(p => !p.IsAccount).ToList();
             }
             catch (Exception ex)
             {
@@ -251,10 +251,10 @@ namespace BudgetBadger.Logic
             }
         }
         
-		public IReadOnlyList<Payee> OrderPayees(IEnumerable<Payee> payees)
-        {
-            return payees.OrderByDescending(p => p.IsAccount).ThenBy(p => p.Group).ThenBy(a => a.Description).ToList();
-        }
+		//public IReadOnlyList<Payee> OrderPayees(IEnumerable<Payee> payees)
+        //{
+        //    return payees.OrderByDescending(p => p.IsAccount).ThenBy(p => p.Group).ThenBy(a => a.Description).ToList();
+        //}
 
         public Task<Result> ValidatePayeeAsync(Payee payee)
         {
