@@ -233,8 +233,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void UpdateStatementTransactions()
         {
-            StatementTransactions.UpdateRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate), Transaction.PropertyCopy);
-            StatementTransactions.Sort();
+            StatementTransactions.MergeAndSortRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate));
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
 
