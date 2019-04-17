@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
@@ -193,25 +194,8 @@ namespace BudgetBadger.Models
 
         public Transaction DeepCopy()
         {
-            Transaction transaction = (Transaction)this.MemberwiseClone();
-            transaction.Account = this.Account.DeepCopy();
-            transaction.Payee = this.Payee.DeepCopy();
-            transaction.Envelope = this.Envelope.DeepCopy();
-            return transaction;
-        }
-
-        public void PropertyCopy(Transaction item)
-        {
-            Amount = item.Amount;
-            Posted = item.Posted;
-            ReconciledDateTime = item.ReconciledDateTime;
-            Envelope.PropertyCopy(item.Envelope);
-            SplitId = item.SplitId;
-            ServiceDate = item.ServiceDate;
-            Notes = item.Notes;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
-            DeletedDateTime = item.DeletedDateTime;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Transaction>(serial);
         }
 
         public Result Validate()
@@ -276,7 +260,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)
@@ -286,7 +270,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public int CompareTo(Transaction transaction)
@@ -325,11 +309,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(Transaction lhs, Transaction rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(Transaction existing, Transaction updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }

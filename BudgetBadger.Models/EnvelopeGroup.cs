@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class EnvelopeGroup : BaseModel, IValidatable, IDeepCopy<EnvelopeGroup>, IEquatable<EnvelopeGroup>, IPropertyCopy<EnvelopeGroup>, IComparable, IComparable<EnvelopeGroup>
+    public class EnvelopeGroup : BaseModel, IValidatable, IDeepCopy<EnvelopeGroup>, IEquatable<EnvelopeGroup>, IComparable, IComparable<EnvelopeGroup>
     {
         Guid id;
         public Guid Id
@@ -77,16 +78,8 @@ namespace BudgetBadger.Models
 
         public EnvelopeGroup DeepCopy()
         {
-            return (EnvelopeGroup)this.MemberwiseClone();
-        }
-
-        public void PropertyCopy(EnvelopeGroup item)
-        {
-            Description = item.description;
-            Notes = item.Notes;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
-            DeletedDateTime = item.DeletedDateTime;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<EnvelopeGroup>(serial);
         }
 
         public Result Validate()
@@ -124,7 +117,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)
@@ -134,7 +127,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public int CompareTo(object obj)
@@ -183,11 +176,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(EnvelopeGroup lhs, EnvelopeGroup rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(EnvelopeGroup existing, EnvelopeGroup updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }

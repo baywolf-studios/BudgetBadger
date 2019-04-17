@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IPropertyCopy<Envelope>, IComparable, IComparable<Envelope>
+    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IComparable, IComparable<Envelope>
     {
         Guid id;
         public Guid Id
@@ -103,21 +104,8 @@ namespace BudgetBadger.Models
 
         public Envelope DeepCopy()
         {
-            Envelope envelope = (Envelope)this.MemberwiseClone();
-            envelope.Group = this.Group.DeepCopy();
-
-            return envelope;
-        }
-
-        public void PropertyCopy(Envelope item)
-        {
-            Description = item.description;
-            Notes = item.Notes;
-            Group.PropertyCopy(item.Group);
-            IgnoreOverspend = item.IgnoreOverspend;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
-            DeletedDateTime = item.DeletedDateTime;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Envelope>(serial);
         }
 
         public Result Validate()
@@ -164,7 +152,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)
@@ -174,7 +162,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public int CompareTo(object obj)
@@ -223,11 +211,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(Envelope lhs, Envelope rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(Envelope existing, Envelope updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }
