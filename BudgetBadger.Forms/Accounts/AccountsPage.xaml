@@ -6,18 +6,18 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
-        <p:RootSearchHeader 
+        <p:RootSearchHeader
             PageTitle="Accounts"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New"/>
+            ToolbarItemText="New" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
@@ -71,11 +71,11 @@
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                             GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                            IsBusy="{Binding IsBusy}"
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Accounts}"
-                            SelectedItem="{Binding SelectedAccount}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            IsBusy="{Binding IsBusy}">
+                            SelectedItem="{Binding SelectedAccount}">
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <Grid ColumnSpacing="0">
