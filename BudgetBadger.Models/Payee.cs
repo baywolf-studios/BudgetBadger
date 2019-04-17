@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Payee : BaseModel, IValidatable, IDeepCopy<Payee>, IEquatable<Payee>, IPropertyCopy<Payee>, IComparable, IComparable<Payee>
+    public class Payee : BaseModel, IValidatable, IDeepCopy<Payee>, IEquatable<Payee>, IComparable, IComparable<Payee>
     {
         Guid id;
         public Guid Id
@@ -99,16 +99,6 @@ namespace BudgetBadger.Models
             return JsonConvert.DeserializeObject<Payee>(serial);
         }
 
-        public void PropertyCopy(Payee item)
-        {
-            Description = item.description;
-            Notes = item.Notes;
-            IsAccount = item.IsAccount;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
-            DeletedDateTime = item.DeletedDateTime;
-        }
-
         public Result Validate()
         {
             var errors = new List<string>();
@@ -154,7 +144,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public int CompareTo(Payee payee)
@@ -203,11 +193,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(Payee lhs, Payee rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(Payee existing, Payee updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }
