@@ -27,7 +27,7 @@
             <ActivityIndicator
                 IsRunning="true"
                 Color="{StaticResource BusyIndicatorBackgroundColor}"/>
-            <Label HorizontalTextAlignment="Center" Text="Loading..." />
+            <Label HorizontalOptions="Center" Text="Loading..." />
         </StackLayout>
     </Grid>
 </ContentView>

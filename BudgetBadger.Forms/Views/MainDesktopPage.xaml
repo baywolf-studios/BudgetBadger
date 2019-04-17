@@ -60,7 +60,7 @@
                             Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Envelopes"
                             TextColor="{StaticResource PrimaryTextColor}"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </StackLayout>
                 </ContentView>
                 <ContentView
@@ -87,7 +87,7 @@
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Accounts"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </StackLayout>
                 </ContentView>
                 <ContentView
@@ -114,7 +114,7 @@
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Payees"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </StackLayout>
                 </ContentView>
                 <ContentView
@@ -141,7 +141,7 @@
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Reports"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </StackLayout>
                 </ContentView>
                 <ContentView
@@ -168,7 +168,7 @@
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
                             Text="Settings"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </StackLayout>
                 </ContentView>
                 <BoxView

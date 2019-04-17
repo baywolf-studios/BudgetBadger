@@ -44,16 +44,16 @@
                     </Grid.ColumnDefinitions>
                     <Label
                         Grid.Column="0"
-                        HorizontalTextAlignment="Start"
+                        HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="Net Worth"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Column="1"
-                        HorizontalTextAlignment="End"
+                        HorizontalOptions="End"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="{Binding NetWorth, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                 </Grid>
                 <BoxView
                     Grid.Row="1"

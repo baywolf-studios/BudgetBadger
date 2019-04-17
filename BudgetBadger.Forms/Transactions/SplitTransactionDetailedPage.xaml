@@ -189,40 +189,40 @@
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Total" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding Total, StringFormat='{0:c}'}" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Running Total"
-                    VerticalTextAlignment="End" />
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding RunningTotal, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Remaining"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding Remaining, StringFormat='{0:c}'}"
                     VerticalOptions="Start" />

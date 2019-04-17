@@ -161,7 +161,7 @@ namespace BudgetBadger.macOS.Renderers
                 UpdateText();
             else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
                 UpdateColor();
-            else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
+            else if (e.PropertyName == Entry.HorizontalOptionsProperty.PropertyName)
                 UpdateAlignment();
             else if (e.PropertyName == Entry.FontAttributesProperty.PropertyName)
                 UpdateFont();

@@ -229,45 +229,45 @@
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Difference"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding Difference, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Statement"
-                    VerticalTextAlignment="End" />
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding StatementAmount, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Cleared"
-                    VerticalTextAlignment="End" />
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
+                    VerticalOptions="Start" />
                 <uc:Button2
                     Grid.Row="0"
                     Grid.RowSpan="2"

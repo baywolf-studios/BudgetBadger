@@ -19,7 +19,7 @@
     <Label
         Grid.Column="1"
         Margin="0,0,16,0"
-        HorizontalTextAlignment="End"
+        HorizontalOptions="End"
         Style="{StaticResource Key=ListItemLabelStyle}"
         Text="{Binding Remaining, StringFormat='{0:C}'}" />
 </Grid>

@@ -47,5 +47,5 @@
         FontSize="16"
         Text="{Binding Caption}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalTextAlignment="Center" />
+        VerticalOptions="Center" />
 </Grid>
