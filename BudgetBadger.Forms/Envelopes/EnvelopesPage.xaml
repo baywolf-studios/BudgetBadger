@@ -137,11 +137,11 @@
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                             GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                            IsBusy="{Binding IsBusy}"
                             ItemSize="{StaticResource ListItemHeight}"
                             ItemsSource="{Binding Budgets}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedBudget}"
-                            IsBusy="{Binding IsBusy}">
+                            SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfListView.LeftSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">

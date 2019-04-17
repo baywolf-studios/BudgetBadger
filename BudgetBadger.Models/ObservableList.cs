@@ -99,7 +99,18 @@ namespace BudgetBadger.Models
             AddRange(collection, NotifyCollectionChangedAction.Reset);
         }
 
-        public void SortedMerge(IEnumerable<T> collection)
+        public void MergeRange(IEnumerable<T> collection)
+        {
+            //remove
+            var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
+            RemoveRange(itemsToRemove);
+
+            //add new
+            var itemsToAdd = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
+            AddRange(itemsToAdd);
+        }
+
+        public void MergeAndSortRange(IEnumerable<T> collection)
         {
             //remove
             var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
