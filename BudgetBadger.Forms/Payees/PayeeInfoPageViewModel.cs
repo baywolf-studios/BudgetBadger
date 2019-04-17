@@ -192,8 +192,7 @@ namespace BudgetBadger.Forms.Payees
                     var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
                     if (result.Success)
                     {
-                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
-                        Transactions.Sort();
+                        Transactions.MergeAndSortRange(result.Data);
                         SelectedTransaction = null;
                     }
 
