@@ -44,16 +44,16 @@
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="Balance"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                         <Label
                             Grid.Column="1"
-                            HorizontalTextAlignment="End"
+                            HorizontalOptions="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="{Binding Account.Balance, StringFormat='{0:c}'}"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -70,25 +70,25 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="Pending" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="{Binding PendingTotal, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="Cleared" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
                         <ContentView
@@ -102,7 +102,7 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="2"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             InputTransparent="true"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="Payment">
@@ -118,7 +118,7 @@
                         <Label
                             Grid.Row="1"
                             Grid.Column="2"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             InputTransparent="true"
                             Style="{StaticResource PageSubheaderLabelStyle}">
                             <Label.Triggers>

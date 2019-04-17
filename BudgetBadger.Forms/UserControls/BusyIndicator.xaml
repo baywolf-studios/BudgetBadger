@@ -21,7 +21,7 @@
                     VerticalOptions="CenterAndExpand"
                     Spacing="8">
                     <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" Color="{StaticResource BusyIndicatorBackgroundColor}"/>
-                    <Label HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
+                    <Label HorizontalOptions="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
                 </StackLayout>
             </Grid>
         </ControlTemplate>

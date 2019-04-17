@@ -37,10 +37,10 @@
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Label
-                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="Filter"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -114,7 +114,7 @@
                                         Grid.RowSpan="2"
                                         Grid.Column="1"
                                         Margin="0,0,16,0"
-                                        HorizontalTextAlignment="End"
+                                        HorizontalOptions="End"
                                         Style="{StaticResource Key=ListItemLabelStyle}"
                                         Text="{Binding YValue, StringFormat='{0:C}'}"
                                         VerticalOptions="Center" />
@@ -150,10 +150,10 @@
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Filters"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <uc:DateSelector
                     Grid.Column="2"
                     Date="{Binding BeginDate}"

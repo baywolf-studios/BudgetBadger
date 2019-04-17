@@ -203,45 +203,45 @@
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Balance"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding Account.Balance, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Pending"
-                    VerticalTextAlignment="End" />
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="2"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding PendingTotal, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
+                    VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Posted"
-                    VerticalTextAlignment="End" />
+                    VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="3"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="{Binding PostedTotal, StringFormat='{0:c}'}"
-                    VerticalTextAlignment="Start" />
+                    VerticalOptions="Start" />
                 <ContentView
                     Grid.Row="0"
                     Grid.RowSpan="2"
@@ -253,7 +253,7 @@
                 <Label
                     Grid.Row="0"
                     Grid.Column="4"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     InputTransparent="true"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     Text="Payment"
@@ -270,7 +270,7 @@
                 <Label
                     Grid.Row="1"
                     Grid.Column="4"
-                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
                     InputTransparent="true"
                     Style="{StaticResource PageSubheaderLabelStyle}"
                     VerticalOptions="Start">

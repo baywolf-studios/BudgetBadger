@@ -53,16 +53,16 @@
                             </Grid.ColumnDefinitions>
                             <Label
                                 Grid.Column="0"
-                                HorizontalTextAlignment="Start"
+                                HorizontalOptions="Start"
                                 Style="{StaticResource PageHeaderLabelStyle}"
                                 Text="To Budget"
-                                VerticalTextAlignment="Center" />
+                                VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                HorizontalTextAlignment="End"
+                                HorizontalOptions="End"
                                 Style="{StaticResource PageHeaderLabelStyle}"
                                 Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
-                                VerticalTextAlignment="Center" />
+                                VerticalOptions="Center" />
                         </Grid>
                     </uc:Expander.HeaderContent>
                     <uc:Expander.BodyContent>
@@ -79,37 +79,37 @@
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="Past" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="{Binding Budget.Past, StringFormat='{0:c}'}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="Activity" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="2"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="Remaining" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="2"
-                                HorizontalTextAlignment="Center"
+                                HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="{Binding Budget.Remaining, StringFormat='{0:c}'}" />
                         </Grid>
@@ -287,59 +287,59 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        HorizontalTextAlignment="Start"
+                        HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="To Budget"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        HorizontalTextAlignment="Start"
+                        HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="{Binding Budget.Schedule.Balance, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="2"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Past"
-                        VerticalTextAlignment="End" />
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="2"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Budget.Past, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Start" />
+                        VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="3"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Activity"
-                        VerticalTextAlignment="End" />
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="3"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Start" />
+                        VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="4"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="Remaining"
-                        VerticalTextAlignment="End" />
+                        VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="4"
-                        HorizontalTextAlignment="Center"
+                        HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
                         Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Start" />
+                        VerticalOptions="Start" />
                     <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"

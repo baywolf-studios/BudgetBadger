@@ -55,16 +55,16 @@
                         </Grid.ColumnDefinitions>
                         <Label
                             Grid.Column="0"
-                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="Difference"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                         <Label
                             Grid.Column="1"
-                            HorizontalTextAlignment="End"
+                            HorizontalOptions="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="{Binding Difference, StringFormat='{0:c}'}"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -80,25 +80,25 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="Statement" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="{Binding StatementAmount, StringFormat='{0:c}'}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="Cleared" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
                     </Grid>

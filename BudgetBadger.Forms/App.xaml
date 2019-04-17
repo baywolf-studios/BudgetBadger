@@ -76,7 +76,7 @@
             <Style x:Key="ListHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
 
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
@@ -85,7 +85,7 @@
             <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
 
@@ -94,7 +94,7 @@
             <Style x:Key="ListItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListItemFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
 
             <x:Double x:Key="DenseListGroupHeaderFontSize">12</x:Double>
@@ -103,7 +103,7 @@
             <Style x:Key="DenseListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=DenseListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=DenseListGroupHeaderTextColor}" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
 

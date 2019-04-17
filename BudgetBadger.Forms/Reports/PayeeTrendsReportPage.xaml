@@ -36,10 +36,10 @@
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Label
-                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
                             Text="Filter"
-                            VerticalTextAlignment="Center" />
+                            VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
                 <uc:Expander.BodyContent>
@@ -110,10 +110,10 @@
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Column="0"
-                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="Filters"
-                    VerticalTextAlignment="Center" />
+                    VerticalOptions="Center" />
                 <uc:DropdownSelector
                     Grid.Column="2"
                     ItemDisplayBinding="{Binding Description}"

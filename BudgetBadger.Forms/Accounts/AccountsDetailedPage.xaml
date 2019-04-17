@@ -161,17 +161,17 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        HorizontalTextAlignment="Start"
+                        HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="Net Worth"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        HorizontalTextAlignment="Start"
+                        HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
                         Text="{Binding NetWorth, StringFormat='{0:c}'}"
-                        VerticalTextAlignment="Center" />
+                        VerticalOptions="Center" />
                     <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
