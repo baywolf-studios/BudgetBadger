@@ -141,8 +141,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (budgetResult.Success)
                 {
-                    Budgets.UpdateRange(budgetResult.Data, Budget.PropertyCopy);
-                    Budgets.Sort();
+                    Budgets.MergeAndSortRange(budgetResult.Data);
                     Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                 }
                 else

@@ -128,8 +128,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                     if (budgetResult.Success)
                     {
-                        Budgets.UpdateRange(budgetResult.Data, Budget.PropertyCopy);
-                        Budgets.Sort();
+                        Budgets.MergeAndSortRange(budgetResult.Data);
                     }
                     else
                     {

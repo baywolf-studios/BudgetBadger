@@ -104,8 +104,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (envelopeGroupsResult.Success)
                 {
-                    EnvelopeGroups.UpdateRange(envelopeGroupsResult.Data, EnvelopeGroup.PropertyCopy);
-                    EnvelopeGroups.Sort();
+                    EnvelopeGroups.MergeAndSortRange(envelopeGroupsResult.Data);
                 }
                 else
                 {

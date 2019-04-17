@@ -6,15 +6,15 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
         <p:ChildSearchHeader
             BackCommand="{Binding BackCommand}"
             PageTitle="Deleted Envelopes"
-            SearchText="{Binding SearchText}"/>
+            SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
@@ -30,11 +30,11 @@
                         Filter="{Binding Filter}"
                         FilterText="{Binding SearchText}"
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                        IsBusy="{Binding IsBusy}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Envelopes}"
                         SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedEnvelope}"
-                        IsBusy="{Binding IsBusy}">
+                        SelectedItem="{Binding SelectedEnvelope}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>

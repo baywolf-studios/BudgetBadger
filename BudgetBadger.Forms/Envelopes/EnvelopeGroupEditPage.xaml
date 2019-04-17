@@ -3,8 +3,8 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
@@ -22,7 +22,7 @@
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
     </p:BasePage.Header>
-    
+
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid

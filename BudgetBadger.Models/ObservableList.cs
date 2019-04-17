@@ -99,17 +99,6 @@ namespace BudgetBadger.Models
             AddRange(collection, NotifyCollectionChangedAction.Reset);
         }
 
-        public void MergeRange(IEnumerable<T> collection)
-        {
-            //remove
-            var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
-            RemoveRange(itemsToRemove);
-
-            //add new
-            var itemsToAdd = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
-            AddRange(itemsToAdd);
-        }
-
         public void MergeAndSortRange(IEnumerable<T> collection)
         {
             //remove
@@ -132,48 +121,6 @@ namespace BudgetBadger.Models
                 {
                     InsertItem(i, sortedList[i]);
                 }
-            }
-        }
-
-        public void UpdateRange(IEnumerable<T> collection, Action<T, T> updateFunction)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            CheckReentrancy();
-
-            int startIndex = Count;
-
-            var updatedItems = collection.Where(item => Items.Any(item2 => item2.Equals(item))).ToList();
-            var newItems = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
-            var removedItems = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
-
-            //foreach (var newItem in newItems)
-            //{
-            //    Add(newItem);
-            //}
-
-            foreach (var updateItem in updatedItems)
-            {
-                var existingItem = Items.FirstOrDefault(item2 => item2.Equals(updateItem));
-                updateFunction?.Invoke(existingItem, updateItem);
-            }
-
-            //foreach (var removedItem in removedItems)
-            //{
-            //    Remove(removedItem);
-            //}
-
-            if (newItems.Any())
-            {
-                this.AddRange(newItems);
-            }
-
-            if (removedItems.Any())
-            {
-                this.RemoveRange(removedItems);
             }
         }
     }

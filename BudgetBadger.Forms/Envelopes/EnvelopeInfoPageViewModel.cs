@@ -202,8 +202,7 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                 if (result.Success)
                 {
-                    Transactions.UpdateRange(result.Data, Transaction.PropertyCopy); 
-                    Transactions.Sort();
+                    Transactions.MergeAndSortRange(result.Data); 
                     SelectedTransaction = null;
                 }
 
