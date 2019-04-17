@@ -130,7 +130,8 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts.MergeAndSortRange(result.Data);
+                    Accounts.MergeRange(result.Data);
+                    Accounts.Sort();
                 }
                 else
                 {

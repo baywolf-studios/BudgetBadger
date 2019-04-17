@@ -121,7 +121,8 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions.MergeAndSortRange(result.Data);
+                        Transactions.MergeRange(result.Data);
+                        Transactions.Sort();
                         Total = RunningTotal;
                         NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
@@ -138,7 +139,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
-                Transactions.MergeAndSortRange(tempTransactions);
+                Transactions.MergeRange(tempTransactions);
+                Transactions.Sort();
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -182,7 +184,8 @@ namespace BudgetBadger.Forms.Transactions
             var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
             if (deletedTransaction != null)
             {
-                Transactions.MergeAndSortRange(Transactions.Where(t => t.Id != deletedTransaction.Id));
+                Transactions.MergeRange(Transactions.Where(t => t.Id != deletedTransaction.Id));
+                Transactions.Sort();
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -261,7 +264,8 @@ namespace BudgetBadger.Forms.Transactions
             }
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            Transactions.MergeAndSortRange(existingTransactions);
+            Transactions.MergeRange(existingTransactions);
+            Transactions.Sort();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 

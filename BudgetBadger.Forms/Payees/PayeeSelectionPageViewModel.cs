@@ -132,7 +132,8 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees.MergeAndSortRange(result.Data);
+                    Payees.MergeRange(result.Data);
+                    Payees.Sort();
                 }
                 else
                 {

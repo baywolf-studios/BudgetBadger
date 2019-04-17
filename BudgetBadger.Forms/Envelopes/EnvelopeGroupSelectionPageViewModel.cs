@@ -114,11 +114,12 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var envelopeGroupsResult = await _envelopeLogic.GetEnvelopeGroupsAsync();
+                var result = await _envelopeLogic.GetEnvelopeGroupsAsync();
 
-                if (envelopeGroupsResult.Success)
+                if (result.Success)
                 {
-                    EnvelopeGroups.MergeAndSortRange(envelopeGroupsResult.Data); 
+                    EnvelopeGroups.MergeRange(result.Data);
+                    EnvelopeGroups.Sort();
                 }
                 else
                 {
