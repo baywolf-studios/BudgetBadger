@@ -13,7 +13,7 @@
     x:Name="this">
     <p:BasePage.Resources>
         <ResourceDictionary>
-            <comparers:PayeeSorter x:Key="Comparer"/>
+            <comparers:PayeeComparer x:Key="Comparer"/>
         </ResourceDictionary>
     </p:BasePage.Resources>
     <p:BasePage.Header>

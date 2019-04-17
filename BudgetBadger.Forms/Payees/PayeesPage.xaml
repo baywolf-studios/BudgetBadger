@@ -102,6 +102,9 @@
                                     <data:DataSource.GroupDescriptors>
                                         <data:GroupDescriptor PropertyName="Group" />
                                     </data:DataSource.GroupDescriptors>
+                                    <data:DataSource.SortDescriptors>
+          <data:SortDescriptor PropertyName="ContactName" Direction="Ascending"/>
+        </data:DataSource.SortDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
                             <syncfusion:SfListView.GroupHeaderTemplate>

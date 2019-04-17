@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BudgetBadger.Forms.Comparers
 {
-    public class PayeeSorter : IComparer<Object>, ISortDirection
+    public class PayeeComparer : IComparer<Object>, ISortDirection
     {
         public ListSortDirection SortDirection { get; set; }
 
@@ -14,7 +14,14 @@ namespace BudgetBadger.Forms.Comparers
         {
             if (x is Payee payee)
             {
-                return payee.CompareTo(y);
+                if (SortDirection == ListSortDirection.Ascending)
+                {
+                    return payee.CompareTo(y);
+                }
+                else
+                {
+                    return payee.CompareTo(y) * -1;
+                }
             }
 
             return 0;
