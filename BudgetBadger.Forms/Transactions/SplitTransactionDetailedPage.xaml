@@ -4,10 +4,12 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
+    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
         <p:ChildHeader
@@ -15,7 +17,7 @@
             PageTitle="Split Transaction"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save"/>    
+            ToolbarItemText="Save" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
@@ -41,10 +43,10 @@
                         <uc:DataGrid
                             AllowSwiping="True"
                             ColumnSizer="Star"
+                            IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Transactions}"
                             SelectedCommand="{Binding TransactionSelectedCommand}"
-                            SelectedItem="{Binding SelectedTransaction}"
-                            IsBusy="{Binding IsBusy}">
+                            SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
@@ -61,6 +63,16 @@
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
+                            <syncfusion:SfDataGrid.SortComparers>
+                                <data:SortComparer PropertyName="ServiceDate">
+                                    <data:SortComparer.Comparer>
+                                        <comparers:TransactionComparer />
+                                    </data:SortComparer.Comparer>
+                                </data:SortComparer>
+                            </syncfusion:SfDataGrid.SortComparers>
+                            <syncfusion:SfDataGrid.SortColumnDescriptions>
+                                <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Ascending" />
+                            </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
@@ -128,7 +140,7 @@
                                                                 <BindingCondition Binding="{Binding Posted}" Value="true" />
                                                                 <BindingCondition Binding="{Binding Reconciled}" Value="false" />
                                                             </MultiTrigger.Conditions>
-                                                          <Setter Property="Source" Value="posted.svg" />
+                                                            <Setter Property="Source" Value="posted.svg" />
                                                         </MultiTrigger>
                                                         <DataTrigger
                                                             Binding="{Binding Reconciled}"

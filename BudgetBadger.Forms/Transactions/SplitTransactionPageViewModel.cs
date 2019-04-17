@@ -121,8 +121,7 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
-                        Transactions.Sort();
+                        Transactions.MergeAndSortRange(result.Data);
                         Total = RunningTotal;
                         NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
@@ -139,8 +138,7 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
-                Transactions.UpdateRange(tempTransactions, Transaction.PropertyCopy);
-                Transactions.Sort();
+                Transactions.MergeAndSortRange(tempTransactions);
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -184,8 +182,7 @@ namespace BudgetBadger.Forms.Transactions
             var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
             if (deletedTransaction != null)
             {
-                Transactions.UpdateRange(Transactions.Where(t => t.Id != deletedTransaction.Id), Transaction.PropertyCopy);
-                Transactions.Sort();
+                Transactions.MergeAndSortRange(Transactions.Where(t => t.Id != deletedTransaction.Id));
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -264,8 +261,7 @@ namespace BudgetBadger.Forms.Transactions
             }
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            Transactions.UpdateRange(existingTransactions, Transaction.PropertyCopy);
-            Transactions.Sort();
+            Transactions.MergeAndSortRange(existingTransactions);
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
