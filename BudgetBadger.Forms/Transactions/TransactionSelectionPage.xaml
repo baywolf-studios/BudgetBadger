@@ -6,20 +6,16 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
-        <p:ChildSearchHeader
-            BackCommand="{Binding BackCommand}"
-            SearchText="{Binding SearchText}"/>
+        <p:ChildSearchHeader BackCommand="{Binding BackCommand}" SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:PullToRefresh
-            IsBusy="{Binding IsBusy}"
-            RefreshCommand="{Binding RefreshCommand}">
+        <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
             <uc:PullToRefresh.PullableContent>
                 <uc:ListView
                     AllowSwiping="true"
@@ -27,11 +23,11 @@
                     FilterText="{Binding SearchText}"
                     FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                     HasOtherTapGestureRecognizers="true"
+                    IsBusy="{Binding IsBusy}"
                     ItemSize="{StaticResource ListDoubleItemHeight}"
                     ItemsSource="{Binding Transactions}"
                     SelectedCommand="{Binding TransactionSelectedCommand}"
-                    SelectedItem="{Binding SelectedTransaction}"
-                    IsBusy="{Binding IsBusy}">
+                    SelectedItem="{Binding SelectedTransaction}">
                     <syncfusion:SfListView.DataSource>
                         <data:DataSource>
                             <data:DataSource.GroupDescriptors>

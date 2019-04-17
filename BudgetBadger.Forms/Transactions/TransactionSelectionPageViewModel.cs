@@ -131,8 +131,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
-                    Transactions.Sort();
+                    Transactions.MergeAndSortRange(result.Data);
                 }
                 else
                 {

@@ -5,10 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
         <p:ChildHeader
@@ -16,7 +16,7 @@
             PageTitle="Split Transaction"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save"/>
+            ToolbarItemText="Save" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
@@ -113,11 +113,11 @@
                     AllowSwiping="true"
                     FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
                     HasOtherTapGestureRecognizers="true"
+                    IsBusy="{Binding IsBusy}"
                     ItemSize="{StaticResource ListDoubleItemHeight}"
                     ItemsSource="{Binding Transactions}"
                     SelectedCommand="{Binding TransactionSelectedCommand}"
-                    SelectedItem="{Binding SelectedTransaction}"
-                    IsBusy="{Binding IsBusy}">
+                    SelectedItem="{Binding SelectedTransaction}">
                     <syncfusion:SfListView.RightSwipeTemplate>
                         <DataTemplate>
                             <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
