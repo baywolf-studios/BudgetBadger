@@ -206,7 +206,6 @@ namespace BudgetBadger.Models
             Posted = item.Posted;
             ReconciledDateTime = item.ReconciledDateTime;
             Account.PropertyCopy(item.Account);
-            Payee.PropertyCopy(item.Payee);
             Envelope.PropertyCopy(item.Envelope);
             SplitId = item.SplitId;
             ServiceDate = item.ServiceDate;

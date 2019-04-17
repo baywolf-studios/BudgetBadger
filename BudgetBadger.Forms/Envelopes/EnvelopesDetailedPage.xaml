@@ -47,10 +47,10 @@
                             ColumnSizer="Star"
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
+                            IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Budgets}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedBudget}"
-                            IsBusy="{Binding IsBusy}">
+                            SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.LeftSwipeTemplate>
                                 <DataTemplate>

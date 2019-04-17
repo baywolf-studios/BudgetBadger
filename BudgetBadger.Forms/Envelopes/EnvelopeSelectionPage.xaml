@@ -30,11 +30,11 @@
                         Filter="{Binding Filter}"
                         FilterText="{Binding SearchText}"
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                        IsBusy="{Binding IsBusy}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Budgets}"
                         SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedBudget}"
-                        IsBusy="{Binding IsBusy}">
+                        SelectedItem="{Binding SelectedBudget}">
                         <syncfusion:SfListView.DataSource>
                             <data:DataSource>
                                 <data:DataSource.GroupDescriptors>

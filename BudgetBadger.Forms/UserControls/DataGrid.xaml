@@ -9,6 +9,6 @@
     BackgroundColor="{StaticResource BackgroundColor}"
     GridStyle="{StaticResource sfDataGridStyle}"
     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
+    LiveDataUpdateMode="AllowDataShaping"
     RowHeight="{StaticResource Key=ListItemHeight}"
-    SelectionMode="Single"
-    LiveDataUpdateMode="AllowDataShaping"/>
+    SelectionMode="Single" />
