@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IPropertyCopy<Account>, IComparable, IComparable<Account>
+    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IComparable, IComparable<Account>
     {
         Guid id;
         public Guid Id
@@ -119,20 +120,6 @@ namespace BudgetBadger.Models
             return account;
         }
 
-        public void PropertyCopy(Account item)
-        {
-            Description = item.description;
-            Notes = item.notes;
-            OnBudget = item.OnBudget;
-            Balance = item.Balance;
-            Pending = item.Pending;
-            Posted = item.Posted;
-            Payment = item.Payment;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
-            DeletedDateTime = item.DeletedDateTime;
-        }
-
         public Result Validate()
         {
             var errors = new List<string>();
@@ -173,7 +160,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p); ;
         }
 
         public override bool Equals(object obj)
@@ -183,7 +170,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public int CompareTo(Account account)
@@ -232,11 +219,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(Account lhs, Account rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(Account existing, Account updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }

@@ -124,8 +124,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts.UpdateRange(result.Data, Account.PropertyCopy);
-                    Accounts.Sort();
+                    Accounts.MergeAndSortRange(result.Data);
                 }
                 else
                 {
