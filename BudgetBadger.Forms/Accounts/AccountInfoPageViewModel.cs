@@ -217,8 +217,7 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions.UpdateRange(result.Data, Transaction.PropertyCopy);
-                        Transactions.Sort();
+                        Transactions.MergeAndSortRange(result.Data);
                         SelectedTransaction = null;
                     }
                 }
