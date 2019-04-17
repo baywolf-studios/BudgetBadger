@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class BudgetSchedule : BaseModel, IValidatable, IDeepCopy<BudgetSchedule>, IEquatable<BudgetSchedule>, IPropertyCopy<BudgetSchedule>
+    public class BudgetSchedule : BaseModel, IValidatable, IDeepCopy<BudgetSchedule>, IEquatable<BudgetSchedule>
     {
         Guid id;
         public Guid Id
@@ -97,20 +98,8 @@ namespace BudgetBadger.Models
 
         public BudgetSchedule DeepCopy()
         {
-            return (BudgetSchedule)this.MemberwiseClone();
-        }
-
-        public void PropertyCopy(BudgetSchedule item)
-        {
-            Description = item.description;
-            BeginDate = item.BeginDate;
-            EndDate = item.EndDate;
-            Past = item.Past;
-            Income = item.Income;
-            Budgeted = item.Budgeted;
-            Overspend = item.Overspend;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<BudgetSchedule>(serial);
         }
 
         public Result Validate()
@@ -148,7 +137,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)
@@ -158,7 +147,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public static bool operator ==(BudgetSchedule lhs, BudgetSchedule rhs)
@@ -182,11 +171,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(BudgetSchedule lhs, BudgetSchedule rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(BudgetSchedule existing, BudgetSchedule updated)
-        {
-            existing.PropertyCopy(updated);
         }
     }
 }

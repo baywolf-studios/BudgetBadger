@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IPropertyCopy<Budget>, IComparable, IComparable<Budget>
+    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IComparable, IComparable<Budget>
     {
         Guid id;
         public Guid Id
@@ -132,24 +133,8 @@ namespace BudgetBadger.Models
 
         public Budget DeepCopy()
         {
-            Budget budget = (Budget)this.MemberwiseClone();
-            budget.Schedule = this.Schedule.DeepCopy();
-            budget.Envelope = this.Envelope.DeepCopy();
-
-            return budget;
-        }
-
-        public void PropertyCopy(Budget item)
-        {
-            Envelope.PropertyCopy(item.Envelope);
-            Schedule.PropertyCopy(item.Schedule);
-            IgnoreOverspend = item.IgnoreOverspend;
-            Amount = item.Amount;
-            PastAmount = item.PastAmount;
-            Activity = item.Activity;
-            PastActivity = item.PastActivity;
-            CreatedDateTime = item.CreatedDateTime;
-            ModifiedDateTime = item.ModifiedDateTime;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Budget>(serial);
         }
 
         public Result Validate()
@@ -210,7 +195,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)
@@ -220,7 +205,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return JsonConvert.SerializeObject(this).GetHashCode();
         }
 
         public static bool operator ==(Budget lhs, Budget rhs)
@@ -244,11 +229,6 @@ namespace BudgetBadger.Models
         public static bool operator !=(Budget lhs, Budget rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static void PropertyCopy(Budget existing, Budget updated)
-        {
-            existing.PropertyCopy(updated);
         }
 
         public int CompareTo(object obj)

@@ -116,8 +116,8 @@ namespace BudgetBadger.Models
 
         public Account DeepCopy()
         {
-            Account account = (Account)this.MemberwiseClone();
-            return account;
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Account>(serial);
         }
 
         public Result Validate()
