@@ -101,7 +101,8 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    Envelopes.MergeAndSortRange(result.Data);
+                    Envelopes.MergeRange(result.Data);
+                    Envelopes.Sort();
                 }
                 else
                 {

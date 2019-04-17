@@ -101,13 +101,6 @@
                                     <data:DataSource.GroupDescriptors>
                                         <data:GroupDescriptor PropertyName="Group" />
                                     </data:DataSource.GroupDescriptors>
-                                    <data:DataSource.SortDescriptors>
-                                        <data:SortDescriptor Direction="Ascending" PropertyName="Description">
-                                            <data:SortDescriptor.Comparer>
-                                                <comparers:PayeeComparer />
-                                            </data:SortDescriptor.Comparer>
-                                        </data:SortDescriptor>
-                                    </data:DataSource.SortDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
                             <syncfusion:SfListView.GroupHeaderTemplate>

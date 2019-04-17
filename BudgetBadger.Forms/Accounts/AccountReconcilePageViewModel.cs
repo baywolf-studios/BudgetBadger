@@ -217,8 +217,10 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions.MergeAndSortRange(result.Data);
-                        StatementTransactions.MergeAndSortRange(result.Data);
+                        Transactions.MergeRange(result.Data);
+                        Transactions.Sort();
+                        StatementTransactions.MergeRange(result.Data);
+                        StatementTransactions.Sort();
                         SelectedTransaction = null;
                     }
                 }
@@ -233,7 +235,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public void UpdateStatementTransactions()
         {
-            StatementTransactions.MergeAndSortRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate));
+            StatementTransactions.MergeRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate));
+            StatementTransactions.Sort();
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
 
