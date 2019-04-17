@@ -5,10 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     x:Name="this">
+    <p:BasePage.Resources>
+        <ResourceDictionary>
+            <comparers:PayeeSorter x:Key="Comparer"/>
+        </ResourceDictionary>
+    </p:BasePage.Resources>
     <p:BasePage.Header>
         <p:RootSearchHeader 
             PageTitle="Payees"
@@ -85,6 +92,13 @@
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
                                 <syncfusion:GroupColumnDescription ColumnName="Group" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
+                            <syncfusion:SfDataGrid.SortComparers>
+                                <data:SortComparer Comparer="{StaticResource Comparer}" PropertyName="Description" />
+                            </syncfusion:SfDataGrid.SortComparers>
+                            <syncfusion:SfDataGrid.SortColumnDescriptions>
+                                <syncfusion:SortColumnDescription ColumnName="Description" 
+                                              SortDirection="Ascending" />
+                            </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"

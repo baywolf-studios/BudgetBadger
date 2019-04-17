@@ -81,7 +81,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private void DataGrid_GridViewCreated(object sender, GridViewCreatedEventArgs e)
         {
-            View.LiveDataUpdateMode = Syncfusion.Data.LiveDataUpdateMode.AllowDataShaping;
+            //View.LiveDataUpdateMode = Syncfusion.Data.LiveDataUpdateMode.AllowDataShaping;
         }
 
         void UpdateFilter()

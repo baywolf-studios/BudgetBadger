@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
@@ -94,7 +95,8 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
-            return (Payee)this.MemberwiseClone();
+            var serial = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Payee>(serial);
         }
 
         public void PropertyCopy(Payee item)
@@ -142,7 +144,7 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return Id == p.Id;
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
         }
 
         public override bool Equals(object obj)

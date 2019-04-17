@@ -77,8 +77,10 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
     <AOTMode>None</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
     <CodeSignProvision>BudgetBadgerProd</CodeSignProvision>
@@ -120,8 +122,8 @@
       <HintPath>..\packages\Microcharts.0.7.1\lib\xamarinmac\Microcharts.macOS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Sqlite, Version=2.2.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Sqlite.Core.2.2.3\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
+    <Reference Include="Microsoft.Data.Sqlite, Version=2.2.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Sqlite.Core.2.2.4\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
@@ -174,41 +176,41 @@
     <Reference Include="Syncfusion.Buttons.XForms, Version=16.2451.0.50, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Xamarin.Buttons.16.2.0.50\lib\netstandard1.0\Syncfusion.Buttons.XForms.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Core.XForms, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Core.17.1.0.38\lib\Xamarin.Mac\Syncfusion.Core.XForms.dll</HintPath>
+    <Reference Include="Syncfusion.Core.XForms, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.Core.17.1.0.41\lib\Xamarin.Mac\Syncfusion.Core.XForms.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Core.XForms.macOS, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Core.17.1.0.38\lib\Xamarin.Mac\Syncfusion.Core.XForms.macOS.dll</HintPath>
+    <Reference Include="Syncfusion.Core.XForms.macOS, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.Core.17.1.0.41\lib\Xamarin.Mac\Syncfusion.Core.XForms.macOS.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Data.Portable, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.38\lib\Xamarin.Mac\Syncfusion.Data.Portable.dll</HintPath>
+    <Reference Include="Syncfusion.Data.Portable, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.41\lib\Xamarin.Mac\Syncfusion.Data.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.DataSource.Portable, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.DataSource.17.1.0.38\lib\netstandard1.0\Syncfusion.DataSource.Portable.dll</HintPath>
+    <Reference Include="Syncfusion.DataSource.Portable, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.DataSource.17.1.0.41\lib\netstandard1.0\Syncfusion.DataSource.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.GridCommon.Portable, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.GridCommon.17.1.0.38\lib\Xamarin.Mac\Syncfusion.GridCommon.Portable.dll</HintPath>
+    <Reference Include="Syncfusion.GridCommon.Portable, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.GridCommon.17.1.0.41\lib\Xamarin.Mac\Syncfusion.GridCommon.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=17.1.0.38, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Licensing.17.1.0.38\lib\Xamarin.Mac\Syncfusion.Licensing.dll</HintPath>
+    <Reference Include="Syncfusion.Licensing, Version=17.1.0.41, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.17.1.0.41\lib\Xamarin.Mac\Syncfusion.Licensing.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfDataGrid.XForms, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.38\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.dll</HintPath>
+    <Reference Include="Syncfusion.SfDataGrid.XForms, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.41\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfDataGrid.XForms.macOS, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.38\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.macOS.dll</HintPath>
+    <Reference Include="Syncfusion.SfDataGrid.XForms.macOS, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfDataGrid.17.1.0.41\lib\Xamarin.Mac\Syncfusion.SfDataGrid.XForms.macOS.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfListView.XForms, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.17.1.0.38\lib\Xamarin.Mac\Syncfusion.SfListView.XForms.dll</HintPath>
+    <Reference Include="Syncfusion.SfListView.XForms, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.17.1.0.41\lib\Xamarin.Mac\Syncfusion.SfListView.XForms.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfListView.XForms.macOS, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.17.1.0.38\lib\Xamarin.Mac\Syncfusion.SfListView.XForms.macOS.dll</HintPath>
+    <Reference Include="Syncfusion.SfListView.XForms.macOS, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.17.1.0.41\lib\Xamarin.Mac\Syncfusion.SfListView.XForms.macOS.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfNumericTextBox.XForms, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.17.1.0.38\lib\netstandard1.0\Syncfusion.SfNumericTextBox.XForms.dll</HintPath>
+    <Reference Include="Syncfusion.SfNumericTextBox.XForms, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNumericTextBox.17.1.0.41\lib\netstandard1.0\Syncfusion.SfNumericTextBox.XForms.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfPullToRefresh.XForms, Version=17.1451.0.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.17.1.0.38\lib\netstandard1.0\Syncfusion.SfPullToRefresh.XForms.dll</HintPath>
+    <Reference Include="Syncfusion.SfPullToRefresh.XForms, Version=17.1451.0.41, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfPullToRefresh.17.1.0.41\lib\netstandard1.0\Syncfusion.SfPullToRefresh.XForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -248,7 +250,7 @@
     <None Include="app.config" />
     <None Include="Info.plist" Condition=" '$(Configuration)' != 'ProRelease' " />
     <None Include="InfoPro.plist" Condition=" '$(Configuration)' == 'ProRelease' ">
-        <LogicalName>Info.plist</LogicalName>
+      <LogicalName>Info.plist</LogicalName>
     </None>
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
@@ -309,9 +311,7 @@
     <BundleResource Include="Resources\expander.svg" />
     <BundleResource Include="Resources\transaction.svg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Renderers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -99,6 +99,31 @@ namespace BudgetBadger.Models
             AddRange(collection, NotifyCollectionChangedAction.Reset);
         }
 
+        public void SortedMerge(IEnumerable<T> collection)
+        {
+            //remove
+            var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
+            
+            foreach(var item in itemsToRemove)
+            {
+                Remove(item);
+            }
+
+            //add new
+            var itemsToAdd = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
+
+            var sortedList = Items.Union(itemsToAdd).ToList();
+            sortedList.Sort();
+
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                if (!Items.Contains(sortedList[i]))
+                {
+                    InsertItem(i, sortedList[i]);
+                }
+            }
+        }
+
         public void UpdateRange(IEnumerable<T> collection, Action<T, T> updateFunction)
         {
             if (collection == null)

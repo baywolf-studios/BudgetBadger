@@ -104,6 +104,9 @@
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
                                 <syncfusion:GroupColumnDescription ColumnName="Envelope.Group.Description" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
+                            <syncfusion:SfDataGrid.SortColumnDescriptions>
+                                <syncfusion:SortColumnDescription ColumnName="Envelope.Description" SortDirection="Ascending" />
+                            </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
