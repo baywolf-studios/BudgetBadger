@@ -30,4 +30,8 @@
             </Keyboard>
         </Entry.Keyboard>
     </Entry>
+    <Label
+        x:Name="HintErrorControl"
+        FontSize="12"
+        IsVisible="false"/>
 </StackLayout>

@@ -7,7 +7,7 @@ namespace BudgetBadger.Forms.UserControls
     public partial class HelperControl : ContentView
     {
         public static readonly BindableProperty ShowHelperProperty = BindableProperty.Create(
-            "ShowHelper",
+            nameof(ShowHelper),
             typeof(bool),
             typeof(ContentView),
             false);
@@ -19,7 +19,7 @@ namespace BudgetBadger.Forms.UserControls
         }
 
         public static readonly BindableProperty TitleProperty = BindableProperty.Create(
-            "Title",
+            nameof(Title),
             typeof(string),
             typeof(ContentView),
             string.Empty);
@@ -31,7 +31,7 @@ namespace BudgetBadger.Forms.UserControls
         }
 
         public static readonly BindableProperty SubtitleProperty = BindableProperty.Create(
-            "Subtitle",
+            nameof(Subtitle),
             typeof(string),
             typeof(ContentView),
             string.Empty);
@@ -43,7 +43,7 @@ namespace BudgetBadger.Forms.UserControls
         }
 
         public static readonly BindableProperty ImagePathProperty = BindableProperty.Create(
-            "ImagePath",
+            nameof(ImagePath),
             typeof(string),
             typeof(ContentView),
             string.Empty);
