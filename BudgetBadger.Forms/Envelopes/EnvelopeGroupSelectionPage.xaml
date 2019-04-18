@@ -21,7 +21,7 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            HelperText="Add an Envelope Group using the + button"
+            Title="Add an Envelope Group using the + button"
             ImagePath="envelopegroup.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">

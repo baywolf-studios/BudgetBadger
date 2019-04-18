@@ -22,7 +22,7 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            HelperText="Add a Payee using the + button"
+            Title="Add a Payee using the + button"
             ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <Grid

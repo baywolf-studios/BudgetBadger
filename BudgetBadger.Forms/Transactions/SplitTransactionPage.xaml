@@ -106,7 +106,7 @@
                 HeightRequest="1" />
             <uc:HelperControl
                 Grid.Row="2"
-                HelperText="No transactions yet"
+                Title="No transactions yet"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:ListView

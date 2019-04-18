@@ -20,7 +20,7 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            HelperText="Add an Account using the + button"
+            Title="Add an Account using the + button"
             ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}">
             <uc:PullToRefresh

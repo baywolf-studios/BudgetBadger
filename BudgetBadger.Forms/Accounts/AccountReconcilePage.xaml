@@ -139,7 +139,7 @@
             <uc:HelperControl
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                HelperText="All transactions reconciled"
+                Title="All transactions reconciled"
                 ImagePath="reconciled.svg"
                 IsVisible="{Binding ReconcileMode}"
                 ShowHelper="{Binding NoTransactions}">

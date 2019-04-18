@@ -25,7 +25,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Grid.Row="2"
-            HelperText="Add an Envelope using the + button"
+            Title="Add an Envelope using the + button"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <Grid
