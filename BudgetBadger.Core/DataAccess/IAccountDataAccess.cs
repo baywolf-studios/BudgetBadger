@@ -12,5 +12,6 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<Account>> ReadAccountsAsync();
         Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(Guid id);
+        Task<int> GetAccountsCountAsync();
     }
 }

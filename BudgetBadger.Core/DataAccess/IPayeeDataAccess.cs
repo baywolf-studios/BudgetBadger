@@ -12,5 +12,6 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<Payee>> ReadPayeesAsync();
         Task UpdatePayeeAsync(Payee payee);
         Task DeletePayeeAsync(Guid id);
+        Task<int> GetPayeesCountAsync();
     }
 }

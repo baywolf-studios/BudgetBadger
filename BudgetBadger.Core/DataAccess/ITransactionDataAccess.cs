@@ -16,5 +16,6 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<Transaction>> ReadTransactionsAsync();
         Task UpdateTransactionAsync(Transaction transaction);
         Task DeleteTransaction(Guid id);
+        Task<int> GetTransactionsCountAsync();
     }
 }
