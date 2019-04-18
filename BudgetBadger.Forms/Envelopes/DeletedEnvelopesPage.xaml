@@ -18,7 +18,7 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            HelperText="No deleted envelopes"
+            Title="No deleted envelopes"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <uc:PullToRefresh

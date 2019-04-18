@@ -18,16 +18,28 @@ namespace BudgetBadger.Forms.UserControls
             set { SetValue(ShowHelperProperty, value); }
         }
 
-        public static readonly BindableProperty HelperTextProperty = BindableProperty.Create(
-            "HelperText",
+        public static readonly BindableProperty TitleProperty = BindableProperty.Create(
+            "Title",
             typeof(string),
             typeof(ContentView),
             string.Empty);
 
-        public string HelperText
+        public string Title
         {
-            get { return (string)GetValue(HelperTextProperty); }
-            set { SetValue(HelperTextProperty, value); }
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public static readonly BindableProperty SubtitleProperty = BindableProperty.Create(
+            "Subtitle",
+            typeof(string),
+            typeof(ContentView),
+            string.Empty);
+
+        public string Subtitle
+        {
+            get { return (string)GetValue(SubtitleProperty); }
+            set { SetValue(SubtitleProperty, value); }
         }
 
         public static readonly BindableProperty ImagePathProperty = BindableProperty.Create(

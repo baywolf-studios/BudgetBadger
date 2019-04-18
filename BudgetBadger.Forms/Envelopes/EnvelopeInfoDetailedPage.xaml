@@ -34,7 +34,7 @@
             </Grid.RowDefinitions>
             <uc:HelperControl
                 Grid.Row="0"
-                HelperText="No transactions yet"
+                Title="No transactions yet"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>

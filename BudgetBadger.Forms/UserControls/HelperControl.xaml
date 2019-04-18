@@ -21,17 +21,23 @@
                     Orientation="Vertical"
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="CenterAndExpand"
-                    Spacing="16">
+                    Spacing="8">
                     <svg:SvgCachedImage
-                        HeightRequest="200"
-                        WidthRequest="200"
-                        Margin="16"
+                        HeightRequest="96"
+                        WidthRequest="96"
+                        Margin="0,24"
                         ReplaceStringMap="{Binding Source={StaticResource DisabledColor}, Converter={StaticResource ReplaceColorMap}}"
                         Source="{Binding Source={x:Reference this}, Path=ImagePath}"/>
                     <Label
-                        HorizontalTextAlignment="Center"
-                        Text="{Binding Source={x:Reference this}, Path=HelperText}"
-                        Style="{StaticResource HelperControlLabelStyle}"/>
+                        HorizontalOptions="Center"
+                        Text="{Binding Source={x:Reference this}, Path=Title}"
+                        Style="{StaticResource HelperControlLabelStyle}"
+                        FontSize="24"/>
+                    <Label
+                        HorizontalOptions="Center"
+                        Text="{Binding Source={x:Reference this}, Path=Subtitle}"
+                        Style="{StaticResource HelperControlLabelStyle}"
+                        FontSize="14"/>
                 </StackLayout>
             </Grid>
         </ControlTemplate>

@@ -54,7 +54,7 @@
                             Grid.Row="1"
                             Margin="16,0"
                             Label="Name"
-                            Text="{Binding Payee.Description}" />
+                            Text="{Binding Payee.Description}"/>
                         <uc:MultilineTextEntry
                             Grid.Row="2"
                             Margin="16,0"
