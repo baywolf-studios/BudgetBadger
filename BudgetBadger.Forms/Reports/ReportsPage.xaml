@@ -19,11 +19,11 @@
             SelectedCommand="{Binding ReportCommand}">
             <syncfusion:SfListView.ItemTemplate>
                 <DataTemplate>
-                    <Label
-                        Margin="16,0"
-                        HeightRequest="48"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{Binding .}" />
+                    <ContentView Margin="16,0" HeightRequest="48">
+                        <Label
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="{Binding .}" />
+                    </ContentView>
                 </DataTemplate>
             </syncfusion:SfListView.ItemTemplate>
         </uc:ListView>
