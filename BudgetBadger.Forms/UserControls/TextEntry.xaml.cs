@@ -24,6 +24,20 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(TextProperty, value);
         }
 
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Hint
+        {
+            get => (string)GetValue(HintProperty);
+            set => SetValue(HintProperty, value);
+        }
+
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Error
+        {
+            get => (string)GetValue(ErrorProperty);
+            set => SetValue(ErrorProperty, value);
+        }
+
         public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry), defaultValue: false);
         public bool IsPassword
         {
@@ -50,6 +64,26 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(IsEnabled))
                 {
                     TextControl.IsEnabled = IsEnabled;
+                }
+
+                if (e.PropertyName == nameof(Hint) || e.PropertyName == nameof(Error))
+                {
+                    if (!String.IsNullOrEmpty(Error))
+                    {
+                        HintErrorControl.IsVisible = true;
+                        HintErrorControl.Text = Error;
+                        HintErrorControl.TextColor = (Color)Application.Current.Resources["ErrorColor"];
+                    }
+                    else if (!String.IsNullOrEmpty(Hint))
+                    {
+                        HintErrorControl.IsVisible = true;
+                        HintErrorControl.Text = Hint;
+                        HintErrorControl.TextColor = (Color)Application.Current.Resources["IdleColor"];
+                    }
+                    else
+                    {
+                        HintErrorControl.IsVisible = false;
+                    }
                 }
             };
         }

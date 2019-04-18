@@ -22,7 +22,8 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            Title="Add an Account using the + button"
+            Title="Add the money you have now"
+            Subtitle="Use the + button to add your first account"
             ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}">
             <Grid>
