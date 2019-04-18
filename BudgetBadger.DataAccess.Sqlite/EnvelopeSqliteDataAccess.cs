@@ -1374,5 +1374,55 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
             
         }
+
+        public async Task<int> GetEnvelopesCountAsync()
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var count = 0;
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT COUNT(*)
+                                    FROM   Envelope";
+
+                        object result = command.ExecuteScalar();
+                        result = (result == DBNull.Value) ? null : result;
+                        count = Convert.ToInt32(result);
+                    }
+
+                    return count;
+                });
+            }
+        }
+
+        public async Task<int> GetEnvelopeGroupsCountAsync()
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var count = 0;
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT COUNT(*)
+                                    FROM   EnvelopeGroup";
+
+                        object result = command.ExecuteScalar();
+                        result = (result == DBNull.Value) ? null : result;
+                        count = Convert.ToInt32(result);
+                    }
+
+                    return count;
+                });
+            }
+        }
     }
 }
