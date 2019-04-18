@@ -42,10 +42,11 @@ namespace BudgetBadger.Forms.UserControls
         public DataGrid ()
 		{
 			InitializeComponent ();
-            //if (Device.RuntimePlatform != Device.macOS)
-            //{
-                GridViewCreated += DataGrid_GridViewCreated;
-            //}
+
+            GridViewCreated += (sender, e) =>
+            {
+                View.SourceCollectionChanged += View_CollectionChanged;
+            };
 
             PropertyChanged += (sender, e) =>
             {
@@ -77,19 +78,22 @@ namespace BudgetBadger.Forms.UserControls
                 SelectionController.ClearSelection();
                 ResetSwipeOffset();
             };
-		}
+        }
 
-        private void DataGrid_GridViewCreated(object sender, GridViewCreatedEventArgs e)
+        void View_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            //View.LiveDataUpdateMode = Syncfusion.Data.LiveDataUpdateMode.AllowDataShaping;
+            if (this != null && this.View != null)
+            {
+                View.Refresh();
+            }
         }
 
         void UpdateFilter()
         {
             if (this != null && this.View != null && Filter != null)
             {
-                this.View.Filter = Filter;
-                this.View.RefreshFilter();
+                View.Filter = Filter;
+                View.RefreshFilter();
             }
         }
 	}
