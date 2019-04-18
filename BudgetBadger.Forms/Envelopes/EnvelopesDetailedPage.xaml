@@ -25,7 +25,8 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Grid.Row="2"
-            Title="Add an Envelope using the + button"
+            Title="Budget it into envelopes"
+            Subtitle="Use the + button to create and budget your first envelope"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}">
             <Grid

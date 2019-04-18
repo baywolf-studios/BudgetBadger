@@ -1,51 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Grid
+<StackLayout
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    ColumnSpacing="0"
-    RowSpacing="0">
-    <Grid.RowSpacing>
+    Orientation="Vertical">
+    <StackLayout.Spacing>
         <OnPlatform x:TypeArguments="x:Double">
-            <On Platform="Android, macOS, iOS" Value="4" />
-            <On Platform="UWP" Value="0" />
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
         </OnPlatform>
-    </Grid.RowSpacing>
-    <Grid.ColumnSpacing>
-        <OnPlatform x:TypeArguments="x:Double">
-            <On Platform="Android, macOS, iOS" Value="8" />
-            <On Platform="UWP" Value="0" />
-        </OnPlatform>
-    </Grid.ColumnSpacing>
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
+    </StackLayout.Spacing>
     <Label
         x:Name="LabelControl"
-        Grid.Row="0"
-        Grid.Column="0"
-        Grid.ColumnSpan="2"
         FontSize="12"
         Text="{Binding Label}"
         TextColor="{StaticResource SecondaryTextColor}" />
+    <StackLayout Orientation="Horizontal">
+        <StackLayout.Spacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="8" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </StackLayout.Spacing>
     <Switch
         x:Name="SwitchControl"
-        Grid.Row="1"
-        Grid.Column="0"
         HorizontalOptions="Start"
         IsToggled="{Binding IsChecked}"
         OnColor="{StaticResource PrimaryColor}" />
     <Label
         x:Name="CaptionControl"
-        Grid.Row="1"
-        Grid.Column="1"
         FontSize="16"
         Text="{Binding Caption}"
         TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="Center" />
-</Grid>
+    </StackLayout>
+</StackLayout>
