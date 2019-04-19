@@ -108,8 +108,8 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
-                Grid.Row="2"
                 Title="No transactions yet"
+                Grid.Row="2"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>

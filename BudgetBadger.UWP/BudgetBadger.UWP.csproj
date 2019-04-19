@@ -105,6 +105,7 @@
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
+    <Compile Include="Localize.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -252,6 +253,10 @@
     <Content Include="transaction.svg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
+      <Project>{33c66195-8bac-4b2e-9dfe-d73b42f99ffa}</Project>
+      <Name>BudgetBadger.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
       <Project>{e00f9247-935f-40f4-a6c2-8d55d84afd9f}</Project>
       <Name>BudgetBadger.Forms</Name>

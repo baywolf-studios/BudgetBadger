@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BudgetBadger.Forms
 {
-    public static class Extensions
+    public static class ColorExtensions
     {
         public static string GetHexString(this Xamarin.Forms.Color color)
         {

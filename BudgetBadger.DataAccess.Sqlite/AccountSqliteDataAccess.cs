@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
@@ -144,11 +145,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
-                                    OnBudget = Convert.ToBoolean(reader["OnBudget"]),
+                                    OnBudget = Convert.ToBoolean(reader["OnBudget"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -189,11 +190,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
-                                    OnBudget = Convert.ToBoolean(reader["OnBudget"]),
+                                    OnBudget = Convert.ToBoolean(reader["OnBudget"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -256,7 +257,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         object result = command.ExecuteScalar();
                         result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result);
+                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
                     }
 
                     return count;

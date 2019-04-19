@@ -24,11 +24,11 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            Grid.Row="2"
             Title="Budget it into envelopes"
-            Subtitle="Use the + button to create and budget your first envelope"
+            Grid.Row="2"
             ImagePath="envelope.svg"
-            ShowHelper="{Binding NoEnvelopes}">
+            ShowHelper="{Binding NoEnvelopes}"
+            Subtitle="Use the + button to create and budget your first envelope">
             <Grid
                 Margin="0"
                 BackgroundColor="{StaticResource BackgroundColor}"

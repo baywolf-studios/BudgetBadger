@@ -75,6 +75,7 @@ namespace BudgetBadger.UWP
 
                 // add this line
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude); // requires the `e` parameter
+                Xamarin.Forms.DependencyService.Register<Localize>();
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

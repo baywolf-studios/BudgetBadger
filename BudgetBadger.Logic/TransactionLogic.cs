@@ -202,132 +202,150 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> ValidateTransactionAsync(Transaction transaction)
         {
-            if (!transaction.IsValid())
-            {
-                return transaction.Validate();
-            }
-
             var errors = new List<string>();
 
-            var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
-            // check for existance of payee
-            if (transactionPayee.IsNew)
+            if (!transaction.Amount.HasValue)
             {
-                errors.Add("Payee does not exist");
+                errors.Add("Amount is required");
             }
 
-            // check for existance of account
-            var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
-            if (transactionAccount.IsNew)
+            if (transaction.Payee == null)
             {
-                errors.Add("Account does not exist");
+                errors.Add("Payee is required");
             }
 
-            // check for existance of envelope
-            var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
-            if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsNew)
+            if (transaction.Account == null)
             {
-                errors.Add("Envelope does not exist");
+                errors.Add("Account is required");
             }
 
-            var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transaction.Id).ConfigureAwait(false);
-            var existingTransaction = await GetPopulatedTransaction(tempTransaction).ConfigureAwait(false);
-
-            if (existingTransaction.IsActive) // already exists need to compare
+            if (transaction.Envelope == null)
             {
-                if (transaction.Account.Id != existingTransaction.Account.Id)
+                errors.Add("Envelope is required");
+            }
+
+            if (!errors.Any())
+            {
+                // check for existance of payee
+                var transactionPayee = await PayeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
+                if (transactionPayee.IsNew)
                 {
-                    if (transactionAccount.IsDeleted)
+                    errors.Add("Payee does not exist");
+                }
+
+                // check for existance of account
+                var transactionAccount = await AccountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
+                if (transactionAccount.IsNew)
+                {
+                    errors.Add("Account does not exist");
+                }
+
+                // check for existance of envelope
+                var transactionEnvelope = await EnvelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
+                if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsNew)
+                {
+                    errors.Add("Envelope does not exist");
+                }
+
+                var tempTransaction = await TransactionDataAccess.ReadTransactionAsync(transaction.Id).ConfigureAwait(false);
+                var existingTransaction = await GetPopulatedTransaction(tempTransaction).ConfigureAwait(false);
+
+                if (existingTransaction.IsActive) // already exists need to compare
+                {
+                    if (transaction.Account.Id != existingTransaction.Account.Id)
                     {
-                        errors.Add("Cannot use a deleted Account");
+                        if (transactionAccount.IsDeleted)
+                        {
+                            errors.Add("Cannot use a deleted Account");
+                        }
+
+                        if (existingTransaction.Account.IsDeleted)
+                        {
+                            if (transaction.Amount != existingTransaction.Amount)
+                            {
+                                errors.Add("Cannot edit the Amount on a transaction with a deleted Account");
+                            }
+
+                            if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                            {
+                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Account");
+                            }
+
+                            if (transaction.Account.Id != existingTransaction.Account.Id)
+                            {
+                                errors.Add("Cannot edit the Account on a transaction with a deleted Account");
+                            }
+                        }
                     }
 
-                    if (existingTransaction.Account.IsDeleted)
+                    if (transaction.Payee.Id != existingTransaction.Payee.Id)
                     {
-                        if (transaction.Amount != existingTransaction.Amount)
+                        if (transactionPayee.IsDeleted)
                         {
-                            errors.Add("Cannot edit the Amount on a transaction with a deleted Account");
+                            errors.Add("Cannot use a deleted Payee");
                         }
 
-                        if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                        if (existingTransaction.IsTransfer && existingTransaction.Payee.IsDeleted)
                         {
-                            errors.Add("Cannot edit the Service Date on a transaction with a deleted Account");
+                            if (transaction.Amount != existingTransaction.Amount)
+                            {
+                                errors.Add("Cannot edit the Amount on a transaction with a deleted Payee");
+                            }
+
+                            if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                            {
+                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Payee");
+                            }
+
+                            if (transaction.Payee.Id != existingTransaction.Payee.Id)
+                            {
+                                errors.Add("Cannot edit the Payee on a transaction with a deleted Payee");
+                            }
+                        }
+                    }
+
+                    if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
+                    {
+                        if (transactionEnvelope.IsDeleted)
+                        {
+                            errors.Add("Cannot use a deleted Envelope");
                         }
 
-                        if (transaction.Account.Id != existingTransaction.Account.Id)
+                        if (existingTransaction.Envelope.IsDeleted)
                         {
-                            errors.Add("Cannot edit the Account on a transaction with a deleted Account");
+                            if (transaction.Amount != existingTransaction.Amount)
+                            {
+                                errors.Add("Cannot edit the Amount on a transaction with a deleted Envelope");
+                            }
+
+                            if (transaction.ServiceDate != existingTransaction.ServiceDate)
+                            {
+                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Envelope");
+                            }
+
+                            if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
+                            {
+                                errors.Add("Cannot edit the Envelope on a transaction with a deleted Envelope");
+                            }
                         }
                     }
                 }
-
-                if (transaction.Payee.Id != existingTransaction.Payee.Id)
+                else
                 {
                     if (transactionPayee.IsDeleted)
                     {
-                        errors.Add("Cannot use a deleted Payee");
+                        errors.Add("Payee is deleted");
                     }
 
-                    if (existingTransaction.IsTransfer && existingTransaction.Payee.IsDeleted)
+                    if (transactionAccount.IsDeleted)
                     {
-                        if (transaction.Amount != existingTransaction.Amount)
-                        {
-                            errors.Add("Cannot edit the Amount on a transaction with a deleted Payee");
-                        }
-
-                        if (transaction.ServiceDate != existingTransaction.ServiceDate)
-                        {
-                            errors.Add("Cannot edit the Service Date on a transaction with a deleted Payee");
-                        }
-
-                        if (transaction.Payee.Id != existingTransaction.Payee.Id)
-                        {
-                            errors.Add("Cannot edit the Payee on a transaction with a deleted Payee");
-                        }
+                        errors.Add("Account is deleted");
                     }
-                }
 
-                if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
-                {
-                    if (transactionEnvelope.IsDeleted)
+                    if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsDeleted)
                     {
-                        errors.Add("Cannot use a deleted Envelope");
+                        errors.Add("Envelope is deleted");
                     }
-
-                    if (existingTransaction.Envelope.IsDeleted)
-                    {
-                        if (transaction.Amount != existingTransaction.Amount)
-                        {
-                            errors.Add("Cannot edit the Amount on a transaction with a deleted Envelope");
-                        }
-
-                        if (transaction.ServiceDate != existingTransaction.ServiceDate)
-                        {
-                            errors.Add("Cannot edit the Service Date on a transaction with a deleted Envelope");
-                        }
-
-                        if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
-                        {
-                            errors.Add("Cannot edit the Envelope on a transaction with a deleted Envelope");
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (transactionPayee.IsDeleted)
-                {
-                    errors.Add( "Payee is deleted");
-                }
-
-                if (transactionAccount.IsDeleted)
-                {
-                    errors.Add("Account is deleted");
-                }
-
-                if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsDeleted)
-                {
-                    errors.Add("Envelope is deleted");
                 }
             }
 

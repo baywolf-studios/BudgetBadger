@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
@@ -621,35 +622,35 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budget = new Budget()
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                     Schedule = new BudgetSchedule
                                     {
                                         Id = new Guid(reader["BudgetScheduleId"] as byte[]),
-                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"]),
-                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
                                     },
                                     Envelope = new Envelope
                                     {
                                         Id = new Guid(reader["EnvelopeId"] as byte[]),
                                         Description = reader["EnvelopeDescription"].ToString(),
                                         Notes = reader["EnvelopeNotes"].ToString(),
-                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 };
@@ -711,35 +712,35 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budgets.Add(new Budget()
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                     Schedule = new BudgetSchedule
                                     {
                                         Id = new Guid(reader["BudgetScheduleId"] as byte[]),
-                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"]),
-                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
                                     },
                                     Envelope = new Envelope
                                     {
                                         Id = new Guid(reader["EnvelopeId"] as byte[]),
                                         Description = reader["EnvelopeDescription"].ToString(),
                                         Notes = reader["EnvelopeNotes"].ToString(),
-                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -803,35 +804,35 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budgets.Add(new Budget()
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                     Schedule = new BudgetSchedule
                                     {
                                         Id = new Guid(reader["BudgetScheduleId"] as byte[]),
-                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"]),
-                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
                                     },
                                     Envelope = new Envelope
                                     {
                                         Id = new Guid(reader["EnvelopeId"] as byte[]),
                                         Description = reader["EnvelopeDescription"].ToString(),
                                         Notes = reader["EnvelopeNotes"].ToString(),
-                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -894,35 +895,35 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budgets.Add(new Budget()
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                     Schedule = new BudgetSchedule
                                     {
                                         Id = new Guid(reader["BudgetScheduleId"] as byte[]),
-                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"]),
-                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
                                     },
                                     Envelope = new Envelope
                                     {
                                         Id = new Guid(reader["EnvelopeId"] as byte[]),
                                         Description = reader["EnvelopeDescription"].ToString(),
                                         Notes = reader["EnvelopeNotes"].ToString(),
-                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"]),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"]),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -965,10 +966,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budgetSchedule = new BudgetSchedule
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    BeginDate = Convert.ToDateTime(reader["BeginDate"]),
-                                    EndDate = Convert.ToDateTime(reader["EndDate"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    BeginDate = Convert.ToDateTime(reader["BeginDate"], CultureInfo.InvariantCulture),
+                                    EndDate = Convert.ToDateTime(reader["EndDate"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                 };
                             }
                         }
@@ -1006,10 +1007,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 budgetSchedules.Add(new BudgetSchedule
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    BeginDate = Convert.ToDateTime(reader["BeginDate"]),
-                                    EndDate = Convert.ToDateTime(reader["EndDate"]),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
+                                    BeginDate = Convert.ToDateTime(reader["BeginDate"], CultureInfo.InvariantCulture),
+                                    EndDate = Convert.ToDateTime(reader["EndDate"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
                                 });
                             }
                         }
@@ -1062,19 +1063,19 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
                                     Group = new EnvelopeGroup
                                     {
                                         Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                         Description = reader["EnvelopeGroupDescription"].ToString(),
                                         Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                     },
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -1119,9 +1120,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -1163,9 +1164,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -1215,19 +1216,19 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
-                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"]),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
                                     Group = new EnvelopeGroup
                                     {
                                         Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                         Description = reader["EnvelopeGroupDescription"].ToString(),
                                         Notes = reader["EnvelopeGroupNotes"].ToString(),
-                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"]),
-                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"]),
-                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"])
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
                                     },
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -1392,7 +1393,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         object result = command.ExecuteScalar();
                         result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result);
+                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
                     }
 
                     return count;
@@ -1417,7 +1418,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         object result = command.ExecuteScalar();
                         result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result);
+                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
                     }
 
                     return count;

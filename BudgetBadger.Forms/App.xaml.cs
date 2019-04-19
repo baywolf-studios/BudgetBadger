@@ -35,6 +35,8 @@ using BudgetBadger.Forms.Purchase;
 using Plugin.InAppBilling.Abstractions;
 using Plugin.InAppBilling;
 using Microsoft.Data.Sqlite;
+using BudgetBadger.Core.LocalizedResources;
+using System.Globalization;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -56,6 +58,11 @@ namespace BudgetBadger.Forms
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
+
+            var localize = Container.Resolve<ILocalize>();
+            localize.CurrentCultureInfo = localize.DeviceCultureInfo;
+            localize.CurrentCultureInfo.NumberFormat = new CultureInfo("en-US").NumberFormat;
+            localize.CurrentCultureInfo.DateTimeFormat = new CultureInfo("en-US").DateTimeFormat;
 
             if (Device.Idiom == TargetIdiom.Desktop)
             {
@@ -88,6 +95,7 @@ namespace BudgetBadger.Forms
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
             container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
+            container.Register<IResourceContainer, ResourceContainer>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
             Directory.CreateDirectory(appDataDirectory);
