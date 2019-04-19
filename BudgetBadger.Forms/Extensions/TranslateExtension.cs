@@ -19,7 +19,7 @@ namespace BudgetBadger.Forms.Extensions
             if (Text == null)
                 return "";
 
-            var translation = _resourceContainer.Value.GetString(Text);
+            var translation = _resourceContainer.Value.GetResourceString(Text);
 
             if (translation == null)
             {
@@ -27,7 +27,7 @@ namespace BudgetBadger.Forms.Extensions
 #if DEBUG
                 throw new ArgumentException(
                     String.Format("Key '{0}' was not found in resources.", Text),
-                    "Text");
+                    nameof(Text));
 #else
 				translation = Text; // returns the key, which GETS DISPLAYED TO THE USER
 #endif

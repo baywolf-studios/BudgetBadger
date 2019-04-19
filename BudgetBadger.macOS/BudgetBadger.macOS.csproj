@@ -269,6 +269,7 @@
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="Renderers\EntryRenderer.cs" />
     <Compile Include="Renderers\Extensions.cs" />
+    <Compile Include="Localize.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -277,6 +278,10 @@
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
       <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
       <Name>BudgetBadger.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
+      <Project>{33C66195-8BAC-4B2E-9DFE-D73B42F99FFA}</Project>
+      <Name>BudgetBadger.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

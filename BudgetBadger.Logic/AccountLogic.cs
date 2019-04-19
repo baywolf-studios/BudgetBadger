@@ -228,7 +228,7 @@ namespace BudgetBadger.Logic
 
             if (account.IsNew && !account.Balance.HasValue)
             {
-                errors.Add(_resourceContainer.GetString("AccountBalanceRequiredError"));
+                errors.Add(_resourceContainer.GetResourceString("AccountBalanceRequiredError"));
             }
 
             if (string.IsNullOrEmpty(account.Description))

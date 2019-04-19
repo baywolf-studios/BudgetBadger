@@ -7,7 +7,8 @@ namespace BudgetBadger.Core.LocalizedResources
 {
     public interface ILocalize
     {
-        CultureInfo CurrentCultureInfo { get; set; }
-        CultureInfo DeviceCultureInfo { get; }
+        CultureInfo GetDeviceCultureInfo();
+        void SetLocale(CultureInfo cultureInfo);
+        CultureInfo GetLocale();
     }
 }

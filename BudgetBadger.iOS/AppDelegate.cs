@@ -1,4 +1,5 @@
-﻿using BudgetBadger.Forms;
+﻿using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
@@ -68,6 +69,7 @@ namespace BudgetBadger.iOS
     {
         public void RegisterTypes(IContainerRegistry container)
         {
+            container.Register<ILocalize, Localize>();
         }
     }
 }

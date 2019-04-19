@@ -98,4 +98,8 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+    <data name="AccountBalanceRequiredError" xml:space="preserve">
+    <value>Worked</value>
+    <comment>Error message when a user has not provided a starting balance for an account</comment>
+  </data>
 </root>

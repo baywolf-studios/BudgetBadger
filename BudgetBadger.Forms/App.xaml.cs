@@ -60,9 +60,8 @@ namespace BudgetBadger.Forms
             SQLitePCL.Batteries_V2.Init();
 
             var localize = Container.Resolve<ILocalize>();
-            localize.CurrentCultureInfo = localize.DeviceCultureInfo;
-            localize.CurrentCultureInfo.NumberFormat = new CultureInfo("en-US").NumberFormat;
-            localize.CurrentCultureInfo.DateTimeFormat = new CultureInfo("en-US").DateTimeFormat;
+            var test = localize.GetDeviceCultureInfo();
+            localize.SetLocale(test);
 
             if (Device.Idiom == TargetIdiom.Desktop)
             {

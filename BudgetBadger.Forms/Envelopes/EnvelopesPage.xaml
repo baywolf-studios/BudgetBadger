@@ -55,7 +55,7 @@
                                 Grid.Column="1"
                                 HorizontalOptions="End"
                                 Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                                Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
                                 VerticalOptions="Center" />
                         </Grid>
                     </uc:Expander.HeaderContent>

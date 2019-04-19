@@ -1,4 +1,5 @@
 ﻿using AppKit;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
@@ -55,6 +56,7 @@ namespace BudgetBadger.macOS
     {
         public void RegisterTypes(IContainerRegistry container)
         {
+            container.Register<ILocalize, Localize>();
         }
     }
 }

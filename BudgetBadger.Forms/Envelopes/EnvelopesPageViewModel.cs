@@ -42,7 +42,7 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        Guid? _currentScheduleId { get; set; }
+        bool loadingNewSchedule = true;
 
         BudgetSchedule _schedule;
         public BudgetSchedule Schedule
@@ -141,9 +141,23 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (budgetResult.Success)
                 {
-                    Budgets.MergeRange(budgetResult.Data);
-                    Budgets.Sort();
-                    Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
+                    if (budgetResult.Data.Any())
+                    {
+                        if (loadingNewSchedule)
+                        {
+                            Budgets = new ObservableList<Budget>(budgetResult.Data);
+                        }
+                        else
+                        {
+                            Budgets.MergeRange(budgetResult.Data);
+                        }
+                        Budgets.Sort();
+                        Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
+                    }
+                    else
+                    {
+                        Budgets = new ObservableList<Budget>();
+                    }
                 }
                 else
                 {
@@ -155,6 +169,7 @@ namespace BudgetBadger.Forms.Envelopes
             finally
             {
                 IsBusy = false;
+                loadingNewSchedule = false;
             }
         }
 
@@ -164,6 +179,7 @@ namespace BudgetBadger.Forms.Envelopes
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
+                loadingNewSchedule = true;
                 await ExecuteRefreshCommand();
             }
             else
@@ -178,6 +194,7 @@ namespace BudgetBadger.Forms.Envelopes
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
+                loadingNewSchedule = true;
                 await ExecuteRefreshCommand();
             }
             else
