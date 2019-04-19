@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Threading;
 
 namespace BudgetBadger.Core.LocalizedResources
 {
@@ -13,10 +15,15 @@ namespace BudgetBadger.Core.LocalizedResources
             _localize = localize;
         }
 
-        public string GetString(string key)
+        public string GetResourceString(string key)
         {
-            Language.AppResources.Culture = _localize.CurrentCultureInfo;
+            Language.AppResources.Culture = _localize.GetLocale();
             return Language.AppResources.ResourceManager.GetString(key);
+        }
+
+        public string GetFormattedString(string format, object obj)
+        {
+            return String.Format(_localize.GetLocale(), format, obj);
         }
     }
 }

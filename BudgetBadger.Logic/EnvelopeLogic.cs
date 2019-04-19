@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
@@ -14,12 +15,17 @@ namespace BudgetBadger.Logic
         readonly IEnvelopeDataAccess _envelopeDataAccess;
         readonly ITransactionDataAccess _transactionDataAccess;
         readonly IAccountDataAccess _accountDataAccess;
+        readonly IResourceContainer _resourceContainer;
 
-        public EnvelopeLogic(IEnvelopeDataAccess envelopeDataAccess, ITransactionDataAccess transactionDataAccess, IAccountDataAccess accountDataAccess)
+        public EnvelopeLogic(IEnvelopeDataAccess envelopeDataAccess,
+            ITransactionDataAccess transactionDataAccess,
+            IAccountDataAccess accountDataAccess,
+            IResourceContainer resourceContainer)
         {
             _envelopeDataAccess = envelopeDataAccess;
             _transactionDataAccess = transactionDataAccess;
             _accountDataAccess = accountDataAccess;
+            _resourceContainer = resourceContainer;
         }
 
         public async Task<Result<Budget>> GetBudgetAsync(Guid id)
@@ -918,7 +924,7 @@ namespace BudgetBadger.Logic
             budgetSchedule.Budgeted = budgeted;
             budgetSchedule.Overspend = overspend;
             // could change this
-            budgetSchedule.Description = budgetSchedule.BeginDate.ToString("Y");
+            budgetSchedule.Description = _resourceContainer.GetFormattedString("{0:Y}", budgetSchedule.BeginDate);
 
             return budgetSchedule;
         }

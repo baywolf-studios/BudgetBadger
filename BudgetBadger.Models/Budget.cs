@@ -157,11 +157,6 @@ namespace BudgetBadger.Models
                 return false;
             }
 
-            if (Id == Guid.Empty || p.Id == Guid.Empty)
-            {
-                return Envelope == p.Envelope;
-            }
-
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
