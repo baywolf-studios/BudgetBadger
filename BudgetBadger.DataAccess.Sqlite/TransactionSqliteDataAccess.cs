@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
@@ -151,18 +152,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transaction = new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -210,18 +211,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transactions.Add(new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -270,18 +271,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transactions.Add(new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -330,18 +331,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transactions.Add(new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -390,18 +391,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transactions.Add(new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -447,18 +448,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                 transactions.Add(new Transaction
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
-                                    Amount = Convert.ToDecimal(reader["Amount"]),
-                                    Posted = Convert.ToBoolean(reader["Posted"]),
-                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    Posted = Convert.ToBoolean(reader["Posted"], CultureInfo.InvariantCulture),
+                                    ReconciledDateTime = reader["ReconciledDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReconciledDateTime"], CultureInfo.InvariantCulture),
                                     Account = new Account { Id = new Guid(reader["AccountId"] as byte[]) },
                                     Payee = new Payee { Id = new Guid(reader["PayeeId"] as byte[]) },
                                     Envelope = new Envelope { Id = new Guid(reader["EnvelopeId"] as byte[]) },
                                     SplitId = reader["SplitId"] == DBNull.Value ? (Guid?)null : new Guid(reader["SplitId"] as byte[]),
-                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"]),
+                                    ServiceDate = Convert.ToDateTime(reader["ServiceDate"], CultureInfo.InvariantCulture),
                                     Notes = reader["Notes"].ToString(),
-                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"]),
-                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"]),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"])
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
 using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Account : BaseModel, IValidatable, IDeepCopy<Account>, IEquatable<Account>, IComparable, IComparable<Account>
+    public class Account : BaseModel, IDeepCopy<Account>, IEquatable<Account>, IComparable, IComparable<Account>
     {
         Guid id;
         public Guid Id
@@ -118,23 +120,6 @@ namespace BudgetBadger.Models
         {
             var serial = JsonConvert.SerializeObject(this);
             return JsonConvert.DeserializeObject<Account>(serial);
-        }
-
-        public Result Validate()
-        {
-            var errors = new List<string>();
-
-            if (IsNew && !Balance.HasValue)
-            {
-                errors.Add("Balance is required");
-            }
-
-            if (string.IsNullOrEmpty(Description))
-            {
-                errors.Add("Account description is required");
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public bool Equals(Account p)

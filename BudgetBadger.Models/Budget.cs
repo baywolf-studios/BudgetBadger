@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : BaseModel, IValidatable, IDeepCopy<Budget>, IEquatable<Budget>, IComparable, IComparable<Budget>
+    public class Budget : BaseModel, IDeepCopy<Budget>, IEquatable<Budget>, IComparable, IComparable<Budget>
     {
         Guid id;
         public Guid Id
@@ -135,36 +135,6 @@ namespace BudgetBadger.Models
         {
             var serial = JsonConvert.SerializeObject(this);
             return JsonConvert.DeserializeObject<Budget>(serial);
-        }
-
-        public Result Validate()
-        {
-            var errors = new List<string>();
-
-            if (!Amount.HasValue)
-            {
-                errors.Add("Budget amount is required");
-            }
-
-            if (Envelope == null)
-            {
-                errors.Add("Envelope is required");
-            }
-            else if (!Envelope.IsValid())
-            {
-                errors.Add("A valid envelope is required");
-            }
-
-            if (Schedule == null)
-            {
-                errors.Add("Schedule is required");
-            }
-            else if (!Schedule.IsValid())
-            {
-                errors.Add("A valid schedule is required");
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public bool Equals(Budget p)

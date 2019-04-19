@@ -458,14 +458,45 @@ namespace BudgetBadger.Logic
         //        .ToList();
         //}
 
-        public Task<Result> ValidateBudgetAsync(Budget budget)
+        public async Task<Result> ValidateBudgetAsync(Budget budget)
         {
-            if (!budget.IsValid())
+            var errors = new List<string>();
+
+            if (!budget.Amount.HasValue)
             {
-                return Task.FromResult(budget.Validate());
+                errors.Add("Budget amount is required");
             }
 
-            var errors = new List<string>();
+            if (budget.Envelope == null)
+            {
+                errors.Add("Envelope is required");
+            }
+            else
+            {
+                var envelopeValidationResult = await ValidateEnvelopeAsync(budget.Envelope);
+                if (!envelopeValidationResult.Success)
+                {
+                    errors.Add("A valid Envelope is required");
+                }
+            }
+
+            if (budget.Schedule == null)
+            {
+                errors.Add("Schedule is required");
+            }
+            else
+            {
+                var scheduleValidResult = await ValidateBudgetScheduleAsync(budget.Schedule);
+                if (!scheduleValidResult.Success)
+                {
+                    errors.Add("A valid Schedule is required");
+                }
+            }
+
+            if (errors.Any())
+            {
+                return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+            }
 
             if (budget.Envelope.IgnoreOverspend && !budget.IgnoreOverspend)
             {
@@ -478,7 +509,7 @@ namespace BudgetBadger.Logic
                 errors.Add("Ignore Overspend must be set on debt envelopes");
             }
 
-            return Task.FromResult(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public async Task<Result<Budget>> SaveBudgetAsync(Budget budget)
@@ -580,14 +611,53 @@ namespace BudgetBadger.Logic
             return new Result { Success = true };
         }
 
-        public Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        public async Task<Result> ValidateEnvelopeAsync(Envelope envelope)
         {
-            if (!envelopeGroup.IsValid())
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(envelope.Description))
             {
-                return Task.FromResult(envelopeGroup.Validate());
+                errors.Add("Envelope description is required");
             }
 
-            return Task.FromResult(new Result { Success = true });
+            if (envelope.Group == null)
+            {
+                errors.Add("Envelope group is required");
+            }
+            else
+            {
+                var validationResult = await ValidateEnvelopeGroupAsync(envelope.Group);
+                if (!validationResult.Success)
+                {
+                    errors.Add("A valid envelope group is required");
+                }
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+        }
+
+        public Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(envelopeGroup.Description))
+            {
+                errors.Add("Envelope group description is required");
+            }
+
+            return Task.FromResult(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
+        }
+
+        public Task<Result> ValidateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(budgetSchedule.Description))
+            {
+                errors.Add("Budget schedule description is required");
+            }
+
+            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
         }
 
         public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
@@ -626,9 +696,10 @@ namespace BudgetBadger.Logic
 
         async Task<Result<Envelope>> SaveEnvelopeAsync(Envelope envelope)
         {
-            if (!envelope.IsValid())
+            var envelopeValid = await ValidateEnvelopeAsync(envelope);
+            if (!envelopeValid.Success)
             {
-                return envelope.Validate().ToResult<Envelope>();
+                return envelopeValid.ToResult<Envelope>();
             }
 
             var result = new Result<Envelope>();
@@ -666,9 +737,10 @@ namespace BudgetBadger.Logic
 
         async Task<Result<BudgetSchedule>> SaveBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            if (!budgetSchedule.IsValid())
+            var scheduleValidation = await ValidateBudgetScheduleAsync(budgetSchedule);
+            if (!scheduleValidation.Success)
             {
-                return budgetSchedule.Validate().ToResult<BudgetSchedule>();
+                return scheduleValidation.ToResult<BudgetSchedule>();
             }
 
             var result = new Result<BudgetSchedule>();

@@ -1,4 +1,5 @@
-﻿using FFImageLoading.Forms.Platform;
+﻿using BudgetBadger.Core.LocalizedResources;
+using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
@@ -42,6 +43,7 @@ namespace BudgetBadger.UWP
     {
         public void RegisterTypes(IContainerRegistry container)
         {
+            container.Register<ILocalize, Localize>();
         }
     }
 }

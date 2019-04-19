@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : BaseModel, IValidatable, IDeepCopy<Envelope>, IEquatable<Envelope>, IComparable, IComparable<Envelope>
+    public class Envelope : BaseModel, IDeepCopy<Envelope>, IEquatable<Envelope>, IComparable, IComparable<Envelope>
     {
         Guid id;
         public Guid Id
@@ -106,27 +106,6 @@ namespace BudgetBadger.Models
         {
             var serial = JsonConvert.SerializeObject(this);
             return JsonConvert.DeserializeObject<Envelope>(serial);
-        }
-
-        public Result Validate()
-        {
-            var errors = new List<string>();
-
-            if (string.IsNullOrEmpty(Description))
-            {
-                errors.Add("Envelope description is required");
-            }
-
-            if (Group == null)
-            {
-                errors.Add("Envelope group is required");
-            }
-            else if (!Group.IsValid())
-            {
-                errors.Add("A valid envelope group is required");
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         public bool Equals(Envelope p)

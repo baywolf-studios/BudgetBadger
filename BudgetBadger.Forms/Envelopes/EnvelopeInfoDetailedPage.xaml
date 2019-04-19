@@ -33,8 +33,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:HelperControl
-                Grid.Row="0"
                 Title="No transactions yet"
+                Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>

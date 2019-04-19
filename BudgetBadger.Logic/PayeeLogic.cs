@@ -258,12 +258,14 @@ namespace BudgetBadger.Logic
 
         public Task<Result> ValidatePayeeAsync(Payee payee)
         {
-            if (!payee.IsValid())
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(payee.Description))
             {
-                return Task.FromResult(payee.Validate());
+                errors.Add("Payee description is required");
             }
 
-            return Task.FromResult(new Result { Success = true });
+            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
         }
 
         public async Task<Result<Payee>> SavePayeeAsync(Payee payee)
