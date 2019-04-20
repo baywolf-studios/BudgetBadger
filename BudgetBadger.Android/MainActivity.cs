@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Droid;
 using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
@@ -44,6 +45,7 @@ namespace BudgetBadger.Droid
     {
         public void RegisterTypes(IContainerRegistry container)
         {
+            container.Register<ILocalize, Localize>();
         }
     }
 }
