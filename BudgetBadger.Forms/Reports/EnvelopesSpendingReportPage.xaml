@@ -116,7 +116,7 @@
                                         Margin="0,0,16,0"
                                         HorizontalOptions="End"
                                         Style="{StaticResource Key=ListItemLabelStyle}"
-                                        Text="{Binding YValue, StringFormat='{0:C}'}"
+                                        Text="{Binding YValue, Converter={StaticResource CurrencyConverter}}"
                                         VerticalOptions="Center" />
                                 </Grid>
                             </DataTemplate>

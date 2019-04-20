@@ -53,7 +53,7 @@
                         Grid.Column="1"
                         HorizontalOptions="End"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Center" />
                 </Grid>
                 <BoxView

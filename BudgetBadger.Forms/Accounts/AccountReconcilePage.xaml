@@ -63,7 +63,7 @@
                             Grid.Column="1"
                             HorizontalOptions="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="{Binding Difference, StringFormat='{0:c}'}"
+                            Text="{Binding Difference, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -88,7 +88,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding StatementAmount, StringFormat='{0:c}'}" />
+                            Text="{Binding StatementAmount, Converter={StaticResource CurrencyConverter}}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -100,7 +100,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
+                            Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -184,7 +184,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="GroupingKey" />
+                                        <data:GroupDescriptor PropertyName="ServiceDate" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
@@ -197,7 +197,7 @@
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
-                                            Text="{Binding Key, StringFormat='{0:d}'}" />
+                                            Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.GroupHeaderTemplate>

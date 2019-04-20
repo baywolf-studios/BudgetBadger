@@ -82,7 +82,7 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Past, StringFormat='{0:c}'}" />
+                                Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="1"
@@ -94,7 +94,7 @@
                                 Grid.Column="1"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Income, StringFormat='{0:c}'}" />
+                                Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="2"
@@ -106,7 +106,7 @@
                                 Grid.Column="2"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}" />
+                                Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}" />
                             <Label
                                 Grid.Row="0"
                                 Grid.Column="3"
@@ -118,7 +118,7 @@
                                 Grid.Column="3"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}" />
+                                Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}" />
                         </Grid>
                     </uc:Expander.BodyContent>
                 </uc:Expander>

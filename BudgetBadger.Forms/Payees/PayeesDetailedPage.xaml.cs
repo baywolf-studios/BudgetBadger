@@ -11,8 +11,8 @@ using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Payees
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PayeesDetailedPage : BasePage
+    [XamlCompilation(XamlCompilationOptions.Skip)]
+    public partial class PayeesDetailedPage : BasePage
     {
 		public PayeesDetailedPage ()
 		{

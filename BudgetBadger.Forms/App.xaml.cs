@@ -75,12 +75,14 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
+            SetLocale();
             await VerifyPurchases();
             await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
         {
+            SetLocale();
             //await VerifyPurchases();
             await SyncOnStartOrResume();
         }
@@ -229,6 +231,13 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
 
             timer.Stop();
+        }
+
+        void SetLocale()
+        {
+            var localize = Container.Resolve<ILocalize>();
+            var test = localize.GetDeviceCultureInfo();
+            localize.SetLocale(test);
         }
 
         async Task VerifyPurchases()

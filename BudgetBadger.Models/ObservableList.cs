@@ -127,11 +127,12 @@ namespace BudgetBadger.Models
         public void MergeRange(IEnumerable<T> collection)
         {
             //remove
-            var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item))).ToList();
+            // Items where the item doesn't exist in the collection
+            var itemsToRemove = Items.Where(item => !collection.Any(item2 => item2.Equals(item)));
             RemoveRange(itemsToRemove);
 
             //add new
-            var itemsToAdd = collection.Where(item => !Items.Any(item2 => item2.Equals(item))).ToList();
+            var itemsToAdd = collection.Where(item => !Items.Any(item2 => item2.Equals(item)));
             AddRange(itemsToAdd);
         }
     }

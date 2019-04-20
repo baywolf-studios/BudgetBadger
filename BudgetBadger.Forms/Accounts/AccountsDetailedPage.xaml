@@ -106,7 +106,7 @@
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Pending, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Pending"
                                     HeaderTextAlignment="End"
@@ -115,7 +115,7 @@
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Posted, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Posted"
                                     HeaderTextAlignment="End"
@@ -124,7 +124,7 @@
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Balance"
                                     HeaderTextAlignment="End"
@@ -171,7 +171,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding NetWorth, StringFormat='{0:c}'}"
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Center" />
                     <uc:Button2
                         Grid.Row="0"

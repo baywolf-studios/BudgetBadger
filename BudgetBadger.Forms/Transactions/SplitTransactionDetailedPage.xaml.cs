@@ -11,8 +11,8 @@ using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Transactions
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class SplitTransactionDetailedPage : BasePage
+    [XamlCompilation(XamlCompilationOptions.Skip)]
+    public partial class SplitTransactionDetailedPage : BasePage
     {
 		public SplitTransactionDetailedPage ()
 		{

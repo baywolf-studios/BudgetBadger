@@ -145,7 +145,17 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p); ;
+            return Id == p.Id
+                && CreatedDateTime == p.CreatedDateTime
+                && ModifiedDateTime == p.ModifiedDateTime
+                && DeletedDateTime == p.DeletedDateTime
+                && Description == p.Description
+                && Notes == p.Notes
+                && OnBudget == p.OnBudget
+                && Balance == p.Balance
+                && Pending == p.Pending
+                && Posted == p.Posted
+                && Payment == p.Payment;
         }
 
         public override bool Equals(object obj)
@@ -155,7 +165,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return JsonConvert.SerializeObject(this).GetHashCode();
+            return Id.GetHashCode();
         }
 
         public int CompareTo(Account account)

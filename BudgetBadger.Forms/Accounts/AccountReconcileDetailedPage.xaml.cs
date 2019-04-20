@@ -11,8 +11,8 @@ using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Accounts
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AccountReconcileDetailedPage : BasePage
+    [XamlCompilation(XamlCompilationOptions.Skip)]
+    public partial class AccountReconcileDetailedPage : BasePage
     {
 		public AccountReconcileDetailedPage ()
 		{

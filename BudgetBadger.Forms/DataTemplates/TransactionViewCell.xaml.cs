@@ -41,7 +41,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
-                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Account:
                         rightSingleLabel.IsVisible = true;
@@ -49,7 +49,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
-                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Payee:
                         rightSingleLabel.IsVisible = true;
@@ -57,7 +57,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         rightSecondaryLabel.IsVisible = false;
                         primaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
-                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Full:
                         rightSingleLabel.IsVisible = false;
@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         rightSecondaryLabel.IsVisible = true;
                         primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
                         secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
-                        rightPrimaryLabel.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C}");
+                        rightPrimaryLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         rightSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         break;
                 }

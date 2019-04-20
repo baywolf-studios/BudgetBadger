@@ -31,7 +31,7 @@
                     <syncfusion:SfListView.DataSource>
                         <data:DataSource>
                             <data:DataSource.GroupDescriptors>
-                                <data:GroupDescriptor PropertyName="GroupingKey" />
+                                <data:GroupDescriptor PropertyName="ServiceDate" />
                             </data:DataSource.GroupDescriptors>
                         </data:DataSource>
                     </syncfusion:SfListView.DataSource>
@@ -44,7 +44,7 @@
                                 <Label
                                     Margin="16,12,16,0"
                                     Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
-                                    Text="{Binding Key, StringFormat='{0:d}'}" />
+                                    Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
                             </ContentView>
                         </DataTemplate>
                     </syncfusion:SfListView.GroupHeaderTemplate>
