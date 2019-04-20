@@ -48,7 +48,7 @@
                             Grid.Column="1"
                             HorizontalOptions="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
+                            Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -74,7 +74,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding Budget.Past, StringFormat='{0:c}'}" />
+                            Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -86,7 +86,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding Budget.Activity, StringFormat='{0:c}'}" />
+                            Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="2"
@@ -98,7 +98,7 @@
                             Grid.Column="2"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding Budget.Amount, StringFormat='{0:c}'}" />
+                            Text="{Binding Budget.Amount, Converter={StaticResource CurrencyConverter}}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -153,7 +153,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="GroupingKey" />
+                                        <data:GroupDescriptor PropertyName="ServiceDate" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
@@ -166,7 +166,7 @@
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
-                                            Text="{Binding Key, StringFormat='{0:d}'}" />
+                                            Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.GroupHeaderTemplate>

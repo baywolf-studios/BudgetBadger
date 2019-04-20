@@ -52,7 +52,7 @@
                             Grid.Column="1"
                             HorizontalOptions="End"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="{Binding Account.Balance, StringFormat='{0:c}'}"
+                            Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -78,7 +78,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PendingTotal, StringFormat='{0:c}'}" />
+                            Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}" />
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -90,7 +90,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PostedTotal, StringFormat='{0:c}'}" />
+                            Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}" />
                         <ContentView
                             Grid.Row="0"
                             Grid.RowSpan="2"
@@ -132,7 +132,7 @@
                                     Binding="{Binding Account.PaymentRequired}"
                                     TargetType="Label"
                                     Value="true">
-                                    <Setter Property="Text" Value="{Binding Account.Payment, StringFormat='{0:c}'}" />
+                                    <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
                                     <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
                                 </DataTrigger>
                             </Label.Triggers>
@@ -193,7 +193,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="GroupingKey" />
+                                        <data:GroupDescriptor PropertyName="ServiceDate" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
@@ -206,7 +206,7 @@
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
-                                            Text="{Binding Key, StringFormat='{0:d}'}" />
+                                            Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.GroupHeaderTemplate>

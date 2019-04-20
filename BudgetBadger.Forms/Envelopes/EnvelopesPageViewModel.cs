@@ -14,6 +14,7 @@ using Prism.Services;
 using BudgetBadger.Core.Sync;
 using Prism;
 using BudgetBadger.Models.Extensions;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {

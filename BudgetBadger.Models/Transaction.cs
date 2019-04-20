@@ -138,11 +138,7 @@ namespace BudgetBadger.Models
         public DateTime ServiceDate
         {
             get => serviceDate;
-            set
-            {
-                SetProperty(ref serviceDate, value);
-                OnPropertyChanged(nameof(GroupingKey));
-            }
+            set => SetProperty(ref serviceDate, value);
         }
 
         string notes;
@@ -180,8 +176,6 @@ namespace BudgetBadger.Models
         public bool IsDeleted { get => DeletedDateTime != null; }
 
         public bool IsActive { get => !IsNew && !IsDeleted; }
-
-        public string GroupingKey { get => ServiceDate.ToShortDateString(); }
 
         public Transaction()
         {
@@ -221,7 +215,19 @@ namespace BudgetBadger.Models
             // Return true if the fields match.
             // Note that the base class is not invoked because it is
             // System.Object, which defines Equals as reference equality.
-            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(p);
+            return Id == p.Id
+                && CreatedDateTime == p.CreatedDateTime
+                && ModifiedDateTime == p.ModifiedDateTime
+                && DeletedDateTime == p.DeletedDateTime
+                && Notes == p.Notes
+                && Amount == p.Amount
+                && Posted == p.Posted
+                && ReconciledDateTime == p.ReconciledDateTime
+                && ServiceDate == p.ServiceDate
+                && SplitId == p.SplitId
+                && Account == p.Account
+                && Payee == p.Payee
+                && Envelope == p.Envelope;
         }
 
         public override bool Equals(object obj)
@@ -231,7 +237,7 @@ namespace BudgetBadger.Models
 
         public override int GetHashCode()
         {
-            return JsonConvert.SerializeObject(this).GetHashCode();
+            return Id.GetHashCode();
         }
 
         public int CompareTo(Transaction transaction)

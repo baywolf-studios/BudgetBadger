@@ -90,7 +90,7 @@
                 Margin="0,0,16,0"
                 HorizontalOptions="End"
                 Style="{StaticResource Key=ListItemLabelStyle}"
-                Text="{Binding Amount, StringFormat='{0:C}'}"
+                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                 VerticalOptions="Center"/>
             <Label
                 x:Name="rightPrimaryLabel"
@@ -100,7 +100,7 @@
                 HorizontalOptions="End"
                 IsVisible="false"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                Text="{Binding Amount, StringFormat='{0:C}'}"
+                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                 VerticalOptions="End"/>
             <Label
                 x:Name="rightSecondaryLabel"
@@ -110,7 +110,7 @@
                 HorizontalOptions="End"
                 IsVisible="false"
                 Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Envelope.Description, StringFormat='{0:C}'}"
+                Text="{Binding Envelope.Description, Converter={StaticResource CurrencyConverter}}"
                 VerticalOptions="Start"/>
         </Grid>
     </ContentView>

@@ -13,6 +13,7 @@
             <converters:IntEnumConverter x:Key="IntEnum" />
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <converters:CurrencyConverter x:Key="CurrencyConverter" />
+            <converters:ShortDateConverter x:Key="ShortDateConverter"/>
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <OnPlatform x:Key="ControlCornerRadiusDouble" x:TypeArguments="x:Double">

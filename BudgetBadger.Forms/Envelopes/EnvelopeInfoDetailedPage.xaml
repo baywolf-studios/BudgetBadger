@@ -88,7 +88,7 @@
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="d"
+                                    DisplayBinding="{Binding ServiceDate, Converter={StaticResource ShortDateConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Service Date"
                                     HeaderTextAlignment="Start"
@@ -121,7 +121,7 @@
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Amount"
                                     HeaderTextAlignment="End"
@@ -213,7 +213,7 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding Budget.Remaining, StringFormat='{0:c}'}"
+                    Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}"
                     VerticalOptions="Center" />
                 <Label
                     Grid.Row="0"
@@ -227,7 +227,7 @@
                     Grid.Column="2"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Budget.Past, StringFormat='{0:c}'}"
+                    Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}"
                     VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
@@ -241,7 +241,7 @@
                     Grid.Column="3"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Budget.Activity, StringFormat='{0:c}'}"
+                    Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}"
                     VerticalOptions="Start" />
                 <Label
                     Grid.Row="0"
@@ -255,7 +255,7 @@
                     Grid.Column="4"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding Budget.Amount, StringFormat='{0:c}'}"
+                    Text="{Binding Budget.Amount, Converter={StaticResource CurrencyConverter}}"
                     VerticalOptions="Start" />
                 <uc:Button2
                     Grid.Row="0"

@@ -128,7 +128,7 @@
                                     TextAlignment="Start" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Past, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Past"
                                     HeaderTextAlignment="End"
@@ -137,7 +137,7 @@
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Activity, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Activity"
                                     HeaderTextAlignment="End"
@@ -146,7 +146,7 @@
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Amount"
                                     HeaderTextAlignment="End"
@@ -155,7 +155,7 @@
                                     TextAlignment="End" />
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
-                                    Format="c"
+                                    DisplayBinding="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="Remaining"
                                     HeaderTextAlignment="End"
@@ -202,7 +202,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding Schedule.Balance, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Center" />
                     <Label
                         Grid.Row="0"
@@ -216,7 +216,7 @@
                         Grid.Column="2"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Past, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
@@ -230,7 +230,7 @@
                         Grid.Column="3"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Income, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
@@ -244,7 +244,7 @@
                         Grid.Column="4"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Budgeted, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Start" />
                     <Label
                         Grid.Row="0"
@@ -258,7 +258,7 @@
                         Grid.Column="5"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Overspend, StringFormat='{0:c}'}"
+                        Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"
                         VerticalOptions="Start" />
                     <uc:Button2
                         Grid.Row="0"

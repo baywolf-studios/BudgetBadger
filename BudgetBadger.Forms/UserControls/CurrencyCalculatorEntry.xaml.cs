@@ -5,6 +5,7 @@ using System.Data;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms.Animation;
 using Xamarin.Forms;
 
@@ -12,6 +13,9 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class CurrencyCalculatorEntry : StackLayout
     {
+        readonly IResourceContainer _resourceContainer;
+        readonly ILocalize _localize;
+
         public static BindableProperty PrefixProperty = BindableProperty.Create(nameof(Prefix), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
         public string Prefix
         {
@@ -36,6 +40,9 @@ namespace BudgetBadger.Forms.UserControls
         public CurrencyCalculatorEntry()
         {
             InitializeComponent();
+
+            _resourceContainer = StaticResourceContainer.Current;
+            _localize = DependencyService.Get<ILocalize>();
 
             LabelControl.BindingContext = this;
 
@@ -71,7 +78,7 @@ namespace BudgetBadger.Forms.UserControls
 
                 if (e.PropertyName == nameof(Number))
                 {
-                    TextControl.Text = Number.HasValue ? Number.Value.ToString("c") : string.Empty;
+                    TextControl.Text = Number.HasValue ? _resourceContainer.GetFormattedString("{0:C}", Number.Value) : string.Empty;
                 }
             };
         }
@@ -88,7 +95,8 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     try
                     {
-                        var nfi = CultureInfo.CurrentCulture.NumberFormat;
+                        var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+                        var nfi = locale.NumberFormat;
                         var symbol = nfi.CurrencySymbol;
                         var groupSeparator = nfi.CurrencyGroupSeparator;
                         var decimalSeparator = nfi.CurrencyDecimalSeparator;
@@ -101,7 +109,7 @@ namespace BudgetBadger.Forms.UserControls
                         result = 0;
                     }
                 }
-                Number = Convert.ToDecimal(result);
+                Number = result;
             }
 
             OnPropertyChanged(nameof(Number));

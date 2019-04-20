@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
