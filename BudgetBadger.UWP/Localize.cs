@@ -13,32 +13,30 @@ namespace BudgetBadger.UWP
 {
     public class Localize : ILocalize
     {
-        CultureInfo _currentCultureInfo = null;
+        readonly CultureInfo _deviceCulture = CultureInfo.CurrentUICulture;
+        static CultureInfo _currentCulture;
 
-        public CultureInfo CurrentCultureInfo
+        public CultureInfo GetLocale()
         {
-            get
-            {
-                if (_currentCultureInfo == null)
-                {
-                    _currentCultureInfo = CultureInfo.CurrentUICulture;
-                    Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = _currentCultureInfo.Name;
-                    Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
-                    Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
-                }
-                return _currentCultureInfo;
-            }
-            set
-            {
-                _currentCultureInfo = value;
-                CultureInfo.CurrentCulture = value;
-                CultureInfo.CurrentUICulture = value;
-                Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = value.Name;
-                Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
-                Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
-            }
+            return _currentCulture;
         }
 
-        public CultureInfo DeviceCultureInfo { get { return CultureInfo.CurrentUICulture; } }
+        public void SetLocale(CultureInfo cultureInfo)
+        {
+            _currentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = cultureInfo.Name;
+            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
+            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
+        }
+
+        public CultureInfo GetDeviceCultureInfo()
+        {
+            return _deviceCulture;
+        }
     }
 }
