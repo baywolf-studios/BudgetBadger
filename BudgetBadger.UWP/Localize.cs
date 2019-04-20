@@ -13,7 +13,7 @@ namespace BudgetBadger.UWP
 {
     public class Localize : ILocalize
     {
-        readonly CultureInfo _deviceCulture = CultureInfo.CurrentUICulture;
+        static readonly CultureInfo _deviceCulture = CultureInfo.CurrentUICulture;
         static CultureInfo _currentCulture;
 
         public CultureInfo GetLocale()
