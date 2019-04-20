@@ -111,6 +111,7 @@
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
     <Compile Include="SimpleAuthActivity.cs" />
     <Compile Include="Effects\BottomBarNoShiftEffect.cs" />
+    <Compile Include="Localize.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -276,6 +277,10 @@
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
       <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
       <Name>BudgetBadger.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
+      <Project>{33C66195-8BAC-4B2E-9DFE-D73B42F99FFA}</Project>
+      <Name>BudgetBadger.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
