@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public partial class NetWorthReportPage : BasePage
+    public partial class NetWorthReportPage : BaseDetailedPage
     {
         public NetWorthReportPage()
         {
