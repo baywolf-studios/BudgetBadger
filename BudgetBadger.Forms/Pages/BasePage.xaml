@@ -1,34 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
+    x:Class="BudgetBadger.Forms.Pages.BasePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    BackgroundColor="#dde3ed"
     NavigationPage.HasBackButton="false"
-    NavigationPage.HasNavigationBar="false"
-    x:Class="BudgetBadger.Forms.Pages.BasePage"
-    BackgroundColor="#dde3ed">
+    NavigationPage.HasNavigationBar="false">
     <ContentPage.Effects>
-        <effects:StatusBarPaddingEffect />         
+        <effects:StatusBarPaddingEffect />
     </ContentPage.Effects>
     <ContentPage.Content>
-        <Grid RowSpacing="0" ColumnSpacing="0">
+        <Grid ColumnSpacing="0" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ContentView
                 x:Name="HeaderView"
-                HeightRequest="{StaticResource AppBarPortraitHeight}"
+                Grid.Row="0"
                 BackgroundColor="{StaticResource AppBarColor}"
-                Grid.Row="0"/>
-            <ContentView
+                HeightRequest="{StaticResource AppBarPortraitHeight}" />
+            <Frame
                 x:Name="BodyView"
                 Grid.Row="1"
+                Margin="32"
+                Padding="0"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                HasShadow="True"
                 HorizontalOptions="Center"
                 WidthRequest="{StaticResource MaxWidth}"
-                BackgroundColor="{StaticResource BackgroundColor}"
-                Margin="32">
-            </ContentView>
+                CornerRadius="{StaticResource ControlCornerRadiusSingle}">
+                <Frame.Triggers>
+                    <Trigger TargetType="Frame" Property="HasShadow" Value="false">
+                        <Setter Property="CornerRadius" Value="0"/>
+                    </Trigger>
+                </Frame.Triggers>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

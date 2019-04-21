@@ -16,6 +16,13 @@
             <converters:ShortDateConverter x:Key="ShortDateConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
+            <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
+                <On Platform="iOS">5</On>
+                <On Platform="Android">2</On>
+                <On Platform="UWP">0</On>
+                <On Platform="macOS">5</On>
+            </OnPlatform>
+
             <OnPlatform x:Key="ControlCornerRadiusDouble" x:TypeArguments="x:Double">
                 <On Platform="iOS">5</On>
                 <On Platform="Android">2</On>
