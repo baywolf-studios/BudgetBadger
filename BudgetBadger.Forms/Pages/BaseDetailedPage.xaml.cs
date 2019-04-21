@@ -57,8 +57,8 @@ namespace BudgetBadger.Forms.Pages
 
         public View Body
         {
-            get => BodyView.Content;
-            set => BodyView.Content = value;
+            get => BodyView.Body;
+            set => BodyView.Body = value;
         }
 
         public BaseDetailedPage()

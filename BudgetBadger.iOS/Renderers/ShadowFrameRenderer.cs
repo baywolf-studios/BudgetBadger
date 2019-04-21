@@ -21,15 +21,19 @@ namespace BudgetBadger.iOS.Renderers
         {
             base.OnElementChanged(e);
 
-            if (e.NewElement == null)
-                return;
-            UpdateShadow();
+            if (e?.NewElement == null) return;
+            if ((Element as ShadowFrame) != null)
+            {
+                Element.IsClippedToBounds = true;
+                UpdateShadow();
+            }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == "Elevation" || e.PropertyName == "HasShadow")
+
+            if (e?.PropertyName == "Elevation" || e?.PropertyName == nameof(VisualElement.BackgroundColor))
             {
                 UpdateShadow();
             }
@@ -37,16 +41,13 @@ namespace BudgetBadger.iOS.Renderers
 
         private void UpdateShadow()
         {
-
             var materialFrame = (ShadowFrame)Element;
 
-            // Update shadow to match better material design standards of elevation
-            Layer.ShadowRadius = materialFrame.Elevation;
-            Layer.ShadowColor = UIColor.Gray.CGColor;
-            Layer.ShadowOffset = new CGSize(2, 2);
-            Layer.ShadowOpacity = 0.80f;
-            Layer.ShadowPath = UIBezierPath.FromRect(Layer.Bounds).CGPath;
             Layer.MasksToBounds = false;
+            Layer.ShadowColor = UIColor.Black.CGColor;
+            Layer.ShadowOffset = new CGSize(0, (nfloat)materialFrame.Elevation);
+            Layer.ShadowOpacity = 0.24f;
+            Layer.ShadowRadius = Math.Abs(materialFrame.Elevation);
 
         }
     }
