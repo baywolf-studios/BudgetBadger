@@ -50,6 +50,9 @@
                 <On Platform="UWP">48</On>
                 <On Platform="macOS">48</On>
             </OnPlatform>
+            
+            <x:Double x:Key="MaxWidth">720</x:Double>
+            
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>
             <Color x:Key="PrimaryTextColor">#1d1f24</Color>
@@ -67,7 +70,7 @@
             <Color x:Key="BusyIndicatorColor">white</Color>
 
             <Color x:Key="BusyIndicatorBackgroundColor">#0c7bb3</Color>
-
+            
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource AppBarColor}" />
                 <Setter Property="BarTextColor" Value="White" />

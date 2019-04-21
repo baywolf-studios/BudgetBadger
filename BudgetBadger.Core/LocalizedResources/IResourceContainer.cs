@@ -9,5 +9,6 @@ namespace BudgetBadger.Core.LocalizedResources
     {
         string GetResourceString(string key);
         string GetFormattedString(string format, object obj);
+        string GetFormattedString(string format, params object[] objs);
     }
 }

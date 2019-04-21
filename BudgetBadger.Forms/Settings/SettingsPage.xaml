@@ -10,7 +10,7 @@
     <p:BasePage.Header>
         <p:RootHeader PageTitle="Settings" />
     </p:BasePage.Header>
-    <p:BasePage.Body>
+    <p:BasePage.Body >
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <ScrollView
                 Margin="0"
@@ -35,6 +35,9 @@
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
+                        <RowDefinition Height="{StaticResource ListItemHeight}" />
+                        <RowDefinition Height="{StaticResource ListItemHeight}" />
+                        <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
@@ -270,9 +273,30 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
+                        Text="Language" />
+                    <uc:DropdownSelector
+                        Grid.Row="12"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Label="Currency"
+                        Margin="16,0">
+                    </uc:DropdownSelector>
+                    
+                    <uc:DropdownSelector
+                        Grid.Row="13"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Label="Date &amp; Time"
+                        Margin="16,0">
+                    </uc:DropdownSelector>
+                    <Label
+                        Grid.Row="14"
+                        Grid.ColumnSpan="3"
+                        Margin="16,12,16,0"
+                        Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="Help" />
                     <Label
-                        Grid.Row="12"
+                        Grid.Row="15"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,0"
@@ -283,7 +307,7 @@
                         </Label.GestureRecognizers>
                     </Label>
                     <Label
-                        Grid.Row="13"
+                        Grid.Row="16"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,0"

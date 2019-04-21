@@ -11,4 +11,4 @@
     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
     LiveDataUpdateMode="AllowDataShaping"
     RowHeight="{StaticResource Key=ListItemHeight}"
-    SelectionMode="Single" />
+    SelectionMode="Single"/>

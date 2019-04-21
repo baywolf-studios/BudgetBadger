@@ -66,7 +66,26 @@ namespace BudgetBadger.Forms.Pages
             InitializeComponent();
 
             SizeChanged += BasePage_SizeChanged;
+
+            BodyFrame.SizeChanged += BodyFrame_SizeChanged;
         }
+
+        void BodyFrame_SizeChanged(object sender, EventArgs e)
+        {
+            if (BodyFrame.Width < (double)Application.Current.Resources["MaxWidth"])
+            {
+                BodyFrame.Margin = new Thickness(0);
+                BodyFrame.IsVisible = true;
+                BodyFrame.HasShadow = false;
+            }
+            else
+            {
+                BodyFrame.Margin = new Thickness(32);
+                BodyFrame.IsVisible = true;
+                BodyFrame.HasShadow = true;
+            }
+        }
+
 
         void BasePage_SizeChanged(object sender, EventArgs e)
         {

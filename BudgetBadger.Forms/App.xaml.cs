@@ -236,8 +236,23 @@ namespace BudgetBadger.Forms
         void SetLocale()
         {
             var localize = Container.Resolve<ILocalize>();
-            var test = localize.GetDeviceCultureInfo();
-            localize.SetLocale(test);
+            var settings = Container.Resolve<ISettings>();
+
+            var currentCulture = localize.GetDeviceCultureInfo();
+
+            var currencyCulture = settings.GetValueOrDefault(AppSettings.CurrencyCulture);
+            if(!String.IsNullOrEmpty(currencyCulture))
+            {
+                currentCulture.NumberFormat = new CultureInfo(currencyCulture).NumberFormat;
+            }
+
+            var dateTimeCulture = settings.GetValueOrDefault(AppSettings.DateTimeCulture);
+            if (!String.IsNullOrEmpty(dateTimeCulture))
+            {
+                currentCulture.DateTimeFormat = new CultureInfo(dateTimeCulture).DateTimeFormat;
+            }
+
+            localize.SetLocale(currentCulture);
         }
 
         async Task VerifyPurchases()
