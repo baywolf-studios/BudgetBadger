@@ -26,6 +26,7 @@ namespace BudgetBadger.iOS.Renderers
             if (e?.NewElement != null && e?.NewElement is Card)
             {
                 _card = (Card)e.NewElement;
+                UpdateCornerRadius();
                 this.Elevate(_card.Elevation);
             }
         }
@@ -34,10 +35,27 @@ namespace BudgetBadger.iOS.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
+            if (e?.PropertyName == nameof(Card.CornerRadius))
+            {
+                UpdateCornerRadius();
+            }
+
             if (e?.PropertyName == nameof(Card.Elevation) || e?.PropertyName == nameof(Card.BackgroundColor))
             {
                 this.Elevate(_card.Elevation);
             }
+        }
+
+        void UpdateCornerRadius()
+        {
+            float cornerRadius = Element.CornerRadius;
+
+            if (cornerRadius == -1f)
+            {
+                cornerRadius = 5f; // default corner radius
+            }
+
+            Layer.CornerRadius = cornerRadius;
         }
     }
 }
