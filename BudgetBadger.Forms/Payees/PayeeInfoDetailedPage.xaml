@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<p:BasePage
+<p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Payees.PayeeInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -11,7 +11,7 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
-    <p:BasePage.Header>
+    <p:BaseDetailedPage.Header>
         <p:ChildSearchHeader
             BackCommand="{Binding BackCommand}"
             PageTitle="{Binding Payee.Description}"
@@ -19,8 +19,8 @@
             ToolbarItemCommand="{Binding EditCommand}"
             ToolbarItemIcon="edit.svg"
             ToolbarItemText="Edit" />
-    </p:BasePage.Header>
-    <p:BasePage.Body>
+    </p:BaseDetailedPage.Header>
+    <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -224,5 +224,5 @@
                     VerticalOptions="Center" />
             </Grid>
         </Grid>
-    </p:BasePage.Body>
-</p:BasePage>
+    </p:BaseDetailedPage.Body>
+</p:BaseDetailedPage>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<p:BasePage
+<p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Reports.PayeeTrendsReportPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,12 +7,12 @@
     xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
-    <p:BasePage.Header>
+    <p:BaseDetailedPage.Header>
         <p:ChildHeader 
             BackCommand="{Binding BackCommand}"
             PageTitle="{Binding SelectedPayee.Description}"/>
-    </p:BasePage.Header>
-    <p:BasePage.Body>
+    </p:BaseDetailedPage.Header>
+    <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
             BackgroundColor="{StaticResource BackgroundColor}"
@@ -130,5 +130,5 @@
                     Label="End Date" />
             </Grid>
         </Grid>
-    </p:BasePage.Body>
-</p:BasePage>
+    </p:BaseDetailedPage.Body>
+</p:BaseDetailedPage>

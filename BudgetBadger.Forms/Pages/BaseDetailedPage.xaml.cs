@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Pages
 {
-    public partial class BasePage : ContentPage
+    public partial class BaseDetailedPage : ContentPage
     {
         double _appBarPortraitHeight
         {
@@ -61,7 +61,7 @@ namespace BudgetBadger.Forms.Pages
             set => BodyView.Content = value;
         }
 
-        public BasePage()
+        public BaseDetailedPage()
         {
             InitializeComponent();
 
@@ -73,8 +73,6 @@ namespace BudgetBadger.Forms.Pages
             else
             {
                 BodyView.HasShadow = true;
-                BodyView.HorizontalOptions = LayoutOptions.Center;
-                BodyView.WidthRequest = (double)Application.Current.Resources["MaxWidth"];
                 BodyView.Margin = new Thickness(32);
             }
         }
