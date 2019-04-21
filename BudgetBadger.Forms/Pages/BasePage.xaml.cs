@@ -64,32 +64,13 @@ namespace BudgetBadger.Forms.Pages
         public BasePage()
         {
             InitializeComponent();
-
-            SizeChanged += BasePage_SizeChanged;
-
-            BodyFrame.SizeChanged += BodyFrame_SizeChanged;
         }
 
-        void BodyFrame_SizeChanged(object sender, EventArgs e)
+        protected override void OnSizeAllocated(double width, double height)
         {
-            if (BodyFrame.Width < (double)Application.Current.Resources["MaxWidth"])
-            {
-                BodyFrame.Margin = new Thickness(0);
-                BodyFrame.IsVisible = true;
-                BodyFrame.HasShadow = false;
-            }
-            else
-            {
-                BodyFrame.Margin = new Thickness(32);
-                BodyFrame.IsVisible = true;
-                BodyFrame.HasShadow = true;
-            }
-        }
+            base.OnSizeAllocated(width, height);
 
-
-        void BasePage_SizeChanged(object sender, EventArgs e)
-        {
-            if (Height > Width)
+            if (width > height)
             {
                 // portrait
                 HeaderView.HeightRequest = _appBarPortraitHeight;
@@ -99,7 +80,18 @@ namespace BudgetBadger.Forms.Pages
                 // landscape
                 HeaderView.HeightRequest = _appBarLandscapeHeight;
             }
-        }
 
+            if (width > 0 && Device.RuntimePlatform != Device.macOS)
+            {
+                if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
+                {
+                    BodyView.Margin = new Thickness(32);
+                }
+                else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
+                {
+                    BodyView.Margin = new Thickness(0);
+                }
+            }
+        }
     }
 }
