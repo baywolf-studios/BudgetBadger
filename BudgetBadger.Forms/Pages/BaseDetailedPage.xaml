@@ -17,13 +17,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Card  
-                x:Name="HeaderView"
-                Grid.Row="0"
-                BackgroundColor="{StaticResource AppBarColor}"
-                HeightRequest="{StaticResource AppBarPortraitHeight}"
-                Elevation="4"
-            CornerRadius="0"/>
+            
             <uc:Card
                 x:Name="BodyView"
                 Grid.Row="1"
@@ -36,6 +30,13 @@
                     </Trigger>
                 </Frame.Triggers>
             </uc:Card>
+            <uc:Card  
+                x:Name="HeaderView"
+                Grid.Row="0"
+                BackgroundColor="{StaticResource AppBarColor}"
+                HeightRequest="{StaticResource AppBarPortraitHeight}"
+                Elevation="4"
+            CornerRadius="0"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
