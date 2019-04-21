@@ -86,10 +86,12 @@ namespace BudgetBadger.Forms.Pages
                 if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
                 {
                     BodyView.Margin = new Thickness(32);
+                    BodyView.HasShadow = true;
                 }
                 else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
                 {
                     BodyView.Margin = new Thickness(0);
+                    BodyView.HasShadow = false;
                 }
             }
         }
