@@ -13,7 +13,7 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Accounts
 {
     [XamlCompilation(XamlCompilationOptions.Skip)]
-    public partial class AccountInfoDetailedPage : BasePage
+    public partial class AccountInfoDetailedPage : BaseDetailedPage
     {
 		public AccountInfoDetailedPage()
         {
