@@ -22,7 +22,7 @@
                 Grid.Row="0"
                 BackgroundColor="{StaticResource AppBarColor}"
                 HeightRequest="{StaticResource AppBarPortraitHeight}"/>
-            <uc:ShadowFrame
+            <uc:Card
                 x:Name="BodyView"
                 Grid.Row="1"
                 Padding="0"
@@ -33,7 +33,7 @@
                         <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}"/>
                     </Trigger>
                 </Frame.Triggers>
-            </uc:ShadowFrame>
+            </uc:Card>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class ShadowFrame : Frame
+    public partial class Card : Frame
     {
-        public static BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(float), typeof(ShadowFrame), 4.0f);
+        public static BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(float), typeof(Card), 4.0f);
         public float Elevation
         {
             get
@@ -47,7 +48,7 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
-        public ShadowFrame()
+        public Card()
         {
             InitializeComponent();
 
@@ -58,6 +59,16 @@ namespace BudgetBadger.Forms.UserControls
                     iosInnerFrame.CornerRadius = CornerRadius;
                 }
             };
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(HasShadow))
+            {
+                return;
+            }
+
+            base.OnPropertyChanged(propertyName);
         }
     }
 }

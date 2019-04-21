@@ -67,12 +67,12 @@ namespace BudgetBadger.Forms.Pages
 
             if (Device.Idiom == TargetIdiom.Phone)
             {
-                BodyView.HasShadow = false;
+                BodyView.Elevation = 0;
                 BodyView.Margin = new Thickness(0);
             }
             else
             {
-                BodyView.HasShadow = true;
+                BodyView.Elevation = 4;
                 BodyView.Margin = new Thickness(32);
             }
         }
@@ -99,12 +99,12 @@ namespace BudgetBadger.Forms.Pages
                 if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
                 {
                     BodyView.Margin = new Thickness(32);
-                    BodyView.HasShadow = true;
+                    BodyView.Elevation = 4;
                 }
                 else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
                 {
                     BodyView.Margin = new Thickness(0);
-                    BodyView.HasShadow = false;
+                    BodyView.Elevation = 0;
                 }
             }
         }
