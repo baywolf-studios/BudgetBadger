@@ -5,7 +5,8 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     NavigationPage.HasBackButton="false"
     NavigationPage.HasNavigationBar="false"
-    x:Class="BudgetBadger.Forms.Pages.BasePage">
+    x:Class="BudgetBadger.Forms.Pages.BasePage"
+    BackgroundColor="#dde3ed">
     <ContentPage.Effects>
         <effects:StatusBarPaddingEffect />         
     </ContentPage.Effects>
@@ -20,10 +21,17 @@
                 HeightRequest="{StaticResource AppBarPortraitHeight}"
                 BackgroundColor="{StaticResource AppBarColor}"
                 Grid.Row="0"/>
-            <ContentView
-                x:Name="BodyView"
-                BackgroundColor="{StaticResource BackgroundColor}"
-                Grid.Row="1"/>
+            <Frame HasShadow="true"
+                   Grid.Row="1"
+                   Padding="0"
+                   Margin="0"
+                   HorizontalOptions="Center"
+                   WidthRequest="{StaticResource MaxWidth}"
+                   x:Name="BodyFrame">
+                <ContentView
+                    x:Name="BodyView"
+                    BackgroundColor="{StaticResource BackgroundColor}"/>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

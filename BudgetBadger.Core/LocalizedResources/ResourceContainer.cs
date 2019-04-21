@@ -25,5 +25,10 @@ namespace BudgetBadger.Core.LocalizedResources
         {
             return String.Format(_localize.GetLocale(), format, obj);
         }
+
+        public string GetFormattedString(string format, params object[] objs)
+        {
+            return String.Format(_localize.GetLocale(), format, objs);
+        }
     }
 }
