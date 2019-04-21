@@ -21,17 +21,14 @@
                 HeightRequest="{StaticResource AppBarPortraitHeight}"
                 BackgroundColor="{StaticResource AppBarColor}"
                 Grid.Row="0"/>
-            <Frame HasShadow="true"
-                   Grid.Row="1"
-                   Padding="0"
-                   Margin="0"
-                   HorizontalOptions="Center"
-                   WidthRequest="{StaticResource MaxWidth}"
-                   x:Name="BodyFrame">
-                <ContentView
-                    x:Name="BodyView"
-                    BackgroundColor="{StaticResource BackgroundColor}"/>
-            </Frame>
+            <ContentView
+                x:Name="BodyView"
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                WidthRequest="{StaticResource MaxWidth}"
+                BackgroundColor="{StaticResource BackgroundColor}"
+                Margin="32">
+            </ContentView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
