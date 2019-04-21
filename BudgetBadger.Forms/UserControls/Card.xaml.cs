@@ -20,7 +20,7 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
-        Frame iosInnerFrame = new Frame { Padding = 0, Margin = 0, HasShadow = false, IsClippedToBounds = true };
+        Frame iosInnerFrame = new Frame { Padding = 0, Margin = 0, CornerRadius = 0, HasShadow = false, IsClippedToBounds = true };
         public View Body
         {
             get
@@ -59,6 +59,10 @@ namespace BudgetBadger.Forms.UserControls
                     iosInnerFrame.CornerRadius = CornerRadius;
                 }
             };
+
+            CornerRadius = 0;
+            Padding = 0;
+            Margin = 0;
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)

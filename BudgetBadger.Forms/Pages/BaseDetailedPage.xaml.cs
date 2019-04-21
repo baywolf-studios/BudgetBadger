@@ -72,7 +72,7 @@ namespace BudgetBadger.Forms.Pages
             }
             else
             {
-                BodyView.Elevation = 4;
+                BodyView.Elevation = 1;
                 BodyView.Margin = new Thickness(32);
             }
         }
@@ -99,7 +99,7 @@ namespace BudgetBadger.Forms.Pages
                 if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
                 {
                     BodyView.Margin = new Thickness(32);
-                    BodyView.Elevation = 4;
+                    BodyView.Elevation = 1;
                 }
                 else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
                 {

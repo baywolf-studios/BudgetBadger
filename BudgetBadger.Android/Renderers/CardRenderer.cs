@@ -1,15 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
+using Android.Content;
+using Android.Support.V4.View;
+using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms.UserControls;
-using BudgetBadger.macOS.Renderers;
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.MacOS;
+using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(Card), typeof(CardRenderer))]
-namespace BudgetBadger.macOS.Renderers
+namespace BudgetBadger.Droid.Renderers
 {
-    public class CardRenderer : FrameRenderer
+    public class CardRenderer : Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer
     {
+        public CardRenderer(Context context) : base(context)
+        {
+        }
+
         private Card _card;
 
         public static void Initialize()
@@ -24,8 +30,7 @@ namespace BudgetBadger.macOS.Renderers
             if (e?.NewElement != null && e?.NewElement is Card)
             {
                 _card = (Card)e.NewElement;
-                UpdateCornerRadius();
-                this.Elevate(_card.Elevation);
+                UpdateElevation();
             }
         }
 
@@ -33,27 +38,17 @@ namespace BudgetBadger.macOS.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e?.PropertyName == nameof(Card.CornerRadius))
+            if (e?.PropertyName == nameof(Card.Elevation))
             {
-                UpdateCornerRadius();
-            }
-
-            if (e?.PropertyName == nameof(Card.Elevation) || e?.PropertyName == nameof(Card.BackgroundColor))
-            {
-                this.Elevate(_card.Elevation);
+                UpdateElevation();
             }
         }
 
-        void UpdateCornerRadius()
+        private void UpdateElevation()
         {
-            float cornerRadius = Element.CornerRadius;
-
-            if (cornerRadius == -1f)
-            {
-                cornerRadius = 5f; // default corner radius
-            }
-
-            Layer.CornerRadius = cornerRadius;
+            // set the elevation manually
+            ViewCompat.SetElevation(this, _card.Elevation);
+            ViewCompat.SetElevation(Control, _card.Elevation);
         }
     }
 }

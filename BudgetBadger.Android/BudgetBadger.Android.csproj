@@ -112,6 +112,8 @@
     <Compile Include="SimpleAuthActivity.cs" />
     <Compile Include="Effects\BottomBarNoShiftEffect.cs" />
     <Compile Include="Localize.cs" />
+    <Compile Include="Renderers\CardRenderer.cs" />
+    <Compile Include="Renderers\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -282,6 +284,9 @@
       <Project>{33C66195-8BAC-4B2E-9DFE-D73B42F99FFA}</Project>
       <Name>BudgetBadger.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
