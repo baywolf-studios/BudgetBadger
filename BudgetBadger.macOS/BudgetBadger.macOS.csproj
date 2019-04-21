@@ -270,6 +270,8 @@
     <Compile Include="Renderers\EntryRenderer.cs" />
     <Compile Include="Renderers\Extensions.cs" />
     <Compile Include="Localize.cs" />
+    <Compile Include="Renderers\CardRenderer.cs" />
+    <Compile Include="Renderers\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

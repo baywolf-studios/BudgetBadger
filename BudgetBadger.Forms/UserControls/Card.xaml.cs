@@ -25,7 +25,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             get
             {
-                if (Device.RuntimePlatform == Device.iOS)
+                if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.macOS)
                 {
                     return iosInnerFrame.Content;
                 }
@@ -36,7 +36,7 @@ namespace BudgetBadger.Forms.UserControls
             }
             set
             {
-                if (Device.RuntimePlatform == Device.iOS)
+                if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.macOS)
                 {
                     iosInnerFrame.Content = value;
                     Content = iosInnerFrame;
