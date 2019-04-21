@@ -17,11 +17,13 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ContentView  
+            <uc:Card  
                 x:Name="HeaderView"
                 Grid.Row="0"
                 BackgroundColor="{StaticResource AppBarColor}"
-                HeightRequest="{StaticResource AppBarPortraitHeight}"/>
+                HeightRequest="{StaticResource AppBarPortraitHeight}"
+                Elevation="4"
+            CornerRadius="0"/>
             <uc:Card
                 x:Name="BodyView"
                 Grid.Row="1"
