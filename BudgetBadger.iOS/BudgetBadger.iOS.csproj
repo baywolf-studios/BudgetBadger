@@ -106,7 +106,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Effects\StatusBarPaddingEffect.cs" />
     <Compile Include="Localize.cs" />
-    <Compile Include="Renderers\ShadowFrameRenderer.cs" />
+    <Compile Include="Renderers\CardRenderer.cs" />
+    <Compile Include="Renderers\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
