@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<p:BasePage
+<p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -12,7 +12,7 @@
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
-    <p:BasePage.Header>
+    <p:BaseDetailedPage.Header>
         <p:StepperHeader
             NextCommand="{Binding NextCommand}"
             PageTitle="{Binding Schedule.Description}"
@@ -21,8 +21,8 @@
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg"
             ToolbarItemText="New" />
-    </p:BasePage.Header>
-    <p:BasePage.Body>
+    </p:BaseDetailedPage.Header>
+    <p:BaseDetailedPage.Body>
         <uc:HelperControl
             Title="Budget it into envelopes"
             Grid.Row="2"
@@ -272,5 +272,5 @@
                 </Grid>
             </Grid>
         </uc:HelperControl>
-    </p:BasePage.Body>
-</p:BasePage>
+    </p:BaseDetailedPage.Body>
+</p:BaseDetailedPage>
