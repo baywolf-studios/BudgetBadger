@@ -1,5 +1,6 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
+using BudgetBadger.iOS.Renderers;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
@@ -35,6 +36,8 @@ namespace BudgetBadger.iOS
             Syncfusion.SfPullToRefresh.XForms.iOS.SfPullToRefreshRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
+            BorderedEditorRenderer.Initialize();
+            ShadowFrameRenderer.Initialize();
 
             LoadApplication(new App(new iOSInitializer()));
 

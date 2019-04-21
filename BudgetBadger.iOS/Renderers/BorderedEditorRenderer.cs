@@ -9,6 +9,11 @@ namespace BudgetBadger.iOS.Renderers
 {
     public class BorderedEditorRenderer : EditorRenderer
     {
+        public static void Initialize()
+        {
+            // empty, but used for beating the linker
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             base.OnElementChanged(e);

@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackgroundColor="#dde3ed"
     NavigationPage.HasBackButton="false"
     NavigationPage.HasNavigationBar="false">
@@ -21,7 +22,7 @@
                 Grid.Row="0"
                 BackgroundColor="{StaticResource AppBarColor}"
                 HeightRequest="{StaticResource AppBarPortraitHeight}"/>
-            <Frame
+            <uc:ShadowFrame
                 x:Name="BodyView"
                 Grid.Row="1"
                 Padding="0"
@@ -32,7 +33,7 @@
                         <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}"/>
                     </Trigger>
                 </Frame.Triggers>
-            </Frame>
+            </uc:ShadowFrame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
