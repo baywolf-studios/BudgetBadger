@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
@@ -15,16 +16,19 @@ namespace BudgetBadger.Logic
         readonly IAccountLogic _accountLogic;
         readonly IPayeeLogic _payeeLogic;
         readonly IEnvelopeLogic _envelopeLogic;
+        readonly IResourceContainer _resourceContainer;
 
         public ReportLogic(ITransactionLogic transactionLogic,
                            IAccountLogic accountLogic,
                            IPayeeLogic payeeLogic,
-                           IEnvelopeLogic envelopeLogic)
+                           IEnvelopeLogic envelopeLogic,
+                           IResourceContainer resourceContainer)
         {
             _transactionLogic = transactionLogic;
             _accountLogic = accountLogic;
             _payeeLogic = payeeLogic;
             _envelopeLogic = envelopeLogic;
+            _resourceContainer = resourceContainer;
         }
 
         public async Task<Result<IReadOnlyList<DataPoint<DateTime, decimal>>>> GetNetWorthReport(DateTime beginDate, DateTime endDate)
@@ -46,9 +50,9 @@ namespace BudgetBadger.Logic
                     var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<DateTime, decimal>
                     {
-                        XLabel = startMonth.ToString("Y"),
+                        XLabel = _resourceContainer.GetFormattedString("{0:Y}", startMonth),
                         XValue = startMonth,
-                        YLabel = monthTotal.ToString("C"),
+                        YLabel = _resourceContainer.GetFormattedString("{0:C}", monthTotal),
                         YValue = monthTotal
                     });
                     startMonth = startMonth.AddMonths(1);
@@ -93,7 +97,7 @@ namespace BudgetBadger.Logic
                             XValue = envelope,
                             XLabel = envelope.Group.Description + " " + envelope.Description,
                             YValue = envelopeTransactionsSum,
-                            YLabel = envelopeTransactionsSum.ToString("C")
+                            YLabel = _resourceContainer.GetFormattedString("{0:C}", envelopeTransactionsSum)
                         });
                     }
 
@@ -139,7 +143,7 @@ namespace BudgetBadger.Logic
                             XValue = payee,
                             XLabel = payee.Description,
                             YValue = payeeTransactionsSum,
-                            YLabel = payeeTransactionsSum.ToString("C")
+                            YLabel = _resourceContainer.GetFormattedString("{0:C}", payeeTransactionsSum)
                         });
                     }
 
@@ -180,9 +184,9 @@ namespace BudgetBadger.Logic
                     var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<DateTime, decimal>
                     {
-                        XLabel = startMonth.ToString("Y"),
+                        XLabel = _resourceContainer.GetFormattedString("{0:Y}", startMonth),
                         XValue = startMonth,
-                        YLabel = monthTotal.ToString("C"),
+                        YLabel = _resourceContainer.GetFormattedString("{0:C}", monthTotal),
                         YValue = monthTotal
                     });
                     startMonth = startMonth.AddMonths(1);
@@ -223,9 +227,9 @@ namespace BudgetBadger.Logic
                     var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
                     dataPoints.Add(new DataPoint<DateTime, decimal>
                     {
-                        XLabel = startMonth.ToString("Y"),
+                        XLabel = _resourceContainer.GetFormattedString("{0:Y}", startMonth),
                         XValue = startMonth,
-                        YLabel = monthTotal.ToString("C"),
+                        YLabel = _resourceContainer.GetFormattedString("{0:C}", monthTotal),
                         YValue = monthTotal
                     });
                     startMonth = startMonth.AddMonths(1);
