@@ -8,6 +8,22 @@ namespace BudgetBadger.Forms.UserControls
     {
         double originalWidth = -1;
         Color backgroundColor;
+        Color pressedBackgroundColor;
+        float elevation;
+        float pressedElevation;
+
+        public static BindableProperty IsRaisedProperty = BindableProperty.Create(nameof(IsRaised), typeof(bool), typeof(Button2), false);
+        public bool IsRaised
+        {
+            get
+            {
+                return (bool)GetValue(IsRaisedProperty);
+            }
+            set
+            {
+                SetValue(IsRaisedProperty, value);
+            }
+        }
 
         public static BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(float), typeof(Button2), 0.0f);
         public float Elevation
@@ -27,6 +43,8 @@ namespace BudgetBadger.Forms.UserControls
             InitializeComponent();
 
             backgroundColor = BackgroundColor;
+            pressedBackgroundColor = Color.FromHsla(backgroundColor.Hue, backgroundColor.Saturation, 0.9 * backgroundColor.Luminosity, backgroundColor.A);
+            pressedElevation = Elevation;
 
             PropertyChanged += (sender, e) =>
             {
@@ -39,36 +57,35 @@ namespace BudgetBadger.Forms.UserControls
 
             Pressed += (sender, e) =>
             {
-                backgroundColor = BackgroundColor;
-
-                if (backgroundColor != Color.Transparent)
+                if (BackgroundColor != pressedBackgroundColor)
                 {
-                    Elevation += 6;
-                }
+                    backgroundColor = BackgroundColor;
 
-                if (Device.RuntimePlatform == Device.macOS || Device.RuntimePlatform == Device.iOS)
-                {
-                    if (backgroundColor == Color.Transparent)
+                    if (IsRaised)
                     {
-                        BackgroundColor = (Color)Application.Current.Resources["SecondaryButtonActiveColor"];
+                        pressedBackgroundColor = Color.FromHsla(backgroundColor.Hue, backgroundColor.Saturation, 0.9 * backgroundColor.Luminosity, backgroundColor.A);
+
                     }
                     else
                     {
-                        BackgroundColor = Color.FromHsla(backgroundColor.Hue, backgroundColor.Saturation, 0.9 * backgroundColor.Luminosity, backgroundColor.A);
+                        pressedBackgroundColor = (Color)Application.Current.Resources["SecondaryButtonActiveColor"];
                     }
-                }
-            };
-            Released += (sender, e) =>
-            {
-                if (Device.RuntimePlatform == Device.macOS || Device.RuntimePlatform == Device.iOS)
-                {
-                    BackgroundColor = backgroundColor;
+
+                    BackgroundColor = pressedBackgroundColor;
                 }
 
-                if (backgroundColor != Color.Transparent)
+                if (IsRaised && Elevation != pressedElevation)
                 {
-                    Elevation -= 6;
+                    elevation = Elevation;
+                    pressedElevation = Elevation + 6;
+                    Elevation = pressedElevation;
                 }
+            };
+
+            Released += (sender, e) =>
+            {
+                BackgroundColor = backgroundColor;
+                Elevation = elevation;
             };
         }
     }
