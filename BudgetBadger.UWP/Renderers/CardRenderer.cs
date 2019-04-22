@@ -76,9 +76,9 @@ namespace BudgetBadger.UWP.Renderers
         void UpdateDropShadow()
         {
             Control.OffsetX = 0;
-            Control.OffsetY = Element.Elevation;
+            Control.OffsetY = Element.Elevation < 10 ? Math.Floor(Element.Elevation / 2) + 1 : Element.Elevation - 4;
             Control.BlurRadius = Element.Elevation == 1 ? 3 : Element.Elevation * 2;
-            Control.ShadowOpacity = 0.24;
+            Control.ShadowOpacity = (24 - Math.Round(Element.Elevation / 10)) / 100;
             Control.Color = Windows.UI.Colors.Black;
             Control.IsMasked = false;
         }
