@@ -101,9 +101,9 @@
         Grid.Column="0"
         Grid.ColumnSpan="4"
         Padding="0"
+        BackgroundColor="{StaticResource AppBarColor}"
         IsVisible="false"
-        Opacity="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Opacity="0">
         <ContentView
             x:Name="EntryFrame"
             Margin="8"
