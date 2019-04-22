@@ -49,7 +49,7 @@
                         </syncfusion:SfListView.GroupHeaderTemplate>
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="{StaticResource Key=ListItemHeight}">
+                                <Grid HeightRequest="{StaticResource Key=ListItemHeight}">
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="0"

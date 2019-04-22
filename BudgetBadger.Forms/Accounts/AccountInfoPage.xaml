@@ -23,7 +23,7 @@
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            BackgroundColor="{StaticResource BackgroundColor}"
+            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.ColumnDefinitions>
@@ -201,7 +201,7 @@
                                 <DataTemplate>
                                     <ContentView
                                         x:Name="denseGroupHeaderCell"
-                                        BackgroundColor="{StaticResource BackgroundColor}"
+                                        
                                         HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
                                         <Label
                                             Margin="16,12,16,0"
@@ -220,7 +220,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                                    <BoxView  />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

@@ -6,7 +6,7 @@
     HeightRequest="{StaticResource Key=ListItemHeight}">
     <Grid
         Margin="16,0"
-        BackgroundColor="{StaticResource BackgroundColor}"
+        
         ColumnSpacing="16"
         HeightRequest="{StaticResource Key=ListItemHeight}"
         RowSpacing="0">

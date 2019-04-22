@@ -47,7 +47,14 @@ namespace BudgetBadger.Forms.Pages
         public View Header
         {
             get => HeaderView.Content;
-            set => HeaderView.Content = value;
+            set
+            {
+                if (value != null)
+                {
+                    value.BackgroundColor = (Color)Application.Current.Resources["AppBarColor"];
+                }
+                HeaderView.Content = value;
+            }
         }
 
         public ContentView BodyContentView
@@ -58,7 +65,14 @@ namespace BudgetBadger.Forms.Pages
         public View Body
         {
             get => BodyView.Body;
-            set => BodyView.Body = value;
+            set
+            {
+                if (value != null)
+                {
+                    value.BackgroundColor = (Color)Application.Current.Resources["BackgroundColor"];
+                }
+                BodyView.Body = value;
+            }
         }
 
         public BaseDetailedPage()
@@ -76,7 +90,7 @@ namespace BudgetBadger.Forms.Pages
                 BodyView.Margin = new Thickness(32);
             }
         }
-
+        
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);

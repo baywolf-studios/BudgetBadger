@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Grid 
+<?xml version="1.0" encoding="UTF-8" ?>
+<Grid
+    x:Class="BudgetBadger.Forms.Pages.ChildHeader"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="BudgetBadger.Forms.Pages.ChildHeader"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ColumnSpacing="0"
     RowSpacing="0">
@@ -46,8 +46,7 @@
         Grid.Row="0"
         Grid.Column="0"
         Margin="0"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <svg:SvgCachedImage
             x:Name="BackButtonImage"
             HeightRequest="24"
@@ -65,8 +64,7 @@
         Grid.Row="0"
         Grid.Column="2"
         Margin="0"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding ToolbarItemCommand}" />
         </ContentView.GestureRecognizers>

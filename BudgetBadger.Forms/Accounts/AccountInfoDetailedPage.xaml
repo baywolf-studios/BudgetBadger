@@ -24,7 +24,7 @@
     <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
-            BackgroundColor="{StaticResource BackgroundColor}"
+            
             RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
