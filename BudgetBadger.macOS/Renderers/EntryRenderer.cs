@@ -34,6 +34,11 @@ namespace BudgetBadger.macOS.Renderers
 
     public class EntryRenderer2 : ViewRenderer<Entry, NSTextField>
     {
+        public static void Initialize()
+        {
+            // empty, but used for beating the linker
+        }
+
         internal class BoolEventArgs : EventArgs
         {
             public BoolEventArgs(bool value)

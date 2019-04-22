@@ -46,6 +46,8 @@ namespace BudgetBadger.Droid.Renderers
 
         private void UpdateElevation()
         {
+            StateListAnimator = null;
+
             // set the elevation manually
             ViewCompat.SetElevation(this, _card.Elevation);
             ViewCompat.SetElevation(Control, _card.Elevation);

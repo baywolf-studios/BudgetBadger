@@ -39,7 +39,7 @@ namespace BudgetBadger.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e?.PropertyName == nameof(Card.Elevation))
+            if (e?.PropertyName == nameof(Card.Elevation) || e?.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
                 UpdateElevation();
             }
