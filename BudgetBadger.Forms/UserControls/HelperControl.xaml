@@ -21,7 +21,8 @@
                     Orientation="Vertical"
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="CenterAndExpand"
-                    Spacing="8">
+                    Spacing="8"
+                    Margin="16">
                     <svg:SvgCachedImage
                         HeightRequest="96"
                         WidthRequest="96"
@@ -29,12 +30,12 @@
                         ReplaceStringMap="{Binding Source={StaticResource DisabledColor}, Converter={StaticResource ReplaceColorMap}}"
                         Source="{Binding Source={x:Reference this}, Path=ImagePath}"/>
                     <Label
-                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
                         Text="{Binding Source={x:Reference this}, Path=Title}"
                         Style="{StaticResource HelperControlLabelStyle}"
                         FontSize="24"/>
                     <Label
-                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
                         Text="{Binding Source={x:Reference this}, Path=Subtitle}"
                         Style="{StaticResource HelperControlLabelStyle}"
                         FontSize="14"/>
