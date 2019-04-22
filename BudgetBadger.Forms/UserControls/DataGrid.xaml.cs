@@ -45,7 +45,10 @@ namespace BudgetBadger.Forms.UserControls
 
             GridViewCreated += (sender, e) =>
             {
-                View.SourceCollectionChanged += View_CollectionChanged;
+                if (View != null)
+                {
+                    View.SourceCollectionChanged += View_CollectionChanged;
+                }
             };
 
             PropertyChanged += (sender, e) =>

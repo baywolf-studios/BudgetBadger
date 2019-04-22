@@ -108,6 +108,7 @@
     <Compile Include="Localize.cs" />
     <Compile Include="Renderers\CardRenderer.cs" />
     <Compile Include="Renderers\Helper.cs" />
+    <Compile Include="Renderers\Button2Renderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">

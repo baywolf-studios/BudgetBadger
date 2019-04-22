@@ -161,6 +161,7 @@
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
                 <Setter Property="Elevation" Value="2"/>
+                <Setter Property="IsRaised" Value="true"/>
             </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
@@ -180,6 +181,7 @@
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
                 <Setter Property="Elevation" Value="2"/>
+                <Setter Property="IsRaised" Value="true"/>
             </Style>
             
             <Color x:Key="SecondaryButtonActiveColor">#ebeff5</Color>
@@ -188,7 +190,7 @@
             <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
             <x:Double x:Key="SecondaryActionButtonBorderWidth">1</x:Double>
             <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
-            <Color x:Key="SecondaryActionButtonBackgroundColor">Transparent</Color>
+            <Color x:Key="SecondaryActionButtonBackgroundColor">White</Color>
             <Color x:Key="SecondaryActionButtonBorderColor">#0c7bb3</Color>
             <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
@@ -207,7 +209,7 @@
             <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>
             <x:Double x:Key="SecondaryDestructionButtonBorderWidth">1</x:Double>
-            <Color x:Key="SecondaryDestructionButtonBackgroundColor">Transparent</Color>
+            <Color x:Key="SecondaryDestructionButtonBackgroundColor">White</Color>
             <Color x:Key="SecondaryDestructionButtonBorderColor">#de1b1b</Color>
             <Style x:Key="SecondaryDestructionButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}" />

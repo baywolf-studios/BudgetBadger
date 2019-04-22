@@ -1,22 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
-using Android.Animation;
-using Android.Content;
-using Android.Support.V4.View;
-using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms.UserControls;
+using BudgetBadger.iOS.Renderers;
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(Button2), typeof(Button2Renderer))]
-namespace BudgetBadger.Droid.Renderers
+namespace BudgetBadger.iOS.Renderers
 {
-    public class Button2Renderer : Xamarin.Forms.Platform.Android.AppCompat.ButtonRenderer
+    public class Button2Renderer : ButtonRenderer
     {
-        public Button2Renderer(Context context) : base(context)
-        {
-        }
-
         private Button2 _card;
 
         public static void Initialize()
@@ -31,7 +24,7 @@ namespace BudgetBadger.Droid.Renderers
             if (e?.NewElement != null && e?.NewElement is Button2)
             {
                 _card = (Button2)e.NewElement;
-                UpdateElevation();
+                this.Elevate(_card.Elevation);
             }
         }
 
@@ -39,19 +32,10 @@ namespace BudgetBadger.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e?.PropertyName == nameof(Card.Elevation))
+            if (e?.PropertyName == nameof(Button2.Elevation))
             {
-                UpdateElevation();
+                this.Elevate(_card.Elevation);
             }
-        }
-
-        private void UpdateElevation()
-        {
-            StateListAnimator = null;
-
-            // set the elevation manually
-            ViewCompat.SetElevation(this, _card.Elevation);
-            ViewCompat.SetElevation(Control, _card.Elevation);
         }
     }
 }
