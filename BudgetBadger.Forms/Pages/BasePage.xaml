@@ -18,22 +18,24 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <uc:Card
-                x:Name="HeaderView"
-                Grid.Row="0"
-                CornerRadius="0"
-                Elevation="4"
-                HeightRequest="{StaticResource AppBarPortraitHeight}" />
-            <uc:Card
                 x:Name="BodyView"
                 Grid.Row="1"
                 Padding="0"
-                CornerRadius="0">
+                CornerRadius="0"
+                BackgroundColor="{StaticResource BackgroundColor}">
                 <Frame.Triggers>
-                    <Trigger TargetType="Frame" Property="HasShadow" Value="true">
+                    <Trigger TargetType="uc:Card" Property="Elevation" Value="1">
                         <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}" />
                     </Trigger>
                 </Frame.Triggers>
             </uc:Card>
+            <uc:Card
+                x:Name="HeaderView"
+                Grid.Row="0"
+                CornerRadius="0"
+                Elevation="4"
+                HeightRequest="{StaticResource AppBarPortraitHeight}"
+                BackgroundColor="{StaticResource AppBarColor}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
