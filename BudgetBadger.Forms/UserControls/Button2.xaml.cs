@@ -84,9 +84,14 @@ namespace BudgetBadger.Forms.UserControls
 
             Released += (sender, e) =>
             {
-                BackgroundColor = backgroundColor;
-                Elevation = elevation;
+                UpdateReleased();
             };
+        }
+
+        public void UpdateReleased()
+        {
+            BackgroundColor = backgroundColor;
+            Elevation = elevation;
         }
     }
 }
