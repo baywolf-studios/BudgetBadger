@@ -6,7 +6,8 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     ColumnSpacing="0"
-    RowSpacing="0">
+    RowSpacing="0"
+    BackgroundColor="{StaticResource AppBarColor}">
     <Grid.RowDefinitions>
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -90,7 +91,8 @@
         Grid.ColumnSpan="4"
         Padding="0"
         IsVisible="false"
-        Opacity="0">
+        Opacity="0"
+        BackgroundColor="{StaticResource AppBarColor}">
         <ContentView
             x:Name="EntryFrame"
             Margin="8"
