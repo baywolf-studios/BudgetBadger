@@ -39,7 +39,6 @@ namespace BudgetBadger.iOS.Renderers
         void Control_Released(object sender, EventArgs e)
         {
             _card?.UpdateReleased();
-            _card?.UpdateReleased();
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)

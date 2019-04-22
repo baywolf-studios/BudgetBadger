@@ -17,6 +17,11 @@ namespace BudgetBadger.UWP.Renderers
 {
     public class CardRenderer :  ViewRenderer<Card, DropShadowPanel>
     {
+        public static void Initialize()
+        {
+            // empty, but used for beating the linker
+        }
+
         public CardRenderer()
         {
             AutoPackage = false;
