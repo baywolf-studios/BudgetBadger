@@ -1,4 +1,5 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.UWP.Renderers;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
@@ -35,6 +36,8 @@ namespace BudgetBadger.UWP
             SfPullToRefreshRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
+            Button2Renderer.Initialize();
+            CardRenderer.Initialize();
             LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
         }
     }

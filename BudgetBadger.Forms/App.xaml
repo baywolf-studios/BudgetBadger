@@ -7,8 +7,8 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:local="clr-namespace:BudgetBadger.Forms"
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:sfdatagrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms">
+    xmlns:sfdatagrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <Application.Resources>
         <ResourceDictionary>
             <converters:IntEnumConverter x:Key="IntEnum" />
@@ -160,8 +160,8 @@
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
-                <Setter Property="Elevation" Value="2"/>
-                <Setter Property="IsRaised" Value="true"/>
+                <Setter Property="Elevation" Value="2" />
+                <Setter Property="IsRaised" Value="true" />
             </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
@@ -180,12 +180,12 @@
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
-                <Setter Property="Elevation" Value="2"/>
-                <Setter Property="IsRaised" Value="true"/>
+                <Setter Property="Elevation" Value="2" />
+                <Setter Property="IsRaised" Value="true" />
             </Style>
-            
+
             <Color x:Key="SecondaryButtonActiveColor">#ebeff5</Color>
-            
+
             <x:Double x:Key="SecondaryActionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
             <x:Double x:Key="SecondaryActionButtonBorderWidth">1</x:Double>

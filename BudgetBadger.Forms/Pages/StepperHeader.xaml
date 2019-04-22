@@ -5,9 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    BackgroundColor="{StaticResource AppBarColor}"
     ColumnSpacing="0"
-    RowSpacing="0"
-    BackgroundColor="{StaticResource AppBarColor}">
+    RowSpacing="0">
     <Grid.RowDefinitions>
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -90,9 +90,9 @@
         Grid.Column="0"
         Grid.ColumnSpan="4"
         Padding="0"
+        BackgroundColor="{StaticResource AppBarColor}"
         IsVisible="false"
-        Opacity="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Opacity="0">
         <ContentView
             x:Name="EntryFrame"
             Margin="8"
