@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackgroundColor="#dde3ed"
     NavigationPage.HasBackButton="false"
     NavigationPage.HasNavigationBar="false">
@@ -16,23 +17,23 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ContentView  
+            <uc:Card
                 x:Name="HeaderView"
                 Grid.Row="0"
-                BackgroundColor="{StaticResource AppBarColor}"
-                HeightRequest="{StaticResource AppBarPortraitHeight}"/>
-            <Frame
+                CornerRadius="0"
+                Elevation="4"
+                HeightRequest="{StaticResource AppBarPortraitHeight}" />
+            <uc:Card
                 x:Name="BodyView"
                 Grid.Row="1"
                 Padding="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
                 CornerRadius="0">
                 <Frame.Triggers>
                     <Trigger TargetType="Frame" Property="HasShadow" Value="true">
-                        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}"/>
+                        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}" />
                     </Trigger>
                 </Frame.Triggers>
-            </Frame>
+            </uc:Card>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -39,7 +39,7 @@
                         <DataTemplate>
                             <ContentView
                                 x:Name="denseGroupHeaderCell"
-                                BackgroundColor="{StaticResource BackgroundColor}"
+                                
                                 HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
                                 <Label
                                     Margin="16,12,16,0"
@@ -58,7 +58,7 @@
                     </syncfusion:SfListView.ItemTemplate>
                     <syncfusion:SfListView.FooterTemplate>
                         <DataTemplate>
-                            <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                            <BoxView  />
                         </DataTemplate>
                     </syncfusion:SfListView.FooterTemplate>
                 </uc:ListView>

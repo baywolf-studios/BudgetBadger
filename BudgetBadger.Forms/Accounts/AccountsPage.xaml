@@ -27,7 +27,7 @@
             Subtitle="Use the + button to add your first account">
             <Grid
                 Margin="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
+                
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
@@ -130,7 +130,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                                    <BoxView  />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

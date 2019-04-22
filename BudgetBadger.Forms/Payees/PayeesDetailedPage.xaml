@@ -26,7 +26,6 @@
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>

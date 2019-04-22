@@ -47,7 +47,14 @@ namespace BudgetBadger.Forms.Pages
         public View Header
         {
             get => HeaderView.Content;
-            set => HeaderView.Content = value;
+            set
+            {
+                if (value != null)
+                {
+                    value.BackgroundColor = (Color)Application.Current.Resources["AppBarColor"];
+                }
+                HeaderView.Content = value;
+            }
         }
 
         public ContentView BodyContentView
@@ -57,8 +64,15 @@ namespace BudgetBadger.Forms.Pages
 
         public View Body
         {
-            get => BodyView.Content;
-            set => BodyView.Content = value;
+            get => BodyView.Body;
+            set
+            {
+                if (value != null)
+                {
+                    value.BackgroundColor = (Color)Application.Current.Resources["BackgroundColor"];
+                }
+                BodyView.Body = value;
+            }
         }
 
         public BasePage()
@@ -67,12 +81,12 @@ namespace BudgetBadger.Forms.Pages
 
             if (Device.Idiom == TargetIdiom.Phone)
             {
-                BodyView.HasShadow = false;
+                BodyView.Elevation = 0;
                 BodyView.Margin = new Thickness(0);
             }
             else
             {
-                BodyView.HasShadow = true;
+                BodyView.Elevation = 1;
                 BodyView.HorizontalOptions = LayoutOptions.Center;
                 BodyView.WidthRequest = (double)Application.Current.Resources["MaxWidth"];
                 BodyView.Margin = new Thickness(32);
@@ -101,12 +115,12 @@ namespace BudgetBadger.Forms.Pages
                 if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
                 {
                     BodyView.Margin = new Thickness(32);
-                    BodyView.HasShadow = true;
+                    BodyView.Elevation = 1;
                 }
                 else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
                 {
                     BodyView.Margin = new Thickness(0);
-                    BodyView.HasShadow = false;
+                    BodyView.Elevation = 0;
                 }
             }
         }

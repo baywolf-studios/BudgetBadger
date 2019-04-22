@@ -34,8 +34,7 @@
         Grid.Row="0"
         Grid.Column="0"
         Margin="0"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding ToolbarItemCommand}" />
         </ContentView.GestureRecognizers>
@@ -53,8 +52,7 @@
         Grid.Row="0"
         Grid.Column="1"
         Margin="0"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding PreviousCommand}" />
         </ContentView.GestureRecognizers>
@@ -72,8 +70,7 @@
         Grid.Row="0"
         Grid.Column="3"
         Margin="0"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding NextCommand}" />
         </ContentView.GestureRecognizers>
@@ -92,7 +89,6 @@
         Grid.Column="0"
         Grid.ColumnSpan="4"
         Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}"
         IsVisible="false"
         Opacity="0">
         <ContentView
@@ -135,8 +131,7 @@
         x:Name="SearchButtonFrame"
         Grid.Row="0"
         Grid.Column="4"
-        Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}">
+        Padding="0">
         <svg:SvgCachedImage
             x:Name="SearchImage"
             HeightRequest="24"

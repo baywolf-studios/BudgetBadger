@@ -27,7 +27,7 @@
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
+                
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
@@ -115,7 +115,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView BackgroundColor="{StaticResource BackgroundColor}" />
+                                    <BoxView  />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

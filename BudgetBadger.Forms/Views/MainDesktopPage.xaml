@@ -7,7 +7,6 @@
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackgroundColor="{StaticResource BackgroundColor}"
     NavigationPage.HasNavigationBar="false">
     <MasterDetailPage.Master>
         <ContentPage
