@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.OS;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Droid;
+using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
@@ -30,6 +31,8 @@ namespace BudgetBadger.Droid
             SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
             CachedImageRenderer.Init(true);
             var ignore = typeof(SvgCachedImage);
+            Button2Renderer.Initialize();
+            CardRenderer.Initialize();
             LoadApplication(new App(new AndroidInitializer()));
         }
 

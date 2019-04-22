@@ -1,6 +1,7 @@
 ﻿using AppKit;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
+using BudgetBadger.macOS.Renderers;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
@@ -40,6 +41,9 @@ namespace BudgetBadger.macOS
             Syncfusion.ListView.XForms.MacOS.SfListViewRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
+            EntryRenderer2.Initialize();
+            Button2Renderer.Initialize();
+            CardRenderer.Initialize();
 
             LoadApplication(new App(new macOSInitializer()));
             base.DidFinishLaunching(notification);

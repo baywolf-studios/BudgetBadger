@@ -38,6 +38,7 @@ namespace BudgetBadger.iOS
             var ignore = typeof(SvgCachedImage);
             BorderedEditorRenderer.Initialize();
             CardRenderer.Initialize();
+            Button2Renderer.Initialize();
 
             LoadApplication(new App(new iOSInitializer()));
 
