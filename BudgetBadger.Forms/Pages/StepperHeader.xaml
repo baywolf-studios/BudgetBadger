@@ -88,17 +88,8 @@
         <ContentView
             x:Name="EntryFrame"
             Margin="8"
-            Padding="0">
-            <ContentView.BackgroundColor>
-                <Color x:FactoryMethod="FromRgba">
-                    <x:Arguments>
-                        <x:Int32>0</x:Int32>
-                        <x:Int32>0</x:Int32>
-                        <x:Int32>0</x:Int32>
-                        <x:Int32>31</x:Int32>
-                    </x:Arguments>
-                </Color>
-            </ContentView.BackgroundColor>
+            Padding="0"
+            BackgroundColor="{StaticResource PrimaryActionButtonActiveBackgroundColor}">
             <Entry
                 x:Name="EntryControl"
                 Margin="8,0"
