@@ -172,7 +172,7 @@
             <x:Double x:Key="PrimaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="PrimaryDestructionButtonTextColor">white</Color>
             <x:Double x:Key="PrimaryDestructionButtonBorderWidth">1</x:Double>
-            <Color x:Key="PrimaryDestructionButtonBackgroundColor">#de1b1b</Color
+            <Color x:Key="PrimaryDestructionButtonBackgroundColor">#de1b1b</Color>
             <Color x:Key="PrimaryDestructionButtonHoverBackgroundColor">#f55353</Color>
             <Color x:Key="PrimaryDestructionButtonActiveBackgroundColor">#b80d0d</Color>
             <Style x:Key="PrimaryDestructionButtonStyle" TargetType="uc:Button2">
