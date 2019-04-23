@@ -32,8 +32,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Envelope> _envelopes;
-        public ObservableList<Envelope> Envelopes
+        IReadOnlyList<Envelope> _envelopes;
+        public IReadOnlyList<Envelope> Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
@@ -66,7 +66,7 @@ namespace BudgetBadger.Forms.Envelopes
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Envelopes = new ObservableList<Envelope>();
+            Envelopes = new List<Envelope>();
             SelectedEnvelope = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -101,8 +101,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    Envelopes.MergeRange(result.Data);
-                    Envelopes.Sort();
+                    Envelopes = result.Data;
                 }
                 else
                 {

@@ -51,8 +51,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _budget, value);
         }
 
-        ObservableList<Transaction> _transactions;
-        public ObservableList<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -94,7 +94,7 @@ namespace BudgetBadger.Forms.Envelopes
             _settings = settings;
 
             Budget = new Budget();
-            Transactions = new ObservableList<Transaction>();
+            Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -202,8 +202,7 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _transactionLogic.GetEnvelopeTransactionsAsync(Budget.Envelope);
                 if (result.Success)
                 {
-                    Transactions.MergeRange(result.Data);
-                    Transactions.Sort();
+                    Transactions = result.Data;
                     SelectedTransaction = null;
                 }
 

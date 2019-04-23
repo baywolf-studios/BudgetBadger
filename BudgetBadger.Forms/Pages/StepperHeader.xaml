@@ -37,7 +37,7 @@
         Margin="0"
         Padding="0">
         <ContentView.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ToolbarItemCommand}" />
+            <TapGestureRecognizer Command="{Binding ToolbarItemCommand}" Tapped="Handle_Tapped" />
         </ContentView.GestureRecognizers>
         <svg:SvgCachedImage
             x:Name="ToolbarItemImage"

@@ -1,4 +1,4 @@
-﻿using Syncfusion.SfDataGrid.XForms;
+using Syncfusion.SfDataGrid.XForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,11 @@ using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.UserControls
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class DataGrid : SfDataGrid
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class DataGrid : SfDataGrid
     {
+        int previousRow = 1;
+
         public static BindableProperty FilterTextProperty = BindableProperty.Create(nameof(FilterText), typeof(string), typeof(DataGrid), propertyChanged: (bindable, oldVal, newVal) =>
         {
             ((DataGrid)bindable).UpdateFilter();
@@ -40,28 +42,28 @@ namespace BudgetBadger.Forms.UserControls
         public bool HasOtherTapGestureRecognizers { get; set; }
 
         public DataGrid ()
-		{
-			InitializeComponent ();
+        {
+            InitializeComponent ();
 
-            GridViewCreated += (sender, e) =>
+            GridTapped += (sender, e) =>
             {
-                if (View != null)
-                {
-                    View.SourceCollectionChanged += View_CollectionChanged;
-                }
+                previousRow = e.RowColumnIndex.RowIndex;
             };
 
-            PropertyChanged += (sender, e) =>
+            Swiping += (sender, e) =>
+            {
+                previousRow = e.RowIndex;
+            };
+
+            PropertyChanging += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsBusy))
                 {
-                    ResetSwipeOffset();
+                    if (IsBusy)
+                    {
+                        ScrollToRowIndex(previousRow, false);
+                    }
                 }
-            };
-
-            ScrollStateChanged += (sender, e) =>
-            {
-                ResetSwipeOffset();
             };
 
             SelectionChanging += (sender, e) =>
@@ -71,33 +73,25 @@ namespace BudgetBadger.Forms.UserControls
                     e.Cancel = true;
                 }
             };
+
             SelectionChanged += (sender, e) =>
             {
                 if (SelectedCommand != null)
                 {
                     SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
                 }
-
-                SelectionController.ClearSelection();
-                ResetSwipeOffset();
             };
-        }
-
-        void View_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (this != null && this.View != null)
-            {
-                View.Refresh();
-            }
         }
 
         void UpdateFilter()
         {
-            if (this != null && this.View != null && Filter != null)
+            if (this != null
+                && View != null
+                && Filter != null)
             {
                 View.Filter = Filter;
                 View.RefreshFilter();
             }
         }
-	}
+    }
 }

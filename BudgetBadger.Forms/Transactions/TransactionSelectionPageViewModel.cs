@@ -37,8 +37,8 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Transaction> _transactions;
-        public ObservableList<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -68,7 +68,7 @@ namespace BudgetBadger.Forms.Transactions
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            Transactions = new ObservableList<Transaction>();
+            Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
             SelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteSelectedCommand(t));
@@ -131,8 +131,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    Transactions.MergeRange(result.Data);
-                    Transactions.Sort();
+                    Transactions = result.Data;
                 }
                 else
                 {

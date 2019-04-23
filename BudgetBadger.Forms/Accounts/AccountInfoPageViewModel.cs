@@ -50,8 +50,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        ObservableList<Transaction> _transactions;
-        public ObservableList<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -99,7 +99,7 @@ namespace BudgetBadger.Forms.Accounts
             _syncFactory = syncFactory;
 
             Account = new Account();
-            Transactions = new ObservableList<Transaction>();
+            Transactions = new List<Transaction>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -217,8 +217,7 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions.MergeRange(result.Data);
-                        Transactions.Sort();
+                        Transactions = result.Data;
                         SelectedTransaction = null;
                     }
                 }
