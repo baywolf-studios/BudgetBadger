@@ -3,6 +3,7 @@ using System.ComponentModel;
 using AppKit;
 using BudgetBadger.Forms.UserControls;
 using BudgetBadger.macOS.Renderers;
+using CoreGraphics;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
@@ -26,7 +27,6 @@ namespace BudgetBadger.macOS.Renderers
             {
                 _card = (Button2)e.NewElement;
                 UpdateBorder();
-                this.Elevate(_card.Elevation);
             }
         }
 
@@ -37,11 +37,6 @@ namespace BudgetBadger.macOS.Renderers
             if (e?.PropertyName == nameof(Button2.BorderWidth) || e?.PropertyName == nameof(Button2.BorderColor))
             {
                 UpdateBorder();
-            }
-
-            if (e?.PropertyName == nameof(Button2.Elevation))
-            {
-                this.Elevate(_card.Elevation);
             }
         }
 

@@ -149,19 +149,20 @@
             <Color x:Key="PrimaryActionButtonTextColor">white</Color>
             <x:Double x:Key="PrimaryActionButtonBorderWidth">1</x:Double>
             <Color x:Key="PrimaryActionButtonBackgroundColor">#0c7bb3</Color>
+            <Color x:Key="PrimaryActionButtonActiveBackgroundColor">#066391</Color>
             <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}" />
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
-                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="RestingBorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
+                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
-                <Setter Property="Elevation" Value="2" />
-                <Setter Property="IsRaised" Value="true" />
             </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
@@ -169,19 +170,20 @@
             <Color x:Key="PrimaryDestructionButtonTextColor">white</Color>
             <x:Double x:Key="PrimaryDestructionButtonBorderWidth">1</x:Double>
             <Color x:Key="PrimaryDestructionButtonBackgroundColor">#de1b1b</Color>
+            <Color x:Key="PrimaryDestructionButtonActiveBackgroundColor">#b80d0d</Color>
             <Style x:Key="PrimaryDestructionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}" />
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
-                <Setter Property="BorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
+                <Setter Property="RestingBorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonActiveBackgroundColor}" />
+                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=PrimaryDestructionButtonActiveBackgroundColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
-                <Setter Property="Elevation" Value="2" />
-                <Setter Property="IsRaised" Value="true" />
             </Style>
 
             <Color x:Key="SecondaryButtonActiveColor">#ebeff5</Color>
@@ -191,12 +193,16 @@
             <x:Double x:Key="SecondaryActionButtonBorderWidth">1</x:Double>
             <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
             <Color x:Key="SecondaryActionButtonBackgroundColor">White</Color>
-            <Color x:Key="SecondaryActionButtonBorderColor">#0c7bb3</Color>
-            <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
+            <Color x:Key="SecondaryActionButtonBorderColor">#c8d1e0</Color>
+            <Color x:Key="SecondaryActionButtonActiveBackgroundColor">#bbe5fa</Color>
+            <Color x:Key="SecondaryActionButtonActiveBorderColor">#0c7bb3</Color>
+            <Style x:Key="SecondaryActionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryActionButtonTextColor}" />
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
-                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
+                <Setter Property="RestingBorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
+                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=SecondaryActionButtonActiveBorderColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}" />
@@ -210,12 +216,16 @@
             <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>
             <x:Double x:Key="SecondaryDestructionButtonBorderWidth">1</x:Double>
             <Color x:Key="SecondaryDestructionButtonBackgroundColor">White</Color>
-            <Color x:Key="SecondaryDestructionButtonBorderColor">#de1b1b</Color>
-            <Style x:Key="SecondaryDestructionButtonStyle" TargetType="Button">
+            <Color x:Key="SecondaryDestructionButtonBorderColor">#c8d1e0</Color>
+            <Color x:Key="SecondaryDestructionButtonActiveBackgroundColor">#fad4d4</Color>
+            <Color x:Key="SecondaryDestructionButtonActiveBorderColor">#de1b1b</Color>
+            <Style x:Key="SecondaryDestructionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryDestructionButtonTextColor}" />
-                <Setter Property="BackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonBackgroundColor}" />
-                <Setter Property="BorderColor" Value="{StaticResource Key=SecondaryDestructionButtonBorderColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonBackgroundColor}" />
+                <Setter Property="RestingBorderColor" Value="{StaticResource Key=SecondaryDestructionButtonBorderColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonActiveBackgroundColor}" />
+                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=SecondaryDestructionButtonActiveBorderColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryDestructionButtonHeight}" />
                 <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}" />
