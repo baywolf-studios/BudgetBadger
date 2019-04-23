@@ -43,8 +43,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        IReadOnlyList<Payee> _payees;
+        public IReadOnlyList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -83,7 +83,7 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            Payees = new ObservableList<Payee>();
+            Payees = new List<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
@@ -134,8 +134,7 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees.MergeRange(result.Data);
-                    Payees.Sort();
+                    Payees = result.Data;
                 }
                 else
                 {

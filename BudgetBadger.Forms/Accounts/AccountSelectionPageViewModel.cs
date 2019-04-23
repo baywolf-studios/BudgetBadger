@@ -34,8 +34,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        IReadOnlyList<Account> _accounts;
+        public IReadOnlyList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -68,7 +68,7 @@ namespace BudgetBadger.Forms.Accounts
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Accounts = new ObservableList<Account>();
+            Accounts = new List<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -124,8 +124,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts.MergeRange(result.Data);
-                    Accounts.Sort();
+                    Accounts = result.Data;
                 }
                 else
                 {

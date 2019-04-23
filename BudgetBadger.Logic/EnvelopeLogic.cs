@@ -89,6 +89,7 @@ namespace BudgetBadger.Logic
                 };
                 budgetsToReturn.Add(genericDebtBudget);
 
+                budgetsToReturn.Sort();
 
                 result.Success = true;
                 result.Data = budgetsToReturn;
@@ -133,6 +134,8 @@ namespace BudgetBadger.Logic
                 var budgetsToReturn = budgetsToReturnTemp.ToList();
 
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
+
+                budgetsToReturn.Sort();
 
                 result.Success = true;
                 result.Data = budgetsToReturn;
@@ -245,10 +248,12 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive);
+                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
+
+                activeEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = activeEnvelopes.ToList();
+                result.Data = activeEnvelopes;
             }
             catch (Exception ex)
             {
@@ -270,10 +275,12 @@ namespace BudgetBadger.Logic
                                                       && !e.Group.IsIncome
                                                       && !e.Group.IsSystem
                                                       && !e.Group.IsDebt
-                                                      && e.IsDeleted);
+                                                      && e.IsDeleted).ToList();
+
+                deletedEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = deletedEnvelopes.ToList();
+                result.Data = deletedEnvelopes;
             }
             catch (Exception ex)
             {
@@ -295,10 +302,12 @@ namespace BudgetBadger.Logic
                                                       && !e.IsSystem
                                                       && !e.Group.IsIncome
                                                       && !e.Group.IsSystem
-                                                      && !e.Group.IsDebt);
+                                                      && !e.Group.IsDebt).ToList();
+
+                activeEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = activeEnvelopes.ToList();
+                result.Data = activeEnvelopes;
             }
             catch (Exception ex)
             {
@@ -360,9 +369,10 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt);
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                filteredEnvelopeGroups.Sort();
                 result.Success = true;
-                result.Data = filteredEnvelopeGroups.ToList();
+                result.Data = filteredEnvelopeGroups;
             }
             catch (Exception ex)
             {
@@ -380,9 +390,10 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsDeleted && !e.IsSystem && !e.IsIncome && !e.IsDebt);
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsDeleted && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                filteredEnvelopeGroups.Sort();
                 result.Success = true;
-                result.Data = filteredEnvelopeGroups.ToList();
+                result.Data = filteredEnvelopeGroups;
             }
             catch (Exception ex)
             {
@@ -420,49 +431,19 @@ namespace BudgetBadger.Logic
 
         public bool FilterBudget(Budget budget, string searchText)
         {
+            var text = searchText ?? "";
+
             if (budget != null && budget.Envelope != null)
             {
-                return budget.Envelope.Group.Description.ToLower().Contains(searchText.ToLower())
-                             || budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
+                return budget.Envelope.Group.Description.ToLower().Contains(text.ToLower())
+                             || budget.Envelope.Description.ToLower().Contains(text.ToLower());
             }
             else
             {
                 return false;
             }
         }
-
-        //public IReadOnlyList<EnvelopeGroup> OrderEnvelopeGroups(IEnumerable<EnvelopeGroup> envelopeGroups)
-        //{
-        //    return envelopeGroups
-        //        .OrderByDescending(b => b.IsDebt)
-        //        .ThenByDescending(b => b.IsIncome)
-        //        .ThenByDescending(b => !b.IsDebt && !b.IsIncome)
-        //        .ThenBy(b => b.Description)
-        //        .ToList();
-        //}
-
-        //public IReadOnlyList<Envelope> OrderEnvelopes(IEnumerable<Envelope> envelopes)
-        //{
-        //    return envelopes.OrderByDescending(b => b.Group.IsDebt && !b.IsGenericDebtEnvelope)
-        //        .ThenByDescending(b => b.Group.IsIncome)
-        //        .ThenByDescending(b => !b.Group.IsDebt && !b.Group.IsIncome)
-        //        .ThenByDescending(b => b.IsGenericDebtEnvelope)
-        //        .ThenBy(b => b.Group.Description)
-        //        .ThenBy(a => a.Description)
-        //        .ToList();
-        //}
-
-        //public IReadOnlyList<Budget> OrderBudgets(IEnumerable<Budget> budgets)
-        //{
-        //    return budgets
-        //        .OrderByDescending(b => b.Envelope.Group.IsDebt && !b.Envelope.IsGenericDebtEnvelope)
-        //        .ThenByDescending(b => b.Envelope.Group.IsIncome)
-        //        .ThenByDescending(b => !b.Envelope.Group.IsDebt && !b.Envelope.Group.IsIncome)
-        //        .ThenByDescending(b => b.Envelope.IsGenericDebtEnvelope)
-        //        .ThenBy(b => b.Envelope.Group.Description)
-        //        .ThenBy(a => a.Envelope.Description)
-        //        .ToList();
-        //}
+    
 
         public async Task<Result> ValidateBudgetAsync(Budget budget)
         {

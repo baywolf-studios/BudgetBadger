@@ -52,8 +52,8 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        ObservableList<Transaction> _transactions;
-        public ObservableList<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -102,7 +102,7 @@ namespace BudgetBadger.Forms.Transactions
             _transLogic = transLogic;
             _syncFactory = syncFactory;
 
-            Transactions = new ObservableList<Transaction>();
+            Transactions = new List<Transaction>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteTransactionCommand(a));
@@ -121,8 +121,7 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions.MergeRange(result.Data);
-                        Transactions.Sort();
+                        Transactions = result.Data;
                         Total = RunningTotal;
                         NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
@@ -139,8 +138,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
-                Transactions.MergeRange(tempTransactions);
-                Transactions.Sort();
+                tempTransactions.Sort();
+                Transactions = tempTransactions;
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -170,7 +169,7 @@ namespace BudgetBadger.Forms.Transactions
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
 
-                        Transactions = new ObservableList<Transaction>
+                        Transactions = new List<Transaction>
                         {
                             split1,
                             split2
@@ -184,8 +183,9 @@ namespace BudgetBadger.Forms.Transactions
             var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
             if (deletedTransaction != null)
             {
-                Transactions.MergeRange(Transactions.Where(t => t.Id != deletedTransaction.Id));
-                Transactions.Sort();
+                var tempTran5 = Transactions.Where(t => t.Id != deletedTransaction.Id).ToList();
+                tempTran5.Sort();
+                Transactions = tempTran5;
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -264,8 +264,8 @@ namespace BudgetBadger.Forms.Transactions
             }
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            Transactions.MergeRange(existingTransactions);
-            Transactions.Sort();
+            existingTransactions.Sort();
+            Transactions = existingTransactions;
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 

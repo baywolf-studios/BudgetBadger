@@ -63,16 +63,6 @@
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
-                            <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="ServiceDate">
-                                    <data:SortComparer.Comparer>
-                                        <comparers:TransactionComparer />
-                                    </data:SortComparer.Comparer>
-                                </data:SortComparer>
-                            </syncfusion:SfDataGrid.SortComparers>
-                            <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Ascending" />
-                            </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"

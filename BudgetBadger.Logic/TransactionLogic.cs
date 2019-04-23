@@ -99,7 +99,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
+			result.Data = CombineAndSortSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -113,7 +113,7 @@ namespace BudgetBadger.Logic
 			var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
+			result.Data = CombineAndSortSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -127,7 +127,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
                      
             result.Success = true;
-			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
+			result.Data = CombineAndSortSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -162,7 +162,7 @@ namespace BudgetBadger.Logic
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
             result.Success = true;
-			result.Data = CombineSplitTransactions(await Task.WhenAll(tasks));
+			result.Data = CombineAndSortSplitTransactions(await Task.WhenAll(tasks));
 
             return result;
         }
@@ -182,23 +182,6 @@ namespace BudgetBadger.Logic
                 return false;
             }
         }
-
-        public IReadOnlyList<Transaction> SearchTransactions(IEnumerable<Transaction> transactions, string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return transactions.ToList();
-            }
-
-            var searchResults = transactions.Where(t => FilterTransaction(t, searchText));
-
-			return searchResults.ToList();
-        }
-
-		//public IReadOnlyList<Transaction> OrderTransactions(IEnumerable<Transaction> transactions)
-   //     {
-			//return transactions.OrderByDescending(a => a.ServiceDate).ToList();
-        //}
 
         public async Task<Result> ValidateTransactionAsync(Transaction transaction)
         {
@@ -452,8 +435,11 @@ namespace BudgetBadger.Logic
 
             var tasks = transactions.Where(t => t.IsActive).Select(GetPopulatedTransaction);
 
+            var transactionsToReturn = (await Task.WhenAll(tasks)).ToList();
+            transactionsToReturn.Sort();
+
             result.Success = true;
-            result.Data = await Task.WhenAll(tasks);
+            result.Data = transactionsToReturn;
 
             return result;
         }
@@ -610,7 +596,7 @@ namespace BudgetBadger.Logic
             return transaction;
         }
 
-        public IReadOnlyList<Transaction> CombineSplitTransactions(IEnumerable<Transaction> transactions)
+        public IReadOnlyList<Transaction> CombineAndSortSplitTransactions(IEnumerable<Transaction> transactions)
         {
             var combinedTransactions = new List<Transaction>(transactions.Where(t => !t.IsSplit));
 
@@ -651,6 +637,8 @@ namespace BudgetBadger.Logic
 
                 combinedTransactions.Add(combinedTransaction);
             }
+
+            combinedTransactions.Sort();
 
             return combinedTransactions;
         }

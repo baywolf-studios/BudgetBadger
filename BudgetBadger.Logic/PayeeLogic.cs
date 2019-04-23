@@ -138,8 +138,11 @@ namespace BudgetBadger.Logic
 
                 var tasks = payees.Select(GetPopulatedPayee);
 
+                var payeesToReturn = (await Task.WhenAll(tasks)).ToList();
+                payeesToReturn.Sort();
+
                 result.Success = true;
-				result.Data = await Task.WhenAll(tasks);
+				result.Data = payeesToReturn;
             }
             catch (Exception ex)
             {
@@ -166,10 +169,11 @@ namespace BudgetBadger.Logic
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
 
                 result.Success = true;
-                result.Data = filteredPopulatedPayees.ToList();
+                result.Data = filteredPopulatedPayees;
             }
             catch (Exception ex)
             {
@@ -196,10 +200,11 @@ namespace BudgetBadger.Logic
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount);
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
 
                 result.Success = true;
-                result.Data = filteredPopulatedPayees.ToList();
+                result.Data = filteredPopulatedPayees;
             }
             catch (Exception ex)
             {
@@ -220,15 +225,16 @@ namespace BudgetBadger.Logic
 
                 // ugly hardcoded to remove the starting balance payee.
                 // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance).ToList();
-
+                var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance && !p.IsAccount).ToList();
 
                 var tasks = payees.Select(GetPopulatedPayee);
 
-                var payeesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var payeesTemp = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
+
+                payeesTemp.Sort();
 
                 result.Success = true;
-				result.Data = payeesTemp.Where(p => !p.IsAccount).ToList();
+				result.Data = payeesTemp;
             }
             catch (Exception ex)
             {
@@ -250,11 +256,6 @@ namespace BudgetBadger.Logic
                 return false;
             }
         }
-        
-		//public IReadOnlyList<Payee> OrderPayees(IEnumerable<Payee> payees)
-        //{
-        //    return payees.OrderByDescending(p => p.IsAccount).ThenBy(p => p.Group).ThenBy(a => a.Description).ToList();
-        //}
 
         public Task<Result> ValidatePayeeAsync(Payee payee)
         {

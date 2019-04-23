@@ -43,8 +43,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedEnvelopeGroup, value);
         }
 
-        ObservableList<EnvelopeGroup> _envelopeGroups;
-        public ObservableList<EnvelopeGroup> EnvelopeGroups
+        IReadOnlyList<EnvelopeGroup> _envelopeGroups;
+        public IReadOnlyList<EnvelopeGroup> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
@@ -77,7 +77,7 @@ namespace BudgetBadger.Forms.Envelopes
             _syncService = syncService;
 
             SelectedEnvelopeGroup = null;
-            EnvelopeGroups = new ObservableList<EnvelopeGroup>();
+            EnvelopeGroups = new List<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -118,8 +118,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    EnvelopeGroups.MergeRange(result.Data);
-                    EnvelopeGroups.Sort();
+                    EnvelopeGroups = result.Data;
                 }
                 else
                 {

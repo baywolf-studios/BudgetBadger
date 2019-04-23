@@ -1,4 +1,5 @@
 ﻿using Syncfusion.ListView.XForms;
+using Syncfusion.ListView.XForms.Control.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace BudgetBadger.Forms.UserControls
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ListView : SfListView
 	{
+        double scrollY = 0;
+
         public static BindableProperty FilterTextProperty = BindableProperty.Create(nameof(FilterText), typeof(string), typeof(ListView), propertyChanged: (bindable, oldVal, newVal) =>
         {
             ((ListView)bindable).UpdateFilter();
@@ -43,17 +46,20 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
 
-            PropertyChanged += (sender, e) =>
+            PropertyChanging += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsBusy))
                 {
-                    ResetSwipe();
+                    if (!IsBusy)
+                    {
+                        var scroller = this.GetScrollView();
+                        scrollY = scroller.ScrollY;
+                    }
+                    else
+                    {
+                        ScrollTo(scrollY);
+                    }
                 }
-            };
-
-            ScrollStateChanged += (sender, e) =>
-            {
-                ResetSwipe();
             };
 
             SelectionChanging += (sender, e) => 
@@ -70,9 +76,6 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
                 }
-
-                SelectedItem = null;
-                ResetSwipe();
             };
         }
 

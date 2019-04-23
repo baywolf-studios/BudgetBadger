@@ -43,8 +43,6 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        bool loadingNewSchedule = true;
-
         BudgetSchedule _schedule;
         public BudgetSchedule Schedule
         {
@@ -52,8 +50,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _schedule, value);
         }
 
-        ObservableList<Budget> _budgets;
-        public ObservableList<Budget> Budgets
+        IReadOnlyList<Budget> _budgets;
+        public IReadOnlyList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value); 
@@ -91,7 +89,7 @@ namespace BudgetBadger.Forms.Envelopes
             _syncFactory = syncFactory;
 
             Schedule = null;
-            Budgets = new ObservableList<Budget>();
+            Budgets = new List<Budget>();
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -144,20 +142,12 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     if (budgetResult.Data.Any())
                     {
-                        if (loadingNewSchedule)
-                        {
-                            Budgets = new ObservableList<Budget>(budgetResult.Data);
-                        }
-                        else
-                        {
-                            Budgets.MergeRange(budgetResult.Data);
-                        }
-                        Budgets.Sort();
+                        Budgets = budgetResult.Data;
                         Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                     }
                     else
                     {
-                        Budgets = new ObservableList<Budget>();
+                        Budgets = new List<Budget>();
                     }
                 }
                 else
@@ -170,7 +160,6 @@ namespace BudgetBadger.Forms.Envelopes
             finally
             {
                 IsBusy = false;
-                loadingNewSchedule = false;
             }
         }
 
@@ -180,7 +169,6 @@ namespace BudgetBadger.Forms.Envelopes
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
-                loadingNewSchedule = true;
                 await ExecuteRefreshCommand();
             }
             else
@@ -195,7 +183,6 @@ namespace BudgetBadger.Forms.Envelopes
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
-                loadingNewSchedule = true;
                 await ExecuteRefreshCommand();
             }
             else

@@ -48,8 +48,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        ObservableList<Transaction> _transactions;
-        public ObservableList<Transaction> Transactions
+        IReadOnlyList<Transaction> _transactions;
+        public IReadOnlyList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -60,8 +60,8 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        ObservableList<Transaction> _statementTransactions;
-        public ObservableList<Transaction> StatementTransactions
+        IReadOnlyList<Transaction> _statementTransactions;
+        public IReadOnlyList<Transaction> StatementTransactions
         {
             get => _statementTransactions;
             set
@@ -147,8 +147,8 @@ namespace BudgetBadger.Forms.Accounts
             _syncFactory = syncFactory;
 
             Account = new Account();
-            Transactions = new ObservableList<Transaction>();
-            StatementTransactions = new ObservableList<Transaction>();
+            Transactions = new List<Transaction>();
+            StatementTransactions = new List<Transaction>();
             SelectedTransaction = null;
             StatementDate = DateTime.Now;
             StatementAmount = 0;
@@ -217,10 +217,8 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
                     if (result.Success)
                     {
-                        Transactions.MergeRange(result.Data);
-                        Transactions.Sort();
-                        StatementTransactions.MergeRange(result.Data);
-                        StatementTransactions.Sort();
+                        Transactions = result.Data;
+                        StatementTransactions = result.Data;
                         SelectedTransaction = null;
                     }
                 }
@@ -235,8 +233,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public void UpdateStatementTransactions()
         {
-            StatementTransactions.MergeRange(Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate));
-            StatementTransactions.Sort();
+            var temp = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
+            temp.Sort();
+            StatementTransactions = temp;
+
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
 
