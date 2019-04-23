@@ -30,7 +30,11 @@ namespace BudgetBadger.UWP.Renderers
             {
                 this.Control.AddHandler(PointerReleasedEvent, new PointerEventHandler(Control_Released), true);
                 this.Control.AddHandler(PointerCanceledEvent, new PointerEventHandler(Control_Released), true);
-                this.Control.AddHandler(PointerReleasedEvent, new PointerEventHandler(Control_Released), true);
+
+                this.Control.AddHandler(PointerEnteredEvent, new PointerEventHandler(Control_Hover), true);
+
+                this.Control.AddHandler(PointerExitedEvent, new PointerEventHandler(Control_Released), true);
+
 
                 _card = (Button2)e.NewElement;
             }
@@ -39,6 +43,11 @@ namespace BudgetBadger.UWP.Renderers
         void Control_Released(object sender, PointerRoutedEventArgs e)
         {
             _card?.UpdateResting();
+        }
+
+        void Control_Hover(object sender, PointerRoutedEventArgs e)
+        {
+            _card?.UpdateHover();
         }
     }
 }

@@ -25,6 +25,20 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(RestingBorderColorProperty, value);
         }
 
+        public static BindableProperty HoverBackgroundColorProperty = BindableProperty.Create(nameof(HoverBackgroundColor), typeof(Color), typeof(Button2), Color.Accent);
+        public Color HoverBackgroundColor
+        {
+            get => (Color)GetValue(HoverBackgroundColorProperty);
+            set => SetValue(HoverBackgroundColorProperty, value);
+        }
+
+        public static BindableProperty HoverBorderColorProperty = BindableProperty.Create(nameof(HoverBorderColor), typeof(Color), typeof(Button2), Color.Accent);
+        public Color HoverBorderColor
+        {
+            get => (Color)GetValue(HoverBorderColorProperty);
+            set => SetValue(HoverBorderColorProperty, value);
+        }
+
         public static BindableProperty ActiveBackgroundColorProperty = BindableProperty.Create(nameof(ActiveBackgroundColor), typeof(Color), typeof(Button2), Color.Accent);
         public Color ActiveBackgroundColor
         {
@@ -90,6 +104,11 @@ namespace BudgetBadger.Forms.UserControls
         public void UpdateResting()
         {
             UpdateColors(RestingBackgroundColor, RestingBorderColor);
+        }
+
+        public void UpdateHover()
+        {
+            UpdateColors(HoverBackgroundColor, HoverBorderColor);
         }
 
         public void UpdateActive()
