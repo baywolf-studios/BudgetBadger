@@ -86,7 +86,7 @@ namespace BudgetBadger.Forms.UserControls
             if (!ForceActiveBackground && BackgroundColor != RestingBackgroundColor)
             {
                 uint animationLength = 150;
-                var colorTask = this.ColorTo(ActiveBackgroundColor, RestingBackgroundColor, (Color obj2) => BackgroundColor = obj2, animationLength, Easing.CubicInOut);
+                var colorTask = this.ColorTo(BackgroundColor, RestingBackgroundColor, (Color obj2) => BackgroundColor = obj2, animationLength, Easing.CubicInOut);
                 if (await Task.WhenAny(colorTask, Task.Delay((int)animationLength + 50)) != colorTask)
                 {
                     ViewExtensions.CancelAnimations(this);
