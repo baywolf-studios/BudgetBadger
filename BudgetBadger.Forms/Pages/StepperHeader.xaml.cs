@@ -9,7 +9,7 @@ namespace BudgetBadger.Forms.Pages
 {
     public partial class StepperHeader : Grid
     {
-        uint _animationLength = 150;
+        uint _animationLength = 50;
 
         public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperHeader));
         public string PageTitle
