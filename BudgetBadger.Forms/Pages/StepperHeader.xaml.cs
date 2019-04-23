@@ -9,7 +9,7 @@ namespace BudgetBadger.Forms.Pages
 {
     public partial class StepperHeader : Grid
     {
-        uint _animationLength = 50;
+        uint _animationLength = 150;
 
         public static BindableProperty PageTitleProperty = BindableProperty.Create(nameof(PageTitle), typeof(string), typeof(StepperHeader));
         public string PageTitle
@@ -116,6 +116,7 @@ namespace BudgetBadger.Forms.Pages
             if (await Task.WhenAny(colorTask2, Task.Delay((int)_animationLength + 50)) != colorTask2)
             {
                 ViewExtensions.CancelAnimations(ToolbarItemFrame);
+                ToolbarItemFrame.BackgroundColor = originalColor;
             }
         }
 
