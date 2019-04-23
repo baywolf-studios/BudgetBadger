@@ -32,23 +32,12 @@ namespace BudgetBadger.iOS.Renderers
                 this.Control.TouchCancel += Control_Released;
                 this.Control.TouchDragExit += Control_Released;
                 _card = (Button2)e.NewElement;
-                this.Elevate(_card.Elevation);
             }
         }
 
         void Control_Released(object sender, EventArgs e)
         {
-            _card?.UpdateReleased();
-        }
-
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
-
-            if (e?.PropertyName == nameof(Button2.Elevation))
-            {
-                this.Elevate(_card.Elevation);
-            }
+            _card?.UpdateResting();
         }
     }
 }
