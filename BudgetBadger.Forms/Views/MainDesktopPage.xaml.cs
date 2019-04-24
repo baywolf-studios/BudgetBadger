@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Envelopes;
+using BudgetBadger.Forms.UserControls;
 using FFImageLoading.Svg.Forms;
 using Prism.Ioc;
 using Prism.Navigation;
@@ -29,46 +30,60 @@ namespace BudgetBadger.Forms.Views
 
         string _replaceColorMap;
 
-        void SetAllInactive()
+        void SetAllInactive(Guid excluded)
         {
-            EnvelopesFrame.BackgroundColor = _backgroundColor;
-            AccountsFrame.BackgroundColor = _backgroundColor;
-            PayeesFrame.BackgroundColor = _backgroundColor;
-            ReportsFrame.BackgroundColor = _backgroundColor;
-            SettingsFrame.BackgroundColor = _backgroundColor;
+            if (excluded != EnvelopesFrame.Id)
+            {
+                EnvelopesFrame.ForceActiveBackground = false;
+                EnvelopesFrame.ForceActiveBackground = true; 
+                EnvelopesIcon.ReplaceStringMap.Clear();
+                EnvelopesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
+                EnvelopesIcon.ReloadImage();
+                EnvelopesLabel.TextColor = _secondaryTextColor;
+            }
 
-            EnvelopesIcon.ReplaceStringMap.Clear();
-            EnvelopesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-            EnvelopesIcon.ReloadImage();
-            EnvelopesLabel.TextColor = _secondaryTextColor;
+            if (excluded != AccountsFrame.Id)
+            {
+                AccountsFrame.BackgroundColor = _backgroundColor; 
+                AccountsIcon.ReplaceStringMap.Clear();
+                AccountsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
+                AccountsIcon.ReloadImage();
+                AccountsLabel.TextColor = _secondaryTextColor;
+            }
 
-            AccountsIcon.ReplaceStringMap.Clear();
-            AccountsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-            AccountsIcon.ReloadImage();
-            AccountsLabel.TextColor = _secondaryTextColor;
+            if (excluded != PayeesFrame.Id)
+            {
+                PayeesFrame.BackgroundColor = _backgroundColor;
+                PayeesIcon.ReplaceStringMap.Clear();
+                PayeesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
+                PayeesIcon.ReloadImage();
+                PayeesLabel.TextColor = _secondaryTextColor;
+            }
 
-            PayeesIcon.ReplaceStringMap.Clear();
-            PayeesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-            PayeesIcon.ReloadImage();
-            PayeesLabel.TextColor = _secondaryTextColor;
+            if (excluded != ReportsFrame.Id)
+            {
+                ReportsFrame.BackgroundColor = _backgroundColor;
+                ReportsIcon.ReplaceStringMap.Clear();
+                ReportsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
+                ReportsIcon.ReloadImage();
+                ReportsLabel.TextColor = _secondaryTextColor;
+            }
 
-            ReportsIcon.ReplaceStringMap.Clear();
-            ReportsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-            ReportsIcon.ReloadImage();
-            ReportsLabel.TextColor = _secondaryTextColor;
-
-            SettingsIcon.ReplaceStringMap.Clear();
-            SettingsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-            SettingsIcon.ReloadImage();
-            SettingsLabel.TextColor = _secondaryTextColor;
+            if (excluded != SettingsFrame.Id)
+            {
+                SettingsFrame.BackgroundColor = _backgroundColor;
+                SettingsIcon.ReplaceStringMap.Clear();
+                SettingsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
+                SettingsIcon.ReloadImage();
+                SettingsLabel.TextColor = _secondaryTextColor;
+            }
         }
 
         void Handle_Tapped(object sender, EventArgs e)
         {
-            SetAllInactive();
+            var frame = (ContentButton)sender;
 
-            var frame = (ContentView)sender;
-            frame.BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
+            SetAllInactive(frame.Id);
 
             var stackLayout = (StackLayout)frame.Content;
 
