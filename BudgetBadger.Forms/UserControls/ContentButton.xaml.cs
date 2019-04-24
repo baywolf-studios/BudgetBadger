@@ -86,7 +86,8 @@ namespace BudgetBadger.Forms.UserControls
 
         public async void UpdateResting()
         {
-            if (!ForceActiveBackground && BackgroundColor != RestingBackgroundColor)
+            if ((!ForceActiveBackground && BackgroundColor != RestingBackgroundColor)
+                || BackgroundColor == HoverBackgroundColor)
             {
                 uint animationLength = 150;
                 var colorTask = this.ColorTo(BackgroundColor, RestingBackgroundColor, (Color obj2) => BackgroundColor = obj2, animationLength, Easing.CubicInOut);
@@ -100,7 +101,10 @@ namespace BudgetBadger.Forms.UserControls
 
         public void UpdateHover()
         {
-            BackgroundColor = HoverBackgroundColor;
+            if (BackgroundColor != ActiveBackgroundColor)
+            {
+                BackgroundColor = HoverBackgroundColor;
+            }
         }
 
         public void UpdateActive()
