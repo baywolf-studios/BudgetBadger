@@ -150,6 +150,21 @@
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    HeaderText=""
+                                    MappingName="CreatedDateTime"
+                                    Width="16">
+                                    <syncfusion:GridTemplateColumn.IsHidden>
+                                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
+                                            <On Platform="macOS">false</On>
+                                        </OnPlatform>
+                                    </syncfusion:GridTemplateColumn.IsHidden>
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ContentView/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                             </syncfusion:SfDataGrid.Columns>
                         </uc:DataGrid>
                     </uc:PullToRefresh.PullableContent>

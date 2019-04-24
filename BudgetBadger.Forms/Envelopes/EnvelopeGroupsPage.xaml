@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
-    x:Class="BudgetBadger.Forms.Payees.PayeesPage"
+    x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -14,7 +14,7 @@
     x:Name="this">
     <p:BasePage.Header>
         <p:RootSearchHeader
-            PageTitle="Payees"
+            PageTitle="EnvelopeGroups"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg"
@@ -22,9 +22,9 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            Title="Add a Payee using the + button"
-            ImagePath="payees.svg"
-            ShowHelper="{Binding NoPayees}">
+            Title="Add an Envelope Group using the + button"
+            ImagePath="envelopegroup.svg"
+            ShowHelper="{Binding NoEnvelopeGroups}">
             <Grid
                 Margin="0"
                 ColumnSpacing="16"
@@ -36,13 +36,12 @@
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
                             FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                             HeaderSize="0"
                             IsBusy="{Binding IsBusy}"
                             ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding Payees}"
+                            ItemsSource="{Binding EnvelopeGroups}"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedPayee}">
+                            SelectedItem="{Binding SelectedEnvelopeGroup}">
                             <syncfusion:SfListView.Triggers>
                                 <DataTrigger
                                     Binding="{Binding HasSearchText}"
@@ -58,7 +57,7 @@
                                         Command="{Binding SaveCommand}"
                                         IsVisible="{Binding HasSearchText}"
                                         Style="{StaticResource SecondaryActionButtonStyle}"
-                                        Text="{Binding SearchText, StringFormat='Add Payee: {0}'}" />
+                                        Text="{Binding SearchText, StringFormat='Add EnvelopeGroup: {0}'}" />
                                 </DataTemplate>
                             </syncfusion:SfListView.HeaderTemplate>
                             <syncfusion:SfListView.RightSwipeTemplate>
@@ -95,21 +94,9 @@
                                     </Grid>
                                 </DataTemplate>
                             </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.DataSource>
-                                <data:DataSource>
-                                    <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Group" />
-                                    </data:DataSource.GroupDescriptors>
-                                </data:DataSource>
-                            </syncfusion:SfListView.DataSource>
-                            <syncfusion:SfListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <dt:GroupHeaderViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.GroupHeaderTemplate>
                             <syncfusion:SfListView.ItemTemplate>
                                 <DataTemplate>
-                                    <dt:PayeeViewCell />
+                                    <dt:EnvelopeGroupViewCell />
                                 </DataTemplate>
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
@@ -120,13 +107,6 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-                <uc:Button2
-                    x:Name="NewTransactionButton"
-                    Margin="16,0,16,16"
-                    Command="{Binding AddTransactionCommand}"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction"
-                    VerticalOptions="End" />
             </Grid>
         </uc:HelperControl>
     </p:BasePage.Body>
