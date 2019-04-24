@@ -38,6 +38,7 @@ namespace BudgetBadger.UWP
             var ignore = typeof(SvgCachedImage);
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
+            ContentButtonRenderer.Initialize();
             LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
         }
     }

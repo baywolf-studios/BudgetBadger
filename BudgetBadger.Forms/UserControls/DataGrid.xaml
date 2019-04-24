@@ -9,4 +9,4 @@
     GridStyle="{StaticResource sfDataGridStyle}"
     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
     RowHeight="{StaticResource Key=ListItemHeight}"
-    SelectionMode="Single"/>
+    SelectionMode="Single" />
