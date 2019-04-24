@@ -205,9 +205,9 @@
             <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
             <Color x:Key="SecondaryActionButtonBackgroundColor">White</Color>
             <Color x:Key="SecondaryActionButtonBorderColor">#c8d1e0</Color>
-            <Color x:Key="SecondaryActionButtonHoverBackgroundColor">#e8f4fa</Color>
+            <Color x:Key="SecondaryActionButtonHoverBackgroundColor">#f5f7fa</Color>
             <Color x:Key="SecondaryActionButtonHoverBorderColor">#0c7bb3</Color>
-            <Color x:Key="SecondaryActionButtonActiveBackgroundColor">#bbe5fa</Color>
+            <Color x:Key="SecondaryActionButtonActiveBackgroundColor">#e8f4fa</Color>
             <Color x:Key="SecondaryActionButtonActiveBorderColor">#0c7bb3</Color>
             <Style x:Key="SecondaryActionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
