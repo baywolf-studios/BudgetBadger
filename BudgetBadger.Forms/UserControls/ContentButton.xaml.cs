@@ -57,6 +57,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
 
+
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (sender, e) =>
             {
