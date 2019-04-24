@@ -33,18 +33,16 @@
                     Style="{StaticResource MasterDetailTitleLabelStyle}"
                     Text="Budget Badger"
                     VerticalOptions="Center" />
-                <ContentView
+                <uc:ContentButton
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
                     Margin="8,0"
-                    Padding="0"
-                    BackgroundColor="{StaticResource SelectedItemColor}">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="NavigationPage/EnvelopesPage"
-                            Tapped="Handle_Tapped" />
-                    </ContentView.GestureRecognizers>
+                    BackgroundColor="{StaticResource SelectedItemColor}"
+                    Style="{StaticResource SidebarButtonStyle}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="NavigationPage/EnvelopesPage"
+                    ForceActiveBackground="true"
+                    Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="EnvelopesIcon"
@@ -61,18 +59,16 @@
                             TextColor="{StaticResource PrimaryTextColor}"
                             VerticalOptions="Center" />
                     </StackLayout>
-                </ContentView>
-                <ContentView
+                </uc:ContentButton>
+                <uc:ContentButton
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
-                    Padding="0">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="NavigationPage/AccountsPage"
-                            Tapped="Handle_Tapped" />
-                    </ContentView.GestureRecognizers>
+                    Style="{StaticResource SidebarButtonStyle}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="NavigationPage/AccountsPage"
+                    ForceActiveBackground="true"
+                    Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="AccountsIcon"
@@ -88,18 +84,16 @@
                             Text="Accounts"
                             VerticalOptions="Center" />
                     </StackLayout>
-                </ContentView>
-                <ContentView
+                </uc:ContentButton>
+                <uc:ContentButton
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
-                    Padding="0">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="NavigationPage/PayeesPage"
-                            Tapped="Handle_Tapped" />
-                    </ContentView.GestureRecognizers>
+                    Style="{StaticResource SidebarButtonStyle}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="NavigationPage/PayeesPage"
+                    ForceActiveBackground="true"
+                    Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="PayeesIcon"
@@ -115,18 +109,16 @@
                             Text="Payees"
                             VerticalOptions="Center" />
                     </StackLayout>
-                </ContentView>
-                <ContentView
+                </uc:ContentButton>
+                <uc:ContentButton
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
-                    Padding="0">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="NavigationPage/ReportsPage"
-                            Tapped="Handle_Tapped" />
-                    </ContentView.GestureRecognizers>
+                    Style="{StaticResource SidebarButtonStyle}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="NavigationPage/ReportsPage"
+                    ForceActiveBackground="true"
+                    Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="ReportsIcon"
@@ -142,18 +134,16 @@
                             Text="Reports"
                             VerticalOptions="Center" />
                     </StackLayout>
-                </ContentView>
-                <ContentView
+                </uc:ContentButton>
+                <uc:ContentButton
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
-                    Padding="0">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="NavigationPage/SettingsPage"
-                            Tapped="Handle_Tapped" />
-                    </ContentView.GestureRecognizers>
+                    Style="{StaticResource SidebarButtonStyle}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="NavigationPage/SettingsPage"
+                    ForceActiveBackground="true"
+                    Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
                             x:Name="SettingsIcon"
@@ -169,7 +159,7 @@
                             Text="Settings"
                             VerticalOptions="Center" />
                     </StackLayout>
-                </ContentView>
+                </uc:ContentButton>
                 <BoxView
                     Grid.RowSpan="7"
                     Grid.Column="1"
