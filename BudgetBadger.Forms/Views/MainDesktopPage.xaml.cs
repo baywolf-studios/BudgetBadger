@@ -34,8 +34,7 @@ namespace BudgetBadger.Forms.Views
         {
             if (excluded != EnvelopesFrame.Id)
             {
-                EnvelopesFrame.ForceActiveBackground = false;
-                EnvelopesFrame.ForceActiveBackground = true; 
+                EnvelopesFrame.BackgroundColor = EnvelopesFrame.RestingBackgroundColor;
                 EnvelopesIcon.ReplaceStringMap.Clear();
                 EnvelopesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
                 EnvelopesIcon.ReloadImage();
@@ -44,7 +43,7 @@ namespace BudgetBadger.Forms.Views
 
             if (excluded != AccountsFrame.Id)
             {
-                AccountsFrame.BackgroundColor = _backgroundColor; 
+                AccountsFrame.BackgroundColor = AccountsFrame.RestingBackgroundColor;
                 AccountsIcon.ReplaceStringMap.Clear();
                 AccountsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
                 AccountsIcon.ReloadImage();
@@ -53,7 +52,7 @@ namespace BudgetBadger.Forms.Views
 
             if (excluded != PayeesFrame.Id)
             {
-                PayeesFrame.BackgroundColor = _backgroundColor;
+                PayeesFrame.BackgroundColor = PayeesFrame.RestingBackgroundColor;
                 PayeesIcon.ReplaceStringMap.Clear();
                 PayeesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
                 PayeesIcon.ReloadImage();
@@ -62,7 +61,7 @@ namespace BudgetBadger.Forms.Views
 
             if (excluded != ReportsFrame.Id)
             {
-                ReportsFrame.BackgroundColor = _backgroundColor;
+                ReportsFrame.BackgroundColor = ReportsFrame.RestingBackgroundColor;
                 ReportsIcon.ReplaceStringMap.Clear();
                 ReportsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
                 ReportsIcon.ReloadImage();
@@ -71,7 +70,7 @@ namespace BudgetBadger.Forms.Views
 
             if (excluded != SettingsFrame.Id)
             {
-                SettingsFrame.BackgroundColor = _backgroundColor;
+                SettingsFrame.BackgroundColor = SettingsFrame.RestingBackgroundColor;
                 SettingsIcon.ReplaceStringMap.Clear();
                 SettingsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
                 SettingsIcon.ReloadImage();
