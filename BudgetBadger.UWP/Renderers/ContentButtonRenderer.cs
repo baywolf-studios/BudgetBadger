@@ -27,16 +27,21 @@ namespace BudgetBadger.UWP.Renderers
 
             if (e?.NewElement != null && e?.NewElement is ContentButton)
             {
-                this.AddHandler(PointerReleasedEvent, new PointerEventHandler(Control_Released), true);
                 this.AddHandler(PointerCanceledEvent, new PointerEventHandler(Control_Released), true);
 
                 this.AddHandler(PointerEnteredEvent, new PointerEventHandler(Control_Hover), true);
 
                 this.AddHandler(PointerExitedEvent, new PointerEventHandler(Control_Released), true);
 
+                this.AddHandler(PointerPressedEvent, new PointerEventHandler(Control_Pressed), true);
 
                 _card = (ContentButton)e.NewElement;
             }
+        }
+
+        void Control_Pressed(object sender, PointerRoutedEventArgs e)
+        {
+            _card?.UpdateActive();
         }
 
         void Control_Released(object sender, PointerRoutedEventArgs e)
