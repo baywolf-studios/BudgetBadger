@@ -51,6 +51,8 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ForceActiveBackgroundProperty, value);
         }
 
+        public event EventHandler<EventArgs> Tapped;
+
         public ContentButton()
         {
             InitializeComponent();
@@ -60,6 +62,7 @@ namespace BudgetBadger.Forms.UserControls
             {
                 UpdateActive();
 
+                Tapped?.Invoke(this, new EventArgs());
                 if (Command != null && Command.CanExecute(CommandParameter))
                 {
                     Command.Execute(CommandParameter);
