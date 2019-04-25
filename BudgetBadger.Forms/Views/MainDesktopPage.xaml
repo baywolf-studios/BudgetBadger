@@ -38,10 +38,10 @@
                     Grid.Row="1"
                     Margin="8,0"
                     BackgroundColor="{StaticResource SelectedItemColor}"
-                    Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="NavigationPage/EnvelopesPage"
                     ForceActiveBackground="true"
+                    Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -64,10 +64,10 @@
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
-                    Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="NavigationPage/AccountsPage"
                     ForceActiveBackground="true"
+                    Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -89,10 +89,10 @@
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
-                    Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="NavigationPage/PayeesPage"
                     ForceActiveBackground="true"
+                    Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -114,10 +114,10 @@
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
-                    Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="NavigationPage/ReportsPage"
                     ForceActiveBackground="true"
+                    Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage
@@ -139,10 +139,10 @@
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
-                    Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="NavigationPage/SettingsPage"
                     ForceActiveBackground="true"
+                    Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <svg:SvgCachedImage

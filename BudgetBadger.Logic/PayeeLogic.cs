@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
@@ -14,13 +15,17 @@ namespace BudgetBadger.Logic
         readonly IPayeeDataAccess _payeeDataAccess;
         readonly IAccountDataAccess _accountDataAccess;
         readonly ITransactionDataAccess _transactionDataAccess;
+        readonly IResourceContainer _resourceContainer;
 
-        public PayeeLogic(IPayeeDataAccess payeeDataAccess, IAccountDataAccess accountDataAccess, 
-                          ITransactionDataAccess transactionDataAccess)
+        public PayeeLogic(IPayeeDataAccess payeeDataAccess,
+            IAccountDataAccess accountDataAccess, 
+            ITransactionDataAccess transactionDataAccess,
+            IResourceContainer resourceContainer)
         {
             _payeeDataAccess = payeeDataAccess;
             _accountDataAccess = accountDataAccess;
             _transactionDataAccess = transactionDataAccess;
+            _resourceContainer = resourceContainer;
         }
 
         async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
@@ -32,23 +37,23 @@ namespace BudgetBadger.Logic
 
             if (!populatePayee.IsActive)
             {
-                errors.Add("Cannot delete an inactive payee"); 
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError")); 
             }
 
             if (populatePayee.IsAccount)
             {
-                errors.Add("Cannot delete an account payee");
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError");
             }
 
             if (populatePayee.Id == Constants.StartingBalancePayee.Id)
             {
-                errors.Add("Cannot delete the starting balance payee"); 
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"); 
             }
 
             var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id).ConfigureAwait(false);
             if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
             {
-                errors.Add("Cannot delete a payee with future transactions on it");
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError");
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -266,7 +271,7 @@ namespace BudgetBadger.Logic
 
             if (string.IsNullOrEmpty(payee.Description))
             {
-                errors.Add("Payee description is required");
+                errors.Add(_resourceContainer.GetResourceString("PayeeValidDescriptionError"));
             }
 
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });

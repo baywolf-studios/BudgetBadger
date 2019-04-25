@@ -279,13 +279,12 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
-                        Label="Currency" 
-                        ItemsSource="{Binding CurrencyFormatList}"
                         ItemDisplayBinding="{Binding Key}"
+                        ItemsSource="{Binding CurrencyFormatList}"
+                        Label="Currency"
                         SelectedItem="{Binding SelectedCurrencyFormat, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
-                            <b:EventToCommandBehavior EventName="SelectedIndexChanged" 
-                                                      Command="{Binding CurrencySelectedCommand}"/>
+                            <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
                     </uc:DropdownSelector>
                     <uc:DropdownSelector
@@ -293,13 +292,12 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
-                        Label="Date and Time"
-                        ItemsSource="{Binding DateFormatList, Mode=TwoWay}"
                         ItemDisplayBinding="{Binding Key}"
+                        ItemsSource="{Binding DateFormatList, Mode=TwoWay}"
+                        Label="Date and Time"
                         SelectedItem="{Binding SelectedDateFormat, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
-                            <b:EventToCommandBehavior EventName="SelectedIndexChanged" 
-                                                      Command="{Binding DateSelectedCommand}"/>
+                            <b:EventToCommandBehavior Command="{Binding DateSelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
                     </uc:DropdownSelector>
                     <Label

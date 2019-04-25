@@ -225,13 +225,13 @@
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
             </Style>
-            
+
             <Style x:Key="SidebarButtonStyle" TargetType="uc:ContentButton">
                 <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
                 <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
                 <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
             </Style>
-            
+
             <x:Double x:Key="SecondaryDestructionButtonFontSize">14</x:Double>
             <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>

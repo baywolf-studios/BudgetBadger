@@ -162,9 +162,9 @@
                                     MappingName="Remaining"
                                     TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
+                                    Width="16"
                                     HeaderText=""
-                                    MappingName="CreatedDateTime"
-                                    Width="16">
+                                    MappingName="CreatedDateTime">
                                     <syncfusion:GridTemplateColumn.IsHidden>
                                         <OnPlatform x:TypeArguments="x:Boolean" Default="true">
                                             <On Platform="macOS">false</On>
@@ -172,7 +172,7 @@
                                     </syncfusion:GridTemplateColumn.IsHidden>
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView/>
+                                            <ContentView />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

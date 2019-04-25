@@ -68,5 +68,50 @@ namespace BudgetBadger.Language {
                 return ResourceManager.GetString("AccountBalanceRequiredError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an account payee.
+        /// </summary>
+        public static string PayeeDeleteAccountError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteAccountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a payee with future transactions on it.
+        /// </summary>
+        public static string PayeeDeleteFutureTransactionsError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteFutureTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an inactive payee.
+        /// </summary>
+        public static string PayeeDeleteInactiveError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete the starting balance payee.
+        /// </summary>
+        public static string PayeeDeleteStartingBalanceError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteStartingBalanceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee name is required.
+        /// </summary>
+        public static string PayeeValidDescriptionError {
+            get {
+                return ResourceManager.GetString("PayeeValidDescriptionError", resourceCulture);
+            }
+        }
     }
 }
