@@ -80,10 +80,10 @@ namespace BudgetBadger.Forms.Transactions
 
 		public async void OnNavigatingTo(INavigationParameters parameters)
 		{
-            var goBackToRoot = parameters.GetValue<bool>(PageParameter.GoBackToRoot);
-            if (goBackToRoot)
+            var goBack = parameters.GetValue<bool>(PageParameter.GoBack);
+            if (goBack)
             {
-                await _navigationService.GoBackAsync(parameters);
+                await _navigationService.GoBackAsync();
                 return;
             }
 

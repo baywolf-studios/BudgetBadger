@@ -114,13 +114,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
-            var goBackToRoot = parameters.GetValue<bool>(PageParameter.GoBackToRoot);
-            if (goBackToRoot)
-            {
-                await _navigationService.GoBackAsync(parameters);
-                return;
-            }
-
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {

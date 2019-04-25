@@ -191,7 +191,7 @@ namespace BudgetBadger.Forms.Transactions
                 return;
             }
 
-            //Transactions = Transactions.ToList();
+            Transactions = Transactions.ToList();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
@@ -286,11 +286,18 @@ namespace BudgetBadger.Forms.Transactions
                 {
                     _needToSync = true;
 
-                    var parameter = new NavigationParameters
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        { PageParameter.GoBackToRoot, true }
-                    };
-                    await _navigationService.GoBackAsync(parameter);
+                        var param = new NavigationParameters
+                        {
+                            { PageParameter.GoBack, true }
+                        };
+                        await _navigationService.GoBackAsync(param);
+                    }
+                    else
+                    {
+                        await _navigationService.GoBackToRootAsync();
+                    }
                 }
                 else
                 {

@@ -144,11 +144,14 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
-                    var parameter = new NavigationParameters
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        { PageParameter.GoBackToRoot, true }
-                    };
-                    await _navigationService.GoBackAsync(parameter);
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await _navigationService.GoBackToRootAsync();
+                    }
                 }
                 else
                 {
