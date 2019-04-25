@@ -121,4 +121,19 @@
     <value>Account Balance Required</value>
     <comment>Error message when a user has not provided a starting balance for an account</comment>
   </data>
+  <data name="PayeeDeleteAccountError" xml:space="preserve">
+    <value>Cannot delete an account payee</value>
+  </data>
+  <data name="PayeeDeleteFutureTransactionsError" xml:space="preserve">
+    <value>Cannot delete a payee with future transactions on it</value>
+  </data>
+  <data name="PayeeDeleteInactiveError" xml:space="preserve">
+    <value>Cannot delete an inactive payee</value>
+  </data>
+  <data name="PayeeDeleteStartingBalanceError" xml:space="preserve">
+    <value>Cannot delete the starting balance payee</value>
+  </data>
+  <data name="PayeeValidDescriptionError" xml:space="preserve">
+    <value>Payee name is required</value>
+  </data>
 </root>
