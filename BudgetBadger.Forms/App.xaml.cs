@@ -37,6 +37,7 @@ using Plugin.InAppBilling;
 using Microsoft.Data.Sqlite;
 using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
+using Newtonsoft.Json;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -238,19 +239,35 @@ namespace BudgetBadger.Forms
             var localize = Container.Resolve<ILocalize>();
             var settings = Container.Resolve<ISettings>();
 
-            var currentCulture = localize.GetDeviceCultureInfo();
+            var currentCulture = (CultureInfo)localize.GetDeviceCultureInfo().Clone();
 
-            var currencyCulture = settings.GetValueOrDefault(AppSettings.CurrencyCulture);
-            if(!String.IsNullOrEmpty(currencyCulture))
+            var currentCurrencyFormat = settings.GetValueOrDefault(AppSettings.CurrencyFormat);
+            if (!String.IsNullOrEmpty(currentCurrencyFormat) && currentCurrencyFormat != "Automatic")
             {
-                currentCulture.NumberFormat = new CultureInfo(currencyCulture).NumberFormat;
+                try
+                {
+                    var currencyCulture = new CultureInfo(currentCurrencyFormat);
+                    currentCulture.NumberFormat = currencyCulture.NumberFormat;
+                }
+                catch(Exception ex)
+                {
+                    // culture doesn't exist
+                }
             }
 
-            var dateTimeCulture = settings.GetValueOrDefault(AppSettings.DateTimeCulture);
-            if (!String.IsNullOrEmpty(dateTimeCulture))
+            var currentDateFormat = settings.GetValueOrDefault(AppSettings.DateFormat);
+            if (!String.IsNullOrEmpty(currentDateFormat) && currentDateFormat != "Automatic")
             {
-                currentCulture.DateTimeFormat = new CultureInfo(dateTimeCulture).DateTimeFormat;
-            }
+                try
+                {
+                    var dateCulture = new CultureInfo(currentDateFormat);
+                    currentCulture.DateTimeFormat = dateCulture.DateTimeFormat;
+                }
+                catch (Exception ex)
+                {
+                    // culture doesn't exist
+                }
+        }
 
             localize.SetLocale(currentCulture);
         }

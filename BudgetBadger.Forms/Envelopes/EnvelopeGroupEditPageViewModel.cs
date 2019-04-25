@@ -9,6 +9,7 @@ using Prism.Navigation;
 using Prism.Services;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -143,7 +144,11 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    var parameter = new NavigationParameters
+                    {
+                        { PageParameter.GoBackToRoot, true }
+                    };
+                    await _navigationService.GoBackAsync(parameter);
                 }
                 else
                 {
@@ -173,7 +178,7 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

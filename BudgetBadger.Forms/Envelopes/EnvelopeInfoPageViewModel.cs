@@ -126,6 +126,13 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            var goBackToRoot = parameters.GetValue<bool>(PageParameter.GoBackToRoot);
+            if (goBackToRoot)
+            {
+                await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {

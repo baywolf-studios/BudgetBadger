@@ -74,9 +74,6 @@
             Source="back.svg"
             VerticalOptions="Center"
             WidthRequest="24" />
-        <ContentView.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding BackCommand}" />
-        </ContentView.GestureRecognizers>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"

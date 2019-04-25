@@ -12,6 +12,7 @@ using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -208,7 +209,11 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    var parameter = new NavigationParameters
+                    {
+                        { PageParameter.GoBackToRoot, true }
+                    };
+                    await _navigationService.GoBackAsync(parameter);
                 }
                 else
                 {
@@ -238,7 +243,14 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    if (Device.RuntimePlatform == Device.macOS)
+                    {
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await _navigationService.GoBackToRootAsync();
+                    }
                 }
                 else
                 {

@@ -12,6 +12,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
 {
@@ -285,7 +286,11 @@ namespace BudgetBadger.Forms.Transactions
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    var parameter = new NavigationParameters
+                    {
+                        { PageParameter.GoBackToRoot, true }
+                    };
+                    await _navigationService.GoBackAsync(parameter);
                 }
                 else
                 {

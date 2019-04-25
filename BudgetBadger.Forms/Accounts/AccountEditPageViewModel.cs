@@ -13,6 +13,7 @@ using BudgetBadger.Forms.Enums;
 using Prism.Mvvm;
 using System.Collections.Generic;
 using BudgetBadger.Models.Extensions;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -153,7 +154,11 @@ namespace BudgetBadger.Forms.Accounts
 				{
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    var parameter = new NavigationParameters
+                    {
+                        { PageParameter.GoBackToRoot, true }
+                    };
+                    await _navigationService.GoBackAsync(parameter);
 				}
 				else
 				{
@@ -183,7 +188,7 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     _needToSync = true;
 
-                    await _navigationService.GoBackToRootAsync();
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
