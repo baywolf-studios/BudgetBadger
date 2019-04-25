@@ -225,16 +225,19 @@ namespace BudgetBadger.Logic
 
                 // ugly hardcoded to remove the starting balance payee.
                 // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p => p.IsActive && !p.IsStartingBalance && !p.IsAccount).ToList();
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsActive);
 
-                var tasks = payees.Select(GetPopulatedPayee);
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
 
-                var payeesTemp = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                payeesTemp.Sort();
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
 
                 result.Success = true;
-				result.Data = payeesTemp;
+				result.Data = filteredPopulatedPayees;
             }
             catch (Exception ex)
             {
