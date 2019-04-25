@@ -3,6 +3,7 @@ namespace BudgetBadger.Forms.Enums
 {
     public static class PageParameter
     {
+        public static readonly string GoBackToRoot = nameof(GoBackToRoot);
         public static readonly string Account = "account";
         public static readonly string Budget = "budget";
         public static readonly string Payee = "payee";

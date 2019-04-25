@@ -123,6 +123,13 @@ namespace BudgetBadger.Forms.Payees
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            var goBackToRoot = parameters.GetValue<bool>(PageParameter.GoBackToRoot);
+            if (goBackToRoot)
+            {
+                await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
             {

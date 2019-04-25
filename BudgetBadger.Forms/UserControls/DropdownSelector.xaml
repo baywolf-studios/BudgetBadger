@@ -18,7 +18,7 @@
     <Picker
         x:Name="PickerControl"
         FontSize="16"
-        ItemsSource="{Binding ItemsSource}"
+        ItemsSource="{Binding ItemsSource, Mode=TwoWay}"
         SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
         SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
         TextColor="{StaticResource PrimaryTextColor}" />

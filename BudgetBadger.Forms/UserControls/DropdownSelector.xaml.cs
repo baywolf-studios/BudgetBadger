@@ -39,7 +39,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(DropdownSelector), null);
+        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(DropdownSelector), null, BindingMode.TwoWay);
         public IList ItemsSource
         {
             get => (IList)GetValue(ItemsSourceProperty);

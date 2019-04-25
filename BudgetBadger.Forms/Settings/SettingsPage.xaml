@@ -38,8 +38,8 @@
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
                         <RowDefinition Height="{StaticResource ListItemHeight}" />
@@ -278,15 +278,30 @@
                         Grid.Row="12"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Label="Currency" />
-
+                        Margin="16,8"
+                        Label="Currency" 
+                        ItemsSource="{Binding CurrencyFormatList}"
+                        ItemDisplayBinding="{Binding Key}"
+                        SelectedItem="{Binding SelectedCurrencyFormat, Mode=TwoWay}">
+                        <uc:DropdownSelector.Behaviors>
+                            <b:EventToCommandBehavior EventName="SelectedIndexChanged" 
+                                                      Command="{Binding CurrencySelectedCommand}"/>
+                        </uc:DropdownSelector.Behaviors>
+                    </uc:DropdownSelector>
                     <uc:DropdownSelector
                         Grid.Row="13"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Label="Date &amp; Time" />
+                        Margin="16,8"
+                        Label="Date and Time"
+                        ItemsSource="{Binding DateFormatList, Mode=TwoWay}"
+                        ItemDisplayBinding="{Binding Key}"
+                        SelectedItem="{Binding SelectedDateFormat, Mode=TwoWay}">
+                        <uc:DropdownSelector.Behaviors>
+                            <b:EventToCommandBehavior EventName="SelectedIndexChanged" 
+                                                      Command="{Binding DateSelectedCommand}"/>
+                        </uc:DropdownSelector.Behaviors>
+                    </uc:DropdownSelector>
                     <Label
                         Grid.Row="14"
                         Grid.ColumnSpan="3"
