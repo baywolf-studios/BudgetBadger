@@ -61,11 +61,74 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Balance Required.
+        ///   Looks up a localized string similar to Cannot delete account with balance.
         /// </summary>
-        public static string AccountBalanceRequiredError {
+        public static string AccountDeleteBalanceError {
             get {
-                return ResourceManager.GetString("AccountBalanceRequiredError", resourceCulture);
+                return ResourceManager.GetString("AccountDeleteBalanceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete account with future transactions.
+        /// </summary>
+        public static string AccountDeleteFutureTransactionsError {
+            get {
+                return ResourceManager.GetString("AccountDeleteFutureTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an inactive account.
+        /// </summary>
+        public static string AccountDeleteInactiveError {
+            get {
+                return ResourceManager.GetString("AccountDeleteInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete account with pending transactions.
+        /// </summary>
+        public static string AccountDeletePendingTransactionsError {
+            get {
+                return ResourceManager.GetString("AccountDeletePendingTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The reconciled amounts do not match.
+        /// </summary>
+        public static string AccountReconcileAmountsDoNotMatchError {
+            get {
+                return ResourceManager.GetString("AccountReconcileAmountsDoNotMatchError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account is not deleted.
+        /// </summary>
+        public static string AccountUndoDeleteNotDeletedError {
+            get {
+                return ResourceManager.GetString("AccountUndoDeleteNotDeletedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account balance is required.
+        /// </summary>
+        public static string AccountValidBalanceError {
+            get {
+                return ResourceManager.GetString("AccountValidBalanceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account name is required.
+        /// </summary>
+        public static string AccountValidDescriptionError {
+            get {
+                return ResourceManager.GetString("AccountValidDescriptionError", resourceCulture);
             }
         }
         
