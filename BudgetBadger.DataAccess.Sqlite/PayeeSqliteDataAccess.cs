@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
@@ -12,10 +13,13 @@ namespace BudgetBadger.DataAccess.Sqlite
     public class PayeeSqliteDataAccess : IPayeeDataAccess
     {
         readonly string _connectionString;
+        readonly IResourceContainer _resourceContainer;
 
-        public PayeeSqliteDataAccess(string connectionString)
+        public PayeeSqliteDataAccess(string connectionString,
+            IResourceContainer resourceContainer)
         {
             _connectionString = connectionString;
+            _resourceContainer = resourceContainer;
 
             Initialize();
         }
@@ -69,7 +73,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                     @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.StartingBalancePayee.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.StartingBalancePayee.Description));
                         command.Parameters.AddWithValue("@Notes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.StartingBalancePayee.ModifiedDateTime);

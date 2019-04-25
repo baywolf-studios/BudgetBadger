@@ -16,7 +16,7 @@ namespace BudgetBadger.Logic
         readonly IAccountDataAccess _accountDataAccess;
         readonly IPayeeDataAccess _payeeDataAccess;
         readonly IEnvelopeDataAccess _envelopeDataAccess;
-        readonly IResourceContainer _resouceContainer;
+        readonly IResourceContainer _resourceContainer;
 
         public TransactionLogic(ITransactionDataAccess transactionDataAccess, 
             IAccountDataAccess accountDataAccess, 
@@ -28,7 +28,7 @@ namespace BudgetBadger.Logic
             _accountDataAccess = accountDataAccess;
             _payeeDataAccess = payeeDataAccess;
             _envelopeDataAccess = envelopeDataAccess;
-            _resouceContainer = resourceContainer;
+            _resourceContainer = resourceContainer;
         }
 
         async Task<Result> ValidateDeleteTransactionAsync(Guid transactionId)
@@ -40,17 +40,17 @@ namespace BudgetBadger.Logic
 
             if (transaction.IsTransfer && transaction.Payee.IsDeleted)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionDeleteTransferDeletedPayeeError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionDeleteTransferDeletedPayeeError"));
             }
 
             if (transaction.Account.IsDeleted)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionDeleteAccountDeletedError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionDeleteAccountDeletedError"));
             }
 
             if (transaction.Envelope.IsDeleted)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionDeleteEnvelopeDeletedError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionDeleteEnvelopeDeletedError"));
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -196,22 +196,22 @@ namespace BudgetBadger.Logic
 
             if (!transaction.Amount.HasValue)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionValidAmountError"));
             }
 
             if (transaction.Payee == null)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeError"));
             }
 
             if (transaction.Account == null)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionValidAccountError"));
             }
 
             if (transaction.Envelope == null)
             {
-                errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeError"));
+                errors.Add(_resourceContainer.GetResourceString("TransactionValidEnvelopeError"));
             }
 
             if (!errors.Any())
@@ -220,21 +220,21 @@ namespace BudgetBadger.Logic
                 var transactionPayee = await _payeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
                 if (transactionPayee.IsNew)
                 {
-                    errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeExistError"));
+                    errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeExistError"));
                 }
 
                 // check for existance of account
                 var transactionAccount = await _accountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
                 if (transactionAccount.IsNew)
                 {
-                    errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountExistError"));
+                    errors.Add(_resourceContainer.GetResourceString("TransactionValidAccountExistError"));
                 }
 
                 // check for existance of envelope
                 var transactionEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
                 if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsNew)
                 {
-                    errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeExistError"));
+                    errors.Add(_resourceContainer.GetResourceString("TransactionValidEnvelopeExistError"));
                 }
 
                 var tempTransaction = await _transactionDataAccess.ReadTransactionAsync(transaction.Id).ConfigureAwait(false);
@@ -246,24 +246,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionAccount.IsDeleted)
                         {
-                            errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedError"));
+                            errors.Add(_resourceContainer.GetResourceString("TransactionValidAccountDeletedError"));
                         }
 
                         if (existingTransaction.Account.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedAccountError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidAmountDeletedAccountError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedAccountError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidServiceDateDeletedAccountError"));
                             }
 
                             if (transaction.Account.Id != existingTransaction.Account.Id)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedAccountError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidAccountDeletedAccountError"));
                             }
                         }
                     }
@@ -272,24 +272,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionPayee.IsDeleted)
                         {
-                            errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
+                            errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
                         }
 
                         if (existingTransaction.IsTransfer && existingTransaction.Payee.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedPayeeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidAmountDeletedPayeeError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedPayeeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidServiceDateDeletedPayeeError"));
                             }
 
                             if (transaction.Payee.Id != existingTransaction.Payee.Id)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedPayeeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeDeletedPayeeError"));
                             }
                         }
                     }
@@ -298,24 +298,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionEnvelope.IsDeleted)
                         {
-                            errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
+                            errors.Add(_resourceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
                         }
 
                         if (existingTransaction.Envelope.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedEnvelopeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidAmountDeletedEnvelopeError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedEnvelopeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidServiceDateDeletedEnvelopeError"));
                             }
 
                             if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
                             {
-                                errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedEnvelopeError"));
+                                errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeDeletedEnvelopeError"));
                             }
                         }
                     }
@@ -324,17 +324,17 @@ namespace BudgetBadger.Logic
                 {
                     if (transactionPayee.IsDeleted)
                     {
-                        errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
+                        errors.Add(_resourceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
                     }
 
                     if (transactionAccount.IsDeleted)
                     {
-                        errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedError"));
+                        errors.Add(_resourceContainer.GetResourceString("TransactionValidAccountDeletedError"));
                     }
 
                     if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsDeleted)
                     {
-                        errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
+                        errors.Add(_resourceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
                     }
                 }
             }
@@ -458,7 +458,7 @@ namespace BudgetBadger.Logic
             if (!transactions.Any())
             {
                 result.Success = false;
-                result.Message = _resouceContainer.GetResourceString("SplitTransactionValidTransactionsError");
+                result.Message = _resourceContainer.GetResourceString("SplitTransactionValidTransactionsError");
                 return result;
             }
 
@@ -572,7 +572,7 @@ namespace BudgetBadger.Logic
 
             if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem)
             {
-                transactionToPopulate.Envelope = Constants.IgnoredEnvelope;
+                transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
             }
             else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem)
             {
@@ -584,7 +584,7 @@ namespace BudgetBadger.Logic
             {
                 var debtAccount = await _accountDataAccess.ReadAccountAsync(transactionToPopulate.Envelope.Id).ConfigureAwait(false);
                 transactionToPopulate.Account = debtAccount;
-                transactionToPopulate.Envelope = Constants.GenericDebtEnvelope;
+                transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.GenericDebtEnvelope.Id);
             }
 
             return new Result<Transaction> { Success = true, Data = transactionToPopulate };
@@ -619,17 +619,17 @@ namespace BudgetBadger.Logic
 
                     if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
                     {
-                        combinedTransaction.Account = new Account() { Description = _resouceContainer.GetResourceString("Split") };
+                        combinedTransaction.Account = new Account() { Description = _resourceContainer.GetResourceString("Split") };
                     }
 
                     if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
                     {
-                        combinedTransaction.Envelope = new Envelope() { Description = _resouceContainer.GetResourceString("Split") };
+                        combinedTransaction.Envelope = new Envelope() { Description = _resourceContainer.GetResourceString("Split") };
                     }
 
                     if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
                     {
-                        combinedTransaction.Payee = new Payee() { Description = _resouceContainer.GetResourceString("Split") };
+                        combinedTransaction.Payee = new Payee() { Description = _resourceContainer.GetResourceString("Split") };
                     }
 
                     if (transactionGroup.All(t => t.Posted))
