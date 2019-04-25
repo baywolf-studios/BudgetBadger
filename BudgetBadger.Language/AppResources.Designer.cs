@@ -178,6 +178,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Split.
+        /// </summary>
+        public static string Split {
+            get {
+                return ResourceManager.GetString("Split", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No split transactions to save.
+        /// </summary>
+        public static string SplitTransactionValidTransactionsError {
+            get {
+                return ResourceManager.GetString("SplitTransactionValidTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete transaction with deleted account.
         /// </summary>
         public static string TransactionDeleteAccountDeletedError {
@@ -205,6 +223,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Account on a transaction with a deleted Account.
+        /// </summary>
+        public static string TransactionValidAccountDeletedAccountError {
+            get {
+                return ResourceManager.GetString("TransactionValidAccountDeletedAccountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot use a deleted Account.
+        /// </summary>
+        public static string TransactionValidAccountDeletedError {
+            get {
+                return ResourceManager.GetString("TransactionValidAccountDeletedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account is required.
         /// </summary>
         public static string TransactionValidAccountError {
@@ -223,11 +259,47 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Account.
+        /// </summary>
+        public static string TransactionValidAmountDeletedAccountError {
+            get {
+                return ResourceManager.GetString("TransactionValidAmountDeletedAccountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Envelope.
+        /// </summary>
+        public static string TransactionValidAmountDeletedEnvelopeError {
+            get {
+                return ResourceManager.GetString("TransactionValidAmountDeletedEnvelopeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Payee.
+        /// </summary>
+        public static string TransactionValidAmountDeletedPayeeError {
+            get {
+                return ResourceManager.GetString("TransactionValidAmountDeletedPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount is required.
         /// </summary>
         public static string TransactionValidAmountError {
             get {
                 return ResourceManager.GetString("TransactionValidAmountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot use a deleted Envelope.
+        /// </summary>
+        public static string TransactionValidEnvelopeDeletedError {
+            get {
+                return ResourceManager.GetString("TransactionValidEnvelopeDeletedError", resourceCulture);
             }
         }
         
@@ -250,6 +322,33 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Envelope on a transaction with a deleted Envelope.
+        /// </summary>
+        public static string TransactionValidPayeeDeletedEnvelopeError {
+            get {
+                return ResourceManager.GetString("TransactionValidPayeeDeletedEnvelopeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot use a deleted Payee.
+        /// </summary>
+        public static string TransactionValidPayeeDeletedError {
+            get {
+                return ResourceManager.GetString("TransactionValidPayeeDeletedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Payee on a transaction with a deleted Payee.
+        /// </summary>
+        public static string TransactionValidPayeeDeletedPayeeError {
+            get {
+                return ResourceManager.GetString("TransactionValidPayeeDeletedPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payee is required.
         /// </summary>
         public static string TransactionValidPayeeError {
@@ -264,6 +363,33 @@ namespace BudgetBadger.Language {
         public static string TransactionValidPayeeExistError {
             get {
                 return ResourceManager.GetString("TransactionValidPayeeExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Account.
+        /// </summary>
+        public static string TransactionValidServiceDateDeletedAccountError {
+            get {
+                return ResourceManager.GetString("TransactionValidServiceDateDeletedAccountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Envelope.
+        /// </summary>
+        public static string TransactionValidServiceDateDeletedEnvelopeError {
+            get {
+                return ResourceManager.GetString("TransactionValidServiceDateDeletedEnvelopeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Payee.
+        /// </summary>
+        public static string TransactionValidServiceDateDeletedPayeeError {
+            get {
+                return ResourceManager.GetString("TransactionValidServiceDateDeletedPayeeError", resourceCulture);
             }
         }
     }

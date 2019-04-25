@@ -156,6 +156,12 @@
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
   </data>
+  <data name="Split" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="SplitTransactionValidTransactionsError" xml:space="preserve">
+    <value>No split transactions to save</value>
+  </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
   </data>
@@ -165,14 +171,32 @@
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
     <value>Cannot delete transfer transaction with deleted payee</value>
   </data>
+  <data name="TransactionValidAccountDeletedAccountError" xml:space="preserve">
+    <value>Cannot edit the Account on a transaction with a deleted Account</value>
+  </data>
+  <data name="TransactionValidAccountDeletedError" xml:space="preserve">
+    <value>Cannot use a deleted Account</value>
+  </data>
   <data name="TransactionValidAccountError" xml:space="preserve">
     <value>Account is required</value>
   </data>
   <data name="TransactionValidAccountExistError" xml:space="preserve">
     <value>Account does not exist</value>
   </data>
+  <data name="TransactionValidAmountDeletedAccountError" xml:space="preserve">
+    <value>Cannot edit the Amount on a transaction with a deleted Account</value>
+  </data>
+  <data name="TransactionValidAmountDeletedEnvelopeError" xml:space="preserve">
+    <value>Cannot edit the Amount on a transaction with a deleted Envelope</value>
+  </data>
+  <data name="TransactionValidAmountDeletedPayeeError" xml:space="preserve">
+    <value>Cannot edit the Amount on a transaction with a deleted Payee</value>
+  </data>
   <data name="TransactionValidAmountError" xml:space="preserve">
     <value>Amount is required</value>
+  </data>
+  <data name="TransactionValidEnvelopeDeletedError" xml:space="preserve">
+    <value>Cannot use a deleted Envelope</value>
   </data>
   <data name="TransactionValidEnvelopeError" xml:space="preserve">
     <value>Envelope is required</value>
@@ -180,10 +204,28 @@
   <data name="TransactionValidEnvelopeExistError" xml:space="preserve">
     <value>Envelope does not exist</value>
   </data>
+  <data name="TransactionValidPayeeDeletedEnvelopeError" xml:space="preserve">
+    <value>Cannot edit the Envelope on a transaction with a deleted Envelope</value>
+  </data>
+  <data name="TransactionValidPayeeDeletedError" xml:space="preserve">
+    <value>Cannot use a deleted Payee</value>
+  </data>
+  <data name="TransactionValidPayeeDeletedPayeeError" xml:space="preserve">
+    <value>Cannot edit the Payee on a transaction with a deleted Payee</value>
+  </data>
   <data name="TransactionValidPayeeError" xml:space="preserve">
     <value>Payee is required</value>
   </data>
   <data name="TransactionValidPayeeExistError" xml:space="preserve">
     <value>Payee does not exist</value>
+  </data>
+  <data name="TransactionValidServiceDateDeletedAccountError" xml:space="preserve">
+    <value>Cannot edit the Service Date on a transaction with a deleted Account</value>
+  </data>
+  <data name="TransactionValidServiceDateDeletedEnvelopeError" xml:space="preserve">
+    <value>Cannot edit the Service Date on a transaction with a deleted Envelope</value>
+  </data>
+  <data name="TransactionValidServiceDateDeletedPayeeError" xml:space="preserve">
+    <value>Cannot edit the Service Date on a transaction with a deleted Payee</value>
   </data>
 </root>

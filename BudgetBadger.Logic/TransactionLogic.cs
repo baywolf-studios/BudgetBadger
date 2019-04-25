@@ -246,24 +246,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionAccount.IsDeleted)
                         {
-                            errors.Add("Cannot use a deleted Account");
+                            errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedError"));
                         }
 
                         if (existingTransaction.Account.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add("Cannot edit the Amount on a transaction with a deleted Account");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedAccountError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Account");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedAccountError"));
                             }
 
                             if (transaction.Account.Id != existingTransaction.Account.Id)
                             {
-                                errors.Add("Cannot edit the Account on a transaction with a deleted Account");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedAccountError"));
                             }
                         }
                     }
@@ -272,24 +272,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionPayee.IsDeleted)
                         {
-                            errors.Add("Cannot use a deleted Payee");
+                            errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
                         }
 
                         if (existingTransaction.IsTransfer && existingTransaction.Payee.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add("Cannot edit the Amount on a transaction with a deleted Payee");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedPayeeError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Payee");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedPayeeError"));
                             }
 
                             if (transaction.Payee.Id != existingTransaction.Payee.Id)
                             {
-                                errors.Add("Cannot edit the Payee on a transaction with a deleted Payee");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedPayeeError"));
                             }
                         }
                     }
@@ -298,24 +298,24 @@ namespace BudgetBadger.Logic
                     {
                         if (transactionEnvelope.IsDeleted)
                         {
-                            errors.Add("Cannot use a deleted Envelope");
+                            errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
                         }
 
                         if (existingTransaction.Envelope.IsDeleted)
                         {
                             if (transaction.Amount != existingTransaction.Amount)
                             {
-                                errors.Add("Cannot edit the Amount on a transaction with a deleted Envelope");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidAmountDeletedEnvelopeError"));
                             }
 
                             if (transaction.ServiceDate != existingTransaction.ServiceDate)
                             {
-                                errors.Add("Cannot edit the Service Date on a transaction with a deleted Envelope");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidServiceDateDeletedEnvelopeError"));
                             }
 
                             if (transaction.Envelope.Id != existingTransaction.Envelope.Id)
                             {
-                                errors.Add("Cannot edit the Envelope on a transaction with a deleted Envelope");
+                                errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedEnvelopeError"));
                             }
                         }
                     }
@@ -324,17 +324,17 @@ namespace BudgetBadger.Logic
                 {
                     if (transactionPayee.IsDeleted)
                     {
-                        errors.Add("Payee is deleted");
+                        errors.Add(_resouceContainer.GetResourceString("TransactionValidPayeeDeletedError"));
                     }
 
                     if (transactionAccount.IsDeleted)
                     {
-                        errors.Add("Account is deleted");
+                        errors.Add(_resouceContainer.GetResourceString("TransactionValidAccountDeletedError"));
                     }
 
                     if (!transaction.Envelope.IsGenericDebtEnvelope && transactionEnvelope.IsDeleted)
                     {
-                        errors.Add("Envelope is deleted");
+                        errors.Add(_resouceContainer.GetResourceString("TransactionValidEnvelopeDeletedError"));
                     }
                 }
             }
@@ -458,7 +458,7 @@ namespace BudgetBadger.Logic
             if (!transactions.Any())
             {
                 result.Success = false;
-                result.Message = "No split transactions to save";
+                result.Message = _resouceContainer.GetResourceString("SplitTransactionValidTransactionsError");
                 return result;
             }
 
@@ -619,17 +619,17 @@ namespace BudgetBadger.Logic
 
                     if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
                     {
-                        combinedTransaction.Account = new Account() { Description = "Split" };
+                        combinedTransaction.Account = new Account() { Description = _resouceContainer.GetResourceString("Split") };
                     }
 
                     if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
                     {
-                        combinedTransaction.Envelope = new Envelope() { Description = "Split" };
+                        combinedTransaction.Envelope = new Envelope() { Description = _resouceContainer.GetResourceString("Split") };
                     }
 
                     if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
                     {
-                        combinedTransaction.Payee = new Payee() { Description = "Split" };
+                        combinedTransaction.Payee = new Payee() { Description = _resouceContainer.GetResourceString("Split") };
                     }
 
                     if (transactionGroup.All(t => t.Posted))
