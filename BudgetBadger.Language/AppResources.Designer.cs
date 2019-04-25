@@ -176,5 +176,95 @@ namespace BudgetBadger.Language {
                 return ResourceManager.GetString("PayeeValidDescriptionError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete transaction with deleted account.
+        /// </summary>
+        public static string TransactionDeleteAccountDeletedError {
+            get {
+                return ResourceManager.GetString("TransactionDeleteAccountDeletedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete transaction with deleted envelope.
+        /// </summary>
+        public static string TransactionDeleteEnvelopeDeletedError {
+            get {
+                return ResourceManager.GetString("TransactionDeleteEnvelopeDeletedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete transfer transaction with deleted payee.
+        /// </summary>
+        public static string TransactionDeleteTransferDeletedPayeeError {
+            get {
+                return ResourceManager.GetString("TransactionDeleteTransferDeletedPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account is required.
+        /// </summary>
+        public static string TransactionValidAccountError {
+            get {
+                return ResourceManager.GetString("TransactionValidAccountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account does not exist.
+        /// </summary>
+        public static string TransactionValidAccountExistError {
+            get {
+                return ResourceManager.GetString("TransactionValidAccountExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount is required.
+        /// </summary>
+        public static string TransactionValidAmountError {
+            get {
+                return ResourceManager.GetString("TransactionValidAmountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope is required.
+        /// </summary>
+        public static string TransactionValidEnvelopeError {
+            get {
+                return ResourceManager.GetString("TransactionValidEnvelopeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope does not exist.
+        /// </summary>
+        public static string TransactionValidEnvelopeExistError {
+            get {
+                return ResourceManager.GetString("TransactionValidEnvelopeExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee is required.
+        /// </summary>
+        public static string TransactionValidPayeeError {
+            get {
+                return ResourceManager.GetString("TransactionValidPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee does not exist.
+        /// </summary>
+        public static string TransactionValidPayeeExistError {
+            get {
+                return ResourceManager.GetString("TransactionValidPayeeExistError", resourceCulture);
+            }
+        }
     }
 }
