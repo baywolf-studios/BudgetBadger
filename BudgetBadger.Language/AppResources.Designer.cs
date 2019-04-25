@@ -133,6 +133,60 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buffer.
+        /// </summary>
+        public static string BufferEnvelope {
+            get {
+                return ResourceManager.GetString("BufferEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debt.
+        /// </summary>
+        public static string DebtEnvelopeGroup {
+            get {
+                return ResourceManager.GetString("DebtEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debt.
+        /// </summary>
+        public static string GenericDebtEnvelope {
+            get {
+                return ResourceManager.GetString("GenericDebtEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Needed.
+        /// </summary>
+        public static string IgnoredEnvelope {
+            get {
+                return ResourceManager.GetString("IgnoredEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income.
+        /// </summary>
+        public static string IncomeEnvelope {
+            get {
+                return ResourceManager.GetString("IncomeEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income.
+        /// </summary>
+        public static string IncomeEnvelopeGroup {
+            get {
+                return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete an account payee.
         /// </summary>
         public static string PayeeDeleteAccountError {
@@ -192,6 +246,24 @@ namespace BudgetBadger.Language {
         public static string SplitTransactionValidTransactionsError {
             get {
                 return ResourceManager.GetString("SplitTransactionValidTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Balance.
+        /// </summary>
+        public static string StartingBalancePayee {
+            get {
+                return ResourceManager.GetString("StartingBalancePayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string SystemEnvelopeGroup {
+            get {
+                return ResourceManager.GetString("SystemEnvelopeGroup", resourceCulture);
             }
         }
         

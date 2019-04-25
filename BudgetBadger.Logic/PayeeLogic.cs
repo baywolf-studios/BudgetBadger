@@ -42,18 +42,18 @@ namespace BudgetBadger.Logic
 
             if (populatePayee.IsAccount)
             {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError");
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError"));
             }
 
             if (populatePayee.Id == Constants.StartingBalancePayee.Id)
             {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"); 
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError")); 
             }
 
             var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id).ConfigureAwait(false);
             if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
             {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError");
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError"));
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };

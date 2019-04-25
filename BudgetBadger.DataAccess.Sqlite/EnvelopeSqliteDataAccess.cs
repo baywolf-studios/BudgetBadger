@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
@@ -12,10 +13,13 @@ namespace BudgetBadger.DataAccess.Sqlite
     public class EnvelopeSqliteDataAccess : IEnvelopeDataAccess
     {
         readonly string _connectionString;
+        readonly IResourceContainer _resourceContainer;
 
-        public EnvelopeSqliteDataAccess(string connectionString)
+        public EnvelopeSqliteDataAccess(string connectionString,
+            IResourceContainer resourceContainer)
         {
             _connectionString = connectionString;
+            _resourceContainer = resourceContainer;
 
             Initialize();
         }
@@ -95,7 +99,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -110,7 +114,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.DebtEnvelopeGroup.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.DebtEnvelopeGroup.Description));
                         command.Parameters.AddWithValue("@Notes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.DebtEnvelopeGroup.ModifiedDateTime);
@@ -131,7 +135,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -146,7 +150,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelopeGroup.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelopeGroup.Description));
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelopeGroup.ModifiedDateTime);
@@ -167,7 +171,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -182,7 +186,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.SystemEnvelopeGroup.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.SystemEnvelopeGroup.Description));
                         command.Parameters.AddWithValue("@Notes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.SystemEnvelopeGroup.ModifiedDateTime);
@@ -203,7 +207,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -222,7 +226,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.BufferEnvelope.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.BufferEnvelope.Description));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
@@ -245,7 +249,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -264,7 +268,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.IgnoredEnvelope.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IgnoredEnvelope.Description));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
@@ -287,7 +291,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
+                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -306,7 +310,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @DeletedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", Constants.IncomeEnvelope.Description);
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelope.Description));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
@@ -1087,6 +1091,14 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
+        public Envelope ReadGenericDebtEnvelope()
+        {
+            var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
+            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(Constants.GenericDebtEnvelope.Description);
+            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(Constants.DebtEnvelopeGroup.Description);
+            return genericDebtEnvelope;
+        }
+
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
         {
             using(await MultiThreadLock.UseWaitAsync())
@@ -1105,7 +1117,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime, 
+                                               DeletedDateTime
                                         FROM   EnvelopeGroup
                                         WHERE  Id = @Id";
 

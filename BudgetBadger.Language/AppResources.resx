@@ -141,6 +141,24 @@
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
   </data>
+  <data name="BufferEnvelope" xml:space="preserve">
+    <value>Buffer</value>
+  </data>
+  <data name="DebtEnvelopeGroup" xml:space="preserve">
+    <value>Debt</value>
+  </data>
+  <data name="GenericDebtEnvelope" xml:space="preserve">
+    <value>Debt</value>
+  </data>
+  <data name="IgnoredEnvelope" xml:space="preserve">
+    <value>Not Needed</value>
+  </data>
+  <data name="IncomeEnvelope" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="IncomeEnvelopeGroup" xml:space="preserve">
+    <value>Income</value>
+  </data>
   <data name="PayeeDeleteAccountError" xml:space="preserve">
     <value>Cannot delete an account payee</value>
   </data>
@@ -161,6 +179,12 @@
   </data>
   <data name="SplitTransactionValidTransactionsError" xml:space="preserve">
     <value>No split transactions to save</value>
+  </data>
+  <data name="StartingBalancePayee" xml:space="preserve">
+    <value>Starting Balance</value>
+  </data>
+  <data name="SystemEnvelopeGroup" xml:space="preserve">
+    <value>System</value>
   </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>

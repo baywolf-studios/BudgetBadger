@@ -80,7 +80,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
                 var genericDebtBudget = new Budget
                 {
-                    Envelope = Constants.GenericDebtEnvelope,
+                    Envelope = _envelopeDataAccess.ReadGenericDebtEnvelope(),
                     Amount = debtBudgets.Sum(b => b.Amount),
                     Activity = debtBudgets.Sum(b => b.Activity),
                     PastAmount = debtBudgets.Sum(b => b.PastAmount),

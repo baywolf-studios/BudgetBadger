@@ -116,8 +116,8 @@ namespace BudgetBadger.Forms
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
             container.UseInstance(new SqliteConnection(defaultConnectionString), serviceKey: "defaultConnection");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
             container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
             //default logic
@@ -133,9 +133,9 @@ namespace BudgetBadger.Forms
             container.UseInstance(new SqliteConnection(syncConnectionString), serviceKey: "syncConnection");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                    serviceKey: "syncAccountDataAccess");
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
                                                  serviceKey: "syncPayeeDataAccess");
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
                                                     serviceKey: "syncEnvelopeDataAccess");
             container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
                                                        serviceKey: "syncTransactionDataAccess");

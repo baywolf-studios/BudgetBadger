@@ -40,7 +40,7 @@ namespace BudgetBadger.Logic
 
             if (account.IsNew)
             {
-                errors.Add(_resourceContainer.GetResourceString("AccountDeleteInactiveError");
+                errors.Add(_resourceContainer.GetResourceString("AccountDeleteInactiveError"));
             }
 
             if (account.Balance != 0)
@@ -272,12 +272,13 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.CreatePayeeAsync(accountPayee).ConfigureAwait(false);
 
                 //create a debt envelope for new accounts
+                var debtEnvelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(Constants.DebtEnvelopeGroup.Id);
                 var debtEnvelope = new Envelope
                 {
                     Id = accountToUpsert.Id,
                     Description = accountToUpsert.Description,
                     IgnoreOverspend = true,
-                    Group = Constants.DebtEnvelopeGroup,
+                    Group = debtEnvelopeGroup,
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow
                 };
@@ -287,7 +288,7 @@ namespace BudgetBadger.Logic
                 Envelope startingBalanceEnvelope;
                 if (accountToUpsert.OffBudget)
                 {
-                    startingBalanceEnvelope = Constants.IgnoredEnvelope;
+                    startingBalanceEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
                 }
                 else if (accountToUpsert.Balance < 0) // on budget and negative
                 {
@@ -295,7 +296,7 @@ namespace BudgetBadger.Logic
                 }
                 else // on budget and positive
                 {
-                    startingBalanceEnvelope = Constants.IncomeEnvelope;
+                    startingBalanceEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IncomeEnvelope.Id);
                 }
 
                 var startingBalance = new Transaction
@@ -307,7 +308,7 @@ namespace BudgetBadger.Logic
                     ServiceDate = dateTimeNow,
                     Posted = true,
                     Account = accountToUpsert,
-                    Payee = Constants.StartingBalancePayee,
+                    Payee = await _payeeDataAccess.ReadPayeeAsync(Constants.StartingBalancePayee.Id),
                     Envelope = startingBalanceEnvelope                 
                 };
 
