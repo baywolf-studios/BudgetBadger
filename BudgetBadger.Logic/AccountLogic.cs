@@ -40,12 +40,12 @@ namespace BudgetBadger.Logic
 
             if (account.IsNew)
             {
-                errors.Add("Cannot delete an inactive account");
+                errors.Add(_resourceContainer.GetResourceString("AccountDeleteInactiveError");
             }
 
             if (account.Balance != 0)
             {
-                errors.Add("Cannot delete account with balance");
+                errors.Add(_resourceContainer.GetResourceString("AccountDeleteBalanceError"));
             }
 
             var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
@@ -54,13 +54,13 @@ namespace BudgetBadger.Logic
             if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now)
                 || payeeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
-                errors.Add("Cannot delete account with future transactions");
+                errors.Add(_resourceContainer.GetResourceString("AccountDeleteFutureTransactionsError"));
             }
 
             if (accountTransactions.Any(t => t.IsActive && t.Pending)
                 || payeeTransactions.Any(t => t.IsActive && t.Pending))
             {
-                errors.Add("Cannot delete account with pending transactions");
+                errors.Add(_resourceContainer.GetResourceString("AccountDeletePendingTransactionsError"));
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -124,7 +124,7 @@ namespace BudgetBadger.Logic
                 else
                 {
                     result.Success = false;
-                    result.Message = "Account is not deleted";
+                    result.Message = _resourceContainer.GetResourceString("AccountUndoDeleteNotDeletedError");
                 }
             }
             catch (Exception ex)
@@ -232,12 +232,12 @@ namespace BudgetBadger.Logic
 
             if (account.IsNew && !account.Balance.HasValue)
             {
-                errors.Add(_resourceContainer.GetResourceString("AccountBalanceRequiredError"));
+                errors.Add(_resourceContainer.GetResourceString("AccountValidBalanceError"));
             }
 
             if (string.IsNullOrEmpty(account.Description))
             {
-                errors.Add("Account description is required");
+                errors.Add(_resourceContainer.GetResourceString("AccountValidDescriptionError"));
             }
 
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
@@ -429,7 +429,7 @@ namespace BudgetBadger.Logic
                 else
                 {
                     result.Success = false;
-                    result.Message = "The reconciled amounts do not match";
+                    result.Message = _resourceContainer.GetResourceString("AccountReconcileAmountsDoNotMatchError");
                 }
 
             }

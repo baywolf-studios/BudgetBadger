@@ -117,9 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountBalanceRequiredError" xml:space="preserve">
-    <value>Account Balance Required</value>
-    <comment>Error message when a user has not provided a starting balance for an account</comment>
+  <data name="AccountDeleteBalanceError" xml:space="preserve">
+    <value>Cannot delete account with balance</value>
+  </data>
+  <data name="AccountDeleteFutureTransactionsError" xml:space="preserve">
+    <value>Cannot delete account with future transactions</value>
+  </data>
+  <data name="AccountDeleteInactiveError" xml:space="preserve">
+    <value>Cannot delete an inactive account</value>
+  </data>
+  <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
+    <value>Cannot delete account with pending transactions</value>
+  </data>
+  <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
+    <value>The reconciled amounts do not match</value>
+  </data>
+  <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
+    <value>Account is not deleted</value>
+  </data>
+  <data name="AccountValidBalanceError" xml:space="preserve">
+    <value>Account balance is required</value>
+  </data>
+  <data name="AccountValidDescriptionError" xml:space="preserve">
+    <value>Account name is required</value>
   </data>
   <data name="PayeeDeleteAccountError" xml:space="preserve">
     <value>Cannot delete an account payee</value>
