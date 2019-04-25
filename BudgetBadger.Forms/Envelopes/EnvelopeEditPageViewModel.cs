@@ -209,11 +209,14 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
-                    var parameter = new NavigationParameters
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        { PageParameter.GoBackToRoot, true }
-                    };
-                    await _navigationService.GoBackAsync(parameter);
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await _navigationService.GoBackToRootAsync();
+                    }
                 }
                 else
                 {
@@ -243,14 +246,7 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

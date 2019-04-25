@@ -154,12 +154,15 @@ namespace BudgetBadger.Forms.Accounts
 				{
                     _needToSync = true;
 
-                    var parameter = new NavigationParameters
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        { PageParameter.GoBackToRoot, true }
-                    };
-                    await _navigationService.GoBackAsync(parameter);
-				}
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await _navigationService.GoBackToRootAsync();
+                    }
+                }
 				else
 				{
 					await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
