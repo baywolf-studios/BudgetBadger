@@ -151,6 +151,150 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete debt envelopes.
+        /// </summary>
+        public static string EnvelopeDeleteDebtError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteDebtError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope has future budget amounts to it.
+        /// </summary>
+        public static string EnvelopeDeleteFutureBudgetsError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteFutureBudgetsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope has future transactions.
+        /// </summary>
+        public static string EnvelopeDeleteFutureTransactionsError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteFutureTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete income envelopes.
+        /// </summary>
+        public static string EnvelopeDeleteIncomeError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteIncomeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope still has a remaining balance.
+        /// </summary>
+        public static string EnvelopeDeleteRemainingBalanceError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteRemainingBalanceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope group name is required.
+        /// </summary>
+        public static string EnvelopeGroupValidDescriptionError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget amount is required.
+        /// </summary>
+        public static string EnvelopeValidAmountError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidAmountError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope name is required.
+        /// </summary>
+        public static string EnvelopeValidDescriptionError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A valid Envelope is required.
+        /// </summary>
+        public static string EnvelopeValidEnvelopeError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidEnvelopeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope is required.
+        /// </summary>
+        public static string EnvelopeValidEnvelopeExistError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidEnvelopeExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope group is required.
+        /// </summary>
+        public static string EnvelopeValidGroupError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidGroupError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A valid envelope group is required.
+        /// </summary>
+        public static string EnvelopeValidGroupValidError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidGroupValidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore Overspend must be set on debt envelopes.
+        /// </summary>
+        public static string EnvelopeValidOverspendDebtError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidOverspendDebtError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot set Ignore Overspend Always when Ignore Overspend is not set.
+        /// </summary>
+        public static string EnvelopeValidOverspendError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidOverspendError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A valid Schedule is required.
+        /// </summary>
+        public static string EnvelopeValidScheduleError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidScheduleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule is required.
+        /// </summary>
+        public static string EnvelopeValidScheduleExistError {
+            get {
+                return ResourceManager.GetString("EnvelopeValidScheduleExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debt.
         /// </summary>
         public static string GenericDebtEnvelope {
@@ -228,6 +372,78 @@ namespace BudgetBadger.Language {
         public static string PayeeValidDescriptionError {
             get {
                 return ResourceManager.GetString("PayeeValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg. Past 3 Months Activity.
+        /// </summary>
+        public static string QuickBudgetAvgPast3MonthsActivity {
+            get {
+                return ResourceManager.GetString("QuickBudgetAvgPast3MonthsActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg. Past 3 Months Budgeted.
+        /// </summary>
+        public static string QuickBudgetAvgPast3MonthsBudgeted {
+            get {
+                return ResourceManager.GetString("QuickBudgetAvgPast3MonthsBudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg. Past Year Activity.
+        /// </summary>
+        public static string QuickBudgetAvgPastYearActivity {
+            get {
+                return ResourceManager.GetString("QuickBudgetAvgPastYearActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg. Past Year Budgeted.
+        /// </summary>
+        public static string QuickBudgetAvgPastYearBudgeted {
+            get {
+                return ResourceManager.GetString("QuickBudgetAvgPastYearBudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance.
+        /// </summary>
+        public static string QuickBudgetBalance {
+            get {
+                return ResourceManager.GetString("QuickBudgetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Month Activity.
+        /// </summary>
+        public static string QuickBudgetLastMonthActivity {
+            get {
+                return ResourceManager.GetString("QuickBudgetLastMonthActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Month Budgeted.
+        /// </summary>
+        public static string QuickBudgetLastMonthBudgeted {
+            get {
+                return ResourceManager.GetString("QuickBudgetLastMonthBudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget schedule description is required.
+        /// </summary>
+        public static string ScheduleValidDescriptionError {
+            get {
+                return ResourceManager.GetString("ScheduleValidDescriptionError", resourceCulture);
             }
         }
         
@@ -462,6 +678,24 @@ namespace BudgetBadger.Language {
         public static string TransactionValidServiceDateDeletedPayeeError {
             get {
                 return ResourceManager.GetString("TransactionValidServiceDateDeletedPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer does not contain a valid From Envelope.
+        /// </summary>
+        public static string TransferValidFromerror {
+            get {
+                return ResourceManager.GetString("TransferValidFromerror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer does not contain a valid To Envelope.
+        /// </summary>
+        public static string TransferValidToError {
+            get {
+                return ResourceManager.GetString("TransferValidToError", resourceCulture);
             }
         }
     }

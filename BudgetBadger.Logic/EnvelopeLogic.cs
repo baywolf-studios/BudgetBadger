@@ -157,24 +157,24 @@ namespace BudgetBadger.Logic
 
             if (envelope.Group.IsDebt || envelope.IsGenericDebtEnvelope)
             {
-                errors.Add("Cannot delete debt envelopes");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteDebtError"));
             }
 
             if (envelope.Group.IsIncome || envelope.IsIncome || envelope.IsBuffer)
             {
-                errors.Add("Cannot delete income envelopes");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteIncomeError"));
             }
 
             var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(envelope.Id).ConfigureAwait(false);
             if (envelopeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
             {
-                errors.Add("Envelope has future transactions");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteFutureTransactionsError"));
             }
 
             var envelopeBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelope.Id).ConfigureAwait(false);
             if (envelopeBudgets.Any(b => b.Schedule.BeginDate > DateTime.Now && b.Amount != 0)) 
             {
-                errors.Add("Envelope has future budget amounts to it");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteFutureBudgetsError"));
             }
 
             var latestEnvelopeBudget = envelopeBudgets
@@ -186,7 +186,7 @@ namespace BudgetBadger.Logic
                 var populateLatestEnvelopeBudget = await GetPopulatedBudget(latestEnvelopeBudget).ConfigureAwait(false);
                 if (populateLatestEnvelopeBudget.Remaining != 0)
                 {
-                    errors.Add("Envelope still has a remaining balance"); 
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteRemainingBalanceError")); 
                 }
             }
 
@@ -451,32 +451,32 @@ namespace BudgetBadger.Logic
 
             if (!budget.Amount.HasValue)
             {
-                errors.Add("Budget amount is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidAmountError"));
             }
 
             if (budget.Envelope == null)
             {
-                errors.Add("Envelope is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidEnvelopeExistError"));
             }
             else
             {
                 var envelopeValidationResult = await ValidateEnvelopeAsync(budget.Envelope);
                 if (!envelopeValidationResult.Success)
                 {
-                    errors.Add("A valid Envelope is required");
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeValidEnvelopeError"));
                 }
             }
 
             if (budget.Schedule == null)
             {
-                errors.Add("Schedule is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidScheduleExistError"));
             }
             else
             {
                 var scheduleValidResult = await ValidateBudgetScheduleAsync(budget.Schedule);
                 if (!scheduleValidResult.Success)
                 {
-                    errors.Add("A valid Schedule is required");
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeValidScheduleError"));
                 }
             }
 
@@ -487,13 +487,13 @@ namespace BudgetBadger.Logic
 
             if (budget.Envelope.IgnoreOverspend && !budget.IgnoreOverspend)
             {
-                errors.Add("Cannot set Ignore Overspend Always when Ignore Overspend is not set");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendError"));
             }
 
             if (budget.Envelope.Group.IsDebt && 
                 (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
             {
-                errors.Add("Ignore Overspend must be set on debt envelopes");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendDebtError"));
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -572,12 +572,12 @@ namespace BudgetBadger.Logic
 
             if (fromBudget == null)
             {
-                return new Result { Success = false, Message = "Transfer does not contain a valid From Envelope" };
+                return new Result { Success = false, Message = _resourceContainer.GetResourceString("TransferValidFromerror") };
             }
 
             if (toBudget == null)
             {
-                return new Result { Success = false, Message = "Transfer does not contain a valid To Envelope" };
+                return new Result { Success = false, Message = _resourceContainer.GetResourceString("TransferValidToError") };
             }
 
             fromBudget.Amount -= amount;
@@ -604,19 +604,19 @@ namespace BudgetBadger.Logic
 
             if (string.IsNullOrEmpty(envelope.Description))
             {
-                errors.Add("Envelope description is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidDescriptionError"));
             }
 
             if (envelope.Group == null)
             {
-                errors.Add("Envelope group is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeValidGroupError"));
             }
             else
             {
                 var validationResult = await ValidateEnvelopeGroupAsync(envelope.Group);
                 if (!validationResult.Success)
                 {
-                    errors.Add("A valid envelope group is required");
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeValidGroupValidError"));
                 }
             }
 
@@ -629,7 +629,7 @@ namespace BudgetBadger.Logic
 
             if (string.IsNullOrEmpty(envelopeGroup.Description))
             {
-                errors.Add("Envelope group description is required");
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupValidDescriptionError"));
             }
 
             return Task.FromResult(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
@@ -641,7 +641,7 @@ namespace BudgetBadger.Logic
 
             if (string.IsNullOrEmpty(budgetSchedule.Description))
             {
-                errors.Add("Budget schedule description is required");
+                errors.Add(_resourceContainer.GetResourceString(ScheduleValidDescriptionError"));
             }
 
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
@@ -1017,7 +1017,7 @@ namespace BudgetBadger.Logic
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
-                            Description = "Last Month Activity",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetLastMonthActivity"),
                             Amount = (activeTransactions
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) * -1
@@ -1032,7 +1032,7 @@ namespace BudgetBadger.Logic
                     {
                         var yearAgoActivity = new QuickBudget
                         {
-                            Description = "Last Month Budgeted",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetLastMonthBudgeted"),
                             Amount = (budgets
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= lastMonth.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0))
@@ -1048,7 +1048,7 @@ namespace BudgetBadger.Logic
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
-                            Description = "Avg. Past 3 Months Activity",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetAvgPast3MonthsActivity"),
                             Amount = (activeTransactions
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -3
@@ -1063,7 +1063,7 @@ namespace BudgetBadger.Logic
                     {
                         var yearAgoActivity = new QuickBudget
                         {
-                            Description = "Avg. Past 3 Months Budgeted",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetAvgPast3MonthsBudgeted"),
                             Amount = (budgets
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= threeMonthsAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 3
@@ -1079,7 +1079,7 @@ namespace BudgetBadger.Logic
                     {
                         var threeMonthsAgoActivity = new QuickBudget
                         {
-                            Description = "Avg. Past Year Activity",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetAvgPastYearActivity"),
                             Amount = (activeTransactions
                                       .Where(t => t.ServiceDate < budget.Schedule.BeginDate && t.ServiceDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / -12
@@ -1094,7 +1094,7 @@ namespace BudgetBadger.Logic
                     {
                         var yearAgoActivity = new QuickBudget
                         {
-                            Description = "Avg. Past Year Budgeted",
+                            Description = _resourceContainer.GetResourceString("QuickBudgetAvgPastYearBudgeted"),
                             Amount = (budgets
                                       .Where(b => b.Schedule.BeginDate < budget.Schedule.BeginDate && b.Schedule.BeginDate >= yearAgo.BeginDate)
                                       .Sum(t2 => t2.Amount ?? 0)) / 12
@@ -1108,7 +1108,7 @@ namespace BudgetBadger.Logic
 
                     var balance = new QuickBudget
                     {
-                        Description = "Balance",
+                        Description = _resourceContainer.GetResourceString("QuickBudgetBalance"),
                         Amount = (budget.Amount ?? 0) + (budget.Remaining * -1)
                     };
                     if (balance.Amount != 0)
