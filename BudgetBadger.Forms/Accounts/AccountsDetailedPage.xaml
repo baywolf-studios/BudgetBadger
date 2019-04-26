@@ -23,9 +23,9 @@
     <p:BaseDetailedPage.Body>
         <uc:HelperControl
             Title="Add the money you have now"
-            Subtitle="Use the + button to add your first account"
             ImagePath="account.svg"
-            ShowHelper="{Binding NoAccounts}">
+            ShowHelper="{Binding NoAccounts}"
+            Subtitle="Use the + button to add your first account">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -83,7 +83,7 @@
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
-                                <syncfusion:GroupColumnDescription ColumnName="Type" />
+                                <syncfusion:GroupColumnDescription ColumnName="Group" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.SortComparers>
                                 <data:SortComparer PropertyName="Description">
@@ -132,9 +132,9 @@
                                     MappingName="Balance"
                                     TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
+                                    Width="16"
                                     HeaderText=""
-                                    MappingName="CreatedDateTime"
-                                    Width="16">
+                                    MappingName="CreatedDateTime">
                                     <syncfusion:GridTemplateColumn.IsHidden>
                                         <OnPlatform x:TypeArguments="x:Boolean" Default="true">
                                             <On Platform="macOS">false</On>
@@ -142,7 +142,7 @@
                                     </syncfusion:GridTemplateColumn.IsHidden>
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView/>
+                                            <ContentView />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

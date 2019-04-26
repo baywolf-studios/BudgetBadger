@@ -69,23 +69,12 @@ namespace BudgetBadger.Models
             get => Id == Constants.StartingBalancePayee.Id;
         }
 
+        // calculated
+        string group;
         public string Group
         {
-            get
-            {
-                if (string.IsNullOrEmpty(Description))
-                {
-                    return "";
-                }
-                else if (IsAccount)
-                {
-                    return "Transfer";
-                }
-                else
-                {
-                    return Description[0].ToString().ToUpper();
-                }
-            }
+            get => group;
+            set => SetProperty(ref group, value);
         }
 
         public Payee()

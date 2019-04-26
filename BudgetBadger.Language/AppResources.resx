@@ -141,6 +141,9 @@
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
   </data>
+  <data name="BudgetAccountType" xml:space="preserve">
+    <value>Budget</value>
+  </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
   </data>
@@ -219,6 +222,9 @@
   <data name="PayeeDeleteStartingBalanceError" xml:space="preserve">
     <value>Cannot delete the starting balance payee</value>
   </data>
+  <data name="PayeeTransferGroup" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
   </data>
@@ -242,6 +248,9 @@
   </data>
   <data name="QuickBudgetLastMonthBudgeted" xml:space="preserve">
     <value>Last Month Budgeted</value>
+  </data>
+  <data name="ReportingAccountType" xml:space="preserve">
+    <value>Reporting1</value>
   </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
     <value>Budget schedule description is required</value>

@@ -27,7 +27,6 @@
             Subtitle="Use the + button to add your first account">
             <Grid
                 Margin="0"
-                
                 ColumnSpacing="16"
                 RowSpacing="0">
                 <Grid.RowDefinitions>
@@ -114,7 +113,7 @@
                             <syncfusion:SfListView.DataSource>
                                 <data:DataSource>
                                     <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Type.Name" />
+                                        <data:GroupDescriptor PropertyName="Group" />
                                     </data:DataSource.GroupDescriptors>
                                 </data:DataSource>
                             </syncfusion:SfListView.DataSource>
@@ -130,7 +129,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView  />
+                                    <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

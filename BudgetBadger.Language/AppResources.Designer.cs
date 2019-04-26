@@ -133,6 +133,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget.
+        /// </summary>
+        public static string BudgetAccountType {
+            get {
+                return ResourceManager.GetString("BudgetAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer.
         /// </summary>
         public static string BufferEnvelope {
@@ -367,6 +376,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transfer.
+        /// </summary>
+        public static string PayeeTransferGroup {
+            get {
+                return ResourceManager.GetString("PayeeTransferGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payee name is required.
         /// </summary>
         public static string PayeeValidDescriptionError {
@@ -435,6 +453,15 @@ namespace BudgetBadger.Language {
         public static string QuickBudgetLastMonthBudgeted {
             get {
                 return ResourceManager.GetString("QuickBudgetLastMonthBudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reporting1.
+        /// </summary>
+        public static string ReportingAccountType {
+            get {
+                return ResourceManager.GetString("ReportingAccountType", resourceCulture);
             }
         }
         
