@@ -14,6 +14,7 @@ using Prism.Mvvm;
 using System.Collections.Generic;
 using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -23,6 +24,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IResourceContainer _resourceContainer;
 
         bool _needToSync;
 
@@ -47,9 +49,9 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        public IList<AccountType> AccountTypes
+        public IList<string> AccountTypes
         {
-            get => Enumeration.GetAll<AccountType>().ToList();
+            get => Enum.GetNames(typeof(AccountType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
@@ -60,12 +62,14 @@ namespace BudgetBadger.Forms.Accounts
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
-                                        ISyncFactory syncFactory)
+                                        ISyncFactory syncFactory,
+                                        IResourceContainer resourceContainer)
         {
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _resourceContainer = resourceContainer;
 
             Account = new Account();
 

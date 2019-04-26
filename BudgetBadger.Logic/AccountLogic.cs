@@ -370,7 +370,6 @@ namespace BudgetBadger.Logic
             // payment 
             var dateTimeNow = DateTime.Now;
 
-
             var amountBudgetedToPayDownDebt = accountDebtBudgets
                 .Where(a => a.Schedule.BeginDate <= dateTimeNow)
                 .Sum(a => a.Amount);
@@ -380,6 +379,9 @@ namespace BudgetBadger.Logic
                 .Sum(d => d.Amount ?? 0);
 
             account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance ?? 0;
+
+            // group
+            account.Group = _resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
 
             return account;
         }

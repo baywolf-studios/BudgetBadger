@@ -31,13 +31,21 @@ namespace BudgetBadger.Models
             get => notes;
             set => SetProperty(ref notes, value);
         }
-        
+
+        // calculated
+        string group;
+        public string Group
+        {
+            get => group;
+            set => SetProperty(ref group, value);
+        }
+
         public AccountType Type
         {
-            get => OnBudget ? AccountType.Budget : AccountType.Reporting;
+            get => OnBudget ? AccountType.BudgetAccountType : AccountType.ReportingAccountType;
             set 
             {
-                OnBudget = value == AccountType.Budget;
+                OnBudget = value == AccountType.BudgetAccountType;
             }
         }
 
@@ -175,17 +183,13 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (Type != null && account.Type != null)
-            {
-                if (Type.Id == account.Type.Id)
+
+                if (Type == account.Type)
                 {
                     return String.Compare(Description, account.Description);
                 }
 
-                return Type.Id.CompareTo(account.Type.Id);
-            }
-
-            return String.Compare(Description, account.Description);
+                return Type.CompareTo(account.Type);
         }
 
         public int CompareTo(object obj)

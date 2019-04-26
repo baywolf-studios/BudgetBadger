@@ -334,6 +334,19 @@ namespace BudgetBadger.Logic
 
             payeeToPopulate.IsAccount = !payeeAccount.IsNew;
 
+            if (string.IsNullOrEmpty(payeeToPopulate.Description))
+            {
+                payeeToPopulate.Group = String.Empty;
+            }
+            else if (payeeToPopulate.IsAccount)
+            {
+                payeeToPopulate.Group = _resourceContainer.GetResourceString("PayeeTransferGroup");
+            }
+            else
+            {
+                payeeToPopulate.Group = payeeToPopulate.Description[0].ToString().ToUpper();
+            }
+
             return payeeToPopulate;
         }
     }
