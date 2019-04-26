@@ -147,6 +147,54 @@
   <data name="DebtEnvelopeGroup" xml:space="preserve">
     <value>Debt</value>
   </data>
+  <data name="EnvelopeDeleteDebtError" xml:space="preserve">
+    <value>Cannot delete debt envelopes</value>
+  </data>
+  <data name="EnvelopeDeleteFutureBudgetsError" xml:space="preserve">
+    <value>Envelope has future budget amounts to it</value>
+  </data>
+  <data name="EnvelopeDeleteFutureTransactionsError" xml:space="preserve">
+    <value>Envelope has future transactions</value>
+  </data>
+  <data name="EnvelopeDeleteIncomeError" xml:space="preserve">
+    <value>Cannot delete income envelopes</value>
+  </data>
+  <data name="EnvelopeDeleteRemainingBalanceError" xml:space="preserve">
+    <value>Envelope still has a remaining balance</value>
+  </data>
+  <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
+    <value>Envelope group name is required</value>
+  </data>
+  <data name="EnvelopeValidAmountError" xml:space="preserve">
+    <value>Budget amount is required</value>
+  </data>
+  <data name="EnvelopeValidDescriptionError" xml:space="preserve">
+    <value>Envelope name is required</value>
+  </data>
+  <data name="EnvelopeValidEnvelopeError" xml:space="preserve">
+    <value>A valid Envelope is required</value>
+  </data>
+  <data name="EnvelopeValidEnvelopeExistError" xml:space="preserve">
+    <value>Envelope is required</value>
+  </data>
+  <data name="EnvelopeValidGroupError" xml:space="preserve">
+    <value>Envelope group is required</value>
+  </data>
+  <data name="EnvelopeValidGroupValidError" xml:space="preserve">
+    <value>A valid envelope group is required</value>
+  </data>
+  <data name="EnvelopeValidOverspendDebtError" xml:space="preserve">
+    <value>Ignore Overspend must be set on debt envelopes</value>
+  </data>
+  <data name="EnvelopeValidOverspendError" xml:space="preserve">
+    <value>Cannot set Ignore Overspend Always when Ignore Overspend is not set</value>
+  </data>
+  <data name="EnvelopeValidScheduleError" xml:space="preserve">
+    <value>A valid Schedule is required</value>
+  </data>
+  <data name="EnvelopeValidScheduleExistError" xml:space="preserve">
+    <value>Schedule is required</value>
+  </data>
   <data name="GenericDebtEnvelope" xml:space="preserve">
     <value>Debt</value>
   </data>
@@ -173,6 +221,30 @@
   </data>
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
+  </data>
+  <data name="QuickBudgetAvgPast3MonthsActivity" xml:space="preserve">
+    <value>Avg. Past 3 Months Activity</value>
+  </data>
+  <data name="QuickBudgetAvgPast3MonthsBudgeted" xml:space="preserve">
+    <value>Avg. Past 3 Months Budgeted</value>
+  </data>
+  <data name="QuickBudgetAvgPastYearActivity" xml:space="preserve">
+    <value>Avg. Past Year Activity</value>
+  </data>
+  <data name="QuickBudgetAvgPastYearBudgeted" xml:space="preserve">
+    <value>Avg. Past Year Budgeted</value>
+  </data>
+  <data name="QuickBudgetBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="QuickBudgetLastMonthActivity" xml:space="preserve">
+    <value>Last Month Activity</value>
+  </data>
+  <data name="QuickBudgetLastMonthBudgeted" xml:space="preserve">
+    <value>Last Month Budgeted</value>
+  </data>
+  <data name="ScheduleValidDescriptionError" xml:space="preserve">
+    <value>Budget schedule description is required</value>
   </data>
   <data name="Split" xml:space="preserve">
     <value>Split</value>
@@ -251,5 +323,11 @@
   </data>
   <data name="TransactionValidServiceDateDeletedPayeeError" xml:space="preserve">
     <value>Cannot edit the Service Date on a transaction with a deleted Payee</value>
+  </data>
+  <data name="TransferValidFromerror" xml:space="preserve">
+    <value>Transfer does not contain a valid From Envelope</value>
+  </data>
+  <data name="TransferValidToError" xml:space="preserve">
+    <value>Transfer does not contain a valid To Envelope</value>
   </data>
 </root>
