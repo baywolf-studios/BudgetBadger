@@ -42,10 +42,10 @@ namespace BudgetBadger.Models
 
         public AccountType Type
         {
-            get => OnBudget ? AccountType.BudgetAccountType : AccountType.ReportingAccountType;
+            get => OnBudget ? AccountType.AccountTypeBudget : AccountType.AccountTypeReporting;
             set 
             {
-                OnBudget = value == AccountType.BudgetAccountType;
+                OnBudget = value == AccountType.AccountTypeBudget;
             }
         }
 

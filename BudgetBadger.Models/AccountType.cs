@@ -6,7 +6,7 @@ namespace BudgetBadger.Models
 {
     public enum AccountType
     {
-        BudgetAccountType,
-        ReportingAccountType,
+        AccountTypeBudget,
+        AccountTypeReporting,
     }
 }

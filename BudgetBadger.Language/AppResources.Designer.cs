@@ -106,6 +106,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget.
+        /// </summary>
+        public static string AccountTypeBudget {
+            get {
+                return ResourceManager.GetString("AccountTypeBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reporting.
+        /// </summary>
+        public static string AccountTypeReporting {
+            get {
+                return ResourceManager.GetString("AccountTypeReporting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account is not deleted.
         /// </summary>
         public static string AccountUndoDeleteNotDeletedError {
@@ -129,15 +147,6 @@ namespace BudgetBadger.Language {
         public static string AccountValidDescriptionError {
             get {
                 return ResourceManager.GetString("AccountValidDescriptionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Budget.
-        /// </summary>
-        public static string BudgetAccountType {
-            get {
-                return ResourceManager.GetString("BudgetAccountType", resourceCulture);
             }
         }
         
@@ -340,6 +349,33 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always Ignore.
+        /// </summary>
+        public static string OverspendingTypeAlwaysIgnore {
+            get {
+                return ResourceManager.GetString("OverspendingTypeAlwaysIgnore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t Ignore.
+        /// </summary>
+        public static string OverspendingTypeDoNotIgnore {
+            get {
+                return ResourceManager.GetString("OverspendingTypeDoNotIgnore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore.
+        /// </summary>
+        public static string OverspendingTypeIgnore {
+            get {
+                return ResourceManager.GetString("OverspendingTypeIgnore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete an account payee.
         /// </summary>
         public static string PayeeDeleteAccountError {
@@ -453,15 +489,6 @@ namespace BudgetBadger.Language {
         public static string QuickBudgetLastMonthBudgeted {
             get {
                 return ResourceManager.GetString("QuickBudgetLastMonthBudgeted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reporting1.
-        /// </summary>
-        public static string ReportingAccountType {
-            get {
-                return ResourceManager.GetString("ReportingAccountType", resourceCulture);
             }
         }
         

@@ -13,6 +13,7 @@ using BudgetBadger.Models.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -22,6 +23,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IResourceContainer _resourceContainer;
 
         bool _needToSync;
 
@@ -55,9 +57,9 @@ namespace BudgetBadger.Forms.Envelopes
 			get => !Budget.Envelope.Group.IsDebt;
 		}
 
-        public IList<OverspendingType> OverspendingTypes
+        public IList<string> OverspendingTypes
         {
-            get => Enumeration.GetAll<OverspendingType>().ToList();
+            get => Enum.GetNames(typeof(OverspendingType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
@@ -70,12 +72,14 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopeEditPageViewModel(INavigationService navigationService,
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
-                                         ISyncFactory syncFactory)
+                                         ISyncFactory syncFactory,
+                                         IResourceContainer resourceContainer)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
             _syncFactory = syncFactory;
+            _resourceContainer = resourceContainer;
 
             Budget = new Budget();
 
