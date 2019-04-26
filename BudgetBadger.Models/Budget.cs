@@ -36,23 +36,23 @@ namespace BudgetBadger.Models
             {
                 if (Envelope != null && Envelope.IgnoreOverspend)
                 {
-                    return OverspendingType.AlwaysIgnore;
+                    return OverspendingType.OverspendingTypeAlwaysIgnore;
                 }
                 else if (IgnoreOverspend)
                 {
-                    return OverspendingType.Ignore;
+                    return OverspendingType.OverspendingTypeIgnore;
                 }
                 else
                 {
-                    return OverspendingType.DoNotIgnore;
+                    return OverspendingType.OverspendingTypeDoNotIgnore;
                 }
             }
             set
             {
-                IgnoreOverspend = (value == OverspendingType.Ignore || value == OverspendingType.AlwaysIgnore);
+                IgnoreOverspend = (value == OverspendingType.OverspendingTypeIgnore || value == OverspendingType.OverspendingTypeAlwaysIgnore);
                 if (Envelope != null)
                 {
-                    Envelope.IgnoreOverspend = (value == OverspendingType.AlwaysIgnore);
+                    Envelope.IgnoreOverspend = (value == OverspendingType.OverspendingTypeAlwaysIgnore);
                 }
             }
         }

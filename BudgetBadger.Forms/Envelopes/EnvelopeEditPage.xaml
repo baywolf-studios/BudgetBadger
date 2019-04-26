@@ -172,7 +172,7 @@
                             IsEnabled="{Binding IsNotDebt}"
                             ItemsSource="{Binding OverspendingTypes}"
                             Label="Overspending"
-                            SelectedItem="{Binding Budget.HandleOverspend}" />
+                            SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnumConverter}}" />
                         <uc:MultilineTextEntry
                             Grid.Row="5"
                             Grid.Column="0"

@@ -132,6 +132,12 @@
   <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
     <value>The reconciled amounts do not match</value>
   </data>
+  <data name="AccountTypeBudget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="AccountTypeReporting" xml:space="preserve">
+    <value>Reporting</value>
+  </data>
   <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
     <value>Account is not deleted</value>
   </data>
@@ -140,9 +146,6 @@
   </data>
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
-  </data>
-  <data name="BudgetAccountType" xml:space="preserve">
-    <value>Budget</value>
   </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
@@ -210,6 +213,15 @@
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
     <value>Income</value>
   </data>
+  <data name="OverspendingTypeAlwaysIgnore" xml:space="preserve">
+    <value>Always Ignore</value>
+  </data>
+  <data name="OverspendingTypeDoNotIgnore" xml:space="preserve">
+    <value>Don't Ignore</value>
+  </data>
+  <data name="OverspendingTypeIgnore" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
   <data name="PayeeDeleteAccountError" xml:space="preserve">
     <value>Cannot delete an account payee</value>
   </data>
@@ -248,9 +260,6 @@
   </data>
   <data name="QuickBudgetLastMonthBudgeted" xml:space="preserve">
     <value>Last Month Budgeted</value>
-  </data>
-  <data name="ReportingAccountType" xml:space="preserve">
-    <value>Reporting1</value>
   </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
     <value>Budget schedule description is required</value>
