@@ -641,7 +641,7 @@ namespace BudgetBadger.Logic
 
             if (string.IsNullOrEmpty(budgetSchedule.Description))
             {
-                errors.Add(_resourceContainer.GetResourceString(ScheduleValidDescriptionError"));
+                errors.Add(_resourceContainer.GetResourceString("ScheduleValidDescriptionError"));
             }
 
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
