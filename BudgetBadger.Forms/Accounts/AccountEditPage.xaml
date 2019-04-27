@@ -3,12 +3,13 @@
     x:Class="BudgetBadger.Forms.Accounts.AccountEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Edit Account"
+            PageTitle="{ext:Translate AccountEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg"
             ToolbarItemText="Save">
@@ -17,7 +18,7 @@
                     Binding="{Binding Account.IsNew}"
                     TargetType="p:ChildHeader"
                     Value="True">
-                    <Setter Property="PageTitle" Value="New Account" />
+                    <Setter Property="PageTitle" Value="{ext:Translate AccountNewPageTitle}" />
                 </DataTrigger>
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
@@ -54,33 +55,33 @@
                         <uc:TextEntry
                             Grid.Row="1"
                             Margin="16,0"
-                            Label="Name"
+                            Label="{ext:Translate AccountNameLabel}"
                             Text="{Binding Account.Description}" />
                         <uc:DropdownSelector
                             Grid.Row="2"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
                             ItemsSource="{Binding AccountTypes}"
-                            Label="Type"
+                            Label="{ext:Translate AccountTypeLabel}"
                             SelectedIndex="{Binding Account.Type, Converter={StaticResource IntEnumConverter}}" />
                         <uc:CurrencyCalculatorEntry
                             Grid.Row="3"
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
-                            Label="Balance"
+                            Label="{ext:Translate AccountBalanceLabel}"
                             Number="{Binding Account.Balance}" />
                         <uc:MultilineTextEntry
                             Grid.Row="4"
                             Margin="16,0"
                             Keyboard="Text"
-                            Label="Notes"
+                            Label="{ext:Translate AccountNotesLabel}"
                             Text="{Binding Account.Notes}" />
                         <uc:Button2
                             Grid.Row="5"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="Delete Account">
+                            Text="{ext:Translate DeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -102,7 +103,7 @@
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="Undo Delete">
+                            Text="{ext:Translate UndoDeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -168,7 +169,7 @@
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="Delete Account"
+                        Text="{ext:Translate DeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -186,7 +187,7 @@
                         Command="{Binding UndoDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="Undo Delete"
+                        Text="{ext:Translate UndoDeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
