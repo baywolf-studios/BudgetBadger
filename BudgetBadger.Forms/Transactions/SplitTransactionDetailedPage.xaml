@@ -16,13 +16,11 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="Split Transaction"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save" />
+            ToolbarItemIcon="save.svg" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
@@ -31,8 +29,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:HelperControl
-                Grid.Row="0"
                 Title="No transactions yet"
+                Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:PullToRefresh
@@ -151,9 +149,9 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
+                                    Width="16"
                                     HeaderText=""
-                                    MappingName="CreatedDateTime"
-                                    Width="16">
+                                    MappingName="CreatedDateTime">
                                     <syncfusion:GridTemplateColumn.IsHidden>
                                         <OnPlatform x:TypeArguments="x:Boolean" Default="true">
                                             <On Platform="macOS">false</On>
@@ -161,7 +159,7 @@
                                     </syncfusion:GridTemplateColumn.IsHidden>
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView/>
+                                            <ContentView />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

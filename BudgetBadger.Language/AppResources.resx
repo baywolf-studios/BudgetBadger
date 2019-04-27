@@ -138,6 +138,9 @@
   <data name="AccountNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="AccountNetWorthLabel" xml:space="preserve">
+    <value>Net Worth</value>
+  </data>
   <data name="AccountNewPageTitle" xml:space="preserve">
     <value>New Account</value>
   </data>
@@ -158,6 +161,27 @@
   </data>
   <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
     <value>The reconciled amounts do not match</value>
+  </data>
+  <data name="AccountReconcileDifferenceLabel" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="AccountReconcileNoTransactionsLabel" xml:space="preserve">
+    <value>All transactions reconciled</value>
+  </data>
+  <data name="AccountReconcileStatementBalanceLabel" xml:space="preserve">
+    <value>Statement Balance</value>
+  </data>
+  <data name="AccountReconcileStatementDateLabel" xml:space="preserve">
+    <value>Statement Date</value>
+  </data>
+  <data name="AccountReconcileStatementLabel" xml:space="preserve">
+    <value>Statement</value>
+  </data>
+  <data name="AccountSelectionPageTitle" xml:space="preserve">
+    <value>Select an Account</value>
+  </data>
+  <data name="AccountsPageTitle" xml:space="preserve">
+    <value>Accounts</value>
   </data>
   <data name="AccountTypeBudget" xml:space="preserve">
     <value>Budget</value>
@@ -186,11 +210,20 @@
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="AlertReconcileUnsuccessful" xml:space="preserve">
+    <value>Reconcile Unsuccessful</value>
+  </data>
+  <data name="AlertRefreshUnsuccessful" xml:space="preserve">
+    <value>Refresh Unsuccessful</value>
+  </data>
   <data name="AlertSaveUnsuccessful" xml:space="preserve">
     <value>Save Unsuccessful</value>
   </data>
   <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
     <value>Undo Delete Unsuccessful</value>
+  </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
   </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
@@ -209,6 +242,18 @@
   </data>
   <data name="DeleteButton" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeletedAccountsPageTitle" xml:space="preserve">
+    <value>Deleted Accounts</value>
+  </data>
+  <data name="EmptyAccountHelperSubtitle" xml:space="preserve">
+    <value>Use the + button to add your first account</value>
+  </data>
+  <data name="EmptyAccountHelperTitle" xml:space="preserve">
+    <value>Add the money you have now</value>
+  </data>
+  <data name="EmptyDeletedAccountsHelperTitle" xml:space="preserve">
+    <value>No deleted accounts</value>
   </data>
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
     <value>Cannot delete debt envelopes</value>
@@ -269,6 +314,9 @@
   </data>
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
     <value>Income</value>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>Next</value>
   </data>
   <data name="NoTransactionsLabel" xml:space="preserve">
     <value>No transactions yet</value>
@@ -367,6 +415,9 @@
     <value>Last Month Budgeted</value>
   </data>
   <data name="ReconcileAccountButton" xml:space="preserve">
+    <value>Reconcile</value>
+  </data>
+  <data name="ReconcileButton" xml:space="preserve">
     <value>Reconcile</value>
   </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">

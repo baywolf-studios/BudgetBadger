@@ -17,8 +17,7 @@
             PageTitle="EnvelopeGroups"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New" />
+            ToolbarItemIcon="newicon.svg" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
@@ -101,7 +100,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView  />
+                                    <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

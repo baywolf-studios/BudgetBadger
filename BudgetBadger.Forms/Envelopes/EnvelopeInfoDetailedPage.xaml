@@ -18,8 +18,7 @@
             SearchCommand="{Binding SearchCommand}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg"
-            ToolbarItemText="Edit" />
+            ToolbarItemIcon="edit.svg" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid

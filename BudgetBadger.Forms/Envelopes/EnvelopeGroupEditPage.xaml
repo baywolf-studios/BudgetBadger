@@ -10,8 +10,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="Edit Envelope Group"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save">
+            ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding EnvelopeGroup.IsNew}"

@@ -16,8 +16,7 @@
             PageTitle="Payees"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New" />
+            ToolbarItemIcon="newicon.svg" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <uc:HelperControl

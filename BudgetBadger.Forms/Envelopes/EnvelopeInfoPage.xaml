@@ -17,8 +17,7 @@
             PageTitle="{Binding Budget.Envelope.Description}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg"
-            ToolbarItemText="Edit" />
+            ToolbarItemIcon="edit.svg" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid

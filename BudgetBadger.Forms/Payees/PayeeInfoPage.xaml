@@ -17,18 +17,16 @@
             PageTitle="{Binding Payee.Description}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg"
-            ToolbarItemText="Edit" />
+            ToolbarItemIcon="edit.svg" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <uc:HelperControl
-                Grid.Row="0"
                 Title="No transactions yet"
+                Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
@@ -78,10 +76,7 @@
                             </syncfusion:SfListView.DataSource>
                             <syncfusion:SfListView.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ContentView
-                                        x:Name="denseGroupHeaderCell"
-                                        
-                                        HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
+                                    <ContentView x:Name="denseGroupHeaderCell" HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
@@ -99,7 +94,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView  />
+                                    <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>

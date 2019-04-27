@@ -15,13 +15,11 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="Split Transaction"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save" />
+            ToolbarItemIcon="save.svg" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
@@ -105,8 +103,8 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
-                Grid.Row="2"
                 Title="No transactions yet"
+                Grid.Row="2"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:ListView
@@ -144,7 +142,7 @@
                     </syncfusion:SfListView.ItemTemplate>
                     <syncfusion:SfListView.FooterTemplate>
                         <DataTemplate>
-                            <BoxView  />
+                            <BoxView />
                         </DataTemplate>
                     </syncfusion:SfListView.FooterTemplate>
                 </uc:ListView>

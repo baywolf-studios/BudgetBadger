@@ -11,8 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="Edit Budget"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save">
+            ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Budget.Envelope.IsNew}"

@@ -124,6 +124,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Net Worth.
+        /// </summary>
+        public static string AccountNetWorthLabel {
+            get {
+                return ResourceManager.GetString("AccountNetWorthLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Account.
         /// </summary>
         public static string AccountNewPageTitle {
@@ -183,6 +192,69 @@ namespace BudgetBadger.Language {
         public static string AccountReconcileAmountsDoNotMatchError {
             get {
                 return ResourceManager.GetString("AccountReconcileAmountsDoNotMatchError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Difference.
+        /// </summary>
+        public static string AccountReconcileDifferenceLabel {
+            get {
+                return ResourceManager.GetString("AccountReconcileDifferenceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All transactions reconciled.
+        /// </summary>
+        public static string AccountReconcileNoTransactionsLabel {
+            get {
+                return ResourceManager.GetString("AccountReconcileNoTransactionsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statement Balance.
+        /// </summary>
+        public static string AccountReconcileStatementBalanceLabel {
+            get {
+                return ResourceManager.GetString("AccountReconcileStatementBalanceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statement Date.
+        /// </summary>
+        public static string AccountReconcileStatementDateLabel {
+            get {
+                return ResourceManager.GetString("AccountReconcileStatementDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statement.
+        /// </summary>
+        public static string AccountReconcileStatementLabel {
+            get {
+                return ResourceManager.GetString("AccountReconcileStatementLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an Account.
+        /// </summary>
+        public static string AccountSelectionPageTitle {
+            get {
+                return ResourceManager.GetString("AccountSelectionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accounts.
+        /// </summary>
+        public static string AccountsPageTitle {
+            get {
+                return ResourceManager.GetString("AccountsPageTitle", resourceCulture);
             }
         }
         
@@ -268,6 +340,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reconcile Unsuccessful.
+        /// </summary>
+        public static string AlertReconcileUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertReconcileUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Unsuccessful.
+        /// </summary>
+        public static string AlertRefreshUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertRefreshUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Unsuccessful.
         /// </summary>
         public static string AlertSaveUnsuccessful {
@@ -282,6 +372,15 @@ namespace BudgetBadger.Language {
         public static string AlertUndoDeleteUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertUndoDeleteUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string BackButton {
+            get {
+                return ResourceManager.GetString("BackButton", resourceCulture);
             }
         }
         
@@ -336,6 +435,42 @@ namespace BudgetBadger.Language {
         public static string DeleteButton {
             get {
                 return ResourceManager.GetString("DeleteButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted Accounts.
+        /// </summary>
+        public static string DeletedAccountsPageTitle {
+            get {
+                return ResourceManager.GetString("DeletedAccountsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the + button to add your first account.
+        /// </summary>
+        public static string EmptyAccountHelperSubtitle {
+            get {
+                return ResourceManager.GetString("EmptyAccountHelperSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the money you have now.
+        /// </summary>
+        public static string EmptyAccountHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyAccountHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No deleted accounts.
+        /// </summary>
+        public static string EmptyDeletedAccountsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyDeletedAccountsHelperTitle", resourceCulture);
             }
         }
         
@@ -516,6 +651,15 @@ namespace BudgetBadger.Language {
         public static string IncomeEnvelopeGroup {
             get {
                 return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string NextButton {
+            get {
+                return ResourceManager.GetString("NextButton", resourceCulture);
             }
         }
         
@@ -813,6 +957,15 @@ namespace BudgetBadger.Language {
         public static string ReconcileAccountButton {
             get {
                 return ResourceManager.GetString("ReconcileAccountButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reconcile.
+        /// </summary>
+        public static string ReconcileButton {
+            get {
+                return ResourceManager.GetString("ReconcileButton", resourceCulture);
             }
         }
         

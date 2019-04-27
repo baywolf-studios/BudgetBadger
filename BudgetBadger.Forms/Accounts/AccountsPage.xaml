@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -13,18 +14,17 @@
     x:Name="this">
     <p:BasePage.Header>
         <p:RootSearchHeader
-            PageTitle="Accounts"
+            PageTitle="{ext:Translate AccountsPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New" />
+            ToolbarItemIcon="newicon.svg" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            Title="Add the money you have now"
+            Title="{ext:Translate EmptyAccountHelperTitle}"
             ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}"
-            Subtitle="Use the + button to add your first account">
+            Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <Grid
                 Margin="0"
                 ColumnSpacing="16"
@@ -46,7 +46,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="Net Worth"
+                        Text="{ext:Translate AccountNetWorthLabel}"
                         VerticalOptions="Center" />
                     <Label
                         Grid.Column="1"
@@ -141,7 +141,7 @@
                     Margin="16,0,16,16"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction"
+                    Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="End" />
             </Grid>
         </uc:HelperControl>
