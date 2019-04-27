@@ -106,6 +106,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Account.
+        /// </summary>
+        public static string AccountEditPageTitle {
+            get {
+                return ResourceManager.GetString("AccountEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string AccountNameLabel {
@@ -192,15 +201,6 @@ namespace BudgetBadger.Language {
         public static string AccountValidDescriptionError {
             get {
                 return ResourceManager.GetString("AccountValidDescriptionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Account.
-        /// </summary>
-        public static string AcountEditPageTitle {
-            get {
-                return ResourceManager.GetString("AcountEditPageTitle", resourceCulture);
             }
         }
         
