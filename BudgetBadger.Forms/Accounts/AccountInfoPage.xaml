@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -23,7 +24,6 @@
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.ColumnDefinitions>
@@ -46,7 +46,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Balance"
+                            Text="{ext:Translate AccountBalanceLabel}"
                             VerticalOptions="Center" />
                         <Label
                             Grid.Column="1"
@@ -72,7 +72,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Pending" />
+                            Text="{ext:Translate AccountPendingLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
@@ -84,7 +84,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Cleared" />
+                            Text="AccountPostedLabel" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
@@ -105,7 +105,7 @@
                             HorizontalOptions="Center"
                             InputTransparent="true"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Payment">
+                            Text="{ext:Translate AccountPaymentLabel}">
                             <Label.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Account.PaymentRequired}"
@@ -126,7 +126,7 @@
                                     Binding="{Binding Account.PaymentRequired}"
                                     TargetType="Label"
                                     Value="false">
-                                    <Setter Property="Text" Value="Not Needed" />
+                                    <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
                                 </DataTrigger>
                                 <DataTrigger
                                     Binding="{Binding Account.PaymentRequired}"
@@ -147,9 +147,9 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
+                Title="{ext:Translate NoTransactionsLabel}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Title="No transactions yet"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
@@ -199,10 +199,7 @@
                             </syncfusion:SfListView.DataSource>
                             <syncfusion:SfListView.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ContentView
-                                        x:Name="denseGroupHeaderCell"
-                                        
-                                        HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
+                                    <ContentView x:Name="denseGroupHeaderCell" HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
@@ -220,7 +217,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView  />
+                                    <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>
@@ -233,7 +230,7 @@
                 Margin="16,0,0,16"
                 Command="{Binding ReconcileCommand}"
                 Style="{StaticResource SecondaryActionButtonStyle}"
-                Text="Reconcile"
+                Text="{ext:Translate ReconcileAccountButton}"
                 VerticalOptions="End" />
             <uc:Button2
                 Grid.Row="2"
@@ -241,7 +238,7 @@
                 Margin="0,0,16,16"
                 Command="{Binding AddTransactionCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
-                Text="Add Transaction"
+                Text="{ext:Translate AddTransactionButton}"
                 VerticalOptions="End" />
         </Grid>
     </p:BasePage.Body>

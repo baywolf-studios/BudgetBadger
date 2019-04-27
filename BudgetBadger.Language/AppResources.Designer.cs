@@ -142,6 +142,42 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment.
+        /// </summary>
+        public static string AccountPaymentLabel {
+            get {
+                return ResourceManager.GetString("AccountPaymentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Needed.
+        /// </summary>
+        public static string AccountPaymentNotNeededLabel {
+            get {
+                return ResourceManager.GetString("AccountPaymentNotNeededLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string AccountPendingLabel {
+            get {
+                return ResourceManager.GetString("AccountPendingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleared.
+        /// </summary>
+        public static string AccountPostedLabel {
+            get {
+                return ResourceManager.GetString("AccountPostedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The reconciled amounts do not match.
         /// </summary>
         public static string AccountReconcileAmountsDoNotMatchError {
@@ -201,6 +237,15 @@ namespace BudgetBadger.Language {
         public static string AccountValidDescriptionError {
             get {
                 return ResourceManager.GetString("AccountValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Transaction.
+        /// </summary>
+        public static string AddTransactionButton {
+            get {
+                return ResourceManager.GetString("AddTransactionButton", resourceCulture);
             }
         }
         
@@ -471,6 +516,15 @@ namespace BudgetBadger.Language {
         public static string IncomeEnvelopeGroup {
             get {
                 return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No transactions yet.
+        /// </summary>
+        public static string NoTransactionsLabel {
+            get {
+                return ResourceManager.GetString("NoTransactionsLabel", resourceCulture);
             }
         }
         
@@ -754,6 +808,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reconcile.
+        /// </summary>
+        public static string ReconcileAccountButton {
+            get {
+                return ResourceManager.GetString("ReconcileAccountButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget schedule description is required.
         /// </summary>
         public static string ScheduleValidDescriptionError {
@@ -808,6 +871,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        public static string TransactionAccountLabel {
+            get {
+                return ResourceManager.GetString("TransactionAccountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        public static string TransactionAmountLabel {
+            get {
+                return ResourceManager.GetString("TransactionAmountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete transaction with deleted account.
         /// </summary>
         public static string TransactionDeleteAccountDeletedError {
@@ -831,6 +912,33 @@ namespace BudgetBadger.Language {
         public static string TransactionDeleteTransferDeletedPayeeError {
             get {
                 return ResourceManager.GetString("TransactionDeleteTransferDeletedPayeeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope.
+        /// </summary>
+        public static string TransactionEnvelopeLabel {
+            get {
+                return ResourceManager.GetString("TransactionEnvelopeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee.
+        /// </summary>
+        public static string TransactionPayeeLabel {
+            get {
+                return ResourceManager.GetString("TransactionPayeeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Date.
+        /// </summary>
+        public static string TransactionServiceDateLabel {
+            get {
+                return ResourceManager.GetString("TransactionServiceDateLabel", resourceCulture);
             }
         }
         
