@@ -3,12 +3,13 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Edit Envelope Group"
+            PageTitle="{ext:Translate EnvelopeGroupEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
@@ -16,12 +17,11 @@
                     Binding="{Binding EnvelopeGroup.IsNew}"
                     TargetType="p:ChildHeader"
                     Value="True">
-                    <Setter Property="PageTitle" Value="New Envelope Group" />
+                    <Setter Property="PageTitle" Value="{ext:Translate EnvelopeGroupNewPageTitle}" />
                 </DataTrigger>
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
     </p:BasePage.Header>
-
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <Grid
@@ -52,19 +52,19 @@
                         <uc:TextEntry
                             Grid.Row="1"
                             Margin="16,0"
-                            Label="Name"
+                            Label="{ext:Translate EnvelopeGroupNameLabel}"
                             Text="{Binding EnvelopeGroup.Description}" />
                         <uc:MultilineTextEntry
                             Grid.Row="2"
                             Margin="16,0"
-                            Label="Notes"
+                            Label="{ext:Translate EnvelopeGroupNotesLabel}"
                             Text="{Binding EnvelopeGroup.Notes}" />
                         <uc:Button2
                             Grid.Row="3"
                             Margin="16,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="Delete Group">
+                            Text="{ext:Translate DeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -86,7 +86,7 @@
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="Undo Delete">
+                            Text="{ext:Translate UndoDeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -152,7 +152,7 @@
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="Delete Group"
+                        Text="{ext:Translate DeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -170,7 +170,7 @@
                         Command="{Binding UndoDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="Undo Delete"
+                        Text="{ext:Translate UndoDeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger

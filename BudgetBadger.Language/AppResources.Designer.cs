@@ -547,6 +547,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add an Envelope Group using the + button.
+        /// </summary>
+        public static string EmptyEnvelopeGroupHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyEnvelopeGroupHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No transactions yet.
         /// </summary>
         public static string EmptyTransactionsHelperTitle {
@@ -628,11 +637,56 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Envelope Group.
+        /// </summary>
+        public static string EnvelopeGroupEditPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         public static string EnvelopeGroupLabel {
             get {
                 return ResourceManager.GetString("EnvelopeGroupLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string EnvelopeGroupNameLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Envelope Group.
+        /// </summary>
+        public static string EnvelopeGroupNewPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupNewPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string EnvelopeGroupNotesLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupNotesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Group.
+        /// </summary>
+        public static string EnvelopeGroupSelectionPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupSelectionPageTitle", resourceCulture);
             }
         }
         

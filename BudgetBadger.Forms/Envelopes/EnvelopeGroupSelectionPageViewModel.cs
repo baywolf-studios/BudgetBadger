@@ -12,15 +12,17 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeGroupSelectionPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISync _syncService;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -28,6 +30,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SaveCommand { get; set; }
 		public ICommand AddCommand { get; set; }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroup)env, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -66,15 +70,17 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        public EnvelopeGroupSelectionPageViewModel(INavigationService navigationService,
+        public EnvelopeGroupSelectionPageViewModel(IResourceContainer resourceContainer,
+                                           INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic,
-                                           ISync syncService)
+                                           ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
-            _syncService = syncService;
+            _syncFactory = syncFactory;
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new List<EnvelopeGroup>();
@@ -85,8 +91,18 @@ namespace BudgetBadger.Forms.Envelopes
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -122,7 +138,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    //show error
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopeGroups = (EnvelopeGroups?.Count ?? 0) == 0;
@@ -168,23 +184,11 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    var syncTask = _syncService.FullSync();
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.EnvelopeGroup, result.Data }
-                    };
-
-                    await _navigationService.GoBackAsync(parameters);
-
-                    var syncResult = await syncTask;
-                    if (!syncResult.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "OK");
-                    }
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
