@@ -137,7 +137,7 @@
                 </Grid>
             </ScrollView>
             <uc:HelperControl
-                Title="{ext:Translate AccountReconcileNoTransactionsLabel}"
+                Title="{ext:Translate AccountReconcileEmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 ImagePath="reconciled.svg"

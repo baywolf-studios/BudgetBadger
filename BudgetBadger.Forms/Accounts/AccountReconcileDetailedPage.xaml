@@ -54,7 +54,7 @@
                     Number="{Binding StatementAmount}" />
             </Grid>
             <uc:HelperControl
-                Title="{ext:Translate AccountReconcileNoTransactionsLabel}"
+                Title="{ext:Translate AccountReconcileEmptyTransactionsHelperTitle}"
                 Grid.Row="0"
                 Grid.ColumnSpan="2"
                 ImagePath="reconciled.svg"

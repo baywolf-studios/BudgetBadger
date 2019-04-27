@@ -207,9 +207,9 @@ namespace BudgetBadger.Language {
         /// <summary>
         ///   Looks up a localized string similar to All transactions reconciled.
         /// </summary>
-        public static string AccountReconcileNoTransactionsLabel {
+        public static string AccountReconcileEmptyTransactionsHelperTitle {
             get {
-                return ResourceManager.GetString("AccountReconcileNoTransactionsLabel", resourceCulture);
+                return ResourceManager.GetString("AccountReconcileEmptyTransactionsHelperTitle", resourceCulture);
             }
         }
         
@@ -322,6 +322,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string AlertCancel {
+            get {
+                return ResourceManager.GetString("AlertCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Unsuccessful.
         /// </summary>
         public static string AlertDeleteUnsuccessful {
@@ -331,11 +340,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string AlertGeneralError {
+            get {
+                return ResourceManager.GetString("AlertGeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string AlertOk {
             get {
                 return ResourceManager.GetString("AlertOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Budget.
+        /// </summary>
+        public static string AlertQuickBudget {
+            get {
+                return ResourceManager.GetString("AlertQuickBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Enough Data for Quick Budgets.
+        /// </summary>
+        public static string AlertQuickBudgetNotEnoughData {
+            get {
+                return ResourceManager.GetString("AlertQuickBudgetNotEnoughData", resourceCulture);
             }
         }
         
@@ -448,6 +484,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted Envelope Groups.
+        /// </summary>
+        public static string DeletedEnvelopeGroupsPageTitle {
+            get {
+                return ResourceManager.GetString("DeletedEnvelopeGroupsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted Envelopes.
+        /// </summary>
+        public static string DeletedEnvelopesPageTitle {
+            get {
+                return ResourceManager.GetString("DeletedEnvelopesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the + button to add your first account.
         /// </summary>
         public static string EmptyAccountHelperSubtitle {
@@ -471,6 +525,51 @@ namespace BudgetBadger.Language {
         public static string EmptyDeletedAccountsHelperTitle {
             get {
                 return ResourceManager.GetString("EmptyDeletedAccountsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No deleted envelope groups.
+        /// </summary>
+        public static string EmptyDeletedEnvelopeGroupsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyDeletedEnvelopeGroupsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No deleted envelopes.
+        /// </summary>
+        public static string EmptyDeletedEnvelopesHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyDeletedEnvelopesHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No transactions yet.
+        /// </summary>
+        public static string EmptyTransactionsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyTransactionsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity.
+        /// </summary>
+        public static string EnvelopeActivityLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeActivityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget.
+        /// </summary>
+        public static string EnvelopeAmountLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeAmountLabel", resourceCulture);
             }
         }
         
@@ -520,11 +619,92 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Budget.
+        /// </summary>
+        public static string EnvelopeEditPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string EnvelopeGroupLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Envelope group name is required.
         /// </summary>
         public static string EnvelopeGroupValidDescriptionError {
             get {
                 return ResourceManager.GetString("EnvelopeGroupValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string EnvelopeNameLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Envelope.
+        /// </summary>
+        public static string EnvelopeNewPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeNewPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string EnvelopeNotesLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeNotesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overspending.
+        /// </summary>
+        public static string EnvelopeOverspendingLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeOverspendingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Past.
+        /// </summary>
+        public static string EnvelopePastLabel {
+            get {
+                return ResourceManager.GetString("EnvelopePastLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining.
+        /// </summary>
+        public static string EnvelopeRemainingLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeRemainingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Budget.
+        /// </summary>
+        public static string EnvelopeToBudgetLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeToBudgetLabel", resourceCulture);
             }
         }
         
@@ -660,15 +840,6 @@ namespace BudgetBadger.Language {
         public static string NextButton {
             get {
                 return ResourceManager.GetString("NextButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No transactions yet.
-        /// </summary>
-        public static string NoTransactionsLabel {
-            get {
-                return ResourceManager.GetString("NoTransactionsLabel", resourceCulture);
             }
         }
         
@@ -930,6 +1101,15 @@ namespace BudgetBadger.Language {
         public static string QuickBudgetBalance {
             get {
                 return ResourceManager.GetString("QuickBudgetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Budget.
+        /// </summary>
+        public static string QuickBudgetButton {
+            get {
+                return ResourceManager.GetString("QuickBudgetButton", resourceCulture);
             }
         }
         

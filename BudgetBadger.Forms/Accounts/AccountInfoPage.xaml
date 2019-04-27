@@ -146,7 +146,7 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
-                Title="{ext:Translate NoTransactionsLabel}"
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 ImagePath="transaction.svg"

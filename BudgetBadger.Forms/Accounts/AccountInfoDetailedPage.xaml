@@ -29,7 +29,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:HelperControl
-                Title="{ext:Translate NoTransactionsLabel}"
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">

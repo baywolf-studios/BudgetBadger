@@ -12,11 +12,13 @@ using System.Collections.Generic;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class DeletedEnvelopeGroupsPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -61,10 +63,12 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        public DeletedEnvelopeGroupsPageViewModel(INavigationService navigationService,
+        public DeletedEnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
+                                           INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
@@ -108,7 +112,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    //show error
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopeGroups = (EnvelopeGroups?.Count ?? 0) == 0;
