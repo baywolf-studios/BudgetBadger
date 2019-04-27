@@ -147,8 +147,17 @@
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
   </data>
+  <data name="AlertOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="AlertSaveUnsuccessful" xml:space="preserve">
+    <value>Save Unsuccessful</value>
+  </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
+  </data>
+  <data name="BusyTextSaving" xml:space="preserve">
+    <value>Saving...</value>
   </data>
   <data name="DebtEnvelopeGroup" xml:space="preserve">
     <value>Debt</value>
@@ -272,6 +281,9 @@
   </data>
   <data name="StartingBalancePayee" xml:space="preserve">
     <value>Starting Balance</value>
+  </data>
+  <data name="SyncDateTimeNever" xml:space="preserve">
+    <value>Never</value>
   </data>
   <data name="SystemEnvelopeGroup" xml:space="preserve">
     <value>System</value>

@@ -151,11 +151,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string AlertOk {
+            get {
+                return ResourceManager.GetString("AlertOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Unsuccessful.
+        /// </summary>
+        public static string AlertSaveUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertSaveUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer.
         /// </summary>
         public static string BufferEnvelope {
             get {
                 return ResourceManager.GetString("BufferEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving....
+        /// </summary>
+        public static string BusyTextSaving {
+            get {
+                return ResourceManager.GetString("BusyTextSaving", resourceCulture);
             }
         }
         
@@ -525,6 +552,15 @@ namespace BudgetBadger.Language {
         public static string StartingBalancePayee {
             get {
                 return ResourceManager.GetString("StartingBalancePayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        public static string SyncDateTimeNever {
+            get {
+                return ResourceManager.GetString("SyncDateTimeNever", resourceCulture);
             }
         }
         

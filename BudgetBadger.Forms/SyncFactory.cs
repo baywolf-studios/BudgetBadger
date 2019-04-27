@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Files;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
@@ -12,6 +13,7 @@ namespace BudgetBadger.Forms
 {
     public class SyncFactory : ISyncFactory
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ISettings _settings;
         readonly IDirectoryInfo _syncDirectory;
         readonly IAccountSyncLogic _accountSyncLogic;
@@ -20,7 +22,8 @@ namespace BudgetBadger.Forms
         readonly ITransactionSyncLogic _transactionSyncLogic;
         readonly KeyValuePair<string, IFileSyncProvider>[] _fileSyncProviders;
 
-        public SyncFactory(ISettings settings,
+        public SyncFactory(IResourceContainer resourceContainer,
+            ISettings settings,
             IDirectoryInfo syncDirectory,
             IAccountSyncLogic accountSyncLogic,
             IPayeeSyncLogic payeeSyncLogic,
@@ -28,6 +31,7 @@ namespace BudgetBadger.Forms
             ITransactionSyncLogic transactionSyncLogic,
             KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders)
         {
+            _resourceContainer = resourceContainer;
             _settings = settings;
             _syncDirectory = syncDirectory;
             _accountSyncLogic = accountSyncLogic;
@@ -51,16 +55,16 @@ namespace BudgetBadger.Forms
         {
             if(_settings.GetValueOrDefault(AppSettings.SyncMode) == SyncMode.NoSync)
             {
-                return "Never";
+                return _resourceContainer.GetResourceString("SyncDateTimeNever");
             }
 
             if (DateTime.TryParse(_settings.GetValueOrDefault(AppSettings.LastSyncDateTime), out DateTime dateTime))
             {
-                return dateTime.ToString("g");
+                return _resourceContainer.GetFormattedString("{0:g}", dateTime);
             }
             else
             {
-                return "Never";
+                return _resourceContainer.GetResourceString("SyncDateTimeNever");
             }
         }
     }
