@@ -132,6 +132,9 @@
   <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
     <value>Cannot delete account with pending transactions</value>
   </data>
+  <data name="AccountEditPageTitle" xml:space="preserve">
+    <value>Edit Account</value>
+  </data>
   <data name="AccountNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -161,9 +164,6 @@
   </data>
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
-  </data>
-  <data name="AcountEditPageTitle" xml:space="preserve">
-    <value>Edit Account</value>
   </data>
   <data name="AlertDeleteUnsuccessful" xml:space="preserve">
     <value>Delete Unsuccessful</value>
