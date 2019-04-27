@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountBalanceLabel" xml:space="preserve">
+    <value>Balance</value>
+  </data>
   <data name="AccountDeleteBalanceError" xml:space="preserve">
     <value>Cannot delete account with balance</value>
   </data>
@@ -129,11 +132,23 @@
   <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
     <value>Cannot delete account with pending transactions</value>
   </data>
+  <data name="AccountNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AccountNewPageTitle" xml:space="preserve">
+    <value>New Account</value>
+  </data>
+  <data name="AccountNotesLabel" xml:space="preserve">
+    <value>Notes</value>
+  </data>
   <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
     <value>The reconciled amounts do not match</value>
   </data>
   <data name="AccountTypeBudget" xml:space="preserve">
     <value>Budget</value>
+  </data>
+  <data name="AccountTypeLabel" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="AccountTypeReporting" xml:space="preserve">
     <value>Reporting</value>
@@ -147,20 +162,38 @@
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
   </data>
+  <data name="AcountEditPageTitle" xml:space="preserve">
+    <value>Edit Account</value>
+  </data>
+  <data name="AlertDeleteUnsuccessful" xml:space="preserve">
+    <value>Delete Unsuccessful</value>
+  </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="AlertSaveUnsuccessful" xml:space="preserve">
     <value>Save Unsuccessful</value>
   </data>
+  <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
+    <value>Undo Delete Unsuccessful</value>
+  </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
   </data>
+  <data name="BusyTextDeleting" xml:space="preserve">
+    <value>Deleting</value>
+  </data>
   <data name="BusyTextSaving" xml:space="preserve">
-    <value>Saving...</value>
+    <value>Saving</value>
+  </data>
+  <data name="BusyTextUndoingDelete" xml:space="preserve">
+    <value>Undoing Delete</value>
   </data>
   <data name="DebtEnvelopeGroup" xml:space="preserve">
     <value>Debt</value>
+  </data>
+  <data name="DeleteButton" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
     <value>Cannot delete debt envelopes</value>
@@ -404,5 +437,8 @@
   </data>
   <data name="TransferValidToError" xml:space="preserve">
     <value>Transfer does not contain a valid To Envelope</value>
+  </data>
+  <data name="UndoDeleteButton" xml:space="preserve">
+    <value>Undo Delete</value>
   </data>
 </root>

@@ -152,8 +152,9 @@ namespace BudgetBadger.Forms.Accounts
 
 			try
 			{
-				BusyText = "Deleting";
-				var result = await _accountLogic.DeleteAccountAsync(Account.Id);
+				BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
+
+                var result = await _accountLogic.DeleteAccountAsync(Account.Id);
 				if (result.Success)
 				{
                     _needToSync = true;
@@ -169,8 +170,9 @@ namespace BudgetBadger.Forms.Accounts
                 }
 				else
 				{
-					await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
-				}
+					await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+
+                }
 			}
 			finally
             {
@@ -189,7 +191,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                BusyText = "Undoing Delete";
+                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
                 var result = await _accountLogic.UndoDeleteAccountAsync(Account.Id);
                 if (result.Success)
                 {
@@ -199,7 +201,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertUndoDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
