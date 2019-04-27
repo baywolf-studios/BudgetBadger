@@ -116,7 +116,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                BusyText = "Saving";
+                BusyText = _resourceContainer.GetResourceString("BusyTextSaving");
                 var result = await _accountLogic.SaveAccountAsync(Account);
 
                 if (result.Success)
@@ -132,7 +132,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
