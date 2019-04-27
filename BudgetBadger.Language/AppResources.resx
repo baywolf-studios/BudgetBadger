@@ -279,6 +279,9 @@
   <data name="EmptyDeletedEnvelopesHelperTitle" xml:space="preserve">
     <value>No deleted envelopes</value>
   </data>
+  <data name="EmptyEnvelopeGroupHelperTitle" xml:space="preserve">
+    <value>Add an Envelope Group using the + button</value>
+  </data>
   <data name="EmptyTransactionsHelperTitle" xml:space="preserve">
     <value>No transactions yet</value>
   </data>
@@ -306,8 +309,23 @@
   <data name="EnvelopeEditPageTitle" xml:space="preserve">
     <value>Edit Budget</value>
   </data>
+  <data name="EnvelopeGroupEditPageTitle" xml:space="preserve">
+    <value>Edit Envelope Group</value>
+  </data>
   <data name="EnvelopeGroupLabel" xml:space="preserve">
     <value>Group</value>
+  </data>
+  <data name="EnvelopeGroupNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EnvelopeGroupNewPageTitle" xml:space="preserve">
+    <value>New Envelope Group</value>
+  </data>
+  <data name="EnvelopeGroupNotesLabel" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="EnvelopeGroupSelectionPageTitle" xml:space="preserve">
+    <value>Select a Group</value>
   </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Envelope group name is required</value>

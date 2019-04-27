@@ -185,7 +185,7 @@
                             Margin="16,0,0,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate DeleteButon}">
+                            Text="{ext:Translate DeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>

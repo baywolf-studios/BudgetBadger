@@ -10,12 +10,14 @@ using Prism.Services;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware
     {
-		readonly IEnvelopeLogic _envelopeLogic;
+        readonly IResourceContainer _resourceContainer;
+        readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
@@ -48,11 +50,13 @@ namespace BudgetBadger.Forms.Payees
         public ICommand DeleteCommand { get; set; }
         public ICommand UndoDeleteCommand { get; set; }
 
-		public EnvelopeGroupEditPageViewModel(INavigationService navigationService,
+		public EnvelopeGroupEditPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                               IPageDialogService dialogService,
 		                                      IEnvelopeLogic envelopeLogic,
 		                                      ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
@@ -103,7 +107,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Saving";
+                BusyText = _resourceContainer.GetResourceString("BusyTextSaving");
 				var result = await _envelopeLogic.SaveEnvelopeGroupAsync(EnvelopeGroup);
 
                 if (result.Success)
@@ -118,7 +122,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -138,7 +142,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Deleting";
+                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
                 var result = await _envelopeLogic.DeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
                 if (result.Success)
                 {
@@ -155,7 +159,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -175,7 +179,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Undoing Delete";
+                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
                 var result = await _envelopeLogic.UndoDeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
                 if (result.Success)
                 {
@@ -185,7 +189,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
