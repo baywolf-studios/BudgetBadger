@@ -14,13 +14,6 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(PageTitleProperty, value);
         }
 
-        public static BindableProperty ToolbarItemTextProperty = BindableProperty.Create(nameof(ToolbarItemText), typeof(string), typeof(ChildHeader), defaultBindingMode: BindingMode.TwoWay);
-        public string ToolbarItemText
-        {
-            get => (string)GetValue(ToolbarItemTextProperty);
-            set => SetValue(ToolbarItemTextProperty, value);
-        }
-
         public ImageSource ToolbarItemIcon
         {
             get => ToolbarItemImage.Source;

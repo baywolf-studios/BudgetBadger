@@ -15,11 +15,13 @@ using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
 using Prism;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
     public class AccountsPageViewModel : BindableBase, IPageLifecycleAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -70,11 +72,13 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
-        public AccountsPageViewModel(INavigationService navigationService,
+        public AccountsPageViewModel(IResourceContainer resourceContainer,
+                                     INavigationService navigationService,
 		                             IPageDialogService dialogService,
 		                             IAccountLogic accountLogic,
 		                             ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -134,7 +138,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
@@ -178,7 +182,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 

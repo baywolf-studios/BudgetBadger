@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
@@ -17,6 +18,7 @@ namespace BudgetBadger.Forms.Accounts
 {
 	public class DeletedAccountsPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -61,8 +63,12 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noAccounts, value);
         }
 
-        public DeletedAccountsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IAccountLogic accountLogic)
+        public DeletedAccountsPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService, 
+            IPageDialogService dialogService, 
+            IAccountLogic accountLogic)
         {
+            _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -123,7 +129,7 @@ namespace BudgetBadger.Forms.Accounts
                 else
                 {
                     await Task.Yield();
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;

@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -20,7 +21,6 @@
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.ColumnDefinitions>
@@ -57,7 +57,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Difference"
+                            Text="{ext:Translate AccountReconcileDifferenceLabel}"
                             VerticalOptions="Center" />
                         <Label
                             Grid.Column="1"
@@ -82,7 +82,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Statement" />
+                            Text="{ext:Translate AccountReconcileStatementLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
@@ -94,7 +94,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Cleared" />
+                            Text="{ext:Translate AccountPostedLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
@@ -129,17 +129,17 @@
                     <uc:DateSelector
                         Grid.Row="0"
                         Date="{Binding StatementDate}"
-                        Label="Statement Date" />
+                        Label="{ext:Translate AccountReconcileStatementDateLabel}" />
                     <uc:CurrencyCalculatorEntry
                         Grid.Row="1"
-                        Label="Statement Balance"
+                        Label="{ext:Translate AccountReconcileStatementBalanceLabel}"
                         Number="{Binding StatementAmount}" />
                 </Grid>
             </ScrollView>
             <uc:HelperControl
+                Title="{ext:Translate AccountReconcileNoTransactionsLabel}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Title="All transactions reconciled"
                 ImagePath="reconciled.svg"
                 IsVisible="{Binding ReconcileMode}"
                 ShowHelper="{Binding NoTransactions}">
@@ -190,10 +190,7 @@
                             </syncfusion:SfListView.DataSource>
                             <syncfusion:SfListView.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ContentView
-                                        x:Name="denseGroupHeaderCell"
-                                        
-                                        HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
+                                    <ContentView x:Name="denseGroupHeaderCell" HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
                                         <Label
                                             Margin="16,12,16,0"
                                             Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
@@ -211,7 +208,7 @@
                             </syncfusion:SfListView.ItemTemplate>
                             <syncfusion:SfListView.FooterTemplate>
                                 <DataTemplate>
-                                    <BoxView  />
+                                    <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>
@@ -235,7 +232,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding StatementMode}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Next"
+                    Text="{ext:Translate NextButton}"
                     VerticalOptions="End" />
                 <uc:Button2
                     Grid.Column="0"
@@ -243,7 +240,7 @@
                     Command="{Binding ToggleReconcileModeCommand}"
                     IsVisible="{Binding ReconcileMode}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="Back"
+                    Text="{ext:Translate BackButton}"
                     VerticalOptions="End" />
                 <uc:Button2
                     Grid.Column="1"
@@ -251,7 +248,7 @@
                     Command="{Binding ReconcileCommand}"
                     IsVisible="{Binding ReconcileMode}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Reconcile"
+                    Text="{ext:Translate ReconcileButton}"
                     VerticalOptions="End" />
             </Grid>
         </Grid>

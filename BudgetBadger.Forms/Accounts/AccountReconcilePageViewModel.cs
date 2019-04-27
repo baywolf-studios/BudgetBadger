@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
@@ -17,6 +18,7 @@ namespace BudgetBadger.Forms.Accounts
 {
     public class AccountReconcilePageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
         readonly IAccountLogic _accountLogic;
@@ -134,12 +136,14 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
-        public AccountReconcilePageViewModel(INavigationService navigationService,
+        public AccountReconcilePageViewModel(IResourceContainer resourceContainer,
+                                             INavigationService navigationService,
                                              ITransactionLogic transactionLogic, 
                                              IAccountLogic accountLogic, 
                                              IPageDialogService dialogService,
                                              ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _transactionLogic = transactionLogic;
             _accountLogic = accountLogic;
@@ -252,7 +256,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Could not reconcile", reconcileResult.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertReconcileUnsuccessful"), reconcileResult.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 
@@ -293,7 +297,7 @@ namespace BudgetBadger.Forms.Accounts
                 else
                 {
                     transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
         }
@@ -310,7 +314,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 

@@ -11,8 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="Edit Transaction"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg"
-            ToolbarItemText="Save">
+            ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Transaction.IsNew}"

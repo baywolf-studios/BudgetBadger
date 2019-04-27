@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
@@ -13,19 +14,18 @@
     x:Name="this">
     <p:BaseDetailedPage.Header>
         <p:RootSearchHeader
-            PageTitle="Accounts"
+            PageTitle="{ext:Translate AccountsPageTitle}"
             SearchCommand="{Binding SearchCommand}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg"
-            ToolbarItemText="New" />
+            ToolbarItemIcon="newicon.svg" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <uc:HelperControl
-            Title="Add the money you have now"
+            Title="{ext:Translate EmptyAccountHelperTitle}"
             ImagePath="account.svg"
             ShowHelper="{Binding NoAccounts}"
-            Subtitle="Use the + button to add your first account">
+            Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -99,7 +99,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Name"
+                                    HeaderText="{ext:Translate AccountNameLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Description"
@@ -108,7 +108,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Pending, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Pending"
+                                    HeaderText="{ext:Translate AccountPendingLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Pending"
@@ -117,7 +117,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Posted, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Posted"
+                                    HeaderText="{ext:Translate AccountPostedLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Posted"
@@ -126,7 +126,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Balance"
+                                    HeaderText="{ext:Translate AccountBalanceLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Balance"
@@ -179,7 +179,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="Net Worth"
+                        Text="{ext:Translate AccountNetWorthLabel}"
                         VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
@@ -195,7 +195,7 @@
                         Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction"
+                        Text="{ext:Translate AddTransactionButton}"
                         VerticalOptions="Center" />
                 </Grid>
             </Grid>
