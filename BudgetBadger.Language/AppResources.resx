@@ -249,6 +249,51 @@
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
   </data>
+  <data name="PurchaseErrorAppStoreUnavailable" xml:space="preserve">
+    <value>Currently the app store seems to be unavailble, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorBillingUnavailable" xml:space="preserve">
+    <value>Billing seems to be unavailable, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorConnection" xml:space="preserve">
+    <value>Unable to connect to billing service</value>
+  </data>
+  <data name="PurchaseErrorGeneralError" xml:space="preserve">
+    <value>There was an issue purchasing, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorInvalidProduct" xml:space="preserve">
+    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorItemUnavailable" xml:space="preserve">
+    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorNotPurchased" xml:space="preserve">
+    <value>The product was not purchased</value>
+  </data>
+  <data name="PurchaseErrorPaymentInvalid" xml:space="preserve">
+    <value>Payment seems to be invalid, please try again.</value>
+  </data>
+  <data name="PurchaseErrorPaymentNotAllowed" xml:space="preserve">
+    <value>Payment does not seem to be enabled or allowed, please try again.</value>
+  </data>
+  <data name="PurchaseErrorProductRequestFailed" xml:space="preserve">
+    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorRestoreFailed" xml:space="preserve">
+    <value>The purchase was unable to be restored, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorServiceUnavailable" xml:space="preserve">
+    <value>The network connection seems to be unavailble, please try again later.</value>
+  </data>
+  <data name="PurchaseErrorUnknown" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="PurchaseErrorUserCancelled" xml:space="preserve">
+    <value>Purchase Cancelled</value>
+  </data>
+  <data name="PurchaseErrorVerifyFailed" xml:space="preserve">
+    <value>The purchase was unable to be verified, please try again later.</value>
+  </data>
   <data name="QuickBudgetAvgPast3MonthsActivity" xml:space="preserve">
     <value>Avg. Past 3 Months Activity</value>
   </data>

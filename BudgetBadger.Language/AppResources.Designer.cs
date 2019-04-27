@@ -457,6 +457,141 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currently the app store seems to be unavailble, please try again later..
+        /// </summary>
+        public static string PurchaseErrorAppStoreUnavailable {
+            get {
+                return ResourceManager.GetString("PurchaseErrorAppStoreUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Billing seems to be unavailable, please try again later..
+        /// </summary>
+        public static string PurchaseErrorBillingUnavailable {
+            get {
+                return ResourceManager.GetString("PurchaseErrorBillingUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to connect to billing service.
+        /// </summary>
+        public static string PurchaseErrorConnection {
+            get {
+                return ResourceManager.GetString("PurchaseErrorConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an issue purchasing, please try again later..
+        /// </summary>
+        public static string PurchaseErrorGeneralError {
+            get {
+                return ResourceManager.GetString("PurchaseErrorGeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
+        /// </summary>
+        public static string PurchaseErrorInvalidProduct {
+            get {
+                return ResourceManager.GetString("PurchaseErrorInvalidProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
+        /// </summary>
+        public static string PurchaseErrorItemUnavailable {
+            get {
+                return ResourceManager.GetString("PurchaseErrorItemUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product was not purchased.
+        /// </summary>
+        public static string PurchaseErrorNotPurchased {
+            get {
+                return ResourceManager.GetString("PurchaseErrorNotPurchased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment seems to be invalid, please try again..
+        /// </summary>
+        public static string PurchaseErrorPaymentInvalid {
+            get {
+                return ResourceManager.GetString("PurchaseErrorPaymentInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment does not seem to be enabled or allowed, please try again..
+        /// </summary>
+        public static string PurchaseErrorPaymentNotAllowed {
+            get {
+                return ResourceManager.GetString("PurchaseErrorPaymentNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
+        /// </summary>
+        public static string PurchaseErrorProductRequestFailed {
+            get {
+                return ResourceManager.GetString("PurchaseErrorProductRequestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The purchase was unable to be restored, please try again later..
+        /// </summary>
+        public static string PurchaseErrorRestoreFailed {
+            get {
+                return ResourceManager.GetString("PurchaseErrorRestoreFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The network connection seems to be unavailble, please try again later..
+        /// </summary>
+        public static string PurchaseErrorServiceUnavailable {
+            get {
+                return ResourceManager.GetString("PurchaseErrorServiceUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error.
+        /// </summary>
+        public static string PurchaseErrorUnknown {
+            get {
+                return ResourceManager.GetString("PurchaseErrorUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Cancelled.
+        /// </summary>
+        public static string PurchaseErrorUserCancelled {
+            get {
+                return ResourceManager.GetString("PurchaseErrorUserCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The purchase was unable to be verified, please try again later..
+        /// </summary>
+        public static string PurchaseErrorVerifyFailed {
+            get {
+                return ResourceManager.GetString("PurchaseErrorVerifyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avg. Past 3 Months Activity.
         /// </summary>
         public static string QuickBudgetAvgPast3MonthsActivity {
