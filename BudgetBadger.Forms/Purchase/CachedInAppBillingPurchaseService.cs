@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Models;
 using Plugin.InAppBilling.Abstractions;
@@ -8,11 +9,15 @@ namespace BudgetBadger.Forms.Purchase
 {
 	public class CachedInAppBillingPurchaseService : InAppBillingPurchaseService
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ISettings _settings;
         readonly string _settingsKey = "CachedInAppBillingPurchaseService";
 
-        public CachedInAppBillingPurchaseService(IInAppBilling inAppBilling, ISettings settings) : base(inAppBilling)
+        public CachedInAppBillingPurchaseService(IResourceContainer resourceContainer,
+            IInAppBilling inAppBilling,
+            ISettings settings) : base(resourceContainer, inAppBilling)
         {
+            _resourceContainer = resourceContainer;
             _settings = settings;
         }
 
@@ -42,7 +47,7 @@ namespace BudgetBadger.Forms.Purchase
             else
             {
                 result.Success = false;
-                result.Message = "Not purchased";
+                result.Message = _resourceContainer.GetResourceString("PurchaseErrorNotPurchased");
             }
 
             return Task.FromResult<Result>(result);
