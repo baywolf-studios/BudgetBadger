@@ -128,7 +128,6 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await Task.Yield();
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 

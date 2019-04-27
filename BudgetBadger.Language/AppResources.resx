@@ -165,7 +165,7 @@
   <data name="AccountReconcileDifferenceLabel" xml:space="preserve">
     <value>Difference</value>
   </data>
-  <data name="AccountReconcileNoTransactionsLabel" xml:space="preserve">
+  <data name="AccountReconcileEmptyTransactionsHelperTitle" xml:space="preserve">
     <value>All transactions reconciled</value>
   </data>
   <data name="AccountReconcileStatementBalanceLabel" xml:space="preserve">
@@ -204,11 +204,23 @@
   <data name="AddTransactionButton" xml:space="preserve">
     <value>Add Transaction</value>
   </data>
+  <data name="AlertCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="AlertDeleteUnsuccessful" xml:space="preserve">
     <value>Delete Unsuccessful</value>
   </data>
+  <data name="AlertGeneralError" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="AlertQuickBudget" xml:space="preserve">
+    <value>Quick Budget</value>
+  </data>
+  <data name="AlertQuickBudgetNotEnoughData" xml:space="preserve">
+    <value>Not Enough Data for Quick Budgets</value>
   </data>
   <data name="AlertReconcileUnsuccessful" xml:space="preserve">
     <value>Reconcile Unsuccessful</value>
@@ -246,6 +258,12 @@
   <data name="DeletedAccountsPageTitle" xml:space="preserve">
     <value>Deleted Accounts</value>
   </data>
+  <data name="DeletedEnvelopeGroupsPageTitle" xml:space="preserve">
+    <value>Deleted Envelope Groups</value>
+  </data>
+  <data name="DeletedEnvelopesPageTitle" xml:space="preserve">
+    <value>Deleted Envelopes</value>
+  </data>
   <data name="EmptyAccountHelperSubtitle" xml:space="preserve">
     <value>Use the + button to add your first account</value>
   </data>
@@ -254,6 +272,21 @@
   </data>
   <data name="EmptyDeletedAccountsHelperTitle" xml:space="preserve">
     <value>No deleted accounts</value>
+  </data>
+  <data name="EmptyDeletedEnvelopeGroupsHelperTitle" xml:space="preserve">
+    <value>No deleted envelope groups</value>
+  </data>
+  <data name="EmptyDeletedEnvelopesHelperTitle" xml:space="preserve">
+    <value>No deleted envelopes</value>
+  </data>
+  <data name="EmptyTransactionsHelperTitle" xml:space="preserve">
+    <value>No transactions yet</value>
+  </data>
+  <data name="EnvelopeActivityLabel" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="EnvelopeAmountLabel" xml:space="preserve">
+    <value>Budget</value>
   </data>
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
     <value>Cannot delete debt envelopes</value>
@@ -270,8 +303,35 @@
   <data name="EnvelopeDeleteRemainingBalanceError" xml:space="preserve">
     <value>Envelope still has a remaining balance</value>
   </data>
+  <data name="EnvelopeEditPageTitle" xml:space="preserve">
+    <value>Edit Budget</value>
+  </data>
+  <data name="EnvelopeGroupLabel" xml:space="preserve">
+    <value>Group</value>
+  </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Envelope group name is required</value>
+  </data>
+  <data name="EnvelopeNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EnvelopeNewPageTitle" xml:space="preserve">
+    <value>New Envelope</value>
+  </data>
+  <data name="EnvelopeNotesLabel" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="EnvelopeOverspendingLabel" xml:space="preserve">
+    <value>Overspending</value>
+  </data>
+  <data name="EnvelopePastLabel" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="EnvelopeRemainingLabel" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="EnvelopeToBudgetLabel" xml:space="preserve">
+    <value>To Budget</value>
   </data>
   <data name="EnvelopeValidAmountError" xml:space="preserve">
     <value>Budget amount is required</value>
@@ -317,9 +377,6 @@
   </data>
   <data name="NextButton" xml:space="preserve">
     <value>Next</value>
-  </data>
-  <data name="NoTransactionsLabel" xml:space="preserve">
-    <value>No transactions yet</value>
   </data>
   <data name="OverspendingTypeAlwaysIgnore" xml:space="preserve">
     <value>Always Ignore</value>
@@ -407,6 +464,9 @@
   </data>
   <data name="QuickBudgetBalance" xml:space="preserve">
     <value>Balance</value>
+  </data>
+  <data name="QuickBudgetButton" xml:space="preserve">
+    <value>Quick Budget</value>
   </data>
   <data name="QuickBudgetLastMonthActivity" xml:space="preserve">
     <value>Last Month Activity</value>

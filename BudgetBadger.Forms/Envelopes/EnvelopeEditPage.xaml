@@ -3,13 +3,13 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Edit Budget"
+            PageTitle="{ext:Translate EnvelopeEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
@@ -17,7 +17,7 @@
                     Binding="{Binding Budget.Envelope.IsNew}"
                     TargetType="p:ChildHeader"
                     Value="True">
-                    <Setter Property="PageTitle" Value="New Envelope" />
+                    <Setter Property="PageTitle" Value="{ext:Translate EnvelopeNewPageTitle}" />
                 </DataTrigger>
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
@@ -53,7 +53,7 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Start"
                                 Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="To Budget"
+                                Text="{ext:Translate EnvelopeToBudgetLabel}"
                                 VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
@@ -79,7 +79,7 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Past" />
+                                Text="{ext:Translate EnvelopePastLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -91,7 +91,7 @@
                                 Grid.Column="1"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Activity" />
+                                Text="{ext:Translate EnvelopeActivityLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -103,7 +103,7 @@
                                 Grid.Column="2"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Remaining" />
+                                Text="{ext:Translate EnvelopeRemainingLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="2"
@@ -146,7 +146,7 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Name"
+                            Label="{ext:Translate EnvelopeNameLabel}"
                             Text="{Binding Budget.Envelope.Description}" />
                         <uc:ButtonSelector
                             Grid.Row="2"
@@ -154,14 +154,14 @@
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding GroupSelectedCommand}"
-                            Label="Group"
+                            Label="{ext:Translate EnvelopeGroupLabel}"
                             Text="{Binding Budget.Envelope.Group.Description}" />
                         <uc:CurrencyCalculatorEntry
                             Grid.Row="3"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Budget"
+                            Label="{ext:Translate EnvelopeAmountLabel}"
                             Number="{Binding Budget.Amount}" />
                         <uc:DropdownSelector
                             Grid.Row="4"
@@ -170,14 +170,14 @@
                             Margin="16,0"
                             IsEnabled="{Binding IsNotDebt}"
                             ItemsSource="{Binding OverspendingTypes}"
-                            Label="Overspending"
+                            Label="{ext:Translate EnvelopeOverspendingLabel}"
                             SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnumConverter}}" />
                         <uc:MultilineTextEntry
                             Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Notes"
+                            Label="{ext:Translate EnvelopeNotesLabel}"
                             Text="{Binding Budget.Envelope.Notes}" />
                         <uc:Button2
                             Grid.Row="6"
@@ -185,7 +185,7 @@
                             Margin="16,0,0,0"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="Delete Envelope">
+                            Text="{ext:Translate DeleteButon}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -209,7 +209,7 @@
                             Margin="16,0"
                             Command="{Binding UndoDeleteCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="Undo Delete">
+                            Text="{ext:Translate UndoDeleteButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -233,7 +233,7 @@
                             Command="{Binding QuickBudgetCommand}"
                             IsVisible="{Binding Budget.IsActive}"
                             Style="{StaticResource PrimaryActionButtonStyle}"
-                            Text="Quick Budget">
+                            Text="{ext:Translate QuickBudgetButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -287,7 +287,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="To Budget"
+                        Text="{ext:Translate EnvelopeToBudgetLabel}"
                         VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
@@ -301,7 +301,7 @@
                         Grid.Column="2"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Past"
+                        Text="{ext:Translate EnvelopePastLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -315,7 +315,7 @@
                         Grid.Column="3"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Activity"
+                        Text="{ext:Translate EnvelopeActivityLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -329,7 +329,7 @@
                         Grid.Column="4"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Remaining"
+                        Text="{ext:Translate EnvelopeRemainingLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -345,7 +345,7 @@
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="Delete Envelope"
+                        Text="{ext:Translate DeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -363,7 +363,7 @@
                         Command="{Binding UndoDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="Undo Delete"
+                        Text="{ext:Translate UndoDeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -382,9 +382,8 @@
                         Command="{Binding QuickBudgetCommand}"
                         IsVisible="{Binding Budget.IsActive}"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Quick Budget"
+                        Text="{ext:Translate QuickBudgetButton}"
                         VerticalOptions="Center" />
-
                 </Grid>
             </Grid>
         </uc:BusyIndicator>

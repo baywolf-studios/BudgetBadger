@@ -118,7 +118,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                     await _navigationService.GoBackAsync();
                 }
             }
@@ -153,7 +153,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                BusyText = "Saving";
+                BusyText = _resourceContainer.GetResourceString("BusyTextSaving");
                 var result = await _envelopeLogic.SaveBudgetAsync(Budget);
 
                 if (result.Success)
@@ -170,7 +170,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -207,7 +207,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                BusyText = "Deleting";
+                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
                 var result = await _envelopeLogic.DeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
@@ -224,7 +224,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -244,7 +244,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                BusyText = "Undoing Delete";
+                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
                 var result = await _envelopeLogic.UndoDeleteEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
@@ -254,7 +254,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertUndoDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -275,7 +275,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                     foreach (var quickBudget in quickBudgetResult.Data)
                     {
-                        var buttonText = quickBudget.Description + ": " + quickBudget.Amount.ToString("c");
+                        var buttonText = quickBudget.Description + " = " + quickBudget.Amount.ToString("c");
                         var action = ActionSheetButton.CreateButton(buttonText, () =>
                         {
                             Budget.Amount = quickBudget.Amount;
@@ -284,18 +284,18 @@ namespace BudgetBadger.Forms.Envelopes
                         buttons.Add(action);
                     }
 
-                    buttons.Add(ActionSheetButton.CreateCancelButton("Cancel", () => { }));
+                    buttons.Add(ActionSheetButton.CreateCancelButton(_resourceContainer.GetResourceString("AlertCancel"), () => { }));
 
-                    await _dialogService.DisplayActionSheetAsync("Quick Budget", buttons.ToArray());
+                    await _dialogService.DisplayActionSheetAsync(_resourceContainer.GetResourceString("AlertQuickBudget"), buttons.ToArray());
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Not Enough Data for Quick Budgets", quickBudgetResult.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertQuickBudgetNotEnoughData"), quickBudgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Unable to retrive Quick Budgets", quickBudgetResult.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"), quickBudgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }
