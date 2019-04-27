@@ -144,6 +144,18 @@
   <data name="AccountNotesLabel" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="AccountPaymentLabel" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="AccountPaymentNotNeededLabel" xml:space="preserve">
+    <value>Not Needed</value>
+  </data>
+  <data name="AccountPendingLabel" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="AccountPostedLabel" xml:space="preserve">
+    <value>Cleared</value>
+  </data>
   <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
     <value>The reconciled amounts do not match</value>
   </data>
@@ -164,6 +176,9 @@
   </data>
   <data name="AccountValidDescriptionError" xml:space="preserve">
     <value>Account name is required</value>
+  </data>
+  <data name="AddTransactionButton" xml:space="preserve">
+    <value>Add Transaction</value>
   </data>
   <data name="AlertDeleteUnsuccessful" xml:space="preserve">
     <value>Delete Unsuccessful</value>
@@ -254,6 +269,9 @@
   </data>
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
     <value>Income</value>
+  </data>
+  <data name="NoTransactionsLabel" xml:space="preserve">
+    <value>No transactions yet</value>
   </data>
   <data name="OverspendingTypeAlwaysIgnore" xml:space="preserve">
     <value>Always Ignore</value>
@@ -348,6 +366,9 @@
   <data name="QuickBudgetLastMonthBudgeted" xml:space="preserve">
     <value>Last Month Budgeted</value>
   </data>
+  <data name="ReconcileAccountButton" xml:space="preserve">
+    <value>Reconcile</value>
+  </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
     <value>Budget schedule description is required</value>
   </data>
@@ -366,6 +387,12 @@
   <data name="SystemEnvelopeGroup" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="TransactionAccountLabel" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="TransactionAmountLabel" xml:space="preserve">
+    <value>Amount</value>
+  </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
   </data>
@@ -374,6 +401,15 @@
   </data>
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
     <value>Cannot delete transfer transaction with deleted payee</value>
+  </data>
+  <data name="TransactionEnvelopeLabel" xml:space="preserve">
+    <value>Envelope</value>
+  </data>
+  <data name="TransactionPayeeLabel" xml:space="preserve">
+    <value>Payee</value>
+  </data>
+  <data name="TransactionServiceDateLabel" xml:space="preserve">
+    <value>Service Date</value>
   </data>
   <data name="TransactionValidAccountDeletedAccountError" xml:space="preserve">
     <value>Cannot edit the Account on a transaction with a deleted Account</value>

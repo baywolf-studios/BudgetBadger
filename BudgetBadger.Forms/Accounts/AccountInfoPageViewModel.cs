@@ -12,11 +12,13 @@ using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
     public class AccountInfoPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
         readonly IAccountLogic _accountLogic;
@@ -86,12 +88,14 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public AccountInfoPageViewModel(INavigationService navigationService,
+        public AccountInfoPageViewModel(IResourceContainer resourceContainer,
+                                        INavigationService navigationService,
                                         ITransactionLogic transactionLogic,
                                         IAccountLogic accountLogic,
                                         IPageDialogService dialogService,
                                         ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _accountLogic = accountLogic;
@@ -162,7 +166,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 
@@ -285,7 +289,7 @@ namespace BudgetBadger.Forms.Accounts
                 else
                 {
                     transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
         }
