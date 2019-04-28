@@ -318,17 +318,29 @@
   <data name="DeleteButton" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeletedAccountsLabel" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
   <data name="DeletedAccountsPageTitle" xml:space="preserve">
     <value>Deleted Accounts</value>
   </data>
+  <data name="DeletedEnvelopeGroupsLabel" xml:space="preserve">
+    <value>Envelope Groups</value>
+  </data>
   <data name="DeletedEnvelopeGroupsPageTitle" xml:space="preserve">
     <value>Deleted Envelope Groups</value>
+  </data>
+  <data name="DeletedEnvelopesLabel" xml:space="preserve">
+    <value>Envelopes</value>
   </data>
   <data name="DeletedEnvelopesPageTitle" xml:space="preserve">
     <value>Deleted Envelopes</value>
   </data>
   <data name="DeletedLabel" xml:space="preserve">
     <value>Deleted</value>
+  </data>
+  <data name="DeletedPayeesLabel" xml:space="preserve">
+    <value>Payees</value>
   </data>
   <data name="DeletedPayeesPageTitle" xml:space="preserve">
     <value>Deleted Payees</value>

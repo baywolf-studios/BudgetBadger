@@ -664,6 +664,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounts.
+        /// </summary>
+        public static string DeletedAccountsLabel {
+            get {
+                return ResourceManager.GetString("DeletedAccountsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted Accounts.
         /// </summary>
         public static string DeletedAccountsPageTitle {
@@ -673,11 +682,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Envelope Groups.
+        /// </summary>
+        public static string DeletedEnvelopeGroupsLabel {
+            get {
+                return ResourceManager.GetString("DeletedEnvelopeGroupsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted Envelope Groups.
         /// </summary>
         public static string DeletedEnvelopeGroupsPageTitle {
             get {
                 return ResourceManager.GetString("DeletedEnvelopeGroupsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelopes.
+        /// </summary>
+        public static string DeletedEnvelopesLabel {
+            get {
+                return ResourceManager.GetString("DeletedEnvelopesLabel", resourceCulture);
             }
         }
         
@@ -696,6 +723,15 @@ namespace BudgetBadger.Language {
         public static string DeletedLabel {
             get {
                 return ResourceManager.GetString("DeletedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payees.
+        /// </summary>
+        public static string DeletedPayeesLabel {
+            get {
+                return ResourceManager.GetString("DeletedPayeesLabel", resourceCulture);
             }
         }
         

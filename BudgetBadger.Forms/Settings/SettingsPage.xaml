@@ -196,7 +196,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedEnvelopeGroupsPageTitle}">
+                        Text="{ext:Translate DeletedEnvelopeGroupsLabel}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage" />
                         </Label.GestureRecognizers>
@@ -219,7 +219,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedEnvelopesPageTitle}">
+                        Text="{ext:Translate DeletedEnvelopesLabel}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage" />
                         </Label.GestureRecognizers>
@@ -242,7 +242,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedAccountsPageTitle}">
+                        Text="{ext:Translate DeletedAccountsLabel}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage" />
                         </Label.GestureRecognizers>
@@ -265,7 +265,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedPayeesPageTitle}">
+                        Text="{ext:Translate DeletedPayeesLabel}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage" />
                         </Label.GestureRecognizers>
