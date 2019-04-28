@@ -121,16 +121,16 @@
     <value>Balance</value>
   </data>
   <data name="AccountDeleteBalanceError" xml:space="preserve">
-    <value>Cannot delete account with balance</value>
+    <value>Cannot delete an account with balance</value>
   </data>
   <data name="AccountDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete account with future transactions</value>
+    <value>Cannot delete an account with future transactions</value>
   </data>
   <data name="AccountDeleteInactiveError" xml:space="preserve">
     <value>Cannot delete an inactive account</value>
   </data>
   <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
-    <value>Cannot delete account with pending transactions</value>
+    <value>Cannot delete an account with pending transactions</value>
   </data>
   <data name="AccountEditPageTitle" xml:space="preserve">
     <value>Edit Account</value>
@@ -394,16 +394,16 @@
     <value>Cannot delete debt envelopes</value>
   </data>
   <data name="EnvelopeDeleteFutureBudgetsError" xml:space="preserve">
-    <value>Envelope has future budget amounts to it</value>
+    <value>Cannot delete nvelope with future budget amounts</value>
   </data>
   <data name="EnvelopeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Envelope has future transactions</value>
+    <value>Cannot delete nvelope with future transactions</value>
   </data>
   <data name="EnvelopeDeleteIncomeError" xml:space="preserve">
     <value>Cannot delete income envelopes</value>
   </data>
   <data name="EnvelopeDeleteRemainingBalanceError" xml:space="preserve">
-    <value>Envelope still has a remaining balance</value>
+    <value>Cannot delete envelope with a remaining balance</value>
   </data>
   <data name="EnvelopeEditPageTitle" xml:space="preserve">
     <value>Edit Budget</value>
@@ -490,7 +490,7 @@
     <value>Envelope name is required</value>
   </data>
   <data name="EnvelopeValidEnvelopeError" xml:space="preserve">
-    <value>A valid Envelope is required</value>
+    <value>A valid envelope is required</value>
   </data>
   <data name="EnvelopeValidEnvelopeExistError" xml:space="preserve">
     <value>Envelope is required</value>
@@ -502,13 +502,13 @@
     <value>A valid envelope group is required</value>
   </data>
   <data name="EnvelopeValidOverspendDebtError" xml:space="preserve">
-    <value>Ignore Overspend must be set on debt envelopes</value>
+    <value>Ignore overspend must be set on debt envelopes</value>
   </data>
   <data name="EnvelopeValidOverspendError" xml:space="preserve">
-    <value>Cannot set Ignore Overspend Always when Ignore Overspend is not set</value>
+    <value>Cannot set ignore overspend always when ignore overspend is not set</value>
   </data>
   <data name="EnvelopeValidScheduleError" xml:space="preserve">
-    <value>A valid Schedule is required</value>
+    <value>A valid schedule is required</value>
   </data>
   <data name="EnvelopeValidScheduleExistError" xml:space="preserve">
     <value>Schedule is required</value>
@@ -556,7 +556,7 @@
     <value>Cannot delete an account payee</value>
   </data>
   <data name="PayeeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete a payee with future transactions on it</value>
+    <value>Cannot delete a payee with future transactions</value>
   </data>
   <data name="PayeeDeleteInactiveError" xml:space="preserve">
     <value>Cannot delete an inactive payee</value>
@@ -634,7 +634,7 @@
     <value>The network connection seems to be unavailble, please try again later.</value>
   </data>
   <data name="PurchaseErrorUnknown" xml:space="preserve">
-    <value>Unknown error</value>
+    <value>Unknown Error</value>
   </data>
   <data name="PurchaseErrorUserCancelled" xml:space="preserve">
     <value>Purchase Cancelled</value>
@@ -778,10 +778,10 @@
     <value>Status</value>
   </data>
   <data name="TransactionValidAccountDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the Account on a transaction with a deleted Account</value>
+    <value>Cannot edit the account on a transaction with a deleted account</value>
   </data>
   <data name="TransactionValidAccountDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted Account</value>
+    <value>Cannot use a deleted account</value>
   </data>
   <data name="TransactionValidAccountError" xml:space="preserve">
     <value>Account is required</value>
@@ -790,19 +790,19 @@
     <value>Account does not exist</value>
   </data>
   <data name="TransactionValidAmountDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the Amount on a transaction with a deleted Account</value>
+    <value>Cannot edit the amount on a transaction with a deleted account</value>
   </data>
   <data name="TransactionValidAmountDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the Amount on a transaction with a deleted Envelope</value>
+    <value>Cannot edit the amount on a transaction with a deleted envelope</value>
   </data>
   <data name="TransactionValidAmountDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the Amount on a transaction with a deleted Payee</value>
+    <value>Cannot edit the amount on a transaction with a deleted payee</value>
   </data>
   <data name="TransactionValidAmountError" xml:space="preserve">
     <value>Amount is required</value>
   </data>
   <data name="TransactionValidEnvelopeDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted Envelope</value>
+    <value>Cannot use a deleted envelope</value>
   </data>
   <data name="TransactionValidEnvelopeError" xml:space="preserve">
     <value>Envelope is required</value>
@@ -811,13 +811,13 @@
     <value>Envelope does not exist</value>
   </data>
   <data name="TransactionValidPayeeDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the Envelope on a transaction with a deleted Envelope</value>
+    <value>Cannot edit the envelope on a transaction with a deleted envelope</value>
   </data>
   <data name="TransactionValidPayeeDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted Payee</value>
+    <value>Cannot use a deleted payee</value>
   </data>
   <data name="TransactionValidPayeeDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the Payee on a transaction with a deleted Payee</value>
+    <value>Cannot edit the payee on a transaction with a deleted payee</value>
   </data>
   <data name="TransactionValidPayeeError" xml:space="preserve">
     <value>Payee is required</value>
@@ -826,13 +826,13 @@
     <value>Payee does not exist</value>
   </data>
   <data name="TransactionValidServiceDateDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the Service Date on a transaction with a deleted Account</value>
+    <value>Cannot edit the service date on a transaction with a deleted account</value>
   </data>
   <data name="TransactionValidServiceDateDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the Service Date on a transaction with a deleted Envelope</value>
+    <value>Cannot edit the service date on a transaction with a deleted envelope</value>
   </data>
   <data name="TransactionValidServiceDateDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the Service Date on a transaction with a deleted Payee</value>
+    <value>Cannot edit the service date on a transaction with a deleted payee</value>
   </data>
   <data name="TransferValidFromerror" xml:space="preserve">
     <value>Transfer does not contain a valid From Envelope</value>
