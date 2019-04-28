@@ -70,7 +70,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete account with balance.
+        ///   Looks up a localized string similar to Cannot delete an account with balance.
         /// </summary>
         public static string AccountDeleteBalanceError {
             get {
@@ -79,7 +79,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete account with future transactions.
+        ///   Looks up a localized string similar to Cannot delete an account with future transactions.
         /// </summary>
         public static string AccountDeleteFutureTransactionsError {
             get {
@@ -97,7 +97,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete account with pending transactions.
+        ///   Looks up a localized string similar to Cannot delete an account with pending transactions.
         /// </summary>
         public static string AccountDeletePendingTransactionsError {
             get {
@@ -889,7 +889,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Envelope has future budget amounts to it.
+        ///   Looks up a localized string similar to Cannot delete nvelope with future budget amounts.
         /// </summary>
         public static string EnvelopeDeleteFutureBudgetsError {
             get {
@@ -898,7 +898,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Envelope has future transactions.
+        ///   Looks up a localized string similar to Cannot delete nvelope with future transactions.
         /// </summary>
         public static string EnvelopeDeleteFutureTransactionsError {
             get {
@@ -916,7 +916,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Envelope still has a remaining balance.
+        ///   Looks up a localized string similar to Cannot delete envelope with a remaining balance.
         /// </summary>
         public static string EnvelopeDeleteRemainingBalanceError {
             get {
@@ -1177,7 +1177,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A valid Envelope is required.
+        ///   Looks up a localized string similar to A valid envelope is required.
         /// </summary>
         public static string EnvelopeValidEnvelopeError {
             get {
@@ -1213,7 +1213,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignore Overspend must be set on debt envelopes.
+        ///   Looks up a localized string similar to Ignore overspend must be set on debt envelopes.
         /// </summary>
         public static string EnvelopeValidOverspendDebtError {
             get {
@@ -1222,7 +1222,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot set Ignore Overspend Always when Ignore Overspend is not set.
+        ///   Looks up a localized string similar to Cannot set ignore overspend always when ignore overspend is not set.
         /// </summary>
         public static string EnvelopeValidOverspendError {
             get {
@@ -1231,7 +1231,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A valid Schedule is required.
+        ///   Looks up a localized string similar to A valid schedule is required.
         /// </summary>
         public static string EnvelopeValidScheduleError {
             get {
@@ -1375,7 +1375,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete a payee with future transactions on it.
+        ///   Looks up a localized string similar to Cannot delete a payee with future transactions.
         /// </summary>
         public static string PayeeDeleteFutureTransactionsError {
             get {
@@ -1609,7 +1609,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown error.
+        ///   Looks up a localized string similar to Unknown Error.
         /// </summary>
         public static string PurchaseErrorUnknown {
             get {
@@ -2041,7 +2041,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Account on a transaction with a deleted Account.
+        ///   Looks up a localized string similar to Cannot edit the account on a transaction with a deleted account.
         /// </summary>
         public static string TransactionValidAccountDeletedAccountError {
             get {
@@ -2050,7 +2050,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use a deleted Account.
+        ///   Looks up a localized string similar to Cannot use a deleted account.
         /// </summary>
         public static string TransactionValidAccountDeletedError {
             get {
@@ -2077,7 +2077,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Account.
+        ///   Looks up a localized string similar to Cannot edit the amount on a transaction with a deleted account.
         /// </summary>
         public static string TransactionValidAmountDeletedAccountError {
             get {
@@ -2086,7 +2086,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Envelope.
+        ///   Looks up a localized string similar to Cannot edit the amount on a transaction with a deleted envelope.
         /// </summary>
         public static string TransactionValidAmountDeletedEnvelopeError {
             get {
@@ -2095,7 +2095,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Amount on a transaction with a deleted Payee.
+        ///   Looks up a localized string similar to Cannot edit the amount on a transaction with a deleted payee.
         /// </summary>
         public static string TransactionValidAmountDeletedPayeeError {
             get {
@@ -2113,7 +2113,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use a deleted Envelope.
+        ///   Looks up a localized string similar to Cannot use a deleted envelope.
         /// </summary>
         public static string TransactionValidEnvelopeDeletedError {
             get {
@@ -2140,7 +2140,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Envelope on a transaction with a deleted Envelope.
+        ///   Looks up a localized string similar to Cannot edit the envelope on a transaction with a deleted envelope.
         /// </summary>
         public static string TransactionValidPayeeDeletedEnvelopeError {
             get {
@@ -2149,7 +2149,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use a deleted Payee.
+        ///   Looks up a localized string similar to Cannot use a deleted payee.
         /// </summary>
         public static string TransactionValidPayeeDeletedError {
             get {
@@ -2158,7 +2158,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Payee on a transaction with a deleted Payee.
+        ///   Looks up a localized string similar to Cannot edit the payee on a transaction with a deleted payee.
         /// </summary>
         public static string TransactionValidPayeeDeletedPayeeError {
             get {
@@ -2185,7 +2185,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Account.
+        ///   Looks up a localized string similar to Cannot edit the service date on a transaction with a deleted account.
         /// </summary>
         public static string TransactionValidServiceDateDeletedAccountError {
             get {
@@ -2194,7 +2194,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Envelope.
+        ///   Looks up a localized string similar to Cannot edit the service date on a transaction with a deleted envelope.
         /// </summary>
         public static string TransactionValidServiceDateDeletedEnvelopeError {
             get {
@@ -2203,7 +2203,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot edit the Service Date on a transaction with a deleted Payee.
+        ///   Looks up a localized string similar to Cannot edit the service date on a transaction with a deleted payee.
         /// </summary>
         public static string TransactionValidServiceDateDeletedPayeeError {
             get {
