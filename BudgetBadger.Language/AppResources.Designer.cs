@@ -520,6 +520,42 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Badger Pro.
+        /// </summary>
+        public static string BudgetBadgerProLabel {
+            get {
+                return ResourceManager.GetString("BudgetBadgerProLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade your budget - Go Pro!.
+        /// </summary>
+        public static string BudgetBadgerProPurchaseLabel {
+            get {
+                return ResourceManager.GetString("BudgetBadgerProPurchaseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore Purchase.
+        /// </summary>
+        public static string BudgetBadgerProRestoreLabel {
+            get {
+                return ResourceManager.GetString("BudgetBadgerProRestoreLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanks for purchasing Budget Badger Pro!.
+        /// </summary>
+        public static string BudgetBadgerProThanksLabel {
+            get {
+                return ResourceManager.GetString("BudgetBadgerProThanksLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer.
         /// </summary>
         public static string BufferEnvelope {
@@ -561,6 +597,33 @@ namespace BudgetBadger.Language {
         public static string BusyTextUndoingDelete {
             get {
                 return ResourceManager.GetString("BusyTextUndoingDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cloud Sync.
+        /// </summary>
+        public static string CloudSyncLabel {
+            get {
+                return ResourceManager.GetString("CloudSyncLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency.
+        /// </summary>
+        public static string CurrencyLabel {
+            get {
+                return ResourceManager.GetString("CurrencyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date and Time.
+        /// </summary>
+        public static string DateTimeLabel {
+            get {
+                return ResourceManager.GetString("DateTimeLabel", resourceCulture);
             }
         }
         
@@ -610,11 +673,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string DeletedLabel {
+            get {
+                return ResourceManager.GetString("DeletedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted Payees.
         /// </summary>
         public static string DeletedPayeesPageTitle {
             get {
                 return ResourceManager.GetString("DeletedPayeesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dropbox.
+        /// </summary>
+        public static string DropboxLabel {
+            get {
+                return ResourceManager.GetString("DropboxLabel", resourceCulture);
             }
         }
         
@@ -1123,6 +1204,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string HelpLabel {
+            get {
+                return ResourceManager.GetString("HelpLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Needed.
         /// </summary>
         public static string IgnoredEnvelope {
@@ -1146,6 +1236,24 @@ namespace BudgetBadger.Language {
         public static string IncomeEnvelopeGroup {
             get {
                 return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string LanguageLabel {
+            get {
+                return ResourceManager.GetString("LanguageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Synced.
+        /// </summary>
+        public static string LastSyncedLabel {
+            get {
+                return ResourceManager.GetString("LastSyncedLabel", resourceCulture);
             }
         }
         
@@ -1618,6 +1726,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsPageTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Split.
         /// </summary>
         public static string Split {
@@ -1641,6 +1758,15 @@ namespace BudgetBadger.Language {
         public static string StartingBalancePayee {
             get {
                 return ResourceManager.GetString("StartingBalancePayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sync.
+        /// </summary>
+        public static string SyncButton {
+            get {
+                return ResourceManager.GetString("SyncButton", resourceCulture);
             }
         }
         

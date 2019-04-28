@@ -270,6 +270,18 @@
   <data name="BeginDateLabel" xml:space="preserve">
     <value>Begin Date</value>
   </data>
+  <data name="BudgetBadgerProLabel" xml:space="preserve">
+    <value>Budget Badger Pro</value>
+  </data>
+  <data name="BudgetBadgerProPurchaseLabel" xml:space="preserve">
+    <value>Upgrade your budget - Go Pro!</value>
+  </data>
+  <data name="BudgetBadgerProRestoreLabel" xml:space="preserve">
+    <value>Restore Purchase</value>
+  </data>
+  <data name="BudgetBadgerProThanksLabel" xml:space="preserve">
+    <value>Thanks for purchasing Budget Badger Pro!</value>
+  </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
   </data>
@@ -284,6 +296,15 @@
   </data>
   <data name="BusyTextUndoingDelete" xml:space="preserve">
     <value>Undoing Delete</value>
+  </data>
+  <data name="CloudSyncLabel" xml:space="preserve">
+    <value>Cloud Sync</value>
+  </data>
+  <data name="CurrencyLabel" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="DateTimeLabel" xml:space="preserve">
+    <value>Date and Time</value>
   </data>
   <data name="DebtEnvelopeGroup" xml:space="preserve">
     <value>Debt</value>
@@ -300,8 +321,14 @@
   <data name="DeletedEnvelopesPageTitle" xml:space="preserve">
     <value>Deleted Envelopes</value>
   </data>
+  <data name="DeletedLabel" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
   <data name="DeletedPayeesPageTitle" xml:space="preserve">
     <value>Deleted Payees</value>
+  </data>
+  <data name="DropboxLabel" xml:space="preserve">
+    <value>Dropbox</value>
   </data>
   <data name="EmptyAccountHelperSubtitle" xml:space="preserve">
     <value>Use the + button to add your first account</value>
@@ -471,6 +498,9 @@
   <data name="GenericDebtEnvelope" xml:space="preserve">
     <value>Debt</value>
   </data>
+  <data name="HelpLabel" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="IgnoredEnvelope" xml:space="preserve">
     <value>Not Needed</value>
   </data>
@@ -479,6 +509,12 @@
   </data>
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
     <value>Income</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LastSyncedLabel" xml:space="preserve">
+    <value>Last Synced</value>
   </data>
   <data name="NetWorthReportPageTitle" xml:space="preserve">
     <value>Net Worth</value>
@@ -636,6 +672,9 @@
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
     <value>Budget schedule description is required</value>
   </data>
+  <data name="SettingsPageTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="Split" xml:space="preserve">
     <value>Split</value>
   </data>
@@ -644,6 +683,9 @@
   </data>
   <data name="StartingBalancePayee" xml:space="preserve">
     <value>Starting Balance</value>
+  </data>
+  <data name="SyncButton" xml:space="preserve">
+    <value>Sync</value>
   </data>
   <data name="SyncDateTimeNever" xml:space="preserve">
     <value>Never</value>
