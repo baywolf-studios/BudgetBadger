@@ -147,7 +147,7 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{ext:Translate LastSyncedLabel}" />
-                                    <Span Text=" | " />
+                                    <Span Text=" - " />
                                     <Span Text="{Binding LastSynced}" />
                                 </FormattedString>
                             </Label.FormattedText>

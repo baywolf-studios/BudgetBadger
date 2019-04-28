@@ -277,7 +277,7 @@ namespace BudgetBadger.Forms.Settings
             {
                 try
                 {
-                    var dateFormat = String.Join(" | ", DateTime.Now.ToString("d", culture.DateTimeFormat), DateTime.Now.ToString("Y", culture.DateTimeFormat));
+                    var dateFormat = String.Join("  ", DateTime.Now.ToString("d", culture.DateTimeFormat), DateTime.Now.ToString("Y", culture.DateTimeFormat));
                     result[dateFormat] = culture;
                 }
                 catch (Exception ex)

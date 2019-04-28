@@ -291,6 +291,9 @@
   <data name="BusyTextDeleting" xml:space="preserve">
     <value>Deleting</value>
   </data>
+  <data name="BusyTextLoading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
   <data name="BusyTextSaving" xml:space="preserve">
     <value>Saving</value>
   </data>
