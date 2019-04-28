@@ -520,6 +520,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Badger.
+        /// </summary>
+        public static string BudgetBadger {
+            get {
+                return ResourceManager.GetString("BudgetBadger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget Badger Pro.
         /// </summary>
         public static string BudgetBadgerProLabel {
@@ -1020,6 +1029,15 @@ namespace BudgetBadger.Language {
         public static string EnvelopeSelectionPageTitle {
             get {
                 return ResourceManager.GetString("EnvelopeSelectionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelopes.
+        /// </summary>
+        public static string EnvelopesPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopesPageTitle", resourceCulture);
             }
         }
         
@@ -1744,6 +1762,51 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Split Transaction.
+        /// </summary>
+        public static string SplitTransactionButton {
+            get {
+                return ResourceManager.GetString("SplitTransactionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Split Transaction.
+        /// </summary>
+        public static string SplitTransactionPageTitle {
+            get {
+                return ResourceManager.GetString("SplitTransactionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining.
+        /// </summary>
+        public static string SplitTransactionRemainingLabel {
+            get {
+                return ResourceManager.GetString("SplitTransactionRemainingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running Total.
+        /// </summary>
+        public static string SplitTransactionRunningTotalLabel {
+            get {
+                return ResourceManager.GetString("SplitTransactionRunningTotalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string SplitTransactionTotalLabel {
+            get {
+                return ResourceManager.GetString("SplitTransactionTotalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No split transactions to save.
         /// </summary>
         public static string SplitTransactionValidTransactionsError {
@@ -1789,6 +1852,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inflow.
+        /// </summary>
+        public static string TransactactionInflowLabel {
+            get {
+                return ResourceManager.GetString("TransactactionInflowLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outflow.
+        /// </summary>
+        public static string TransactactionOutflowLabel {
+            get {
+                return ResourceManager.GetString("TransactactionOutflowLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
         public static string TransactionAccountLabel {
@@ -1803,6 +1884,15 @@ namespace BudgetBadger.Language {
         public static string TransactionAmountLabel {
             get {
                 return ResourceManager.GetString("TransactionAmountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleared.
+        /// </summary>
+        public static string TransactionClearedLabel {
+            get {
+                return ResourceManager.GetString("TransactionClearedLabel", resourceCulture);
             }
         }
         
@@ -1834,11 +1924,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Transaction.
+        /// </summary>
+        public static string TransactionEditPageTitle {
+            get {
+                return ResourceManager.GetString("TransactionEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Envelope.
         /// </summary>
         public static string TransactionEnvelopeLabel {
             get {
                 return ResourceManager.GetString("TransactionEnvelopeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Transaction.
+        /// </summary>
+        public static string TransactionNewPageTitle {
+            get {
+                return ResourceManager.GetString("TransactionNewPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string TransactionNotesLabel {
+            get {
+                return ResourceManager.GetString("TransactionNotesLabel", resourceCulture);
             }
         }
         
@@ -1852,11 +1969,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reconciled.
+        /// </summary>
+        public static string TransactionReconciledLabel {
+            get {
+                return ResourceManager.GetString("TransactionReconciledLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service Date.
         /// </summary>
         public static string TransactionServiceDateLabel {
             get {
                 return ResourceManager.GetString("TransactionServiceDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string TransactionStatusLabel {
+            get {
+                return ResourceManager.GetString("TransactionStatusLabel", resourceCulture);
             }
         }
         

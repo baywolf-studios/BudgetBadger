@@ -7,18 +7,18 @@
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:local="clr-namespace:BudgetBadger.Forms.Views"
     xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
-    xmlns:transactions="clr-namespace:BudgetBadger.Forms.Transactions"
     android:TabbedPage.ToolbarPlacement="Bottom">
     <TabbedPage.Effects>
         <effects:BottomBarNoShiftEffect />
     </TabbedPage.Effects>
     <TabbedPage.Children>
         <NavigationPage
-            Title="Envelopes"
+            Title="{ext:Translate EnvelopesPageTitle}"
             BarTextColor="White"
             Icon="{StaticResource EnvelopesTabIcon}">
             <x:Arguments>
@@ -26,7 +26,7 @@
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
-            Title="Accounts"
+            Title="{ext:Translate AccountsPageTitle}"
             BarTextColor="White"
             Icon="{StaticResource AccountsTabIcon}">
             <x:Arguments>
@@ -34,7 +34,7 @@
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
-            Title="Payees"
+            Title="{ext:Translate PayeesPageTitle}"
             BarTextColor="White"
             Icon="{StaticResource PayeesTabIcon}">
             <x:Arguments>
@@ -42,7 +42,7 @@
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
-            Title="Reports"
+            Title="{ext:Translate ReportsPageTitle}"
             BarTextColor="White"
             Icon="{StaticResource ReportsTabIcon}">
             <x:Arguments>
@@ -50,7 +50,7 @@
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
-            Title="Settings"
+            Title="{ext:Translate SettingsPageTitle}"
             BarTextColor="White"
             Icon="{StaticResource SettingsTabIcon}">
             <x:Arguments>

@@ -223,7 +223,6 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
-            containerRegistry.RegisterForNavigation<TransactionSelectionPage, TransactionSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();

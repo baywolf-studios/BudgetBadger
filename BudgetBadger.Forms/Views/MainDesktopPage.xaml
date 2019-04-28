@@ -3,8 +3,7 @@
     x:Class="BudgetBadger.Forms.Views.MainDesktopPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
-    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     NavigationPage.HasNavigationBar="false">
@@ -31,7 +30,7 @@
                     Grid.Row="0"
                     Margin="16,0"
                     Style="{StaticResource MasterDetailTitleLabelStyle}"
-                    Text="Budget Badger"
+                    Text="{ext:Translate BudgetBadger}"
                     VerticalOptions="Center" />
                 <uc:ContentButton
                     x:Name="EnvelopesFrame"
@@ -55,7 +54,7 @@
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="Envelopes"
+                            Text="{ext:Translate EnvelopesPageTitle}"
                             TextColor="{StaticResource PrimaryTextColor}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -81,7 +80,7 @@
                             x:Name="AccountsLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="Accounts"
+                            Text="{ext:Translate AccountsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
@@ -106,7 +105,7 @@
                             x:Name="PayeesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="Payees"
+                            Text="{ext:Translate PayeesPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
@@ -131,7 +130,7 @@
                             x:Name="ReportsLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="Reports"
+                            Text="{ext:Translate ReportsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
@@ -156,7 +155,7 @@
                             x:Name="SettingsLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="Settings"
+                            Text="{ext:Translate SettingsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>

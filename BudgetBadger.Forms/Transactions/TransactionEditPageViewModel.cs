@@ -10,11 +10,13 @@ using Prism.Services;
 using BudgetBadger.Models.Extensions;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Transactions
 {
     public class TransactionEditPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
@@ -58,11 +60,13 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand DeleteCommand { get; set; }
         public ICommand SplitCommand { get; set; }
 
-        public TransactionEditPageViewModel(INavigationService navigationService,
+        public TransactionEditPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
                                         ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
@@ -136,7 +140,7 @@ namespace BudgetBadger.Forms.Transactions
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Error", result.Message, "Okay");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 await _navigationService.GoBackAsync();
             }
         }
@@ -180,7 +184,7 @@ namespace BudgetBadger.Forms.Transactions
 
             try
             {
-                BusyText = "Saving";
+                BusyText = _resourceContainer.GetResourceString("BusyTextSaving");
                 var result = await _transLogic.SaveTransactionAsync(Transaction);
 
                 if (result.Success)
@@ -195,7 +199,7 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -235,7 +239,7 @@ namespace BudgetBadger.Forms.Transactions
 
             try
             {
-                BusyText = "Deleting";
+                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
                 var result = await _transLogic.DeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
@@ -249,7 +253,7 @@ namespace BudgetBadger.Forms.Transactions
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally

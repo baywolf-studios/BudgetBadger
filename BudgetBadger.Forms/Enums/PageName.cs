@@ -34,6 +34,5 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string SyncModesPage = "SyncModesPage";
         public static readonly string TransactionEditPage = "TransactionEditPage";
         public static readonly string SplitTransactionPage = "SplitTransactionPage";
-        public static readonly string TransactionSelectionPage = "TransactionSelectionPage";
     }
 }

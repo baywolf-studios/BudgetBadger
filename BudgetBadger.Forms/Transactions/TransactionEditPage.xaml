@@ -3,13 +3,13 @@
     x:Class="BudgetBadger.Forms.Transactions.TransactionEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Edit Transaction"
+            PageTitle="{ext:Translate TransactionEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg">
             <p:ChildHeader.Triggers>
@@ -17,7 +17,7 @@
                     Binding="{Binding Transaction.IsNew}"
                     TargetType="p:ChildHeader"
                     Value="True">
-                    <Setter Property="PageTitle" Value="New Transaction" />
+                    <Setter Property="PageTitle" Value="{ext:Translate TransactionNewPageTitle}" />
                 </DataTrigger>
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
@@ -62,34 +62,34 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Margin="16,0,0,0"
-                            Label="Outflow"
+                            Label="{ext:Translate TransactactionOutflowLabel}"
                             Number="{Binding Transaction.Outflow}" />
                         <uc:CurrencyCalculatorEntry
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="0,0,16,0"
-                            Label="Inflow"
+                            Label="{ext:Translate TransactactionInflowLabel}"
                             Number="{Binding Transaction.Inflow}" />
                         <uc:ButtonSelector
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding AccountSelectedCommand}"
-                            Label="Account"
+                            Label="{ext:Translate TransactionAccountLabel}"
                             Text="{Binding Transaction.Account.Description}" />
                         <uc:ButtonSelector
                             Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding PayeeSelectedCommand}"
-                            Label="Payee"
+                            Label="{ext:Translate TransactionPayeeLabel}"
                             Text="{Binding Transaction.Payee.Description}" />
                         <uc:ButtonSelector
                             Grid.Row="4"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding EnvelopeSelectedCommand}"
-                            Label="Envelope"
+                            Label="{ext:Translate TransactionEnvelopeLabel}"
                             Text="{Binding Transaction.Envelope.Description}">
                             <uc:ButtonSelector.Triggers>
                                 <DataTrigger
@@ -105,21 +105,21 @@
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Date="{Binding Transaction.ServiceDate}"
-                            Label="Service Date" />
+                            Label="{ext:Translate TransactionServiceDateLabel}" />
                         <uc:Checkbox
                             Grid.Row="6"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Caption="Cleared"
+                            Caption="{ext:Translate TransactionClearedLabel}"
                             IsChecked="{Binding Transaction.Posted}"
-                            Label="Status">
+                            Label="{ext:Translate TransactionStatusLabel}">
                             <uc:Checkbox.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Transaction.Reconciled}"
                                     TargetType="uc:Checkbox"
                                     Value="true">
                                     <Setter Property="IsEnabled" Value="false" />
-                                    <Setter Property="Caption" Value="Reconciled" />
+                                    <Setter Property="Caption" Value="{ext:Translate TransactionReconciledLabel}" />
                                 </DataTrigger>
                             </uc:Checkbox.Triggers>
                         </uc:Checkbox>
@@ -127,7 +127,7 @@
                             Grid.Row="7"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Label="Notes"
+                            Label="{ext:Translate TransactionNotesLabel}"
                             Text="{Binding Transaction.Notes}" />
                         <Grid
                             Grid.Row="8"
@@ -153,7 +153,7 @@
                                 Command="{Binding DeleteCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                Text="Delete Transaction">
+                                Text="{ext:Translate DeleteButton}">
                                 <uc:Button2.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
@@ -171,7 +171,7 @@
                                 Command="{Binding SplitCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"
-                                Text="Split Transaction">
+                                Text="{ext:Translate SplitTransactionButton}">
                                 <uc:Button2.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
@@ -189,7 +189,7 @@
                                 Command="{Binding DeleteCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                Text="Delete Transaction">
+                                Text="{ext:Translate DeleteButton}">
                                 <uc:Button2.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
@@ -207,7 +207,7 @@
                                 Command="{Binding SplitCommand}"
                                 IsVisible="false"
                                 Style="{StaticResource PrimaryActionButtonStyle}"
-                                Text="Split Transaction">
+                                Text="{ext:Translate SplitTransactionButton}">
                                 <uc:Button2.Triggers>
                                     <MultiTrigger TargetType="Button">
                                         <MultiTrigger.Conditions>
@@ -270,7 +270,7 @@
                         Command="{Binding DeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="Delete Transaction"
+                        Text="{ext:Translate DeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -288,7 +288,7 @@
                         Command="{Binding SplitCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Split Transaction"
+                        Text="{ext:Translate SplitTransactionButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
