@@ -14,11 +14,13 @@ using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -79,13 +81,15 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public EnvelopeInfoPageViewModel(INavigationService navigationService,
+        public EnvelopeInfoPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                          ITransactionLogic transactionLogic,
                                          IEnvelopeLogic envelopeLogic,
                                          IPageDialogService dialogService,
                                          ISyncFactory syncFactory,
                                          ISettings settings)
         {
+            _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _envelopeLogic = envelopeLogic;
@@ -238,7 +242,7 @@ namespace BudgetBadger.Forms.Envelopes
                 else
                 {
                     transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
         }
@@ -255,7 +259,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }

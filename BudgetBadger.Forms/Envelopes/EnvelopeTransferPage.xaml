@@ -3,13 +3,13 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeTransferPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Envelope Transfer"
+            PageTitle="{ext:Translate EnvelopeTransferPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg" />
     </p:BasePage.Header>
@@ -32,24 +32,24 @@
                 <uc:ButtonSelector
                     Grid.Row="0"
                     Margin="16,0"
-                    Label="Date"
+                    Label="{ext:Translate EnvelopeTransferDateLabel}"
                     Text="{Binding Schedule.Description}" />
                 <uc:ButtonSelector
                     Grid.Row="1"
                     Margin="16,0"
                     Command="{Binding FromEnvelopeSelectedCommand}"
-                    Label="From"
+                    Label="{ext:Translate EnvelopeTransferFromLabel}"
                     Text="{Binding FromEnvelope.Description}" />
                 <uc:ButtonSelector
                     Grid.Row="2"
                     Margin="16,0"
                     Command="{Binding ToEnvelopeSelectedCommand}"
-                    Label="To"
+                    Label="{ext:Translate EnvelopeTransferToLabel}"
                     Text="{Binding ToEnvelope.Description}" />
                 <uc:CurrencyCalculatorEntry
                     Grid.Row="3"
                     Margin="16,0"
-                    Label="Amount"
+                    Label="{ext:Translate EnvelopeTransferAmountLabel}"
                     Number="{Binding Amount}" />
             </Grid>
         </ScrollView>

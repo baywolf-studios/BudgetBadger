@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
@@ -14,6 +15,7 @@ namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeTransferPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -55,11 +57,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _schedule, value);
         }
 
-        public EnvelopeTransferPageViewModel(INavigationService navigationService,
+        public EnvelopeTransferPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                       IEnvelopeLogic envelopeLogic,
                                       IPageDialogService dialogService,
                                       ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -156,7 +160,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 

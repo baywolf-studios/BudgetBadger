@@ -3,9 +3,9 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -40,7 +40,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Remaining"
+                            Text="{ext:Translate EnvelopeRemainingLabel}"
                             VerticalOptions="Center" />
                         <Label
                             Grid.Column="1"
@@ -66,7 +66,7 @@
                             Grid.Column="0"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Past" />
+                            Text="{ext:Translate EnvelopePastLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
@@ -78,7 +78,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Activity" />
+                            Text="{ext:Translate EnvelopeActivityLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
@@ -90,7 +90,7 @@
                             Grid.Column="2"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="Budget" />
+                            Text="{ext:Translate EnvelopeAmountLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="2"
@@ -106,7 +106,7 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
-                Title="No transactions yet"
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
@@ -188,7 +188,7 @@
                 Margin="16,0,16,16"
                 Command="{Binding AddTransactionCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
-                Text="Add Transaction"
+                Text="{ext:Translate AddTransactionButton}"
                 VerticalOptions="End" />
         </Grid>
     </p:BasePage.Body>

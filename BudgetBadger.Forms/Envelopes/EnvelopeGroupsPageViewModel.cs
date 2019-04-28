@@ -15,11 +15,13 @@ using BudgetBadger.Core.Sync;
 using Prism;
 using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeGroupsPageViewModel : BindableBase, IPageLifecycleAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeGroupLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -70,11 +72,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        public EnvelopeGroupsPageViewModel(INavigationService navigationService,
+        public EnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                    IPageDialogService dialogService,
                                    IEnvelopeLogic envelopeGroupLogic,
                                    ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _envelopeGroupLogic = envelopeGroupLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -134,7 +138,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopeGroups = (EnvelopeGroups?.Count ?? 0) == 0;
@@ -165,7 +169,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 
@@ -203,7 +207,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }
