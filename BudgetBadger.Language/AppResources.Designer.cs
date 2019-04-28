@@ -322,6 +322,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication Unsuccessful.
+        /// </summary>
+        public static string AlertAuthenticationUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertAuthenticationUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget Badger Pro.
         /// </summary>
         public static string AlertBudgetBadgerPro {
@@ -367,6 +376,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Did not authenticate with Dropbox. Sync disabled..
+        /// </summary>
+        public static string AlertMessageDropboxError {
+            get {
+                return ResourceManager.GetString("AlertMessageDropboxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Purchased.
         /// </summary>
         public static string AlertNotPurchased {
@@ -390,6 +408,15 @@ namespace BudgetBadger.Language {
         public static string AlertPurchase {
             get {
                 return ResourceManager.GetString("AlertPurchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Unsuccessful.
+        /// </summary>
+        public static string AlertPurchaseUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertPurchaseUnsuccessful", resourceCulture);
             }
         }
         
@@ -430,6 +457,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore Purchase Unsuccessful.
+        /// </summary>
+        public static string AlertRestorePurchaseUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertRestorePurchaseUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Unsuccessful.
         /// </summary>
         public static string AlertSaveUnsuccessful {
@@ -439,11 +475,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sync Unsuccessful.
+        /// </summary>
+        public static string AlertSyncUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertSyncUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Undo Delete Unsuccessful.
         /// </summary>
         public static string AlertUndoDeleteUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertUndoDeleteUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string AutomaticLabel {
+            get {
+                return ResourceManager.GetString("AutomaticLabel", resourceCulture);
             }
         }
         
@@ -489,6 +543,15 @@ namespace BudgetBadger.Language {
         public static string BusyTextSaving {
             get {
                 return ResourceManager.GetString("BusyTextSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syncing.
+        /// </summary>
+        public static string BusyTextSyncing {
+            get {
+                return ResourceManager.GetString("BusyTextSyncing", resourceCulture);
             }
         }
         

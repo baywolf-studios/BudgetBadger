@@ -24,6 +24,7 @@ namespace BudgetBadger.Forms.Settings
     {
         const string BudgetBadgerProMacAppLink = "macappstore://itunes.apple.com/app/id402437824?mt=12";
 
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
@@ -31,6 +32,8 @@ namespace BudgetBadger.Forms.Settings
         readonly IPurchaseService _purchaseService;
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
+
+        string _automatic;
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand ShowDeletedCommand { get; set; }
@@ -119,7 +122,8 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _selectedDateFormat, value);
         }
 
-        public SettingsPageViewModel(INavigationService navigationService,
+        public SettingsPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       ISettings settings,
                                       DropBoxApi dropboxApi,
@@ -127,6 +131,7 @@ namespace BudgetBadger.Forms.Settings
                                       ISyncFactory syncFactory,
                                       ILocalize localize)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
@@ -139,6 +144,7 @@ namespace BudgetBadger.Forms.Settings
             IsBusy = false;
             CurrencyFormatList = new List<KeyValuePair<string, CultureInfo>>();
             DateFormatList = new List<KeyValuePair<string, CultureInfo>>();
+            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
             ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
@@ -151,15 +157,13 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatingTo(INavigationParameters parameters)
         {
-            if (CurrencyFormatList.Count == 0)
-            {
-                CurrencyFormatList.AddRange(GetCurrencies());
-            }
+            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
 
-            if (DateFormatList.Count == 0)
-            {
-                DateFormatList.AddRange(GetDateFormats());
-            }
+            CurrencyFormatList.Clear();
+            CurrencyFormatList.AddRange(GetCurrencies());
+
+            DateFormatList.Clear();
+            DateFormatList.AddRange(GetDateFormats());
 
             var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
             if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
@@ -168,7 +172,7 @@ namespace BudgetBadger.Forms.Settings
             }
             else
             {
-                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Key == "Automatic");
+                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
 
             var currentDateFormat = _settings.GetValueOrDefault(AppSettings.DateFormat);
@@ -178,12 +182,14 @@ namespace BudgetBadger.Forms.Settings
             }
             else
             {
-                SelectedDateFormat = DateFormatList.FirstOrDefault(c => c.Key == "Automatic");
+                SelectedDateFormat = DateFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
         }
 
         public async void OnAppearing()
         {
+            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
+
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
 
             HasPro = purchasedPro.Success;
@@ -202,7 +208,7 @@ namespace BudgetBadger.Forms.Settings
         {
             var result = new Dictionary<string, CultureInfo>
             {
-                { "Automatic", CultureInfo.InvariantCulture }
+                { _automatic, CultureInfo.InvariantCulture }
             };
 
             var allCultures = new List<CultureInfo>
@@ -229,7 +235,7 @@ namespace BudgetBadger.Forms.Settings
                 try
                 {
                     var region = new RegionInfo(culture.LCID);
-                    var numberFormat = String.Join(": ", region.ISOCurrencySymbol, (-1234567.89).ToString("C", culture.NumberFormat));
+                    var numberFormat = String.Join(" ", region.ISOCurrencySymbol, (-1234567.89).ToString("C", culture.NumberFormat));
                     result[numberFormat] = culture;
                 }
                 catch (Exception ex)
@@ -245,7 +251,7 @@ namespace BudgetBadger.Forms.Settings
         {
             var result = new Dictionary<string, CultureInfo>
             {
-                { "Automatic", CultureInfo.InvariantCulture }
+                { _automatic, CultureInfo.InvariantCulture }
             };
 
             var allCultures = new List<CultureInfo>
@@ -271,7 +277,7 @@ namespace BudgetBadger.Forms.Settings
             {
                 try
                 {
-                    var dateFormat = String.Join(" : ", DateTime.Now.ToString("d", culture.DateTimeFormat), DateTime.Now.ToString("Y", culture.DateTimeFormat));
+                    var dateFormat = String.Join(" | ", DateTime.Now.ToString("d", culture.DateTimeFormat), DateTime.Now.ToString("Y", culture.DateTimeFormat));
                     result[dateFormat] = culture;
                 }
                 catch (Exception ex)
@@ -294,7 +300,10 @@ namespace BudgetBadger.Forms.Settings
 
                 if (!HasPro)
                 {
-                    var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
+                    var wantToPurchase = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadgerPro"),
+                    _resourceContainer.GetResourceString("AlertMessageBudgetBadgerPro"),
+                    _resourceContainer.GetResourceString("AlertPurchase"),
+                    _resourceContainer.GetResourceString("AlertCancel"));
                     if (wantToPurchase)
                     {
                         await ExecutePurchaseProCommand();
@@ -319,13 +328,17 @@ namespace BudgetBadger.Forms.Settings
                         else
                         {
                             DropboxEnabled = false;
-                            await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", "Did not authenticate with Dropbox. Sync disabled.", "Ok");
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
+                                _resourceContainer.GetResourceString("AlertMessageDropboxError"),
+                                _resourceContainer.GetResourceString("AlertOk"));
                         }
                     }
                     catch (Exception ex)
                     {
                         DropboxEnabled = false;
-                        await _dialogService.DisplayAlertAsync("Authentication Unsuccessful", ex.Message, "Ok");
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
+                            ex.Message,
+                            _resourceContainer.GetResourceString("AlertOk"));
                     }
                 }
                 else
@@ -356,7 +369,9 @@ namespace BudgetBadger.Forms.Settings
 
             if (!HasPro)
             {
-                await _dialogService.DisplayAlertAsync("Restore Purchase Unsuccessful", result.Message, "Ok");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRestorePurchaseUnsuccessful"),
+                    result.Message,
+                    _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 
@@ -378,7 +393,9 @@ namespace BudgetBadger.Forms.Settings
                     }
                     else
                     {
-                        await _dialogService.DisplayAlertAsync("Purchase Unsuccessful", purchaseResult.Message, "Ok");
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
+                            purchaseResult.Message,
+                            _resourceContainer.GetResourceString("AlertOk"));
                     }
                 }
             }
@@ -392,7 +409,7 @@ namespace BudgetBadger.Forms.Settings
             }
 
             IsBusy = true;
-            BusyText = "Syncing...";
+            BusyText = _resourceContainer.GetResourceString("BusyTextSyncing");
 
             try
             {
@@ -405,7 +422,9 @@ namespace BudgetBadger.Forms.Settings
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Sync Unsuccessful", syncResult.Message, "Ok");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSyncUnsuccessful"),
+                        syncResult.Message,
+                        _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 LastSynced = _syncFactory.GetLastSyncDateTime();
@@ -420,11 +439,11 @@ namespace BudgetBadger.Forms.Settings
         {
             var current = (CultureInfo)_localize.GetLocale().Clone();
 
-            if (SelectedCurrencyFormat.Key == "Automatic")
+            if (SelectedCurrencyFormat.Value == CultureInfo.InvariantCulture)
             {
                 var device = _localize.GetDeviceCultureInfo();
                 current.NumberFormat = device.NumberFormat;
-                await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, "Automatic");
+                await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, string.Empty);
             }
             else
             {
@@ -438,11 +457,11 @@ namespace BudgetBadger.Forms.Settings
         public async Task ExecuteDateSelectedCommand()
         {
             var current = (CultureInfo)_localize.GetLocale().Clone();
-            if (SelectedDateFormat.Key == "Automatic")
+            if (SelectedDateFormat.Value == CultureInfo.InvariantCulture)
             {
                 var device = _localize.GetDeviceCultureInfo();
                 current.DateTimeFormat = device.DateTimeFormat;
-                await _settings.AddOrUpdateValueAsync(AppSettings.DateFormat, "Automatic");
+                await _settings.AddOrUpdateValueAsync(AppSettings.DateFormat, string.Empty);
             }
             else
             {

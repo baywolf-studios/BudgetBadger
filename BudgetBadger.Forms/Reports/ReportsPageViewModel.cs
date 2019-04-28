@@ -94,7 +94,7 @@ namespace BudgetBadger.Forms.Reports
                 var wantToPurchase = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadgerPro"),
                     _resourceContainer.GetResourceString("AlertMessageBudgetBadgerPro"),
                     _resourceContainer.GetResourceString("AlertPurchase"),
-                    _resourceContainer.GetResourceString("AlertCancel")_;
+                    _resourceContainer.GetResourceString("AlertCancel"));
 
                 if (wantToPurchase)
                 {
