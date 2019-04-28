@@ -270,6 +270,9 @@
   <data name="BeginDateLabel" xml:space="preserve">
     <value>Begin Date</value>
   </data>
+  <data name="BudgetBadger" xml:space="preserve">
+    <value>Budget Badger</value>
+  </data>
   <data name="BudgetBadgerProLabel" xml:space="preserve">
     <value>Budget Badger Pro</value>
   </data>
@@ -437,6 +440,9 @@
   </data>
   <data name="EnvelopeSelectionPageTitle" xml:space="preserve">
     <value>Select an Envelope</value>
+  </data>
+  <data name="EnvelopesPageTitle" xml:space="preserve">
+    <value>Envelopes</value>
   </data>
   <data name="EnvelopeSpendingReportPageTitle" xml:space="preserve">
     <value>Envelopes Spending</value>
@@ -678,6 +684,21 @@
   <data name="Split" xml:space="preserve">
     <value>Split</value>
   </data>
+  <data name="SplitTransactionButton" xml:space="preserve">
+    <value>Split Transaction</value>
+  </data>
+  <data name="SplitTransactionPageTitle" xml:space="preserve">
+    <value>Split Transaction</value>
+  </data>
+  <data name="SplitTransactionRemainingLabel" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="SplitTransactionRunningTotalLabel" xml:space="preserve">
+    <value>Running Total</value>
+  </data>
+  <data name="SplitTransactionTotalLabel" xml:space="preserve">
+    <value>Total</value>
+  </data>
   <data name="SplitTransactionValidTransactionsError" xml:space="preserve">
     <value>No split transactions to save</value>
   </data>
@@ -693,11 +714,20 @@
   <data name="SystemEnvelopeGroup" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="TransactactionInflowLabel" xml:space="preserve">
+    <value>Inflow</value>
+  </data>
+  <data name="TransactactionOutflowLabel" xml:space="preserve">
+    <value>Outflow</value>
+  </data>
   <data name="TransactionAccountLabel" xml:space="preserve">
     <value>Account</value>
   </data>
   <data name="TransactionAmountLabel" xml:space="preserve">
     <value>Amount</value>
+  </data>
+  <data name="TransactionClearedLabel" xml:space="preserve">
+    <value>Cleared</value>
   </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
@@ -708,14 +738,29 @@
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
     <value>Cannot delete transfer transaction with deleted payee</value>
   </data>
+  <data name="TransactionEditPageTitle" xml:space="preserve">
+    <value>Edit Transaction</value>
+  </data>
   <data name="TransactionEnvelopeLabel" xml:space="preserve">
     <value>Envelope</value>
+  </data>
+  <data name="TransactionNewPageTitle" xml:space="preserve">
+    <value>New Transaction</value>
+  </data>
+  <data name="TransactionNotesLabel" xml:space="preserve">
+    <value>Notes</value>
   </data>
   <data name="TransactionPayeeLabel" xml:space="preserve">
     <value>Payee</value>
   </data>
+  <data name="TransactionReconciledLabel" xml:space="preserve">
+    <value>Reconciled</value>
+  </data>
   <data name="TransactionServiceDateLabel" xml:space="preserve">
     <value>Service Date</value>
+  </data>
+  <data name="TransactionStatusLabel" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="TransactionValidAccountDeletedAccountError" xml:space="preserve">
     <value>Cannot edit the Account on a transaction with a deleted Account</value>

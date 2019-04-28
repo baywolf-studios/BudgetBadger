@@ -3,9 +3,7 @@
     x:Class="BudgetBadger.Forms.Transactions.SplitTransactionDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
-    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
@@ -14,7 +12,7 @@
     <p:BaseDetailedPage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Split Transaction"
+            PageTitle="{ext:Translate SplitTransactionPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
             ToolbarItemIcon="save.svg" />
     </p:BaseDetailedPage.Header>
@@ -29,7 +27,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:HelperControl
-                Title="No transactions yet"
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
@@ -66,7 +64,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding ServiceDate, Converter={StaticResource ShortDateConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="ServiceDate"
+                                    HeaderText="{ext:Translate TransactionServiceDateLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="ServiceDate"
@@ -74,7 +72,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Account"
+                                    HeaderText="{ext:Translate TransactionAccountLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Account.Description"
@@ -82,7 +80,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Payee"
+                                    HeaderText="{ext:Translate TransactionPayeeLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Payee.Description"
@@ -90,7 +88,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Envelope"
+                                    HeaderText="{ext:Translate TransactionEnvelopeLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Envelope.Description"
@@ -99,7 +97,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Amount"
+                                    HeaderText="{ext:Translate TransactionAmountLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Amount"
@@ -194,7 +192,7 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Total" />
+                    Text="{ext:Translate SplitTransactionTotalLabel}" />
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
@@ -206,7 +204,7 @@
                     Grid.Column="2"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Running Total"
+                    Text="{ext:Translate SplitTransactionRunningTotalLabel}"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
@@ -220,7 +218,7 @@
                     Grid.Column="3"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Remaining"
+                    Text="{ext:Translate SplitTransactionRemainingLabel}"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
@@ -235,7 +233,7 @@
                     Grid.Column="5"
                     Command="{Binding AddNewCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add New"
+                    Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="Center" />
             </Grid>
         </Grid>

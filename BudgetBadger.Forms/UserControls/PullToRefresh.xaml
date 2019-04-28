@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentView
+    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:sf="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
-    x:Class="BudgetBadger.Forms.UserControls.PullToRefresh"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:sf="clr-namespace:Syncfusion.SfPullToRefresh.XForms;assembly=Syncfusion.SfPullToRefresh.XForms"
     x:Name="this">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -16,18 +17,15 @@
         <sf:SfPullToRefresh
             x:Name="sfPull"
             ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-            ProgressStrokeColor="{StaticResource BusyIndicatorColor}">
-        </sf:SfPullToRefresh>
+            ProgressStrokeColor="{StaticResource BusyIndicatorColor}" />
         <StackLayout
-            HorizontalOptions="CenterAndExpand"
             x:Name="activityIndicator"
+            HorizontalOptions="CenterAndExpand"
             Orientation="Vertical"
-            VerticalOptions="CenterAndExpand"
-            Spacing="8">
-            <ActivityIndicator
-                IsRunning="true"
-                Color="{StaticResource BusyIndicatorBackgroundColor}"/>
-            <Label HorizontalOptions="Center" Text="Loading..." />
+            Spacing="8"
+            VerticalOptions="CenterAndExpand">
+            <ActivityIndicator IsRunning="true" Color="{StaticResource BusyIndicatorBackgroundColor}" />
+            <Label HorizontalOptions="Center" Text="{ext:Translate BusyTextLoading}" />
         </StackLayout>
     </Grid>
 </ContentView>
