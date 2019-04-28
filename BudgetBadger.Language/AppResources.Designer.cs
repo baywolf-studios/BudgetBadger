@@ -583,6 +583,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string BusyTextLoading {
+            get {
+                return ResourceManager.GetString("BusyTextLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saving.
         /// </summary>
         public static string BusyTextSaving {

@@ -11,9 +11,7 @@
         <ColumnDefinition Width="40" />
         <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-    <ContentView
-        Grid.Row="0"
-        Grid.Column="0">
+    <ContentView Grid.Row="0" Grid.Column="0">
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer x:Name="ToggleGestureRecognizer" CommandParameter="{Binding .}" />
         </ContentView.GestureRecognizers>
@@ -29,7 +27,7 @@
                         <BindingCondition Binding="{Binding Posted}" Value="true" />
                         <BindingCondition Binding="{Binding Reconciled}" Value="false" />
                     </MultiTrigger.Conditions>
-                  <Setter Property="Source" Value="posted.svg" />
+                    <Setter Property="Source" Value="posted.svg" />
                 </MultiTrigger>
                 <DataTrigger
                     Binding="{Binding Reconciled}"
@@ -45,43 +43,41 @@
                 </DataTrigger>
             </svg:SvgCachedImage.Triggers>
         </svg:SvgCachedImage>
-        
+
     </ContentView>
     <ContentView Grid.Column="1">
         <ContentView.InputTransparent>
             <OnPlatform x:TypeArguments="x:Boolean">
-                <On Platform="Android, macOS" Value="False"/>
-                <On Platform="iOS, UWP" Value="True"/>
+                <On Platform="Android, macOS" Value="False" />
+                <On Platform="iOS, UWP" Value="True" />
             </OnPlatform>
         </ContentView.InputTransparent>
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer x:Name="SelectedGestureRecognizer" CommandParameter="{Binding .}" />
         </ContentView.GestureRecognizers>
-        <Grid
-            RowSpacing="4"
-            ColumnSpacing="16">
+        <Grid ColumnSpacing="16" RowSpacing="4">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <Label
                 x:Name="primaryLabel"
                 Grid.Row="0"
                 Grid.Column="0"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 Text="{Binding Payee.Description}"
-                VerticalOptions="End"/>
+                VerticalOptions="End" />
             <Label
                 x:Name="secondaryLabel"
                 Grid.Row="1"
                 Grid.Column="0"
                 Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
                 Text="{Binding Account.Description}"
-                VerticalOptions="Start"/>
+                VerticalOptions="Start" />
             <Label
                 x:Name="rightSingleLabel"
                 Grid.Row="0"
@@ -91,7 +87,7 @@
                 HorizontalOptions="End"
                 Style="{StaticResource Key=ListItemLabelStyle}"
                 Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="Center"/>
+                VerticalOptions="Center" />
             <Label
                 x:Name="rightPrimaryLabel"
                 Grid.Row="0"
@@ -101,7 +97,7 @@
                 IsVisible="false"
                 Style="{StaticResource Key=ListDoubleItemLabelStyle}"
                 Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="End"/>
+                VerticalOptions="End" />
             <Label
                 x:Name="rightSecondaryLabel"
                 Grid.Row="1"
@@ -110,8 +106,8 @@
                 HorizontalOptions="End"
                 IsVisible="false"
                 Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Envelope.Description, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="Start"/>
+                Text="{Binding Envelope.Description}"
+                VerticalOptions="Start" />
         </Grid>
     </ContentView>
 </Grid>
