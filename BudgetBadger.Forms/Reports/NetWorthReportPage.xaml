@@ -3,19 +3,16 @@
     x:Class="BudgetBadger.Forms.Reports.NetWorthReportPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BaseDetailedPage.Header>
-        <p:ChildHeader
-            BackCommand="{Binding BackCommand}"
-            PageTitle="Net Worth Report"/>
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{ext:Translate NetWorthReportPageTitle}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
@@ -38,7 +35,7 @@
                         <Label
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Filter"
+                            Text="{ext:Translate FilterLabel}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -54,11 +51,11 @@
                         <uc:DateSelector
                             Grid.Column="0"
                             Date="{Binding BeginDate}"
-                            Label="Begin Date" />
+                            Label="{ext:Translate BeginDateLabel}" />
                         <uc:DateSelector
                             Grid.Column="1"
                             Date="{Binding EndDate}"
-                            Label="End Date" />
+                            Label="{ext:Translate EndDateLabel}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -101,16 +98,16 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Filters"
+                    Text="{ext:Translate FilterLabel}"
                     VerticalOptions="Center" />
                 <uc:DateSelector
                     Grid.Column="2"
                     Date="{Binding BeginDate}"
-                    Label="Begin Date" />
+                    Label="{ext:Translate BeginDateLabel}" />
                 <uc:DateSelector
                     Grid.Column="3"
                     Date="{Binding EndDate}"
-                    Label="End Date" />
+                    Label="{ext:Translate EndDateLabel}" />
             </Grid>
         </Grid>
     </p:BaseDetailedPage.Body>

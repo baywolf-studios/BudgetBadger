@@ -10,11 +10,13 @@ using Prism.Services;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class PayeeEditPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -48,11 +50,13 @@ namespace BudgetBadger.Forms.Payees
         public ICommand DeleteCommand { get; set; }
         public ICommand UndoDeleteCommand { get; set; }
 
-        public PayeeEditPageViewModel(INavigationService navigationService,
+        public PayeeEditPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       IPayeeLogic payeeLogic,
                                       ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _payeeLogic = payeeLogic;
@@ -103,7 +107,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Saving";
+                BusyText = _resourceContainer.GetResourceString("BusyTextSaving");
                 var result = await _payeeLogic.SavePayeeAsync(Payee);
 
                 if (result.Success)
@@ -118,7 +122,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -138,7 +142,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Deleting";
+                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
                 var result = await _payeeLogic.DeletePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
@@ -155,7 +159,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -175,7 +179,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = "Undoing Delete";
+                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
                 var result = await _payeeLogic.UndoDeletePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
@@ -185,7 +189,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertUndoDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally

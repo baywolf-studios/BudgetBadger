@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
@@ -18,6 +19,7 @@ namespace BudgetBadger.Forms.Reports
 {
     public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -92,8 +94,12 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _envelopeChart, value);
         }
 
-        public EnvelopeTrendsReportsPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IReportLogic reportLogic)
+        public EnvelopeTrendsReportsPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
+            IEnvelopeLogic envelopeLogic,
+            IReportLogic reportLogic)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _reportLogic = reportLogic;
             _envelopeLogic = envelopeLogic;
@@ -166,7 +172,7 @@ namespace BudgetBadger.Forms.Reports
             }
 
             IsBusy = true;
-            BusyText = "Loading...";
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
 
             try
             {

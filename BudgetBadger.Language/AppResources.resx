@@ -204,6 +204,9 @@
   <data name="AddTransactionButton" xml:space="preserve">
     <value>Add Transaction</value>
   </data>
+  <data name="AlertBudgetBadgerPro" xml:space="preserve">
+    <value>Budget Badger Pro</value>
+  </data>
   <data name="AlertCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -213,8 +216,17 @@
   <data name="AlertGeneralError" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="AlertMessageBudgetBadgerPro" xml:space="preserve">
+    <value>You currently do not have access to these features. Would you like to purchase Budget Badger Pro?</value>
+  </data>
+  <data name="AlertNotPurchased" xml:space="preserve">
+    <value>Not Purchased</value>
+  </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="AlertPurchase" xml:space="preserve">
+    <value>Purchase</value>
   </data>
   <data name="AlertQuickBudget" xml:space="preserve">
     <value>Quick Budget</value>
@@ -236,6 +248,9 @@
   </data>
   <data name="BackButton" xml:space="preserve">
     <value>Back</value>
+  </data>
+  <data name="BeginDateLabel" xml:space="preserve">
+    <value>Begin Date</value>
   </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
@@ -264,6 +279,9 @@
   <data name="DeletedEnvelopesPageTitle" xml:space="preserve">
     <value>Deleted Envelopes</value>
   </data>
+  <data name="DeletedPayeesPageTitle" xml:space="preserve">
+    <value>Deleted Payees</value>
+  </data>
   <data name="EmptyAccountHelperSubtitle" xml:space="preserve">
     <value>Use the + button to add your first account</value>
   </data>
@@ -279,6 +297,9 @@
   <data name="EmptyDeletedEnvelopesHelperTitle" xml:space="preserve">
     <value>No deleted envelopes</value>
   </data>
+  <data name="EmptyDeletedPayeesHelperTitle" xml:space="preserve">
+    <value>No deleted payees</value>
+  </data>
   <data name="EmptyEnvelopeGroupHelperTitle" xml:space="preserve">
     <value>Add an Envelope Group using the + button</value>
   </data>
@@ -288,8 +309,14 @@
   <data name="EmptyEnvelopeHelperTitle" xml:space="preserve">
     <value>Budget it into envelopes</value>
   </data>
+  <data name="EmptyPayeeHelperTitle" xml:space="preserve">
+    <value>Add a Payee using the + button</value>
+  </data>
   <data name="EmptyTransactionsHelperTitle" xml:space="preserve">
     <value>No transactions yet</value>
+  </data>
+  <data name="EndDateLabel" xml:space="preserve">
+    <value>EndDate</value>
   </data>
   <data name="EnvelopeActivityLabel" xml:space="preserve">
     <value>Activity</value>
@@ -339,6 +366,9 @@
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Envelope group name is required</value>
   </data>
+  <data name="EnvelopeLabel" xml:space="preserve">
+    <value>Envelope</value>
+  </data>
   <data name="EnvelopeNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -360,6 +390,9 @@
   <data name="EnvelopeSelectionPageTitle" xml:space="preserve">
     <value>Select an Envelope</value>
   </data>
+  <data name="EnvelopeSpendingReportPageTitle" xml:space="preserve">
+    <value>Envelopes Spending</value>
+  </data>
   <data name="EnvelopeTransferAmountLabel" xml:space="preserve">
     <value>Amount</value>
   </data>
@@ -377,6 +410,9 @@
   </data>
   <data name="EnvelopeTransferToLabel" xml:space="preserve">
     <value>To</value>
+  </data>
+  <data name="EnvelopeTrendsReportPageTitle" xml:space="preserve">
+    <value>Envelope Trends</value>
   </data>
   <data name="EnvelopeValidAmountError" xml:space="preserve">
     <value>Budget amount is required</value>
@@ -408,6 +444,9 @@
   <data name="EnvelopeValidScheduleExistError" xml:space="preserve">
     <value>Schedule is required</value>
   </data>
+  <data name="FilterLabel" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="GenericDebtEnvelope" xml:space="preserve">
     <value>Debt</value>
   </data>
@@ -419,6 +458,9 @@
   </data>
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
     <value>Income</value>
+  </data>
+  <data name="NetWorthReportPageTitle" xml:space="preserve">
+    <value>Net Worth</value>
   </data>
   <data name="NextButton" xml:space="preserve">
     <value>Next</value>
@@ -444,8 +486,35 @@
   <data name="PayeeDeleteStartingBalanceError" xml:space="preserve">
     <value>Cannot delete the starting balance payee</value>
   </data>
+  <data name="PayeeEditPageTitle" xml:space="preserve">
+    <value>Edit Payee</value>
+  </data>
+  <data name="PayeeLabel" xml:space="preserve">
+    <value>Payee</value>
+  </data>
+  <data name="PayeeNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PayeeNewPageTitle" xml:space="preserve">
+    <value>NewPayee</value>
+  </data>
+  <data name="PayeeNotesLabel" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="PayeeSelectionPageTitle" xml:space="preserve">
+    <value>Select a Payee</value>
+  </data>
+  <data name="PayeesPageTitle" xml:space="preserve">
+    <value>Payees</value>
+  </data>
+  <data name="PayeeSpendingReportPageTitle" xml:space="preserve">
+    <value>Payees Spending</value>
+  </data>
   <data name="PayeeTransferGroup" xml:space="preserve">
     <value>Transfer</value>
+  </data>
+  <data name="PayeeTrendsReportPageTitle" xml:space="preserve">
+    <value>Payee Trends</value>
   </data>
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
@@ -524,6 +593,9 @@
   </data>
   <data name="ReconcileButton" xml:space="preserve">
     <value>Reconcile</value>
+  </data>
+  <data name="ReportsPageTitle" xml:space="preserve">
+    <value>Reports</value>
   </data>
   <data name="ScheduleBudgetedLabel" xml:space="preserve">
     <value>Budgeted</value>

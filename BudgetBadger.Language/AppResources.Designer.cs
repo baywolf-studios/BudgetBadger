@@ -322,6 +322,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Badger Pro.
+        /// </summary>
+        public static string AlertBudgetBadgerPro {
+            get {
+                return ResourceManager.GetString("AlertBudgetBadgerPro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string AlertCancel {
@@ -349,11 +358,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You currently do not have access to these features. Would you like to purchase Budget Badger Pro?.
+        /// </summary>
+        public static string AlertMessageBudgetBadgerPro {
+            get {
+                return ResourceManager.GetString("AlertMessageBudgetBadgerPro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Purchased.
+        /// </summary>
+        public static string AlertNotPurchased {
+            get {
+                return ResourceManager.GetString("AlertNotPurchased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string AlertOk {
             get {
                 return ResourceManager.GetString("AlertOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase.
+        /// </summary>
+        public static string AlertPurchase {
+            get {
+                return ResourceManager.GetString("AlertPurchase", resourceCulture);
             }
         }
         
@@ -417,6 +453,15 @@ namespace BudgetBadger.Language {
         public static string BackButton {
             get {
                 return ResourceManager.GetString("BackButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin Date.
+        /// </summary>
+        public static string BeginDateLabel {
+            get {
+                return ResourceManager.GetString("BeginDateLabel", resourceCulture);
             }
         }
         
@@ -502,6 +547,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted Payees.
+        /// </summary>
+        public static string DeletedPayeesPageTitle {
+            get {
+                return ResourceManager.GetString("DeletedPayeesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the + button to add your first account.
         /// </summary>
         public static string EmptyAccountHelperSubtitle {
@@ -547,6 +601,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No deleted payees.
+        /// </summary>
+        public static string EmptyDeletedPayeesHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyDeletedPayeesHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add an Envelope Group using the + button.
         /// </summary>
         public static string EmptyEnvelopeGroupHelperTitle {
@@ -574,11 +637,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a Payee using the + button.
+        /// </summary>
+        public static string EmptyPayeeHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyPayeeHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No transactions yet.
         /// </summary>
         public static string EmptyTransactionsHelperTitle {
             get {
                 return ResourceManager.GetString("EmptyTransactionsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EndDate.
+        /// </summary>
+        public static string EndDateLabel {
+            get {
+                return ResourceManager.GetString("EndDateLabel", resourceCulture);
             }
         }
         
@@ -727,6 +808,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Envelope.
+        /// </summary>
+        public static string EnvelopeLabel {
+            get {
+                return ResourceManager.GetString("EnvelopeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string EnvelopeNameLabel {
@@ -790,6 +880,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Envelopes Spending.
+        /// </summary>
+        public static string EnvelopeSpendingReportPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeSpendingReportPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount.
         /// </summary>
         public static string EnvelopeTransferAmountLabel {
@@ -840,6 +939,15 @@ namespace BudgetBadger.Language {
         public static string EnvelopeTransferToLabel {
             get {
                 return ResourceManager.GetString("EnvelopeTransferToLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Envelope Trends.
+        /// </summary>
+        public static string EnvelopeTrendsReportPageTitle {
+            get {
+                return ResourceManager.GetString("EnvelopeTrendsReportPageTitle", resourceCulture);
             }
         }
         
@@ -934,6 +1042,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string FilterLabel {
+            get {
+                return ResourceManager.GetString("FilterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debt.
         /// </summary>
         public static string GenericDebtEnvelope {
@@ -966,6 +1083,15 @@ namespace BudgetBadger.Language {
         public static string IncomeEnvelopeGroup {
             get {
                 return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Worth.
+        /// </summary>
+        public static string NetWorthReportPageTitle {
+            get {
+                return ResourceManager.GetString("NetWorthReportPageTitle", resourceCulture);
             }
         }
         
@@ -1042,11 +1168,92 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Payee.
+        /// </summary>
+        public static string PayeeEditPageTitle {
+            get {
+                return ResourceManager.GetString("PayeeEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee.
+        /// </summary>
+        public static string PayeeLabel {
+            get {
+                return ResourceManager.GetString("PayeeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string PayeeNameLabel {
+            get {
+                return ResourceManager.GetString("PayeeNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NewPayee.
+        /// </summary>
+        public static string PayeeNewPageTitle {
+            get {
+                return ResourceManager.GetString("PayeeNewPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string PayeeNotesLabel {
+            get {
+                return ResourceManager.GetString("PayeeNotesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Payee.
+        /// </summary>
+        public static string PayeeSelectionPageTitle {
+            get {
+                return ResourceManager.GetString("PayeeSelectionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payees.
+        /// </summary>
+        public static string PayeesPageTitle {
+            get {
+                return ResourceManager.GetString("PayeesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payees Spending.
+        /// </summary>
+        public static string PayeeSpendingReportPageTitle {
+            get {
+                return ResourceManager.GetString("PayeeSpendingReportPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer.
         /// </summary>
         public static string PayeeTransferGroup {
             get {
                 return ResourceManager.GetString("PayeeTransferGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee Trends.
+        /// </summary>
+        public static string PayeeTrendsReportPageTitle {
+            get {
+                return ResourceManager.GetString("PayeeTrendsReportPageTitle", resourceCulture);
             }
         }
         
@@ -1281,6 +1488,15 @@ namespace BudgetBadger.Language {
         public static string ReconcileButton {
             get {
                 return ResourceManager.GetString("ReconcileButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reports.
+        /// </summary>
+        public static string ReportsPageTitle {
+            get {
+                return ResourceManager.GetString("ReportsPageTitle", resourceCulture);
             }
         }
         
