@@ -4,11 +4,12 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
-        <p:RootHeader PageTitle="Settings" />
+        <p:RootHeader PageTitle="{ext:Translate SettingsPageTitle}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
@@ -49,7 +50,7 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="Budget Badger Pro" />
+                        Text="{ext:Translate BudgetBadgerProLabel}" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
@@ -57,14 +58,14 @@
                         Margin="16,0"
                         IsVisible="{Binding HasPro}"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Thanks for purchasing Budget Badger Pro!" />
+                        Text="{ext:Translate BudgetBadgerProThanksLabel}" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,0"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Upgrade your budget - Go Pro!">
+                        Text="{ext:Translate BudgetBadgerProPurchaseLabel}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
                         </Label.GestureRecognizers>
@@ -83,7 +84,7 @@
                         Grid.ColumnSpan="3"
                         Margin="16,0"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Restore Purchase">
+                        Text="{ext:Translate BudgetBadgerProRestoreLabel}">
                         <Label.IsVisible>
                             <OnPlatform x:TypeArguments="x:Boolean" Default="true">
                                 <On Platform="macOS" Value="false" />
@@ -112,7 +113,7 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="Cloud Sync" />
+                        Text="{ext:Translate CloudSyncLabel}" />
                     <svg:SvgCachedImage
                         Grid.Row="4"
                         Grid.Column="0"
@@ -137,7 +138,7 @@
                         <Label
                             Grid.Row="0"
                             Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                            Text="Dropbox"
+                            Text="{ext:Translate DropboxLabel}"
                             VerticalOptions="End" />
                         <Label
                             Grid.Row="1"
@@ -145,7 +146,8 @@
                             VerticalOptions="Start">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Last synced: " />
+                                    <Span Text="{ext:Translate LastSyncedLabel}" />
+                                    <Span Text=" | " />
                                     <Span Text="{Binding LastSynced}" />
                                 </FormattedString>
                             </Label.FormattedText>
@@ -169,13 +171,13 @@
                         HorizontalOptions="Start"
                         IsVisible="{Binding ShowSync}"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="Sync" />
+                        Text="{ext:Translate SyncButton}" />
                     <Label
                         Grid.Row="6"
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="Deleted" />
+                        Text="{ext:Translate DeletedLabel}" />
                     <svg:SvgCachedImage
                         Grid.Row="7"
                         Grid.Column="0"
@@ -194,7 +196,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Envelope Groups">
+                        Text="{ext:Translate DeletedEnvelopeGroupsPageTitle}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage" />
                         </Label.GestureRecognizers>
@@ -217,7 +219,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Envelopes">
+                        Text="{ext:Translate DeletedEnvelopesPageTitle}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage" />
                         </Label.GestureRecognizers>
@@ -240,7 +242,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Accounts">
+                        Text="{ext:Translate DeletedAccountsPageTitle}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage" />
                         </Label.GestureRecognizers>
@@ -263,7 +265,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource ListItemLabelStyle}"
-                        Text="Payees">
+                        Text="{ext:Translate DeletedPayeesPageTitle}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage" />
                         </Label.GestureRecognizers>
@@ -273,7 +275,7 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="Language" />
+                        Text="{ext:Translate LanguageLabel}" />
                     <uc:DropdownSelector
                         Grid.Row="12"
                         Grid.Column="0"
@@ -281,7 +283,7 @@
                         Margin="16,8"
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding CurrencyFormatList}"
-                        Label="Currency"
+                        Label="{ext:Translate CurrencyLabel}"
                         SelectedItem="{Binding SelectedCurrencyFormat, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
@@ -294,7 +296,7 @@
                         Margin="16,8"
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding DateFormatList, Mode=TwoWay}"
-                        Label="Date and Time"
+                        Label="{ext:Translate DateTimeLabel}"
                         SelectedItem="{Binding SelectedDateFormat, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding DateSelectedCommand}" EventName="SelectedIndexChanged" />
@@ -305,7 +307,7 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="Help" />
+                        Text="{ext:Translate HelpLabel}" />
                     <Label
                         Grid.Row="15"
                         Grid.Column="0"

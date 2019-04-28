@@ -184,6 +184,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
+                    _needToSync = true;
                     await _navigationService.GoBackAsync();
                 }
                 else

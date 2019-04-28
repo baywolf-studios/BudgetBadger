@@ -115,7 +115,7 @@
                     Grid.Column="2"
                     ItemDisplayBinding="{Binding ExtendedDescription}"
                     ItemsSource="{Binding Envelopes}"
-                    Label="{ext:Translate EnvelopeLabel"}
+                    Label="{ext:Translate EnvelopeLabel}"
                     SelectedItem="{Binding SelectedEnvelope}" />
                 <uc:DateSelector
                     Grid.Column="3"

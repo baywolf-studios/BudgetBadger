@@ -15,7 +15,6 @@
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <converters:CurrencyConverter x:Key="CurrencyConverter" />
             <converters:ShortDateConverter x:Key="ShortDateConverter" />
-            <converters:AddGroupConverter x:Key="AddGroupConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">

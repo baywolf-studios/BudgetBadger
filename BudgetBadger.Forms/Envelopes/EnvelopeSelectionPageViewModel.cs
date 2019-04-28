@@ -65,8 +65,13 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _searchText, value);
         }
 
-        public EnvelopeSelectionPageViewModel(INavigationService navigationService, IEnvelopeLogic envelopeLogic, IPageDialogService dialogService)
+        public EnvelopeSelectionPageViewModel(
+            IResourceContainer resourceContainer,
+            INavigationService navigationService,
+            IEnvelopeLogic envelopeLogic,
+            IPageDialogService dialogService)
         {
+            _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
