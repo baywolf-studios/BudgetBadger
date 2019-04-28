@@ -282,6 +282,12 @@
   <data name="EmptyEnvelopeGroupHelperTitle" xml:space="preserve">
     <value>Add an Envelope Group using the + button</value>
   </data>
+  <data name="EmptyEnvelopeHelperSubtitle" xml:space="preserve">
+    <value>Use the + button to create and budget your first envelope</value>
+  </data>
+  <data name="EmptyEnvelopeHelperTitle" xml:space="preserve">
+    <value>Budget it into envelopes</value>
+  </data>
   <data name="EmptyTransactionsHelperTitle" xml:space="preserve">
     <value>No transactions yet</value>
   </data>
@@ -327,6 +333,9 @@
   <data name="EnvelopeGroupSelectionPageTitle" xml:space="preserve">
     <value>Select a Group</value>
   </data>
+  <data name="EnvelopeGroupsPageTitle" xml:space="preserve">
+    <value>Envelope Groups</value>
+  </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Envelope group name is required</value>
   </data>
@@ -348,8 +357,26 @@
   <data name="EnvelopeRemainingLabel" xml:space="preserve">
     <value>Remaining</value>
   </data>
-  <data name="EnvelopeToBudgetLabel" xml:space="preserve">
-    <value>To Budget</value>
+  <data name="EnvelopeSelectionPageTitle" xml:space="preserve">
+    <value>Select an Envelope</value>
+  </data>
+  <data name="EnvelopeTransferAmountLabel" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="EnvelopeTransferButton" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="EnvelopeTransferDateLabel" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="EnvelopeTransferFromLabel" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="EnvelopeTransferPageTitle" xml:space="preserve">
+    <value>Envelope Transfer</value>
+  </data>
+  <data name="EnvelopeTransferToLabel" xml:space="preserve">
+    <value>To</value>
   </data>
   <data name="EnvelopeValidAmountError" xml:space="preserve">
     <value>Budget amount is required</value>
@@ -497,6 +524,21 @@
   </data>
   <data name="ReconcileButton" xml:space="preserve">
     <value>Reconcile</value>
+  </data>
+  <data name="ScheduleBudgetedLabel" xml:space="preserve">
+    <value>Budgeted</value>
+  </data>
+  <data name="ScheduleIncomeLabel" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="ScheduleOverLabel" xml:space="preserve">
+    <value>Over</value>
+  </data>
+  <data name="SchedulePastLabel" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="ScheduleToBudgetLabel" xml:space="preserve">
+    <value>To Budget</value>
   </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
     <value>Budget schedule description is required</value>

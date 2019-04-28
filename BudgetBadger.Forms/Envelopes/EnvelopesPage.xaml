@@ -3,9 +3,9 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -23,11 +23,11 @@
 
     <p:BasePage.Body>
         <uc:HelperControl
-            Title="Budget it into envelopes"
+            Title="{ext:Translate EmptyEnvelopeHelperTitle}"
             Grid.Row="2"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}"
-            Subtitle="Use the + button to create and budget your first envelope">
+            Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <Grid
                 Margin="0"
                 ColumnSpacing="16"
@@ -48,7 +48,7 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Start"
                                 Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="To Budget"
+                                Text="{ext:Translate ScheduleToBudgetLabel}"
                                 VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
@@ -75,7 +75,7 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Past" />
+                                Text="{ext:Translate SchedulePastLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -87,7 +87,7 @@
                                 Grid.Column="1"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Income" />
+                                Text="{ext:Translate ScheduleIncomeLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -99,7 +99,7 @@
                                 Grid.Column="2"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Budgeted" />
+                                Text="{ext:Translate ScheduleBudgetedLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="2"
@@ -111,7 +111,7 @@
                                 Grid.Column="3"
                                 HorizontalOptions="Center"
                                 Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="Over" />
+                                Text="{ext:Translate ScheduleOverLabel}" />
                             <Label
                                 Grid.Row="1"
                                 Grid.Column="3"
@@ -151,7 +151,7 @@
                                         <Label
                                             FontSize="{StaticResource ListItemFontSize}"
                                             HorizontalOptions="Center"
-                                            Text="Transfer"
+                                            Text="{ext:Translate EnvelopeTransferButton}"
                                             TextColor="{StaticResource DataGridContextActionTextColor}"
                                             VerticalOptions="Center" />
                                     </ContentView>
@@ -222,7 +222,7 @@
                     Margin="16,0,16,16"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction"
+                    Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="End" />
             </Grid>
         </uc:HelperControl>

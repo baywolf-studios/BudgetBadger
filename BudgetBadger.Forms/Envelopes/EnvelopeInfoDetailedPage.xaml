@@ -3,9 +3,9 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
@@ -31,7 +31,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <uc:HelperControl
-                Title="No transactions yet"
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
@@ -88,7 +88,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding ServiceDate, Converter={StaticResource ShortDateConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Service Date"
+                                    HeaderText="{ext:Translate TransactionServiceDateLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="ServiceDate"
@@ -96,7 +96,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Account"
+                                    HeaderText="TransactionAccountLabel"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Account.Description"
@@ -104,7 +104,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Payee"
+                                    HeaderText="TransactionPayeeLabel"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Payee.Description"
@@ -112,7 +112,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Envelope"
+                                    HeaderText="TransactionEnvelopeLabel"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Envelope.Description"
@@ -121,7 +121,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Amount"
+                                    HeaderText="TransactionAmountLabel"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Amount"
@@ -219,7 +219,7 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Remaining"
+                    Text="{ext:Translate EnvelopeRemainingLabel}"
                     VerticalOptions="Center" />
                 <Label
                     Grid.Row="1"
@@ -233,7 +233,7 @@
                     Grid.Column="2"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Past"
+                    Text="{ext:Translate EnvelopePastLabel}"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
@@ -247,7 +247,7 @@
                     Grid.Column="3"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Activity"
+                    Text="{ext:Translate EnvelopeActivityLabel}"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
@@ -261,7 +261,7 @@
                     Grid.Column="4"
                     HorizontalOptions="Center"
                     Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="Budget"
+                    Text="{ext:Translate EnvelopeAmountLabel}"
                     VerticalOptions="End" />
                 <Label
                     Grid.Row="1"
@@ -277,7 +277,7 @@
                     Command="{Binding AddTransactionCommand}"
                     HorizontalOptions="EndAndExpand"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="Add Transaction"
+                    Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="Center" />
             </Grid>
         </Grid>

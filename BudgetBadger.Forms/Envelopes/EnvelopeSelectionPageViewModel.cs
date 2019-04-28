@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
@@ -16,6 +17,7 @@ namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -132,12 +134,12 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                     else
                     {
-                        await _dialogService.DisplayAlertAsync("Error", budgetResult.Message, "OK");
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                     }
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", scheduleResult.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopes = (Budgets?.Count ?? 0) == 0;

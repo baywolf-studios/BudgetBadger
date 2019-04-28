@@ -3,10 +3,10 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
@@ -23,11 +23,11 @@
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <uc:HelperControl
-            Title="Budget it into envelopes"
+            Title="{ext:Translate EmptyEnvelopeHelperTitle}"
             Grid.Row="2"
             ImagePath="envelope.svg"
             ShowHelper="{Binding NoEnvelopes}"
-            Subtitle="Use the + button to create and budget your first envelope">
+            Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <Grid
                 Margin="0"
                 ColumnSpacing="16"
@@ -62,7 +62,7 @@
                                         <Label
                                             FontSize="{StaticResource ListItemFontSize}"
                                             HorizontalOptions="Center"
-                                            Text="Transfer"
+                                            Text="{ext:Translate EnvelopeTransferButton}"
                                             TextColor="{StaticResource DataGridContextActionTextColor}"
                                             VerticalOptions="Center" />
                                     </ContentView>
@@ -119,7 +119,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Name"
+                                    HeaderText="{ext:Translate EnvelopeNameLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Envelope.Description"
@@ -128,7 +128,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Past, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Past"
+                                    HeaderText="{ext:Translate EnvelopePastLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Past"
@@ -137,7 +137,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Activity, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Activity"
+                                    HeaderText="{ext:Translate EnvelopeActivityLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Activity"
@@ -146,7 +146,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Amount"
+                                    HeaderText="{ext:Translate EnvelopeAmountLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Amount"
@@ -155,7 +155,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Remaining"
+                                    HeaderText="{ext:Translate EnvelopeRemainingLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Remaining"
@@ -208,7 +208,7 @@
                         Grid.Column="0"
                         HorizontalOptions="Start"
                         Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="To Budget"
+                        Text="{ext:Translate ScheduleToBudgetLabel}"
                         VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
@@ -222,7 +222,7 @@
                         Grid.Column="2"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Past"
+                        Text="{ext:Translate SchedulePastLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -236,7 +236,7 @@
                         Grid.Column="3"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Income"
+                        Text="{ext:Translate ScheduleIncomeLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -250,7 +250,7 @@
                         Grid.Column="4"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Budgeted"
+                        Text="{ext:Translate ScheduleBudgetedLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -264,7 +264,7 @@
                         Grid.Column="5"
                         HorizontalOptions="Center"
                         Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="Over"
+                        Text="{ext:Translate ScheduleOverLabel}"
                         VerticalOptions="End" />
                     <Label
                         Grid.Row="1"
@@ -280,7 +280,7 @@
                         Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction"
+                        Text="{ext:Translate AddTransactionButton}"
                         VerticalOptions="Center" />
                 </Grid>
             </Grid>
