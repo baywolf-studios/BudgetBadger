@@ -204,6 +204,9 @@
   <data name="AddTransactionButton" xml:space="preserve">
     <value>Add Transaction</value>
   </data>
+  <data name="AlertAuthenticationUnsuccessful" xml:space="preserve">
+    <value>Authentication Unsuccessful</value>
+  </data>
   <data name="AlertBudgetBadgerPro" xml:space="preserve">
     <value>Budget Badger Pro</value>
   </data>
@@ -219,6 +222,9 @@
   <data name="AlertMessageBudgetBadgerPro" xml:space="preserve">
     <value>You currently do not have access to these features. Would you like to purchase Budget Badger Pro?</value>
   </data>
+  <data name="AlertMessageDropboxError" xml:space="preserve">
+    <value>Did not authenticate with Dropbox. Sync disabled.</value>
+  </data>
   <data name="AlertNotPurchased" xml:space="preserve">
     <value>Not Purchased</value>
   </data>
@@ -227,6 +233,9 @@
   </data>
   <data name="AlertPurchase" xml:space="preserve">
     <value>Purchase</value>
+  </data>
+  <data name="AlertPurchaseUnsuccessful" xml:space="preserve">
+    <value>Purchase Unsuccessful</value>
   </data>
   <data name="AlertQuickBudget" xml:space="preserve">
     <value>Quick Budget</value>
@@ -240,11 +249,20 @@
   <data name="AlertRefreshUnsuccessful" xml:space="preserve">
     <value>Refresh Unsuccessful</value>
   </data>
+  <data name="AlertRestorePurchaseUnsuccessful" xml:space="preserve">
+    <value>Restore Purchase Unsuccessful</value>
+  </data>
   <data name="AlertSaveUnsuccessful" xml:space="preserve">
     <value>Save Unsuccessful</value>
   </data>
+  <data name="AlertSyncUnsuccessful" xml:space="preserve">
+    <value>Sync Unsuccessful</value>
+  </data>
   <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
     <value>Undo Delete Unsuccessful</value>
+  </data>
+  <data name="AutomaticLabel" xml:space="preserve">
+    <value>Automatic</value>
   </data>
   <data name="BackButton" xml:space="preserve">
     <value>Back</value>
@@ -260,6 +278,9 @@
   </data>
   <data name="BusyTextSaving" xml:space="preserve">
     <value>Saving</value>
+  </data>
+  <data name="BusyTextSyncing" xml:space="preserve">
+    <value>Syncing</value>
   </data>
   <data name="BusyTextUndoingDelete" xml:space="preserve">
     <value>Undoing Delete</value>
