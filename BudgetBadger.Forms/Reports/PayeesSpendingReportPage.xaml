@@ -3,20 +3,17 @@
     x:Class="BudgetBadger.Forms.Reports.PayeesSpendingReportPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     x:Name="this">
     <p:BasePage.Header>
-        <p:ChildHeader 
-            BackCommand="{Binding BackCommand}"
-            PageTitle="Payees Spending Report"/>
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{ext:Translate PayeeSpendingReportPageTitle}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
@@ -39,7 +36,7 @@
                         <Label
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Filter"
+                            Text="{ext:Translate FilterLabel}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -55,11 +52,11 @@
                         <uc:DateSelector
                             Grid.Column="0"
                             Date="{Binding BeginDate}"
-                            Label="Begin Date" />
+                            Label="{ext:Translate BeginDateLabel}" />
                         <uc:DateSelector
                             Grid.Column="1"
                             Date="{Binding EndDate}"
-                            Label="End Date" />
+                            Label="{ext:Translate EndDateLabel}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -77,8 +74,8 @@
                         GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
                         ItemSize="{StaticResource ListItemHeight}"
                         ItemsSource="{Binding Payees}"
-                        SelectedItem="{Binding SelectedPayee}"
-                        SelectedCommand="{Binding SelectedCommand}">
+                        SelectedCommand="{Binding SelectedCommand}"
+                        SelectedItem="{Binding SelectedPayee}">
                         <syncfusion:SfListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid
@@ -134,16 +131,16 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Filters"
+                    Text="{ext:Translate FilterLabel}"
                     VerticalOptions="Center" />
                 <uc:DateSelector
                     Grid.Column="2"
                     Date="{Binding BeginDate}"
-                    Label="Begin Date" />
+                    Label="{ext:Translate BeginDateLabel}" />
                 <uc:DateSelector
                     Grid.Column="3"
                     Date="{Binding EndDate}"
-                    Label="End Date" />
+                    Label="{ext:Translate EndDateLabel}" />
             </Grid>
         </Grid>
     </p:BasePage.Body>

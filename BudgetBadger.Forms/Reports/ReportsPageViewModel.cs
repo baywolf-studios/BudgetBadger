@@ -14,27 +14,24 @@ using BudgetBadger.Forms.Enums;
 using BudgetBadger.Core.Purchase;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Reports
 {
     public class ReportsPageViewModel : BindableBase
     {
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPurchaseService _purchaseService;
         readonly IPageDialogService _dialogService;
-        readonly string _netWorthReport = "Net Worth";
-        readonly string _envelopeSpendingReport = "Envelopes Spending";
-        readonly string _payeeSpendingReport = "Payees Spending";
-        readonly string _spendingTrendByEnvelopeReport = "Envelope Trends";
-        readonly string _spendingTrendByPayeeReport = "Payee Trends";
+
+        string _netWorthReport;
+        string _envelopeSpendingReport;
+        string _payeeSpendingReport;
+        string _spendingTrendByEnvelopeReport;
+        string _spendingTrendByPayeeReport;
 
         public ICommand ReportCommand { get; set; }
-
-        public ICommand NetWorthCommand { get; set; }
-        public ICommand EnvelopesSpendingCommand { get; set; }
-        public ICommand PayeesSpendingCommand { get; set; }
-        public ICommand EnvelopeTrendCommand { get; set; }
-        public ICommand PayeeTrendCommand { get; set; }
 
         string _selectedReport;
         public string SelectedReport
@@ -50,10 +47,12 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _reports, value);
         }
 
-        public ReportsPageViewModel(INavigationService navigationService,
+        public ReportsPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                     IPageDialogService dialogService, 
                                     IPurchaseService purchaseService)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _purchaseService = purchaseService;
             _dialogService = dialogService;
@@ -61,15 +60,16 @@ namespace BudgetBadger.Forms.Reports
             ResetReports();
 
             ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
-            NetWorthCommand = new DelegateCommand(async () => await ExecuteNetWorthCommand());
-            EnvelopesSpendingCommand = new DelegateCommand(async () => await ExecuteEnvelopesSpendingCommand());
-            PayeesSpendingCommand = new DelegateCommand(async () => await ExecutePayeesSpendingCommand());
-            EnvelopeTrendCommand = new DelegateCommand(async () => await ExecuteEnvelopeTrendCommand());
-            PayeeTrendCommand = new DelegateCommand(async () => await ExecutePayeeTrendCommand());
         }
 
         void ResetReports()
         {
+            _netWorthReport = _resourceContainer.GetResourceString("NetWorthReportPageTitle");
+            _envelopeSpendingReport = _resourceContainer.GetResourceString("EnvelopeSpendingReportPageTitle");
+            _payeeSpendingReport = _resourceContainer.GetResourceString("PayeeSpendingReportPageTitle");
+            _spendingTrendByEnvelopeReport = _resourceContainer.GetResourceString("EnvelopeTrendsReportPageTitle");
+            _spendingTrendByPayeeReport = _resourceContainer.GetResourceString("PayeeTrendsReportPageTitle");
+
             Reports = new List<string>
             {
                 _netWorthReport,
@@ -91,7 +91,10 @@ namespace BudgetBadger.Forms.Reports
             if (!allowedReports.Success)
             {
                 // show some dialog asking if they would like to purchase
-                var wantToPurchase = await _dialogService.DisplayAlertAsync("Budget Badger Pro", "You currently do not have access to these features. Would you like to purchase Budget Badger Pro?", "Purchase", "Cancel");
+                var wantToPurchase = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadgerPro"),
+                    _resourceContainer.GetResourceString("AlertMessageBudgetBadgerPro"),
+                    _resourceContainer.GetResourceString("AlertPurchase"),
+                    _resourceContainer.GetResourceString("AlertCancel")_;
 
                 if (wantToPurchase)
                 {
@@ -107,7 +110,7 @@ namespace BudgetBadger.Forms.Reports
                         if (!purchaseResult.Success)
                         {
                             //show dialog of not allowing
-                            await _dialogService.DisplayAlertAsync("Not Purchased", purchaseResult.Message, "Ok");
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertNotPurchased"), purchaseResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                             ResetReports();
                             return;
                         }
@@ -143,31 +146,6 @@ namespace BudgetBadger.Forms.Reports
             }
 
             ResetReports();
-        }
-
-        public async Task ExecuteNetWorthCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.NetWorthReportPage);
-        }
-
-        public async Task ExecuteEnvelopesSpendingCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.EnvelopesSpendingReportPage);
-        }
-
-        public async Task ExecutePayeesSpendingCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
-        }
-
-        public async Task ExecuteEnvelopeTrendCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
-        }
-
-        public async Task ExecutePayeeTrendCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
         }
     }
 }

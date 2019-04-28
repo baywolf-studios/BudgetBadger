@@ -3,9 +3,9 @@
     x:Class="BudgetBadger.Forms.Payees.PayeesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
@@ -13,14 +13,14 @@
     x:Name="this">
     <p:BaseDetailedPage.Header>
         <p:RootSearchHeader
-            PageTitle="Payees"
+            PageTitle="{ext:Translate PayeesPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <uc:HelperControl
-            Title="Add a Payee using the + button"
+            Title="{ext:Translate EmptyPayeeHelperTitle}"
             ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <Grid
@@ -99,7 +99,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Name"
+                                    HeaderText="{ext:Translate PayeeNameLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Description"
@@ -107,7 +107,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="Notes"
+                                    HeaderText="{ext:Translate PayeeNotesLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Notes"
@@ -174,7 +174,7 @@
                         Command="{Binding AddTransactionCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="Add Transaction"
+                        Text="{ext:Translate AddTransactionButton}"
                         VerticalOptions="Center" />
                 </Grid>
             </Grid>

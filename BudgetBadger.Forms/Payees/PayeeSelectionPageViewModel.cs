@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
@@ -16,6 +17,7 @@ namespace BudgetBadger.Forms.Payees
 {
     public class PayeeSelectionPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -64,8 +66,12 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        public PayeeSelectionPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IPayeeLogic payeeLogic)
+        public PayeeSelectionPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
+            IPageDialogService dialogService,
+            IPayeeLogic payeeLogic)
         {
+            _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -136,8 +142,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await Task.Yield();
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoPayees = (Payees?.Count ?? 0) == 0;
@@ -168,7 +173,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }

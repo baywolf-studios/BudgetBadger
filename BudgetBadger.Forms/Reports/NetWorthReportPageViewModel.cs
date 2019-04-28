@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using Microcharts;
 using Prism.AppModel;
@@ -16,6 +17,7 @@ namespace BudgetBadger.Forms.Reports
 {
     public class NetWorthReportPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
 
@@ -69,8 +71,11 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _netWorthChart, value);
         }
 
-        public NetWorthReportPageViewModel(INavigationService navigationService, IReportLogic reportLogic)
+        public NetWorthReportPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
+            IReportLogic reportLogic)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _reportLogic = reportLogic;
 
@@ -109,7 +114,7 @@ namespace BudgetBadger.Forms.Reports
             }
 
             IsBusy = true;
-            BusyText = "Loading...";
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
 
             try
             {

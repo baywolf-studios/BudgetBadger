@@ -13,11 +13,13 @@ using Prism.Mvvm;
 using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class PayeeInfoPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly ITransactionLogic _transactionLogic;
         readonly INavigationService _navigationService;
         readonly IPayeeLogic _payeeLogic;
@@ -79,12 +81,14 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public PayeeInfoPageViewModel(INavigationService navigationService,
+        public PayeeInfoPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
                                       ITransactionLogic transactionLogic,
                                       IPayeeLogic payeeLogic,
                                       IPageDialogService dialogService,
                                       ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
             _navigationService = navigationService;
             _payeeLogic = payeeLogic;
@@ -186,7 +190,7 @@ namespace BudgetBadger.Forms.Payees
                     }
                     else
                     {
-                        //show alert that account data may be stale
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), payeeResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                     }
 
                     var result = await _transactionLogic.GetPayeeTransactionsAsync(Payee);
@@ -194,6 +198,10 @@ namespace BudgetBadger.Forms.Payees
                     {
                         Transactions = result.Data;
                         SelectedTransaction = null;
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                     }
 
                     NoTransactions = (Transactions?.Count ?? 0) == 0;
@@ -239,7 +247,7 @@ namespace BudgetBadger.Forms.Payees
                 else
                 {
                     transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync("Save Unsuccessful", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
         }
@@ -256,7 +264,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }

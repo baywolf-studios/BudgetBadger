@@ -3,19 +3,16 @@
     x:Class="BudgetBadger.Forms.Reports.PayeeTrendsReportPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages">
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BaseDetailedPage.Header>
-        <p:ChildHeader 
-            BackCommand="{Binding BackCommand}"
-            PageTitle="{Binding SelectedPayee.Description}"/>
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{Binding SelectedPayee.Description}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid
             Margin="0"
-            
             ColumnSpacing="16"
             RowSpacing="0">
             <Grid.RowDefinitions>
@@ -38,7 +35,7 @@
                         <Label
                             HorizontalOptions="Start"
                             Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="Filter"
+                            Text="{ext:Translate FilterLabel}"
                             VerticalOptions="Center" />
                     </Grid>
                 </uc:Expander.HeaderContent>
@@ -58,18 +55,18 @@
                             Grid.ColumnSpan="2"
                             ItemDisplayBinding="{Binding Description}"
                             ItemsSource="{Binding Payees}"
-                            Label="Payee"
+                            Label="{ext:Translate PayeeLabel}"
                             SelectedItem="{Binding SelectedPayee}" />
                         <uc:DateSelector
                             Grid.Row="1"
                             Grid.Column="0"
                             Date="{Binding BeginDate, Mode=TwoWay}"
-                            Label="Begin Date" />
+                            Label="{ext:Translate BeginDateLabel}" />
                         <uc:DateSelector
                             Grid.Row="1"
                             Grid.Column="1"
                             Date="{Binding EndDate, Mode=TwoWay}"
-                            Label="End Date" />
+                            Label="{ext:Translate EndDateLabel}" />
                     </Grid>
                 </uc:Expander.BodyContent>
             </uc:Expander>
@@ -112,22 +109,22 @@
                     Grid.Column="0"
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="Filters"
+                    Text="{ext:Translate FilterLabel}"
                     VerticalOptions="Center" />
                 <uc:DropdownSelector
                     Grid.Column="2"
                     ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding Payees}"
-                    Label="Payee"
+                    Label="{ext:Translate PayeeLabel}"
                     SelectedItem="{Binding SelectedPayee}" />
                 <uc:DateSelector
                     Grid.Column="3"
                     Date="{Binding BeginDate, Mode=TwoWay}"
-                    Label="Begin Date" />
+                    Label="{ext:Translate BeginDateLabel}" />
                 <uc:DateSelector
                     Grid.Column="4"
                     Date="{Binding EndDate, Mode=TwoWay}"
-                    Label="End Date" />
+                    Label="{ext:Translate EndDateLabel}" />
             </Grid>
         </Grid>
     </p:BaseDetailedPage.Body>

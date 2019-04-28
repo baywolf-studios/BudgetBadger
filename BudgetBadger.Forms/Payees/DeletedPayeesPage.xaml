@@ -3,24 +3,22 @@
     x:Class="BudgetBadger.Forms.Payees.DeletedPayeesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
         <p:ChildSearchHeader
             BackCommand="{Binding BackCommand}"
-            PageTitle="Deleted Payees"
+            PageTitle="{ext:Translate DeletedPayeesPageTitle}"
             SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
-            Title="No deleted payees"
+            Title="{ext:Translate EmptyDeletedPayeesHelperTitle}"
             ImagePath="payees.svg"
             ShowHelper="{Binding NoPayees}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">

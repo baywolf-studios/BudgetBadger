@@ -15,11 +15,13 @@ using BudgetBadger.Core.Sync;
 using Prism;
 using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
     public class PayeesPageViewModel : BindableBase, IPageLifecycleAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -71,11 +73,13 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        public PayeesPageViewModel(INavigationService navigationService,
+        public PayeesPageViewModel(IResourceContainer resourceContainer,
+            INavigationService navigationService,
 		                           IPageDialogService dialogService,
 		                           IPayeeLogic payeeLogic,
 		                           ISyncFactory syncFactory)
         {
+            _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -136,7 +140,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", result.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
                 NoPayees = (Payees?.Count ?? 0) == 0;
@@ -167,7 +171,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                //show error
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 
@@ -205,7 +209,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Delete Unsuccessful", result.Message, "OK");
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
 

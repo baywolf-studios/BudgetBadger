@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Models;
@@ -18,6 +19,7 @@ namespace BudgetBadger.Forms.Reports
 {
     public class EnvelopesSpendingReportPageViewModel : BindableBase, INavigationAware
     {
+        readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly IReportLogic _reportLogic;
@@ -73,10 +75,12 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _selectedEnvelope, value);
         }
 
-        public EnvelopesSpendingReportPageViewModel(INavigationService navigationService,
+        public EnvelopesSpendingReportPageViewModel(IResourceContainer resourceContainer, 
+            INavigationService navigationService,
                                                     IPageDialogService dialogService,
                                                     IReportLogic reportLogic)
         {
+            _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _reportLogic = reportLogic;
@@ -130,7 +134,7 @@ namespace BudgetBadger.Forms.Reports
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Error", envelopeReportResult.Message, "OK");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), envelopeReportResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
