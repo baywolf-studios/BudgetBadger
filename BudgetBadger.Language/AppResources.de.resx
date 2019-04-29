@@ -121,154 +121,154 @@
     <value>Balance</value>
   </data>
   <data name="AccountDeleteBalanceError" xml:space="preserve">
-    <value>Cannot delete an account with balance</value>
+    <value>Konto mit Kontostand kann nicht gelöscht werden</value>
   </data>
   <data name="AccountDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete an account with future transactions</value>
+    <value>Ein Konto mit zukünftigen Transaktionen kann nicht gelöscht werden</value>
   </data>
   <data name="AccountDeleteInactiveError" xml:space="preserve">
-    <value>Cannot delete an inactive account</value>
+    <value>Ein inaktives Konto kann nicht gelöscht werden</value>
   </data>
   <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
-    <value>Cannot delete an account with pending transactions</value>
+    <value>Ein Konto mit ausstehenden Transaktionen kann nicht gelöscht werden</value>
   </data>
   <data name="AccountEditPageTitle" xml:space="preserve">
-    <value>Edit Account</value>
+    <value>Konto bearbeiten</value>
   </data>
   <data name="AccountNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="AccountNetWorthLabel" xml:space="preserve">
-    <value>Net Worth</value>
+    <value>Vermögen</value>
   </data>
   <data name="AccountNewPageTitle" xml:space="preserve">
-    <value>New Account</value>
+    <value>Neues Konto</value>
   </data>
   <data name="AccountNotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Anmerkungen</value>
   </data>
   <data name="AccountPaymentLabel" xml:space="preserve">
-    <value>Payment</value>
+    <value>Zahlung</value>
   </data>
   <data name="AccountPaymentNotNeededLabel" xml:space="preserve">
-    <value>Not Needed</value>
+    <value>Nicht benötigt</value>
   </data>
   <data name="AccountPendingLabel" xml:space="preserve">
-    <value>Pending</value>
+    <value>steht aus</value>
   </data>
   <data name="AccountPostedLabel" xml:space="preserve">
-    <value>Cleared</value>
+    <value>Gelöscht</value>
   </data>
   <data name="AccountReconcileAmountsDoNotMatchError" xml:space="preserve">
-    <value>The reconciled amounts do not match</value>
+    <value>Die abgeglichenen Beträge stimmen nicht überein</value>
   </data>
   <data name="AccountReconcileDifferenceLabel" xml:space="preserve">
-    <value>Difference</value>
+    <value>Unterschied</value>
   </data>
   <data name="AccountReconcileEmptyTransactionsHelperTitle" xml:space="preserve">
-    <value>All transactions reconciled</value>
+    <value>Alle Transaktionen abgestimmt</value>
   </data>
   <data name="AccountReconcileStatementBalanceLabel" xml:space="preserve">
-    <value>Statement Balance</value>
+    <value>Kontoauszug</value>
   </data>
   <data name="AccountReconcileStatementDateLabel" xml:space="preserve">
-    <value>Statement Date</value>
+    <value>Aufstellungsdatum</value>
   </data>
   <data name="AccountReconcileStatementLabel" xml:space="preserve">
-    <value>Statement</value>
+    <value>Aussage</value>
   </data>
   <data name="AccountSelectionPageTitle" xml:space="preserve">
-    <value>Select an Account</value>
+    <value>Wählen Sie ein Konto aus</value>
   </data>
   <data name="AccountsPageTitle" xml:space="preserve">
-    <value>Accounts</value>
+    <value>Konten</value>
   </data>
   <data name="AccountTypeBudget" xml:space="preserve">
     <value>Budget</value>
   </data>
   <data name="AccountTypeLabel" xml:space="preserve">
-    <value>Type</value>
+    <value>Art</value>
   </data>
   <data name="AccountTypeReporting" xml:space="preserve">
-    <value>Reporting</value>
+    <value>Berichterstattung</value>
   </data>
   <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
-    <value>Account is not deleted</value>
+    <value>Konto wird nicht gelöscht</value>
   </data>
   <data name="AccountValidBalanceError" xml:space="preserve">
-    <value>Account balance is required</value>
+    <value>Kontostand ist erforderlich</value>
   </data>
   <data name="AccountValidDescriptionError" xml:space="preserve">
-    <value>Account name is required</value>
+    <value>Kontoname ist erforderlich</value>
   </data>
   <data name="AddTransactionButton" xml:space="preserve">
-    <value>Add Transaction</value>
+    <value>Transaktion hinzufügen</value>
   </data>
   <data name="AlertAuthenticationUnsuccessful" xml:space="preserve">
-    <value>Authentication Unsuccessful</value>
+    <value>Authentifizierung fehlgeschlagen</value>
   </data>
   <data name="AlertBudgetBadgerPro" xml:space="preserve">
-    <value>Budget Badger Pro</value>
+    <value>Budget Dachs Pro</value>
   </data>
   <data name="AlertCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Stornieren</value>
   </data>
   <data name="AlertDeleteUnsuccessful" xml:space="preserve">
-    <value>Delete Unsuccessful</value>
+    <value>Löschen fehlgeschlagen</value>
   </data>
   <data name="AlertGeneralError" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="AlertMessageBudgetBadgerPro" xml:space="preserve">
-    <value>You currently do not have access to these features. Would you like to purchase Budget Badger Pro?</value>
+    <value>Sie haben derzeit keinen Zugriff auf diese Funktionen. Möchten Sie Budget Badger Pro kaufen?</value>
   </data>
   <data name="AlertMessageDropboxError" xml:space="preserve">
-    <value>Did not authenticate with Dropbox. Sync disabled.</value>
+    <value>Mit Dropbox nicht authentifiziert. Synchronisierung deaktiviert</value>
   </data>
   <data name="AlertNotPurchased" xml:space="preserve">
-    <value>Not Purchased</value>
+    <value>Nicht gekauft</value>
   </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="AlertPurchase" xml:space="preserve">
-    <value>Purchase</value>
+    <value>Kauf</value>
   </data>
   <data name="AlertPurchaseUnsuccessful" xml:space="preserve">
-    <value>Purchase Unsuccessful</value>
+    <value>Kauf nicht erfolgreich</value>
   </data>
   <data name="AlertQuickBudget" xml:space="preserve">
-    <value>Quick Budget</value>
+    <value>Schnelles Budget</value>
   </data>
   <data name="AlertQuickBudgetNotEnoughData" xml:space="preserve">
-    <value>Not Enough Data for Quick Budgets</value>
+    <value>Nicht genügend Daten für schnelle Budgets</value>
   </data>
   <data name="AlertReconcileUnsuccessful" xml:space="preserve">
-    <value>Reconcile Unsuccessful</value>
+    <value>Reconcile nicht erfolgreich</value>
   </data>
   <data name="AlertRefreshUnsuccessful" xml:space="preserve">
-    <value>Refresh Unsuccessful</value>
+    <value>Aktualisieren fehlgeschlagen</value>
   </data>
   <data name="AlertRestorePurchaseUnsuccessful" xml:space="preserve">
-    <value>Restore Purchase Unsuccessful</value>
+    <value>Einkauf wiederherstellen fehlgeschlagen</value>
   </data>
   <data name="AlertSaveUnsuccessful" xml:space="preserve">
-    <value>Save Unsuccessful</value>
+    <value>Speichern Sie nicht erfolgreich</value>
   </data>
   <data name="AlertSyncUnsuccessful" xml:space="preserve">
-    <value>Sync Unsuccessful</value>
+    <value>Synchronisierung fehlgeschlagen</value>
   </data>
   <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
-    <value>Undo Delete Unsuccessful</value>
+    <value>Rückgängig machen Löschen fehlgeschlagen</value>
   </data>
   <data name="AutomaticLabel" xml:space="preserve">
-    <value>Automatic</value>
+    <value>Automatik</value>
   </data>
   <data name="BackButton" xml:space="preserve">
-    <value>Back</value>
+    <value>Zurück</value>
   </data>
   <data name="BeginDateLabel" xml:space="preserve">
-    <value>Begin Date</value>
+    <value>Anfangsdatum</value>
   </data>
   <data name="BudgetBadger" xml:space="preserve">
     <value>Budget Badger</value>
@@ -277,570 +277,570 @@
     <value>Budget Badger Pro</value>
   </data>
   <data name="BudgetBadgerProPurchaseLabel" xml:space="preserve">
-    <value>Upgrade your budget - Go Pro!</value>
+    <value>Steigern Sie Ihr Budget - Go Pro!</value>
   </data>
   <data name="BudgetBadgerProRestoreLabel" xml:space="preserve">
-    <value>Restore Purchase</value>
+    <value>Kauf wiederherstellen</value>
   </data>
   <data name="BudgetBadgerProThanksLabel" xml:space="preserve">
-    <value>Thanks for purchasing Budget Badger Pro!</value>
+    <value>Vielen Dank für den Kauf von Budget Badger Pro!</value>
   </data>
   <data name="BufferEnvelope" xml:space="preserve">
-    <value>Buffer</value>
+    <value>Puffer</value>
   </data>
   <data name="BusyTextDeleting" xml:space="preserve">
-    <value>Deleting</value>
+    <value>Löschen</value>
   </data>
   <data name="BusyTextLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Wird geladen</value>
   </data>
   <data name="BusyTextSaving" xml:space="preserve">
-    <value>Saving</value>
+    <value>Speichern</value>
   </data>
   <data name="BusyTextSyncing" xml:space="preserve">
-    <value>Syncing</value>
+    <value>Synchronisierung</value>
   </data>
   <data name="BusyTextUndoingDelete" xml:space="preserve">
-    <value>Undoing Delete</value>
+    <value>Löschen rückgängig machen</value>
   </data>
   <data name="CloudSyncLabel" xml:space="preserve">
     <value>Cloud Sync</value>
   </data>
   <data name="CurrencyLabel" xml:space="preserve">
-    <value>Currency</value>
+    <value>Währung</value>
   </data>
   <data name="DateTimeLabel" xml:space="preserve">
-    <value>Date and Time</value>
+    <value>Datum und Uhrzeit</value>
   </data>
   <data name="DebtEnvelopeGroup" xml:space="preserve">
-    <value>Debt</value>
+    <value>Schuld</value>
   </data>
   <data name="DeleteButton" xml:space="preserve">
-    <value>Delete</value>
+    <value>Löschen</value>
   </data>
   <data name="DeletedAccountsLabel" xml:space="preserve">
-    <value>Accounts</value>
+    <value>Konten</value>
   </data>
   <data name="DeletedAccountsPageTitle" xml:space="preserve">
-    <value>Deleted Accounts</value>
+    <value>Gelöschte Konten</value>
   </data>
   <data name="DeletedEnvelopeGroupsLabel" xml:space="preserve">
-    <value>Envelope Groups</value>
+    <value>Umschlaggruppen</value>
   </data>
   <data name="DeletedEnvelopeGroupsPageTitle" xml:space="preserve">
-    <value>Deleted Envelope Groups</value>
+    <value>Gelöschte Umschlaggruppen</value>
   </data>
   <data name="DeletedEnvelopesLabel" xml:space="preserve">
-    <value>Envelopes</value>
+    <value>Umschläge</value>
   </data>
   <data name="DeletedEnvelopesPageTitle" xml:space="preserve">
-    <value>Deleted Envelopes</value>
+    <value>Gelöschte Umschläge</value>
   </data>
   <data name="DeletedLabel" xml:space="preserve">
-    <value>Deleted</value>
+    <value>Gelöscht</value>
   </data>
   <data name="DeletedPayeesLabel" xml:space="preserve">
-    <value>Payees</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="DeletedPayeesPageTitle" xml:space="preserve">
-    <value>Deleted Payees</value>
+    <value>Gelöschte Zahlungsempfänger</value>
   </data>
   <data name="DropboxLabel" xml:space="preserve">
     <value>Dropbox</value>
   </data>
   <data name="EmptyAccountHelperSubtitle" xml:space="preserve">
-    <value>Use the + button to add your first account</value>
+    <value>Verwenden Sie die + Taste, um Ihr erstes Konto hinzuzufügen</value>
   </data>
   <data name="EmptyAccountHelperTitle" xml:space="preserve">
-    <value>Add the money you have now</value>
+    <value>Fügen Sie das Geld hinzu, das Sie jetzt haben</value>
   </data>
   <data name="EmptyDeletedAccountsHelperTitle" xml:space="preserve">
-    <value>No deleted accounts</value>
+    <value>Keine gelöschten Konten</value>
   </data>
   <data name="EmptyDeletedEnvelopeGroupsHelperTitle" xml:space="preserve">
-    <value>No deleted envelope groups</value>
+    <value>Keine gelöschten Umschlaggruppen</value>
   </data>
   <data name="EmptyDeletedEnvelopesHelperTitle" xml:space="preserve">
-    <value>No deleted envelopes</value>
+    <value>Keine gelöschten Umschläge</value>
   </data>
   <data name="EmptyDeletedPayeesHelperTitle" xml:space="preserve">
-    <value>No deleted payees</value>
+    <value>Keine gelöschten Zahlungsempfänger</value>
   </data>
   <data name="EmptyEnvelopeGroupHelperTitle" xml:space="preserve">
-    <value>Add an Envelope Group using the + button</value>
+    <value>Fügen Sie mit der Taste + eine Umschlaggruppe hinzu</value>
   </data>
   <data name="EmptyEnvelopeHelperSubtitle" xml:space="preserve">
-    <value>Use the + button to create and budget your first envelope</value>
+    <value>Verwenden Sie die Schaltfläche +, um den ersten Umschlag zu erstellen und zu budgetieren</value>
   </data>
   <data name="EmptyEnvelopeHelperTitle" xml:space="preserve">
-    <value>Budget it into envelopes</value>
+    <value>Budgetieren Sie es in Umschläge</value>
   </data>
   <data name="EmptyPayeeHelperTitle" xml:space="preserve">
-    <value>Add a Payee using the + button</value>
+    <value>Fügen Sie einen Empfänger mit der Taste + hinzu</value>
   </data>
   <data name="EmptyTransactionsHelperTitle" xml:space="preserve">
-    <value>No transactions yet</value>
+    <value>Noch keine Transaktionen</value>
   </data>
   <data name="EndDateLabel" xml:space="preserve">
-    <value>End Date</value>
+    <value>Enddatum</value>
   </data>
   <data name="EnvelopeActivityLabel" xml:space="preserve">
-    <value>Activity</value>
+    <value>Aktivität</value>
   </data>
   <data name="EnvelopeAmountLabel" xml:space="preserve">
     <value>Budget</value>
   </data>
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
-    <value>Cannot delete debt envelopes</value>
+    <value>Umschläge können nicht gelöscht werden</value>
   </data>
   <data name="EnvelopeDeleteFutureBudgetsError" xml:space="preserve">
-    <value>Cannot delete nvelope with future budget amounts</value>
+    <value>Nvelope kann nicht mit zukünftigen Budgetbeträgen gelöscht werden</value>
   </data>
   <data name="EnvelopeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete nvelope with future transactions</value>
+    <value>Nvelope kann nicht mit zukünftigen Transaktionen gelöscht werden</value>
   </data>
   <data name="EnvelopeDeleteIncomeError" xml:space="preserve">
-    <value>Cannot delete income envelopes</value>
+    <value>Einnahmenumschläge können nicht gelöscht werden</value>
   </data>
   <data name="EnvelopeDeleteRemainingBalanceError" xml:space="preserve">
-    <value>Cannot delete envelope with a remaining balance</value>
+    <value>Umschlag mit Restguthaben kann nicht gelöscht werden</value>
   </data>
   <data name="EnvelopeEditPageTitle" xml:space="preserve">
-    <value>Edit Budget</value>
+    <value>Budget bearbeiten</value>
   </data>
   <data name="EnvelopeGroupEditPageTitle" xml:space="preserve">
-    <value>Edit Envelope Group</value>
+    <value>Umschlaggruppe bearbeiten</value>
   </data>
   <data name="EnvelopeGroupLabel" xml:space="preserve">
-    <value>Group</value>
+    <value>Gruppe</value>
   </data>
   <data name="EnvelopeGroupNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="EnvelopeGroupNewPageTitle" xml:space="preserve">
-    <value>New Envelope Group</value>
+    <value>Neue Umschlaggruppe</value>
   </data>
   <data name="EnvelopeGroupNotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Anmerkungen</value>
   </data>
   <data name="EnvelopeGroupSelectionPageTitle" xml:space="preserve">
-    <value>Select a Group</value>
+    <value>Wählen Sie eine Gruppe aus</value>
   </data>
   <data name="EnvelopeGroupsPageTitle" xml:space="preserve">
-    <value>Envelope Groups</value>
+    <value>Umschlaggruppen</value>
   </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
-    <value>Envelope group name is required</value>
+    <value>Der Name der Umschlaggruppe ist erforderlich</value>
   </data>
   <data name="EnvelopeLabel" xml:space="preserve">
-    <value>Envelope</value>
+    <value>Briefumschlag</value>
   </data>
   <data name="EnvelopeNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="EnvelopeNewPageTitle" xml:space="preserve">
-    <value>New Envelope</value>
+    <value>Neuer Umschlag</value>
   </data>
   <data name="EnvelopeNotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Anmerkungen</value>
   </data>
   <data name="EnvelopeOverspendingLabel" xml:space="preserve">
-    <value>Overspending</value>
+    <value>Mehrausgaben</value>
   </data>
   <data name="EnvelopePastLabel" xml:space="preserve">
-    <value>Past</value>
+    <value>Vergangenheit</value>
   </data>
   <data name="EnvelopeRemainingLabel" xml:space="preserve">
-    <value>Remaining</value>
+    <value>Verbleibend</value>
   </data>
   <data name="EnvelopeSelectionPageTitle" xml:space="preserve">
-    <value>Select an Envelope</value>
+    <value>Wählen Sie einen Umschlag aus</value>
   </data>
   <data name="EnvelopesPageTitle" xml:space="preserve">
-    <value>Envelopes</value>
+    <value>Umschläge</value>
   </data>
   <data name="EnvelopeSpendingReportPageTitle" xml:space="preserve">
-    <value>Envelopes Spending</value>
+    <value>Umschläge ausgeben</value>
   </data>
   <data name="EnvelopeTransferAmountLabel" xml:space="preserve">
-    <value>Amount</value>
+    <value>Menge</value>
   </data>
   <data name="EnvelopeTransferButton" xml:space="preserve">
     <value>Transfer</value>
   </data>
   <data name="EnvelopeTransferDateLabel" xml:space="preserve">
-    <value>Date</value>
+    <value>Datum</value>
   </data>
   <data name="EnvelopeTransferFromLabel" xml:space="preserve">
-    <value>From</value>
+    <value>Von</value>
   </data>
   <data name="EnvelopeTransferPageTitle" xml:space="preserve">
-    <value>Envelope Transfer</value>
+    <value>Umschlagübertragung</value>
   </data>
   <data name="EnvelopeTransferToLabel" xml:space="preserve">
-    <value>To</value>
+    <value>Zu</value>
   </data>
   <data name="EnvelopeTrendsReportPageTitle" xml:space="preserve">
-    <value>Envelope Trends</value>
+    <value>Umschlagtrends</value>
   </data>
   <data name="EnvelopeValidAmountError" xml:space="preserve">
-    <value>Budget amount is required</value>
+    <value>Budgetbetrag ist erforderlich</value>
   </data>
   <data name="EnvelopeValidDescriptionError" xml:space="preserve">
-    <value>Envelope name is required</value>
+    <value>Umschlagname ist erforderlich</value>
   </data>
   <data name="EnvelopeValidEnvelopeError" xml:space="preserve">
-    <value>A valid envelope is required</value>
+    <value>Ein gültiger Umschlag ist erforderlich</value>
   </data>
   <data name="EnvelopeValidEnvelopeExistError" xml:space="preserve">
-    <value>Envelope is required</value>
+    <value>Umschlag ist erforderlich</value>
   </data>
   <data name="EnvelopeValidGroupError" xml:space="preserve">
-    <value>Envelope group is required</value>
+    <value>Umschlaggruppe ist erforderlich</value>
   </data>
   <data name="EnvelopeValidGroupValidError" xml:space="preserve">
-    <value>A valid envelope group is required</value>
+    <value>Eine gültige Umschlaggruppe ist erforderlich</value>
   </data>
   <data name="EnvelopeValidOverspendDebtError" xml:space="preserve">
-    <value>Ignore overspend must be set on debt envelopes</value>
+    <value>Überschreitungen ignorieren muss auf Umschlägen festgelegt werden</value>
   </data>
   <data name="EnvelopeValidOverspendError" xml:space="preserve">
-    <value>Cannot set ignore overspend always when ignore overspend is not set</value>
+    <value>Ignoriere Überschreitung kann nicht immer gesetzt werden, wenn Überschreiben ignorieren nicht festgelegt ist</value>
   </data>
   <data name="EnvelopeValidScheduleError" xml:space="preserve">
-    <value>A valid schedule is required</value>
+    <value>Ein gültiger Zeitplan ist erforderlich</value>
   </data>
   <data name="EnvelopeValidScheduleExistError" xml:space="preserve">
-    <value>Schedule is required</value>
+    <value>Zeitplan ist erforderlich</value>
   </data>
   <data name="FilterLabel" xml:space="preserve">
     <value>Filter</value>
   </data>
   <data name="GenericDebtEnvelope" xml:space="preserve">
-    <value>Debt</value>
+    <value>Schuld</value>
   </data>
   <data name="HelpLabel" xml:space="preserve">
-    <value>Help</value>
+    <value>Hilfe</value>
   </data>
   <data name="IgnoredEnvelope" xml:space="preserve">
-    <value>Not Needed</value>
+    <value>Nicht benötigt</value>
   </data>
   <data name="IncomeEnvelope" xml:space="preserve">
-    <value>Income</value>
+    <value>Einkommen</value>
   </data>
   <data name="IncomeEnvelopeGroup" xml:space="preserve">
-    <value>Income</value>
+    <value>Einkommen</value>
   </data>
   <data name="LanguageLabel" xml:space="preserve">
-    <value>Language</value>
+    <value>Sprache</value>
   </data>
   <data name="LastSyncedLabel" xml:space="preserve">
-    <value>Last Synced</value>
+    <value>Letzte Synchronisation</value>
   </data>
   <data name="NetWorthReportPageTitle" xml:space="preserve">
-    <value>Net Worth</value>
+    <value>Vermögen</value>
   </data>
   <data name="NextButton" xml:space="preserve">
-    <value>Next</value>
+    <value>Nächster</value>
   </data>
   <data name="OverspendingTypeAlwaysIgnore" xml:space="preserve">
-    <value>Always Ignore</value>
+    <value>Immer ignorieren</value>
   </data>
   <data name="OverspendingTypeDoNotIgnore" xml:space="preserve">
-    <value>Don't Ignore</value>
+    <value>Nicht ignorieren</value>
   </data>
   <data name="OverspendingTypeIgnore" xml:space="preserve">
-    <value>Ignore</value>
+    <value>Ignorieren</value>
   </data>
   <data name="PayeeDeleteAccountError" xml:space="preserve">
-    <value>Cannot delete an account payee</value>
+    <value>Ein Kontoempfänger kann nicht gelöscht werden</value>
   </data>
   <data name="PayeeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete a payee with future transactions</value>
+    <value>Ein Empfänger mit zukünftigen Transaktionen kann nicht gelöscht werden</value>
   </data>
   <data name="PayeeDeleteInactiveError" xml:space="preserve">
-    <value>Cannot delete an inactive payee</value>
+    <value>Ein inaktiver Zahlungsempfänger kann nicht gelöscht werden</value>
   </data>
   <data name="PayeeDeleteStartingBalanceError" xml:space="preserve">
-    <value>Cannot delete the starting balance payee</value>
+    <value>Der Empfänger des Startkontos kann nicht gelöscht werden</value>
   </data>
   <data name="PayeeEditPageTitle" xml:space="preserve">
-    <value>Edit Payee</value>
+    <value>Zahlungsempfänger bearbeiten</value>
   </data>
   <data name="PayeeLabel" xml:space="preserve">
-    <value>Payee</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="PayeeNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="PayeeNewPageTitle" xml:space="preserve">
-    <value>New Payee</value>
+    <value>Neue Zahlung</value>
   </data>
   <data name="PayeeNotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Anmerkungen</value>
   </data>
   <data name="PayeeSelectionPageTitle" xml:space="preserve">
-    <value>Select a Payee</value>
+    <value>Wählen Sie einen Zahlungsempfänger aus</value>
   </data>
   <data name="PayeesPageTitle" xml:space="preserve">
-    <value>Payees</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="PayeeSpendingReportPageTitle" xml:space="preserve">
-    <value>Payees Spending</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="PayeeTransferGroup" xml:space="preserve">
     <value>Transfer</value>
   </data>
   <data name="PayeeTrendsReportPageTitle" xml:space="preserve">
-    <value>Payee Trends</value>
+    <value>Zahlungsempfänger-Trends</value>
   </data>
   <data name="PayeeValidDescriptionError" xml:space="preserve">
-    <value>Payee name is required</value>
+    <value>Name des Zahlungsempfängers erforderlich</value>
   </data>
   <data name="PurchaseErrorAppStoreUnavailable" xml:space="preserve">
-    <value>Currently the app store seems to be unavailble, please try again later.</value>
+    <value>Momentan scheint der App Store nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorBillingUnavailable" xml:space="preserve">
-    <value>Billing seems to be unavailable, please try again later.</value>
+    <value>Die Rechnung scheint nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorConnection" xml:space="preserve">
-    <value>Unable to connect to billing service</value>
+    <value>Es kann keine Verbindung zum Abrechnungsdienst hergestellt werden</value>
   </data>
   <data name="PurchaseErrorGeneralError" xml:space="preserve">
-    <value>There was an issue purchasing, please try again later.</value>
+    <value>Es gab ein Problem beim Kauf. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorInvalidProduct" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+    <value>Das Produkt, das Sie kaufen, scheint nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorItemUnavailable" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+    <value>Das Produkt, das Sie kaufen, scheint nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorNotPurchased" xml:space="preserve">
-    <value>The product was not purchased</value>
+    <value>Das Produkt wurde nicht gekauft</value>
   </data>
   <data name="PurchaseErrorPaymentInvalid" xml:space="preserve">
-    <value>Payment seems to be invalid, please try again.</value>
+    <value>Die Zahlung scheint ungültig zu sein, bitte versuchen Sie es erneut.</value>
   </data>
   <data name="PurchaseErrorPaymentNotAllowed" xml:space="preserve">
-    <value>Payment does not seem to be enabled or allowed, please try again.</value>
+    <value>Die Zahlung scheint nicht aktiviert oder erlaubt zu sein. Bitte versuchen Sie es erneut.</value>
   </data>
   <data name="PurchaseErrorProductRequestFailed" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
+    <value>Das Produkt, das Sie kaufen, scheint nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorRestoreFailed" xml:space="preserve">
-    <value>The purchase was unable to be restored, please try again later.</value>
+    <value>Der Kauf konnte nicht wiederhergestellt werden. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorServiceUnavailable" xml:space="preserve">
-    <value>The network connection seems to be unavailble, please try again later.</value>
+    <value>Die Netzwerkverbindung scheint nicht verfügbar zu sein. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="PurchaseErrorUnknown" xml:space="preserve">
-    <value>Unknown Error</value>
+    <value>Unbekannter Fehler</value>
   </data>
   <data name="PurchaseErrorUserCancelled" xml:space="preserve">
-    <value>Purchase Cancelled</value>
+    <value>Kauf abgebrochen</value>
   </data>
   <data name="PurchaseErrorVerifyFailed" xml:space="preserve">
-    <value>The purchase was unable to be verified, please try again later.</value>
+    <value>Der Kauf konnte nicht bestätigt werden. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="QuickBudgetAvgPast3MonthsActivity" xml:space="preserve">
-    <value>Avg. Past 3 Months Activity</value>
+    <value>Durchschnitt Vergangenheit 3 Monate Aktivität</value>
   </data>
   <data name="QuickBudgetAvgPast3MonthsBudgeted" xml:space="preserve">
-    <value>Avg. Past 3 Months Budgeted</value>
+    <value>Durchschnittliche Vergangenheit 3 Monate geplant</value>
   </data>
   <data name="QuickBudgetAvgPastYearActivity" xml:space="preserve">
-    <value>Avg. Past Year Activity</value>
+    <value>Durchschnittliche Aktivitäten im vergangenen Jahr</value>
   </data>
   <data name="QuickBudgetAvgPastYearBudgeted" xml:space="preserve">
-    <value>Avg. Past Year Budgeted</value>
+    <value>Durchschnittliches Frühjahr geplant</value>
   </data>
   <data name="QuickBudgetBalance" xml:space="preserve">
     <value>Balance</value>
   </data>
   <data name="QuickBudgetButton" xml:space="preserve">
-    <value>Quick Budget</value>
+    <value>Schnelles Budget</value>
   </data>
   <data name="QuickBudgetLastMonthActivity" xml:space="preserve">
-    <value>Last Month Activity</value>
+    <value>Aktivität des letzten Monats</value>
   </data>
   <data name="QuickBudgetLastMonthBudgeted" xml:space="preserve">
-    <value>Last Month Budgeted</value>
+    <value>Letzter Monat budgetiert</value>
   </data>
   <data name="ReconcileAccountButton" xml:space="preserve">
-    <value>Reconcile</value>
+    <value>Versöhnen</value>
   </data>
   <data name="ReconcileButton" xml:space="preserve">
-    <value>Reconcile</value>
+    <value>Versöhnen</value>
   </data>
   <data name="ReportsPageTitle" xml:space="preserve">
-    <value>Reports</value>
+    <value>Berichte</value>
   </data>
   <data name="ScheduleBudgetedLabel" xml:space="preserve">
-    <value>Budgeted</value>
+    <value>Budgetiert</value>
   </data>
   <data name="ScheduleIncomeLabel" xml:space="preserve">
-    <value>Income</value>
+    <value>Einkommen</value>
   </data>
   <data name="ScheduleOverLabel" xml:space="preserve">
-    <value>Over</value>
+    <value>Über</value>
   </data>
   <data name="SchedulePastLabel" xml:space="preserve">
-    <value>Past</value>
+    <value>Vergangenheit</value>
   </data>
   <data name="ScheduleToBudgetLabel" xml:space="preserve">
-    <value>To Budget</value>
+    <value>Budget</value>
   </data>
   <data name="ScheduleValidDescriptionError" xml:space="preserve">
-    <value>Budget schedule description is required</value>
+    <value>Beschreibung des Budgetplans ist erforderlich</value>
   </data>
   <data name="SettingsPageTitle" xml:space="preserve">
-    <value>Settings</value>
+    <value>die Einstellungen</value>
   </data>
   <data name="Split" xml:space="preserve">
-    <value>Split</value>
+    <value>Teilt</value>
   </data>
   <data name="SplitTransactionButton" xml:space="preserve">
-    <value>Split Transaction</value>
+    <value>Transaktion teilen</value>
   </data>
   <data name="SplitTransactionPageTitle" xml:space="preserve">
-    <value>Split Transaction</value>
+    <value>Transaktion teilen</value>
   </data>
   <data name="SplitTransactionRemainingLabel" xml:space="preserve">
-    <value>Remaining</value>
+    <value>Verbleibend</value>
   </data>
   <data name="SplitTransactionRunningTotalLabel" xml:space="preserve">
-    <value>Running Total</value>
+    <value>Gesamtlaufzeit</value>
   </data>
   <data name="SplitTransactionTotalLabel" xml:space="preserve">
-    <value>Total</value>
+    <value>Gesamt</value>
   </data>
   <data name="SplitTransactionValidTransactionsError" xml:space="preserve">
-    <value>No split transactions to save</value>
+    <value>Keine geteilten Transaktionen zum Speichern</value>
   </data>
   <data name="StartingBalancePayee" xml:space="preserve">
-    <value>Starting Balance</value>
+    <value>Startguthaben</value>
   </data>
   <data name="SyncButton" xml:space="preserve">
     <value>Sync</value>
   </data>
   <data name="SyncDateTimeNever" xml:space="preserve">
-    <value>Never</value>
+    <value>noch nie</value>
   </data>
   <data name="SystemEnvelopeGroup" xml:space="preserve">
     <value>System</value>
   </data>
   <data name="TransactactionInflowLabel" xml:space="preserve">
-    <value>Inflow</value>
+    <value>Zufluss</value>
   </data>
   <data name="TransactactionOutflowLabel" xml:space="preserve">
-    <value>Outflow</value>
+    <value>Abfluss</value>
   </data>
   <data name="TransactionAccountLabel" xml:space="preserve">
-    <value>Account</value>
+    <value>Konto</value>
   </data>
   <data name="TransactionAmountLabel" xml:space="preserve">
-    <value>Amount</value>
+    <value>Menge</value>
   </data>
   <data name="TransactionClearedLabel" xml:space="preserve">
-    <value>Cleared</value>
+    <value>Gelöscht</value>
   </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
-    <value>Cannot delete transaction with deleted account</value>
+    <value>Transaktion mit gelöschtem Konto kann nicht gelöscht werden</value>
   </data>
   <data name="TransactionDeleteEnvelopeDeletedError" xml:space="preserve">
-    <value>Cannot delete transaction with deleted envelope</value>
+    <value>Transaktion mit gelöschtem Umschlag kann nicht gelöscht werden</value>
   </data>
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
-    <value>Cannot delete transfer transaction with deleted payee</value>
+    <value>Überweisungstransaktion mit gelöschtem Zahlungsempfänger kann nicht gelöscht werden</value>
   </data>
   <data name="TransactionEditPageTitle" xml:space="preserve">
-    <value>Edit Transaction</value>
+    <value>Transaktion bearbeiten</value>
   </data>
   <data name="TransactionEnvelopeLabel" xml:space="preserve">
-    <value>Envelope</value>
+    <value>Briefumschlag</value>
   </data>
   <data name="TransactionNewPageTitle" xml:space="preserve">
-    <value>New Transaction</value>
+    <value>Neue Transaktion</value>
   </data>
   <data name="TransactionNotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Anmerkungen</value>
   </data>
   <data name="TransactionPayeeLabel" xml:space="preserve">
-    <value>Payee</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="TransactionReconciledLabel" xml:space="preserve">
-    <value>Reconciled</value>
+    <value>Versöhnt</value>
   </data>
   <data name="TransactionServiceDateLabel" xml:space="preserve">
-    <value>Service Date</value>
+    <value>Servicedatum</value>
   </data>
   <data name="TransactionStatusLabel" xml:space="preserve">
     <value>Status</value>
   </data>
   <data name="TransactionValidAccountDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the account on a transaction with a deleted account</value>
+    <value>Das Konto für eine Transaktion mit einem gelöschten Konto kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidAccountDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted account</value>
+    <value>Ein gelöschtes Konto kann nicht verwendet werden</value>
   </data>
   <data name="TransactionValidAccountError" xml:space="preserve">
-    <value>Account is required</value>
+    <value>Konto ist erforderlich</value>
   </data>
   <data name="TransactionValidAccountExistError" xml:space="preserve">
-    <value>Account does not exist</value>
+    <value>Konto existiert nicht</value>
   </data>
   <data name="TransactionValidAmountDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the amount on a transaction with a deleted account</value>
+    <value>Der Betrag einer Transaktion mit einem gelöschten Konto kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidAmountDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the amount on a transaction with a deleted envelope</value>
+    <value>Der Betrag einer Transaktion mit einem gelöschten Umschlag kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidAmountDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the amount on a transaction with a deleted payee</value>
+    <value>Der Betrag einer Transaktion mit einem gelöschten Zahlungsempfänger kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidAmountError" xml:space="preserve">
-    <value>Amount is required</value>
+    <value>Betrag ist erforderlich</value>
   </data>
   <data name="TransactionValidEnvelopeDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted envelope</value>
+    <value>Ein gelöschter Umschlag kann nicht verwendet werden</value>
   </data>
   <data name="TransactionValidEnvelopeError" xml:space="preserve">
-    <value>Envelope is required</value>
+    <value>Umschlag ist erforderlich</value>
   </data>
   <data name="TransactionValidEnvelopeExistError" xml:space="preserve">
-    <value>Envelope does not exist</value>
+    <value>Umschlag existiert nicht</value>
   </data>
   <data name="TransactionValidPayeeDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the envelope on a transaction with a deleted envelope</value>
+    <value>Der Umschlag einer Transaktion mit einem gelöschten Umschlag kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidPayeeDeletedError" xml:space="preserve">
-    <value>Cannot use a deleted payee</value>
+    <value>Ein gelöschter Zahlungsempfänger kann nicht verwendet werden</value>
   </data>
   <data name="TransactionValidPayeeDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the payee on a transaction with a deleted payee</value>
+    <value>Der Empfänger kann nicht für eine Transaktion mit einem gelöschten Empfänger bearbeitet werden</value>
   </data>
   <data name="TransactionValidPayeeError" xml:space="preserve">
-    <value>Payee is required</value>
+    <value>Empfänger ist erforderlich</value>
   </data>
   <data name="TransactionValidPayeeExistError" xml:space="preserve">
-    <value>Payee does not exist</value>
+    <value>Zahlungsempfänger existiert nicht</value>
   </data>
   <data name="TransactionValidServiceDateDeletedAccountError" xml:space="preserve">
-    <value>Cannot edit the service date on a transaction with a deleted account</value>
+    <value>Das Servicedatum für eine Transaktion mit einem gelöschten Konto kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidServiceDateDeletedEnvelopeError" xml:space="preserve">
-    <value>Cannot edit the service date on a transaction with a deleted envelope</value>
+    <value>Das Servicedatum für eine Transaktion mit einem gelöschten Umschlag kann nicht bearbeitet werden</value>
   </data>
   <data name="TransactionValidServiceDateDeletedPayeeError" xml:space="preserve">
-    <value>Cannot edit the service date on a transaction with a deleted payee</value>
+    <value>Das Servicedatum für eine Transaktion mit einem gelöschten Empfänger kann nicht bearbeitet werden</value>
   </data>
   <data name="TransferValidFromerror" xml:space="preserve">
-    <value>Transfer does not contain a valid From Envelope</value>
+    <value>Die Überweisung enthält keinen gültigen Umschlag</value>
   </data>
   <data name="TransferValidToError" xml:space="preserve">
-    <value>Transfer does not contain a valid To Envelope</value>
+    <value>Die Übertragung enthält keinen gültigen Umschlag</value>
   </data>
   <data name="UndoDeleteButton" xml:space="preserve">
-    <value>Undo Delete</value>
+    <value>Undo Löschen</value>
   </data>
 </root>
