@@ -853,7 +853,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EndDate.
+        ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string EndDateLabel {
             get {
@@ -1429,7 +1429,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NewPayee.
+        ///   Looks up a localized string similar to New Payee.
         /// </summary>
         public static string PayeeNewPageTitle {
             get {
