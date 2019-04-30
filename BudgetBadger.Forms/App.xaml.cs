@@ -239,10 +239,30 @@ namespace BudgetBadger.Forms
             var localize = Container.Resolve<ILocalize>();
             var settings = Container.Resolve<ISettings>();
 
-            var currentCulture = (CultureInfo)localize.GetDeviceCultureInfo().Clone();
+            var currentLanguage = settings.GetValueOrDefault(AppSettings.Language);
+            CultureInfo currentCulture = null;
 
+            if (!String.IsNullOrEmpty(currentLanguage))
+            {
+                try
+                {
+
+                    currentCulture = new CultureInfo(currentLanguage);
+                }
+                catch (Exception ex)
+                {
+                    // culture doesn't exist
+                }
+            }
+
+            if (currentCulture == null)
+            {
+                currentCulture = (CultureInfo)localize.GetDeviceCultureInfo().Clone();
+            }
+            
+            
             var currentCurrencyFormat = settings.GetValueOrDefault(AppSettings.CurrencyFormat);
-            if (!String.IsNullOrEmpty(currentCurrencyFormat) && currentCurrencyFormat != "Automatic")
+            if (!String.IsNullOrEmpty(currentCurrencyFormat))
             {
                 try
                 {
@@ -254,20 +274,6 @@ namespace BudgetBadger.Forms
                     // culture doesn't exist
                 }
             }
-
-            var currentDateFormat = settings.GetValueOrDefault(AppSettings.DateFormat);
-            if (!String.IsNullOrEmpty(currentDateFormat) && currentDateFormat != "Automatic")
-            {
-                try
-                {
-                    var dateCulture = new CultureInfo(currentDateFormat);
-                    currentCulture.DateTimeFormat = dateCulture.DateTimeFormat;
-                }
-                catch (Exception ex)
-                {
-                    // culture doesn't exist
-                }
-        }
 
             localize.SetLocale(currentCulture);
         }

@@ -843,4 +843,10 @@
   <data name="UndoDeleteButton" xml:space="preserve">
     <value>Undo Löschen</value>
   </data>
+  <data name="InternationalLabel" xml:space="preserve">
+    <value>International</value>
+  </data>
+  <data name="DetectLabel" xml:space="preserve">
+    <value>entdecken</value>
+  </data>
 </root>
