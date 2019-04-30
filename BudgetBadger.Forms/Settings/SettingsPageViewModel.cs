@@ -188,6 +188,9 @@ namespace BudgetBadger.Forms.Settings
             var german = new CultureInfo("de");
             result.Add(german.DisplayName, german);
 
+            var spanish = new CultureInfo("es");
+            result.Add(spanish.DisplayName, spanish);
+
             return result.ToList(); ;
         }
 
