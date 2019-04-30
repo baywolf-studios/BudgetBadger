@@ -745,6 +745,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detect.
+        /// </summary>
+        public static string DetectLabel {
+            get {
+                return ResourceManager.GetString("DetectLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dropbox.
         /// </summary>
         public static string DropboxLabel {
@@ -1299,6 +1308,15 @@ namespace BudgetBadger.Language {
         public static string IncomeEnvelopeGroup {
             get {
                 return ResourceManager.GetString("IncomeEnvelopeGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to International.
+        /// </summary>
+        public static string InternationalLabel {
+            get {
+                return ResourceManager.GetString("InternationalLabel", resourceCulture);
             }
         }
         

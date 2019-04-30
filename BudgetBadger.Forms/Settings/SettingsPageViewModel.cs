@@ -33,7 +33,7 @@ namespace BudgetBadger.Forms.Settings
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
 
-        string _automatic;
+        string _detect;
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand ShowDeletedCommand { get; set; }
@@ -44,6 +44,7 @@ namespace BudgetBadger.Forms.Settings
         public ICommand EmailCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
         public ICommand CurrencySelectedCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
+        public ICommand LanguageSelectedCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -87,6 +88,20 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _lastSynced, value);
         }
 
+        List<KeyValuePair<string, CultureInfo>> _languageList;
+        public List<KeyValuePair<string, CultureInfo>> LanguageList
+        {
+            get => _languageList;
+            set => SetProperty(ref _languageList, value);
+        }
+
+        KeyValuePair<string, CultureInfo> _selectedLanguage;
+        public KeyValuePair<string, CultureInfo> SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set => SetProperty(ref _selectedLanguage, value);
+        }
+
         List<KeyValuePair<string, CultureInfo>> _currencyFormatList;
         public List<KeyValuePair<string, CultureInfo>> CurrencyFormatList
         {
@@ -99,27 +114,6 @@ namespace BudgetBadger.Forms.Settings
         {
             get => _selectedCurrencyFormat;
             set => SetProperty(ref _selectedCurrencyFormat, value);
-        }
-
-        List<KeyValuePair<string, CultureInfo>> _dateFormatList;
-        public List<KeyValuePair<string, CultureInfo>> DateFormatList
-        {
-            get => _dateFormatList;
-            set => SetProperty(ref _dateFormatList, value);
-        }
-
-        int _selectedDateFormatIndex;
-        public int SelectedDateFormatIndex
-        {
-            get => _selectedDateFormatIndex;
-            set => SetProperty(ref _selectedDateFormatIndex, value);
-        }
-
-        KeyValuePair<string, CultureInfo> _selectedDateFormat;
-        public KeyValuePair<string, CultureInfo> SelectedDateFormat
-        {
-            get => _selectedDateFormat;
-            set => SetProperty(ref _selectedDateFormat, value);
         }
 
         public SettingsPageViewModel(IResourceContainer resourceContainer,
@@ -143,8 +137,8 @@ namespace BudgetBadger.Forms.Settings
             HasPro = false;
             IsBusy = false;
             CurrencyFormatList = new List<KeyValuePair<string, CultureInfo>>();
-            DateFormatList = new List<KeyValuePair<string, CultureInfo>>();
-            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
+            LanguageList = new List<KeyValuePair<string, CultureInfo>>();
+            _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
             ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
@@ -152,43 +146,17 @@ namespace BudgetBadger.Forms.Settings
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new DelegateCommand(async () => await ExecuteCurrencySelectedCommand());
-            DateSelectedCommand = new DelegateCommand(async () => await ExecuteDateSelectedCommand());
+            LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
         }
 
         public void OnNavigatingTo(INavigationParameters parameters)
         {
-            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
-
-            CurrencyFormatList.Clear();
-            CurrencyFormatList.AddRange(GetCurrencies());
-
-            DateFormatList.Clear();
-            DateFormatList.AddRange(GetDateFormats());
-
-            var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
-            if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
-            {
-                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value.Name == currentCurrencyFormat);
-            }
-            else
-            {
-                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
-            }
-
-            var currentDateFormat = _settings.GetValueOrDefault(AppSettings.DateFormat);
-            if (DateFormatList.Any(d => d.Value.Name == currentDateFormat))
-            {
-                SelectedDateFormat = DateFormatList.FirstOrDefault(d => d.Value.Name == currentDateFormat);
-            }
-            else
-            {
-                SelectedDateFormat = DateFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
-            }
+            ResetLocalization();
         }
 
         public async void OnAppearing()
         {
-            _automatic = _resourceContainer.GetResourceString("AutomaticLabel");
+            _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
 
@@ -204,11 +172,30 @@ namespace BudgetBadger.Forms.Settings
         {
         }
 
+        List<KeyValuePair<string, CultureInfo>> GetLanguages()
+        {
+            var result = new Dictionary<string, CultureInfo>
+            {
+                { _detect, CultureInfo.InvariantCulture }
+            };
+
+            var english = new CultureInfo("en-US");
+            result.Add(english.DisplayName, english);
+
+            var englishUK = new CultureInfo("en-GB");
+            result.Add(englishUK.DisplayName, englishUK);
+
+            var german = new CultureInfo("de");
+            result.Add(german.DisplayName, german);
+
+            return result.ToList(); ;
+        }
+
         List<KeyValuePair<string, CultureInfo>> GetCurrencies()
         {
             var result = new Dictionary<string, CultureInfo>
             {
-                { _automatic, CultureInfo.InvariantCulture }
+                { _detect, CultureInfo.InvariantCulture }
             };
 
             var allCultures = new List<CultureInfo>
@@ -230,55 +217,13 @@ namespace BudgetBadger.Forms.Settings
 
             allCultures.AddRange(otherCultures);
 
-            foreach (var culture in allCultures)
+            foreach (var culture in allCultures.Where(c => c.TextInfo.IsRightToLeft == false))
             {
                 try
                 {
                     var region = new RegionInfo(culture.LCID);
                     var numberFormat = String.Join(" ", region.ISOCurrencySymbol, (-1234567.89).ToString("C", culture.NumberFormat));
                     result[numberFormat] = culture;
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-
-            return result.ToList();
-        }
-
-        List<KeyValuePair<string, CultureInfo>> GetDateFormats()
-        {
-            var result = new Dictionary<string, CultureInfo>
-            {
-                { _automatic, CultureInfo.InvariantCulture }
-            };
-
-            var allCultures = new List<CultureInfo>
-            {
-                new CultureInfo("en-US"), // USD
-                new CultureInfo("en-GB"), // GBP
-                new CultureInfo("fr-FR"), // EUR
-                new CultureInfo("ja-JP"), // JPY
-                new CultureInfo("en-AU"), // AUD
-                new CultureInfo("en-CA"), // CAD
-                new CultureInfo("de-CH"), // CNH
-                new CultureInfo("zh-CN"), // CHF
-                new CultureInfo("sv-SE"), // SEK
-                new CultureInfo("en-NZ"), // NZD
-                new CultureInfo("es-MX") // MXN
-            };
-
-            var otherCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-
-            allCultures.AddRange(otherCultures);
-
-            foreach (var culture in allCultures.Where(c => DateTime.Now >= c.Calendar.MinSupportedDateTime && DateTime.Now <= c.Calendar.MaxSupportedDateTime))
-            {
-                try
-                {
-                    var dateFormat = String.Join("  ", DateTime.Now.ToString("d", culture.DateTimeFormat), DateTime.Now.ToString("Y", culture.DateTimeFormat));
-                    result[dateFormat] = culture;
                 }
                 catch (Exception ex)
                 {
@@ -435,6 +380,29 @@ namespace BudgetBadger.Forms.Settings
             }
         }
 
+        public async Task ExecuteLanguageSelectedCommand()
+        {
+            var current = (CultureInfo)_localize.GetLocale().Clone();
+
+            if (SelectedLanguage.Value == CultureInfo.InvariantCulture) // set to device
+            {
+                var device = _localize.GetDeviceCultureInfo();
+                current = device;
+                await _settings.AddOrUpdateValueAsync(AppSettings.Language, string.Empty);
+            }
+            else // user choice
+            {
+                current = SelectedLanguage.Value;
+                await _settings.AddOrUpdateValueAsync(AppSettings.Language, SelectedLanguage.Value.Name);
+            }
+
+            _localize.SetLocale(current);
+
+            ResetLocalization();
+
+            await ExecuteCurrencySelectedCommand();
+        }
+
         public async Task ExecuteCurrencySelectedCommand()
         {
             var current = (CultureInfo)_localize.GetLocale().Clone();
@@ -452,24 +420,39 @@ namespace BudgetBadger.Forms.Settings
             }
 
             _localize.SetLocale(current);
+
+            ResetLocalization();
         }
 
-        public async Task ExecuteDateSelectedCommand()
+        void ResetLocalization()
         {
-            var current = (CultureInfo)_localize.GetLocale().Clone();
-            if (SelectedDateFormat.Value == CultureInfo.InvariantCulture)
+            _detect = _resourceContainer.GetResourceString("DetectLabel");
+
+            LanguageList.Clear();
+            LanguageList.AddRange(GetLanguages());
+
+            var currentLanguage = _settings.GetValueOrDefault(AppSettings.Language);
+            if (LanguageList.Any(d => d.Value.Name == currentLanguage))
             {
-                var device = _localize.GetDeviceCultureInfo();
-                current.DateTimeFormat = device.DateTimeFormat;
-                await _settings.AddOrUpdateValueAsync(AppSettings.DateFormat, string.Empty);
+                SelectedLanguage = LanguageList.FirstOrDefault(d => d.Value.Name == currentLanguage);
             }
             else
             {
-                current.DateTimeFormat = SelectedDateFormat.Value.DateTimeFormat;
-                await _settings.AddOrUpdateValueAsync(AppSettings.DateFormat, SelectedDateFormat.Value.Name);
+                SelectedLanguage = LanguageList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
 
-            _localize.SetLocale(current);
+            CurrencyFormatList.Clear();
+            CurrencyFormatList.AddRange(GetCurrencies());
+
+            var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
+            if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
+            {
+                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value.Name == currentCurrencyFormat);
+            }
+            else
+            {
+                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
+            }
         }
     }
 }
