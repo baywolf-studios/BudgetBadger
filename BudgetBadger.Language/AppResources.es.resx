@@ -271,10 +271,10 @@
     <value>Fecha de inicio</value>
   </data>
   <data name="BudgetBadger" xml:space="preserve">
-    <value>Tejón del presupuesto</value>
+    <value>Budget Badger</value>
   </data>
   <data name="BudgetBadgerProLabel" xml:space="preserve">
-    <value>Presupuesto Badger Pro</value>
+    <value>Budget Badger Pro</value>
   </data>
   <data name="BudgetBadgerProPurchaseLabel" xml:space="preserve">
     <value>¡Mejora tu presupuesto - Go Pro!</value>
