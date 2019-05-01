@@ -22,44 +22,139 @@
             Title="{ext:Translate EmptyEnvelopeGroupHelperTitle}"
             ImagePath="envelopegroup.svg"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView
-                        Filter="{Binding Filter}"
-                        FilterText="{Binding SearchText}"
-                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                        HeaderSize="0"
-                        IsBusy="{Binding IsBusy}"
-                        ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}">
-                        <syncfusion:SfListView.Triggers>
-                            <DataTrigger
-                                Binding="{Binding HasSearchText}"
-                                TargetType="syncfusion:SfListView"
-                                Value="true">
-                                <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
-                            </DataTrigger>
-                        </syncfusion:SfListView.Triggers>
-                        <syncfusion:SfListView.HeaderTemplate>
-                            <DataTemplate>
-                                <uc:Button2
-                                    Margin="16,8"
-                                    Command="{Binding SaveCommand}"
-                                    IsVisible="{Binding HasSearchText}"
-                                    Style="{StaticResource SecondaryActionButtonStyle}"
-                                    Text="{Binding SearchText, StringFormat='+ {0}'}" />
-                            </DataTemplate>
-                        </syncfusion:SfListView.HeaderTemplate>
-                        <syncfusion:SfListView.ItemTemplate>
-                            <DataTemplate>
-                                <dt:EnvelopeGroupViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.ItemTemplate>
-                    </uc:ListView>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
+            <Grid
+                Margin="0"
+                ColumnSpacing="16"
+                RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <uc:PullToRefresh
+                    Grid.Row="0"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:PullToRefresh.PullableContent>
+                        <uc:ListView
+                            Filter="{Binding Filter}"
+                            FilterText="{Binding SearchText}"
+                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                            HeaderSize="0"
+                            IsBusy="{Binding IsBusy}"
+                            ItemSize="{StaticResource ListItemHeight}"
+                            ItemsSource="{Binding EnvelopeGroups}"
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedEnvelopeGroup}">
+                            <uc:ListView.FooterSize>
+                                <OnIdiom x:TypeArguments="x:Double">
+                                    <OnIdiom.Phone>
+                                        <StaticResource Key="FooterHiddenButtonHeight"/>
+                                    </OnIdiom.Phone>
+                                    <OnIdiom.Tablet>0</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>0</OnIdiom.Desktop>
+                                </OnIdiom>
+                            </uc:ListView.FooterSize>
+                            <syncfusion:SfListView.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding HasSearchText}"
+                                    TargetType="syncfusion:SfListView"
+                                    Value="true">
+                                    <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
+                                </DataTrigger>
+                            </syncfusion:SfListView.Triggers>
+                            <syncfusion:SfListView.HeaderTemplate>
+                                <DataTemplate>
+                                    <uc:Button2
+                                        Margin="16,8"
+                                        Command="{Binding SaveCommand}"
+                                        IsVisible="{Binding HasSearchText}"
+                                        Style="{StaticResource SecondaryActionButtonStyle}"
+                                        Text="{Binding SearchText, StringFormat='+ {0}'}" />
+                                </DataTemplate>
+                            </syncfusion:SfListView.HeaderTemplate>
+                            <syncfusion:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <dt:EnvelopeGroupViewCell />
+                                </DataTemplate>
+                            </syncfusion:SfListView.ItemTemplate>
+                            <syncfusion:SfListView.FooterTemplate>
+                                <DataTemplate>
+                                    <BoxView />
+                                </DataTemplate>
+                            </syncfusion:SfListView.FooterTemplate>
+                        </uc:ListView>
+                    </uc:PullToRefresh.PullableContent>
+                </uc:PullToRefresh>
+                <uc:Button2
+                    Grid.Row="0"
+                    Margin="16,0,16,16"
+                    Command="{Binding ManageGroupsCommand}"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="{ext:Translate AddTransactionButton}"
+                    VerticalOptions="End">
+                    <uc:Button2.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>true</OnIdiom.Phone>
+                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </uc:Button2.IsVisible>
+                </uc:Button2>
+                <BoxView
+                    Grid.Row="1"
+                    Margin="0"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    HeightRequest="1" />
+                <Grid
+                    Grid.Row="2"
+                    Margin="16"
+                    ColumnSpacing="16"
+                    RowSpacing="8">
+                    <Grid.IsVisible>
+                        <OnIdiom x:TypeArguments="x:Boolean">
+                            <OnIdiom.Phone>false</OnIdiom.Phone>
+                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </Grid.IsVisible>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="hidden"
+                        TextColor="Transparent"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource PageHeaderLabelStyle}"
+                        Text="hidden"
+                        TextColor="Transparent"
+                        VerticalOptions="Center" />
+                    <uc:Button2
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Command="{Binding ManageGroupsCommand}"
+                        HorizontalOptions="EndAndExpand"
+                        Style="{StaticResource SecondaryActionButtonStyle}"
+                        Text="{ext:Translate AddTransactionButton}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Grid>
         </uc:HelperControl>
     </p:BasePage.Body>
 </p:BasePage>

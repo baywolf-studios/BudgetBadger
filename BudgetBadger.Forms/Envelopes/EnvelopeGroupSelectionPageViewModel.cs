@@ -29,6 +29,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 		public ICommand AddCommand { get; set; }
+        public ICommand ManageGroupsCommand { get => new DelegateCommand(async () => await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage)); }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroup)env, SearchText); }
 
         bool _needToSync;

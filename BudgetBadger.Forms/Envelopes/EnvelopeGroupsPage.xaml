@@ -11,9 +11,10 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
-        <p:RootSearchHeader
+        <p:ChildSearchHeader
             PageTitle="{ext:Translate EnvelopeGroupsPageTitle}"
             SearchText="{Binding SearchText}"
+            BackCommand="{Binding BackCommand}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg" />
     </p:BasePage.Header>
