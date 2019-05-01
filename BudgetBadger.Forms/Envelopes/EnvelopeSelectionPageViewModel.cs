@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
 		public ICommand AddCommand { get; set; }
+       
         public Predicate<object> Filter { get => (budget) => _envelopeLogic.FilterBudget((Budget)budget, SearchText); }
 
         bool _transferEnvelopeSelection { get; set; }

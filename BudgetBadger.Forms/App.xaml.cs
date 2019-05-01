@@ -218,6 +218,7 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTransferPage, EnvelopeTransferPageViewModel>();
             containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>(desktopView: typeof(EnvelopeGroupsDetailedPage), tabletView: typeof(EnvelopeGroupsDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
             containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();

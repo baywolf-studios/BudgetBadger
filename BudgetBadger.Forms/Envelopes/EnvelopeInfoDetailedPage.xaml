@@ -96,7 +96,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="TransactionAccountLabel"
+                                    HeaderText="{ext:Translate TransactionAccountLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Account.Description"
@@ -104,7 +104,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="TransactionPayeeLabel"
+                                    HeaderText="{ext:Translate TransactionPayeeLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Payee.Description"
@@ -112,7 +112,7 @@
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="TransactionEnvelopeLabel"
+                                    HeaderText="{ext:Translate TransactionEnvelopeLabel}"
                                     HeaderTextAlignment="Start"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Envelope.Description"
@@ -121,7 +121,7 @@
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="TransactionAmountLabel"
+                                    HeaderText="{ext:Translate TransactionAmountLabel}"
                                     HeaderTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     MappingName="Amount"

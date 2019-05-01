@@ -25,7 +25,7 @@
             BarTextColor="White"
             Icon="{StaticResource EnvelopesTabIcon}">
             <x:Arguments>
-                <envelopes:EnvelopesDetailedPage />
+                <envelopes:EnvelopesPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
@@ -33,7 +33,7 @@
             BarTextColor="White"
             Icon="{StaticResource AccountsTabIcon}">
             <x:Arguments>
-                <accounts:AccountsDetailedPage />
+                <accounts:AccountsPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
@@ -41,7 +41,7 @@
             BarTextColor="White"
             Icon="{StaticResource PayeesTabIcon}">
             <x:Arguments>
-                <payees:PayeesDetailedPage />
+                <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
