@@ -65,44 +65,48 @@
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
-            <uc:PullToRefresh
+            <uc:HelperControl
                 Grid.Row="2"
-                IsBusy="{Binding IsBusy}"
-                RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView
-                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                        ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding Payees}"
-                        SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedPayee}">
-                        <syncfusion:SfListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid
-                                    ColumnSpacing="16"
-                                    HeightRequest="{StaticResource Key=ListItemHeight}"
-                                    RowSpacing="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        Grid.Column="0"
-                                        Margin="16,0,0,0"
-                                        Style="{StaticResource Key=ListItemLabelStyle}"
-                                        Text="{Binding XLabel}" />
-                                    <Label
-                                        Grid.Column="1"
-                                        Margin="0,0,16,0"
-                                        HorizontalOptions="End"
-                                        Style="{StaticResource Key=ListItemLabelStyle}"
-                                        Text="{Binding YValue, Converter={StaticResource CurrencyConverter}}" />
-                                </Grid>
-                            </DataTemplate>
-                        </syncfusion:SfListView.ItemTemplate>
-                    </uc:ListView>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
+                ImagePath="report.svg"
+                ShowHelper="{Binding NoResults}">
+                <uc:PullToRefresh
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:PullToRefresh.PullableContent>
+                        <uc:ListView
+                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
+                            ItemSize="{StaticResource ListItemHeight}"
+                            ItemsSource="{Binding Payees}"
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedPayee}">
+                            <syncfusion:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        ColumnSpacing="16"
+                                        HeightRequest="{StaticResource Key=ListItemHeight}"
+                                        RowSpacing="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                            Grid.Column="0"
+                                            Margin="16,0,0,0"
+                                            Style="{StaticResource Key=ListItemLabelStyle}"
+                                            Text="{Binding XLabel}" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Margin="0,0,16,0"
+                                            HorizontalOptions="End"
+                                            Style="{StaticResource Key=ListItemLabelStyle}"
+                                            Text="{Binding YValue, Converter={StaticResource CurrencyConverter}}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </syncfusion:SfListView.ItemTemplate>
+                        </uc:ListView>
+                    </uc:PullToRefresh.PullableContent>
+                </uc:PullToRefresh>
+            </uc:HelperControl>
             <BoxView
                 Grid.Row="3"
                 Margin="0"

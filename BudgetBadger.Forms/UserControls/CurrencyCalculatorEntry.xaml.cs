@@ -37,6 +37,20 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(NumberProperty, value);
         }
 
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Hint
+        {
+            get => (string)GetValue(HintProperty);
+            set => SetValue(HintProperty, value);
+        }
+
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextEntry), defaultBindingMode: BindingMode.TwoWay);
+        public string Error
+        {
+            get => (string)GetValue(ErrorProperty);
+            set => SetValue(ErrorProperty, value);
+        }
+
         public CurrencyCalculatorEntry()
         {
             InitializeComponent();
@@ -79,6 +93,26 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(Number))
                 {
                     TextControl.Text = Number.HasValue ? _resourceContainer.GetFormattedString("{0:C}", Number.Value) : string.Empty;
+                }
+
+                if (e.PropertyName == nameof(Hint) || e.PropertyName == nameof(Error))
+                {
+                    if (!String.IsNullOrEmpty(Error))
+                    {
+                        HintErrorControl.IsVisible = true;
+                        HintErrorControl.Text = Error;
+                        HintErrorControl.TextColor = (Color)Application.Current.Resources["ErrorColor"];
+                    }
+                    else if (!String.IsNullOrEmpty(Hint))
+                    {
+                        HintErrorControl.IsVisible = true;
+                        HintErrorControl.Text = Hint;
+                        HintErrorControl.TextColor = (Color)Application.Current.Resources["IdleColor"];
+                    }
+                    else
+                    {
+                        HintErrorControl.IsVisible = false;
+                    }
                 }
             };
         }

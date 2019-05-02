@@ -75,6 +75,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _selectedPayee, value);
         }
 
+        bool _noResults;
+        public bool NoResults
+        {
+            get => _noResults;
+            set => SetProperty(ref _noResults, value);
+        }
+
         public PayeesSpendingReportPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
                                                  IPageDialogService dialogService,
@@ -136,6 +143,8 @@ namespace BudgetBadger.Forms.Reports
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), payeeReportResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
+
+                NoResults = !Payees.Any();
             }
             finally
             {

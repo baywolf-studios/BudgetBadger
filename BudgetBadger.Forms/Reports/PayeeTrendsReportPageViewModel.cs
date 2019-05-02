@@ -94,6 +94,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _payeeChart, value);
         }
 
+        bool _noResults;
+        public bool NoResults
+        {
+            get => _noResults;
+            set => SetProperty(ref _noResults, value);
+        }
+
         public PayeeTrendsReportPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPayeeLogic payeeLogic,
@@ -163,6 +170,7 @@ namespace BudgetBadger.Forms.Reports
         {
             if (SelectedPayee == null)
             {
+                NoResults = true;
                 return;
             }
 
@@ -200,6 +208,7 @@ namespace BudgetBadger.Forms.Reports
                 }
 
                 PayeeChart = new PointChart { Entries = payeeEntries };
+                NoResults = !payeeEntries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally
             {

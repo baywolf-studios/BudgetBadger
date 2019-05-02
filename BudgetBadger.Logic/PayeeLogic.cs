@@ -349,5 +349,24 @@ namespace BudgetBadger.Logic
 
             return payeeToPopulate;
         }
+
+        public async Task<Result<int>> GetPayeesCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _payeeDataAccess.GetPayeesCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
     }
 }

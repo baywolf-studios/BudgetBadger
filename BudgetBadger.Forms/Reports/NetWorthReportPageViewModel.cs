@@ -71,6 +71,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _netWorthChart, value);
         }
 
+        bool _noResults;
+        public bool NoResults
+        {
+            get => _noResults;
+            set => SetProperty(ref _noResults, value);
+        }
+
         public NetWorthReportPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IReportLogic reportLogic)
@@ -120,7 +127,6 @@ namespace BudgetBadger.Forms.Reports
             {
                 var entries = new List<Microcharts.Entry>();
 
-                await Task.Yield();
                 var netWorthReportResult = await _reportLogic.GetNetWorthReport(BeginDate, EndDate);
                 if (netWorthReportResult.Success)
                 {
@@ -141,6 +147,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
                 NetWorthChart = new LineChart() { Entries = entries };
+                NoResults = !entries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally
             {

@@ -444,5 +444,24 @@ namespace BudgetBadger.Logic
 
             return result;
         }
+
+        public async Task<Result<int>> GetAccountsCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _accountDataAccess.GetAccountsCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
     }
 }

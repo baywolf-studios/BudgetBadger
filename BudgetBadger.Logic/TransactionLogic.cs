@@ -649,5 +649,24 @@ namespace BudgetBadger.Logic
 
             return combinedTransactions;
         }
+
+        public async Task<Result<int>> GetTransactionsCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _transactionDataAccess.GetTransactionsCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
     }
 }

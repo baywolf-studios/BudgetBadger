@@ -49,6 +49,13 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
+        bool _noAccounts;
+        public bool NoAccounts
+        {
+            get => _noAccounts;
+            set => SetProperty(ref _noAccounts, value);
+        }
+
         public IList<string> AccountTypes
         {
             get => Enum.GetNames(typeof(AccountType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
@@ -96,12 +103,18 @@ namespace BudgetBadger.Forms.Accounts
         {
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async void OnNavigatingTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
+            }
+
+            var accountCountResult = await _accountLogic.GetAccountsCountAsync();
+            if (accountCountResult.Success)
+            {
+                NoAccounts = accountCountResult.Data == 0;
             }
         }
 

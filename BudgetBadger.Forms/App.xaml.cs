@@ -60,17 +60,22 @@ namespace BudgetBadger.Forms
 
             SQLitePCL.Batteries_V2.Init();
 
-            var localize = Container.Resolve<ILocalize>();
-            var test = localize.GetDeviceCultureInfo();
-            localize.SetLocale(test);
-
             if (Device.Idiom == TargetIdiom.Desktop)
             {
                 await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
             }
             else
             {
-                await NavigationService.NavigateAsync("MainPage");
+                var settings = Container.Resolve<ISettings>();
+                int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+                if (appOpenedCount > 0)
+                {
+                    await NavigationService.NavigateAsync("MainPage");
+                }
+                else
+                {
+                    await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
+                }
             }
         }
 
@@ -79,6 +84,12 @@ namespace BudgetBadger.Forms
             SetLocale();
             await VerifyPurchases();
             await SyncOnStartOrResume();
+
+            // tracking number of times app opened
+            var settings = Container.Resolve<ISettings>();
+            int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+            appOpenedCount++;
+            await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
         }
 
         protected async override void OnResume()
