@@ -61,6 +61,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add an account with a positive balance, then budget it into envelopes.
+        /// </summary>
+        public static string AccountBalanceHint {
+            get {
+                return ResourceManager.GetString("AccountBalanceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         public static string AccountBalanceLabel {
@@ -331,6 +340,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Badger.
+        /// </summary>
+        public static string AlertBudgetBadger {
+            get {
+                return ResourceManager.GetString("AlertBudgetBadger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget Badger Pro.
         /// </summary>
         public static string AlertBudgetBadgerPro {
@@ -349,11 +367,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debt Envelopes.
+        /// </summary>
+        public static string AlertDebtEnvelopes {
+            get {
+                return ResourceManager.GetString("AlertDebtEnvelopes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Unsuccessful.
         /// </summary>
         public static string AlertDeleteUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertDeleteUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        public static string AlertFeedback {
+            get {
+                return ResourceManager.GetString("AlertFeedback", resourceCulture);
             }
         }
         
@@ -376,11 +412,65 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A debt envelope has been created for the account with a negative balance.
+        /// </summary>
+        public static string AlertMessageDebtEnvelopes {
+            get {
+                return ResourceManager.GetString("AlertMessageDebtEnvelopes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Did not authenticate with Dropbox. Sync disabled..
         /// </summary>
         public static string AlertMessageDropboxError {
             get {
                 return ResourceManager.GetString("AlertMessageDropboxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you enjoying Budget Badger?.
+        /// </summary>
+        public static string AlertMessageEnjoyingBudgetBadger {
+            get {
+                return ResourceManager.GetString("AlertMessageEnjoyingBudgetBadger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you mind giving us some feedback?.
+        /// </summary>
+        public static string AlertMessageFeedback {
+            get {
+                return ResourceManager.GetString("AlertMessageFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How about rating it on the app store, then?.
+        /// </summary>
+        public static string AlertMessageReview {
+            get {
+                return ResourceManager.GetString("AlertMessageReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A few suggested envelope groups have been added to help you get started. You can manage them with the button at the bottom or add new ones with the + button..
+        /// </summary>
+        public static string AlertMessageSuggestedEnvelopeGroups {
+            get {
+                return ResourceManager.GetString("AlertMessageSuggestedEnvelopeGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, thanks.
+        /// </summary>
+        public static string AlertNoThanks {
+            get {
+                return ResourceManager.GetString("AlertNoThanks", resourceCulture);
             }
         }
         
@@ -394,11 +484,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not really.
+        /// </summary>
+        public static string AlertNotReally {
+            get {
+                return ResourceManager.GetString("AlertNotReally", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string AlertOk {
             get {
                 return ResourceManager.GetString("AlertOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok, sure.
+        /// </summary>
+        public static string AlertOkSure {
+            get {
+                return ResourceManager.GetString("AlertOkSure", resourceCulture);
             }
         }
         
@@ -466,11 +574,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rating.
+        /// </summary>
+        public static string AlertReview {
+            get {
+                return ResourceManager.GetString("AlertReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Unsuccessful.
         /// </summary>
         public static string AlertSaveUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertSaveUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suggested Envelope Groups.
+        /// </summary>
+        public static string AlertSuggestedEnvelopeGroups {
+            get {
+                return ResourceManager.GetString("AlertSuggestedEnvelopeGroups", resourceCulture);
             }
         }
         
@@ -489,6 +615,15 @@ namespace BudgetBadger.Language {
         public static string AlertUndoDeleteUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertUndoDeleteUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes!.
+        /// </summary>
+        public static string AlertYes {
+            get {
+                return ResourceManager.GetString("AlertYes", resourceCulture);
             }
         }
         
@@ -853,6 +988,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not enough data for report.
+        /// </summary>
+        public static string EmptyReportsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyReportsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No transactions yet.
         /// </summary>
         public static string EmptyTransactionsHelperTitle {
@@ -952,11 +1096,29 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Everyday Expenses.
+        /// </summary>
+        public static string EnvelopeGroupEverydayExpenses {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupEverydayExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         public static string EnvelopeGroupLabel {
             get {
                 return ResourceManager.GetString("EnvelopeGroupLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly Bills.
+        /// </summary>
+        public static string EnvelopeGroupMonthlyBills {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupMonthlyBills", resourceCulture);
             }
         }
         
@@ -988,6 +1150,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Savings Goals.
+        /// </summary>
+        public static string EnvelopeGroupSavingsGoals {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupSavingsGoals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a Group.
         /// </summary>
         public static string EnvelopeGroupSelectionPageTitle {
@@ -997,7 +1168,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Envelope Groups.
+        ///   Looks up a localized string similar to Manage Groups.
         /// </summary>
         public static string EnvelopeGroupsPageTitle {
             get {
@@ -1335,6 +1506,15 @@ namespace BudgetBadger.Language {
         public static string LastSyncedLabel {
             get {
                 return ResourceManager.GetString("LastSyncedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Groups.
+        /// </summary>
+        public static string ManageGroupsButton {
+            get {
+                return ResourceManager.GetString("ManageGroupsButton", resourceCulture);
             }
         }
         

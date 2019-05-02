@@ -80,6 +80,7 @@
                 BusyText="{Binding BusyText}"
                 IsBusy="{Binding IsBusy, Mode=OneWay}">
                 <uc:HelperControl
+                    Title="{ext:Translate EmptyReportsHelperTitle}"
                     ImagePath="report.svg"
                     ShowHelper="{Binding NoResults}">
                     <microcharts:ChartView Chart="{Binding PayeeChart}" />

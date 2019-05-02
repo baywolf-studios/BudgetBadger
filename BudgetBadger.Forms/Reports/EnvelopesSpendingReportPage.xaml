@@ -66,12 +66,11 @@
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
+                Title="{ext:Translate EmptyReportsHelperTitle}"
                 Grid.Row="2"
                 ImagePath="report.svg"
                 ShowHelper="{Binding NoResults}">
-                <uc:PullToRefresh
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
+                <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView
                             ItemSize="{StaticResource ListDoubleItemHeight}"

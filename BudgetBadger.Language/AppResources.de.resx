@@ -208,7 +208,7 @@
     <value>Authentifizierung fehlgeschlagen</value>
   </data>
   <data name="AlertBudgetBadgerPro" xml:space="preserve">
-    <value>Budget Dachs Pro</value>
+    <value>Budget Badger Pro</value>
   </data>
   <data name="AlertCancel" xml:space="preserve">
     <value>Stornieren</value>
@@ -427,7 +427,7 @@
     <value>Wählen Sie eine Gruppe aus</value>
   </data>
   <data name="EnvelopeGroupsPageTitle" xml:space="preserve">
-    <value>Umschlaggruppen</value>
+    <value>Gruppen verwalten</value>
   </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Der Name der Umschlaggruppe ist erforderlich</value>
@@ -848,5 +848,65 @@
   </data>
   <data name="DetectLabel" xml:space="preserve">
     <value>entdecken</value>
+  </data>
+  <data name="ManageGroupsButton" xml:space="preserve">
+    <value>Gruppen verwalten</value>
+  </data>
+  <data name="EnvelopeGroupMonthlyBills" xml:space="preserve">
+    <value>Monatliche Rechnungen</value>
+  </data>
+  <data name="EnvelopeGroupEverydayExpenses" xml:space="preserve">
+    <value>Tageskosten</value>
+  </data>
+  <data name="EnvelopeGroupSavingsGoals" xml:space="preserve">
+    <value>Sparziele</value>
+  </data>
+  <data name="AlertSuggestedEnvelopeGroups" xml:space="preserve">
+    <value>Vorschläge für die Envelope-Gruppen</value>
+  </data>
+  <data name="AlertMessageSuggestedEnvelopeGroups" xml:space="preserve">
+    <value>Ein paar vorgeschlagene Umschlaggruppen wurden hinzugefügt, um Ihnen den Einstieg zu erleichtern. Sie können sie mit dem Button unten verwalten oder mit dem +-Button neue hinzufügen.</value>
+  </data>
+  <data name="EmptyReportsHelperTitle" xml:space="preserve">
+    <value>Zu wenig Daten für den Bericht</value>
+  </data>
+  <data name="AccountBalanceHint" xml:space="preserve">
+    <value>Fügen Sie ein Konto mit einem positiven Saldo hinzu, dann budgetieren Sie es in Umschläge</value>
+  </data>
+  <data name="AlertDebtEnvelopes" xml:space="preserve">
+    <value>Schuldenumschlag</value>
+  </data>
+  <data name="AlertMessageDebtEnvelopes" xml:space="preserve">
+    <value>Ein Schuldenumschlag wurde für das Konto mit negativer Bilanz erstellt</value>
+  </data>
+  <data name="AlertBudgetBadger" xml:space="preserve">
+    <value>Budget Badger</value>
+  </data>
+  <data name="AlertMessageEnjoyingBudgetBadger" xml:space="preserve">
+    <value>Genießen Sie Budget Badger?</value>
+  </data>
+  <data name="AlertYes" xml:space="preserve">
+    <value>ja!</value>
+  </data>
+  <data name="AlertNotReally" xml:space="preserve">
+    <value>Nicht wirklich</value>
+  </data>
+  <data name="AlertReview" xml:space="preserve">
+    <value>schätzung</value>
+  </data>
+  <data name="AlertMessageReview" xml:space="preserve">
+    <value>Wie wäre es mit der Bewertung auf dem App-Store, dann?</value>
+  </data>
+  <data name="AlertOkSure" xml:space="preserve">
+    <value>Ok, sicher</value>
+  </data>
+  <data name="AlertNoThanks" xml:space="preserve">
+    <value>Nein, danke</value>
+  </data>
+  <data name="AlertFeedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="AlertMessageFeedback" xml:space="preserve">
+    <value>Möchten Sie uns Feedback geben?</value>
   </data>
 </root>

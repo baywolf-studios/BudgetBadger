@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, IPageLifecycleAware
+    public class AccountsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
@@ -102,6 +102,22 @@ namespace BudgetBadger.Forms.Accounts
 
         public void OnDisappearing()
         {
+        }
+
+        // this gets hit before the OnAppearing
+        public async void OnNavigatingTo(INavigationParameters parameters)
+        {
+            var account = parameters.GetValue<Account>(PageParameter.Account);
+            if (account != null)
+            {
+                if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
+                {
+                    // show message about debt envelopes
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDebtEnvelopes"),
+                            _resourceContainer.GetResourceString("AlertMessageDebtEnvelopes"),
+                            _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
         }
 
         public async Task ExecuteSelectedCommand(Account account)

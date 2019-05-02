@@ -49,7 +49,7 @@
                             <uc:ListView.FooterSize>
                                 <OnIdiom x:TypeArguments="x:Double">
                                     <OnIdiom.Phone>
-                                        <StaticResource Key="FooterHiddenButtonHeight"/>
+                                        <StaticResource Key="FooterHiddenButtonHeight" />
                                     </OnIdiom.Phone>
                                     <OnIdiom.Tablet>0</OnIdiom.Tablet>
                                     <OnIdiom.Desktop>0</OnIdiom.Desktop>
@@ -91,7 +91,7 @@
                     Margin="16,0,16,16"
                     Command="{Binding ManageGroupsCommand}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="{ext:Translate AddTransactionButton}"
+                    Text="{ext:Translate ManageGroupsButton}"
                     VerticalOptions="End">
                     <uc:Button2.IsVisible>
                         <OnIdiom x:TypeArguments="x:Boolean">
@@ -151,7 +151,7 @@
                         Command="{Binding ManageGroupsCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="{ext:Translate AddTransactionButton}"
+                        Text="{ext:Translate ManageGroupsButton}"
                         VerticalOptions="Center" />
                 </Grid>
             </Grid>

@@ -124,17 +124,19 @@ namespace BudgetBadger.Forms.Envelopes
                 if (countResult.Data == 0)
                 {
                     // add some 
-                    var montlhyBills = new EnvelopeGroup { Description = "Monthly Bills" };
+                    var montlhyBills = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupMonthlyBills") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(montlhyBills);
 
-                    var everydayExpenses = new EnvelopeGroup { Description = "Everyday Expenses" };
+                    var everydayExpenses = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupEverydayExpenses") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(everydayExpenses);
 
-                    var savingsGoals = new EnvelopeGroup { Description = "Savings Goals" };
+                    var savingsGoals = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupSavingsGoals") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(savingsGoals);
 
                     // show message
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), String.Empty, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSuggestedEnvelopeGroups"),
+                        _resourceContainer.GetResourceString("AlertMessageSuggestedEnvelopeGroups"),
+                        _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
 
