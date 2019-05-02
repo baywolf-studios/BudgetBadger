@@ -94,6 +94,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _envelopeChart, value);
         }
 
+        bool _noResults;
+        public bool NoResults
+        {
+            get => _noResults;
+            set => SetProperty(ref _noResults, value);
+        }
+
         public EnvelopeTrendsReportsPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IEnvelopeLogic envelopeLogic,
@@ -163,6 +170,7 @@ namespace BudgetBadger.Forms.Reports
         {
             if (SelectedEnvelope == null)
             {
+                NoResults = true;
                 return;
             }
 
@@ -200,6 +208,7 @@ namespace BudgetBadger.Forms.Reports
                 }
 
                 EnvelopeChart = new PointChart { Entries = envelopeEntries };
+                NoResults = !envelopeEntries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally
             {

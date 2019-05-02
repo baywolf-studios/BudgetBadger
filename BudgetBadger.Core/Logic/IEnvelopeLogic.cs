@@ -24,6 +24,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Envelope>>> GetDeletedEnvelopesAsync();
         Task<Result> DeleteEnvelopeAsync(Guid id);
         Task<Result> UndoDeleteEnvelopeAsync(Guid id);
+        Task<Result<int>> GetEnvelopesCountAsync();
 
         Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync();
         Task<Result<IReadOnlyList<EnvelopeGroup>>> GetDeletedEnvelopeGroupsAsync();
@@ -31,6 +32,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<Result> DeleteEnvelopeGroupAsync(Guid id);
         Task<Result> UndoDeleteEnvelopeGroupAsync(Guid id);
+        Task<Result<int>> GetEnvelopeGroupsCountAsync();
 
         bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText);
         bool FilterEnvelope(Envelope envelope, string searchText);

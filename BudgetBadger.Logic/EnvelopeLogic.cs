@@ -1132,5 +1132,43 @@ namespace BudgetBadger.Logic
             }
             return result;
         }
+
+        public async Task<Result<int>> GetEnvelopesCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _envelopeDataAccess.GetEnvelopesCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<int>> GetEnvelopeGroupsCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _envelopeDataAccess.GetEnvelopeGroupsCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
     }
 }

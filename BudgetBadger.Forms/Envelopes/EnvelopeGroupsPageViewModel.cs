@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BindableBase, IPageLifecycleAware
+    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeGroupLogic;
@@ -35,6 +35,8 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -96,13 +98,27 @@ namespace BudgetBadger.Forms.Envelopes
             DeleteCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteDeleteCommand(a));
         }
 
-        public async void OnAppearing()
+        public async void OnNavigatedFrom(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
+            }
         }
 
-        public void OnDisappearing()
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
+        }
+
+        public async void OnNavigatingTo(INavigationParameters parameters)
+        {
+            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteSelectedCommand(EnvelopeGroup envelopeGroup)
@@ -161,6 +177,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                _needToSync = true;
+
                 var parameters = new NavigationParameters
                 {
                     { PageParameter.EnvelopeGroup, result.Data }
@@ -196,15 +214,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                _needToSync = true;
                 await ExecuteRefreshCommand();
-
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
             }
             else
             {

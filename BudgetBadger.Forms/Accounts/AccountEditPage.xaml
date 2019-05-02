@@ -68,7 +68,16 @@
                             Margin="16,0"
                             IsEnabled="{Binding Account.IsNew}"
                             Label="{ext:Translate AccountBalanceLabel}"
-                            Number="{Binding Account.Balance}" />
+                            Number="{Binding Account.Balance}">
+                            <uc:CurrencyCalculatorEntry.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding NoAccounts}"
+                                    TargetType="uc:CurrencyCalculatorEntry"
+                                    Value="true">
+                                    <Setter Property="Hint" Value="false" />
+                                </DataTrigger>
+                            </uc:CurrencyCalculatorEntry.Triggers>
+                        </uc:CurrencyCalculatorEntry>
                         <uc:MultilineTextEntry
                             Grid.Row="4"
                             Margin="16,0"

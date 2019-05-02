@@ -64,11 +64,16 @@
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
+            
             <uc:BusyIndicator
                 Grid.Row="2"
                 BusyText="{Binding BusyText}"
                 IsBusy="{Binding IsBusy, Mode=OneWay}">
-                <microcharts:ChartView x:Name="networth" Chart="{Binding NetWorthChart}" />
+                <uc:HelperControl
+                    ImagePath="report.svg"
+                    ShowHelper="{Binding NoResults}">
+                    <microcharts:ChartView x:Name="networth" Chart="{Binding NetWorthChart}" />
+                </uc:HelperControl>
             </uc:BusyIndicator>
             <BoxView
                 Grid.Row="3"

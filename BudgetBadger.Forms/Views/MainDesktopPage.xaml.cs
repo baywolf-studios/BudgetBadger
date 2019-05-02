@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.UserControls;
@@ -11,8 +12,11 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Views
 {
-    public partial class MainDesktopPage : MasterDetailPage
+    public partial class MainDesktopPage : MasterDetailPage, INavigatingAware
     {
+        readonly ISettings _settings;
+        readonly INavigationService _navigationService;
+
         Color _backgroundColor
         {
             get => (Color)Application.Current.Resources["BackgroundColor"];
@@ -84,6 +88,8 @@ namespace BudgetBadger.Forms.Views
 
             SetAllInactive(frame.Id);
 
+            frame.BackgroundColor = frame.ActiveBackgroundColor;
+
             var stackLayout = (StackLayout)frame.Content;
 
             var currentIcon = (SvgCachedImage)stackLayout.Children.FirstOrDefault(c => c is SvgCachedImage);
@@ -96,12 +102,25 @@ namespace BudgetBadger.Forms.Views
 
         }
 
-        public MainDesktopPage()
+        public MainDesktopPage(INavigationService navigationService, ISettings settings)
         {
             InitializeComponent();
+
+            _navigationService = navigationService;
+            _settings = settings;
 
             _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
         }
 
+        public void OnNavigatingTo(INavigationParameters parameters)
+        {
+            int.TryParse(_settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appCount);
+
+            if (appCount == 0)
+            {
+                AccountsFrame.Command.Execute(AccountsFrame.CommandParameter);
+                Handle_Tapped(AccountsFrame, new EventArgs());
+            }
+        }
     }
 }

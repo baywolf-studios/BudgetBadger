@@ -28,7 +28,7 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync();
         Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task DeleteEnvelopeGroupAsync(Guid id);
-        Task<int> GetEnvelopeGroupsCountAsync();
+        Task<int>GetEnvelopeGroupsCountAsync();
 
         Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
         Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id);

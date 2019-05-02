@@ -79,7 +79,11 @@
                 Grid.Row="2"
                 BusyText="{Binding BusyText}"
                 IsBusy="{Binding IsBusy, Mode=OneWay}">
-                <microcharts:ChartView Chart="{Binding EnvelopeChart}" />
+                <uc:HelperControl
+                    ImagePath="report.svg"
+                    ShowHelper="{Binding NoResults}">
+                    <microcharts:ChartView Chart="{Binding EnvelopeChart}" />
+                </uc:HelperControl>
             </uc:BusyIndicator>
             <BoxView
                 Grid.Row="3"

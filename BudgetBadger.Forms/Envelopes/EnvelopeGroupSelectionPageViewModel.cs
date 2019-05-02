@@ -112,11 +112,32 @@ namespace BudgetBadger.Forms.Envelopes
             if (envelopeGroup != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
             }
         }
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            var countResult = await _envelopeLogic.GetEnvelopeGroupsCountAsync();
+            if (countResult.Success)
+            {
+                if (countResult.Data == 0)
+                {
+                    // add some 
+                    var montlhyBills = new EnvelopeGroup { Description = "Monthly Bills" };
+                    await _envelopeLogic.SaveEnvelopeGroupAsync(montlhyBills);
+
+                    var everydayExpenses = new EnvelopeGroup { Description = "Everyday Expenses" };
+                    await _envelopeLogic.SaveEnvelopeGroupAsync(everydayExpenses);
+
+                    var savingsGoals = new EnvelopeGroup { Description = "Savings Goals" };
+                    await _envelopeLogic.SaveEnvelopeGroupAsync(savingsGoals);
+
+                    // show message
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), String.Empty, _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
+
             await ExecuteRefreshCommand();
         }
 

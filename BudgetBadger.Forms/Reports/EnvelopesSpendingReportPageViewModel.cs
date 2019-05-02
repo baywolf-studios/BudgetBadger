@@ -75,6 +75,13 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _selectedEnvelope, value);
         }
 
+        bool _noResults;
+        public bool NoResults
+        {
+            get => _noResults;
+            set => SetProperty(ref _noResults, value);
+        }
+
         public EnvelopesSpendingReportPageViewModel(IResourceContainer resourceContainer, 
             INavigationService navigationService,
                                                     IPageDialogService dialogService,
@@ -126,7 +133,6 @@ namespace BudgetBadger.Forms.Reports
             {
                 var envelopeEntries = new List<Entry>();
 
-                await Task.Yield();
                 var envelopeReportResult = await _reportLogic.GetEnvelopesSpendingReport(BeginDate, EndDate);
                 if (envelopeReportResult.Success)
                 {
@@ -136,6 +142,8 @@ namespace BudgetBadger.Forms.Reports
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), envelopeReportResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
+
+                NoResults = !Envelopes.Any();
             }
             finally
             {

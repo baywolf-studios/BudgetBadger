@@ -25,4 +25,8 @@
             <effects:CalculatorKeyboardEntryEffect />
         </Entry.Effects>
     </Entry>
+    <Label
+        x:Name="HintErrorControl"
+        FontSize="12"
+        IsVisible="false"/>
 </StackLayout>
