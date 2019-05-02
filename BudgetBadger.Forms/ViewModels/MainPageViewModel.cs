@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Settings;
+using BudgetBadger.Forms.Enums;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.ViewModels
@@ -14,14 +18,23 @@ namespace BudgetBadger.Forms.ViewModels
     {
         readonly INavigationService _navigationService;
         readonly ITransactionLogic _transactionLogic;
+        readonly ISettings _settings;
+        readonly IPageDialogService _dialogService;
+        readonly IResourceContainer _resourceContainer;
 
         public ICommand NavigateCommand { get; set; }
 
         public MainPageViewModel(INavigationService navigationService,
-            ITransactionLogic transactionLogic)
+            ITransactionLogic transactionLogic,
+            ISettings settings,
+            IPageDialogService dialogService,
+            IResourceContainer resourceContainer)
         {
             _navigationService = navigationService;
             _transactionLogic = transactionLogic;
+            _settings = settings;
+            _dialogService = dialogService;
+            _resourceContainer = resourceContainer;
 
             NavigateCommand = new DelegateCommand<string>(async a => await ExecuteNavigateCommand(a));
         }
@@ -36,10 +49,49 @@ namespace BudgetBadger.Forms.ViewModels
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
-            var transactionCountResult = await _transactionLogic.GetTransactionsCountAsync();
-            if (transactionCountResult.Success && transactionCountResult.Data >= 20)
+            bool.TryParse(_settings.GetValueOrDefault(AppSettings.AskedForReview), out bool alreadyAskedForRevew);
+
+            if (!alreadyAskedForRevew)
             {
-                // ask for review
+                int.TryParse(_settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+
+                if (appOpenedCount >= 10)
+                {
+                    var transactionCountResult = await _transactionLogic.GetTransactionsCountAsync();
+                    if (transactionCountResult.Success && transactionCountResult.Data >= 20)
+                    {
+                        var enjoyingBudgetBadger = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadger"),
+                            _resourceContainer.GetResourceString("AlertMessageEnjoyingBudgetBadger"),
+                            _resourceContainer.GetResourceString("AlertYes"),
+                            _resourceContainer.GetResourceString("AlertNotReally"));
+
+                        if (enjoyingBudgetBadger)
+                        {
+                            var wantToReview = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertReview"),
+                            _resourceContainer.GetResourceString("AlertMessageReview"),
+                            _resourceContainer.GetResourceString("AlertOkSure"),
+                            _resourceContainer.GetResourceString("AlertNoThanks"));
+
+                            if (wantToReview)
+                            {
+                                Device.OpenUri(new Uri("")); // use review url for platforms
+                            }
+                        }
+                        else
+                        {
+                            var giveFeedback = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertFeedback"),
+                            _resourceContainer.GetResourceString("AlertMessageFeedback"),
+                            _resourceContainer.GetResourceString("AlertOkSure"),
+                            _resourceContainer.GetResourceString("AlertNoThanks"));
+
+                            if (giveFeedback)
+                            {
+                                var emailUri = new Uri("mailto:support@BudgetBadger.io?subject=Feedback");
+                                Device.OpenUri(emailUri);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

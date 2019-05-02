@@ -13,8 +13,8 @@
     x:Name="this">
     <p:BaseDetailedPage.Header>
         <p:ChildSearchHeader
-            PageTitle="{ext:Translate EnvelopeGroupsPageTitle}"
             BackCommand="{Binding BackCommand}"
+            PageTitle="{ext:Translate EnvelopeGroupsPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="newicon.svg" />

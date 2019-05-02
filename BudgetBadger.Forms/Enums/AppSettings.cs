@@ -8,5 +8,6 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string Language = "Language";
         public static readonly string CurrencyFormat = "CurrencyFormat";
         public static readonly string AppOpenedCount = "AppOpenedCount";
+        public static readonly string AskedForReview = "AskedForReview";
     }
 }

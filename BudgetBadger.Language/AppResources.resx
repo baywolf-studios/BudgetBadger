@@ -427,7 +427,7 @@
     <value>Select a Group</value>
   </data>
   <data name="EnvelopeGroupsPageTitle" xml:space="preserve">
-    <value>Envelope Groups</value>
+    <value>Manage Groups</value>
   </data>
   <data name="EnvelopeGroupValidDescriptionError" xml:space="preserve">
     <value>Envelope group name is required</value>
@@ -848,5 +848,65 @@
   </data>
   <data name="DetectLabel" xml:space="preserve">
     <value>Detect</value>
+  </data>
+  <data name="ManageGroupsButton" xml:space="preserve">
+    <value>Manage Groups</value>
+  </data>
+  <data name="EnvelopeGroupMonthlyBills" xml:space="preserve">
+    <value>Monthly Bills</value>
+  </data>
+  <data name="EnvelopeGroupEverydayExpenses" xml:space="preserve">
+    <value>Everyday Expenses</value>
+  </data>
+  <data name="EnvelopeGroupSavingsGoals" xml:space="preserve">
+    <value>Savings Goals</value>
+  </data>
+  <data name="AlertSuggestedEnvelopeGroups" xml:space="preserve">
+    <value>Suggested Envelope Groups</value>
+  </data>
+  <data name="AlertMessageSuggestedEnvelopeGroups" xml:space="preserve">
+    <value>A few suggested envelope groups have been added to help you get started. You can manage them with the button at the bottom or add new ones with the + button.</value>
+  </data>
+  <data name="EmptyReportsHelperTitle" xml:space="preserve">
+    <value>Not enough data for report</value>
+  </data>
+  <data name="AccountBalanceHint" xml:space="preserve">
+    <value>Add an account with a positive balance, then budget it into envelopes</value>
+  </data>
+  <data name="AlertMessageDebtEnvelopes" xml:space="preserve">
+    <value>A debt envelope has been created for the account with a negative balance</value>
+  </data>
+  <data name="AlertDebtEnvelopes" xml:space="preserve">
+    <value>Debt Envelopes</value>
+  </data>
+  <data name="AlertBudgetBadger" xml:space="preserve">
+    <value>Budget Badger</value>
+  </data>
+  <data name="AlertMessageEnjoyingBudgetBadger" xml:space="preserve">
+    <value>Are you enjoying Budget Badger?</value>
+  </data>
+  <data name="AlertYes" xml:space="preserve">
+    <value>Yes!</value>
+  </data>
+  <data name="AlertNotReally" xml:space="preserve">
+    <value>Not really</value>
+  </data>
+  <data name="AlertReview" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="AlertMessageReview" xml:space="preserve">
+    <value>How about rating it on the app store, then?</value>
+  </data>
+  <data name="AlertOkSure" xml:space="preserve">
+    <value>Ok, sure</value>
+  </data>
+  <data name="AlertNoThanks" xml:space="preserve">
+    <value>No, thanks</value>
+  </data>
+  <data name="AlertFeedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="AlertMessageFeedback" xml:space="preserve">
+    <value>Would you mind giving us some feedback?</value>
   </data>
 </root>
