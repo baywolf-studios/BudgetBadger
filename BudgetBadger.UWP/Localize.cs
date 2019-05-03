@@ -13,11 +13,11 @@ namespace BudgetBadger.UWP
 {
     public class Localize : ILocalize
     {
-        static readonly CultureInfo _deviceCulture = CultureInfo.CurrentUICulture;
         static CultureInfo _currentCulture;
 
         public CultureInfo GetLocale()
         {
+            var test = Windows.System.UserProfile.GlobalizationPreferences.Languages[0];
             return _currentCulture;
         }
 
@@ -36,7 +36,7 @@ namespace BudgetBadger.UWP
 
         public CultureInfo GetDeviceCultureInfo()
         {
-            return _deviceCulture;
+            return new CultureInfo(Windows.System.UserProfile.GlobalizationPreferences.Languages[0].ToString());
         }
     }
 }
