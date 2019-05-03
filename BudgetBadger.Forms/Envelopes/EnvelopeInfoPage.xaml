@@ -24,12 +24,16 @@
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0">
+            <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
                 <uc:Expander.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
@@ -102,12 +106,14 @@
             </uc:Expander>
             <BoxView
                 Grid.Row="1"
+                Grid.ColumnSpan="2"
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
             <uc:HelperControl
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
+                Grid.ColumnSpan="2"
                 ImagePath="transaction.svg"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
@@ -183,9 +189,17 @@
                 </uc:PullToRefresh>
             </uc:HelperControl>
             <uc:Button2
-                x:Name="NewTransactionButton"
                 Grid.Row="2"
-                Margin="16,0,16,16"
+                Grid.Column="0"
+                Margin="16,0,0,16"
+                Command="{Binding TransferCommand}"
+                Style="{StaticResource SecondaryActionButtonStyle}"
+                Text="{ext:Translate EnvelopeTransferButton}"
+                VerticalOptions="End" />
+            <uc:Button2
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,0,16,16"
                 Command="{Binding AddTransactionCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="{ext:Translate AddTransactionButton}"
