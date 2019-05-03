@@ -90,6 +90,8 @@ namespace BudgetBadger.Forms
             int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
+
+            //await settings.AddOrUpdateValueAsync(AppSettings.AskedForReview, "");
         }
 
         protected async override void OnResume()

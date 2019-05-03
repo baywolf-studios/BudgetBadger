@@ -60,6 +60,8 @@ namespace BudgetBadger.Forms.ViewModels
                     var transactionCountResult = await _transactionLogic.GetTransactionsCountAsync();
                     if (transactionCountResult.Success && transactionCountResult.Data >= 20)
                     {
+                        await _settings.AddOrUpdateValueAsync(AppSettings.AskedForReview, true.ToString());
+
                         var enjoyingBudgetBadger = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadger"),
                             _resourceContainer.GetResourceString("AlertMessageEnjoyingBudgetBadger"),
                             _resourceContainer.GetResourceString("AlertYes"),
@@ -74,7 +76,26 @@ namespace BudgetBadger.Forms.ViewModels
 
                             if (wantToReview)
                             {
-                                Device.OpenUri(new Uri("")); // use review url for platforms
+                                switch (Device.RuntimePlatform)
+                                {
+                                    case Device.iOS:
+                                        Device.OpenUri(new Uri("https://itunes.apple.com/us/app/budget-badger/id1436425263?mt=8&action=write-review"));
+                                        break;
+                                    case Device.Android:
+                                        Device.OpenUri(new Uri("https://play.google.com/store/apps/details?id=com.BayWolfStudios.BudgetBadger"));
+                                        break;
+                                    case Device.UWP:
+                                        Device.OpenUri(new Uri("ms-windows-store://review/?ProductId=9nps726fkxtt"));
+                                        break;
+                                    case Device.macOS:
+#if PRORELEASE
+                                        // put new app here
+                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462407660?mt=12"));
+#else
+                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1459385878?mt=12"));
+#endif
+                                        break;
+                                }
                             }
                         }
                         else

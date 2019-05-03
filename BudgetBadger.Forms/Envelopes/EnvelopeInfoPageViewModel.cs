@@ -35,6 +35,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand TransferCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -107,6 +108,7 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            TransferCommand = new DelegateCommand(async () => await ExecuteTransferCommand());
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -261,6 +263,15 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
+        }
+
+        public async Task ExecuteTransferCommand()
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Envelope, Budget.Envelope }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
         }
     }
 }

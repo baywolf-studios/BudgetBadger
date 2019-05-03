@@ -121,7 +121,7 @@ namespace BudgetBadger.Forms.Envelopes
             var countResult = await _envelopeLogic.GetEnvelopeGroupsCountAsync();
             if (countResult.Success)
             {
-                if (countResult.Data == 0)
+                if (countResult.Data <=  3) //3 because of the built in system, debt, income groups
                 {
                     // add some 
                     var montlhyBills = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupMonthlyBills") };

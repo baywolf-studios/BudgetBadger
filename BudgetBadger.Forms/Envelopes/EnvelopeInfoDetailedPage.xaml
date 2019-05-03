@@ -213,6 +213,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
@@ -274,6 +275,15 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="7"
+                    Command="{Binding TransferCommand}"
+                    HorizontalOptions="EndAndExpand"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="{ext:Translate EnvelopeTransferButton}"
+                    VerticalOptions="Center" />
+                <uc:Button2
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="8"
                     Command="{Binding AddTransactionCommand}"
                     HorizontalOptions="EndAndExpand"
                     Style="{StaticResource PrimaryActionButtonStyle}"
