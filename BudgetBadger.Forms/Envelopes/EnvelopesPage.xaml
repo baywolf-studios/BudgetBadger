@@ -153,7 +153,8 @@
                                             HorizontalOptions="Center"
                                             Text="{ext:Translate EnvelopeTransferButton}"
                                             TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center" />
+                                            VerticalOptions="Center"
+                                            LineBreakMode="NoWrap"/>
                                     </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.LeftSwipeTemplate>

@@ -54,7 +54,7 @@ namespace BudgetBadger.Forms
         public string GetLastSyncDateTime()
         {
             var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
-            if (!String.IsNullOrEmpty(syncMode) || syncMode == SyncMode.NoSync)
+            if (String.IsNullOrEmpty(syncMode) || syncMode == SyncMode.NoSync)
             {
                 return _resourceContainer.GetResourceString("SyncDateTimeNever");
             }
