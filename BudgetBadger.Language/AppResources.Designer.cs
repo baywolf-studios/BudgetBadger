@@ -412,7 +412,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A debt envelope has been created for the account with a negative balance.
+        ///   Looks up a localized string similar to Since this account has a negative balance, a debt envelope has been created..
         /// </summary>
         public static string AlertMessageDebtEnvelopes {
             get {

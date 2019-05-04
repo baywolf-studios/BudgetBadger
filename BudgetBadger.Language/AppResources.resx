@@ -874,7 +874,7 @@
     <value>Add an account with a positive balance, then budget it into envelopes</value>
   </data>
   <data name="AlertMessageDebtEnvelopes" xml:space="preserve">
-    <value>A debt envelope has been created for the account with a negative balance</value>
+    <value>Since this account has a negative balance, a debt envelope has been created.</value>
   </data>
   <data name="AlertDebtEnvelopes" xml:space="preserve">
     <value>Debt Envelopes</value>
