@@ -10,7 +10,14 @@ namespace BudgetBadger.macOS.Renderers
         {
             view.Shadow = new NSShadow();
             view.Layer.MasksToBounds = false;
-            view.Layer.ShadowColor = NSColor.Black.CGColor;
+            if (elevation > 0)
+            {
+                view.Layer.ShadowColor = NSColor.Black.CGColor;
+            }
+            else
+            {
+                view.Layer.ShadowColor = NSColor.Clear.CGColor;
+            }
 
             var offset = elevation < 10 ? Math.Floor(elevation / 2) + 1 : elevation - 4;
             view.Layer.ShadowOffset = new CGSize(0, (nfloat)(-1 * offset));
