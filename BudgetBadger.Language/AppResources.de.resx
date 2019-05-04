@@ -643,16 +643,16 @@
     <value>Der Kauf konnte nicht bestätigt werden. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="QuickBudgetAvgPast3MonthsActivity" xml:space="preserve">
-    <value>Durchschnitt Vergangenheit 3 Monate Aktivität</value>
+    <value>Vergangenheit 3 Monate Aktivität</value>
   </data>
   <data name="QuickBudgetAvgPast3MonthsBudgeted" xml:space="preserve">
-    <value>Durchschnittliche Vergangenheit 3 Monate geplant</value>
+    <value>Haushalt in der Vergangenheit 3 Monate</value>
   </data>
   <data name="QuickBudgetAvgPastYearActivity" xml:space="preserve">
-    <value>Durchschnittliche Aktivitäten im vergangenen Jahr</value>
+    <value>Vergangenheit 1 Jahr Aktivität</value>
   </data>
   <data name="QuickBudgetAvgPastYearBudgeted" xml:space="preserve">
-    <value>Durchschnittliches Frühjahr geplant</value>
+    <value>Budget für das letzte Jahr</value>
   </data>
   <data name="QuickBudgetBalance" xml:space="preserve">
     <value>Balance</value>
