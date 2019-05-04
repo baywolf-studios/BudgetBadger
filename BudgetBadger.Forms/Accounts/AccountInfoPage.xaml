@@ -83,7 +83,7 @@
                             Grid.Column="1"
                             HorizontalOptions="Center"
                             Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="AccountPostedLabel" />
+                            Text="{ext:Translate AccountPostedLabel}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
