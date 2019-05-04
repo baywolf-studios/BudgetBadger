@@ -1834,7 +1834,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avg. Past 3 Months Activity.
+        ///   Looks up a localized string similar to Past 3 Months Activity.
         /// </summary>
         public static string QuickBudgetAvgPast3MonthsActivity {
             get {
@@ -1843,7 +1843,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avg. Past 3 Months Budgeted.
+        ///   Looks up a localized string similar to Past 3 Months Budgeted.
         /// </summary>
         public static string QuickBudgetAvgPast3MonthsBudgeted {
             get {
@@ -1852,7 +1852,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avg. Past Year Activity.
+        ///   Looks up a localized string similar to Past Year Activity.
         /// </summary>
         public static string QuickBudgetAvgPastYearActivity {
             get {
@@ -1861,7 +1861,7 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avg. Past Year Budgeted.
+        ///   Looks up a localized string similar to Past Year Budgeted.
         /// </summary>
         public static string QuickBudgetAvgPastYearBudgeted {
             get {
