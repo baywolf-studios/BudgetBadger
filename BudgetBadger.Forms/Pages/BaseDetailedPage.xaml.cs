@@ -81,11 +81,13 @@ namespace BudgetBadger.Forms.Pages
 
             if (Device.Idiom == TargetIdiom.Phone)
             {
+                HeaderView.Elevation = 0;
                 BodyView.Elevation = 0;
                 BodyView.Margin = new Thickness(0);
             }
             else
             {
+                HeaderView.Elevation = 4;
                 BodyView.Elevation = 1;
                 BodyView.Margin = new Thickness(32);
             }
@@ -113,11 +115,13 @@ namespace BudgetBadger.Forms.Pages
                 if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
                 {
                     BodyView.Margin = new Thickness(32);
+                    HeaderView.Elevation = 4;
                     BodyView.Elevation = 1;
                 }
                 else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
                 {
                     BodyView.Margin = new Thickness(0);
+                    HeaderView.Elevation = 0;
                     BodyView.Elevation = 0;
                 }
             }

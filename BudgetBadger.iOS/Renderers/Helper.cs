@@ -9,7 +9,14 @@ namespace BudgetBadger.iOS.Renderers
         internal static void Elevate(this UIView view, float elevation)
         {
             view.Layer.MasksToBounds = false;
-            view.Layer.ShadowColor = UIColor.Black.CGColor;
+            if (elevation > 0)
+            {
+                view.Layer.ShadowColor = UIColor.Black.CGColor;
+            }
+            else
+            {
+                view.Layer.ShadowColor = UIColor.Clear.CGColor;
+            }
 
             var offset = elevation < 10 ? Math.Floor(elevation / 2) + 1 : elevation - 4;
             view.Layer.ShadowOffset = new CGSize(0, (nfloat)(offset));
