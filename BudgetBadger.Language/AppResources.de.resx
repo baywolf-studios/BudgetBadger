@@ -877,7 +877,7 @@
     <value>Schuldenumschlag</value>
   </data>
   <data name="AlertMessageDebtEnvelopes" xml:space="preserve">
-    <value>Ein Schuldenumschlag wurde für das Konto mit negativer Bilanz erstellt</value>
+    <value>Da dieses Konto eine negative Bilanz aufweist, wurde ein Schuldenumschlag angelegt.</value>
   </data>
   <data name="AlertBudgetBadger" xml:space="preserve">
     <value>Budget Badger</value>
