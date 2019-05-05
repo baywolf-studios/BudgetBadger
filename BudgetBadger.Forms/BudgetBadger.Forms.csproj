@@ -13,6 +13,7 @@
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
     <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\ProRelease\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;PRORELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
@@ -23,6 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType></DebugType>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
