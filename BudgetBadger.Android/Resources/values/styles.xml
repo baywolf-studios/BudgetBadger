@@ -34,6 +34,8 @@
     <item name="android:windowIsTranslucent">false</item>
     <item name="android:windowIsFloating">false</item>
     <item name="android:backgroundDimEnabled">true</item>
-    <item name="android:windowFullscreen">true</item>  
+    <item name="colorPrimary">#0c7bb3</item>
+    <item name="colorPrimaryDark">#064d70</item>
+    <item name="colorAccent">#0c7bb3</item>
   </style>
 </resources>

@@ -140,6 +140,11 @@
     <AndroidResource Include="Resources\drawable\ic_launcher_background.xml" />
     <AndroidResource Include="Resources\drawable\ic_launcher_foreground.xml" />
     <AndroidResource Include="Resources\drawable\splashscreen.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_splash.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_splash.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
