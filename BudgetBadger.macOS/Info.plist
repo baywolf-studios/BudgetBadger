@@ -7,13 +7,13 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.BayWolfStudios.BudgetBadgermac</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.4.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.4.0</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.11</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>en_us</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>${AuthorCopyright:HtmlEncode}</string>
+	<string>© 2019 Bay Wolf Studios LLC</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSMainStoryboardFile</key>
@@ -38,6 +38,11 @@
 				<string>budgetbadger</string>
 			</array>
 		</dict>
+	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>de</string>
 	</array>
 </dict>
 </plist>
