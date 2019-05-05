@@ -43,8 +43,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;RELEASE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
@@ -67,7 +66,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\ProRelease</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;PRORELEASE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
