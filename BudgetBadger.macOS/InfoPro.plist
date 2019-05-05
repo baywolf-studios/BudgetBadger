@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>Budget Badger</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.BayWolfStudios.BudgetBadgerPromac</string>
+	<string>com.BayWolfStudios.BudgetBadgerPro.mac</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.4.0</string>
 	<key>CFBundleVersion</key>
