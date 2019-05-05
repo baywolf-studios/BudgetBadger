@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
-    <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
+    <CodeSigningKey>Mac Developer: Matthew Pritchett (4ZF68XBVNY)</CodeSigningKey>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
@@ -38,7 +38,7 @@
     </XamMacArch>
     <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
     <AOTMode>None</AOTMode>
-    <CodeSignProvision>BudgetBadgerProd</CodeSignProvision>
+    <CodeSignProvision>Budget Badger Mac Development</CodeSignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
     <CreatePackage>true</CreatePackage>
-    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
@@ -60,8 +60,8 @@
     </XamMacArch>
     <AOTMode>None</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
-    <CodeSignProvision>BudgetBadgerProd</CodeSignProvision>
-    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CodeSignProvision>Budget Badger Mac AppStore</CodeSignProvision>
+    <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
@@ -72,7 +72,7 @@
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
     <CreatePackage>true</CreatePackage>
-    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
@@ -83,8 +83,8 @@
     </XamMacArch>
     <AOTMode>None</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
-    <CodeSignProvision>BudgetBadgerProd</CodeSignProvision>
-    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CodeSignProvision>Budget Badger Pro Mac App Store</CodeSignProvision>
+    <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
   </PropertyGroup>
   <ItemGroup>
