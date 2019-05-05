@@ -124,13 +124,13 @@ namespace BudgetBadger.Forms.Envelopes
                 if (countResult.Data <=  3) //3 because of the built in system, debt, income groups
                 {
                     // add some 
-                    var montlhyBills = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupMonthlyBills") };
+                    var montlhyBills = new EnvelopeGroup{ Id = new Guid("{f3d90935-bb10-4cf7-ae4b-fa7ca041a6b1}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupMonthlyBills") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(montlhyBills);
 
-                    var everydayExpenses = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupEverydayExpenses") };
+                    var everydayExpenses = new EnvelopeGroup { Id = new Guid("{ce3bc99c-610b-413c-a06a-5888ef596cf1}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupEverydayExpenses") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(everydayExpenses);
 
-                    var savingsGoals = new EnvelopeGroup { Description = _resourceContainer.GetResourceString("EnvelopeGroupSavingsGoals") };
+                    var savingsGoals = new EnvelopeGroup { Id = new Guid("{0f3e250f-db63-4c5e-8090-f1dca882fb53}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupSavingsGoals") };
                     await _envelopeLogic.SaveEnvelopeGroupAsync(savingsGoals);
 
                     // show message
