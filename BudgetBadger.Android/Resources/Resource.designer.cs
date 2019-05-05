@@ -7749,6 +7749,9 @@ namespace BudgetBadger.Droid
 			// aapt resource value: 0x7f030001
 			public const int ic_launcher_round = 2130903041;
 			
+			// aapt resource value: 0x7f030002
+			public const int ic_splash = 2130903042;
+			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
