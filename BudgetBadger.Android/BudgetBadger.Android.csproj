@@ -130,6 +130,15 @@
     <AndroidResource Include="Resources\drawable\expander.svg" />
     <AndroidResource Include="Resources\drawable\transaction.svg" />
     <AndroidResource Include="Resources\values\dimens.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher.xml" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher_round.xml" />
+    <AndroidResource Include="Resources\drawable\ic_launcher_background.xml" />
+    <AndroidResource Include="Resources\drawable\ic_launcher_foreground.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -218,9 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\helpertransaction.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\info.svg" />
