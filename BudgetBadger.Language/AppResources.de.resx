@@ -466,7 +466,7 @@
     <value>Menge</value>
   </data>
   <data name="EnvelopeTransferButton" xml:space="preserve">
-    <value>Transfer</value>
+    <value>verlegen</value>
   </data>
   <data name="EnvelopeTransferDateLabel" xml:space="preserve">
     <value>Datum</value>
