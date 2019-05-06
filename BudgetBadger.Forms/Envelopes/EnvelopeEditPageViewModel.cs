@@ -290,7 +290,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertQuickBudgetNotEnoughData"), quickBudgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertQuickBudget"), _resourceContainer.GetResourceString("AlertQuickBudgetNotEnoughData"), _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             else
