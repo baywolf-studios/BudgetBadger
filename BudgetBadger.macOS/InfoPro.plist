@@ -32,10 +32,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.budgetbadger.urlscheme</string>
+			<string>com.budgetbadgerpro.urlscheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>budgetbadger</string>
+				<string>budgetbadgerpro</string>
 			</array>
 		</dict>
 	</array>

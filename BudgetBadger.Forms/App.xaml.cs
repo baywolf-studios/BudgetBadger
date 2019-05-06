@@ -168,6 +168,18 @@ namespace BudgetBadger.Forms
 
             container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
 
+#if PRORELEASE
+            container.Register(made: Made.Of(() => new DropBoxApi(
+                Arg.Index<string>(0),
+                Arg.Index<string>(1),
+                Arg.Index<string>(2),
+                Arg.Index<string>(3),
+                null),
+                _ => SyncMode.DropboxSync,
+                _ => "***REMOVED***",
+                _ => "",
+                _ => "budgetbadgerpro://authorize"));
+#else
             container.Register(made: Made.Of(() => new DropBoxApi(
                 Arg.Index<string>(0),
                 Arg.Index<string>(1),
@@ -178,6 +190,7 @@ namespace BudgetBadger.Forms
                 _ => "***REMOVED***",
                 _ => "",
                 _ => "budgetbadger://authorize"));
+#endif
 
             container.Register<ISyncFactory>(made: Made.Of(() => new SyncFactory(Arg.Of<IResourceContainer>(),
                                                                           Arg.Of<ISettings>(),
