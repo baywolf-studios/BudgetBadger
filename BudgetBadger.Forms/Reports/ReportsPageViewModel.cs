@@ -100,7 +100,7 @@ namespace BudgetBadger.Forms.Reports
                 {
                     if (Device.RuntimePlatform == Device.macOS)
                     {
-                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462407660?mt=12"));
+                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462667634?mt=12"));
                         ResetReports();
                         return;
                     }

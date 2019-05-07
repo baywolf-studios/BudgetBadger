@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Settings
 {
     public class SettingsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
     {
-        const string BudgetBadgerProMacAppLink = "macappstore://itunes.apple.com/app/id1462407660?mt=12";
+        const string BudgetBadgerProMacAppLink = "macappstore://itunes.apple.com/app/id1462667634?mt=12";
 
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;

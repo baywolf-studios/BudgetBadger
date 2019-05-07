@@ -54,6 +54,12 @@ namespace BudgetBadger.macOS
         {
             // Insert code here to tear down your application
         }
+
+        [Export("applicationShouldTerminateAfterLastWindowClosed:")]
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
+        {
+            return true;
+        }
     }
 
     public class macOSInitializer : IPlatformInitializer
