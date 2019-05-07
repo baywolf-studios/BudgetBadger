@@ -33,12 +33,6 @@ Global
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		ProRelease|Any CPU = ProRelease|Any CPU
-		ProRelease|ARM = ProRelease|ARM
-		ProRelease|iPhone = ProRelease|iPhone
-		ProRelease|iPhoneSimulator = ProRelease|iPhoneSimulator
-		ProRelease|x64 = ProRelease|x64
-		ProRelease|x86 = ProRelease|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|iPhone = Release|iPhone
