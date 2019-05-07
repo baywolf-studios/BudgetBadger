@@ -90,9 +90,9 @@ namespace BudgetBadger.Forms.ViewModels
                                     case Device.macOS:
 #if PRORELEASE
                                         // put new app here
-                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462407660?mt=12"));
+                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462666544?mt=12"));
 #else
-                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1459385878?mt=12"));
+                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462667634?mt=12"));
 #endif
                                         break;
                                 }

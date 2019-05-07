@@ -24,8 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
-    <CodeSigningKey>Mac Developer: Matthew Pritchett (4ZF68XBVNY)</CodeSigningKey>
-    <CreatePackage>false</CreatePackage>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>true</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
@@ -36,9 +36,10 @@
     </LinkMode>
     <XamMacArch>
     </XamMacArch>
-    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <AOTMode>None</AOTMode>
-    <CodeSignProvision>Budget Badger Mac Development</CodeSignProvision>
+    <CodeSignProvision>Automatic</CodeSignProvision>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -62,6 +63,7 @@
     <CodeSignProvision>Budget Badger Mac AppStore</CodeSignProvision>
     <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -85,6 +87,7 @@
     <CodeSignProvision>Budget Badger Pro Mac App Store</CodeSignProvision>
     <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dropbox.Api, Version=4.0.0.0, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
