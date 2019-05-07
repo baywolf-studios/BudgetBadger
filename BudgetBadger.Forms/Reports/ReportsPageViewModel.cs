@@ -98,22 +98,13 @@ namespace BudgetBadger.Forms.Reports
 
                 if (wantToPurchase)
                 {
-                    if (Device.RuntimePlatform == Device.macOS)
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                    if (!purchaseResult.Success)
                     {
-                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462667634?mt=12"));
+                        //show dialog of not allowing
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertNotPurchased"), purchaseResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                         ResetReports();
                         return;
-                    }
-                    else
-                    {
-                        var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                        if (!purchaseResult.Success)
-                        {
-                            //show dialog of not allowing
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertNotPurchased"), purchaseResult.Message, _resourceContainer.GetResourceString("AlertOk"));
-                            ResetReports();
-                            return;
-                        }
                     }
                 }
                 else

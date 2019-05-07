@@ -88,12 +88,7 @@ namespace BudgetBadger.Forms.ViewModels
                                         Device.OpenUri(new Uri("ms-windows-store://review/?ProductId=9nps726fkxtt"));
                                         break;
                                     case Device.macOS:
-#if PRORELEASE
-                                        // put new app here
                                         Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462666544?mt=12"));
-#else
-                                        Device.OpenUri(new Uri("macappstore://itunes.apple.com/app/id1462667634?mt=12"));
-#endif
                                         break;
                                 }
                             }

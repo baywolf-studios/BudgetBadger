@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Forms.3.6.0.293080\build\Xamarin.Forms.props" Condition="Exists('..\packages\Xamarin.Forms.3.6.0.293080\build\Xamarin.Forms.props')" />
   <PropertyGroup>
@@ -61,30 +61,6 @@
     <AOTMode>None</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
     <CodeSignProvision>Budget Badger Mac AppStore</CodeSignProvision>
-    <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
-    <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
-    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ProRelease|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\ProRelease</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;PRORELEASE;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <EnableCodeSigning>true</EnableCodeSigning>
-    <CreatePackage>true</CreatePackage>
-    <EnablePackageSigning>true</EnablePackageSigning>
-    <IncludeMonoRuntime>true</IncludeMonoRuntime>
-    <UseSGen>true</UseSGen>
-    <UseRefCounting>true</UseRefCounting>
-    <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler>
-    </HttpClientHandler>
-    <XamMacArch>
-    </XamMacArch>
-    <AOTMode>None</AOTMode>
-    <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
-    <CodeSignProvision>Budget Badger Pro Mac App Store</CodeSignProvision>
     <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
@@ -251,10 +227,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Info.plist" Condition=" '$(Configuration)' != 'ProRelease' " />
-    <None Include="InfoPro.plist" Condition=" '$(Configuration)' == 'ProRelease' ">
-      <LogicalName>Info.plist</LogicalName>
-    </None>
+    <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -276,6 +249,7 @@
     <Compile Include="Renderers\CardRenderer.cs" />
     <Compile Include="Renderers\Helper.cs" />
     <Compile Include="Renderers\Button2Renderer.cs" />
+    <Compile Include="InAppBilling.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
