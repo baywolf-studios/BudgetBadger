@@ -70,7 +70,7 @@ namespace BudgetBadger.Forms.Purchase
                         result.Message = _resourceContainer.GetResourceString("PurchaseErrorBillingUnavailable"); 
                         break;
                     case PurchaseError.GeneralError:
-                        result.Message = _resourceContainer.GetResourceString("PurchaseError.GeneralError");
+                        result.Message = _resourceContainer.GetResourceString("PurchaseErrorGeneralError");
                         break;
                     case PurchaseError.InvalidProduct:
                         result.Message = _resourceContainer.GetResourceString("PurchaseErrorInvalidProduct");
@@ -214,7 +214,7 @@ namespace BudgetBadger.Forms.Purchase
                         result.Message = _resourceContainer.GetResourceString("PurchaseErrorBillingUnavailable");
                         break;
                     case PurchaseError.GeneralError:
-                        result.Message = _resourceContainer.GetResourceString("PurchaseError.GeneralError");
+                        result.Message = _resourceContainer.GetResourceString("PurchaseErrorGeneralError");
                         break;
                     case PurchaseError.InvalidProduct:
                         result.Message = _resourceContainer.GetResourceString("PurchaseErrorInvalidProduct");
