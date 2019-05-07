@@ -22,8 +22,6 @@ namespace BudgetBadger.Forms.Settings
 {
     public class SettingsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
     {
-        const string BudgetBadgerProMacAppLink = "macappstore://itunes.apple.com/app/id1462667634?mt=12";
-
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
@@ -327,24 +325,17 @@ namespace BudgetBadger.Forms.Settings
         {
             if (!HasPro)
             {
-                if (Device.RuntimePlatform == Device.macOS)
+                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+
+                if (purchaseResult.Success)
                 {
-                    Device.OpenUri(new Uri(BudgetBadgerProMacAppLink));
+                    HasPro = true;
                 }
                 else
                 {
-                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-
-                    if (purchaseResult.Success)
-                    {
-                        HasPro = true;
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
-                            purchaseResult.Message,
-                            _resourceContainer.GetResourceString("AlertOk"));
-                    }
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
+                        purchaseResult.Message,
+                        _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
         }

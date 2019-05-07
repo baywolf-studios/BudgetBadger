@@ -85,16 +85,6 @@
                         Margin="16,0"
                         Style="{StaticResource ListItemLabelStyle}"
                         Text="{ext:Translate BudgetBadgerProRestoreLabel}">
-                        <Label.IsVisible>
-                            <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                                <On Platform="macOS" Value="false" />
-                            </OnPlatform>
-                        </Label.IsVisible>
-                        <Label.HeightRequest>
-                            <OnPlatform x:TypeArguments="x:Double" Default="{StaticResource ListItemHeight}">
-                                <On Platform="macOS" Value="0" />
-                            </OnPlatform>
-                        </Label.HeightRequest>
                         <Label.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasPro}"

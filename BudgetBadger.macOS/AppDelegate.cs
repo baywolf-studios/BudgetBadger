@@ -24,7 +24,7 @@ namespace BudgetBadger.macOS
 
             var rect = new CoreGraphics.CGRect(200, 1000, 1280, 720);
             window = new NSWindow(rect, style, NSBackingStore.Buffered, false);
-            window.Title = "Budget Badger"; // choose your own Title here
+            window.Title = "Budget Badger";
             window.TitleVisibility = NSWindowTitleVisibility.Hidden;
         }
 
@@ -67,6 +67,8 @@ namespace BudgetBadger.macOS
         public void RegisterTypes(IContainerRegistry container)
         {
             container.Register<ILocalize, Localize>();
+            var test = new InAppBillingImplementation();
+            container.RegisterInstance<IInAppBilling>(test);
         }
     }
 }
