@@ -909,4 +909,16 @@
   <data name="AlertMessageFeedback" xml:space="preserve">
     <value>Möchten Sie uns Feedback geben?</value>
   </data>
+  <data name="PurchaseProButton" xml:space="preserve">
+    <value>Erwerben</value>
+  </data>
+  <data name="RestoreProButton" xml:space="preserve">
+    <value>Restaurieren</value>
+  </data>
+  <data name="UnlockReportsLabel" xml:space="preserve">
+    <value>Berichte mit Budget Badger Pro entsperren</value>
+  </data>
+  <data name="UnlockCloudSyncLabel" xml:space="preserve">
+    <value>Cloud-Sync mit Budget Badger Pro entsperren</value>
+  </data>
 </root>
