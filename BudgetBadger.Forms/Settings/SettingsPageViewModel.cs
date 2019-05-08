@@ -150,6 +150,7 @@ namespace BudgetBadger.Forms.Settings
         public void OnNavigatingTo(INavigationParameters parameters)
         {
             ResetLocalization();
+            OnAppearing();
         }
 
         public async void OnAppearing()

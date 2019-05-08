@@ -135,7 +135,7 @@
                             Grid.Row="1"
                             Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
                             VerticalOptions="Start"
-                            Text="Unlock Cloud Sync with Budget Badger Pro">
+                            Text="{ext:Translate UnlockCloudSyncLabel}">
                             <Label.Triggers>
                                 <DataTrigger
                                     Binding="{Binding HasPro}"

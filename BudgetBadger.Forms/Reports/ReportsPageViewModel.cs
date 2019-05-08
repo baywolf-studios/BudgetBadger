@@ -19,7 +19,7 @@ using BudgetBadger.Core.Settings;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BindableBase, IPageLifecycleAware
+    public class ReportsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -91,6 +91,11 @@ namespace BudgetBadger.Forms.Reports
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
+        }
+
+        public void OnNavigatingTo(INavigationParameters parameters)
+        {
+            OnAppearing();
         }
 
         public async void OnAppearing()

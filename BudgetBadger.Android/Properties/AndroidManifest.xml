@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.4.4" package="com.BayWolfStudios.BudgetBadger" android:versionCode="13">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.4.5" package="com.BayWolfStudios.BudgetBadger" android:versionCode="14">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="28" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="com.android.vending.BILLING" />
