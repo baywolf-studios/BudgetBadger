@@ -31,7 +31,7 @@
                     Grid.Row="0"
                     Grid.ColumnSpan="2"
                     Margin="16,32"
-                    Text="Unlock Reports with Budget Badger Pro"
+                    Text="{ext:Translate UnlockReportsLabel}"
                     Style="{StaticResource HelperControlLabelStyle}"
                     FontSize="24">
                     <Label.Triggers>
@@ -111,9 +111,9 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     Margin="16,0,0,16"
-                    Command="{Binding RestoreCommand}"
+                    Command="{Binding RestoreProCommand}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="{ext:Translate EnvelopeTransferButton}"
+                    Text="{ext:Translate RestoreProButton}"
                     VerticalOptions="End">
                     <uc:Button2.Triggers>
                         <DataTrigger
@@ -128,9 +128,9 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="0,0,16,16"
-                    Command="{Binding PurchaseCommand}"
+                    Command="{Binding PurchaseProCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="{ext:Translate AddTransactionButton}"
+                    Text="{ext:Translate PurchaseProButton}"
                     VerticalOptions="End">
                     <uc:Button2.Triggers>
                         <DataTrigger
