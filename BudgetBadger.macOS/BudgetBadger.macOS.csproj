@@ -289,14 +289,12 @@
     <Content Include="Resources\save.svg" />
     <Content Include="Resources\search.svg" />
     <Content Include="Resources\settings.svg" />
+    <Content Include="Resources\lock.svg" />
+    <Content Include="Resources\transaction.svg" />
+    <Content Include="Resources\expander.svg" />
+    <Content Include="Resources\helperenvelopegroup.svg" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <BundleResource Include="Resources\helperenvelopegroup.svg" />
-    <BundleResource Include="Resources\expander.svg" />
-    <BundleResource Include="Resources\transaction.svg" />
-    <BundleResource Include="Resources\lock.svg" />
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
