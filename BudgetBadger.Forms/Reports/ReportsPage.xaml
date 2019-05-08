@@ -30,10 +30,9 @@
                     HorizontalTextAlignment="Center"
                     Grid.Row="0"
                     Grid.ColumnSpan="2"
-                    Margin="16,32"
+                    Margin="16"
                     Text="{ext:Translate UnlockReportsLabel}"
-                    Style="{StaticResource HelperControlLabelStyle}"
-                    FontSize="24">
+                    Style="{StaticResource PageHeaderLabelStyle}">
                     <Label.Triggers>
                         <DataTrigger
                             Binding="{Binding HasPro}"
@@ -72,6 +71,12 @@
                             TargetType="uc:ListView"
                             Value="true">
                             <Setter Property="FooterSize" Value="0" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="uc:ListView"
+                            Value="false">
+                            <Setter Property="SelectionMode" Value="None" />
                         </DataTrigger>
                     </uc:ListView.Triggers>
                     <syncfusion:SfListView.ItemTemplate>

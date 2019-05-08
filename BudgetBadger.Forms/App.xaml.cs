@@ -198,7 +198,7 @@ namespace BudgetBadger.Forms
 
 
 #if DEBUG
-            container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
+            container.Register<IPurchaseService, FalseInAppBillingPurchaseService>();
 #else
             if (Device.RuntimePlatform == Device.macOS)
             {

@@ -58,8 +58,8 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _hasPro, value);
         }
 
-        string _selectedReport;
-        public string SelectedReport
+        KeyValuePair<string, bool> _selectedReport;
+        public KeyValuePair<string, bool> SelectedReport
         {
             get => _selectedReport;
             set => SetProperty(ref _selectedReport, value);
@@ -90,7 +90,7 @@ namespace BudgetBadger.Forms.Reports
 
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
-            ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
+            ReportCommand = new DelegateCommand<object>(async s => await ExecuteReportCommand(s));
         }
 
         public void OnNavigatingTo(INavigationParameters parameters)
@@ -190,35 +190,38 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async Task ExecuteReportCommand(string report)
+        public async Task ExecuteReportCommand(object obj)
         {
-            if (report == null)
+            if (obj != null 
+                && obj is KeyValuePair<string, bool> report)
             {
-                return;
-            }
+                if (HasPro
+                    && report.Key != null)
+                {
+                    if (report.Key == _netWorthReport)
+                    {
+                        await _navigationService.NavigateAsync(PageName.NetWorthReportPage);
+                    }
+                    else if (report.Key == _envelopeSpendingReport)
+                    {
+                        await _navigationService.NavigateAsync(PageName.EnvelopesSpendingReportPage);
+                    }
+                    else if (report.Key == _payeeSpendingReport)
+                    {
+                        await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
+                    }
+                    else if (report.Key == _spendingTrendByEnvelopeReport)
+                    {
+                        await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
+                    }
+                    else if (report.Key == _spendingTrendByPayeeReport)
+                    {
+                        await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
+                    }
+                }
 
-            if (report == _netWorthReport)
-            {
-                await _navigationService.NavigateAsync(PageName.NetWorthReportPage);
+                ResetReports();
             }
-            else if (report == _envelopeSpendingReport)
-            {
-                await _navigationService.NavigateAsync(PageName.EnvelopesSpendingReportPage);
-            }
-            else if (report == _payeeSpendingReport)
-            {
-                await _navigationService.NavigateAsync(PageName.PayeesSpendingReportPage);
-            }
-            else if (report == _spendingTrendByEnvelopeReport)
-            {
-                await _navigationService.NavigateAsync(PageName.EnvelopeTrendsReportPage);
-            }
-            else if (report == _spendingTrendByPayeeReport)
-            {
-                await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
-            }
-
-            ResetReports();
         }
     }
 }
