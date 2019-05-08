@@ -218,6 +218,7 @@
     <BundleResource Include="Resources\payees.svg" />
     <BundleResource Include="Resources\expander.svg" />
     <BundleResource Include="Resources\transaction.svg" />
+    <BundleResource Include="Resources\lock.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

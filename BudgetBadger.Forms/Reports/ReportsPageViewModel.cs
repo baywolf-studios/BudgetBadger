@@ -15,13 +15,15 @@ using BudgetBadger.Core.Purchase;
 using Prism.Services;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Settings;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BindableBase
+    public class ReportsPageViewModel : BindableBase, IPageLifecycleAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
+        readonly ISettings _settings;
         readonly IPurchaseService _purchaseService;
         readonly IPageDialogService _dialogService;
 
@@ -32,6 +34,29 @@ namespace BudgetBadger.Forms.Reports
         string _spendingTrendByPayeeReport;
 
         public ICommand ReportCommand { get; set; }
+        public ICommand RestoreProCommand { get; set; }
+        public ICommand PurchaseProCommand { get; set; }
+
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        string _busyText;
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
 
         string _selectedReport;
         public string SelectedReport
@@ -40,8 +65,8 @@ namespace BudgetBadger.Forms.Reports
             set => SetProperty(ref _selectedReport, value);
         }
 
-        IList<string> _reports;
-        public IList<string> Reports
+        IList<KeyValuePair<string, bool>> _reports;
+        public IList<KeyValuePair<string, bool>> Reports
         {
             get => _reports;
             set => SetProperty(ref _reports, value);
@@ -49,6 +74,7 @@ namespace BudgetBadger.Forms.Reports
 
         public ReportsPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
+            ISettings settings,
                                     IPageDialogService dialogService, 
                                     IPurchaseService purchaseService)
         {
@@ -56,10 +82,26 @@ namespace BudgetBadger.Forms.Reports
             _navigationService = navigationService;
             _purchaseService = purchaseService;
             _dialogService = dialogService;
+            _settings = settings;
+
+            HasPro = false;
 
             ResetReports();
 
+            RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
+            PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             ReportCommand = new DelegateCommand<string>(async s => await ExecuteReportCommand(s));
+        }
+
+        public async void OnAppearing()
+        {
+            var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
+            ResetReports();
+        }
+
+        public void OnDisappearing()
+        {
         }
 
         void ResetReports()
@@ -70,14 +112,77 @@ namespace BudgetBadger.Forms.Reports
             _spendingTrendByEnvelopeReport = _resourceContainer.GetResourceString("EnvelopeTrendsReportPageTitle");
             _spendingTrendByPayeeReport = _resourceContainer.GetResourceString("PayeeTrendsReportPageTitle");
 
-            Reports = new List<string>
+            Reports = new List<KeyValuePair<string, bool>>
             {
-                _netWorthReport,
-                _envelopeSpendingReport,
-                _payeeSpendingReport,
-                _spendingTrendByEnvelopeReport,
-                _spendingTrendByPayeeReport
+                new KeyValuePair<string, bool>(_netWorthReport, HasPro),
+                new KeyValuePair<string, bool>(_envelopeSpendingReport, HasPro),
+                new KeyValuePair<string, bool>(_payeeSpendingReport, HasPro),
+                new KeyValuePair<string, bool>(_spendingTrendByEnvelopeReport, HasPro),
+                new KeyValuePair<string, bool>(_spendingTrendByPayeeReport, HasPro)
             };
+        }
+
+        public async Task ExecuteRestoreProCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
+
+            try
+            {
+                var result = await _purchaseService.RestorePurchaseAsync(Purchases.Pro);
+
+                HasPro = result.Success;
+
+                if (!HasPro)
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRestorePurchaseUnsuccessful"),
+                        result.Message,
+                        _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
+            finally
+            {
+                ResetReports();
+                IsBusy = false;
+            }
+        }
+
+        public async Task ExecutePurchaseProCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
+
+            try
+            {
+                if (!HasPro)
+                {
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+
+                    HasPro = purchaseResult.Success;
+
+                    if (!HasPro)
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
+                            purchaseResult.Message,
+                            _resourceContainer.GetResourceString("AlertOk"));
+                    }
+                }
+            }
+            finally
+            {
+                ResetReports();
+                IsBusy = false;
+            }
         }
 
         public async Task ExecuteReportCommand(string report)
@@ -85,34 +190,6 @@ namespace BudgetBadger.Forms.Reports
             if (report == null)
             {
                 return;
-            }
-
-            var allowedReports = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
-            if (!allowedReports.Success)
-            {
-                // show some dialog asking if they would like to purchase
-                var wantToPurchase = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadgerPro"),
-                    _resourceContainer.GetResourceString("AlertMessageBudgetBadgerPro"),
-                    _resourceContainer.GetResourceString("AlertPurchase"),
-                    _resourceContainer.GetResourceString("AlertCancel"));
-
-                if (wantToPurchase)
-                {
-                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-                    if (!purchaseResult.Success)
-                    {
-                        //show dialog of not allowing
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertNotPurchased"), purchaseResult.Message, _resourceContainer.GetResourceString("AlertOk"));
-                        ResetReports();
-                        return;
-                    }
-                }
-                else
-                {
-                    ResetReports();
-                    return;
-                }
-
             }
 
             if (report == _netWorthReport)
