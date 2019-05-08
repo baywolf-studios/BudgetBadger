@@ -163,6 +163,7 @@ namespace BudgetBadger.Forms.Settings
             var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
             DropboxEnabled = (syncMode == SyncMode.DropboxSync);
             ShowSync = (syncMode == SyncMode.DropboxSync);
+
             LastSynced = _syncFactory.GetLastSyncDateTime();
         }
 
@@ -309,34 +310,64 @@ namespace BudgetBadger.Forms.Settings
 
         public async Task ExecuteRestoreProCommand()
         {
-            var result = await _purchaseService.RestorePurchaseAsync(Purchases.Pro);
-
-            HasPro = result.Success;
-
-            if (!HasPro)
+            if (IsBusy)
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRestorePurchaseUnsuccessful"),
-                    result.Message,
-                    _resourceContainer.GetResourceString("AlertOk"));
+                return;
+            }
+
+            IsBusy = true;
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
+
+            try
+            {
+                var result = await _purchaseService.RestorePurchaseAsync(Purchases.Pro);
+
+                HasPro = result.Success;
+
+                if (!HasPro)
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRestorePurchaseUnsuccessful"),
+                        result.Message,
+                        _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
         public async Task ExecutePurchaseProCommand()
         {
-            if (!HasPro)
+            if (IsBusy)
             {
-                var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+                return;
+            }
 
-                if (purchaseResult.Success)
+            IsBusy = true;
+            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
+
+            try
+            {
+                if (!HasPro)
                 {
-                    HasPro = true;
+                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
+
+                    if (purchaseResult.Success)
+                    {
+                        HasPro = true;
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
+                            purchaseResult.Message,
+                            _resourceContainer.GetResourceString("AlertOk"));
+                    }
                 }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
-                        purchaseResult.Message,
-                        _resourceContainer.GetResourceString("AlertOk"));
-                }
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

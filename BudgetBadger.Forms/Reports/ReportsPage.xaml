@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
@@ -12,18 +13,135 @@
         <p:RootHeader PageTitle="{ext:Translate ReportsPageTitle}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:ListView
-            ItemSize="{StaticResource ListItemHeight}"
-            ItemsSource="{Binding Reports}"
-            SelectedCommand="{Binding ReportCommand}"
-            SelectedItem="{Binding SelectedReport}">
-            <syncfusion:SfListView.ItemTemplate>
-                <DataTemplate>
-                    <ContentView Margin="16,0" HeightRequest="48">
-                        <Label Style="{StaticResource ListItemLabelStyle}" Text="{Binding .}" />
-                    </ContentView>
-                </DataTemplate>
-            </syncfusion:SfListView.ItemTemplate>
-        </uc:ListView>
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
+            <Grid
+                Margin="0"
+                RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Margin="16,32"
+                    Text="Unlock Reports with Budget Badger Pro"
+                    Style="{StaticResource HelperControlLabelStyle}"
+                    FontSize="24">
+                    <Label.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="Label"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <BoxView
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0"
+                    BackgroundColor="{StaticResource DividerColor}"
+                    HeightRequest="1">
+                    <BoxView.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="BoxView"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </BoxView.Triggers>
+                </BoxView>
+                <uc:ListView
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
+                    ItemSize="{StaticResource ListItemHeight}"
+                    ItemsSource="{Binding Reports}"
+                    SelectedCommand="{Binding ReportCommand}"
+                    SelectedItem="{Binding SelectedReport}">
+                    <uc:ListView.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="uc:ListView"
+                            Value="true">
+                            <Setter Property="FooterSize" Value="0" />
+                        </DataTrigger>
+                    </uc:ListView.Triggers>
+                    <syncfusion:SfListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                Margin="16,0"
+                                Orientation="Horizontal"
+                                Spacing="16"
+                                HeightRequest="48">
+                                <svg:SvgCachedImage
+                                    HeightRequest="24"
+                                    HorizontalOptions="End"
+                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                    Source="lock.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="24">
+                                    <svg:SvgCachedImage.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Value}"
+                                            TargetType="svg:SvgCachedImage"
+                                            Value="true">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </svg:SvgCachedImage.Triggers>
+                                </svg:SvgCachedImage>
+                                <Label Style="{StaticResource ListItemLabelStyle}" Text="{Binding Key}" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </syncfusion:SfListView.ItemTemplate>
+                    <syncfusion:SfListView.FooterTemplate>
+                        <DataTemplate>
+                            <BoxView />
+                        </DataTemplate>
+                    </syncfusion:SfListView.FooterTemplate>
+                </uc:ListView>
+                <uc:Button2
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="16,0,0,16"
+                    Command="{Binding RestoreCommand}"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="{ext:Translate EnvelopeTransferButton}"
+                    VerticalOptions="End">
+                    <uc:Button2.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="uc:Button2"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </uc:Button2.Triggers>
+                </uc:Button2>
+                <uc:Button2
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="0,0,16,16"
+                    Command="{Binding PurchaseCommand}"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="{ext:Translate AddTransactionButton}"
+                    VerticalOptions="End">
+                    <uc:Button2.Triggers>
+                        <DataTrigger
+                            Binding="{Binding HasPro}"
+                            TargetType="uc:Button2"
+                            Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                    </uc:Button2.Triggers>
+                </uc:Button2>
+            </Grid>
+        </uc:BusyIndicator>
     </p:BasePage.Body>
 </p:BasePage>

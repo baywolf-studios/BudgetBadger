@@ -145,6 +145,7 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_splash.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_splash.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_splash.png" />
+    <AndroidResource Include="Resources\drawable\lock.svg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

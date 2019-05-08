@@ -59,45 +59,49 @@
                         IsVisible="{Binding HasPro}"
                         Style="{StaticResource ListItemLabelStyle}"
                         Text="{ext:Translate BudgetBadgerProThanksLabel}" />
-                    <Label
+                    <uc:ContentButton
                         Grid.Row="1"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate BudgetBadgerProPurchaseLabel}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding PurchaseProCommand}" />
-                        </Label.GestureRecognizers>
-                        <Label.Triggers>
+                        HeightRequest="{StaticResource ListItemHeight}"
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding PurchaseProCommand}">
+                        <uc:ContentButton.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasPro}"
-                                TargetType="Label"
+                                TargetType="uc:ContentButton"
                                 Value="true">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Label
+                        </uc:ContentButton.Triggers>
+                        <Label
+                            Margin="16,0"
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="{ext:Translate BudgetBadgerProPurchaseLabel}">
+                        </Label>
+                    </uc:ContentButton>
+                    <uc:ContentButton
                         Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate BudgetBadgerProRestoreLabel}">
-                        <Label.Triggers>
+                        Command="{Binding RestoreProCommand}"
+                        HeightRequest="{StaticResource ListItemHeight}"
+                        Style="{StaticResource SettingsButtonStyle}">
+                        <uc:ContentButton.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasPro}"
-                                TargetType="Label"
+                                TargetType="uc:ContentButton"
                                 Value="true">
                                 <Setter Property="IsVisible" Value="false" />
                                 <Setter Property="HeightRequest" Value="0" />
                             </DataTrigger>
-                        </Label.Triggers>
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding RestoreProCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                        </uc:ContentButton.Triggers>
+                        <Label
+                            Margin="16,0"
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="{ext:Translate BudgetBadgerProRestoreLabel}">
+                        </Label>
+                    </uc:ContentButton>
                     <Label
                         Grid.Row="3"
                         Grid.ColumnSpan="3"
@@ -113,9 +117,6 @@
                         Source="dropbox.svg"
                         VerticalOptions="Center"
                         WidthRequest="24">
-                        <svg:SvgCachedImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SyncToggleCommand}" />
-                        </svg:SvgCachedImage.GestureRecognizers>
                     </svg:SvgCachedImage>
                     <Grid
                         Grid.Row="4"
@@ -133,7 +134,22 @@
                         <Label
                             Grid.Row="1"
                             Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                            VerticalOptions="Start">
+                            VerticalOptions="Start"
+                            Text="Unlock Cloud Sync with Budget Badger Pro">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding HasPro}"
+                                    TargetType="Label"
+                                    Value="true">
+                                    <Setter Property="IsVisible" Value="false"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            Grid.Row="1"
+                            Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
+                            VerticalOptions="Start"
+                            IsVisible="false">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{ext:Translate LastSyncedLabel}" />
@@ -141,15 +157,51 @@
                                     <Span Text="{Binding LastSynced}" />
                                 </FormattedString>
                             </Label.FormattedText>
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding HasPro}"
+                                    TargetType="Label"
+                                    Value="true">
+                                    <Setter Property="IsVisible" Value="true"/>
+                                </DataTrigger>
+                            </Label.Triggers>
                         </Label>
                     </Grid>
+                    <svg:SvgCachedImage
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Margin="16,0"
+                        HeightRequest="24"
+                        HorizontalOptions="End"
+                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                        Source="lock.svg"
+                        VerticalOptions="Center"
+                        WidthRequest="24">
+                        <svg:SvgCachedImage.Triggers>
+                            <DataTrigger
+                                Binding="{Binding HasPro}"
+                                TargetType="svg:SvgCachedImage"
+                                Value="true">
+                                <Setter Property="IsVisible" Value="false" />
+                            </DataTrigger>
+                        </svg:SvgCachedImage.Triggers>
+                    </svg:SvgCachedImage>
                     <Switch
                         Grid.Row="4"
                         Grid.Column="2"
                         Margin="16,0"
                         IsToggled="{Binding DropboxEnabled}"
                         OnColor="{StaticResource PrimaryColor}"
-                        VerticalOptions="CenterAndExpand">
+                        VerticalOptions="CenterAndExpand"
+                        IsVisible="false">
+                        <Switch.Triggers>
+                            <DataTrigger
+                                Binding="{Binding HasPro}"
+                                TargetType="Switch"
+                                Value="true">
+                                <Setter Property="IsVisible" Value="true" />
+                            </DataTrigger>
+                        </Switch.Triggers>
                         <Switch.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
                         </Switch.Behaviors>
@@ -168,98 +220,90 @@
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate DeletedLabel}" />
-                    <svg:SvgCachedImage
+                    <uc:ContentButton
                         Grid.Row="7"
-                        Grid.Column="0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="envelopegroup.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="24">
-                        <svg:SvgCachedImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage" />
-                        </svg:SvgCachedImage.GestureRecognizers>
-                    </svg:SvgCachedImage>
-                    <Label
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedEnvelopeGroupsLabel}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopeGroupsPage" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <svg:SvgCachedImage
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding ShowDeletedCommand}"
+                        CommandParameter="DeletedEnvelopeGroupsPage">
+                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
+                            <svg:SvgCachedImage
+                                HeightRequest="24"
+                                HorizontalOptions="End"
+                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                Source="envelopegroup.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                            </svg:SvgCachedImage>
+                            <Label
+                                Style="{StaticResource ListItemLabelStyle}"
+                                Text="{ext:Translate DeletedEnvelopeGroupsLabel}">
+                        </Label>
+                        </StackLayout>
+                    </uc:ContentButton>
+                    <uc:ContentButton
                         Grid.Row="8"
-                        Grid.Column="0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="envelope.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="24">
-                        <svg:SvgCachedImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage" />
-                        </svg:SvgCachedImage.GestureRecognizers>
-                    </svg:SvgCachedImage>
-                    <Label
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedEnvelopesLabel}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedEnvelopesPage" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <svg:SvgCachedImage
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding ShowDeletedCommand}"
+                        CommandParameter="DeletedEnvelopesPage">
+                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
+                            <svg:SvgCachedImage
+                                HeightRequest="24"
+                                HorizontalOptions="End"
+                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                Source="envelope.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                            </svg:SvgCachedImage>
+                            <Label
+                                Style="{StaticResource ListItemLabelStyle}"
+                                Text="{ext:Translate DeletedEnvelopesLabel}">
+                            </Label>
+                        </StackLayout>
+                    </uc:ContentButton>
+                    <uc:ContentButton
                         Grid.Row="9"
-                        Grid.Column="0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="account.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="24">
-                        <svg:SvgCachedImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage" />
-                        </svg:SvgCachedImage.GestureRecognizers>
-                    </svg:SvgCachedImage>
-                    <Label
-                        Grid.Row="9"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedAccountsLabel}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedAccountsPage" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <svg:SvgCachedImage
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding ShowDeletedCommand}"
+                        CommandParameter="DeletedAccountsPage">
+                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
+                            <svg:SvgCachedImage
+                                HeightRequest="24"
+                                HorizontalOptions="End"
+                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                Source="account.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                            </svg:SvgCachedImage>
+                            <Label
+                                Style="{StaticResource ListItemLabelStyle}"
+                                Text="{ext:Translate DeletedAccountsLabel}">
+                            </Label>
+                        </StackLayout>  
+                    </uc:ContentButton>
+                    <uc:ContentButton
                         Grid.Row="10"
-                        Grid.Column="0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="payees.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="24">
-                        <svg:SvgCachedImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage" />
-                        </svg:SvgCachedImage.GestureRecognizers>
-                    </svg:SvgCachedImage>
-                    <Label
-                        Grid.Row="10"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="{ext:Translate DeletedPayeesLabel}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowDeletedCommand}" CommandParameter="DeletedPayeesPage" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding ShowDeletedCommand}"
+                        CommandParameter="DeletedPayeesPage">
+                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
+                            <svg:SvgCachedImage
+                                HeightRequest="24"
+                                HorizontalOptions="End"
+                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                Source="payees.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                            </svg:SvgCachedImage>
+                            <Label
+                                Style="{StaticResource ListItemLabelStyle}"
+                                Text="{ext:Translate DeletedPayeesLabel}">
+                            </Label>
+                        </StackLayout>
+                    </uc:ContentButton>
                     <Label
                         Grid.Row="11"
                         Grid.ColumnSpan="3"
@@ -298,28 +342,30 @@
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate HelpLabel}" />
-                    <Label
+                    <uc:ContentButton
                         Grid.Row="15"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="BudgetBadger.io">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding HelpCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding HelpCommand}">
+                        <Label
+                            Margin="16,0"
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="BudgetBadger.io">
+                        </Label>
+                    </uc:ContentButton>
+                    <uc:ContentButton
                         Grid.Row="16"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="16,0"
-                        Style="{StaticResource ListItemLabelStyle}"
-                        Text="Support@BudgetBadger.io">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EmailCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                        Style="{StaticResource SettingsButtonStyle}"
+                        Command="{Binding EmailCommand}">
+                        <Label
+                            Margin="16,0"
+                            Style="{StaticResource ListItemLabelStyle}"
+                            Text="Support@BudgetBadger.io">
+                        </Label>
+                    </uc:ContentButton>
                 </Grid>
             </ScrollView>
         </uc:BusyIndicator>
