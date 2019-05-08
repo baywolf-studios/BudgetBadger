@@ -1834,6 +1834,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase.
+        /// </summary>
+        public static string PurchaseProButton {
+            get {
+                return ResourceManager.GetString("PurchaseProButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Past 3 Months Activity.
         /// </summary>
         public static string QuickBudgetAvgPast3MonthsActivity {
@@ -1929,6 +1938,15 @@ namespace BudgetBadger.Language {
         public static string ReportsPageTitle {
             get {
                 return ResourceManager.GetString("ReportsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string RestoreProButton {
+            get {
+                return ResourceManager.GetString("RestoreProButton", resourceCulture);
             }
         }
         
@@ -2433,6 +2451,24 @@ namespace BudgetBadger.Language {
         public static string UndoDeleteButton {
             get {
                 return ResourceManager.GetString("UndoDeleteButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock Cloud Sync with Budget Badger Pro.
+        /// </summary>
+        public static string UnlockCloudSyncLabel {
+            get {
+                return ResourceManager.GetString("UnlockCloudSyncLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock Reports with Budget Badger Pro.
+        /// </summary>
+        public static string UnlockReportsLabel {
+            get {
+                return ResourceManager.GetString("UnlockReportsLabel", resourceCulture);
             }
         }
     }
