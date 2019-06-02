@@ -104,8 +104,10 @@ namespace BudgetBadger.Models
 
         public Envelope DeepCopy()
         {
-            var serial = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<Envelope>(serial);
+            Envelope envelope = (Envelope)this.MemberwiseClone();
+            envelope.Group = this.Group.DeepCopy();
+
+            return envelope;
         }
 
         public bool Equals(Envelope p)

@@ -68,6 +68,7 @@ namespace BudgetBadger.Models
                 {
                     Envelope.IgnoreOverspend = false;
                 }
+                OnPropertyChanged(nameof(HandleOverspend));
             }
         }
 
@@ -133,8 +134,11 @@ namespace BudgetBadger.Models
 
         public Budget DeepCopy()
         {
-            var serial = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<Budget>(serial);
+            Budget budget = (Budget)this.MemberwiseClone();
+            budget.Schedule = this.Schedule.DeepCopy();
+            budget.Envelope = this.Envelope.DeepCopy();
+
+            return budget;
         }
 
         public bool Equals(Budget p)
