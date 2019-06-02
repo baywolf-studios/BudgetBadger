@@ -84,8 +84,7 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
-            var serial = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<Payee>(serial);
+            return (Payee)this.MemberwiseClone();
         }
 
         public bool Equals(Payee p)

@@ -98,8 +98,7 @@ namespace BudgetBadger.Models
 
         public BudgetSchedule DeepCopy()
         {
-            var serial = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<BudgetSchedule>(serial);
+            return (BudgetSchedule)this.MemberwiseClone();
         }
 
         public bool Equals(BudgetSchedule p)

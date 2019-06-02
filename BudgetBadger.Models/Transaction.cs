@@ -188,8 +188,11 @@ namespace BudgetBadger.Models
 
         public Transaction DeepCopy()
         {
-            var serial = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<Transaction>(serial);
+            Transaction transaction = (Transaction)this.MemberwiseClone();
+            transaction.Account = this.Account.DeepCopy();
+            transaction.Payee = this.Payee.DeepCopy();
+            transaction.Envelope = this.Envelope.DeepCopy();
+            return transaction;
         }
 
         public bool Equals(Transaction p)
