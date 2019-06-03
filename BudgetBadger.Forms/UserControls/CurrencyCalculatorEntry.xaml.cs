@@ -125,12 +125,13 @@ namespace BudgetBadger.Forms.UserControls
             }
             else
             {
-                if (!decimal.TryParse(TextControl.Text, out decimal result))
+                var locale = DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
+                var nfi = locale.NumberFormat;
+
+                if (!decimal.TryParse(TextControl.Text, NumberStyles.Currency, nfi, out decimal result))
                 {
                     try
                     {
-                        var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
-                        var nfi = locale.NumberFormat;
                         var symbol = nfi.CurrencySymbol;
                         var groupSeparator = nfi.CurrencyGroupSeparator;
                         var decimalSeparator = nfi.CurrencyDecimalSeparator;

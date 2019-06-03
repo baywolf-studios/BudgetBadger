@@ -269,7 +269,8 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var parameters = new NavigationParameters
             {
-                { PageParameter.Envelope, Budget.Envelope }
+                { PageParameter.Envelope, Budget.Envelope },
+                { PageParameter.BudgetSchedule, Budget.Schedule }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
         }

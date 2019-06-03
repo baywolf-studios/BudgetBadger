@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using BudgetBadger.Core.LocalizedResources;
@@ -20,12 +21,13 @@ namespace BudgetBadger.Forms.Converters
                 return null;
             }
 
-            if (!decimal.TryParse(value.ToString(), out decimal result))
+            var locale = DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
+            var nfi = locale.NumberFormat;
+
+            if (!decimal.TryParse(value.ToString(), NumberStyles.Currency, nfi, out decimal result))
             {
                 try
                 {
-                    var locale = DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
-                    var nfi = locale.NumberFormat;
                     var symbol = nfi.CurrencySymbol;
                     var groupSeparator = nfi.CurrencyGroupSeparator;
                     var decimalSeparator = nfi.CurrencyDecimalSeparator;
