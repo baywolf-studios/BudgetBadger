@@ -220,7 +220,7 @@ namespace BudgetBadger.Forms.Settings
 
             allCultures.AddRange(otherCultures);
 
-            foreach (var culture in allCultures.Where(c => c.TextInfo.IsRightToLeft == false))
+            foreach (var culture in allCultures)
             {
                 try
                 {
