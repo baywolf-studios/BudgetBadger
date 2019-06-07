@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
     x:Class="BudgetBadger.Forms.DataTemplates.TextColumn">
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer Tapped="Handle_Tapped"/>
+    </ContentView.GestureRecognizers>
     <ContentView.Content>
         <Entry
             x:Name="TextControl"
