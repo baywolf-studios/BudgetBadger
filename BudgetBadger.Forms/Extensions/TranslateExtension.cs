@@ -16,23 +16,7 @@ namespace BudgetBadger.Forms.Extensions
 
         public object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (Text == null)
-                return "";
-
-            var translation = _resourceContainer.Value.GetResourceString(Text);
-
-            if (translation == null)
-            {
-
-#if DEBUG
-                throw new ArgumentException(
-                    String.Format("Key '{0}' was not found in resources.", Text),
-                    nameof(Text));
-#else
-				translation = Text; // returns the key, which GETS DISPLAYED TO THE USER
-#endif
-            }
-            return translation;
+            return _resourceContainer.Value.GetResourceString(Text);
         }
     }
 }
