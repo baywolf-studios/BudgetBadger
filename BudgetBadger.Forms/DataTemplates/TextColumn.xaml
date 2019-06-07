@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
+    x:Class="BudgetBadger.Forms.DataTemplates.TextColumn">
+    <ContentView.Content>
+        <Entry
+            x:Name="TextControl"
+            FontSize="14"
+            Text="{Binding Text}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            VerticalOptions="CenterAndExpand">
+        <Entry.Keyboard>
+            <Keyboard x:FactoryMethod="Create">
+                <x:Arguments>
+                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
+                </x:Arguments>
+            </Keyboard>
+        </Entry.Keyboard>
+        <Entry.Effects>
+            <ef:BorderlessEntryEffect/>
+        </Entry.Effects>
+    </Entry>
+    </ContentView.Content>
+</ContentView>

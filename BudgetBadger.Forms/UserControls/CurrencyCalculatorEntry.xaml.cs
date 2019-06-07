@@ -81,6 +81,13 @@ namespace BudgetBadger.Forms.UserControls
                     TextControl.CursorPosition = TextControl.Text.Length;
                     TextControl.SelectionLength = 0;
                 }
+
+                if (TextControl.Text != null)
+                {
+                    var locale = DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
+                    var nfi = locale.NumberFormat;
+                    TextControl.Text = TextControl.Text.Replace(nfi.CurrencySymbol, "");
+                }
             };
 
             PropertyChanged += (sender, e) =>
