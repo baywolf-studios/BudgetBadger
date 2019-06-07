@@ -43,13 +43,26 @@ namespace BudgetBadger.Forms.DataTemplates
 
             TextControl.Unfocused += (sender, e) =>
             {
+                BackgroundColor = Color.Transparent;
+
                 if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
                 {
                     SaveCommand.Execute(SaveCommandParameter);
                 }
             };
 
+            TextControl.Focused += (sender, e) =>
+            {
+                BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
+            };
+        }
 
+        void Handle_Tapped(object sender, System.EventArgs e)
+        {
+            if (!TextControl.IsFocused)
+            {
+                TextControl.Focus();
+            }
         }
     }
 }

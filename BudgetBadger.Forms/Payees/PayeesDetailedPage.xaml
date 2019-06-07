@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -45,7 +46,6 @@
                             FilterText="{Binding SearchText}"
                             IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Payees}"
-                            SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedPayee}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
@@ -96,14 +96,17 @@
                                 <syncfusion:SortColumnDescription ColumnName="Description" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate PayeeNameLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Description"
-                                    TextAlignment="Start" />
+                                    MappingName="Description">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:TextColumn Text="{Binding Description}" />
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
@@ -112,6 +115,31 @@
                                     LineBreakMode="TailTruncation"
                                     MappingName="Notes"
                                     TextAlignment="Start" />
+                                <syncfusion:GridTemplateColumn
+                                    Width="56"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText=""
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
+                                                <ContentView.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                                </ContentView.GestureRecognizers>
+                                                <svg:SvgCachedImage
+                                                    Margin="16"
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24"
+                                                    Source="next.svg">
+                                                </svg:SvgCachedImage>
+                                            </ContentView>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
                                     Width="16"
                                     HeaderText=""
