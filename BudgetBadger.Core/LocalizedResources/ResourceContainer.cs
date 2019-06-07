@@ -30,8 +30,8 @@ namespace BudgetBadger.Core.LocalizedResources
 
 #if DEBUG
                 throw new ArgumentException(
-                    String.Format("Key '{0}' was not found in resources.", Text),
-                    nameof(Text));
+                    String.Format("Key '{0}' was not found in resources.", key),
+                    nameof(key));
 #else
                 translation = key; // returns the key, which GETS DISPLAYED TO THE USER
 #endif
