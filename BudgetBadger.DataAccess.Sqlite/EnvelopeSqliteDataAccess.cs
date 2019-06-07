@@ -98,7 +98,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -110,7 +110,12 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @Notes, 
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE EnvelopeGroup
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;
+                                    ";
 
                         command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.DebtEnvelopeGroup.Description));
@@ -133,7 +138,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -145,7 +150,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @Notes, 
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE EnvelopeGroup
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelopeGroup.Description));
@@ -169,7 +178,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO EnvelopeGroup
+                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
                                                 (Id, 
                                                  Description, 
                                                  Notes, 
@@ -181,7 +190,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @Notes, 
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE EnvelopeGroup
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.SystemEnvelopeGroup.Description));
@@ -204,7 +217,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
+                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -220,7 +233,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @IgnoreOverspend,
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE Envelope
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.BufferEnvelope.Description));
@@ -245,7 +262,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
+                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -261,7 +278,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @IgnoreOverspend,
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE Envelope
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IgnoredEnvelope.Description));
@@ -286,7 +307,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"INSERT OR REPLACE INTO Envelope 
+                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
                                                 (Id, 
                                                  Description, 
                                                  EnvelopeGroupId, 
@@ -302,7 +323,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @IgnoreOverspend,
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime);
+
+                                    UPDATE Envelope
+                                    SET    Description = @Description
+                                    WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelope.Description));

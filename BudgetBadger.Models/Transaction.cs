@@ -137,8 +137,8 @@ namespace BudgetBadger.Models
         DateTime serviceDate;
         public DateTime ServiceDate
         {
-            get => serviceDate;
-            set => SetProperty(ref serviceDate, value);
+            get => serviceDate.Date;
+            set => SetProperty(ref serviceDate, value.Date);
         }
 
         string notes;

@@ -70,7 +70,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                     @Notes, 
                                                     @CreatedDateTime, 
                                                     @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                    @DeletedDateTime);
+
+                                        UPDATE Payee
+                                        SET    Description = @Description
+                                        WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id);
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.StartingBalancePayee.Description));

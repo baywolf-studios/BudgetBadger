@@ -37,7 +37,7 @@
     <XamMacArch>
     </XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
-    <AOTMode>All</AOTMode>
+    <AOTMode>None</AOTMode>
     <CodeSignProvision>Automatic</CodeSignProvision>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
