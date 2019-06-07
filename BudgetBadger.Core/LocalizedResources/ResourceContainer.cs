@@ -17,8 +17,27 @@ namespace BudgetBadger.Core.LocalizedResources
 
         public string GetResourceString(string key)
         {
+            if (key == null)
+            {
+                return "";
+            }
+
             Language.AppResources.Culture = _localize.GetLocale();
-            return Language.AppResources.ResourceManager.GetString(key);
+            var translation = Language.AppResources.ResourceManager.GetString(key);
+
+            if (translation == null)
+            {
+
+#if DEBUG
+                throw new ArgumentException(
+                    String.Format("Key '{0}' was not found in resources.", Text),
+                    nameof(Text));
+#else
+                translation = key; // returns the key, which GETS DISPLAYED TO THE USER
+#endif
+            }
+
+            return translation;
         }
 
         public string GetFormattedString(string format, object obj)
