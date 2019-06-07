@@ -24,9 +24,12 @@ namespace BudgetBadger.DataAccess.Sqlite
             Initialize();
         }
 
-        void Initialize()
+        async void Initialize()
         {
-
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -82,10 +85,14 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
-            
+                });
+            }
 
             // envelope groups
-
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -114,9 +121,13 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
-            
+                });
+            }
 
- 
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -146,7 +157,13 @@ namespace BudgetBadger.DataAccess.Sqlite
                         command.ExecuteNonQuery();
 
                     }
-            
+                });
+            }
+
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -175,8 +192,13 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
-            
+                });
+            }
 
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -211,8 +233,13 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
-            
+                });
+            }
 
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -247,7 +274,13 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
+                });
+            }
 
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -282,7 +315,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.ExecuteNonQuery();
                     }
-            
+                });
+            }
         }
 
 
