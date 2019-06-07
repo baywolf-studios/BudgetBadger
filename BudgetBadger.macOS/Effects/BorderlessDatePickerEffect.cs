@@ -21,6 +21,7 @@ namespace BudgetBadger.macOS.Effects
                 datePicker.BackgroundColor = NSColor.Clear;
                 datePicker.Bordered = false;
                 datePicker.FocusRingType = NSFocusRingType.None;
+                datePicker.DatePickerStyle = NSDatePickerStyle.TextField;
             }
         }
 
