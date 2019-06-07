@@ -32,7 +32,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(FilterProperty, value);
         }
 
-        public static BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(ListView));
+        public static BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(DataGrid));
         public ICommand SelectedCommand
         {
             get => (ICommand)GetValue(SelectedCommandProperty);
@@ -76,7 +76,7 @@ namespace BudgetBadger.Forms.UserControls
 
             SelectionChanged += (sender, e) =>
             {
-                if (SelectedCommand != null)
+                if (SelectedCommand != null && SelectedCommand.CanExecute(e.AddedItems.FirstOrDefault()))
                 {
                     SelectedCommand.Execute(e.AddedItems.FirstOrDefault());
                 }
