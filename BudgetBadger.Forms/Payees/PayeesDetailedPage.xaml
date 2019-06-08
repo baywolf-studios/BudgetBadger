@@ -107,14 +107,17 @@
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate PayeeNotesLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Notes"
-                                    TextAlignment="Start" />
+                                    MappingName="Notes">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:MultilineTextColumn Text="{Binding Notes}" />
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
                                     Width="56"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
