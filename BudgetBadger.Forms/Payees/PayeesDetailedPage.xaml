@@ -123,10 +123,12 @@
                                     MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
-                                                <ContentView.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                                </ContentView.GestureRecognizers>
+                                            <uc:ContentButton
+                                                HeightRequest="{StaticResource ListItemHeight}"
+                                                WidthRequest="{StaticResource ListItemHeight}"
+                                                Style="{StaticResource SidebarButtonStyle}"
+                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}">
                                                 <svg:SvgCachedImage
                                                     Margin="16"
                                                     HeightRequest="24"
@@ -136,7 +138,7 @@
                                                     WidthRequest="24"
                                                     Source="next.svg">
                                                 </svg:SvgCachedImage>
-                                            </ContentView>
+                                            </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
