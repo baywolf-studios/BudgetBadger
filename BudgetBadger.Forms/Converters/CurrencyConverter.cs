@@ -36,7 +36,7 @@ namespace BudgetBadger.Forms.Converters
                     result = Decimal.Parse(temp.ToString());
                     result = Decimal.Round(result, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
                 }
-                catch (Exception ex)
+                catch
                 {
                     result = 0;
                 }

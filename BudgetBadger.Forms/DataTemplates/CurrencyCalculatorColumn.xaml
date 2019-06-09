@@ -3,27 +3,20 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
-    x:Class="BudgetBadger.Forms.DataTemplates.TextColumn">
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.CurrencyCalculatorColumn">
     <ContentView.GestureRecognizers>
         <TapGestureRecognizer Tapped="Handle_Tapped"/>
     </ContentView.GestureRecognizers>
     <ContentView.Content>
-        <Entry
+        <uc:CurrencyCalculator
             x:Name="TextControl"
             FontSize="{StaticResource DataGridItemFontSize}"
-            Text="{Binding Text}"
             TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand">
-        <Entry.Keyboard>
-            <Keyboard x:FactoryMethod="Create">
-                <x:Arguments>
-                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
-                </x:Arguments>
-            </Keyboard>
-        </Entry.Keyboard>
-        <Entry.Effects>
-            <ef:BorderlessEntryEffect/>
-        </Entry.Effects>
-    </Entry>
+            Number="{Binding Number}">
+            <uc:CurrencyCalculator.Effects>
+                <ef:BorderlessEntryEffect />
+            </uc:CurrencyCalculator.Effects>
+        </uc:CurrencyCalculator>
     </ContentView.Content>
 </ContentView>

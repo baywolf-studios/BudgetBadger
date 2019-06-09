@@ -11,10 +11,10 @@
         <Editor
             x:Name="TextControl"
             AutoSize="TextChanges"
-            FontSize="14"
-            Keyboard="{Binding Keyboard, Mode=TwoWay}"
+            FontSize="{StaticResource DataGridItemFontSize}"
             Text="{Binding Text}"
-            TextColor="{StaticResource PrimaryTextColor}">
+            TextColor="{StaticResource PrimaryTextColor}"
+            VerticalOptions="CenterAndExpand">
             <Editor.Effects>
                 <ef:BorderlessEditorEffect/>
             </Editor.Effects>
