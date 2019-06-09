@@ -50,6 +50,5 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />
-    <Compile Remove="DataTemplates\PickerColumn.xaml.cs" />
   </ItemGroup>
 </Project>
