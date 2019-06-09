@@ -39,6 +39,7 @@ namespace BudgetBadger.iOS
             BorderedEditorRenderer.Initialize();
             CardRenderer.Initialize();
             Button2Renderer.Initialize();
+            CurrencyCalculatorRenderer.Initialize();
 
             LoadApplication(new App(new iOSInitializer()));
 
