@@ -85,16 +85,6 @@ namespace BudgetBadger.Forms.DataTemplates
                 }
             };
 
-            PickerControl.Unfocused += (sender, e) =>
-            {
-                BackgroundColor = Color.Transparent;
-
-                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
-                {
-                    SaveCommand.Execute(SaveCommandParameter);
-                }
-            };
-
             PickerControl.Focused += (sender, e) =>
             {
                 BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
@@ -102,8 +92,12 @@ namespace BudgetBadger.Forms.DataTemplates
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
-                var index = SelectedIndex;
-                var item = SelectedItem;
+                BackgroundColor = Color.Transparent;
+
+                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                {
+                    SaveCommand.Execute(SaveCommandParameter);
+                }
             };
         }
 
