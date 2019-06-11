@@ -159,11 +159,7 @@ namespace BudgetBadger.Models
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
-                && OnBudget == p.OnBudget
-                && Balance == p.Balance
-                && Pending == p.Pending
-                && Posted == p.Posted
-                && Payment == p.Payment;
+                && OnBudget == p.OnBudget;
         }
 
         public override bool Equals(object obj)
