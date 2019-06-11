@@ -10,10 +10,10 @@
     <ContentView.Content>
         <Picker
             x:Name="PickerControl"
-            FontSize="{StaticResource DataGridItemFontSize}"
-            ItemsSource="{Binding ItemsSource, Mode=TwoWay}"
-            SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+            Margin="-8,0,0,0"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+            FontSize="{StaticResource DataGridItemFontSize}"
             TextColor="{StaticResource PrimaryTextColor}" 
             VerticalOptions="CenterAndExpand">
             <Picker.Effects>

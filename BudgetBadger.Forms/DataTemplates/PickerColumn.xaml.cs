@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,6 +15,16 @@ namespace BudgetBadger.Forms.DataTemplates
             set => PickerControl.ItemDisplayBinding = value;
         }
 
+        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(PickerColumn), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
+        {
+            ((PickerColumn)bindable).PickerControl.ItemsSource = (IList)newVal;
+        });
+        public IList ItemsSource
+        {
+            get => (IList)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
+        }
+
         public static BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(PickerColumn), -1, BindingMode.TwoWay);
         public int SelectedIndex
         {
@@ -21,18 +32,18 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SelectedIndexProperty, value);
         }
 
-        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(PickerColumn), null, BindingMode.TwoWay);
+        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(PickerColumn), null, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
+        {
+            if (((PickerColumn)bindable).PickerControl.ItemsSource != null 
+                && !((PickerColumn)bindable).PickerControl.ItemsSource.Contains(newVal))
+            {
+                ((PickerColumn)bindable).PickerControl.ItemsSource.Add(newVal);
+            }
+        });
         public object SelectedItem
         {
             get => GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
-        }
-
-        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(PickerColumn), null, BindingMode.TwoWay);
-        public IList ItemsSource
-        {
-            get => (IList)GetValue(ItemsSourceProperty);
-            set => SetValue(ItemsSourceProperty, value);
         }
 
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(PickerColumn));
@@ -75,6 +86,12 @@ namespace BudgetBadger.Forms.DataTemplates
             PickerControl.Focused += (sender, e) =>
             {
                 BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
+            };
+
+            PickerControl.SelectedIndexChanged += (sender, e) =>
+            {
+                var index = SelectedIndex;
+                var item = SelectedItem;
             };
         }
 

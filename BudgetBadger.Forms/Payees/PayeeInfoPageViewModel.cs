@@ -14,6 +14,7 @@ using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -25,6 +26,8 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IAccountLogic _accountLogic;
+        readonly IEnvelopeLogic _envelopeLogic;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -49,6 +52,27 @@ namespace BudgetBadger.Forms.Payees
         {
             get => _payee;
             set => SetProperty(ref _payee, value);
+        }
+
+        IReadOnlyList<Account> _accounts;
+        public IReadOnlyList<Account> Accounts
+        {
+            get => _accounts;
+            set => SetProperty(ref _accounts, value);
+        }
+
+        IReadOnlyList<Payee> _payees;
+        public IReadOnlyList<Payee> Payees
+        {
+            get => _payees;
+            set => SetProperty(ref _payees, value);
+        }
+
+        IReadOnlyList<Envelope> _envelopes;
+        public IReadOnlyList<Envelope> Envelopes
+        {
+            get => _envelopes;
+            set => SetProperty(ref _envelopes, value);
         }
 
         IReadOnlyList<Transaction> _transactions;
@@ -86,7 +110,9 @@ namespace BudgetBadger.Forms.Payees
                                       ITransactionLogic transactionLogic,
                                       IPayeeLogic payeeLogic,
                                       IPageDialogService dialogService,
-                                      ISyncFactory syncFactory)
+                                      ISyncFactory syncFactory,
+                                      IAccountLogic accountLogic,
+                                      IEnvelopeLogic envelopeLogic)
         {
             _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
@@ -94,6 +120,8 @@ namespace BudgetBadger.Forms.Payees
             _payeeLogic = payeeLogic;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _accountLogic = accountLogic;
+            _envelopeLogic = envelopeLogic;
 
             Payee = new Payee();
             Transactions = new List<Transaction>();
@@ -183,6 +211,39 @@ namespace BudgetBadger.Forms.Payees
             {
                 if (Payee.IsActive)
                 {
+                    if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        var accountsResult = await _accountLogic.GetAccountsForSelectionAsync();
+                        if (accountsResult.Success)
+                        {
+                            Accounts = accountsResult.Data;
+                        }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), accountsResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                        }
+
+                        var payeesResult = await _payeeLogic.GetPayeesForSelectionAsync();
+                        if (payeesResult.Success)
+                        {
+                            Payees = payeesResult.Data;
+                        }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                        }
+
+                        var envelopesResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
+                        if (envelopesResult.Success)
+                        {
+                            Envelopes = envelopesResult.Data;
+                        }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), envelopesResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                        }
+                    }
+
                     var payeeResult = await _payeeLogic.GetPayeeAsync(Payee.Id);
                     if (payeeResult.Success)
                     {
@@ -203,6 +264,8 @@ namespace BudgetBadger.Forms.Payees
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                     }
+
+
 
                     NoTransactions = (Transactions?.Count ?? 0) == 0;
                 }
