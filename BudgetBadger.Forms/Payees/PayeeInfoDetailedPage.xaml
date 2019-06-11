@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -54,7 +55,6 @@
                             FilterText="{Binding SearchText}"
                             IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Transactions}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
                             SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
@@ -83,39 +83,59 @@
                                 <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding ServiceDate, Converter={StaticResource ShortDateConverter}}"
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate TransactionServiceDateLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="ServiceDate"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    MappingName="ServiceDate">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:DatePickerColumn Date="{Binding ServiceDate}" />
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate TransactionAccountLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Account.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    MappingName="Account.Description">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:PickerColumn
+                                                ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
+                                                SelectedItem="{Binding Account}"
+                                                ItemDisplayBinding="{Binding Description}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate TransactionPayeeLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Payee.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
+                                    MappingName="Payee.Description">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:PickerColumn
+                                                ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+                                                SelectedItem="{Binding Payee}"
+                                                ItemDisplayBinding="{Binding Description}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText="{ext:Translate TransactionEnvelopeLabel}"
                                     HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Envelope.Description"
-                                    TextAlignment="Start" />
+                                    MappingName="Envelope.Description">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:PickerColumn
+                                                ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
+                                                SelectedItem="{Binding Envelope}"
+                                                ItemDisplayBinding="{Binding Description}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTextColumn
                                     CellTextSize="{StaticResource ListItemFontSize}"
                                     DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
