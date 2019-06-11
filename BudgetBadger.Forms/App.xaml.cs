@@ -347,5 +347,27 @@ namespace BudgetBadger.Forms
 
             return new Result { Success = true };
         }
+
+        async void CleanupDeletedAccounts()
+        {
+            try
+            {
+                var settings = Container.Resolve<ISettings>();
+
+                var accountLogic = Container.Resolve<IAccountLogic>();
+                var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
+                if (deletedAccountsResult.Success)
+                {
+                    foreach(var account in deletedAccountsResult.Data)
+                    {
+                        await accountLogic.DeleteAccountAsync(account.Id);
+                    }
+                }
+            }
+            catch
+            {
+            
+            }
+        }
     }
 }

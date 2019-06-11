@@ -9,6 +9,8 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class PickerColumn : ContentView
     {
+        ObservableCollection<object> internalItemsSource;
+
         public BindingBase ItemDisplayBinding
         {
             get => PickerControl.ItemDisplayBinding;
@@ -17,7 +19,14 @@ namespace BudgetBadger.Forms.DataTemplates
 
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(PickerColumn), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            ((PickerColumn)bindable).PickerControl.ItemsSource = (IList)newVal;
+            ((PickerColumn)bindable).internalItemsSource.Clear();
+            if (newVal != null && newVal is IList list)
+            {
+                foreach (var item in list)
+                {
+                    ((PickerColumn)bindable).internalItemsSource.Add(item);
+                }
+            }
         });
         public IList ItemsSource
         {
@@ -34,10 +43,11 @@ namespace BudgetBadger.Forms.DataTemplates
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(PickerColumn), null, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if (((PickerColumn)bindable).PickerControl.ItemsSource != null 
-                && !((PickerColumn)bindable).PickerControl.ItemsSource.Contains(newVal))
+            if (((PickerColumn)bindable).internalItemsSource != null 
+                && !((PickerColumn)bindable).internalItemsSource.Contains(newVal)
+                && newVal != null)
             {
-                ((PickerColumn)bindable).PickerControl.ItemsSource.Add(newVal);
+                ((PickerColumn)bindable).internalItemsSource.Add(newVal);
             }
         });
         public object SelectedItem
@@ -63,7 +73,9 @@ namespace BudgetBadger.Forms.DataTemplates
         public PickerColumn()
         {
             InitializeComponent();
+            internalItemsSource = new ObservableCollection<object>();
             PickerControl.BindingContext = this;
+            PickerControl.ItemsSource = internalItemsSource;
 
             PropertyChanged += (sender, e) =>
             {
