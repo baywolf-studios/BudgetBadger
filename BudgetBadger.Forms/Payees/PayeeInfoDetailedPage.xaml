@@ -90,7 +90,7 @@
                                     MappingName="ServiceDate">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:DatePickerColumn Date="{Binding ServiceDate}" />
+                                            <dt:DatePickerColumn Date="{Binding ServiceDate}" IsReadOnly="true" />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -102,6 +102,7 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerColumn
+                                                IsReadOnly="true"
                                                 ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Account}"
                                                 ItemDisplayBinding="{Binding Description}"/>
