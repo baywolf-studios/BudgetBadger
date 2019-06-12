@@ -119,10 +119,10 @@ namespace BudgetBadger.Forms.DataTemplates
                     {
                         SaveCommand.Execute(SaveCommandParameter);
                     }
-
-                    ForceActiveBackground = false;
-                    ForceActiveBackground = true;
                 }
+
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
             };
         }
 
