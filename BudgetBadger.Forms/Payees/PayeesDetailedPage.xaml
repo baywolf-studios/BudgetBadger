@@ -114,7 +114,7 @@
                                     MappingName="Notes">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:MultilineTextColumn Text="{Binding Notes}" />
+                                            <dt:MultilineTextColumn  IsEnabled="false" Text="{Binding Notes}" />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

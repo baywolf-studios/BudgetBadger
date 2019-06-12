@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView
+<uc:ContentButton
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
-    x:Class="BudgetBadger.Forms.DataTemplates.PickerColumn">
-    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer Tapped="Handle_Tapped"/>
-    </ContentView.GestureRecognizers>
-    <ContentView.Content>
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.PickerColumn"
+    Tapped="Handle_Tapped"
+    ForceActiveBackground="true"
+    Style="{StaticResource DataGridColumnStyle}">
+    <StackLayout
+        Orientation="Vertical">
         <Picker
             x:Name="PickerControl"
-            Margin="-8,0,0,0"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+            VerticalOptions="CenterAndExpand"
             FontSize="{StaticResource DataGridItemFontSize}"
-            TextColor="{StaticResource PrimaryTextColor}" 
-            VerticalOptions="CenterAndExpand">
+            TextColor="{StaticResource PrimaryTextColor}"
+            IsEnabled="{Binding IsEnabled}"
+            IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
+            <Picker.Margin>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <OnPlatform.Platforms>
+                        <On Platform="iOS, Android, UWP" Value="0, 0, 0, 0" />
+                        <On Platform="macOS" Value="-8,0,0,0" />
+                    </OnPlatform.Platforms>
+                </OnPlatform>
+            </Picker.Margin>    
             <Picker.Effects>
                 <ef:BorderlessPickerEffect/>
             </Picker.Effects>
         </Picker>
-    </ContentView.Content>
-</ContentView>
+        <Label
+            x:Name="LabelControl"
+            VerticalOptions="CenterAndExpand"
+            FontSize="{StaticResource DataGridItemFontSize}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            IsVisible="{Binding IsReadOnly}">
+        </Label>
+    </StackLayout>
+</uc:ContentButton>

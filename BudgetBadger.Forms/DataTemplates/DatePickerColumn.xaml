@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView
+<uc:ContentButton
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
-    x:Class="BudgetBadger.Forms.DataTemplates.DatePickerColumn">
-    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer Tapped="Handle_Tapped"/>
-    </ContentView.GestureRecognizers>
-    <ContentView.Content>
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.DatePickerColumn"
+    Tapped="Handle_Tapped"
+    ForceActiveBackground="true"
+    Style="{StaticResource DataGridColumnStyle}">
+    <StackLayout
+        Orientation="Vertical">
         <DatePicker
             x:Name="DateControl"
+            IsEnabled="{Binding IsEnabled}"
             FontSize="{StaticResource DataGridItemFontSize}"
             Date="{Binding Date}"
             TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand">
+            VerticalOptions="CenterAndExpand"
+            IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
             <DatePicker.Effects>
                 <ef:BorderlessDatePickerEffect/>
             </DatePicker.Effects>
         </DatePicker>
-    </ContentView.Content>
-</ContentView>
+        <Label
+            x:Name="LabelControl"
+            VerticalOptions="CenterAndExpand"
+            FontSize="{StaticResource DataGridItemFontSize}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            IsVisible="{Binding IsReadOnly}"
+            Text="{Binding Date, Converter={StaticResource ShortDateConverter}}">
+        </Label>
+    </StackLayout>
+</uc:ContentButton>

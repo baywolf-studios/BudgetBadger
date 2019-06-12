@@ -3,13 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class PickerColumn : ContentView
+    public partial class PickerColumn : ContentButton
     {
         ObservableCollection<object> internalItemsSource;
+
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TextColumn));
+        public bool IsReadOnly
+        {
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
 
         public BindingBase ItemDisplayBinding
         {
@@ -34,13 +42,6 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(ItemsSourceProperty, value);
         }
 
-        public static BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(PickerColumn), -1, BindingMode.TwoWay);
-        public int SelectedIndex
-        {
-            get => (int)GetValue(SelectedIndexProperty);
-            set => SetValue(SelectedIndexProperty, value);
-        }
-
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(PickerColumn), null, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
         {
             if (((PickerColumn)bindable).internalItemsSource != null 
@@ -49,6 +50,14 @@ namespace BudgetBadger.Forms.DataTemplates
             {
                 ((PickerColumn)bindable).internalItemsSource.Add(newVal);
             }
+
+            var index = -1;
+            if (((PickerColumn)bindable).PickerControl.ItemsSource != null)
+            {
+                index = ((PickerColumn)bindable).PickerControl.ItemsSource.IndexOf(newVal);
+            }
+
+            ((PickerColumn)bindable).PickerControl.SelectedIndex = index;
         });
         public object SelectedItem
         {
@@ -70,40 +79,65 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SaveCommandParameterProperty, value);
         }
 
+        public static BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(TextColumn));
+        public ICommand SelectedCommand
+        {
+            get => (ICommand)GetValue(SelectedCommandProperty);
+            set => SetValue(SelectedCommandProperty, value);
+        }
+
+        public static BindableProperty SelectedCommandParameterProperty = BindableProperty.Create(nameof(SelectedCommandParameter), typeof(object), typeof(TextColumn));
+        public object SelectedCommandParameter
+        {
+            get => GetValue(SelectedCommandParameterProperty);
+            set => SetValue(SelectedCommandParameterProperty, value);
+        }
+
         public PickerColumn()
         {
             InitializeComponent();
             internalItemsSource = new ObservableCollection<object>();
             PickerControl.BindingContext = this;
+            LabelControl.BindingContext = this;
             PickerControl.ItemsSource = internalItemsSource;
-
-            PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(IsEnabled))
-                {
-                    PickerControl.IsEnabled = IsEnabled;
-                }
-            };
-
-            PickerControl.Focused += (sender, e) =>
-            {
-                BackgroundColor = (Color)Application.Current.Resources["SelectedItemColor"];
-            };
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
-                BackgroundColor = Color.Transparent;
-
-                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                if (PickerControl.Items != null && PickerControl.SelectedIndex >= 0)
                 {
-                    SaveCommand.Execute(SaveCommandParameter);
+                    LabelControl.Text = PickerControl.Items[PickerControl.SelectedIndex];
+                }
+                else
+                {
+                    LabelControl.Text = string.Empty;
+                }
+
+                if (!SelectedItem.Equals(PickerControl.SelectedItem))
+                {
+                    SelectedItem = PickerControl.SelectedItem;
+                    if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                    {
+                        SaveCommand.Execute(SaveCommandParameter);
+                    }
+
+                    ForceActiveBackground = false;
+                    ForceActiveBackground = true;
                 }
             };
         }
 
         void Handle_Tapped(object sender, System.EventArgs e)
         {
-            if (!PickerControl.IsFocused)
+            if (IsReadOnly || !IsEnabled)
+            {
+                if (SelectedCommand != null && SelectedCommand.CanExecute(SelectedCommandParameter))
+                {
+                    SelectedCommand.Execute(SelectedCommandParameter);
+                }
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
+            }
+            else if (!PickerControl.IsFocused)
             {
                 PickerControl.Focus();
             }
