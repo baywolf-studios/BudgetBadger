@@ -97,10 +97,12 @@
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate PayeeNameLabel}"
-                                    HeaderTextAlignment="Start"
                                     MappingName="Description">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate PayeeNameLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:TextColumn Text="{Binding Description}" />
