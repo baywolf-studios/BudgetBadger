@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uc:ContentButton
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="BudgetBadger.Forms.DataTemplates.HeaderColumn"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    Style="{StaticResource DataGridColumnStyle}"
+    Command="{Binding SelectedCommand}"
+    CommandParameter="{Binding SelectedCommandParameter}">
+    <Label
+        x:Name="TextControl"
+        FontSize="{StaticResource DataGridHeaderFontSize}"
+        Text="{Binding Text}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="CenterAndExpand"/>
+</uc:ContentButton>
