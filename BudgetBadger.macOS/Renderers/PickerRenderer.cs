@@ -24,9 +24,6 @@ namespace BudgetBadger.macOS.Renderers
 
         protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
         {
-            if (e.OldElement != null)
-                ((INotifyCollectionChanged)e.OldElement.Items).CollectionChanged -= RowsCollectionChanged;
-
             if (e.NewElement != null)
             {
                 if (Control == null)
@@ -36,10 +33,12 @@ namespace BudgetBadger.macOS.Renderers
 
                 Control.Activated -= ComboBoxSelectionChanged;
                 Control.Activated += ComboBoxSelectionChanged;
-                UpdatePicker();
+                ResetItems();
+                UpdateSelectedItem();
+                UpdateFontAndColor();
 
-                ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged -= RowsCollectionChanged;
-                ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged += RowsCollectionChanged;
+                ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged -= CollectionChanged;
+                ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged += CollectionChanged; 
             }
 
             base.OnElementChanged(e);
@@ -48,17 +47,24 @@ namespace BudgetBadger.macOS.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == Picker.TitleProperty.PropertyName ||
-                e.PropertyName == Picker.ItemsSourceProperty.PropertyName ||
-                e.PropertyName == Picker.SelectedIndexProperty.PropertyName ||
-                e.PropertyName == Picker.TextColorProperty.PropertyName ||
+            if (e.PropertyName == Picker.ItemsSourceProperty.PropertyName)
+            {
+                ResetItems();
+                UpdateSelectedItem();
+                UpdateFontAndColor();
+            }
+            if(e.PropertyName == Picker.SelectedIndexProperty.PropertyName)
+            {
+                UpdateSelectedItem();
+                UpdateFontAndColor();
+            }
+            if (e.PropertyName == Picker.TextColorProperty.PropertyName ||
                 e.PropertyName == VisualElement.IsEnabledProperty.PropertyName ||
-                e.PropertyName == Picker.SelectedItemProperty.PropertyName ||
                 e.PropertyName == Picker.FontSizeProperty.PropertyName ||
                 e.PropertyName == Picker.FontFamilyProperty.PropertyName ||
                 e.PropertyName == Picker.FontAttributesProperty.PropertyName)
             {
-                UpdatePicker();
+                UpdateFontAndColor();
             }
         }
 
@@ -79,11 +85,16 @@ namespace BudgetBadger.macOS.Renderers
                 if (!_disposed)
                 {
                     _disposed = true;
-                    if (Element != null)
-                        ((INotifyCollectionChanged)Element.Items).CollectionChanged -= RowsCollectionChanged;
 
                     if (Control != null)
+                    {
                         Control.Activated -= ComboBoxSelectionChanged;
+                    }
+
+                    if (Element != null)
+                    {
+                        ((INotifyCollectionChanged)Element.Items).CollectionChanged -= CollectionChanged;
+                    }
                 }
             }
             base.Dispose(disposing);
@@ -94,26 +105,88 @@ namespace BudgetBadger.macOS.Renderers
             ElementController?.SetValueFromRenderer(Picker.SelectedIndexProperty, (int)Control.IndexOfSelectedItem);
         }
 
-        void OnEnded(object sender, EventArgs eventArgs)
+        void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    AddItems(e);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveItems(e);
+                    break;
+                default: //Move, Replace, Reset
+                    ResetItems();
+                    break;
+            }
         }
-
-        void OnStarted(object sender, EventArgs eventArgs)
-        {
-            ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
-        }
-
-        void RowsCollectionChanged(object sender, EventArgs e)
-        {
-            UpdatePicker();
-        }
-
-        void UpdatePicker()
+        void AddItems(NotifyCollectionChangedEventArgs e)
         {
             if (Control == null || Element == null)
+            {
                 return;
+            }
+            int index = e.NewStartingIndex < 0 ? Control.Items().Count() : e.NewStartingIndex;
+            foreach (object newItem in e.NewItems)
+            {
+                var menuItem = new NSMenuItem(newItem.ToString())
+                {
+                    AttributedTitle = new NSAttributedString(newItem.ToString(), GetNSStringAttributes())
+                };
+                Control.Menu.AddItem(menuItem);
+            }
+        }
 
+        void RemoveItems(NotifyCollectionChangedEventArgs e)
+        {
+            if (Control == null || Element == null)
+            {
+                return;
+            }
+
+            int index = e.OldStartingIndex < Control.Items().Count() ? e.OldStartingIndex : Control.Items().Count();
+            foreach (object _ in e.OldItems)
+            {
+                Control.RemoveItem(index--);
+            }
+        }
+
+        void ResetItems()
+        {
+            if (Control == null || Element == null)
+            {
+                return;
+            }
+
+            Control.RemoveAllItems();
+            foreach (var item in Element.Items)
+            {
+                var menuItem = new NSMenuItem(item)
+                {
+                    AttributedTitle = new NSAttributedString(item, GetNSStringAttributes())
+                };
+                Control.Menu.AddItem(menuItem);
+            }
+        }
+
+        void UpdateSelectedItem()
+        {
+            if (Control == null || Element == null)
+            {
+                return;
+            }
+
+            var selectedIndex = Element.SelectedIndex;
+            var items = Element.Items;
+
+            if (items != null && items.Count != 0 && selectedIndex >= 0)
+            {
+                Control.SelectItem(selectedIndex);
+            }
+        }
+
+        NSStringAttributes GetNSStringAttributes()
+        {
             var attributes = new NSStringAttributes
             {
                 Font = Element.ToNSFont(),
@@ -125,20 +198,16 @@ namespace BudgetBadger.macOS.Renderers
                 attributes.ForegroundColor = Element.TextColor.ToNSColor();
             }
 
-            Control.RemoveAllItems();
-            foreach (var item in Element.Items)
-            {
-                var menuItem = new NSMenuItem(item);
-                menuItem.AttributedTitle = new NSAttributedString(menuItem.Title, attributes);
-                Control.Menu.AddItem(menuItem);
-            }
+            return attributes;
+        }
 
-            var selectedIndex = Element.SelectedIndex;
-            var items = Element.Items;
+        void UpdateFontAndColor()
+        {
+            var attributes = GetNSStringAttributes();
 
-            if (items != null && items.Count != 0 && selectedIndex >= 0)
+            foreach (var it in Control.Items())
             {
-                Control.SelectItem(selectedIndex);
+                it.AttributedTitle = new NSAttributedString(it.Title, attributes);
             }
 
             if (Control.SelectedItem != null)

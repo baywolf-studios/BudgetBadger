@@ -27,14 +27,14 @@ namespace BudgetBadger.Forms.DataTemplates
 
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(PickerColumn), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            var items = ((PickerColumn)bindable).PickerControl.ItemsSource as ObservableRangeCollection<object>;
+            var items = ((PickerColumn)bindable).PickerControl.ItemsSource as ObservableCollection<object>;
+            items.Clear();
             if (newVal != null)
             {
-                items.ReplaceRange(newVal as IEnumerable<object>);
-            }
-            else
-            {
-                items.Clear();
+                foreach (var item in (IList)newVal)
+                {
+                    items.Add(item);
+                }
             }
         });
         public IList ItemsSource
@@ -50,6 +50,7 @@ namespace BudgetBadger.Forms.DataTemplates
                 && newVal != null)
             {
                 ((PickerColumn)bindable).PickerControl.ItemsSource.Add(newVal);
+
             }
 
             var index = -1;
@@ -97,9 +98,9 @@ namespace BudgetBadger.Forms.DataTemplates
         public PickerColumn()
         {
             InitializeComponent();
+            PickerControl.ItemsSource = new ObservableCollection<object>();
             PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
-            PickerControl.ItemsSource = new ObservableRangeCollection<object>();
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
