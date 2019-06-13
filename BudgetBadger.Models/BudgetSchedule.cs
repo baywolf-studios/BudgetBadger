@@ -99,7 +99,7 @@ namespace BudgetBadger.Models
         public BudgetSchedule DeepCopy()
         {
             var schedule = (BudgetSchedule)this.MemberwiseClone();
-            schedule.Description = String.Copy(this.Description);
+            schedule.Description = this.Description == null ? null : String.Copy(this.Description);
             return schedule;
         }
 

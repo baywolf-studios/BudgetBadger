@@ -85,9 +85,9 @@ namespace BudgetBadger.Models
         public Payee DeepCopy()
         {
             var payee = (Payee)this.MemberwiseClone();
-            payee.Description = String.Copy(this.Description);
-            payee.Notes = String.Copy(this.Notes);
-            payee.Group = String.Copy(this.Group);
+            payee.Description = this.Description == null ? null : String.Copy(this.Description);
+            payee.Notes = this.Notes == null ? null : String.Copy(this.Notes);
+            payee.Group = this.Group == null ? null : String.Copy(this.Group);
 
             return payee;
         }

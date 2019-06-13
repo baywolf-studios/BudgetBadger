@@ -192,7 +192,7 @@ namespace BudgetBadger.Models
             transaction.Account = this.Account.DeepCopy();
             transaction.Payee = this.Payee.DeepCopy();
             transaction.Envelope = this.Envelope.DeepCopy();
-            transaction.Notes = String.Copy(this.Notes);
+            transaction.Notes = this.Notes == null ? null : String.Copy(this.Notes);
             return transaction;
         }
 
