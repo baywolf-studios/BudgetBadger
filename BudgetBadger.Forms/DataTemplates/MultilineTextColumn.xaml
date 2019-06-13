@@ -7,7 +7,8 @@
     x:Class="BudgetBadger.Forms.DataTemplates.MultilineTextColumn"
     Tapped="Handle_Tapped"
     ForceActiveBackground="true"
-    Style="{StaticResource DataGridColumnStyle}">
+    Style="{StaticResource DataGridColumnStyle}"
+    Padding="8,0">
     <Editor
         x:Name="TextControl"
         IsReadOnly="{Binding IsReadOnly}"

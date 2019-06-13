@@ -53,7 +53,7 @@
                                 <DataTemplate>
                                     <uc:Button2
                                         Margin="16,8"
-                                        Command="{Binding SaveCommand}"
+                                        Command="{Binding SaveSearchCommand}"
                                         IsVisible="{Binding HasSearchText}"
                                         Style="{StaticResource SecondaryActionButtonStyle}"
                                         Text="{Binding SearchText, StringFormat='+ {0}'}" />

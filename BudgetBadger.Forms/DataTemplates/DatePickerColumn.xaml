@@ -7,14 +7,14 @@
     x:Class="BudgetBadger.Forms.DataTemplates.DatePickerColumn"
     Tapped="Handle_Tapped"
     ForceActiveBackground="true"
-    Style="{StaticResource DataGridColumnStyle}">
+    Style="{StaticResource DataGridColumnStyle}"
+    Padding="8,0">
     <StackLayout
         Orientation="Vertical">
         <DatePicker
             x:Name="DateControl"
             IsEnabled="{Binding IsEnabled}"
             FontSize="{StaticResource DataGridItemFontSize}"
-            Date="{Binding Date}"
             TextColor="{StaticResource PrimaryTextColor}"
             VerticalOptions="CenterAndExpand"
             IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">

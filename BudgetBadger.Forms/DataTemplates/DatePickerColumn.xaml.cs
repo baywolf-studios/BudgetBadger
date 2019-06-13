@@ -20,7 +20,11 @@ namespace BudgetBadger.Forms.DataTemplates
                                     typeof(DateTime),
                                     typeof(DatePickerColumn),
                                     defaultValue: DateTime.Now,
-                                    defaultBindingMode: BindingMode.TwoWay);
+                                    defaultBindingMode: BindingMode.TwoWay,
+                                    propertyChanged: (bindable, oldVal, newVal) =>
+                                    {
+                                        ((DatePickerColumn)bindable).DateControl.Date = (DateTime)newVal;
+                                    });
         public DateTime Date
         {
             get => (DateTime)GetValue(DateProperty);
@@ -61,12 +65,30 @@ namespace BudgetBadger.Forms.DataTemplates
             DateControl.BindingContext = this;
             LabelControl.BindingContext = this;
 
+            DateControl.Focused += (sender, e) =>
+            {
+                UpdateActive();
+            };
+
             DateControl.Unfocused += (sender, e) =>
             {
-                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
+            };
+
+            DateControl.DateSelected += (sender, e) =>
+            {
+                if (!Date.Equals(DateControl.Date))
                 {
-                    SaveCommand.Execute(SaveCommandParameter);
+                    Date = DateControl.Date;
+                    if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                    {
+                        SaveCommand.Execute(SaveCommandParameter);
+                    }
                 }
+
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
             };
         }
 

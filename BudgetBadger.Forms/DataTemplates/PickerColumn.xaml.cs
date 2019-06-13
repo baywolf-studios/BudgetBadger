@@ -124,6 +124,17 @@ namespace BudgetBadger.Forms.DataTemplates
                 ForceActiveBackground = false;
                 ForceActiveBackground = true;
             };
+
+            PickerControl.Focused += (sender, e) =>
+            {
+                UpdateActive();
+            };
+
+            PickerControl.Unfocused += (sender, e) =>
+            {
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
+            };
         }
 
         void Handle_Tapped(object sender, System.EventArgs e)

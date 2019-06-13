@@ -36,6 +36,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
+        public ICommand SaveTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -133,6 +134,7 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -323,6 +325,20 @@ namespace BudgetBadger.Forms.Payees
             {
                 await ExecuteRefreshCommand();
 
+                _needToSync = true;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteSaveTransactionCommand(Transaction transaction)
+        {
+            var result = await _transactionLogic.SaveTransactionAsync(transaction);
+
+            if (result.Success)
+            {
                 _needToSync = true;
             }
             else
