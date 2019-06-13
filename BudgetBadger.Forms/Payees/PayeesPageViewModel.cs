@@ -25,11 +25,12 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISyncFactory _syncFactory;
+        readonly ISyncFactory _syncFactory;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -75,9 +76,9 @@ namespace BudgetBadger.Forms.Payees
 
         public PayeesPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
-		                           IPageDialogService dialogService,
-		                           IPayeeLogic payeeLogic,
-		                           ISyncFactory syncFactory)
+                                   IPageDialogService dialogService,
+                                   IPayeeLogic payeeLogic,
+                                   ISyncFactory syncFactory)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
@@ -90,7 +91,8 @@ namespace BudgetBadger.Forms.Payees
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            SaveCommand = new DelegateCommand<Payee>(async p => await ExecuteSaveCommand(p));
+            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
@@ -151,7 +153,17 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteSaveCommand()
+        public async Task ExecuteSaveCommand(Payee newPayee)
+        {
+            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+
+            if (!result.Success)
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteSaveSearchCommand()
         {
             var newPayee = new Payee
             {
@@ -195,7 +207,7 @@ namespace BudgetBadger.Forms.Payees
         {
             var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
 
-			if (result.Success)
+            if (result.Success)
             {
                 await ExecuteRefreshCommand();
 

@@ -82,8 +82,6 @@ namespace BudgetBadger.Forms
         protected async override void OnStart()
         {
             SetLocale();
-            await VerifyPurchases();
-            await SyncOnStartOrResume();
 
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
@@ -91,7 +89,9 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            //await settings.AddOrUpdateValueAsync(AppSettings.AskedForReview, "");
+            await CleanupDeletedAccounts();
+            await VerifyPurchases();
+            await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
@@ -348,25 +348,32 @@ namespace BudgetBadger.Forms
             return new Result { Success = true };
         }
 
-        async void CleanupDeletedAccounts()
+        async Task CleanupDeletedAccounts()
         {
             try
             {
                 var settings = Container.Resolve<ISettings>();
 
-                var accountLogic = Container.Resolve<IAccountLogic>();
-                var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
-                if (deletedAccountsResult.Success)
+                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpAccountDebtEnvelopes), out bool cleanedUp);
+
+                if (!cleanedUp)
                 {
-                    foreach(var account in deletedAccountsResult.Data)
+                    var accountLogic = Container.Resolve<IAccountLogic>();
+                    var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
+                    if (deletedAccountsResult.Success)
                     {
-                        await accountLogic.DeleteAccountAsync(account.Id);
+                        foreach (var account in deletedAccountsResult.Data)
+                        {
+                            await accountLogic.DeleteAccountAsync(account.Id);
+                        }
                     }
+
+                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpAccountDebtEnvelopes, true.ToString());
                 }
             }
-            catch
+            catch (Exception e)
             {
-            
+
             }
         }
     }

@@ -192,6 +192,7 @@ namespace BudgetBadger.Models
             transaction.Account = this.Account.DeepCopy();
             transaction.Payee = this.Payee.DeepCopy();
             transaction.Envelope = this.Envelope.DeepCopy();
+            transaction.Notes = String.Copy(this.Notes);
             return transaction;
         }
 
@@ -228,9 +229,9 @@ namespace BudgetBadger.Models
                 && ReconciledDateTime == p.ReconciledDateTime
                 && ServiceDate == p.ServiceDate
                 && SplitId == p.SplitId
-                && Account == p.Account
-                && Payee == p.Payee
-                && Envelope == p.Envelope;
+                && Account.Equals(p.Account)
+                && Payee.Equals(p.Payee)
+                && Envelope.Equals(p.Envelope);
         }
 
         public override bool Equals(object obj)
@@ -256,29 +257,6 @@ namespace BudgetBadger.Models
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Transaction);
-        }
-
-        public static bool operator ==(Transaction lhs, Transaction rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Transaction lhs, Transaction rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

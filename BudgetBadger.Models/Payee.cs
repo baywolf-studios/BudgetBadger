@@ -84,7 +84,12 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
-            return (Payee)this.MemberwiseClone();
+            var payee = (Payee)this.MemberwiseClone();
+            payee.Description = String.Copy(this.Description);
+            payee.Notes = String.Copy(this.Notes);
+            payee.Group = String.Copy(this.Group);
+
+            return payee;
         }
 
         public bool Equals(Payee p)
@@ -115,8 +120,7 @@ namespace BudgetBadger.Models
                 && ModifiedDateTime == p.ModifiedDateTime
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
-                && Notes == p.Notes
-                && IsAccount == p.IsAccount;
+                && Notes == p.Notes;
         }
 
         public override bool Equals(object obj)
@@ -152,29 +156,6 @@ namespace BudgetBadger.Models
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Payee);
-        }
-
-        public static bool operator ==(Payee lhs, Payee rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Payee lhs, Payee rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

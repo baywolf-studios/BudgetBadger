@@ -84,68 +84,101 @@
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionServiceDateLabel}"
-                                    HeaderTextAlignment="Start"
                                     MappingName="ServiceDate">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate TransactionServiceDateLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:DatePickerColumn Date="{Binding ServiceDate}" IsReadOnly="true" />
+                                            <dt:DatePickerColumn
+                                                Date="{Binding ServiceDate}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionAccountLabel}"
-                                    HeaderTextAlignment="Start"
                                     MappingName="Account.Description">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate TransactionAccountLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerColumn
-                                                IsReadOnly="true"
                                                 ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Account}"
-                                                ItemDisplayBinding="{Binding Description}"/>
+                                                ItemDisplayBinding="{Binding Description}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionPayeeLabel}"
-                                    HeaderTextAlignment="Start"
                                     MappingName="Payee.Description">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate TransactionPayeeLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerColumn
                                                 ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Payee}"
-                                                ItemDisplayBinding="{Binding Description}"/>
+                                                ItemDisplayBinding="{Binding Description}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionEnvelopeLabel}"
-                                    HeaderTextAlignment="Start"
                                     MappingName="Envelope.Description">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate TransactionEnvelopeLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerColumn
                                                 ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Envelope}"
-                                                ItemDisplayBinding="{Binding Description}"/>
+                                                ItemDisplayBinding="{Binding ExtendedDescription}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionAmountLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Amount"
-                                    TextAlignment="End" />
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Amount">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate TransactionAmountLabel}" HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:CurrencyCalculatorColumn
+                                                Number="{Binding Amount}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
                                     Width="56"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
@@ -154,10 +187,12 @@
                                     MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
-                                                <ContentView.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                                </ContentView.GestureRecognizers>
+                                            <uc:ContentButton
+                                                HeightRequest="{StaticResource ListItemHeight}"
+                                                WidthRequest="{StaticResource ListItemHeight}"
+                                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"
+                                                Style="{StaticResource DataGridColumnStyle}">
                                                 <svg:SvgCachedImage
                                                     Margin="16"
                                                     HeightRequest="24"
@@ -187,7 +222,34 @@
                                                         </DataTrigger>
                                                     </svg:SvgCachedImage.Triggers>
                                                 </svg:SvgCachedImage>
-                                            </ContentView>
+                                            </uc:ContentButton>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="56"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText=""
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <uc:ContentButton
+                                                HeightRequest="{StaticResource ListItemHeight}"
+                                                WidthRequest="{StaticResource ListItemHeight}"
+                                                Style="{StaticResource DataGridColumnStyle}"
+                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}">
+                                                <svg:SvgCachedImage
+                                                    Margin="16"
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24"
+                                                    Source="next.svg">
+                                                </svg:SvgCachedImage>
+                                            </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

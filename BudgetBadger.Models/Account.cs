@@ -127,6 +127,9 @@ namespace BudgetBadger.Models
         public Account DeepCopy()
         {
             Account account = (Account)this.MemberwiseClone();
+            account.Description = String.Copy(this.Description);
+            account.Notes = String.Copy(this.Notes);
+            account.Group = String.Copy(this.Group);
             return account;
         }
 
@@ -191,29 +194,6 @@ namespace BudgetBadger.Models
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Account);
-        }
-
-        public static bool operator ==(Account lhs, Account rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Account lhs, Account rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

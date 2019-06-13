@@ -106,6 +106,8 @@ namespace BudgetBadger.Models
         {
             Envelope envelope = (Envelope)this.MemberwiseClone();
             envelope.Group = this.Group.DeepCopy();
+            envelope.Description = String.Copy(this.Description);
+            envelope.Notes = String.Copy(this.Notes);
 
             return envelope;
         }
@@ -139,7 +141,7 @@ namespace BudgetBadger.Models
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
-                && Group == p.Group
+                && Group.Equals(p.Group)
                 && IgnoreOverspend == p.IgnoreOverspend;
         }
 
@@ -176,29 +178,6 @@ namespace BudgetBadger.Models
             }
 
             return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
-        }
-
-        public static bool operator ==(Envelope lhs, Envelope rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Envelope lhs, Envelope rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

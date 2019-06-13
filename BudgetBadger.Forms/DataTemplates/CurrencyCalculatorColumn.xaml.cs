@@ -58,15 +58,23 @@ namespace BudgetBadger.Forms.DataTemplates
             InitializeComponent();
             TextControl.BindingContext = this;
 
-            PropertyChanged += (sender, e) =>
+            TextControl.Focused += (sender, e) =>
             {
-                if (e.PropertyName == nameof(IsEnabled))
-                {
-                    TextControl.IsEnabled = IsEnabled;
-                }
+                UpdateActive();
             };
 
             TextControl.Unfocused += (sender, e) =>
+            {
+                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                {
+                    SaveCommand.Execute(SaveCommandParameter);
+                }
+
+                ForceActiveBackground = false;
+                ForceActiveBackground = true;
+            };
+
+            TextControl.Completed += (sender, e) =>
             {
                 if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
                 {
