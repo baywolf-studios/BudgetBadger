@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using BudgetBadger.Forms.UserControls;
+using BudgetBadger.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class PickerColumn : ContentButton
     {
-        ObservableCollection<object> internalItemsSource;
-
         public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TextColumn));
         public bool IsReadOnly
         {
@@ -27,13 +27,14 @@ namespace BudgetBadger.Forms.DataTemplates
 
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(PickerColumn), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            ((PickerColumn)bindable).internalItemsSource.Clear();
-            if (newVal != null && newVal is IList list)
+            var items = ((PickerColumn)bindable).PickerControl.ItemsSource as ObservableRangeCollection<object>;
+            if (newVal != null)
             {
-                foreach (var item in list)
-                {
-                    ((PickerColumn)bindable).internalItemsSource.Add(item);
-                }
+                items.ReplaceRange(newVal as IEnumerable<object>);
+            }
+            else
+            {
+                items.Clear();
             }
         });
         public IList ItemsSource
@@ -44,11 +45,11 @@ namespace BudgetBadger.Forms.DataTemplates
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(PickerColumn), null, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if (((PickerColumn)bindable).internalItemsSource != null 
-                && !((PickerColumn)bindable).internalItemsSource.Contains(newVal)
+            if (((PickerColumn)bindable).PickerControl.ItemsSource != null 
+                && !((PickerColumn)bindable).PickerControl.ItemsSource.Contains(newVal)
                 && newVal != null)
             {
-                ((PickerColumn)bindable).internalItemsSource.Add(newVal);
+                ((PickerColumn)bindable).PickerControl.ItemsSource.Add(newVal);
             }
 
             var index = -1;
@@ -96,10 +97,9 @@ namespace BudgetBadger.Forms.DataTemplates
         public PickerColumn()
         {
             InitializeComponent();
-            internalItemsSource = new ObservableCollection<object>();
             PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
-            PickerControl.ItemsSource = internalItemsSource;
+            PickerControl.ItemsSource = new ObservableRangeCollection<object>();
 
             PickerControl.SelectedIndexChanged += (sender, e) =>
             {
@@ -112,7 +112,8 @@ namespace BudgetBadger.Forms.DataTemplates
                     LabelControl.Text = string.Empty;
                 }
 
-                if (!(SelectedItem == null && PickerControl.SelectedItem == null))
+                if (!(SelectedItem == null && PickerControl.SelectedItem == null)
+                && PickerControl.SelectedItem != null)
                 {
                     if ((SelectedItem == null && PickerControl.SelectedItem != null)
                         || (SelectedItem != null && PickerControl.SelectedItem == null)

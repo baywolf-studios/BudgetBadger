@@ -251,6 +251,7 @@
     <Compile Include="Renderers\Button2Renderer.cs" />
     <Compile Include="InAppBilling.cs" />
     <Compile Include="Renderers\PickerRenderer.cs" />
+    <Compile Include="Renderers\FormsNSPopUpButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
