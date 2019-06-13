@@ -112,12 +112,17 @@ namespace BudgetBadger.Forms.DataTemplates
                     LabelControl.Text = string.Empty;
                 }
 
-                if (!SelectedItem.Equals(PickerControl.SelectedItem))
+                if (!(SelectedItem == null && PickerControl.SelectedItem == null))
                 {
-                    SelectedItem = PickerControl.SelectedItem;
-                    if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                    if ((SelectedItem == null && PickerControl.SelectedItem != null)
+                        || (SelectedItem != null && PickerControl.SelectedItem == null)
+                        || !(SelectedItem.Equals(PickerControl.SelectedItem)))
                     {
-                        SaveCommand.Execute(SaveCommandParameter);
+                        SelectedItem = PickerControl.SelectedItem;
+                        if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                        {
+                            SaveCommand.Execute(SaveCommandParameter);
+                        }
                     }
                 }
 

@@ -127,9 +127,9 @@ namespace BudgetBadger.Models
         public Account DeepCopy()
         {
             Account account = (Account)this.MemberwiseClone();
-            account.Description = String.Copy(this.Description);
-            account.Notes = String.Copy(this.Notes);
-            account.Group = String.Copy(this.Group);
+            account.Description = this.Description == null ? null : String.Copy(this.Description);
+            account.Notes = this.Notes == null ? null : String.Copy(this.Notes);
+            account.Group = this.Group == null ? null : String.Copy(this.Group);
             return account;
         }
 

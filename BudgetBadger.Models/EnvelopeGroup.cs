@@ -79,8 +79,8 @@ namespace BudgetBadger.Models
         public EnvelopeGroup DeepCopy()
         {
             var group = (EnvelopeGroup)this.MemberwiseClone();
-            group.Description = String.Copy(this.Description);
-            group.Notes = String.Copy(this.Notes);
+            group.Description = this.Description == null ? null : String.Copy(this.Description);
+            group.Notes = this.Notes == null ? null : String.Copy(this.Notes);
             return group;
         }
 

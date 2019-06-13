@@ -23,7 +23,7 @@ namespace BudgetBadger.Forms.DataTemplates
                                     defaultBindingMode: BindingMode.TwoWay,
                                     propertyChanged: (bindable, oldVal, newVal) =>
                                     {
-                                        ((DatePickerColumn)bindable).DateControl.Date = (DateTime)newVal;
+                                        ((DatePickerColumn)bindable).DateControl.Date = ((DateTime)newVal).Date;
                                     });
         public DateTime Date
         {
@@ -78,9 +78,9 @@ namespace BudgetBadger.Forms.DataTemplates
 
             DateControl.DateSelected += (sender, e) =>
             {
-                if (!Date.Equals(DateControl.Date))
+                if (!Date.Date.Equals(DateControl.Date.Date))
                 {
-                    Date = DateControl.Date;
+                    Date = DateControl.Date.Date;
                     if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
                     {
                         SaveCommand.Execute(SaveCommandParameter);

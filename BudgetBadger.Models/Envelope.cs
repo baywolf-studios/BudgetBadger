@@ -106,8 +106,8 @@ namespace BudgetBadger.Models
         {
             Envelope envelope = (Envelope)this.MemberwiseClone();
             envelope.Group = this.Group.DeepCopy();
-            envelope.Description = String.Copy(this.Description);
-            envelope.Notes = String.Copy(this.Notes);
+            envelope.Description = this.Description == null ? null : String.Copy(this.Description);
+            envelope.Notes = this.Notes == null ? null : String.Copy(this.Notes);
 
             return envelope;
         }
