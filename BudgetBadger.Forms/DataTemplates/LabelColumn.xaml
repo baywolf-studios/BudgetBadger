@@ -6,7 +6,8 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     Style="{StaticResource DataGridColumnStyle}"
     Command="{Binding SelectedCommand}"
-    CommandParameter="{Binding SelectedCommandParameter}">
+    CommandParameter="{Binding SelectedCommandParameter}"
+    Padding="8,0">
     <Label
         x:Name="TextControl"
         FontSize="{StaticResource DataGridColumnFontSize}"

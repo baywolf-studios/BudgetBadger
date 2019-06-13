@@ -96,7 +96,7 @@
                                                 Date="{Binding ServiceDate}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
@@ -116,7 +116,7 @@
                                                 ItemDisplayBinding="{Binding Description}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
@@ -136,7 +136,7 @@
                                                 ItemDisplayBinding="{Binding Description}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
@@ -156,7 +156,7 @@
                                                 ItemDisplayBinding="{Binding ExtendedDescription}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
@@ -174,7 +174,7 @@
                                                 Number="{Binding Amount}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
@@ -238,7 +238,7 @@
                                                 HeightRequest="{StaticResource ListItemHeight}"
                                                 WidthRequest="{StaticResource ListItemHeight}"
                                                 Style="{StaticResource DataGridColumnStyle}"
-                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
                                                 <svg:SvgCachedImage
                                                     Margin="16"

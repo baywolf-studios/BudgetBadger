@@ -8,7 +8,7 @@
     Tapped="Handle_Tapped"
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
-    Padding="0,0,16,0">
+    Padding="8,0">
     <StackLayout
         Orientation="Vertical">
         <DatePicker
