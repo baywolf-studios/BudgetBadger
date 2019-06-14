@@ -100,7 +100,6 @@ namespace BudgetBadger.Forms.DataTemplates
         public PickerColumn(bool dense)
         {
             InitializeComponent();
-
             if (dense)
             {
                 PickerControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];

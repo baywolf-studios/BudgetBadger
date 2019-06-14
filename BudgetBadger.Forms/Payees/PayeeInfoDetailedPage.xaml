@@ -104,8 +104,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Account.Description"
-                                    ColumnSizer="Auto">
+                                    MappingName="Account.Description">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <dt:HeaderDenseColumn
@@ -126,8 +125,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Payee.ExtendedDescription"
-                                    ColumnSizer="Auto">
+                                    MappingName="Payee.ExtendedDescription">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <dt:HeaderDenseColumn
@@ -148,7 +146,8 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Envelope.Description">
+                                    MappingName="Envelope.Description"
+                                    ColumnSizer="Auto">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <dt:HeaderDenseColumn

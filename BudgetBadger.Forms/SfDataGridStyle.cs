@@ -67,5 +67,10 @@ namespace BudgetBadger.Forms
         {
             return GridLinesVisibility.Both;
         }
+
+        public override float GetBorderWidth()
+        {
+            return 1;
+        }
     }
 }

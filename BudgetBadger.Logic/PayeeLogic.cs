@@ -340,14 +340,11 @@ namespace BudgetBadger.Logic
             }
             else if (payeeToPopulate.IsAccount)
             {
-                var transferString = _resourceContainer.GetResourceString("PayeeTransferGroup");
-                payeeToPopulate.Group = transferString;
-                payeeToPopulate.ExtendedDescription = string.Format("{0} - {1}", transferString, payeeToPopulate.Description);
+                payeeToPopulate.Group = _resourceContainer.GetResourceString("PayeeTransferGroup");
             }
             else
             {
                 payeeToPopulate.Group = payeeToPopulate.Description[0].ToString().ToUpper();
-                payeeToPopulate.ExtendedDescription = payeeToPopulate.Description;
             }
 
             return payeeToPopulate;

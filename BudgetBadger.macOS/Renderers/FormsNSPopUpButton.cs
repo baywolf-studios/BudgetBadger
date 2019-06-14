@@ -30,5 +30,11 @@ namespace BudgetBadger.macOS.Renderers
             FocusChanged?.Invoke(this, new BoolEventArgs(true));
             return base.BecomeFirstResponder();
         }
+
+        public override void DidCloseMenu(NSMenu menu, NSEvent theEvent)
+        {
+            FocusChanged?.Invoke(this, new BoolEventArgs(false));
+            base.DidCloseMenu(menu, theEvent);
+        }
     }
 }
