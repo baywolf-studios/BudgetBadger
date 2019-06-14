@@ -93,7 +93,20 @@ namespace BudgetBadger.Models
 
         public string ExtendedDescription
         {
-            get => Group?.Description + " - " + Description;
+            get
+            {
+                if (Group != null
+                    && !string.IsNullOrEmpty(Group.Description)
+                    && !IsIncome
+                    && !IsBuffer
+                    && !IsSystem
+                    && !IsGenericDebtEnvelope)
+                {
+                    return string.Format("{0} - {1}", Group?.Description, Description);
+                }
+
+                return Description;
+            }
         }
 
         public Envelope()

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Payees.PayeeInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -84,15 +84,17 @@
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="ServiceDate">
+                                    MappingName="ServiceDate"
+                                    Width="96">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate TransactionServiceDateLabel}"/>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionServiceDateLabel}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:DatePickerColumn
+                                            <dt:DatePickerDenseColumn
                                                 Date="{Binding ServiceDate}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
@@ -102,15 +104,17 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Account.Description">
+                                    MappingName="Account.Description"
+                                    ColumnSizer="Auto">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate TransactionAccountLabel}"/>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionAccountLabel}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:PickerColumn
+                                            <dt:PickerDenseColumn
                                                 ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Account}"
                                                 ItemDisplayBinding="{Binding Description}"
@@ -122,18 +126,20 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Payee.Description">
+                                    MappingName="Payee.ExtendedDescription"
+                                    ColumnSizer="Auto">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate TransactionPayeeLabel}"/>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionPayeeLabel}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:PickerColumn
+                                            <dt:PickerDenseColumn
                                                 ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Payee}"
-                                                ItemDisplayBinding="{Binding Description}"
+                                                ItemDisplayBinding="{Binding ExtendedDescription}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
@@ -145,12 +151,13 @@
                                     MappingName="Envelope.Description">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate TransactionEnvelopeLabel}"/>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionEnvelopeLabel}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:PickerColumn
+                                            <dt:PickerDenseColumn
                                                 ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Envelope}"
                                                 ItemDisplayBinding="{Binding ExtendedDescription}"
@@ -162,15 +169,18 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
+                                    Width="96"
                                     MappingName="Amount">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate TransactionAmountLabel}" HorizontalTextAlignment="End"/>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionAmountLabel}"
+                                                HorizontalTextAlignment="End"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dt:CurrencyCalculatorColumn
+                                            <dt:CurrencyCalculatorDenseColumn
                                                 Number="{Binding Amount}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
@@ -180,7 +190,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    Width="56"
+                                    Width="48"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
                                     HeaderTextAlignment="Center"
@@ -188,8 +198,6 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <uc:ContentButton
-                                                HeightRequest="{StaticResource ListItemHeight}"
-                                                WidthRequest="{StaticResource ListItemHeight}"
                                                 Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}"
                                                 Style="{StaticResource DataGridColumnStyle}">
@@ -227,7 +235,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    Width="56"
+                                    Width="48"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
                                     HeaderTextAlignment="Center"
@@ -235,8 +243,6 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <uc:ContentButton
-                                                HeightRequest="{StaticResource ListItemHeight}"
-                                                WidthRequest="{StaticResource ListItemHeight}"
                                                 Style="{StaticResource DataGridColumnStyle}"
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">

@@ -77,6 +77,14 @@ namespace BudgetBadger.Models
             set => SetProperty(ref group, value);
         }
 
+        // calculated
+        string extendedDescription;
+        public string ExtendedDescription
+        {
+            get => extendedDescription;
+            set => SetProperty(ref extendedDescription, value);
+        }
+
         public Payee()
         {
             Id = Guid.Empty;

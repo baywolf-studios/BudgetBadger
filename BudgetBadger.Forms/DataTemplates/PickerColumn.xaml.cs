@@ -95,9 +95,23 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SelectedCommandParameterProperty, value);
         }
 
-        public PickerColumn()
+        public PickerColumn() : this(false) { }
+
+        public PickerColumn(bool dense)
         {
             InitializeComponent();
+
+            if (dense)
+            {
+                PickerControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+            }
+            else
+            {
+                PickerControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+            }
+
             PickerControl.ItemsSource = new ObservableCollection<object>();
             PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
