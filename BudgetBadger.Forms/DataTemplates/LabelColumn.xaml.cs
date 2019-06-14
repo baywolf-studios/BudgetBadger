@@ -29,9 +29,19 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SelectedCommandParameterProperty, value);
         }
 
-        public LabelColumn()
+        public LabelColumn() : this(false) { }
+
+        public LabelColumn(bool dense)
         {
             InitializeComponent();
+            if (dense)
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+            }
+            else
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+            }
             TextControl.BindingContext = this;
         }
     }

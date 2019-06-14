@@ -59,9 +59,22 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SelectedCommandParameterProperty, value);
         }
 
-        public DatePickerColumn()
+        public DatePickerColumn() : this(false) { }
+
+        public DatePickerColumn(bool dense)
         {
             InitializeComponent();
+            if (dense)
+            {
+                DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+            }
+            else
+            {
+                DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+            }
+
             DateControl.BindingContext = this;
             LabelControl.BindingContext = this;
 

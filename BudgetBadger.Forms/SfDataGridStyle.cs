@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms
 
         public override GridLinesVisibility GetGridLinesVisibility()
         {
-            return GridLinesVisibility.Horizontal;
+            return GridLinesVisibility.Both;
         }
     }
 }

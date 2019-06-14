@@ -50,9 +50,19 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SelectedCommandParameterProperty, value);
         }
 
-        public TextColumn()
+        public TextColumn() : this(false) { }
+
+        public TextColumn(bool dense)
         {
             InitializeComponent();
+            if (dense)
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+            }
+            else
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+            }
             TextControl.BindingContext = this;
 
             TextControl.Focused += (sender, e) =>

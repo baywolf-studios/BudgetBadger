@@ -21,9 +21,19 @@ namespace BudgetBadger.Forms.DataTemplates
             set => TextControl.HorizontalTextAlignment = value;
         }
 
-        public HeaderColumn()
+        public HeaderColumn() : this(false) { }
+
+        public HeaderColumn(bool dense)
         {
             InitializeComponent();
+            if (dense)
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+            }
+            else
+            {
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+            }
             TextControl.BindingContext = this;
         }
     }
