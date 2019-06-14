@@ -14,7 +14,6 @@
         <DatePicker
             x:Name="DateControl"
             IsEnabled="{Binding IsEnabled}"
-            FontSize="{StaticResource DataGridItemFontSize}"
             TextColor="{StaticResource PrimaryTextColor}"
             VerticalOptions="CenterAndExpand"
             IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
@@ -25,7 +24,6 @@
         <Label
             x:Name="LabelControl"
             VerticalOptions="CenterAndExpand"
-            FontSize="{StaticResource DataGridItemFontSize}"
             TextColor="{StaticResource PrimaryTextColor}"
             IsVisible="{Binding IsReadOnly}"
             Text="{Binding Date, Converter={StaticResource ShortDateConverter}}">
