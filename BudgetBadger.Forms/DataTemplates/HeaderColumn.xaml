@@ -7,7 +7,6 @@
     Padding="8,0">
     <Label
         x:Name="TextControl"
-        FontSize="{StaticResource DataGridHeaderFontSize}"
         Text="{Binding Text}"
         TextColor="{StaticResource SecondaryTextColor}"
         VerticalOptions="CenterAndExpand">

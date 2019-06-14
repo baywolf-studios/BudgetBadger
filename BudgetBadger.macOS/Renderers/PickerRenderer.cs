@@ -27,17 +27,19 @@ namespace BudgetBadger.macOS.Renderers
             if (e.NewElement != null)
             {
                 if (Control == null)
-                    SetNativeControl(new NSPopUpButton());
+                {
+                    var popUpButton = new FormsNSPopUpButton();
+                    popUpButton.FocusChanged += ControlFocusChanged;
+                    SetNativeControl(new FormsNSPopUpButton());
+                }
 
                 _defaultBackgroundColor = Control.Cell.BackgroundColor;
 
-                Control.Activated -= ComboBoxSelectionChanged;
                 Control.Activated += ComboBoxSelectionChanged;
                 ResetItems();
                 UpdateSelectedItem();
                 UpdateFontAndColor();
 
-                ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged -= CollectionChanged;
                 ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged += CollectionChanged; 
             }
 
@@ -89,6 +91,7 @@ namespace BudgetBadger.macOS.Renderers
                     if (Control != null)
                     {
                         Control.Activated -= ComboBoxSelectionChanged;
+                        (Control as FormsNSPopUpButton).FocusChanged -= ControlFocusChanged;
                     }
 
                     if (Element != null)
@@ -98,6 +101,11 @@ namespace BudgetBadger.macOS.Renderers
                 }
             }
             base.Dispose(disposing);
+        }
+
+        void ControlFocusChanged(object sender, BoolEventArgs e)
+        {
+            ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, e.Value);
         }
 
         void ComboBoxSelectionChanged(object sender, EventArgs e)
