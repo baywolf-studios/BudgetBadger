@@ -77,12 +77,17 @@ namespace BudgetBadger.Models
             set => SetProperty(ref group, value);
         }
 
-        // calculated
-        string extendedDescription;
         public string ExtendedDescription
         {
-            get => extendedDescription;
-            set => SetProperty(ref extendedDescription, value);
+            get
+            {
+                if (IsAccount)
+                {
+                    return string.Format("{0} - {1}", Group, Description);
+                }
+
+                return Description;
+            }
         }
 
         public Payee()

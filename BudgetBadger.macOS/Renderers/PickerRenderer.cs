@@ -30,15 +30,13 @@ namespace BudgetBadger.macOS.Renderers
                 {
                     var popUpButton = new FormsNSPopUpButton();
                     popUpButton.FocusChanged += ControlFocusChanged;
-                    SetNativeControl(new FormsNSPopUpButton());
+                    SetNativeControl(popUpButton);
                 }
 
                 _defaultBackgroundColor = Control.Cell.BackgroundColor;
 
                 Control.Activated += ComboBoxSelectionChanged;
                 ResetItems();
-                UpdateSelectedItem();
-                UpdateFontAndColor();
 
                 ((INotifyCollectionChanged)e.NewElement.Items).CollectionChanged += CollectionChanged; 
             }
@@ -52,13 +50,10 @@ namespace BudgetBadger.macOS.Renderers
             if (e.PropertyName == Picker.ItemsSourceProperty.PropertyName)
             {
                 ResetItems();
-                UpdateSelectedItem();
-                UpdateFontAndColor();
             }
             if(e.PropertyName == Picker.SelectedIndexProperty.PropertyName)
             {
                 UpdateSelectedItem();
-                UpdateFontAndColor();
             }
             if (e.PropertyName == Picker.TextColorProperty.PropertyName ||
                 e.PropertyName == VisualElement.IsEnabledProperty.PropertyName ||
@@ -111,6 +106,7 @@ namespace BudgetBadger.macOS.Renderers
         void ComboBoxSelectionChanged(object sender, EventArgs e)
         {
             ElementController?.SetValueFromRenderer(Picker.SelectedIndexProperty, (int)Control.IndexOfSelectedItem);
+            ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
         }
 
         void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -175,6 +171,8 @@ namespace BudgetBadger.macOS.Renderers
                 };
                 Control.Menu.AddItem(menuItem);
             }
+
+            UpdateSelectedItem();
         }
 
         void UpdateSelectedItem()
@@ -190,6 +188,11 @@ namespace BudgetBadger.macOS.Renderers
             if (items != null && items.Count != 0 && selectedIndex >= 0)
             {
                 Control.SelectItem(selectedIndex);
+            }
+
+            if (Control.SelectedItem != null)
+            {
+                Control.SelectedItem.AttributedTitle = new NSAttributedString(Control.SelectedItem.Title, GetNSStringAttributes());
             }
         }
 
