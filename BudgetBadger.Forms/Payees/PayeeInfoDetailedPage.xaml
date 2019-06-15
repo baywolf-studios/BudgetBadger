@@ -95,6 +95,7 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:DatePickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
                                                 Date="{Binding ServiceDate}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
@@ -114,6 +115,7 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
                                                 ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Account}"
                                                 ItemDisplayBinding="{Binding Description}"
@@ -125,29 +127,8 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Payee.ExtendedDescription">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactionPayeeLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:PickerDenseColumn
-                                                ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
-                                                SelectedItem="{Binding Payee}"
-                                                ItemDisplayBinding="{Binding ExtendedDescription}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
                                     MappingName="Envelope.Description"
-                                    ColumnSizer="Auto">
+                                    uc:StarSizerRatioHelpers.ColumnRatio="1.5">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <dt:HeaderDenseColumn
@@ -157,6 +138,7 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:PickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
                                                 ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                                 SelectedItem="{Binding Envelope}"
                                                 ItemDisplayBinding="{Binding ExtendedDescription}"
@@ -169,18 +151,41 @@
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
                                     Width="96"
-                                    MappingName="Amount">
+                                    MappingName="Outflow">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactionAmountLabel}"
+                                                Text="{ext:Translate TransactactionOutflowLabel}"
                                                 HorizontalTextAlignment="End"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <dt:CurrencyCalculatorDenseColumn
-                                                Number="{Binding Amount}"
+                                                IsReadOnly="{Binding IsCombined}"
+                                                Number="{Binding Outflow}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="96"
+                                    MappingName="Inflow">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactactionInflowLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:CurrencyCalculatorDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                Number="{Binding Inflow}"
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"

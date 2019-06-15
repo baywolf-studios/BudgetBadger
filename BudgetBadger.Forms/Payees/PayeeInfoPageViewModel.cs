@@ -335,15 +335,25 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.SaveTransactionAsync(transaction);
-
-            if (result.Success)
+            var correctedTransactionResult = await _transactionLogic.GetCorrectedTransaction(transaction);
+            
+            if (correctedTransactionResult.Success)
             {
-                _needToSync = true;
+                transaction = correctedTransactionResult.Data;
+                var result = await _transactionLogic.SaveTransactionAsync(transaction);
+
+                if (result.Success)
+                {
+                    _needToSync = true;
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }

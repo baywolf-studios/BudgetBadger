@@ -60,6 +60,13 @@ namespace BudgetBadger.Forms.DataTemplates
             }
 
             ((PickerColumn)bindable).PickerControl.SelectedIndex = index;
+
+            if (((PickerColumn)bindable).PickerControl.ItemsSource != null
+                && ((PickerColumn)bindable).PickerControl.ItemsSource.Contains(oldVal)
+                && !((PickerColumn)bindable).ItemsSource.Contains(oldVal))
+            {
+                ((PickerColumn)bindable).PickerControl.ItemsSource.Remove(oldVal);
+            }
         });
         public object SelectedItem
         {
