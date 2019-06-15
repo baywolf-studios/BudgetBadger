@@ -9,21 +9,15 @@
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
     Padding="0,0,16,0">
-    <Grid>
-        <DatePicker
-            x:Name="DateControl"
-            IsEnabled="{Binding IsEnabled}"
-            TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand"
-            IsVisible="false">
-            <DatePicker.Effects>
-                <ef:BorderlessDatePickerEffect/>
-            </DatePicker.Effects>
-        </DatePicker>
-        <Label
-            x:Name="LabelControl"
-            VerticalOptions="CenterAndExpand"
-            TextColor="{StaticResource PrimaryTextColor}">
-        </Label>
-    </Grid>
+    <DatePicker
+        x:Name="DateControl"
+        Format="d"
+        IsEnabled="{Binding IsEnabled}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="CenterAndExpand"
+        IsVisible="false">
+        <DatePicker.Effects>
+            <ef:BorderlessDatePickerEffect/>
+        </DatePicker.Effects>
+    </DatePicker>
 </uc:ContentButton>
