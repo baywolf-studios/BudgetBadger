@@ -8,25 +8,15 @@
     Tapped="Handle_Tapped"
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
-    Padding="8,0">
-    <StackLayout
-        Orientation="Vertical">
-        <DatePicker
-            x:Name="DateControl"
-            IsEnabled="{Binding IsEnabled}"
-            TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand"
-            IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
-            <DatePicker.Effects>
-                <ef:BorderlessDatePickerEffect/>
-            </DatePicker.Effects>
-        </DatePicker>
-        <Label
-            x:Name="LabelControl"
-            VerticalOptions="CenterAndExpand"
-            TextColor="{StaticResource PrimaryTextColor}"
-            IsVisible="{Binding IsReadOnly}"
-            Text="{Binding Date, Converter={StaticResource ShortDateConverter}}">
-        </Label>
-    </StackLayout>
+    Padding="0,0,16,0">
+    <DatePicker
+        x:Name="DateControl"
+        IsEnabled="{Binding IsEnabled}"
+        TextColor="{StaticResource PrimaryTextColor}"
+        VerticalOptions="CenterAndExpand"
+        InputTransparent="{Binding IsReadOnly}">
+        <DatePicker.Effects>
+            <ef:BorderlessDatePickerEffect/>
+        </DatePicker.Effects>
+    </DatePicker>
 </uc:ContentButton>

@@ -250,6 +250,9 @@ namespace BudgetBadger.Logic
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
 
+                activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
+                activeEnvelopes.Add(_envelopeDataAccess.ReadGenericDebtEnvelope());
+
                 activeEnvelopes.Sort();
 
                 result.Success = true;

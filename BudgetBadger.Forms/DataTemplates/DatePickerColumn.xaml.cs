@@ -67,19 +67,21 @@ namespace BudgetBadger.Forms.DataTemplates
             if (dense)
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
             }
             else
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
             }
 
             DateControl.BindingContext = this;
-            LabelControl.BindingContext = this;
 
             DateControl.Focused += (sender, e) =>
             {
+                if (IsReadOnly || !IsEnabled)
+                {
+                    DateControl.Unfocus();
+                }
+
                 UpdateActive();
             };
 

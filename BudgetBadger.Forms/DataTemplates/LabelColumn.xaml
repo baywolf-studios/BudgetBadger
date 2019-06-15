@@ -7,7 +7,7 @@
     Style="{StaticResource DataGridColumnStyle}"
     Command="{Binding SelectedCommand}"
     CommandParameter="{Binding SelectedCommandParameter}"
-    Padding="8,0">
+    Padding="0,0,16,0">
     <Label
         x:Name="TextControl"
         Text="{Binding Text}"
