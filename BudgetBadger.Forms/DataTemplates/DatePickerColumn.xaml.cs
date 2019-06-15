@@ -67,12 +67,10 @@ namespace BudgetBadger.Forms.DataTemplates
             if (dense)
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
             }
             else
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
             }
 
             DateControl.BindingContext = this;
@@ -91,14 +89,10 @@ namespace BudgetBadger.Forms.DataTemplates
             {
                 ForceActiveBackground = false;
                 ForceActiveBackground = true;
-                DateControl.IsVisible = false;
-                LabelControl.IsVisible = true;
             };
 
             DateControl.DateSelected += (sender, e) =>
             {
-                LabelControl.Text = StaticResourceContainer.Current.GetFormattedString("{0:d}", DateControl.Date);
-
                 if (!Date.Date.Equals(DateControl.Date.Date))
                 {
                     Date = DateControl.Date.Date;
@@ -110,8 +104,6 @@ namespace BudgetBadger.Forms.DataTemplates
 
                 ForceActiveBackground = false;
                 ForceActiveBackground = true;
-                DateControl.IsVisible = false;
-                LabelControl.IsVisible = true;
             };
         }
 
@@ -128,8 +120,6 @@ namespace BudgetBadger.Forms.DataTemplates
             }
             else
             {
-                LabelControl.IsVisible = false;
-                DateControl.IsVisible = true;
                 DateControl.Focus();
             }
         }
