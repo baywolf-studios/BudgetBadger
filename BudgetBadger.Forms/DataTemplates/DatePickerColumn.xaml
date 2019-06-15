@@ -14,8 +14,7 @@
         Format="d"
         IsEnabled="{Binding IsEnabled}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        IsVisible="false">
+        VerticalOptions="CenterAndExpand">
         <DatePicker.Effects>
             <ef:BorderlessDatePickerEffect/>
         </DatePicker.Effects>
