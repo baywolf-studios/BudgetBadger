@@ -65,7 +65,17 @@ namespace BudgetBadger.Forms
 
         public override GridLinesVisibility GetGridLinesVisibility()
         {
-            return GridLinesVisibility.Both;
+            return GridLinesVisibility.Horizontal;
+        }
+
+        public override float GetHeaderBorderWidth()
+        {
+            return 0;
+        }
+
+        public override Color GetHeaderBorderColor()
+        {
+            return Color.Transparent;
         }
 
         public override float GetBorderWidth()

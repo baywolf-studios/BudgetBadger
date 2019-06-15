@@ -16,16 +16,18 @@ using Prism;
 using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, IActiveAware
+    public class PayeesPageViewModel : BaseViewModel
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly IPayeeLogic _payeeLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
+        readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IPurchaseService> _purchaseService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -35,7 +37,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
-        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -74,17 +76,26 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        public PayeesPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
+                                   INavigationService navigationService,
                                    IPageDialogService dialogService,
-                                   IPayeeLogic payeeLogic,
-                                   ISyncFactory syncFactory)
+                                   Lazy<IPayeeLogic> payeeLogic,
+                                   Lazy<ISyncFactory> syncFactory,
+                                   Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _purchaseService = purchaseService;
 
             Payees = new List<Payee>();
             SelectedPayee = null;
@@ -99,32 +110,12 @@ namespace BudgetBadger.Forms.Payees
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        private bool _IsActive;
-        public bool IsActive
+        public override async void OnActivated()
         {
-            get
-            {
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-                if (value)
-                    OnAppearing();
-                else
-                    OnDisappearing();
-            }
-        }
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
 
-        public event EventHandler IsActiveChanged;
-
-        public async void OnAppearing()
-        {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -153,7 +144,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                var result = await _payeeLogic.Value.GetPayeesAsync();
 
                 if (result.Success)
                 {
@@ -161,7 +152,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 NoPayees = (Payees?.Count ?? 0) == 0;
@@ -174,11 +165,11 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveCommand(Payee newPayee)
         {
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
 
             if (!result.Success)
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -189,7 +180,7 @@ namespace BudgetBadger.Forms.Payees
                 Description = SearchText
             };
 
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
 
             if (result.Success)
             {
@@ -202,7 +193,7 @@ namespace BudgetBadger.Forms.Payees
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -224,23 +215,23 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteCommand(Payee payee)
         {
-            var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
+            var result = await _payeeLogic.Value.DeletePayeeAsync(payee.Id);
 
             if (result.Success)
             {
                 await ExecuteRefreshCommand();
 
-                var syncService = _syncFactory.GetSyncService();
+                var syncService = _syncFactory.Value.GetSyncService();
                 var syncResult = await syncService.FullSync();
 
                 if (syncResult.Success)
                 {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
                 }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 

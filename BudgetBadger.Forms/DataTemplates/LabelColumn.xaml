@@ -13,6 +13,7 @@
         Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
+        BackgroundColor="Transparent"
+        LineBreakMode="TailTruncation">
     </Label>
 </uc:ContentButton>
