@@ -9,6 +9,7 @@
         x:Name="TextControl"
         Text="{Binding Text}"
         TextColor="{StaticResource SecondaryTextColor}"
-        VerticalOptions="CenterAndExpand">
+        VerticalOptions="CenterAndExpand"
+        BackgroundColor="Transparent">
     </Label>
 </ContentView>

@@ -15,7 +15,8 @@
         IsEnabled="{Binding IsEnabled}"
         Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand">
+        VerticalOptions="CenterAndExpand"
+        BackgroundColor="Transparent">
         <Entry.Keyboard>
             <Keyboard x:FactoryMethod="Create">
                 <x:Arguments>

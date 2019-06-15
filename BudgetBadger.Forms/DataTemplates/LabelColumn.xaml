@@ -12,6 +12,7 @@
         x:Name="TextControl"
         Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand">
+        VerticalOptions="CenterAndExpand"
+        BackgroundColor="Transparent">
     </Label>
 </uc:ContentButton>
