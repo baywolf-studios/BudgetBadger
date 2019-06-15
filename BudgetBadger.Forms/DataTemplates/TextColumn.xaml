@@ -13,7 +13,6 @@
         x:Name="TextControl"
         IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
-        Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent">

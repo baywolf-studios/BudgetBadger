@@ -122,46 +122,54 @@ namespace BudgetBadger.Forms.DataTemplates
             PickerControl.BindingContext = this;
             LabelControl.BindingContext = this;
 
-            PickerControl.SelectedIndexChanged += (sender, e) =>
-            {
-                if (PickerControl.Items != null && PickerControl.SelectedIndex >= 0)
-                {
-                    LabelControl.Text = PickerControl.Items[PickerControl.SelectedIndex];
-                }
-                else
-                {
-                    LabelControl.Text = string.Empty;
-                }
-
-                if (!(SelectedItem == null && PickerControl.SelectedItem == null)
-                && PickerControl.SelectedItem != null)
-                {
-                    if ((SelectedItem == null && PickerControl.SelectedItem != null)
-                        || (SelectedItem != null && PickerControl.SelectedItem == null)
-                        || !(SelectedItem.Equals(PickerControl.SelectedItem)))
-                    {
-                        SelectedItem = PickerControl.SelectedItem;
-                        if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
-                        {
-                            SaveCommand.Execute(SaveCommandParameter);
-                        }
-                    }
-                }
-
-                ForceActiveBackground = false;
-                ForceActiveBackground = true;
-            };
-
-            PickerControl.Focused += (sender, e) =>
-            {
-                UpdateActive();
-            };
-
+            PickerControl.SelectedIndexChanged += PickerControl_SelectedIndexChanged;
+            PickerControl.Focused += Control_Focused;
             PickerControl.Unfocused += (sender, e) =>
             {
                 ForceActiveBackground = false;
                 ForceActiveBackground = true;
             };
+        }
+
+        void Control_Focused(object sender, FocusEventArgs e)
+        {
+            if (IsReadOnly || !IsEnabled)
+            {
+                PickerControl.Unfocus();
+                LabelControl.Unfocus();
+            }
+
+            UpdateActive();
+        }
+
+        void PickerControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PickerControl.Items != null && PickerControl.SelectedIndex >= 0)
+            {
+                LabelControl.Text = PickerControl.Items[PickerControl.SelectedIndex];
+            }
+            else
+            {
+                LabelControl.Text = string.Empty;
+            }
+
+            if (!(SelectedItem == null && PickerControl.SelectedItem == null)
+            && PickerControl.SelectedItem != null)
+            {
+                if ((SelectedItem == null && PickerControl.SelectedItem != null)
+                    || (SelectedItem != null && PickerControl.SelectedItem == null)
+                    || !(SelectedItem.Equals(PickerControl.SelectedItem)))
+                {
+                    SelectedItem = PickerControl.SelectedItem;
+                    if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                    {
+                        SaveCommand.Execute(SaveCommandParameter);
+                    }
+                }
+            }
+
+            ForceActiveBackground = false;
+            ForceActiveBackground = true;
         }
 
         void Handle_Tapped(object sender, System.EventArgs e)
