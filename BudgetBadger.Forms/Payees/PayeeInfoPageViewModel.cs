@@ -216,27 +216,19 @@ namespace BudgetBadger.Forms.Payees
                     if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
                     {
                         var accountsResult = await _accountLogic.GetAccountsForSelectionAsync();
-                        if (accountsResult.Success)
+                        if (accountsResult.Success
+                            && (Accounts == null || Accounts.SequenceEqual(accountsResult.Data)))
                         {
                             Accounts = accountsResult.Data;
                         }
-                        else
+                        else if (!accountsResult.Success)
                         {
                             await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), accountsResult.Message, _resourceContainer.GetResourceString("AlertOk"));
                         }
 
-                        var payeesResult = await _payeeLogic.GetPayeesForSelectionAsync();
-                        if (payeesResult.Success)
-                        {
-                            Payees = payeesResult.Data;
-                        }
-                        else
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.GetResourceString("AlertOk"));
-                        }
-
                         var envelopesResult = await _envelopeLogic.GetEnvelopesForSelectionAsync();
-                        if (envelopesResult.Success)
+                        if (envelopesResult.Success
+                            && (Envelopes == null || Envelopes.SequenceEqual(envelopesResult.Data)))
                         {
                             Envelopes = envelopesResult.Data;
                         }
