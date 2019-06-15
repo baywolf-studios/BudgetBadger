@@ -16,7 +16,8 @@
         AutoSize="TextChanges"
         Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand">
+        VerticalOptions="CenterAndExpand"
+        BackgroundColor="Transparent">
         <Editor.Effects>
             <ef:BorderlessEditorEffect/>
         </Editor.Effects>

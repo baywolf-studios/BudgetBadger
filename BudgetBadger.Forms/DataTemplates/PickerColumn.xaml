@@ -16,7 +16,8 @@
             VerticalOptions="CenterAndExpand"
             TextColor="{StaticResource PrimaryTextColor}"
             IsEnabled="{Binding IsEnabled}"
-            IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
+            IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+            BackgroundColor="Transparent">
             <Picker.Margin>
                 <OnPlatform x:TypeArguments="Thickness">
                     <OnPlatform.Platforms>
@@ -33,7 +34,8 @@
             x:Name="LabelControl"
             VerticalOptions="CenterAndExpand"
             TextColor="{StaticResource PrimaryTextColor}"
-            IsVisible="{Binding IsReadOnly}">
+            IsVisible="{Binding IsReadOnly}"
+            BackgroundColor="Transparent">
         </Label>
     </StackLayout>
 </uc:ContentButton>

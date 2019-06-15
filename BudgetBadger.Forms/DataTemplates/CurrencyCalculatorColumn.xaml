@@ -16,7 +16,8 @@
         TextColor="{StaticResource PrimaryTextColor}"
         Number="{Binding Number}"
         HorizontalTextAlignment="End"
-        VerticalOptions="CenterAndExpand">
+        VerticalOptions="CenterAndExpand"
+        BackgroundColor="Transparent">
         <uc:CurrencyCalculator.Effects>
             <ef:BorderlessEntryEffect />
         </uc:CurrencyCalculator.Effects>
