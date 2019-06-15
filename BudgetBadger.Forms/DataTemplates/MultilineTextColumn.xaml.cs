@@ -15,7 +15,10 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(MultilineTextColumn), defaultBindingMode: BindingMode.TwoWay);
+        public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(MultilineTextColumn), defaultBindingMode: BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
+        {
+            ((MultilineTextColumn)bindable).TextControl.Text = (string)newVal;
+        });
         public string Text
         {
             get => (string)GetValue(TextProperty);
@@ -65,32 +68,34 @@ namespace BudgetBadger.Forms.DataTemplates
             }
             TextControl.BindingContext = this;
 
-            TextControl.Focused += (sender, e) =>
-            {
-                UpdateActive();
-            };
+            TextControl.Focused += Control_Focused;
+            TextControl.Unfocused += TextControl_Completed;
+            TextControl.Completed += TextControl_Completed;
+        }
 
-            TextControl.Unfocused += (sender, e) =>
+        void Control_Focused(object sender, FocusEventArgs e)
+        {
+            if (IsReadOnly || !IsEnabled)
             {
+                TextControl.Unfocus();
+            }
+
+            UpdateActive();
+        }
+
+        void TextControl_Completed(object sender, EventArgs e)
+        {
+            if (Text != TextControl.Text)
+            {
+                Text = TextControl.Text;
                 if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
                 {
                     SaveCommand.Execute(SaveCommandParameter);
                 }
+            }
 
-                ForceActiveBackground = false;
-                ForceActiveBackground = true;
-            };
-
-            TextControl.Completed += (sender, e) => 
-            {
-                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
-                {
-                    SaveCommand.Execute(SaveCommandParameter);
-                }
-
-                ForceActiveBackground = false;
-                ForceActiveBackground = true;
-            };
+            ForceActiveBackground = false;
+            ForceActiveBackground = true;
         }
 
         void Handle_Tapped(object sender, System.EventArgs e)

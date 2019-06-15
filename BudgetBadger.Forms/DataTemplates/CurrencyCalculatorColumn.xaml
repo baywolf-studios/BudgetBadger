@@ -14,7 +14,6 @@
         IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
         TextColor="{StaticResource PrimaryTextColor}"
-        Number="{Binding Number}"
         HorizontalTextAlignment="End"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent">
