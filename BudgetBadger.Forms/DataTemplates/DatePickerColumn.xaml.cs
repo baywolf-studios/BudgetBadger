@@ -79,6 +79,8 @@ namespace BudgetBadger.Forms.DataTemplates
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
             }
 
+            _resourceContainer = StaticResourceContainer.Current;
+            _localize = DependencyService.Get<ILocalize>();
             DateControl.BindingContext = this;
             TextControl.BindingContext = this;
 
