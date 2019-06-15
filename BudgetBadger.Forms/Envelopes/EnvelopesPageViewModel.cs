@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopesPageViewModel : BindableBase, IPageLifecycleAware
+    public class EnvelopesPageViewModel : BindableBase, IActiveAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -106,6 +106,25 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
         }
+
+        private bool _IsActive;
+        public bool IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                _IsActive = value;
+                if (value)
+                    OnAppearing();
+                else
+                    OnDisappearing();
+            }
+        }
+
+        public event EventHandler IsActiveChanged;
 
         public async void OnAppearing()
         {

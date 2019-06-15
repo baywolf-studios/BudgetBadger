@@ -9,6 +9,7 @@ using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.Forms.Enums;
+using Prism;
 using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -20,7 +21,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class SettingsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
+    public class SettingsPageViewModel : BindableBase, IActiveAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -147,14 +148,28 @@ namespace BudgetBadger.Forms.Settings
             LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        private bool _IsActive;
+        public bool IsActive
         {
-            ResetLocalization();
-            OnAppearing();
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                _IsActive = value;
+                if (value)
+                    OnAppearing();
+                else
+                    OnDisappearing();
+            }
         }
+        public event EventHandler IsActiveChanged;
 
         public async void OnAppearing()
         {
+            ResetLocalization();
+
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
