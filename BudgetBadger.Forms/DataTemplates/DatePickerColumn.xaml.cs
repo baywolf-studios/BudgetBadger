@@ -73,10 +73,12 @@ namespace BudgetBadger.Forms.DataTemplates
             if (dense)
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
             }
             else
             {
                 DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
             }
 
             _resourceContainer = StaticResourceContainer.Current;
