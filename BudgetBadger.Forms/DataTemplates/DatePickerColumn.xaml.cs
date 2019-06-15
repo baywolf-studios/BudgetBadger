@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 
@@ -8,6 +10,9 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class DatePickerColumn : ContentButton
     {
+        readonly IResourceContainer _resourceContainer;
+        readonly ILocalize _localize;
+
         public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TextColumn));
         public bool IsReadOnly
         {
@@ -24,6 +29,7 @@ namespace BudgetBadger.Forms.DataTemplates
                                     propertyChanged: (bindable, oldVal, newVal) =>
                                     {
                                         ((DatePickerColumn)bindable).DateControl.Date = ((DateTime)newVal).Date;
+                                        ((DatePickerColumn)bindable).TextControl.Text = ((DatePickerColumn)bindable)._resourceContainer.GetFormattedString("{0:d}", newVal);
                                     });
         public DateTime Date
         {
@@ -74,37 +80,67 @@ namespace BudgetBadger.Forms.DataTemplates
             }
 
             DateControl.BindingContext = this;
+            TextControl.BindingContext = this;
 
-            DateControl.Focused += (sender, e) =>
+            DateControl.Focused += Control_Focused;
+            TextControl.Focused += Control_Focused;
+
+            DateControl.Unfocused += DateControl_DateSelected;
+            DateControl.DateSelected += DateControl_DateSelected;
+
+            TextControl.Unfocused += TextControl_Completed;
+            TextControl.Completed += TextControl_Completed;
+        }
+
+        private void TextControl_Completed(object sender, EventArgs e)
+        {
+            var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+            var dfi = locale.DateTimeFormat;
+
+            if (DateTime.TryParse(TextControl.Text, dfi, DateTimeStyles.AllowWhiteSpaces, out DateTime result))
             {
-                if (IsReadOnly || !IsEnabled)
+                if (!Date.Date.Equals(result.Date))
                 {
-                    DateControl.Unfocus();
-                }
-
-                UpdateActive();
-            };
-
-            DateControl.Unfocused += (sender, e) =>
-            {
-                ForceActiveBackground = false;
-                ForceActiveBackground = true;
-            };
-
-            DateControl.DateSelected += (sender, e) =>
-            {
-                if (!Date.Date.Equals(DateControl.Date.Date))
-                {
-                    Date = DateControl.Date.Date;
+                    Date = result.Date;
                     if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
                     {
                         SaveCommand.Execute(SaveCommandParameter);
                     }
                 }
+            }
+            else
+            {
+                TextControl.Text = _resourceContainer.GetFormattedString("{0:d}", Date);
+            }
 
-                ForceActiveBackground = false;
-                ForceActiveBackground = true;
-            };
+            ForceActiveBackground = false;
+            ForceActiveBackground = true;
+        }
+
+        private void DateControl_DateSelected(object sender, EventArgs e)
+        {
+            if (!Date.Date.Equals(DateControl.Date.Date))
+            {
+                Date = DateControl.Date.Date;
+                if (SaveCommand != null && SaveCommand.CanExecute(SaveCommandParameter))
+                {
+                    SaveCommand.Execute(SaveCommandParameter);
+                }
+            }
+
+            ForceActiveBackground = false;
+            ForceActiveBackground = true;
+        }
+
+        void Control_Focused(object sender, FocusEventArgs e)
+        {
+            if (IsReadOnly || !IsEnabled)
+            {
+                DateControl.Unfocus();
+                TextControl.Unfocus();
+            }
+
+            UpdateActive();
         }
 
         void Handle_Tapped(object sender, System.EventArgs e)
