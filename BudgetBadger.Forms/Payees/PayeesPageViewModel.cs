@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, IPageLifecycleAware
+    public class PayeesPageViewModel : BindableBase, IActiveAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
@@ -98,6 +98,25 @@ namespace BudgetBadger.Forms.Payees
             DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
+
+        private bool _IsActive;
+        public bool IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                _IsActive = value;
+                if (value)
+                    OnAppearing();
+                else
+                    OnDisappearing();
+            }
+        }
+
+        public event EventHandler IsActiveChanged;
 
         public async void OnAppearing()
         {

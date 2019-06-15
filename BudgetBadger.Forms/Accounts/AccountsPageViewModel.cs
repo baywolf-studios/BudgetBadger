@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
+    public class AccountsPageViewModel : BindableBase, IActiveAware, INavigatingAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
@@ -94,6 +94,25 @@ namespace BudgetBadger.Forms.Accounts
             DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
+
+        private bool _IsActive;
+        public bool IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                _IsActive = value;
+                if (value)
+                    OnAppearing();
+                else
+                    OnDisappearing();
+            }
+        }
+
+        public event EventHandler IsActiveChanged;
 
         public async void OnAppearing()
         {
