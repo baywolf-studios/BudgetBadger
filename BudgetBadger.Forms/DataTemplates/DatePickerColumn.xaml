@@ -9,15 +9,39 @@
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
     Padding="0,0,16,0">
-    <DatePicker
-        x:Name="DateControl"
-        Format="d"
-        IsEnabled="{Binding IsEnabled}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
-        <DatePicker.Effects>
-            <ef:BorderlessDatePickerEffect/>
-        </DatePicker.Effects>
-    </DatePicker>
+    <StackLayout Orientation="Vertical">
+        <DatePicker
+            x:Name="DateControl"
+            Format="d"
+            InputTransparent="{Binding IsReadOnly}"
+            IsEnabled="{Binding IsEnabled}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            VerticalOptions="CenterAndExpand"
+            BackgroundColor="Transparent">
+            <DatePicker.IsVisible>
+                <OnPlatform x:TypeArguments="x:Boolean" Default="true">
+                    <On Platform="UWP" Value="false"/>
+                </OnPlatform>
+            </DatePicker.IsVisible>
+            <DatePicker.Effects>
+                <ef:BorderlessDatePickerEffect/>
+            </DatePicker.Effects>
+        </DatePicker>
+        <Entry
+            x:Name="TextControl"
+            IsReadOnly="{Binding IsReadOnly}"
+            IsEnabled="{Binding IsEnabled}"
+            TextColor="{StaticResource PrimaryTextColor}"
+            VerticalOptions="CenterAndExpand"
+            BackgroundColor="Transparent">
+            <Entry.IsVisible>
+                <OnPlatform x:TypeArguments="x:Boolean" Default="false">
+                    <On Platform="UWP" Value="true"/>
+                </OnPlatform>
+            </Entry.IsVisible>
+            <Entry.Effects>
+                <ef:BorderlessEntryEffect/>
+            </Entry.Effects>
+        </Entry>
+    </StackLayout>
 </uc:ContentButton>
