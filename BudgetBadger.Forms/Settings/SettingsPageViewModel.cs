@@ -21,7 +21,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class SettingsPageViewModel : BindableBase, IActiveAware
+    public class SettingsPageViewModel : BaseViewModel
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -148,25 +148,7 @@ namespace BudgetBadger.Forms.Settings
             LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
         }
 
-        private bool _IsActive;
-        public bool IsActive
-        {
-            get
-            {
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-                if (value)
-                    OnAppearing();
-                else
-                    OnDisappearing();
-            }
-        }
-        public event EventHandler IsActiveChanged;
-
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
             ResetLocalization();
 
@@ -181,10 +163,6 @@ namespace BudgetBadger.Forms.Settings
             ShowSync = (syncMode == SyncMode.DropboxSync);
 
             LastSynced = _syncFactory.GetLastSyncDateTime();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         List<KeyValuePair<string, CultureInfo>> GetLanguages()

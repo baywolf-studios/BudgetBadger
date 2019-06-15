@@ -20,7 +20,7 @@ using Prism;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BindableBase, IActiveAware
+    public class ReportsPageViewModel : BaseViewModel
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -94,34 +94,11 @@ namespace BudgetBadger.Forms.Reports
             ReportCommand = new DelegateCommand<object>(async s => await ExecuteReportCommand(s));
         }
 
-        private bool _IsActive;
-        public bool IsActive
-        {
-            get
-            {
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-                if (value)
-                    OnAppearing();
-                else
-                    OnDisappearing();
-            }
-        }
-
-        public event EventHandler IsActiveChanged;
-
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
             ResetReports();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         void ResetReports()

@@ -10,6 +10,7 @@
         Text="{Binding Text}"
         TextColor="{StaticResource SecondaryTextColor}"
         VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
+        BackgroundColor="Transparent"
+        LineBreakMode="TailTruncation">
     </Label>
 </ContentView>

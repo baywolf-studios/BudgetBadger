@@ -100,7 +100,16 @@
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:DatePickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:DatePickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:DatePickerDenseColumn.Triggers>
+                                            </dt:DatePickerDenseColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -122,7 +131,16 @@
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:PickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:PickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:PickerDenseColumn.Triggers>
+                                            </dt:PickerDenseColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -145,7 +163,16 @@
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:PickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:PickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:PickerDenseColumn.Triggers>
+                                            </dt:PickerDenseColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -167,7 +194,16 @@
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
+                                            </dt:CurrencyCalculatorDenseColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -189,7 +225,16 @@
                                                 SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}"/>
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
+                                            </dt:CurrencyCalculatorDenseColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
@@ -260,21 +305,6 @@
                                                     Source="next.svg">
                                                 </svg:SvgCachedImage>
                                             </uc:ContentButton>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="16"
-                                    HeaderText=""
-                                    MappingName="CreatedDateTime">
-                                    <syncfusion:GridTemplateColumn.IsHidden>
-                                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                                            <On Platform="macOS">false</On>
-                                        </OnPlatform>
-                                    </syncfusion:GridTemplateColumn.IsHidden>
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ContentView />
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

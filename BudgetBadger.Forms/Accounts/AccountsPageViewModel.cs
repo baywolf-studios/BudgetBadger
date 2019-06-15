@@ -19,7 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, IActiveAware, INavigatingAware
+    public class AccountsPageViewModel : BaseViewModel, INavigatingAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
@@ -95,32 +95,9 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        private bool _IsActive;
-        public bool IsActive
-        {
-            get
-            {
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-                if (value)
-                    OnAppearing();
-                else
-                    OnDisappearing();
-            }
-        }
-
-        public event EventHandler IsActiveChanged;
-
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
             await ExecuteRefreshCommand();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         // this gets hit before the OnAppearing
