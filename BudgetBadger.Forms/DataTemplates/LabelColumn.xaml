@@ -5,8 +5,7 @@
     x:Class="BudgetBadger.Forms.DataTemplates.LabelColumn"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     Style="{StaticResource DataGridColumnStyle}"
-    Command="{Binding SelectedCommand}"
-    CommandParameter="{Binding SelectedCommandParameter}"
+    Tapped="Handle_Tapped"
     Padding="0,0,16,0">
     <Label
         x:Name="TextControl"

@@ -126,6 +126,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (syncResult.Success)
                 {
                     await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
                 }
             }
         }

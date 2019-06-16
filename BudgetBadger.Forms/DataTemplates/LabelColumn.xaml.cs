@@ -8,6 +8,12 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class LabelColumn  : ContentButton
     {
+        public TextAlignment HorizontalTextAlignment
+        {
+            get => TextControl.HorizontalTextAlignment;
+            set => TextControl.HorizontalTextAlignment = value;
+        }
+
         public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(TextColumn), defaultBindingMode: BindingMode.TwoWay);
         public string Text
         {
@@ -43,6 +49,14 @@ namespace BudgetBadger.Forms.DataTemplates
                 TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
             }
             TextControl.BindingContext = this;
+        }
+
+        void Handle_Tapped(object sender, System.EventArgs e)
+        {
+            if (SelectedCommand != null && SelectedCommand.CanExecute(SelectedCommandParameter))
+            {
+                SelectedCommand.Execute(SelectedCommandParameter);
+            }
         }
     }
 }

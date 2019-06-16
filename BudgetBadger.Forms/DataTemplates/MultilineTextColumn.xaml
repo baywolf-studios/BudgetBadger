@@ -11,6 +11,7 @@
     Padding="0,0,16,0">
     <Editor
         x:Name="TextControl"
+        InputTransparent="{Binding IsReadOnly}"
         IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
         AutoSize="TextChanges"
