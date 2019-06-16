@@ -1,46 +1,47 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ContentButton
+    x:Class="BudgetBadger.Forms.DataTemplates.DatePickerColumn"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.DataTemplates.DatePickerColumn"
-    Tapped="Handle_Tapped"
+    Padding="0,0,16,0"
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
-    Padding="0,0,16,0">
+    Tapped="Handle_Tapped">
     <StackLayout Orientation="Vertical">
         <DatePicker
             x:Name="DateControl"
+            BackgroundColor="Transparent"
             Format="d"
             InputTransparent="{Binding IsReadOnly}"
             IsEnabled="{Binding IsEnabled}"
             TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand"
-            BackgroundColor="Transparent">
+            VerticalOptions="CenterAndExpand">
             <DatePicker.IsVisible>
                 <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                    <On Platform="UWP" Value="false"/>
+                    <On Platform="UWP" Value="false" />
                 </OnPlatform>
             </DatePicker.IsVisible>
             <DatePicker.Effects>
-                <ef:BorderlessDatePickerEffect/>
+                <ef:BorderlessDatePickerEffect />
             </DatePicker.Effects>
         </DatePicker>
         <Entry
             x:Name="TextControl"
-            IsReadOnly="{Binding IsReadOnly}"
+            BackgroundColor="Transparent"
+            InputTransparent="{Binding IsReadOnly}"
             IsEnabled="{Binding IsEnabled}"
+            IsReadOnly="{Binding IsReadOnly}"
             TextColor="{StaticResource PrimaryTextColor}"
-            VerticalOptions="CenterAndExpand"
-            BackgroundColor="Transparent">
+            VerticalOptions="CenterAndExpand">
             <Entry.IsVisible>
                 <OnPlatform x:TypeArguments="x:Boolean" Default="false">
-                    <On Platform="UWP" Value="true"/>
+                    <On Platform="UWP" Value="true" />
                 </OnPlatform>
             </Entry.IsVisible>
             <Entry.Effects>
-                <ef:BorderlessEntryEffect/>
+                <ef:BorderlessEntryEffect />
             </Entry.Effects>
         </Entry>
     </StackLayout>
