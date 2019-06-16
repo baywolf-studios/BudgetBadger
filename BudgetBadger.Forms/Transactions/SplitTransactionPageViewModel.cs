@@ -165,6 +165,8 @@ namespace BudgetBadger.Forms.Transactions
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
+            await ExecuteRefreshCommand();
+
             if (SplitId == null)
             {
                 SplitId = parameters.GetValue<Guid?>(PageParameter.SplitTransactionId);
@@ -244,7 +246,6 @@ namespace BudgetBadger.Forms.Transactions
 
             Transactions = Transactions.ToList();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
-            await ExecuteRefreshCommand();
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
