@@ -288,6 +288,7 @@ namespace BudgetBadger.Forms.Accounts
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                     {
                         Transactions = result.Data;
+                        StatementTransactions = result.Data;
                     }
                     else if (!result.Success)
                     {
