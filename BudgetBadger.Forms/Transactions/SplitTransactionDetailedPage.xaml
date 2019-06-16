@@ -42,7 +42,6 @@
                             ColumnSizer="Star"
                             IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Transactions}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
                             SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
