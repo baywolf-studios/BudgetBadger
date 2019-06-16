@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Accounts.AccountReconcileDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -6,6 +6,7 @@
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -80,7 +81,6 @@
                             FilterText="{Binding SearchText}"
                             IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding StatementTransactions}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
                             SelectedItem="{Binding SelectedTransaction}">
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
@@ -109,65 +109,178 @@
                                 <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding ServiceDate, Converter={StaticResource ShortDateConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionServiceDateLabel}"
-                                    HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="ServiceDate"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionAccountLabel}"
-                                    HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Account.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionPayeeLabel}"
-                                    HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Payee.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionEnvelopeLabel}"
-                                    HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Envelope.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate TransactionAmountLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Amount"
-                                    TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
-                                    Width="56"
+                                    MappingName="ServiceDate"
+                                    Width="96">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionServiceDateLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:DatePickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                Date="{Binding ServiceDate}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:DatePickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:DatePickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:DatePickerDenseColumn.Triggers>
+                                            </dt:DatePickerDenseColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Envelope.ExtendedDescription"
+                                    uc:StarSizerRatioHelpers.ColumnRatio="1.5">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionEnvelopeLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:PickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
+                                                SelectedItem="{Binding Envelope}"
+                                                ItemDisplayBinding="{Binding ExtendedDescription}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:PickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:PickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:PickerDenseColumn.Triggers>
+                                            </dt:PickerDenseColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Payee.ExtendedDescription">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactionPayeeLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:PickerDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+                                                SelectedItem="{Binding Payee}"
+                                                ItemDisplayBinding="{Binding ExtendedDescription}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:PickerDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:PickerDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:PickerDenseColumn.Triggers>
+                                            </dt:PickerDenseColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="96"
+                                    MappingName="Outflow">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactactionOutflowLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:CurrencyCalculatorDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                Number="{Binding Outflow}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
+                                            </dt:CurrencyCalculatorDenseColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="96"
+                                    MappingName="Inflow">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderDenseColumn
+                                                Text="{ext:Translate TransactactionInflowLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:CurrencyCalculatorDenseColumn
+                                                IsReadOnly="{Binding IsCombined}"
+                                                Number="{Binding Inflow}"
+                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
+                                            </dt:CurrencyCalculatorDenseColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="48"
                                     HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
                                     HeaderTextAlignment="Center"
                                     MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView HeightRequest="{StaticResource ListItemHeight}" WidthRequest="{StaticResource ListItemHeight}">
-                                                <ContentView.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                                </ContentView.GestureRecognizers>
+                                            <uc:ContentButton
+                                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"
+                                                Style="{StaticResource DataGridColumnStyle}">
                                                 <svg:SvgCachedImage
+                                                    Margin="16"
                                                     HeightRequest="24"
                                                     HorizontalOptions="Center"
                                                     ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    Source="pending.svg"
                                                     VerticalOptions="Center"
                                                     WidthRequest="24">
                                                     <svg:SvgCachedImage.Triggers>
@@ -192,22 +305,32 @@
                                                         </DataTrigger>
                                                     </svg:SvgCachedImage.Triggers>
                                                 </svg:SvgCachedImage>
-                                            </ContentView>
+                                            </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    Width="16"
+                                    Width="48"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
                                     HeaderText=""
-                                    MappingName="CreatedDateTime">
-                                    <syncfusion:GridTemplateColumn.IsHidden>
-                                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                                            <On Platform="macOS">false</On>
-                                        </OnPlatform>
-                                    </syncfusion:GridTemplateColumn.IsHidden>
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView />
+                                            <uc:ContentButton
+                                                Style="{StaticResource DataGridColumnStyle}"
+                                                Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}">
+                                                <svg:SvgCachedImage
+                                                    Margin="16"
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24"
+                                                    Source="next.svg">
+                                                </svg:SvgCachedImage>
+                                            </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

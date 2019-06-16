@@ -145,7 +145,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                                 <syncfusion:GridTemplateColumn
-                                    MappingName="Envelope.Description"
+                                    MappingName="Envelope.ExtendedDescription"
                                     uc:StarSizerRatioHelpers.ColumnRatio="1.5">
                                     <syncfusion:GridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
