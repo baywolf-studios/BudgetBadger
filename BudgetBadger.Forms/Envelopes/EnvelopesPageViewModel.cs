@@ -16,16 +16,18 @@ using Prism;
 using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopesPageViewModel : BaseViewModel
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly IEnvelopeLogic _envelopeLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
+        readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IPurchaseService> _purchaseService;
 
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
@@ -36,7 +38,10 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransferCommand { get; set; }
-        public Predicate<object> Filter { get => (budget) => _envelopeLogic.FilterBudget((Budget)budget, SearchText); }
+        public ICommand SaveCommand { get; set; }
+        public Predicate<object> Filter { get => (budget) => _envelopeLogic.Value.FilterBudget((Budget)budget, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -80,17 +85,26 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _searchText, value);
         }
 
-        public EnvelopesPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
-		                              IEnvelopeLogic envelopeLogic,
-		                              IPageDialogService dialogService,
-		                              ISyncFactory syncFactory)
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public EnvelopesPageViewModel(Lazy<IResourceContainer> resourceContainer,
+                                      INavigationService navigationService,
+                                      Lazy<IEnvelopeLogic> envelopeLogic,
+                                      IPageDialogService dialogService,
+                                      Lazy<ISyncFactory> syncFactory,
+                                      Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _purchaseService = purchaseService;
 
             Schedule = null;
             Budgets = new List<Budget>();
@@ -105,11 +119,30 @@ namespace BudgetBadger.Forms.Envelopes
             DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
+            SaveCommand = new DelegateCommand<Budget>(async e => await ExecuteSaveCommand(e));
         }
 
         public override async void OnActivated()
         {
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
+
             await ExecuteRefreshCommand();
+        }
+
+        public override async void OnDeactivated()
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.Value.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
+                }
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -125,18 +158,18 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 if (Schedule == null)
                 {
-                    var scheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+                    var scheduleResult = await _envelopeLogic.Value.GetCurrentBudgetScheduleAsync();
                     if (scheduleResult.Success)
                     {
                         Schedule = scheduleResult.Data;
                     }
                     else
                     {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
                 }
 
-                var budgetResult = await _envelopeLogic.GetBudgetsAsync(Schedule);
+                var budgetResult = await _envelopeLogic.Value.GetBudgetsAsync(Schedule);
 
                 if (budgetResult.Success)
                 {
@@ -152,7 +185,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopes = (Budgets?.Count ?? 0) == 0;
@@ -165,7 +198,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteNextCommand()
         {
-            var scheduleResult = await _envelopeLogic.GetNextBudgetSchedule(Schedule);
+            var scheduleResult = await _envelopeLogic.Value.GetNextBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
@@ -173,13 +206,13 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
         public async Task ExecutePreviousCommand()
         {
-            var scheduleResult = await _envelopeLogic.GetPreviousBudgetSchedule(Schedule);
+            var scheduleResult = await _envelopeLogic.Value.GetPreviousBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
@@ -187,7 +220,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -228,23 +261,23 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteCommand(Budget budget)
         {
-            var result = await _envelopeLogic.DeleteEnvelopeAsync(budget.Envelope.Id);
+            var result = await _envelopeLogic.Value.DeleteEnvelopeAsync(budget.Envelope.Id);
 
             if (result.Success)
             {
                 await ExecuteRefreshCommand();
 
-                var syncService = _syncFactory.GetSyncService();
+                var syncService = _syncFactory.Value.GetSyncService();
                 var syncResult = await syncService.FullSync();
 
                 if (syncResult.Success)
                 {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
                 }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -261,6 +294,21 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.BudgetSchedule, Schedule }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
+        }
+
+        public async Task ExecuteSaveCommand(Budget budget)
+        {
+            var result = await _envelopeLogic.Value.SaveBudgetAsync(budget);
+
+            if (result.Success)
+            {
+                _needToSync = true;
+                // call to update schedule data
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
         }
     }
 }

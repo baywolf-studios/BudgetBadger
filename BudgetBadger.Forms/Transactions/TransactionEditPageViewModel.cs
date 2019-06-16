@@ -155,6 +155,7 @@ namespace BudgetBadger.Forms.Transactions
                 if (syncResult.Success)
                 {
                     await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
                 }
             }
         }

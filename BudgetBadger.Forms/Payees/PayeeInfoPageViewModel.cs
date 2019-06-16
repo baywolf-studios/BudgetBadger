@@ -162,6 +162,7 @@ namespace BudgetBadger.Forms.Payees
                 if (syncResult.Success)
                 {
                     await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
                 }
             }
         }

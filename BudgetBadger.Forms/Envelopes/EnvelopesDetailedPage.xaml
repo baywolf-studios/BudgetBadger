@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopesDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
@@ -50,7 +51,6 @@
                             FilterText="{Binding SearchText}"
                             IsBusy="{Binding IsBusy}"
                             ItemsSource="{Binding Budgets}"
-                            SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedBudget}">
                             <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
                             <syncfusion:SfDataGrid.LeftSwipeTemplate>
@@ -117,62 +117,140 @@
                                 <syncfusion:SortColumnDescription ColumnName="Envelope.Description" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate EnvelopeNameLabel}"
-                                    HeaderTextAlignment="Start"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Envelope.Description"
-                                    TextAlignment="Start" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Past, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate EnvelopePastLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Past"
-                                    TextAlignment="End" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Activity, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate EnvelopeActivityLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Activity"
-                                    TextAlignment="End" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate EnvelopeAmountLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Amount"
-                                    TextAlignment="End" />
-                                <syncfusion:GridTextColumn
-                                    CellTextSize="{StaticResource ListItemFontSize}"
-                                    DisplayBinding="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText="{ext:Translate EnvelopeRemainingLabel}"
-                                    HeaderTextAlignment="End"
-                                    LineBreakMode="TailTruncation"
-                                    MappingName="Remaining"
-                                    TextAlignment="End" />
                                 <syncfusion:GridTemplateColumn
-                                    Width="16"
-                                    HeaderText=""
-                                    MappingName="CreatedDateTime">
-                                    <syncfusion:GridTemplateColumn.IsHidden>
-                                        <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                                            <On Platform="macOS">false</On>
-                                        </OnPlatform>
-                                    </syncfusion:GridTemplateColumn.IsHidden>
+                                    MappingName="Envelope.Description"
+                                    uc:StarSizerRatioHelpers.ColumnRatio="2">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeNameLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ContentView />
+                                            <dt:TextColumn
+                                                Text="{Binding Envelope.Description}"
+                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:TextColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:TextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:TextColumn.Triggers>
+                                            </dt:TextColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Past">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn 
+                                                Text="{ext:Translate EnvelopePastLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:LabelColumn
+                                                Text="{Binding Past, Converter={StaticResource CurrencyConverter}}"
+                                                HorizontalTextAlignment="End"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                            </dt:LabelColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Activity">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn
+                                                Text="{ext:Translate EnvelopeActivityLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:LabelColumn
+                                                Text="{Binding Activity, Converter={StaticResource CurrencyConverter}}"
+                                                HorizontalTextAlignment="End"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                            </dt:LabelColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Amount">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn
+                                                Text="{ext:Translate EnvelopeAmountLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:CurrencyCalculatorColumn
+                                                IsReadOnly="{Binding BindingContext.HasPro, Source={x:Reference Name=this}, Converter={StaticResource InverseBooleanConverter}}"
+                                                Number="{Binding Amount}"
+                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                            </dt:CurrencyCalculatorColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Remaining">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn
+                                                Text="{ext:Translate EnvelopeRemainingLabel}"
+                                                HorizontalTextAlignment="End"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:LabelColumn
+                                                Text="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
+                                                HorizontalTextAlignment="End"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                            </dt:LabelColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="56"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText=""
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <uc:ContentButton
+                                                HeightRequest="{StaticResource ListItemHeight}"
+                                                WidthRequest="{StaticResource ListItemHeight}"
+                                                Style="{StaticResource SidebarButtonStyle}"
+                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}">
+                                                <svg:SvgCachedImage
+                                                    Margin="16"
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24"
+                                                    Source="next.svg">
+                                                </svg:SvgCachedImage>
+                                            </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

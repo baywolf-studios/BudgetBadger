@@ -25,6 +25,12 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(TextProperty, value);
         }
 
+        public TextAlignment HorizontalTextAlignment
+        {
+            get => TextControl.HorizontalTextAlignment;
+            set => TextControl.HorizontalTextAlignment = value;
+        }
+
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(TextColumn));
         public ICommand SaveCommand
         {
