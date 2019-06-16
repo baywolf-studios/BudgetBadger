@@ -39,6 +39,8 @@ namespace BudgetBadger.Forms.Payees
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
 
+        bool _needToSync;
+
         bool _isBusy;
         public bool IsBusy
         {
@@ -118,6 +120,21 @@ namespace BudgetBadger.Forms.Payees
             await ExecuteRefreshCommand();
         }
 
+        public override async void OnDeactivated()
+        {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.Value.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
+                }
+            }
+        }
+
         public async Task ExecuteSelectedCommand(Payee payee)
         {
             if (payee == null)
@@ -163,11 +180,15 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteSaveCommand(Payee newPayee)
+        public async Task ExecuteSaveCommand(Payee payee)
         {
-            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.Value.SavePayeeAsync(payee);
 
-            if (!result.Success)
+            if (result.Success)
+            {
+                _needToSync = true;
+            }
+            else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
@@ -184,11 +205,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Payee, result.Data }
-                };
-
+                _needToSync = true;
                 await ExecuteRefreshCommand();
             }
             else
@@ -219,15 +236,8 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
+                _needToSync = true;
                 await ExecuteRefreshCommand();
-
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                }
             }
             else
             {

@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    [XamlCompilation(XamlCompilationOptions.Skip)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EnvelopeInfoDetailedPage : BaseDetailedPage
     {
 		public EnvelopeInfoDetailedPage ()

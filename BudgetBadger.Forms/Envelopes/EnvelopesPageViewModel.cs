@@ -265,15 +265,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                _needToSync = true;
                 await ExecuteRefreshCommand();
-
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                }
             }
             else
             {

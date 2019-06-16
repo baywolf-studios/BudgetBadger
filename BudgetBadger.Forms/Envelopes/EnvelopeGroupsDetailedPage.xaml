@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BaseDetailedPage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
+    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -37,7 +38,6 @@
                         FilterText="{Binding SearchText}"
                         IsBusy="{Binding IsBusy}"
                         ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedCommand="{Binding SelectedCommand}"
                         SelectedItem="{Binding SelectedEnvelopeGroup}">
                         <syncfusion:SfDataGrid.RightSwipeTemplate>
                             <DataTemplate>
@@ -84,37 +84,87 @@
                             <syncfusion:SortColumnDescription ColumnName="Description" SortDirection="Ascending" />
                         </syncfusion:SfDataGrid.SortColumnDescriptions>
                         <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                            <syncfusion:GridTextColumn
-                                CellTextSize="{StaticResource ListItemFontSize}"
-                                HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                HeaderText="{ext:Translate EnvelopeGroupNameLabel}"
-                                HeaderTextAlignment="Start"
-                                LineBreakMode="TailTruncation"
-                                MappingName="Description"
-                                TextAlignment="Start" />
-                            <syncfusion:GridTextColumn
-                                CellTextSize="{StaticResource ListItemFontSize}"
-                                HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                HeaderText="{ext:Translate EnvelopeGroupNotesLabel}"
-                                HeaderTextAlignment="Start"
-                                LineBreakMode="TailTruncation"
-                                MappingName="Notes"
-                                TextAlignment="Start" />
                             <syncfusion:GridTemplateColumn
-                                Width="16"
-                                HeaderText=""
-                                MappingName="CreatedDateTime">
-                                <syncfusion:GridTemplateColumn.IsHidden>
-                                    <OnPlatform x:TypeArguments="x:Boolean" Default="true">
-                                        <On Platform="macOS">false</On>
-                                    </OnPlatform>
-                                </syncfusion:GridTemplateColumn.IsHidden>
-                                <syncfusion:GridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentView />
-                                    </DataTemplate>
-                                </syncfusion:GridTemplateColumn.CellTemplate>
-                            </syncfusion:GridTemplateColumn>
+                                    MappingName="Description">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeGroupNameLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:TextColumn
+                                                Text="{Binding Description}"
+                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:TextColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:TextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:TextColumn.Triggers>
+                                            </dt:TextColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    MappingName="Notes">
+                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeGroupNotesLabel}"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dt:MultilineTextColumn
+                                                Text="{Binding Notes}"
+                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                                SaveCommandParameter="{Binding .}"
+                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                SelectedCommandParameter="{Binding .}">
+                                                <dt:MultilineTextColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:MultilineTextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:MultilineTextColumn.Triggers>
+                                            </dt:MultilineTextColumn>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                <syncfusion:GridTemplateColumn
+                                    Width="56"
+                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
+                                    HeaderText=""
+                                    HeaderTextAlignment="Center"
+                                    MappingName=".">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <uc:ContentButton
+                                                HeightRequest="{StaticResource ListItemHeight}"
+                                                WidthRequest="{StaticResource ListItemHeight}"
+                                                Style="{StaticResource SidebarButtonStyle}"
+                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}">
+                                                <svg:SvgCachedImage
+                                                    Margin="16"
+                                                    HeightRequest="24"
+                                                    HorizontalOptions="Center"
+                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="24"
+                                                    Source="next.svg">
+                                                </svg:SvgCachedImage>
+                                            </uc:ContentButton>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
                         </syncfusion:SfDataGrid.Columns>
                     </uc:DataGrid>
                 </uc:PullToRefresh.PullableContent>

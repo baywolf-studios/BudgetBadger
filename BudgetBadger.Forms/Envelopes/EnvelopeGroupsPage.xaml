@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -52,7 +52,7 @@
                                 <DataTemplate>
                                     <uc:Button2
                                         Margin="16,8"
-                                        Command="{Binding SaveCommand}"
+                                        Command="{Binding SaveSearchCommand}"
                                         IsVisible="{Binding HasSearchText}"
                                         Style="{StaticResource SecondaryActionButtonStyle}"
                                         Text="{Binding SearchText, StringFormat='+ {0}'}" />

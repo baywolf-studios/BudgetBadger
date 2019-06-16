@@ -13,17 +13,22 @@ using Prism.Services;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
     public class AccountInfoPageViewModel : BindableBase, INavigationAware
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly ITransactionLogic _transactionLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<ITransactionLogic> _transactionLogic;
         readonly INavigationService _navigationService;
-        readonly IAccountLogic _accountLogic;
+        readonly Lazy<IAccountLogic> _accountLogic;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
+        readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IEnvelopeLogic> _envelopeLogic;
+        readonly Lazy<IPayeeLogic> _payeeLogic;
+        readonly Lazy<IPurchaseService> _purchaseService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -34,7 +39,8 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand AddTransactionCommand { get; set; }
         public ICommand PaymentCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
-        public Predicate<object> Filter { get => (t) => _transactionLogic.FilterTransaction((Transaction)t, SearchText); }
+        public ICommand SaveTransactionCommand { get; set; }
+        public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
 
@@ -50,6 +56,20 @@ namespace BudgetBadger.Forms.Accounts
         {
             get => _account;
             set => SetProperty(ref _account, value);
+        }
+
+        IReadOnlyList<Payee> _payees;
+        public IReadOnlyList<Payee> Payees
+        {
+            get => _payees;
+            set => SetProperty(ref _payees, value);
+        }
+
+        IReadOnlyList<Envelope> _envelopes;
+        public IReadOnlyList<Envelope> Envelopes
+        {
+            get => _envelopes;
+            set => SetProperty(ref _envelopes, value);
         }
 
         IReadOnlyList<Transaction> _transactions;
@@ -88,12 +108,22 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noTransactions, value);
         }
 
-        public AccountInfoPageViewModel(IResourceContainer resourceContainer,
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public AccountInfoPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                         INavigationService navigationService,
-                                        ITransactionLogic transactionLogic,
-                                        IAccountLogic accountLogic,
+                                        Lazy<ITransactionLogic> transactionLogic,
+                                        Lazy<IAccountLogic> accountLogic,
                                         IPageDialogService dialogService,
-                                        ISyncFactory syncFactory)
+                                        Lazy<ISyncFactory> syncFactory,
+                                        Lazy<IEnvelopeLogic> envelopeLogic,
+                                        Lazy<IPayeeLogic> payeeLogic,
+                                        Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
@@ -101,9 +131,14 @@ namespace BudgetBadger.Forms.Accounts
             _accountLogic = accountLogic;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _envelopeLogic = envelopeLogic;
+            _payeeLogic = payeeLogic;
+            _purchaseService = purchaseService;
 
             Account = new Account();
             Transactions = new List<Transaction>();
+            Payees = new List<Payee>();
+            Envelopes = new List<Envelope>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -114,6 +149,7 @@ namespace BudgetBadger.Forms.Accounts
             PaymentCommand = new DelegateCommand(async () => await ExecutePaymentCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
+            SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
         }
 
         public async void OnNavigatingTo(INavigationParameters parameters)
@@ -123,6 +159,9 @@ namespace BudgetBadger.Forms.Accounts
             {
                 Account = account.DeepCopy();
             }
+
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
 
             await ExecuteRefreshCommand();
         }
@@ -135,12 +174,12 @@ namespace BudgetBadger.Forms.Accounts
         {
             if (_needToSync)
             {
-                var syncService = _syncFactory.GetSyncService();
+                var syncService = _syncFactory.Value.GetSyncService();
                 var syncResult = await syncService.FullSync();
 
                 if (syncResult.Success)
                 {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
                     _needToSync = false;
                 }
             }
@@ -157,7 +196,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.DeleteTransactionAsync(transaction.Id);
+            var result = await _transactionLogic.Value.DeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {
@@ -167,7 +206,7 @@ namespace BudgetBadger.Forms.Accounts
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -209,22 +248,52 @@ namespace BudgetBadger.Forms.Accounts
             {
                 if (Account.IsActive)
                 {
-                    var accountResult = await _accountLogic.GetAccountAsync(Account.Id);
+                    if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        var payeesResult = await _payeeLogic.Value.GetPayeesForSelectionAsync();
+                        if (payeesResult.Success
+                            && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
+                        {
+                            Payees = payeesResult.Data;
+                        }
+                        else if (!payeesResult.Success)
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        }
+
+                        var envelopesResult = await _envelopeLogic.Value.GetEnvelopesForSelectionAsync();
+                        if (envelopesResult.Success
+                            && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
+                        {
+                            Envelopes = envelopesResult.Data;
+                        }
+                        else if (!envelopesResult.Success)
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), envelopesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        }
+                    }
+
+                    var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
                     if (accountResult.Success)
                     {
                         Account = accountResult.Data;
                     }
                     else
                     {
-                        //show alert that account data may be stale
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
 
-                    var result = await _transactionLogic.GetAccountTransactionsAsync(Account);
-                    if (result.Success)
+                    var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
+                    if (result.Success
+                        && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                     {
                         Transactions = result.Data;
-                        SelectedTransaction = null;
                     }
+                    else if (!result.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                    }
+                    SelectedTransaction = null;
                 }
 
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
@@ -268,11 +337,11 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (transaction.IsCombined)
                 {
-                    result = await _transactionLogic.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
+                    result = await _transactionLogic.Value.UpdateSplitTransactionPostedAsync(transaction.SplitId.Value, transaction.Posted);
                 }
                 else
                 {
-                    result = await _transactionLogic.SaveTransactionAsync(transaction);
+                    result = await _transactionLogic.Value.SaveTransactionAsync(transaction);
                 }
 
                 if (result.Success)
@@ -290,7 +359,7 @@ namespace BudgetBadger.Forms.Accounts
                 else
                 {
                     transaction.Posted = !transaction.Posted;
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
             }
         }
@@ -303,6 +372,30 @@ namespace BudgetBadger.Forms.Accounts
             };
 
             await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+        }
+
+        public async Task ExecuteSaveTransactionCommand(Transaction transaction)
+        {
+            var correctedTransactionResult = await _transactionLogic.Value.GetCorrectedTransaction(transaction);
+
+            if (correctedTransactionResult.Success)
+            {
+                transaction = correctedTransactionResult.Data;
+                var result = await _transactionLogic.Value.SaveTransactionAsync(transaction);
+
+                if (result.Success)
+                {
+                    _needToSync = true;
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
         }
     }
 }

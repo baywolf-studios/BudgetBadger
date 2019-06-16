@@ -64,13 +64,6 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _accounts, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
-        {
-            get => _payees;
-            set => SetProperty(ref _payees, value);
-        }
-
         IReadOnlyList<Envelope> _envelopes;
         public IReadOnlyList<Envelope> Envelopes
         {
@@ -137,6 +130,8 @@ namespace BudgetBadger.Forms.Payees
 
             Payee = new Payee();
             Transactions = new List<Transaction>();
+            Accounts = new List<Account>();
+            Envelopes = new List<Envelope>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -268,15 +263,13 @@ namespace BudgetBadger.Forms.Payees
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                     {
                         Transactions = result.Data;
-                        SelectedTransaction = null;
                     }
                     else if (!result.Success)
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
 
-
-
+                    SelectedTransaction = null;
                     NoTransactions = (Transactions?.Count ?? 0) == 0;
                 }
             }
