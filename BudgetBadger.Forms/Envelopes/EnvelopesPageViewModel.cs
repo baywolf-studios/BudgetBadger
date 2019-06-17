@@ -296,7 +296,15 @@ namespace BudgetBadger.Forms.Envelopes
             if (result.Success)
             {
                 _needToSync = true;
-                // call to update schedule data
+                var scheduleResult = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
+                if (scheduleResult.Success)
+                {
+                    Schedule = scheduleResult.Data;
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
             }
             else
             {
