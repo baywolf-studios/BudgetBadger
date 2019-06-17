@@ -1,22 +1,27 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <uc:ContentButton
+    x:Class="BudgetBadger.Forms.DataTemplates.TextColumn"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ef="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.DataTemplates.TextColumn"
-    Tapped="Handle_Tapped"
+    Padding="0,0,16,0"
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
-    Padding="0,0,16,0">
+    Tapped="Handle_Tapped">
     <Entry
         x:Name="TextControl"
+        BackgroundColor="Transparent"
         InputTransparent="{Binding IsReadOnly}"
-        IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
+        IsReadOnly="{Binding IsReadOnly}"
         TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
+        VerticalOptions="CenterAndExpand">
+        <Entry.Margin>
+            <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
+                <On Platform="UWP" Value="0,8,0,0" />
+            </OnPlatform>
+        </Entry.Margin>
         <Entry.Keyboard>
             <Keyboard x:FactoryMethod="Create">
                 <x:Arguments>
@@ -25,7 +30,7 @@
             </Keyboard>
         </Entry.Keyboard>
         <Entry.Effects>
-            <ef:BorderlessEntryEffect/>
+            <ef:BorderlessEntryEffect />
         </Entry.Effects>
     </Entry>
 </uc:ContentButton>
