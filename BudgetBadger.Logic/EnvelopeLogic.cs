@@ -804,6 +804,25 @@ namespace BudgetBadger.Logic
             return budget;
         }
 
+        public async Task<Result<BudgetSchedule>> GetBudgetSchedule(BudgetSchedule budgetSchedule)
+        {
+            var result = new Result<BudgetSchedule>();
+
+            try
+            {
+                var schedule = await GetPopulatedBudgetSchedule(budgetSchedule);
+                result.Success = true;
+                result.Data = schedule;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
         {
             var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
