@@ -18,6 +18,11 @@
         HorizontalTextAlignment="End"
         VerticalOptions="CenterAndExpand"
         BackgroundColor="Transparent">
+        <uc:CurrencyCalculator.Margin>
+            <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
+                <On Platform="UWP" Value="0,8,0,0" />
+            </OnPlatform>
+        </uc:CurrencyCalculator.Margin>
         <uc:CurrencyCalculator.Effects>
             <ef:BorderlessEntryEffect />
         </uc:CurrencyCalculator.Effects>

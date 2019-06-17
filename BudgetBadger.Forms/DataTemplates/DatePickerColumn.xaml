@@ -9,7 +9,7 @@
     ForceActiveBackground="true"
     Style="{StaticResource DataGridColumnStyle}"
     Tapped="Handle_Tapped">
-    <StackLayout Orientation="Vertical">
+    <StackLayout Orientation="Vertical" Spacing="0">
         <DatePicker
             x:Name="DateControl"
             BackgroundColor="Transparent"
@@ -35,6 +35,11 @@
             IsReadOnly="{Binding IsReadOnly}"
             TextColor="{StaticResource PrimaryTextColor}"
             VerticalOptions="CenterAndExpand">
+            <Entry.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
+                    <On Platform="UWP" Value="0,8,0,0" />
+                </OnPlatform>
+            </Entry.Margin>
             <Entry.IsVisible>
                 <OnPlatform x:TypeArguments="x:Boolean" Default="false">
                     <On Platform="UWP" Value="true" />
