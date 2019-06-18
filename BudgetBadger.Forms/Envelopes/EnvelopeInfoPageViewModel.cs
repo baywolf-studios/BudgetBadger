@@ -233,33 +233,33 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                if (Budget.IsActive)
+                if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
                 {
-                    if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+                    var payeesResult = await _payeeLogic.Value.GetPayeesForSelectionAsync();
+                    if (payeesResult.Success
+                        && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
                     {
-                        var payeesResult = await _payeeLogic.Value.GetPayeesForSelectionAsync();
-                        if (payeesResult.Success
-                            && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
-                        {
-                            Payees = payeesResult.Data;
-                        }
-                        else if (!payeesResult.Success)
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                        }
-
-                        var accountsResult = await _accountLogic.Value.GetAccountsForSelectionAsync();
-                        if (accountsResult.Success
-                            && (Accounts == null || !Accounts.SequenceEqual(accountsResult.Data)))
-                        {
-                            Accounts = accountsResult.Data;
-                        }
-                        else if (!accountsResult.Success)
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountsResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                        }
+                        Payees = payeesResult.Data;
+                    }
+                    else if (!payeesResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
 
+                    var accountsResult = await _accountLogic.Value.GetAccountsForSelectionAsync();
+                    if (accountsResult.Success
+                        && (Accounts == null || !Accounts.SequenceEqual(accountsResult.Data)))
+                    {
+                        Accounts = accountsResult.Data;
+                    }
+                    else if (!accountsResult.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountsResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                    }
+                }
+
+                if (Budget.IsActive)
+                {
                     var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
                     if (budgetResult.Success)
                     {
