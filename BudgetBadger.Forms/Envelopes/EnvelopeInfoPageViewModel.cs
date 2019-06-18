@@ -354,6 +354,19 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    if (Budget.IsActive)
+                    {
+                        var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
+                        if (budgetResult.Success)
+                        {
+                            Budget = budgetResult.Data;
+                        }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        }
+                    }
                 }
                 else
                 {
