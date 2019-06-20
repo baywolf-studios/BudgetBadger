@@ -137,9 +137,9 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsDebt == group.IsDebt)
+            if (IsDebt.Equals(group.IsDebt))
             {
-                if (IsIncome == group.IsIncome)
+                if (IsIncome.Equals(group.IsIncome))
                 {
                     return String.Compare(Description, group.Description);
                 }

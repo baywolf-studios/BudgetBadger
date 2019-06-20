@@ -139,6 +139,12 @@
                                                         TargetType="dt:PickerDenseColumn">
                                                         <Setter Property="IsReadOnly" Value="true"/>
                                                     </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Envelope.IsSystem}"
+                                                        TargetType="dt:PickerDenseColumn"
+                                                        Value="True">
+                                                        <Setter Property="IsReadOnly" Value="true" />
+                                                    </DataTrigger>
                                                 </dt:PickerDenseColumn.Triggers>
                                             </dt:PickerDenseColumn>
                                         </DataTemplate>

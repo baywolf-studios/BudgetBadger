@@ -183,7 +183,7 @@ namespace BudgetBadger.Models
             }
 
 
-                if (Type == account.Type)
+                if (Type.Equals(account.Type))
                 {
                     return String.Compare(Description, account.Description);
                 }

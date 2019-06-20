@@ -180,9 +180,9 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsGenericDebtEnvelope == envelope.IsGenericDebtEnvelope)
+            if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
             {
-                if (Group == envelope.Group)
+                if (Group.Equals(envelope.Group))
                 {
                     return String.Compare(Description, envelope.Description);
                 }

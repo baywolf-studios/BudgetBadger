@@ -153,9 +153,9 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsAccount == payee.IsAccount)
+            if (IsAccount.Equals(payee.IsAccount))
             {
-                if (Group == payee.Group)
+                if (Group.Equals(payee.Group))
                 {
                     return String.Compare(Description, payee.Description);
                 }
