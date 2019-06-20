@@ -258,13 +258,23 @@ namespace BudgetBadger.Forms.Envelopes
                     }
                 }
 
+                Result<Budget> budgetResult;
                 if (Budget.IsActive)
                 {
-                    var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
-                    if (budgetResult.Success)
-                    {
-                        Budget = budgetResult.Data;
-                    }
+                    budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
+                }
+                else
+                {
+                    budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Envelope.Id, Budget.Schedule);
+                }
+
+                if (budgetResult.Success)
+                {
+                    Budget = budgetResult.Data;
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 var result = await _transactionLogic.Value.GetEnvelopeTransactionsAsync(Budget.Envelope);
@@ -355,17 +365,23 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
+                    Result<Budget> budgetResult;
                     if (Budget.IsActive)
                     {
-                        var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
-                        if (budgetResult.Success)
-                        {
-                            Budget = budgetResult.Data;
-                        }
-                        else
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                        }
+                        budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Id);
+                    }
+                    else
+                    {
+                        budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Envelope.Id, Budget.Schedule);
+                    }
+                    
+                    if (budgetResult.Success)
+                    {
+                        Budget = budgetResult.Data;
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
                 }
                 else

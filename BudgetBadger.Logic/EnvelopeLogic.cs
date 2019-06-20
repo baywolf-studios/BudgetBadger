@@ -48,6 +48,36 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<Budget>> GetBudgetAsync(Guid envelopeId, BudgetSchedule schedule)
+        {
+            var result = new Result<Budget>();
+
+            try
+            {
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelopeId);
+                var budget = budgets.FirstOrDefault(b => b.Envelope.Id == envelopeId && b.Schedule.Id == schedule.Id);
+                if (budget == null)
+                {
+                    budget = new Budget();
+                }
+
+                budget.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(envelopeId);
+
+                var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
+                var populatedBudget = await GetPopulatedBudget(budget, populatedSchedule);
+
+                result.Success = true;
+                result.Data = populatedBudget;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IReadOnlyList<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule)
         {
             var result = new Result<IReadOnlyList<Budget>>();
@@ -802,7 +832,7 @@ namespace BudgetBadger.Logic
             }
 
             return budget;
-        }
+        }        
 
         public async Task<Result<BudgetSchedule>> GetBudgetSchedule(BudgetSchedule budgetSchedule)
         {
