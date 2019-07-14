@@ -959,6 +959,98 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
+        public async Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var budget = new Budget();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT B.Id, 
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  E.Id = @EnvelopeId AND BS.Id = @ScheduleId";
+
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                budget = new Budget()
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    Schedule = new BudgetSchedule
+                                    {
+                                        Id = new Guid(reader["BudgetScheduleId"] as byte[]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    },
+                                    Envelope = new Envelope
+                                    {
+                                        Id = new Guid(reader["EnvelopeId"] as byte[]),
+                                        Description = reader["EnvelopeDescription"].ToString(),
+                                        Notes = reader["EnvelopeNotes"].ToString(),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        Group = new EnvelopeGroup
+                                        {
+                                            Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
+                                            Description = reader["EnvelopeGroupDescription"].ToString(),
+                                            Notes = reader["EnvelopeGroupNotes"].ToString(),
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                        }
+                                    }
+                                };
+                            }
+                        }
+                    }
+
+                    return budget;
+                });
+            }
+        }
+
         public async Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id)
         {
             using(await MultiThreadLock.UseWaitAsync())

@@ -530,6 +530,17 @@ namespace BudgetBadger.Logic
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendDebtError"));
             }
 
+            if (budget.IsNew &&
+                budget.Schedule != null &&
+                budget.Envelope != null)
+            {
+                var existingBudget = await _envelopeDataAccess.ReadBudgetFromScheduleAndEnvelopeAsync(budget.Schedule.Id, budget.Envelope.Id);
+                if (existingBudget.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendDebtError"));
+                }
+            }
+
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
