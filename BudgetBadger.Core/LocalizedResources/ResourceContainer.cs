@@ -69,6 +69,5 @@ namespace BudgetBadger.Core.LocalizedResources
                 return null;
             }
         }
-        }
     }
 }
