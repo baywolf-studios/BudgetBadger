@@ -295,7 +295,13 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                budget = result.Data;
+                var budgetInList = Budgets.FirstOrDefault(b => b.Equals(budget));
+                if (budgetInList != null)
+                {
+                    budgetInList.Id = result.Data.Id;
+                    budgetInList.CreatedDateTime = result.Data.CreatedDateTime;
+                    budgetInList.ModifiedDateTime = result.Data.ModifiedDateTime;
+                }
                 _needToSync = true;
                 var scheduleResult = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
                 if (scheduleResult.Success)
