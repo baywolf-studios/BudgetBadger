@@ -372,7 +372,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", budget.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
@@ -1291,7 +1291,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", budget.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);

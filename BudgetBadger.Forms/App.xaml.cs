@@ -388,14 +388,11 @@ namespace BudgetBadger.Forms
 
                 if (!cleanedUp)
                 {
-                    var locale = Xamarin.Forms.DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
-                    var nfi = locale.NumberFormat;
-
                     var envelopeDataAccess = Container.Resolve<IEnvelopeDataAccess>();
                     var budgets = await envelopeDataAccess.ReadBudgetsAsync();
                     foreach (var budget in budgets)
                     {
-                        var newAmount = Decimal.Round(budget.Amount ?? 0, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
+                        var newAmount = StaticResourceContainer.Current.GetRoundedDecimal(budget.Amount);
                         if (budget.Amount != newAmount)
                         {
                             budget.Amount = newAmount;
