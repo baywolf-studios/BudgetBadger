@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
@@ -16,16 +17,19 @@ namespace BudgetBadger.Logic
         readonly ITransactionDataAccess _transactionDataAccess;
         readonly IAccountDataAccess _accountDataAccess;
         readonly IResourceContainer _resourceContainer;
+        readonly ILocalize _localize;
 
         public EnvelopeLogic(IEnvelopeDataAccess envelopeDataAccess,
             ITransactionDataAccess transactionDataAccess,
             IAccountDataAccess accountDataAccess,
-            IResourceContainer resourceContainer)
+            IResourceContainer resourceContainer,
+            ILocalize localize)
         {
             _envelopeDataAccess = envelopeDataAccess;
             _transactionDataAccess = transactionDataAccess;
             _accountDataAccess = accountDataAccess;
             _resourceContainer = resourceContainer;
+            _localize = localize;
         }
 
         public async Task<Result<Budget>> GetBudgetAsync(Guid id)
@@ -1166,6 +1170,14 @@ namespace BudgetBadger.Logic
                     if (balance.Amount != 0)
                     {
                         quickBudgets.Add(balance);
+                    }
+
+                    var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+                    var nfi = locale.NumberFormat;
+                    // fix amounts
+                    foreach (var quickBudget in quickBudgets)
+                    {
+                        quickBudget.Amount = Decimal.Round(quickBudget.Amount, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
                     }
 
                     result.Success = true;

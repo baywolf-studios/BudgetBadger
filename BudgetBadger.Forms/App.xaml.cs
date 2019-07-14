@@ -90,6 +90,7 @@ namespace BudgetBadger.Forms
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
             await CleanupDeletedAccounts();
+            await CleanupBudgets();
             await VerifyPurchases();
             await SyncOnStartOrResume();
         }
@@ -369,6 +370,41 @@ namespace BudgetBadger.Forms
                     }
 
                     await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpAccountDebtEnvelopes, true.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        async Task CleanupBudgets()
+        {
+            try
+            {
+                var settings = Container.Resolve<ISettings>();
+
+                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpBudgets), out bool cleanedUp);
+
+                if (!cleanedUp)
+                {
+                    var locale = Xamarin.Forms.DependencyService.Get<ILocalize>().GetLocale() ?? CultureInfo.CurrentUICulture;
+                    var nfi = locale.NumberFormat;
+
+                    var envelopeDataAccess = Container.Resolve<IEnvelopeDataAccess>();
+                    var budgets = await envelopeDataAccess.ReadBudgetsAsync();
+                    foreach (var budget in budgets)
+                    {
+                        var newAmount = Decimal.Round(budget.Amount ?? 0, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
+                        if (budget.Amount != newAmount)
+                        {
+                            budget.Amount = newAmount;
+                            budget.ModifiedDateTime = DateTime.Now;
+                            await envelopeDataAccess.UpdateBudgetAsync(budget);
+                        }
+                    }
+
+                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpBudgets, true.ToString());
                 }
             }
             catch (Exception e)

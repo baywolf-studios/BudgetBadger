@@ -80,8 +80,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                          DeletedDateTime  TEXT,
                                          FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
                                          FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id)
-                                      );
-                                    ";
+                                      );";
 
                         command.ExecuteNonQuery();
                     }
@@ -518,7 +517,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"DELETE Budget WHERE Id = @Id";
+                        command.CommandText = @"DELETE FROM Budget WHERE Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", id);
 
