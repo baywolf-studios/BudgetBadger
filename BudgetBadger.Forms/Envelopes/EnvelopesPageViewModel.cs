@@ -295,6 +295,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
+                budget = result.Data;
                 _needToSync = true;
                 var scheduleResult = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
                 if (scheduleResult.Success)
