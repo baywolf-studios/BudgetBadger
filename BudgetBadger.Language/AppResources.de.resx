@@ -921,4 +921,7 @@
   <data name="UnlockCloudSyncLabel" xml:space="preserve">
     <value>Cloud-Sync mit Budget Badger Pro entsperren</value>
   </data>
+  <data name="BudgetValidAlreadyExists" xml:space="preserve">
+    <value>Budget ist bereits vorhanden</value>
+  </data>
 </root>
