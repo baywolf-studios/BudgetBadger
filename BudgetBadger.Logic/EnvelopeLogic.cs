@@ -537,7 +537,7 @@ namespace BudgetBadger.Logic
                 var existingBudget = await _envelopeDataAccess.ReadBudgetFromScheduleAndEnvelopeAsync(budget.Schedule.Id, budget.Envelope.Id);
                 if (existingBudget.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendDebtError"));
+                    errors.Add(_resourceContainer.GetResourceString("BudgetValidAlreadyExists"));
                 }
             }
 
