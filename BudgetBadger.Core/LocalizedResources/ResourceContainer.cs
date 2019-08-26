@@ -52,17 +52,17 @@ namespace BudgetBadger.Core.LocalizedResources
 
         public decimal GetRoundedDecimal(decimal amount)
         {
-            return GetRoundedDecimal(amount);
+            var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+            var nfi = locale.NumberFormat;
+
+            return Decimal.Round(amount, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
         }
 
         public decimal? GetRoundedDecimal(decimal? amount)
         {
             if (amount.HasValue)
             {
-                var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
-                var nfi = locale.NumberFormat;
-
-                return Decimal.Round(amount.Value, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
+                return GetRoundedDecimal(amount.Value);
             }
             else
             {
