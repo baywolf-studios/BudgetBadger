@@ -196,7 +196,7 @@
             <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
             <x:Double x:Key="SecondaryActionButtonBorderWidth">1</x:Double>
             <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
-            <Color x:Key="SecondaryActionButtonBackgroundColor">Transparent</Color>
+            <Color x:Key="SecondaryActionButtonBackgroundColor">white</Color>
             <Color x:Key="SecondaryActionButtonBorderColor">#c8d1e0</Color>
             <Color x:Key="SecondaryActionButtonHoverBackgroundColor">#f5f7fa</Color>
             <Color x:Key="SecondaryActionButtonHoverBorderColor">#0c7bb3</Color>
@@ -235,7 +235,7 @@
             <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
             <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>
             <x:Double x:Key="SecondaryDestructionButtonBorderWidth">1</x:Double>
-            <Color x:Key="SecondaryDestructionButtonBackgroundColor">Transparent</Color>
+            <Color x:Key="SecondaryDestructionButtonBackgroundColor">white</Color>
             <Color x:Key="SecondaryDestructionButtonBorderColor">#c8d1e0</Color>
             <Color x:Key="SecondaryDestructionButtonHoverBackgroundColor">#faf0f0</Color>
             <Color x:Key="SecondaryDestructionButtonHoverBorderColor">#de1b1b</Color>
