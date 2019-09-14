@@ -16,25 +16,28 @@ using Prism;
 using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly IEnvelopeLogic _envelopeGroupLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<IEnvelopeLogic> _envelopeGroupLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
+        readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IPurchaseService> _purchaseService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
+        public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.Value.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
 
         bool _needToSync;
 
@@ -75,24 +78,34 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        public EnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public EnvelopeGroupsPageViewModel(Lazy<IResourceContainer> resourceContainer,
+                                   INavigationService navigationService,
                                    IPageDialogService dialogService,
-                                   IEnvelopeLogic envelopeGroupLogic,
-                                   ISyncFactory syncFactory)
+                                   Lazy<IEnvelopeLogic> envelopeGroupLogic,
+                                   Lazy<ISyncFactory> syncFactory,
+                                   Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _envelopeGroupLogic = envelopeGroupLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _purchaseService = purchaseService;
 
             EnvelopeGroups = new List<EnvelopeGroup>();
             SelectedEnvelopeGroup = null;
 
             SelectedCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
+            SaveCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteDeleteCommand(a));
@@ -102,12 +115,13 @@ namespace BudgetBadger.Forms.Envelopes
         {
             if (_needToSync)
             {
-                var syncService = _syncFactory.GetSyncService();
+                var syncService = _syncFactory.Value.GetSyncService();
                 var syncResult = await syncService.FullSync();
 
                 if (syncResult.Success)
                 {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
                 }
             }
         }
@@ -118,6 +132,9 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
+
             await ExecuteRefreshCommand();
         }
 
@@ -147,7 +164,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeGroupLogic.GetEnvelopeGroupsAsync();
+                var result = await _envelopeGroupLogic.Value.GetEnvelopeGroupsAsync();
 
                 if (result.Success)
                 {
@@ -155,7 +172,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 NoEnvelopeGroups = (EnvelopeGroups?.Count ?? 0) == 0;
@@ -166,29 +183,38 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteSaveCommand()
+        public async Task ExecuteSaveSearchCommand()
         {
             var newEnvelopeGroup = new EnvelopeGroup
             {
                 Description = SearchText
             };
 
-            var result = await _envelopeGroupLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+            var result = await _envelopeGroupLogic.Value.SaveEnvelopeGroupAsync(newEnvelopeGroup);
 
             if (result.Success)
             {
                 _needToSync = true;
 
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.EnvelopeGroup, result.Data }
-                };
-
                 await ExecuteRefreshCommand();
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertAveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteSaveCommand(EnvelopeGroup envelopeGroup)
+        {
+            var result = await _envelopeGroupLogic.Value.SaveEnvelopeGroupAsync(envelopeGroup);
+
+            if (result.Success)
+            {
+                _needToSync = true;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -210,7 +236,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteCommand(EnvelopeGroup envelopeGroup)
         {
-            var result = await _envelopeGroupLogic.DeleteEnvelopeGroupAsync(envelopeGroup.Id);
+            var result = await _envelopeGroupLogic.Value.DeleteEnvelopeGroupAsync(envelopeGroup.Id);
 
             if (result.Success)
             {
@@ -219,7 +245,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
     }

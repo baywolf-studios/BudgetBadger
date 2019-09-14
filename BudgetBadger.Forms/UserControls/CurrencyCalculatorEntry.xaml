@@ -3,7 +3,8 @@
     x:Class="BudgetBadger.Forms.UserControls.CurrencyCalculatorEntry"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects">
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <StackLayout.Spacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
@@ -15,16 +16,12 @@
         FontSize="12"
         Text="{Binding Label}"
         TextColor="{StaticResource IdleColor}" />
-    <Entry
+    <uc:CurrencyCalculator
         x:Name="TextControl"
         FontSize="16"
-        IsPassword="false"
-        Keyboard="Telephone"
-        TextColor="{StaticResource PrimaryTextColor}">
-        <Entry.Effects>
-            <effects:CalculatorKeyboardEntryEffect />
-        </Entry.Effects>
-    </Entry>
+        TextColor="{StaticResource PrimaryTextColor}"
+        Number="{Binding Number}">
+    </uc:CurrencyCalculator>
     <Label
         x:Name="HintErrorControl"
         FontSize="12"

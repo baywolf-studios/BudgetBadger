@@ -34,9 +34,9 @@ namespace BudgetBadger.Forms.Converters
                     var text = value.ToString().Replace(symbol, "").Replace(groupSeparator, "").Replace(decimalSeparator, ".").Replace("(", "-").Replace(")", "");
                     var temp = new DataTable().Compute(text, null);
                     result = Decimal.Parse(temp.ToString());
-                    result = Decimal.Round(result, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
+                    result = StaticResourceContainer.Current.GetRoundedDecimal(result);
                 }
-                catch (Exception ex)
+                catch
                 {
                     result = 0;
                 }

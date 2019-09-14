@@ -16,25 +16,30 @@ using Prism;
 using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BindableBase, IPageLifecycleAware
+    public class PayeesPageViewModel : BaseViewModel
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly IPayeeLogic _payeeLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISyncFactory _syncFactory;
+        readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IPurchaseService> _purchaseService;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
-        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -73,37 +78,61 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        public PayeesPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
-		                           IPageDialogService dialogService,
-		                           IPayeeLogic payeeLogic,
-		                           ISyncFactory syncFactory)
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
+                                   INavigationService navigationService,
+                                   IPageDialogService dialogService,
+                                   Lazy<IPayeeLogic> payeeLogic,
+                                   Lazy<ISyncFactory> syncFactory,
+                                   Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _purchaseService = purchaseService;
 
             Payees = new List<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
+            SaveCommand = new DelegateCommand<Payee>(async p => await ExecuteSaveCommand(p));
+            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
+
             await ExecuteRefreshCommand();
         }
 
-        public void OnDisappearing()
+        public override async void OnDeactivated()
         {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.Value.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
+                }
+            }
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -132,7 +161,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                var result = await _payeeLogic.Value.GetPayeesAsync();
 
                 if (result.Success)
                 {
@@ -140,7 +169,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 NoPayees = (Payees?.Count ?? 0) == 0;
@@ -151,27 +180,37 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteSaveCommand()
+        public async Task ExecuteSaveCommand(Payee payee)
+        {
+            var result = await _payeeLogic.Value.SavePayeeAsync(payee);
+
+            if (result.Success)
+            {
+                _needToSync = true;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteSaveSearchCommand()
         {
             var newPayee = new Payee
             {
                 Description = SearchText
             };
 
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
 
             if (result.Success)
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Payee, result.Data }
-                };
-
+                _needToSync = true;
                 await ExecuteRefreshCommand();
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
@@ -193,23 +232,16 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteCommand(Payee payee)
         {
-            var result = await _payeeLogic.DeletePayeeAsync(payee.Id);
+            var result = await _payeeLogic.Value.DeletePayeeAsync(payee.Id);
 
-			if (result.Success)
+            if (result.Success)
             {
+                _needToSync = true;
                 await ExecuteRefreshCommand();
-
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 

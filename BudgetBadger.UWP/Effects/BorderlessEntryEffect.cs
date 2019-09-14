@@ -13,6 +13,8 @@ namespace BudgetBadger.UWP.Effects
         {
             if (Control is FormsTextBox control)
             {
+                control.Style = Windows.UI.Xaml.Application.Current.Resources["FormsTextBoxStyle"] as Windows.UI.Xaml.Style;
+
                 var margin = control.BorderThickness;
                 control.BorderThickness = new Windows.UI.Xaml.Thickness(0);
                 control.Margin = margin;

@@ -55,7 +55,7 @@ namespace BudgetBadger.Forms
 
         public override Color GetSelectionBackgroundColor()
         {
-            return (Color)Application.Current.Resources["SelectedItemColor"];
+            return(Color)Application.Current.Resources["BackgroundColor"];
         }
 
         public override Color GetBorderColor()
@@ -66,6 +66,21 @@ namespace BudgetBadger.Forms
         public override GridLinesVisibility GetGridLinesVisibility()
         {
             return GridLinesVisibility.Horizontal;
+        }
+
+        public override float GetHeaderBorderWidth()
+        {
+            return 0;
+        }
+
+        public override Color GetHeaderBorderColor()
+        {
+            return Color.Transparent;
+        }
+
+        public override float GetBorderWidth()
+        {
+            return 1;
         }
     }
 }

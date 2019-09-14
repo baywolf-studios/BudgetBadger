@@ -127,6 +127,9 @@ namespace BudgetBadger.Models
         public Account DeepCopy()
         {
             Account account = (Account)this.MemberwiseClone();
+            account.Description = this.Description == null ? null : String.Copy(this.Description);
+            account.Notes = this.Notes == null ? null : String.Copy(this.Notes);
+            account.Group = this.Group == null ? null : String.Copy(this.Group);
             return account;
         }
 
@@ -159,11 +162,7 @@ namespace BudgetBadger.Models
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
-                && OnBudget == p.OnBudget
-                && Balance == p.Balance
-                && Pending == p.Pending
-                && Posted == p.Posted
-                && Payment == p.Payment;
+                && OnBudget == p.OnBudget;
         }
 
         public override bool Equals(object obj)
@@ -184,7 +183,7 @@ namespace BudgetBadger.Models
             }
 
 
-                if (Type == account.Type)
+                if (Type.Equals(account.Type))
                 {
                     return String.Compare(Description, account.Description);
                 }
@@ -195,29 +194,6 @@ namespace BudgetBadger.Models
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Account);
-        }
-
-        public static bool operator ==(Account lhs, Account rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Account lhs, Account rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

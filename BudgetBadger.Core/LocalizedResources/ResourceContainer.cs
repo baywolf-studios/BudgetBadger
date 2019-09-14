@@ -49,5 +49,25 @@ namespace BudgetBadger.Core.LocalizedResources
         {
             return String.Format(_localize.GetLocale(), format, objs);
         }
+
+        public decimal GetRoundedDecimal(decimal amount)
+        {
+            var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+            var nfi = locale.NumberFormat;
+
+            return Decimal.Round(amount, nfi.CurrencyDecimalDigits, MidpointRounding.AwayFromZero);
+        }
+
+        public decimal? GetRoundedDecimal(decimal? amount)
+        {
+            if (amount.HasValue)
+            {
+                return GetRoundedDecimal(amount.Value);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

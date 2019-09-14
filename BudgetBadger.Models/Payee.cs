@@ -77,6 +77,19 @@ namespace BudgetBadger.Models
             set => SetProperty(ref group, value);
         }
 
+        public string ExtendedDescription
+        {
+            get
+            {
+                if (IsAccount)
+                {
+                    return string.Format("{0} - {1}", Group, Description);
+                }
+
+                return Description;
+            }
+        }
+
         public Payee()
         {
             Id = Guid.Empty;
@@ -84,7 +97,12 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
-            return (Payee)this.MemberwiseClone();
+            var payee = (Payee)this.MemberwiseClone();
+            payee.Description = this.Description == null ? null : String.Copy(this.Description);
+            payee.Notes = this.Notes == null ? null : String.Copy(this.Notes);
+            payee.Group = this.Group == null ? null : String.Copy(this.Group);
+
+            return payee;
         }
 
         public bool Equals(Payee p)
@@ -115,8 +133,7 @@ namespace BudgetBadger.Models
                 && ModifiedDateTime == p.ModifiedDateTime
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
-                && Notes == p.Notes
-                && IsAccount == p.IsAccount;
+                && Notes == p.Notes;
         }
 
         public override bool Equals(object obj)
@@ -136,9 +153,9 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsAccount == payee.IsAccount)
+            if (IsAccount.Equals(payee.IsAccount))
             {
-                if (Group == payee.Group)
+                if (Group.Equals(payee.Group))
                 {
                     return String.Compare(Description, payee.Description);
                 }
@@ -152,29 +169,6 @@ namespace BudgetBadger.Models
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Payee);
-        }
-
-        public static bool operator ==(Payee lhs, Payee rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Payee lhs, Payee rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

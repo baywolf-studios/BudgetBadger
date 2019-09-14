@@ -71,7 +71,6 @@
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
-    <Compile Include="Effects\CalculatorKeyboardEntryEffect.cs" />
     <Compile Include="Effects\NoScrollEditorEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
@@ -84,6 +83,8 @@
     <Compile Include="Renderers\CardRenderer.cs" />
     <Compile Include="Renderers\Helper.cs" />
     <Compile Include="Renderers\Button2Renderer.cs" />
+    <Compile Include="Renderers\CurrencyCalculatorRenderer.cs" />
+    <Compile Include="Renderers\SwipeBackPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">

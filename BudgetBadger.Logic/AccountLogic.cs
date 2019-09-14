@@ -88,6 +88,11 @@ namespace BudgetBadger.Logic
                 payee.DeletedDateTime = DateTime.Now;
                 await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
 
+                var debtEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
+                debtEnvelope.ModifiedDateTime = DateTime.Now;
+                debtEnvelope.DeletedDateTime = DateTime.Now;
+                await _envelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
+
                 var reconcileResult = await ReconcileAccount(account.Id, DateTime.Now, 0);
 
                 return reconcileResult;
@@ -118,6 +123,11 @@ namespace BudgetBadger.Logic
                     payee.ModifiedDateTime = DateTime.Now;
                     payee.DeletedDateTime = null;
                     await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+
+                    var debtEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
+                    debtEnvelope.ModifiedDateTime = DateTime.Now;
+                    debtEnvelope.DeletedDateTime = null;
+                    await _envelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
 
                     result.Success = true;
                 }

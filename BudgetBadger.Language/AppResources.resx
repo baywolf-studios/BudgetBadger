@@ -921,4 +921,7 @@
   <data name="UnlockReportsLabel" xml:space="preserve">
     <value>Unlock Reports with Budget Badger Pro</value>
   </data>
+  <data name="BudgetValidAlreadyExists" xml:space="preserve">
+    <value>Budget already exists</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <syncfusion:SfDataGrid
     x:Class="BudgetBadger.Forms.UserControls.DataGrid"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -9,4 +9,5 @@
     GridStyle="{StaticResource sfDataGridStyle}"
     HeaderRowHeight="{StaticResource Key=ListHeaderHeight}"
     RowHeight="{StaticResource Key=ListItemHeight}"
-    SelectionMode="Single" />
+    BackgroundColor="{StaticResource BackgroundColor}"
+    SelectionMode="Single"/>
