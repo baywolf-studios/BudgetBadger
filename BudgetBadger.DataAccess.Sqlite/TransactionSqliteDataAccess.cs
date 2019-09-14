@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Files;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
@@ -12,10 +13,13 @@ namespace BudgetBadger.DataAccess.Sqlite
     public class TransactionSqliteDataAccess : ITransactionDataAccess
     {
         readonly string _connectionString;
+        readonly IResourceContainer _resourceContainer;
 
-        public TransactionSqliteDataAccess(string connectionString)
+        public TransactionSqliteDataAccess(string connectionString,
+            IResourceContainer resourceContainer)
         {
             _connectionString = connectionString;
+            _resourceContainer = resourceContainer;
 
             Initialize();
         }
@@ -95,7 +99,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @DeletedDateTime) ";
 
                         command.Parameters.AddWithValue("@Id", transaction.Id);
-                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
@@ -497,7 +501,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", transaction.Id);
-                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);

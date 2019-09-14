@@ -16,10 +16,11 @@ using Prism.Services;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Settings;
+using Prism;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
+    public class ReportsPageViewModel : BaseViewModel
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -93,20 +94,11 @@ namespace BudgetBadger.Forms.Reports
             ReportCommand = new DelegateCommand<object>(async s => await ExecuteReportCommand(s));
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
-        {
-            OnAppearing();
-        }
-
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
             ResetReports();
-        }
-
-        public void OnDisappearing()
-        {
         }
 
         void ResetReports()

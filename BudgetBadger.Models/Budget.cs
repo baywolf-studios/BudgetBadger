@@ -167,12 +167,10 @@ namespace BudgetBadger.Models
             return Id == p.Id
                 && CreatedDateTime == p.CreatedDateTime
                 && ModifiedDateTime == p.ModifiedDateTime
-                && Schedule == p.Schedule
-                && Envelope == p.Envelope
+                && Schedule.Equals(p.Schedule)
+                && Envelope.Equals(p.Envelope)
                 && IgnoreOverspend == p.IgnoreOverspend
-                && Amount == p.Amount
-                && PastAmount == p.PastAmount
-                && Activity == p.Activity;
+                && Amount == p.Amount;
         }
 
         public override bool Equals(object obj)
@@ -183,29 +181,6 @@ namespace BudgetBadger.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
-        }
-
-        public static bool operator ==(Budget lhs, Budget rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Budget lhs, Budget rhs)
-        {
-            return !(lhs == rhs);
         }
 
         public int CompareTo(object obj)

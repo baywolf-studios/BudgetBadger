@@ -82,8 +82,6 @@ namespace BudgetBadger.Forms
         protected async override void OnStart()
         {
             SetLocale();
-            await VerifyPurchases();
-            await SyncOnStartOrResume();
 
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
@@ -91,7 +89,10 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            //await settings.AddOrUpdateValueAsync(AppSettings.AskedForReview, "");
+            await CleanupDeletedAccounts();
+            await CleanupBudgets();
+            await VerifyPurchases();
+            await SyncOnStartOrResume();
         }
 
         protected async override void OnResume()
@@ -131,7 +132,7 @@ namespace BudgetBadger.Forms
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -150,7 +151,7 @@ namespace BudgetBadger.Forms
                                                  serviceKey: "syncPayeeDataAccess");
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
                                                     serviceKey: "syncEnvelopeDataAccess");
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
                                                        serviceKey: "syncTransactionDataAccess");
 
             //sync directory for filesyncproviders
@@ -346,6 +347,67 @@ namespace BudgetBadger.Forms
             }
 
             return new Result { Success = true };
+        }
+
+        async Task CleanupDeletedAccounts()
+        {
+            try
+            {
+                var settings = Container.Resolve<ISettings>();
+
+                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpAccountDebtEnvelopes), out bool cleanedUp);
+
+                if (!cleanedUp)
+                {
+                    var accountLogic = Container.Resolve<IAccountLogic>();
+                    var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
+                    if (deletedAccountsResult.Success)
+                    {
+                        foreach (var account in deletedAccountsResult.Data)
+                        {
+                            await accountLogic.DeleteAccountAsync(account.Id);
+                        }
+                    }
+
+                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpAccountDebtEnvelopes, true.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        async Task CleanupBudgets()
+        {
+            try
+            {
+                var settings = Container.Resolve<ISettings>();
+
+                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpBudgets), out bool cleanedUp);
+
+                if (!cleanedUp)
+                {
+                    var envelopeDataAccess = Container.Resolve<IEnvelopeDataAccess>();
+                    var budgets = await envelopeDataAccess.ReadBudgetsAsync();
+                    foreach (var budget in budgets)
+                    {
+                        var newAmount = StaticResourceContainer.Current.GetRoundedDecimal(budget.Amount);
+                        if (budget.Amount != newAmount)
+                        {
+                            budget.Amount = newAmount;
+                            budget.ModifiedDateTime = DateTime.Now;
+                            await envelopeDataAccess.UpdateBudgetAsync(budget);
+                        }
+                    }
+
+                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpBudgets, true.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }

@@ -16,7 +16,6 @@ namespace BudgetBadger.UWP.Effects
         {
             if (Control is Windows.UI.Xaml.Controls.DatePicker control)
             {
-
                 control.BorderThickness = new Windows.UI.Xaml.Thickness(0);
 
                 control.Margin = new Windows.UI.Xaml.Thickness(0);

@@ -16,24 +16,29 @@ using Xamarin.Forms;
 using Prism;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BindableBase, IPageLifecycleAware, INavigatingAware
+    public class AccountsPageViewModel : BaseViewModel, INavigatingAware
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly IAccountLogic _accountLogic;
+        readonly Lazy<IResourceContainer> _resourceContainer;
+        readonly Lazy<IAccountLogic> _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly ISyncFactory _syncFactory;
-        
+		readonly Lazy<ISyncFactory> _syncFactory;
+        readonly Lazy<IPurchaseService> _purchaseService;
+
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
-        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
+        public ICommand SaveCommand { get; set; }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
+
+        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -72,17 +77,26 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
-        public AccountsPageViewModel(IResourceContainer resourceContainer,
+        bool _hasPro;
+        public bool HasPro
+        {
+            get => _hasPro;
+            set => SetProperty(ref _hasPro, value);
+        }
+
+        public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
 		                             IPageDialogService dialogService,
-		                             IAccountLogic accountLogic,
-		                             ISyncFactory syncFactory)
+                                     Lazy<IAccountLogic> accountLogic,
+                                     Lazy<ISyncFactory> syncFactory,
+                                     Lazy<IPurchaseService> purchaseService)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
+            _purchaseService = purchaseService;
 
             Accounts = new List<Account>();
             SelectedAccount = null;
@@ -93,15 +107,30 @@ namespace BudgetBadger.Forms.Accounts
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
+            SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
         }
 
-        public async void OnAppearing()
+        public override async void OnActivated()
         {
+            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
+            HasPro = purchasedPro.Success;
+
             await ExecuteRefreshCommand();
         }
 
-        public void OnDisappearing()
+        public override async void OnDeactivated()
         {
+            if (_needToSync)
+            {
+                var syncService = _syncFactory.Value.GetSyncService();
+                var syncResult = await syncService.FullSync();
+
+                if (syncResult.Success)
+                {
+                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
+                    _needToSync = false;
+                }
+            }
         }
 
         // this gets hit before the OnAppearing
@@ -113,9 +142,9 @@ namespace BudgetBadger.Forms.Accounts
                 if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
                 {
                     // show message about debt envelopes
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDebtEnvelopes"),
-                            _resourceContainer.GetResourceString("AlertMessageDebtEnvelopes"),
-                            _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDebtEnvelopes"),
+                            _resourceContainer.Value.GetResourceString("AlertMessageDebtEnvelopes"),
+                            _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
             }
         }
@@ -146,7 +175,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await _accountLogic.GetAccountsAsync();
+                var result = await _accountLogic.Value.GetAccountsAsync();
 
                 if (result.Success)
                 {
@@ -154,7 +183,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
@@ -182,29 +211,36 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteCommand(Account account)
         {
-            var result = await _accountLogic.DeleteAccountAsync(account.Id);
+            var result = await _accountLogic.Value.DeleteAccountAsync(account.Id);
 
             if (result.Success)
             {
+                _needToSync = true;
                 await ExecuteRefreshCommand();
-
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 
         public async Task ExecuteAddTransactionCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+        }
+
+        public async Task ExecuteSaveCommand(Account account)
+        {
+            var result = await _accountLogic.Value.SaveAccountAsync(account);
+
+            if (result.Success)
+            {
+                _needToSync = true;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
         }
     }
 }

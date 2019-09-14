@@ -78,7 +78,10 @@ namespace BudgetBadger.Models
 
         public EnvelopeGroup DeepCopy()
         {
-            return (EnvelopeGroup)this.MemberwiseClone();
+            var group = (EnvelopeGroup)this.MemberwiseClone();
+            group.Description = this.Description == null ? null : String.Copy(this.Description);
+            group.Notes = this.Notes == null ? null : String.Copy(this.Notes);
+            return group;
         }
 
         public bool Equals(EnvelopeGroup p)
@@ -134,9 +137,9 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsDebt == group.IsDebt)
+            if (IsDebt.Equals(group.IsDebt))
             {
-                if (IsIncome == group.IsIncome)
+                if (IsIncome.Equals(group.IsIncome))
                 {
                     return String.Compare(Description, group.Description);
                 }
@@ -145,29 +148,6 @@ namespace BudgetBadger.Models
             }
 
             return -1 * IsDebt.CompareTo(group.IsDebt);
-        }
-
-        public static bool operator ==(EnvelopeGroup lhs, EnvelopeGroup rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(EnvelopeGroup lhs, EnvelopeGroup rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<Budget>> ReadBudgetsAsync();
         Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId);
         Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId);
+        Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId);
         Task UpdateBudgetAsync(Budget budget);
         Task DeleteBudgetAsync(Guid id);
 

@@ -98,7 +98,9 @@ namespace BudgetBadger.Models
 
         public BudgetSchedule DeepCopy()
         {
-            return (BudgetSchedule)this.MemberwiseClone();
+            var schedule = (BudgetSchedule)this.MemberwiseClone();
+            schedule.Description = this.Description == null ? null : String.Copy(this.Description);
+            return schedule;
         }
 
         public bool Equals(BudgetSchedule p)
@@ -129,11 +131,7 @@ namespace BudgetBadger.Models
                 && ModifiedDateTime == p.ModifiedDateTime
                 && Description == p.Description
                 && BeginDate == p.BeginDate
-                && EndDate == p.EndDate
-                && Past == p.Past
-                && Income == p.Income
-                && Budgeted == p.Budgeted
-                && Overspend == p.Overspend;
+                && EndDate == p.EndDate;
         }
 
         public override bool Equals(object obj)
@@ -144,29 +142,6 @@ namespace BudgetBadger.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
-        }
-
-        public static bool operator ==(BudgetSchedule lhs, BudgetSchedule rhs)
-        {
-            // Check for null on left side.
-            if (lhs is null)
-            {
-                if (rhs is null)
-                {
-                    // null == null = true.
-                    return true;
-                }
-
-                // Only the left side is null.
-                return false;
-            }
-            // Equals handles case of null on right side.
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(BudgetSchedule lhs, BudgetSchedule rhs)
-        {
-            return !(lhs == rhs);
         }
     }
 }

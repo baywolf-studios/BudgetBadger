@@ -45,6 +45,8 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent ();
 
+            GridColumnSizer = new DataGridRatioColumnSizer(this);
+
             GridTapped += (sender, e) =>
             {
                 previousRow = e.RowColumnIndex.RowIndex;

@@ -1,22 +1,18 @@
-﻿using BudgetBadger.Forms.Pages;
-using BudgetBadger.Forms.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using BudgetBadger.Forms.Pages;
+using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    [XamlCompilation(XamlCompilationOptions.Skip)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SplitTransactionDetailedPage : BaseDetailedPage
     {
-		public SplitTransactionDetailedPage ()
-		{
-			InitializeComponent ();
-		}
-	}
+        public SplitTransactionDetailedPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

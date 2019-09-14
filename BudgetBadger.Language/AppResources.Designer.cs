@@ -700,6 +700,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget already exists.
+        /// </summary>
+        public static string BudgetValidAlreadyExists {
+            get {
+                return ResourceManager.GetString("BudgetValidAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer.
         /// </summary>
         public static string BufferEnvelope {

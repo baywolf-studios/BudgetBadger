@@ -77,7 +77,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.StartingBalancePayee.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee)));
                         command.Parameters.AddWithValue("@Notes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.StartingBalancePayee.ModifiedDateTime);

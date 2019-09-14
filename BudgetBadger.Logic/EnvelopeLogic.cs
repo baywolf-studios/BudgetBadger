@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
@@ -36,6 +37,36 @@ namespace BudgetBadger.Logic
             {
                 var budget = await _envelopeDataAccess.ReadBudgetAsync(id).ConfigureAwait(false);
                 var populatedBudget = await GetPopulatedBudget(budget).ConfigureAwait(false);
+                result.Success = true;
+                result.Data = populatedBudget;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<Budget>> GetBudgetAsync(Guid envelopeId, BudgetSchedule schedule)
+        {
+            var result = new Result<Budget>();
+
+            try
+            {
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(envelopeId);
+                var budget = budgets.FirstOrDefault(b => b.Envelope.Id == envelopeId && b.Schedule.Id == schedule.Id);
+                if (budget == null)
+                {
+                    budget = new Budget();
+                }
+
+                budget.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(envelopeId);
+
+                var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
+                var populatedBudget = await GetPopulatedBudget(budget, populatedSchedule);
+
                 result.Success = true;
                 result.Data = populatedBudget;
             }
@@ -249,6 +280,9 @@ namespace BudgetBadger.Logic
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
+
+                activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
+                activeEnvelopes.Add(_envelopeDataAccess.ReadGenericDebtEnvelope());
 
                 activeEnvelopes.Sort();
 
@@ -494,6 +528,17 @@ namespace BudgetBadger.Logic
                 (!budget.IgnoreOverspend || !budget.Envelope.IgnoreOverspend))
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeValidOverspendDebtError"));
+            }
+
+            if (budget.IsNew &&
+                budget.Schedule != null &&
+                budget.Envelope != null)
+            {
+                var existingBudget = await _envelopeDataAccess.ReadBudgetFromScheduleAndEnvelopeAsync(budget.Schedule.Id, budget.Envelope.Id);
+                if (existingBudget.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("BudgetValidAlreadyExists"));
+                }
             }
 
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
@@ -799,6 +844,25 @@ namespace BudgetBadger.Logic
             }
 
             return budget;
+        }        
+
+        public async Task<Result<BudgetSchedule>> GetBudgetSchedule(BudgetSchedule budgetSchedule)
+        {
+            var result = new Result<BudgetSchedule>();
+
+            try
+            {
+                var schedule = await GetPopulatedBudgetSchedule(budgetSchedule);
+                result.Success = true;
+                result.Data = schedule;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
@@ -1114,6 +1178,12 @@ namespace BudgetBadger.Logic
                     if (balance.Amount != 0)
                     {
                         quickBudgets.Add(balance);
+                    }
+
+                    // fix amounts
+                    foreach (var quickBudget in quickBudgets)
+                    {
+                        quickBudget.Amount = _resourceContainer.GetRoundedDecimal(quickBudget.Amount);
                     }
 
                     result.Success = true;

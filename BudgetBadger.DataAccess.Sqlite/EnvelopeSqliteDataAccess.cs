@@ -80,8 +80,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                          DeletedDateTime  TEXT,
                                          FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
                                          FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id)
-                                      );
-                                    ";
+                                      );";
 
                         command.ExecuteNonQuery();
                     }
@@ -118,7 +117,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     ";
 
                         command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.DebtEnvelopeGroup.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.DebtEnvelopeGroup.ModifiedDateTime);
@@ -157,7 +156,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelopeGroup.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelopeGroup.ModifiedDateTime);
@@ -197,7 +196,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.SystemEnvelopeGroup.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", Constants.SystemEnvelopeGroup.ModifiedDateTime);
@@ -240,7 +239,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.BufferEnvelope.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope)));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
@@ -285,7 +284,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IgnoredEnvelope.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope)));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
@@ -330,7 +329,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;";
 
                         command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(Constants.IncomeEnvelope.Description));
+                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope)));
                         command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
@@ -373,7 +372,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", budget.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
@@ -518,7 +517,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"DELETE Budget WHERE Id = @Id";
+                        command.CommandText = @"DELETE FROM Budget WHERE Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", id);
 
@@ -960,6 +959,98 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
+        public async Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var budget = new Budget();
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT B.Id, 
+                                           B.Amount, 
+                                           B.IgnoreOverspend,
+                                           B.CreatedDateTime, 
+                                           B.ModifiedDateTime, 
+                                           B.BudgetScheduleId, 
+                                           BS.BeginDate        AS BudgetScheduleBeginDate, 
+                                           BS.EndDate          AS BudgetScheduleEndDate,
+                                           BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
+                                           B.EnvelopeId, 
+                                           E.Description       AS EnvelopeDescription, 
+                                           E.Notes             AS EnvelopeNotes, 
+                                           E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
+                                           E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
+                                           E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           EG.Id               AS EnvelopeGroupId, 
+                                           EG.Description      AS EnvelopeGroupDescription,
+                                           EG.Notes            AS EnvelopeGroupNotes, 
+                                           EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
+                                           EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                    FROM   Budget AS B 
+                                    JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
+                                    JOIN   Envelope E ON B.EnvelopeId = E.Id
+                                    JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
+                                    WHERE  E.Id = @EnvelopeId AND BS.Id = @ScheduleId";
+
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                budget = new Budget()
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    Schedule = new BudgetSchedule
+                                    {
+                                        Id = new Guid(reader["BudgetScheduleId"] as byte[]),
+                                        BeginDate = Convert.ToDateTime(reader["BudgetScheduleBeginDate"], CultureInfo.InvariantCulture),
+                                        EndDate = Convert.ToDateTime(reader["BudgetScheduleEndDate"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["BudgetScheduleCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["BudgetScheduleModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    },
+                                    Envelope = new Envelope
+                                    {
+                                        Id = new Guid(reader["EnvelopeId"] as byte[]),
+                                        Description = reader["EnvelopeDescription"].ToString(),
+                                        Notes = reader["EnvelopeNotes"].ToString(),
+                                        IgnoreOverspend = Convert.ToBoolean(reader["EnvelopeIgnoreOverspend"], CultureInfo.InvariantCulture),
+                                        CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
+                                        ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
+                                        DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        Group = new EnvelopeGroup
+                                        {
+                                            Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
+                                            Description = reader["EnvelopeGroupDescription"].ToString(),
+                                            Notes = reader["EnvelopeGroupNotes"].ToString(),
+                                            CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
+                                            ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                        }
+                                    }
+                                };
+                            }
+                        }
+                    }
+
+                    return budget;
+                });
+            }
+        }
+
         public async Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id)
         {
             using(await MultiThreadLock.UseWaitAsync())
@@ -1113,8 +1204,8 @@ namespace BudgetBadger.DataAccess.Sqlite
         public Envelope ReadGenericDebtEnvelope()
         {
             var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
-            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(Constants.GenericDebtEnvelope.Description);
-            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(Constants.DebtEnvelopeGroup.Description);
+            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
+            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
             return genericDebtEnvelope;
         }
 
@@ -1292,7 +1383,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", budget.Amount);
+                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
