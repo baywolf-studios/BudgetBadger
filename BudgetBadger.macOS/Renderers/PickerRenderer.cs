@@ -165,9 +165,9 @@ namespace BudgetBadger.macOS.Renderers
             Control.RemoveAllItems();
             foreach (var item in Element.Items)
             {
-                var menuItem = new NSMenuItem(item)
+                var menuItem = new NSMenuItem(item ?? String.Empty)
                 {
-                    AttributedTitle = new NSAttributedString(item, GetNSStringAttributes())
+                    AttributedTitle = new NSAttributedString(item ?? String.Empty, GetNSStringAttributes())
                 };
                 Control.Menu.AddItem(menuItem);
             }
