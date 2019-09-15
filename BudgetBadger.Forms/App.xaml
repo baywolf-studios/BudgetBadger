@@ -268,9 +268,10 @@
             <Color x:Key="DataGridContextActionTextColor">white</Color>
             <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
             <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
-            
+            <Color x:Key="DataGridColumnBackground">transparent</Color>
+
             <Style x:Key="DataGridColumnStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=DataGridColumnBackground}" />
                 <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
                 <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
             </Style>
