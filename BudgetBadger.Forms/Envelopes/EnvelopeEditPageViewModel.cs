@@ -92,6 +92,31 @@ namespace BudgetBadger.Forms.Envelopes
         
         public async void OnNavigatingTo(INavigationParameters parameters)
         {
+
+            var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
+            if (envelope != null)
+            {
+                var result = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
+                if (result.Success)
+                {
+                    var budgetResult = await _envelopeLogic.GetBudgetAsync(envelope.Id, result.Data);
+                    if (budgetResult.Success)
+                    {
+                        Budget = budgetResult.Data.DeepCopy();
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                        await _navigationService.GoBackAsync();
+                    }
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _navigationService.GoBackAsync();
+                }
+            }
+
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {
