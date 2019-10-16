@@ -21,7 +21,7 @@
         TextColor="{StaticResource PrimaryTextColor}">
         <DatePicker.FontSize>
             <OnPlatform x:TypeArguments="x:Double" Default="16">
-                <On Platform="macOS" Value="13" />
+                <On Platform="macOS" Value="12" />
             </OnPlatform>
         </DatePicker.FontSize>
         <DatePicker.HorizontalOptions>
