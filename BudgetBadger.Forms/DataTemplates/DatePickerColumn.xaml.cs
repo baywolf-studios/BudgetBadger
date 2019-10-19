@@ -70,15 +70,25 @@ namespace BudgetBadger.Forms.DataTemplates
         public DatePickerColumn(bool dense)
         {
             InitializeComponent();
-            if (dense)
+            if (Device.RuntimePlatform == Device.macOS)
             {
-                DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                DateControl.FontSize = 12;
+                TextControl.FontSize = 12;
             }
             else
             {
-                DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                if (dense)
+                {
+
+
+                    DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                    TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                }
+                else
+                {
+                    DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                    TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                }
             }
 
             _resourceContainer = StaticResourceContainer.Current;
