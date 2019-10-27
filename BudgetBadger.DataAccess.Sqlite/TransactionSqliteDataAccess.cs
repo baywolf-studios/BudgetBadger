@@ -98,14 +98,14 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @ModifiedDateTime, 
                                                      @DeletedDateTime) ";
 
-                        command.Parameters.AddWithValue("@Id", transaction.Id);
+                        command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId?.ToByteArray() ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                         command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
@@ -147,7 +147,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -500,14 +500,14 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", transaction.Id);
+                        command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId?.ToByteArray() ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                         command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
@@ -533,7 +533,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }

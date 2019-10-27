@@ -76,7 +76,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         SET    Description = @Description
                                         WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee)));
                         command.Parameters.AddWithValue("@Notes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
@@ -114,7 +114,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                     @ModifiedDateTime, 
                                                     @DeletedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", payee.Id);
+                        command.Parameters.AddWithValue("@Id", payee.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", payee.Description);
                         command.Parameters.AddWithValue("@Notes", payee.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
@@ -140,7 +140,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE Payee WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -170,7 +170,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   Payee 
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -257,7 +257,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", payee.Id);
+                        command.Parameters.AddWithValue("@Id", payee.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", payee.Description);
                         command.Parameters.AddWithValue("@Notes", payee.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
