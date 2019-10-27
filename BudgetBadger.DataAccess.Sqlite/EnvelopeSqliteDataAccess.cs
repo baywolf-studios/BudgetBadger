@@ -116,7 +116,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     WHERE  Id = @Id;
                                     ";
 
-                        command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
@@ -155,7 +155,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     SET    Description = @Description
                                     WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
@@ -195,7 +195,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     SET    Description = @Description
                                     WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup)));
                         command.Parameters.AddWithValue("@Notes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
@@ -238,9 +238,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     SET    Description = @Description
                                     WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.BufferEnvelope.CreatedDateTime);
@@ -283,9 +283,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     SET    Description = @Description
                                     WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.IgnoredEnvelope.CreatedDateTime);
@@ -328,9 +328,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     SET    Description = @Description
                                     WHERE  Id = @Id;";
 
-                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
+                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelope.CreatedDateTime);
@@ -371,11 +371,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", budget.Id);
+                        command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
+                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", budget.ModifiedDateTime);
 
@@ -409,7 +409,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
+                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id.ToByteArray());
                         command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
                         command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                         command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
@@ -451,9 +451,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime, 
                                                 @DeletedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", envelope.Id);
+                        command.Parameters.AddWithValue("@Id", envelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelope.Description);
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
@@ -492,7 +492,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime, 
                                                 @DeletedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelopeGroup.Description);
                         command.Parameters.AddWithValue("@Notes", envelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelopeGroup.CreatedDateTime);
@@ -519,7 +519,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE FROM Budget WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -541,7 +541,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE BudgetSchedule WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -563,7 +563,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE Envelope WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -585,7 +585,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE EnvelopeGroup WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -635,7 +635,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  B.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -817,7 +817,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  BS.Id = @ScheduleId";
 
-                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -908,7 +908,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @EnvelopeId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1000,8 +1000,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @EnvelopeId AND BS.Id = @ScheduleId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
-                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1071,7 +1071,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     FROM   BudgetSchedule
                                     WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1166,7 +1166,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1231,7 +1231,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   EnvelopeGroup
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1382,7 +1382,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", budget.Id);
+                        command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
@@ -1415,7 +1415,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
+                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id.ToByteArray());
                         command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
                         command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                         command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
@@ -1449,9 +1449,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", envelope.Id);
+                        command.Parameters.AddWithValue("@Id", envelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelope.Description);
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
@@ -1484,7 +1484,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelopeGroup.Description);
                         command.Parameters.AddWithValue("@Notes", envelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelopeGroup.CreatedDateTime);

@@ -76,7 +76,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime, 
                                                 @DeletedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Id", account.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", account.Description);
                         command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
                         command.Parameters.AddWithValue("@Notes", account.Notes ?? (object)DBNull.Value);
@@ -104,7 +104,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE Account WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -134,7 +134,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     FROM   Account AS AC 
                                     WHERE  AC.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -225,7 +225,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            DeletedDateTime = @DeletedDateTime 
                                     WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Id", account.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", account.Description);
                         command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
                         command.Parameters.AddWithValue("@Notes", account.Notes);
