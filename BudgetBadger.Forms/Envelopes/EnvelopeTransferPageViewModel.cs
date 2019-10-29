@@ -13,7 +13,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeTransferPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeTransferPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -98,7 +98,7 @@ namespace BudgetBadger.Forms.Envelopes
         { 
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
             if (envelope != null)

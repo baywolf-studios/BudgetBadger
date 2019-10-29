@@ -119,7 +119,7 @@
       <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="Prism.DryIoc.Forms">
-      <Version>7.1.0.431</Version>
+      <Version>7.2.0.1367</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp.Views.Forms">
       <Version>1.68.0</Version>
@@ -164,7 +164,7 @@
       <Version>2.4.3.840</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>3.6.0.293080</Version>
+      <Version>4.3.0.908675</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +183,6 @@
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessEntryEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
-    <Compile Include="Renderers\EntryRenderer.cs" />
     <Compile Include="Renderers\Extensions.cs" />
     <Compile Include="Localize.cs" />
     <Compile Include="Renderers\CardRenderer.cs" />

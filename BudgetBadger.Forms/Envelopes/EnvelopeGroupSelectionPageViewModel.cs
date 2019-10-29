@@ -16,7 +16,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupSelectionPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeGroupSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -117,7 +117,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var countResult = await _envelopeLogic.GetEnvelopeGroupsCountAsync();
             if (countResult.Success)

@@ -14,7 +14,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionEditPageViewModel : BindableBase, INavigationAware
+    public class TransactionEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Transactions
             SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
         }
 
-		public async void OnNavigatingTo(INavigationParameters parameters)
+		public async Task InitializeAsync(INavigationParameters parameters)
 		{
             var goBack = parameters.GetValue<bool>(PageParameter.GoBack);
             if (goBack)
