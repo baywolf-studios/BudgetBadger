@@ -6,6 +6,7 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
     NavigationPage.HasNavigationBar="false">
     <MasterDetailPage.Master>
         <ContentPage
@@ -37,8 +38,7 @@
                     Grid.Row="1"
                     Margin="8,0"
                     BackgroundColor="{StaticResource SelectedItemColor}"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/EnvelopesPage"
+                    Command="{prism:NavigateTo 'NavigationPage/EnvelopesPage'}"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
                     Tapped="Handle_Tapped">

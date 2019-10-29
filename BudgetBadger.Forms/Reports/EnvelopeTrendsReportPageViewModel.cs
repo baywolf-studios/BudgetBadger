@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -133,7 +133,7 @@ namespace BudgetBadger.Forms.Reports
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var envelopesResult = await _envelopeLogic.GetEnvelopesForReportAsync();
             if (envelopesResult.Success)

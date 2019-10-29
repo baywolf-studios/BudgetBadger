@@ -17,7 +17,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
@@ -90,7 +90,7 @@ namespace BudgetBadger.Forms.Envelopes
             QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
         }
         
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
 
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);

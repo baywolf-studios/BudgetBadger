@@ -18,7 +18,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigationAware
+    public class AccountEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -104,7 +104,7 @@ namespace BudgetBadger.Forms.Accounts
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

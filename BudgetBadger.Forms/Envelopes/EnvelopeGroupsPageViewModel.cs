@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IEnvelopeLogic> _envelopeGroupLogic;
@@ -130,7 +130,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;

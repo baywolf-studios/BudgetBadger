@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BaseViewModel, INavigatingAware
+    public class AccountsPageViewModel : BaseViewModel, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IAccountLogic> _accountLogic;
@@ -134,7 +134,7 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         // this gets hit before the OnAppearing
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)

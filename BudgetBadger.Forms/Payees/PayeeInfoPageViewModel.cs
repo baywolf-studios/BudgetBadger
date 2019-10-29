@@ -19,7 +19,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : BindableBase, INavigationAware
+    public class PayeeInfoPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -162,7 +162,7 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
