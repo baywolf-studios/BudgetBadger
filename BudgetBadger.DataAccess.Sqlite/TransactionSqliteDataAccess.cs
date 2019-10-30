@@ -206,7 +206,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  AccountId = @AccountId";
 
-                        command.Parameters.AddWithValue("@AccountId", accountId);
+                        command.Parameters.AddWithValue("@AccountId", accountId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -266,7 +266,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  PayeeId = @PayeeId";
 
-                        command.Parameters.AddWithValue("@PayeeId", payeeId);
+                        command.Parameters.AddWithValue("@PayeeId", payeeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -326,7 +326,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  EnvelopeId = @EnvelopeId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -386,7 +386,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  SplitId = @SplitId";
 
-                        command.Parameters.AddWithValue("@SplitId", splitId);
+                        command.Parameters.AddWithValue("@SplitId", splitId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
