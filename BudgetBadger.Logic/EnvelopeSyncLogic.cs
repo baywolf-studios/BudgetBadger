@@ -226,8 +226,8 @@ namespace BudgetBadger.Logic
             var sourceBudgets = await sourceEnvelopeDataAccess.ReadBudgetsAsync();
             var targetBudgets = await targetEnvelopeDataAccess.ReadBudgetsAsync();
 
-            var sourceBudgetsDictionary = sourceBudgets.ToDictionary(a => a.Id, a2 => a2);
-            var targetBudgetsDictionary = targetBudgets.ToDictionary(a => a.Id, a2 => a2);
+            var sourceBudgetsDictionary = sourceBudgets.ToDictionary(a => a.Envelope.Id.ToString() + a.Schedule.Id.ToString(), a2 => a2);
+            var targetBudgetsDictionary = targetBudgets.ToDictionary(a => a.Envelope.Id.ToString() + a.Schedule.Id.ToString(), a2 => a2);
 
             var budgetsToAdd = sourceBudgetsDictionary.Keys.Except(targetBudgetsDictionary.Keys);
             foreach (var budgetId in budgetsToAdd)

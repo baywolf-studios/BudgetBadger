@@ -42,17 +42,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT 
-                                          );
-                                        ";
+                                          );";
                         command.ExecuteNonQuery();
                     }
-                });
-            }
 
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();

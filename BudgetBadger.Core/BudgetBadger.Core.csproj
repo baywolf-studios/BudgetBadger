@@ -13,5 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Purchase\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 </Project>
