@@ -54,7 +54,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDateTime   TEXT,
+                                             HiddenDateTime   TEXT
                                           );
 
                                     CREATE TABLE IF NOT EXISTS EnvelopeGroup 
@@ -77,7 +77,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDateTime   TEXT,
+                                             HiddenDateTime   TEXT
                                              FOREIGN KEY(EnvelopeGroupId) REFERENCES EnvelopeGroup(Id)
                                           ); 
             
@@ -99,7 +99,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              EnvelopeId       BLOB NOT NULL,
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
-                                             HiddenDateTime   TEXT,
                                              FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
                                              FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id),
                                              UNIQUE(EnvelopeId, BudgetScheduleId)
@@ -120,7 +119,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             CreatedDateTime    TEXT NOT NULL, 
                                             ModifiedDateTime   TEXT NOT NULL, 
                                             DeletedDateTime    TEXT,
-                                            HiddenDateTime     TEXT,
                                             FOREIGN KEY(AccountId) REFERENCES Account(Id),
                                             FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id),
                                             FOREIGN KEY(PayeeId) REFERENCES Payee(Id)
@@ -139,16 +137,19 @@ namespace BudgetBadger.DataAccess.Sqlite
             int version = Convert.ToInt32(command.ExecuteScalar());
             db.Close();
 
+            bool needVacuum = false;
+
             switch (version)
             {
                 case 0:
-
-                    goto case 1;
-                case 1:
-                    Console.WriteLine("Case 1");
-                    break;
+                    UpgradeFromV0ToV1(db);
+                    needVacuum = true;
+                    goto default;
                 default:
-                    Console.WriteLine("Default case");
+                    if (needVacuum)
+                    {
+                        VacuumDatabase(db);
+                    }
                     break;
             }
         }
@@ -177,6 +178,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         SELECT Id, Description, Notes, CreatedDateTime, ModifiedDateTime, NULL, DeletedDateTime
                                         FROM _Payee_old;
 
+                                        UPDATE Payee
+                                        SET ModifiedDateTime = @Now
+                                        WHERE HiddenDateTime IS NOT NULL;
+
                                         DROP TABLE _Payee_old;
 
 
@@ -191,12 +196,16 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDateTime   TEXT,
+                                             HiddenDateTime   TEXT
                                           );
 
-                                        INSERT INTO Payee (Id, Description, OnBudget, Notes, CreatedDateTime, ModifiedDateTime, DeletedDateTime, HiddenDateTime)
+                                        INSERT INTO Account (Id, Description, OnBudget, Notes, CreatedDateTime, ModifiedDateTime, DeletedDateTime, HiddenDateTime)
                                         SELECT Id, Description, OnBudget, Notes, CreatedDateTime, ModifiedDateTime, NULL, DeletedDateTime
                                         FROM _Account_old;
+
+                                        UPDATE Account
+                                        SET ModifiedDateTime = @Now
+                                        WHERE HiddenDateTime IS NOT NULL;
 
                                         DROP TABLE _Account_old;
 
@@ -221,14 +230,93 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         SELECT Id, Description, EnvelopeGroupId, Notes, IgnoreOverspend, CreatedDateTime, ModifiedDateTime, NULL, DeletedDateTime
                                         FROM _Envelope_old;
 
+                                        UPDATE Envelope
+                                        SET ModifiedDateTime = @Now
+                                        WHERE HiddenDateTime IS NOT NULL;
+
                                         DROP TABLE _Envelope_old;
 
 
+                                        ALTER TABLE BudgetSchedule RENAME TO _BudgetSchedule_old;
+
+                                        CREATE TABLE BudgetSchedule 
+                                          ( 
+                                             Id          BLOB PRIMARY KEY NOT NULL, 
+                                             BeginDate   TEXT NOT NULL,
+                                             EndDate     TEXT NOT NULL,
+                                             CreatedDateTime  TEXT NOT NULL, 
+                                             ModifiedDateTime TEXT NOT NULL
+                                          );
+
+                                        INSERT INTO BudgetSchedule (Id, BeginDate, EndDate, CreatedDateTime, ModifiedDateTime)
+                                        SELECT Id, BeginDate, EndDate, CreatedDateTime, ModifiedDateTime
+                                        FROM _BudgetSchedule_old;
+
+                                        DROP TABLE _BudgetSchedule_old;
+
+
+                                        ALTER TABLE Budget RENAME TO _Budget_old;
+
+                                        CREATE TABLE Budget 
+                                          ( 
+                                             Id               BLOB PRIMARY KEY NOT NULL, 
+                                             Amount           TEXT NOT NULL,
+                                             IgnoreOverspend  INTEGER NOT NULL, 
+                                             BudgetScheduleId BLOB NOT NULL, 
+                                             EnvelopeId       BLOB NOT NULL,
+                                             CreatedDateTime  TEXT NOT NULL, 
+                                             ModifiedDateTime TEXT NOT NULL, 
+                                             FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
+                                             FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id),
+                                             UNIQUE(EnvelopeId, BudgetScheduleId)
+                                          );
+
+                                        INSERT INTO Budget (Id, Amount, IgnoreOverspend, BudgetScheduleId, EnvelopeId, CreatedDateTime, ModifiedDateTime)
+                                        SELECT Id, Amount, IgnoreOverspend, BudgetScheduleId, EnvelopeId, CreatedDateTime, ModifiedDateTime
+                                        FROM _Budget_old
+                                        GROUP BY EnvelopeId, BudgetScheduleId;
+
+                                        DROP TABLE _Budget_old;
+
+
+                                        ALTER TABLE [Transaction] RENAME TO _Transaction_old;
+
+                                        CREATE TABLE [Transaction]
+                                        ( 
+                                            Id                 BLOB PRIMARY KEY NOT NULL, 
+                                            Amount             TEXT NOT NULL, 
+                                            Posted             INTEGER NOT NULL,
+                                            ReconciledDateTime TEXT,
+                                            AccountId          BLOB NOT NULL, 
+                                            PayeeId            BLOB NOT NULL, 
+                                            EnvelopeId         BLOB NOT NULL,
+                                            SplitId            BLOB, 
+                                            ServiceDate        TEXT NOT NULL, 
+                                            Notes              TEXT, 
+                                            CreatedDateTime    TEXT NOT NULL, 
+                                            ModifiedDateTime   TEXT NOT NULL, 
+                                            DeletedDateTime    TEXT,
+                                            FOREIGN KEY(AccountId) REFERENCES Account(Id),
+                                            FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id),
+                                            FOREIGN KEY(PayeeId) REFERENCES Payee(Id)
+                                        );
+
+                                        INSERT INTO [Transaction] (Id, Amount, Posted, ReconciledDateTime, AccountId, PayeeId, EnvelopeId, SplitId, ServiceDate, Notes, CreatedDateTime, ModifiedDateTime, DeletedDateTime)
+                                        SELECT t.Id, t.Amount, t.Posted, t.ReconciledDateTime, t.AccountId, t.PayeeId, t.EnvelopeId, t.SplitId, t.ServiceDate, t.Notes, t.CreatedDateTime, t.ModifiedDateTime, t.DeletedDateTime
+                                        FROM _Transaction_old t
+                                        LEFT JOIN Account a ON t.AccountId = a.Id
+                                        LEFT JOIN Payee p ON t.PayeeId = p.Id
+                                        LEFT JOIN Envelope e ON t.EnvelopeId = e.Id
+                                        WHERE a.Id IS NOT NULL AND p.Id IS NOT NULL AND e.Id IS NOT NULL;
+
+                                        DROP TABLE _Transaction_old;
                 
                                         PRAGMA user_version=1;
                                         COMMIT;
 
                                         PRAGMA foreign_keys=on;";
+
+            command.Parameters.AddWithValue("@Now", DateTime.Now);
 
             command.ExecuteNonQuery();
             db.Close();
@@ -236,7 +324,11 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         static void VacuumDatabase(SqliteConnection db)
         {
-
+            db.Open();
+            var command = db.CreateCommand();
+            command.CommandText = @"VACUUM;";
+            command.ExecuteNonQuery();
+            db.Close();
         }
     }
 }
