@@ -1,34 +1,46 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using BudgetBadger.Core.Utilities;
+using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public static class SqliteDataAccess
+    public class SqliteDataAccess
     {
-        public async static Task Init(string connectionString)
+        protected readonly string _connectionString;
+
+        public SqliteDataAccess(string connectionString)
+        {
+            _connectionString = connectionString;
+            Init().FireAndForget();
+        }
+
+        public async Task Init()
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
                 {
-                    using (var db = new SqliteConnection(connectionString))
+                    using (var db = new SqliteConnection(_connectionString))
                     {
                         if (File.Exists(db.DataSource))
                         {
                             UpgradeDatabase(db);
+                            InsertInitial(db);
                         }
                         else
                         {
                             CreateDatabase(db);
+                            InsertInitial(db);
                         }
                     }
                 });
             }
         }
 
-        static void CreateDatabase(SqliteConnection db)
+        void CreateDatabase(SqliteConnection db)
         {
             db.Open();
             var command = db.CreateCommand();
@@ -77,7 +89,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDateTime   TEXT
+                                             HiddenDateTime   TEXT,
                                              FOREIGN KEY(EnvelopeGroupId) REFERENCES EnvelopeGroup(Id)
                                           ); 
             
@@ -129,7 +141,152 @@ namespace BudgetBadger.DataAccess.Sqlite
             db.Close();
         }
 
-        static void UpgradeDatabase(SqliteConnection db)
+        void InsertInitial(SqliteConnection db)
+        {
+            db.Open();
+            var command = db.CreateCommand();
+
+            command.CommandText = @"
+                       INSERT OR IGNORE INTO EnvelopeGroup
+                                    (Id, 
+                                     Description, 
+                                     Notes, 
+                                     CreatedDateTime, 
+                                     ModifiedDateTime, 
+                                     DeletedDateTime) 
+                        VALUES     (@DebtEnvelopeGroupId, 
+                                    @DebtEnvelopeGroupDescription, 
+                                    @DebtEnvelopeGroupNotes, 
+                                    @DebtEnvelopeGroupCreatedDateTime, 
+                                    @DebtEnvelopeGroupModifiedDateTime, 
+                                    @DebtEnvelopeGroupDeletedDateTime),
+                                   (@IncomeEnvelopeGroupId, 
+                                    @IncomeEnvelopeGroupDescription, 
+                                    @IncomeEnvelopeGroupNotes, 
+                                    @IncomeEnvelopeGroupCreatedDateTime, 
+                                    @IncomeEnvelopeGroupModifiedDateTime, 
+                                    @IncomeEnvelopeGroupDeletedDateTime),
+                                   (@SystemEnvelopeGroupId, 
+                                    @SystemEnvelopeGroupDescription, 
+                                    @SystemEnvelopeGroupNotes, 
+                                    @SystemEnvelopeGroupCreatedDateTime, 
+                                    @SystemEnvelopeGroupModifiedDateTime, 
+                                    @SystemEnvelopeGroupDeletedDateTime);
+
+                        INSERT OR IGNORE INTO Envelope 
+                                    (Id, 
+                                     Description, 
+                                     EnvelopeGroupId, 
+                                     Notes, 
+                                     IgnoreOverspend,
+                                     CreatedDateTime, 
+                                     ModifiedDateTime, 
+                                     DeletedDateTime,
+                                     HiddenDateTime) 
+                        VALUES     (@BufferEnvelopeId, 
+                                    @BufferEnvelopeDescription, 
+                                    @BufferEnvelopeEnvelopeGroupId,
+                                    @BufferEnvelopeNotes, 
+                                    @BufferEnvelopeIgnoreOverspend,
+                                    @BufferEnvelopeCreatedDateTime, 
+                                    @BufferEnvelopeModifiedDateTime, 
+                                    @BufferEnvelopeDeletedDateTime,
+                                    @BufferEnvelopeHiddenDateTime),
+                                   (@IgnoredEnvelopeId, 
+                                    @IgnoredEnvelopeDescription, 
+                                    @IgnoredEnvelopeEnvelopeGroupId,
+                                    @IgnoredEnvelopeNotes, 
+                                    @IgnoredEnvelopeIgnoreOverspend,
+                                    @IgnoredEnvelopeCreatedDateTime, 
+                                    @IgnoredEnvelopeModifiedDateTime, 
+                                    @IgnoredEnvelopeDeletedDateTime,
+                                    @IgnoredEnvelopeHiddenDateTime),
+                                   (@IncomeEnvelopeId, 
+                                    @IncomeEnvelopeDescription, 
+                                    @IncomeEnvelopeEnvelopeGroupId,
+                                    @IncomeEnvelopeNotes, 
+                                    @IncomeEnvelopeIgnoreOverspend,
+                                    @IncomeEnvelopeCreatedDateTime, 
+                                    @IncomeEnvelopeModifiedDateTime, 
+                                    @IncomeEnvelopeDeletedDateTime,
+                                    @IncomeEnvelopeHiddenDateTime);
+
+                    INSERT OR IGNORE INTO Payee 
+                                (Id, 
+                                    Description, 
+                                    Notes, 
+                                    CreatedDateTime, 
+                                    ModifiedDateTime, 
+                                    DeletedDateTime,
+                                    HiddenDateTime) 
+                    VALUES     (@StartingBalancePayeeId, 
+                                @StartingBalancePayeeDescription, 
+                                @StartingBalancePayeeNotes, 
+                                @StartingBalancePayeeCreatedDateTime, 
+                                @StartingBalancePayeeModifiedDateTime, 
+                                @StartingBalancePayeeDeletedDateTime,
+                                @StartingBalancePayeeHiddenDateTime);";
+
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupId", Constants.DebtEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupDescription", nameof(Constants.DebtEnvelopeGroup));
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupNotes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupCreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupModifiedDateTime", Constants.DebtEnvelopeGroup.ModifiedDateTime);
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupDeletedDateTime", Constants.DebtEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupId", Constants.IncomeEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupDescription", nameof(Constants.IncomeEnvelopeGroup));
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupNotes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupCreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupModifiedDateTime", Constants.IncomeEnvelopeGroup.ModifiedDateTime);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupDeletedDateTime", Constants.IncomeEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupId", Constants.SystemEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupDescription", nameof(Constants.SystemEnvelopeGroup));
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupNotes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupCreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupModifiedDateTime", Constants.SystemEnvelopeGroup.ModifiedDateTime);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupDeletedDateTime", Constants.SystemEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+
+            command.Parameters.AddWithValue("@BufferEnvelopeId", Constants.BufferEnvelope.Id);
+            command.Parameters.AddWithValue("@BufferEnvelopeDescription", nameof(Constants.BufferEnvelope));
+            command.Parameters.AddWithValue("@BufferEnvelopeEnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@BufferEnvelopeNotes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@BufferEnvelopeIgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
+            command.Parameters.AddWithValue("@BufferEnvelopeCreatedDateTime", Constants.BufferEnvelope.CreatedDateTime);
+            command.Parameters.AddWithValue("@BufferEnvelopeModifiedDateTime", Constants.BufferEnvelope.ModifiedDateTime);
+            command.Parameters.AddWithValue("@BufferEnvelopeDeletedDateTime", Constants.BufferEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@BufferEnvelopeHiddenDateTime", Constants.BufferEnvelope.HiddenDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeId", Constants.IgnoredEnvelope.Id);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeDescription", nameof(Constants.IgnoredEnvelope));
+            command.Parameters.AddWithValue("@IgnoredEnvelopeEnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeNotes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeIgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeCreatedDateTime", Constants.IgnoredEnvelope.CreatedDateTime);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeModifiedDateTime", Constants.IgnoredEnvelope.ModifiedDateTime);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeDeletedDateTime", Constants.IgnoredEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeHiddenDateTime", Constants.IgnoredEnvelope.HiddenDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IncomeEnvelopeId", Constants.IncomeEnvelope.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeDescription", nameof(Constants.IncomeEnvelope));
+            command.Parameters.AddWithValue("@IncomeEnvelopeEnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeNotes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IncomeEnvelopeIgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
+            command.Parameters.AddWithValue("@IncomeEnvelopeCreatedDateTime", Constants.IncomeEnvelope.CreatedDateTime);
+            command.Parameters.AddWithValue("@IncomeEnvelopeModifiedDateTime", Constants.IncomeEnvelope.ModifiedDateTime);
+            command.Parameters.AddWithValue("@IncomeEnvelopeDeletedDateTime", Constants.IncomeEnvelope.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IncomeEnvelopeHiddenDateTime", Constants.IncomeEnvelope.HiddenDateTime ?? (object)DBNull.Value);
+
+            command.Parameters.AddWithValue("@StartingBalancePayeeId", Constants.StartingBalancePayee.Id);
+            command.Parameters.AddWithValue("@StartingBalancePayeeDescription", nameof(Constants.StartingBalancePayee));
+            command.Parameters.AddWithValue("@StartingBalancePayeeNotes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@StartingBalancePayeeCreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
+            command.Parameters.AddWithValue("@StartingBalancePayeeModifiedDateTime", Constants.StartingBalancePayee.ModifiedDateTime);
+            command.Parameters.AddWithValue("@StartingBalancePayeeDeletedDateTime", Constants.StartingBalancePayee.DeletedDateTime ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@StartingBalancePayeeHiddenDateTime", Constants.StartingBalancePayee.HiddenDateTime ?? (object)DBNull.Value);
+
+            command.ExecuteNonQuery();
+            db.Close();
+        }
+
+        void UpgradeDatabase(SqliteConnection db)
         {
             db.Open();
             var command = db.CreateCommand();
@@ -154,7 +311,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        static void UpgradeFromV0ToV1(SqliteConnection db)
+        void UpgradeFromV0ToV1(SqliteConnection db)
         {
             db.Open();
             var command = db.CreateCommand();
@@ -322,7 +479,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             db.Close();
         }
 
-        static void VacuumDatabase(SqliteConnection db)
+        void VacuumDatabase(SqliteConnection db)
         {
             db.Open();
             var command = db.CreateCommand();
