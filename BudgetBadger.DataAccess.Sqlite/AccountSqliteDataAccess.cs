@@ -9,44 +9,10 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class AccountSqliteDataAccess : IAccountDataAccess
+    public class AccountSqliteDataAccess : SqliteDataAccess, IAccountDataAccess
     {
-        readonly string _connectionString;
-
-        public AccountSqliteDataAccess(string connectionString)
+        public AccountSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
-
-            Initialize();
-        }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS Account 
-                                      ( 
-                                         Id               BLOB PRIMARY KEY NOT NULL, 
-                                         Description      TEXT NOT NULL, 
-                                         OnBudget         INTEGER NOT NULL, 
-                                         Notes            TEXT, 
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT
-                                      );
-                                    ";
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task CreateAccountAsync(Account account)

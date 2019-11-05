@@ -130,13 +130,9 @@ namespace BudgetBadger.Forms
             var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.RegisterInitializer<IAccountDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("defaultconnectionString")).FireAndForget(), request => !request.ServiceKey.ToString().Contains("sync"));
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.RegisterInitializer<IPayeeDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("defaultconnectionString")).FireAndForget(), request => !request.ServiceKey.ToString().Contains("sync"));
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.RegisterInitializer<IEnvelopeDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("defaultconnectionString")).FireAndForget(), request => !request.ServiceKey.ToString().Contains("sync"));
             container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.RegisterInitializer<ITransactionDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("defaultconnectionString")).FireAndForget(), request => !request.ServiceKey.ToString().Contains("sync"));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -149,13 +145,9 @@ namespace BudgetBadger.Forms
             var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
             container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncAccountDataAccess");
-            container.RegisterInitializer<IAccountDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("syncConnectionString")).FireAndForget(), request => request.ServiceKey.ToString().Contains("sync"));
             container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())), serviceKey: "syncPayeeDataAccess");
-            container.RegisterInitializer<IPayeeDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("syncConnectionString")).FireAndForget(), request => request.ServiceKey.ToString().Contains("sync"));
             container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())), serviceKey: "syncEnvelopeDataAccess");
-            container.RegisterInitializer<IEnvelopeDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("syncConnectionString")).FireAndForget(), request => request.ServiceKey.ToString().Contains("sync"));
             container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())), serviceKey: "syncTransactionDataAccess");
-            container.RegisterInitializer<ITransactionDataAccess>((service, resolver) => SqliteDataAccess.Init(resolver.Resolve<string>("syncConnectionString")).FireAndForget(), request => request.ServiceKey.ToString().Contains("sync"));
 
             //sync directory for filesyncproviders
             container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));

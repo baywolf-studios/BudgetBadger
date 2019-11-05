@@ -10,53 +10,14 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class TransactionSqliteDataAccess : ITransactionDataAccess
+    public class TransactionSqliteDataAccess : SqliteDataAccess, ITransactionDataAccess
     {
-        readonly string _connectionString;
         readonly IResourceContainer _resourceContainer;
 
         public TransactionSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer)
+            IResourceContainer resourceContainer) : base(connectionString)
         {
-            _connectionString = connectionString;
             _resourceContainer = resourceContainer;
-
-            Initialize();
-        }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
-                                          ( 
-                                             Id                 BLOB PRIMARY KEY NOT NULL, 
-                                             Amount             TEXT NOT NULL, 
-                                             Posted             INTEGER NOT NULL,
-                                             ReconciledDateTime TEXT,
-                                             AccountId          BLOB NOT NULL, 
-                                             PayeeId            BLOB NOT NULL, 
-                                             EnvelopeId         BLOB NOT NULL,
-                                             SplitId            BLOB, 
-                                             ServiceDate        TEXT NOT NULL, 
-                                             Notes              TEXT, 
-                                             CreatedDateTime    TEXT NOT NULL, 
-                                             ModifiedDateTime   TEXT NOT NULL, 
-                                             DeletedDateTime    TEXT 
-                                          );
-                                        ";
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task CreateTransactionAsync(Transaction transaction)

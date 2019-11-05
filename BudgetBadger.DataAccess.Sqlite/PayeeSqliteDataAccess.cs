@@ -10,76 +10,14 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class PayeeSqliteDataAccess : IPayeeDataAccess
+    public class PayeeSqliteDataAccess : SqliteDataAccess, IPayeeDataAccess
     {
-        readonly string _connectionString;
         readonly IResourceContainer _resourceContainer;
 
         public PayeeSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer)
+            IResourceContainer resourceContainer) : base(connectionString)
         {
-            _connectionString = connectionString;
             _resourceContainer = resourceContainer;
-
-            Initialize();
-        }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS Payee 
-                                          ( 
-                                             Id               BLOB PRIMARY KEY NOT NULL, 
-                                             Description      TEXT NOT NULL, 
-                                             Notes            TEXT, 
-                                             CreatedDateTime  TEXT NOT NULL, 
-                                             ModifiedDateTime TEXT NOT NULL, 
-                                             DeletedDateTime  TEXT 
-                                          );";
-                        command.ExecuteNonQuery();
-                    }
-
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO Payee 
-                                                    (Id, 
-                                                     Description, 
-                                                     Notes, 
-                                                     CreatedDateTime, 
-                                                     ModifiedDateTime, 
-                                                     DeletedDateTime) 
-                                        VALUES     (@Id, 
-                                                    @Description, 
-                                                    @Notes, 
-                                                    @CreatedDateTime, 
-                                                    @ModifiedDateTime, 
-                                                    @DeletedDateTime);
-
-                                        UPDATE Payee
-                                        SET    Description = @Description
-                                        WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.StartingBalancePayee.Id.ToByteArray());
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee)));
-                        command.Parameters.AddWithValue("@Notes", Constants.StartingBalancePayee.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.StartingBalancePayee.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.StartingBalancePayee.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.StartingBalancePayee.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task CreatePayeeAsync(Payee payee)
