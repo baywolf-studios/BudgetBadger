@@ -37,13 +37,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      Notes, 
                                                      CreatedDateTime, 
                                                      ModifiedDateTime, 
-                                                     DeletedDateTime) 
+                                                     DeletedDateTime,
+                                                     HiddenDateTime) 
                                         VALUES     (@Id, 
                                                     @Description, 
                                                     @Notes, 
                                                     @CreatedDateTime, 
                                                     @ModifiedDateTime, 
-                                                    @DeletedDateTime)";
+                                                    @DeletedDateTime,
+                                                    @HiddenDateTime)";
 
                         command.Parameters.AddWithValue("@Id", payee.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", payee.Description);
@@ -51,6 +53,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", payee.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", payee.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", payee.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
@@ -97,7 +100,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime
+                                               DeletedDateTime,
+                                               HiddenDateTime
                                         FROM   Payee 
                                         WHERE  Id = @Id";
 
@@ -114,7 +118,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -143,7 +148,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime
+                                               DeletedDateTime,
+                                               HiddenDateTime
                                         FROM   Payee";
 
                         using (var reader = command.ExecuteReader())
@@ -157,7 +163,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 };
                                 payees.Add(payee);
                             }
@@ -185,7 +192,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes = @Notes, 
                                                CreatedDateTime = @CreatedDateTime, 
                                                ModifiedDateTime = @ModifiedDateTime, 
-                                               DeletedDateTime = @DeletedDateTime 
+                                               DeletedDateTime = @DeletedDateTime,
+                                               HiddenDateTime = @HiddenDateTime
                                         WHERE  Id = @Id ";
 
                         command.Parameters.AddWithValue("@Id", payee.Id.ToByteArray());
@@ -194,6 +202,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         command.Parameters.AddWithValue("@CreatedDateTime", payee.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", payee.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", payee.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", payee.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
