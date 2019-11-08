@@ -114,7 +114,16 @@ namespace BudgetBadger.Models
             set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
         }
 
+        DateTime? hiddenDateTime;
+        public DateTime? HiddenDateTime
+        {
+            get => hiddenDateTime;
+            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+        }
+
         public bool IsDeleted { get => DeletedDateTime != null; }
+
+        public bool IsHidden { get => HiddenDateTime != null; }
 
         public bool IsActive { get => !IsNew && !IsDeleted; }
 
