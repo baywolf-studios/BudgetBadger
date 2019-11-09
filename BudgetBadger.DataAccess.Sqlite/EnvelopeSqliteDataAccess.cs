@@ -12,12 +12,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class EnvelopeSqliteDataAccess : SqliteDataAccess, IEnvelopeDataAccess
     {
-        readonly IResourceContainer _resourceContainer;
-
-        public EnvelopeSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer) : base(connectionString)
+        public EnvelopeSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _resourceContainer = resourceContainer;
         }
 
         public async Task CreateBudgetAsync(Budget budget)
@@ -48,7 +44,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @ModifiedDateTime)";
 
                         command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
+                        command.Parameters.AddWithValue("@Amount", budget.Amount);
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id.ToByteArray());
@@ -899,14 +895,6 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public Envelope ReadGenericDebtEnvelope()
-        {
-            var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
-            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
-            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
-            return genericDebtEnvelope;
-        }
-
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
         {
             using(await MultiThreadLock.UseWaitAsync())
@@ -1086,7 +1074,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
+                        command.Parameters.AddWithValue("@Amount", budget.Amount);
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
@@ -1253,6 +1241,46 @@ namespace BudgetBadger.DataAccess.Sqlite
                     return count;
                 });
             }
+        }
+
+        public Task SoftDeleteEnvelopeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HideEnvelopeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnhideEnvelopeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PurgeEnvelopesAsync(DateTime deletedBefore)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SoftDeleteEnvelopeGroupAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task HideEnvelopeGroupAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnhideEnvelopeGroupAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PurgeEnvelopeGroupsAsync(DateTime deletedBefore)
+        {
+            throw new NotImplementedException();
         }
     }
 }

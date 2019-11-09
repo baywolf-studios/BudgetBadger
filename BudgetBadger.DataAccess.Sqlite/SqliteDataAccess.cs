@@ -171,7 +171,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @IgnoredEnvelopeEnvelopeGroupId,
                                                 @IgnoredEnvelopeIgnoreOverspend,
                                                 @Now, 
-                                                @Now,
+                                                @Now),
                                                (@IncomeEnvelopeId, 
                                                 @IncomeEnvelopeDescription, 
                                                 @IncomeEnvelopeEnvelopeGroupId,

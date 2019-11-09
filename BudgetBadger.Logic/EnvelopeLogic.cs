@@ -29,6 +29,14 @@ namespace BudgetBadger.Logic
             _resourceContainer = resourceContainer;
         }
 
+        public Envelope ReadGenericDebtEnvelope()
+        {
+            var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
+            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
+            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
+            return genericDebtEnvelope;
+        }
+
         public async Task<Result<Budget>> GetBudgetAsync(Guid id)
         {
             var result = new Result<Budget>();
@@ -111,7 +119,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
                 var genericDebtBudget = new Budget
                 {
-                    Envelope = _envelopeDataAccess.ReadGenericDebtEnvelope(),
+                    Envelope = ReadGenericDebtEnvelope(),
                     Amount = debtBudgets.Sum(b => b.Amount),
                     Activity = debtBudgets.Sum(b => b.Activity),
                     PastAmount = debtBudgets.Sum(b => b.PastAmount),
@@ -282,7 +290,7 @@ namespace BudgetBadger.Logic
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
 
                 activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
-                activeEnvelopes.Add(_envelopeDataAccess.ReadGenericDebtEnvelope());
+                activeEnvelopes.Add(ReadGenericDebtEnvelope());
 
                 activeEnvelopes.Sort();
 
@@ -568,6 +576,8 @@ namespace BudgetBadger.Logic
             {
                 budgetToUpsert.Schedule = scheduleResult.Data;
             }
+
+            budgetToUpsert.Amount = _resourceContainer.GetRoundedDecimal(budgetToUpsert.Amount);
 
             if (budgetToUpsert.IsNew)
             {

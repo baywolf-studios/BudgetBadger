@@ -12,12 +12,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class TransactionSqliteDataAccess : SqliteDataAccess, ITransactionDataAccess
     {
-        readonly IResourceContainer _resourceContainer;
-
-        public TransactionSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer) : base(connectionString)
+        public TransactionSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _resourceContainer = resourceContainer;
         }
 
         public async Task CreateTransactionAsync(Transaction transaction)
@@ -60,7 +56,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @DeletedDateTime) ";
 
                         command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
@@ -462,7 +458,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE  Id = @Id";
 
                         command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
@@ -481,7 +477,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task DeleteTransaction(Guid id)
+        public async Task SoftDeleteTransaction(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -492,9 +488,34 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
+                        command.CommandText = @"UPDATE [Transaction]
+                                                SET DeletedDateTime = @Now
+                                                WHERE Id = @Id";
 
+                        command.Parameters.AddWithValue("@Now", DateTime.Now);
                         command.Parameters.AddWithValue("@Id", id.ToByteArray());
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task PurgeTransactionsAsync(DateTime deletedBefore)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"DELETE [Transaction]
+                                                WHERE DeletedDateTime <= @DeletedBefore";
+
+                        command.Parameters.AddWithValue("@DeletedBefore", deletedBefore);
 
                         command.ExecuteNonQuery();
                     }

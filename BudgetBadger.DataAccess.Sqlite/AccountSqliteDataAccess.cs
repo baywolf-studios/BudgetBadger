@@ -264,7 +264,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task PurgeAccounts(DateTime deletedBefore)
+        public async Task PurgeAccountsAsync(DateTime deletedBefore)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {

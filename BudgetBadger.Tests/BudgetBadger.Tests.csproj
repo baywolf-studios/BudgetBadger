@@ -10,6 +10,14 @@
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccessSqlite\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
+    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
+  </ItemGroup>
 </Project>

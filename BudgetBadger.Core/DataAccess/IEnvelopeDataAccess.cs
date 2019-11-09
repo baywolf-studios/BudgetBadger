@@ -9,7 +9,6 @@ namespace BudgetBadger.Core.DataAccess
     {
         Task CreateEnvelopeAsync(Envelope envelope);
         Task<Envelope> ReadEnvelopeAsync(Guid id);
-        Envelope ReadGenericDebtEnvelope();
         Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync();
         Task UpdateEnvelopeAsync(Envelope envelope);
         Task SoftDeleteEnvelopeAsync(Guid id);
