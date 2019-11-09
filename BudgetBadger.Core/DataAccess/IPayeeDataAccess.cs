@@ -14,7 +14,7 @@ namespace BudgetBadger.Core.DataAccess
         Task SoftDeletePayeeAsync(Guid id);
         Task HidePayeeAsync(Guid id);
         Task UnhidePayeeAsync(Guid id);
-        Task PurgePayees(DateTime deletedBefore);
+        Task PurgePayeesAsync(DateTime deletedBefore);
         Task<int> GetPayeesCountAsync();
     }
 }

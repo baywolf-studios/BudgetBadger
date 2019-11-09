@@ -396,6 +396,8 @@ namespace BudgetBadger.Logic
                 }
             }
 
+            transactionToUpsert.Amount = _resourceContainer.GetRoundedDecimal(transactionToUpsert.Amount);
+
             if (transactionToUpsert.IsNew)
             {
                 transactionToUpsert.Id = Guid.NewGuid();
