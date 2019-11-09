@@ -12,7 +12,10 @@ namespace BudgetBadger.Core.DataAccess
         Envelope ReadGenericDebtEnvelope();
         Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync();
         Task UpdateEnvelopeAsync(Envelope envelope);
-        Task DeleteEnvelopeAsync(Guid id);
+        Task SoftDeleteEnvelopeAsync(Guid id);
+        Task HideEnvelopeAsync(Guid id);
+        Task UnhideEnvelopeAsync(Guid id);
+        Task PurgeEnvelopesAsync(DateTime deletedBefore);
         Task<int> GetEnvelopesCountAsync();
 
         Task CreateBudgetAsync(Budget budget);
@@ -22,13 +25,15 @@ namespace BudgetBadger.Core.DataAccess
         Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId);
         Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId);
         Task UpdateBudgetAsync(Budget budget);
-        Task DeleteBudgetAsync(Guid id);
 
         Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id);
         Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync();
         Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
-        Task DeleteEnvelopeGroupAsync(Guid id);
+        Task SoftDeleteEnvelopeGroupAsync(Guid id);
+        Task HideEnvelopeGroupAsync(Guid id);
+        Task UnhideEnvelopeGroupAsync(Guid id);
+        Task PurgeEnvelopeGroupsAsync(DateTime deletedBefore);
         Task<int>GetEnvelopeGroupsCountAsync();
 
         Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
