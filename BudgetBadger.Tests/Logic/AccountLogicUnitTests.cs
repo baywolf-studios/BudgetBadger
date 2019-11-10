@@ -158,7 +158,6 @@ namespace BudgetBadger.Tests.Logic
             A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.Ignored)).MustHaveHappened();
         }
 
-
         [Test]
         public async Task HideAccount_NewAccount_Unsuccessful()
         {
@@ -187,7 +186,6 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsFalse(result.Success);
         }
 
-
         [Test]
         public async Task HideAccount_HiddenAccount_Unsuccessful()
         {
@@ -201,5 +199,76 @@ namespace BudgetBadger.Tests.Logic
             // assert
             Assert.IsFalse(result.Success);
         }
+
+        [Test]
+        public async Task UnhideAccount_HiddenAccount_Successful()
+        {
+            // arrange
+            var hiddenAccount = new Account() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, HiddenDateTime = DateTime.Now };
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.HideAccountAsync(hiddenAccount.Id);
+
+            // assert
+            Assert.IsTrue(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideAccount_HiddenAccount_UpdatesAccount()
+        {
+            // arrange
+            var hiddenAccount = new Account() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, HiddenDateTime = DateTime.Now };
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
+
+            // assert
+            A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task UnhideAccount_DeletedAccount_Unsuccessful()
+        {
+            // arrange
+            var deletedAccount = new Account() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, DeletedDateTime = DateTime.Now };
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(deletedAccount);
+
+            // act
+            var result = await accountLogic.UnhideAccountAsync(deletedAccount.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideAccount_NewAccount_Unsuccessful()
+        {
+            // arrange
+            var inactiveAccount = new Account();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(inactiveAccount);
+
+            // act
+            var result = await accountLogic.HideAccountAsync(inactiveAccount.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideAccount_ActiveAccount_Unsuccessful()
+        {
+            // arrange
+            var activeAccount = new Account() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(activeAccount);
+
+            // act
+            var result = await accountLogic.HideAccountAsync(activeAccount.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
     }
 }
