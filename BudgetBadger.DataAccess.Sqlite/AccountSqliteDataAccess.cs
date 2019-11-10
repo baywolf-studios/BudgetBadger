@@ -60,6 +60,27 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
+        public async Task DeleteAccountAsync(Guid id)
+        {
+            using(await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"DELETE Account WHERE Id = @Id";
+
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
         public async Task<Account> ReadAccountAsync(Guid id)
         {
             using(await MultiThreadLock.UseWaitAsync())
@@ -186,99 +207,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                         command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@HiddenDateTime", account.HiddenDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task SoftDeleteAccountAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Account
-                                                SET DeletedDateTime = @Now
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Now", DateTime.Now);
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task HideAccountAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Account
-                                                SET HiddenDateTime = @Now
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Now", DateTime.Now);
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task UnhideAccountAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Account
-                                                SET DeletedDateTime = NULL
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task PurgeAccountsAsync(DateTime deletedBefore)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE Account
-                                                WHERE DeletedDateTime <= @DeletedBefore";
-
-                        command.Parameters.AddWithValue("@DeletedBefore", deletedBefore);
 
                         command.ExecuteNonQuery();
                     }

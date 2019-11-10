@@ -1242,45 +1242,5 @@ namespace BudgetBadger.DataAccess.Sqlite
                 });
             }
         }
-
-        public Task SoftDeleteEnvelopeAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task HideEnvelopeAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UnhideEnvelopeAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PurgeEnvelopesAsync(DateTime deletedBefore)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SoftDeleteEnvelopeGroupAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task HideEnvelopeGroupAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UnhideEnvelopeGroupAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PurgeEnvelopeGroupsAsync(DateTime deletedBefore)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
