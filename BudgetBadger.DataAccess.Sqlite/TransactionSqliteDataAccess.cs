@@ -477,7 +477,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task SoftDeleteTransaction(Guid id)
+        public async Task DeleteTransactionAsync(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -488,34 +488,9 @@ namespace BudgetBadger.DataAccess.Sqlite
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"UPDATE [Transaction]
-                                                SET DeletedDateTime = @Now
-                                                WHERE Id = @Id";
+                        command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Now", DateTime.Now);
                         command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task PurgeTransactionsAsync(DateTime deletedBefore)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE [Transaction]
-                                                WHERE DeletedDateTime <= @DeletedBefore";
-
-                        command.Parameters.AddWithValue("@DeletedBefore", deletedBefore);
 
                         command.ExecuteNonQuery();
                     }

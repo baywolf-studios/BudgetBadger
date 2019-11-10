@@ -12,8 +12,12 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class PayeeSqliteDataAccess : SqliteDataAccess, IPayeeDataAccess
     {
-        public PayeeSqliteDataAccess(string connectionString) : base(connectionString)
+        readonly IResourceContainer _resourceContainer;
+
+        public PayeeSqliteDataAccess(string connectionString,
+            IResourceContainer resourceContainer) : base(connectionString)
         {
+            _resourceContainer = resourceContainer;
         }
 
         public async Task CreatePayeeAsync(Payee payee)
@@ -227,99 +231,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
 
                     return count;
-                });
-            }
-        }
-
-        public async Task SoftDeletePayeeAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Payee
-                                                SET DeletedDateTime = @Now
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Now", DateTime.Now);
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task HidePayeeAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Payee
-                                                SET HiddenDateTime = @Now
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Now", DateTime.Now);
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task UnhidePayeeAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"UPDATE Payee
-                                                SET DeletedDateTime = NULL
-                                                WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
-        public async Task PurgePayeesAsync(DateTime deletedBefore)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE Payee
-                                                WHERE DeletedDateTime <= @DeletedBefore";
-
-                        command.Parameters.AddWithValue("@DeletedBefore", deletedBefore);
-
-                        command.ExecuteNonQuery();
-                    }
                 });
             }
         }
