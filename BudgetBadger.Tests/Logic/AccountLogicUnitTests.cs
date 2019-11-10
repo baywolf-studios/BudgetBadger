@@ -250,7 +250,7 @@ namespace BudgetBadger.Tests.Logic
             A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(inactiveAccount);
 
             // act
-            var result = await accountLogic.HideAccountAsync(inactiveAccount.Id);
+            var result = await accountLogic.UnhideAccountAsync(inactiveAccount.Id);
 
             // assert
             Assert.IsFalse(result.Success);
@@ -264,7 +264,7 @@ namespace BudgetBadger.Tests.Logic
             A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(activeAccount);
 
             // act
-            var result = await accountLogic.HideAccountAsync(activeAccount.Id);
+            var result = await accountLogic.UnhideAccountAsync(activeAccount.Id);
 
             // assert
             Assert.IsFalse(result.Success);
