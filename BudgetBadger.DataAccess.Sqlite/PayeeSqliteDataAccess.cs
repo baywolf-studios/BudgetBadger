@@ -12,12 +12,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public class PayeeSqliteDataAccess : SqliteDataAccess, IPayeeDataAccess
     {
-        readonly IResourceContainer _resourceContainer;
-
-        public PayeeSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer) : base(connectionString)
+        public PayeeSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _resourceContainer = resourceContainer;
         }
 
         public async Task CreatePayeeAsync(Payee payee)
