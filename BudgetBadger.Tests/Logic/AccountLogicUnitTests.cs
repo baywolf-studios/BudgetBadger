@@ -86,7 +86,6 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsFalse(result.Success);
         }
 
-
         [Test]
         public async Task SoftDeleteAccount_HiddenAccount_Successful()
         {
