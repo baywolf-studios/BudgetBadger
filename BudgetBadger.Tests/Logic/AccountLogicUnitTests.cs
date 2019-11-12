@@ -116,6 +116,21 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task SoftDeleteAccount_AccountWithInactiveTransactions_Successful()
+        {
+            // arrange
+            var accountId = Guid.NewGuid();
+            var activeTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, DeletedDateTime = DateTime.Now };
+            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(accountId)).Returns(new List<Transaction>() { activeTransaction });
+
+            // act
+            var result = await accountLogic.SoftDeleteAccountAsync(accountId);
+
+            // assert
+            Assert.IsTrue(result.Success);
+        }
+
+        [Test]
         public async Task SoftDeleteAccount_AccountPayeeWithActiveTransactions_Unsuccessful()
         {
             // arrange
@@ -127,6 +142,20 @@ namespace BudgetBadger.Tests.Logic
 
             // assert
             Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteAccount_AccountPayeeWithInactiveTransactions_Successful()
+        {
+            // arrange
+            var activeTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, DeletedDateTime = DateTime.Now };
+            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(A<Guid>.Ignored)).Returns(new List<Transaction>() { activeTransaction });
+
+            // act
+            var result = await accountLogic.SoftDeleteAccountAsync(Guid.NewGuid());
+
+            // assert
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
