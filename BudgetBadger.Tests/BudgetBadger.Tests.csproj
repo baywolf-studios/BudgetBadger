@@ -17,6 +17,7 @@
   <ItemGroup>
     <Folder Include="DataAccessSqlite\" />
     <Folder Include="Logic\" />
+    <Folder Include="TestModels\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
