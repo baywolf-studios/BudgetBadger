@@ -36,6 +36,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+
             A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
 
             // act
@@ -50,6 +51,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+
             A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
 
             // act
@@ -64,7 +66,8 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var newAccount = TestAccounts.NewAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(newAccount);
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(newAccount.Id)).Returns(newAccount);
 
             // act
             var result = await accountLogic.SoftDeleteAccountAsync(newAccount.Id);
@@ -78,7 +81,8 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var deletedAccount = TestAccounts.SoftDeletedAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(deletedAccount);
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(deletedAccount.Id)).Returns(deletedAccount);
 
             // act
             var result = await accountLogic.SoftDeleteAccountAsync(deletedAccount.Id);
@@ -92,7 +96,8 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
             var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
@@ -106,7 +111,9 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            var activeTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
+            var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
             A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
@@ -117,11 +124,13 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteAccount_AccountWithInactiveTransactions_Successful()
+        public async Task SoftDeleteAccount_AccountWithDeletedTransactions_Successful()
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            var inactiveTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, DeletedDateTime = DateTime.Now };
+            var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
             A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
@@ -136,7 +145,9 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            var activeTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now };
+            var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
             A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
@@ -147,11 +158,13 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteAccount_AccountPayeeWithInactiveTransactions_Successful()
+        public async Task SoftDeleteAccount_AccountPayeeWithDeletedTransactions_Successful()
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            var inactiveTransaction = new Transaction() { Id = Guid.NewGuid(), CreatedDateTime = DateTime.Now, ModifiedDateTime = DateTime.Now, DeletedDateTime = DateTime.Now };
+            var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
             A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
@@ -166,7 +179,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(activeAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
 
             // act
             var result = await accountLogic.HideAccountAsync(activeAccount.Id);
@@ -194,7 +207,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var newAccount = TestAccounts.NewAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(newAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(newAccount.Id)).Returns(newAccount);
 
             // act
             var result = await accountLogic.HideAccountAsync(newAccount.Id);
@@ -208,7 +221,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var deletedAccount = TestAccounts.SoftDeletedAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(deletedAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(deletedAccount.Id)).Returns(deletedAccount);
 
             // act
             var result = await accountLogic.HideAccountAsync(deletedAccount.Id);
@@ -222,7 +235,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
             var result = await accountLogic.HideAccountAsync(hiddenAccount.Id);
@@ -236,7 +249,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
             var result = await accountLogic.UnhideAccountAsync(hiddenAccount.Id);
@@ -250,7 +263,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(hiddenAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
             var result = await accountLogic.UnhideAccountAsync(hiddenAccount.Id);
@@ -264,7 +277,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var deletedAccount = TestAccounts.SoftDeletedAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(deletedAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(deletedAccount.Id)).Returns(deletedAccount);
 
             // act
             var result = await accountLogic.UnhideAccountAsync(deletedAccount.Id);
@@ -278,7 +291,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var newAccount = TestAccounts.NewAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(newAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(newAccount.Id)).Returns(newAccount);
 
             // act
             var result = await accountLogic.UnhideAccountAsync(newAccount.Id);
@@ -292,7 +305,7 @@ namespace BudgetBadger.Tests.Logic
         {
             // arrange
             var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(A<Guid>.Ignored)).Returns(activeAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
 
             // act
             var result = await accountLogic.UnhideAccountAsync(activeAccount.Id);
