@@ -277,7 +277,7 @@ namespace BudgetBadger.Logic
                     return result;
                 }
 
-                account.DeletedDateTime = DateTime.Now;
+                account.HiddenDateTime = DateTime.Now;
                 account.ModifiedDateTime = DateTime.Now;
 
                 await _accountDataAccess.UpdateAccountAsync(account);
@@ -295,7 +295,51 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> UnhideAccountAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (account.IsNew)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideNewError"));
+                }
+
+                if (account.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideActiveError"));
+                }
+
+                if (account.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideDeletedError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                account.HiddenDateTime = null;
+                account.ModifiedDateTime = DateTime.Now;
+
+                await _accountDataAccess.UpdateAccountAsync(account);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount)
