@@ -8,17 +8,23 @@ namespace BudgetBadger.Core.Logic
 {
     public interface IPayeeLogic
     {
-        Task<Result> ValidatePayeeAsync(Payee payee);
         Task<Result<Payee>> SavePayeeAsync(Payee payee);
-        Task<Result> DeletePayeeAsync(Guid id);
-        Task<Result> UndoDeletePayeeAsync(Guid id);
+        Task<Result<int>> GetPayeesCountAsync();
         Task<Result<Payee>> GetPayeeAsync(Guid id);
         Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync();
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync();
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync();
-        Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync();
-        Task<Result<int>> GetPayeesCountAsync();
+        Task<Result<IReadOnlyList<Account>>> GetHiddenPayeesAsync();
+        Task<Result> SoftDeletePayeeAsync(Guid id);
+        Task<Result> HidePayeeAsync(Guid id);
+        Task<Result> UnhidePayeeAsync(Guid id);
 
         bool FilterPayee(Payee payee, string searchText);
+
+
+        // removing these
+        Task<Result> DeletePayeeAsync(Guid id);
+        Task<Result> UndoDeletePayeeAsync(Guid id);
+        Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync();
     }
 }
