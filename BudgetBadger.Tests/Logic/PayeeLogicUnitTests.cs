@@ -175,6 +175,39 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task SoftDeletePayee_StartingBalancePayee_Unsuccessful()
+        {
+            // arrange
+            var startingPayee = Constants.StartingBalancePayee.DeepCopy();
+
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
+
+            // act
+            var result = await PayeeLogic.SoftDeletePayeeAsync(startingPayee.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeletePayee_AccountPayee_Unsuccessful()
+        {
+            // arrange
+            var accountPayee = TestPayees.ActivePayee.DeepCopy();
+            var account = TestAccounts.ActiveAccount.DeepCopy();
+            account.Id = accountPayee.Id;
+
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(account.Id)).Returns(account);
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(accountPayee.Id)).Returns(accountPayee);
+
+            // act
+            var result = await PayeeLogic.SoftDeletePayeeAsync(accountPayee.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
         public async Task HidePayee_ActivePayee_Successful()
         {
             // arrange
