@@ -310,7 +310,7 @@ namespace BudgetBadger.Tests.Logic
             // act
             var result = await accountLogic.UnhideAccountAsync(activeAccount.Id);
 
-            // assert
+            // assert 
             Assert.IsFalse(result.Success);
         }
 

@@ -28,254 +28,7 @@ namespace BudgetBadger.Logic
             _resourceContainer = resourceContainer;
         }
 
-        async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
-        {
-            var errors = new List<string>();
-
-            var payee = await _payeeDataAccess.ReadPayeeAsync(payeeId).ConfigureAwait(false);
-            var populatePayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
-
-            if (!populatePayee.IsActive)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError")); 
-            }
-
-            if (populatePayee.IsAccount)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError"));
-            }
-
-            if (populatePayee.Id == Constants.StartingBalancePayee.Id)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError")); 
-            }
-
-            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id).ConfigureAwait(false);
-            if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError"));
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
-        }
-
-        public async Task<Result> DeletePayeeAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var validationResult = await ValidateDeletePayeeAsync(id).ConfigureAwait(false);
-                if (!validationResult.Success)
-                {
-                    return validationResult;
-                }
-
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-				payee.ModifiedDateTime = DateTime.Now;
-                payee.DeletedDateTime = DateTime.Now;
-
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result> UndoDeletePayeeAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                payee.ModifiedDateTime = DateTime.Now;
-                payee.DeletedDateTime = null;
-
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<Payee>> GetPayeeAsync(Guid id)
-        {
-            var result = new Result<Payee>();
-
-            try
-            {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                var populatedPayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
-                result.Success = true;
-                result.Data = populatedPayee;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync()
-        {
-            var result = new Result<IReadOnlyList<Payee>>();
-
-            try
-            {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
-
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive);
-
-                var tasks = payees.Select(GetPopulatedPayee);
-
-                var payeesToReturn = (await Task.WhenAll(tasks)).ToList();
-                payeesToReturn.Sort();
-
-                result.Success = true;
-				result.Data = payeesToReturn;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync()
-        {
-            var result = new Result<IReadOnlyList<Payee>>();
-
-            try
-            {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
-
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsDeleted);
-
-                var tasks = payees.Select(GetPopulatedPayee);
-
-                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
-
-                result.Success = true;
-                result.Data = filteredPopulatedPayees;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync()
-        {
-            var result = new Result<IReadOnlyList<Payee>>();
-
-            try
-            {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
-
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive);
-
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
-
-                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
-
-                result.Success = true;
-                result.Data = filteredPopulatedPayees;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync()
-        {
-            var result = new Result<IReadOnlyList<Payee>>();
-
-            try
-            {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
-
-                // ugly hardcoded to remove the starting balance payee.
-                // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive);
-
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
-
-                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
-
-                result.Success = true;
-				result.Data = filteredPopulatedPayees;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public bool FilterPayee(Payee payee, string searchText)
-        {
-            if (payee != null)
-            {
-                return payee.Description.ToLower().Contains(searchText.ToLower());
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public Task<Result> ValidatePayeeAsync(Payee payee)
-        {
-            var errors = new List<string>();
-
-            if (string.IsNullOrEmpty(payee.Description))
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeValidDescriptionError"));
-            }
-
-            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
-        }
+        
 
         public async Task<Result<Payee>> SavePayeeAsync(Payee payee)
         {
@@ -326,6 +79,183 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<int>> GetPayeesCountAsync()
+        {
+            var result = new Result<int>();
+
+            try
+            {
+                var count = await _payeeDataAccess.GetPayeesCountAsync();
+                result.Success = true;
+                result.Data = count;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<Payee>> GetPayeeAsync(Guid id)
+        {
+            var result = new Result<Payee>();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                var populatedPayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
+                result.Success = true;
+                result.Data = populatedPayee;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+
+                // ugly hardcoded to remove the starting balance payee.
+                // may move to a "Payee Group" type setup
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsActive);
+
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
+
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
+
+                result.Success = true;
+                result.Data = filteredPopulatedPayees;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsActive);
+
+                var tasks = payees.Select(GetPopulatedPayee);
+
+                var payeesToReturn = (await Task.WhenAll(tasks)).ToList();
+                payeesToReturn.Sort();
+
+                result.Success = true;
+				result.Data = payeesToReturn;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsActive);
+
+                var tasks = payees.Select(p => GetPopulatedPayee(p));
+
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
+
+                result.Success = true;
+                result.Data = filteredPopulatedPayees;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Task<Result<IReadOnlyList<Account>>> GetHiddenPayeesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> SoftDeletePayeeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> HidePayeeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UnhidePayeeAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool FilterPayee(Payee payee, string searchText)
+        {
+            if (payee != null)
+            {
+                return payee.Description.ToLower().Contains(searchText.ToLower());
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        Task<Result> ValidatePayeeAsync(Payee payee)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(payee.Description))
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeValidDescriptionError"));
+            }
+
+            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
+        }
+
         async Task<Payee> GetPopulatedPayee(Payee payee)
         {
             var payeeToPopulate = payee.DeepCopy();
@@ -350,15 +280,110 @@ namespace BudgetBadger.Logic
             return payeeToPopulate;
         }
 
-        public async Task<Result<int>> GetPayeesCountAsync()
+
+
+        async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
         {
-            var result = new Result<int>();
+            var errors = new List<string>();
+
+            var payee = await _payeeDataAccess.ReadPayeeAsync(payeeId).ConfigureAwait(false);
+            var populatePayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
+
+            if (!populatePayee.IsActive)
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError"));
+            }
+
+            if (populatePayee.IsAccount)
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError"));
+            }
+
+            if (populatePayee.Id == Constants.StartingBalancePayee.Id)
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"));
+            }
+
+            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id).ConfigureAwait(false);
+            if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError"));
+            }
+
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
+        }
+
+        public async Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync()
+        {
+            var result = new Result<IReadOnlyList<Payee>>();
 
             try
             {
-                var count = await _payeeDataAccess.GetPayeesCountAsync();
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsDeleted);
+
+                var tasks = payees.Select(GetPopulatedPayee);
+
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
+
                 result.Success = true;
-                result.Data = count;
+                result.Data = filteredPopulatedPayees;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result> DeletePayeeAsync(Guid id)
+        {
+            var result = new Result();
+
+            try
+            {
+                var validationResult = await ValidateDeletePayeeAsync(id).ConfigureAwait(false);
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
+
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                payee.ModifiedDateTime = DateTime.Now;
+                payee.DeletedDateTime = DateTime.Now;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result> UndoDeletePayeeAsync(Guid id)
+        {
+            var result = new Result();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                payee.ModifiedDateTime = DateTime.Now;
+                payee.DeletedDateTime = null;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+                result.Success = true;
             }
             catch (Exception ex)
             {
