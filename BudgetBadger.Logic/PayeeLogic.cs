@@ -216,19 +216,162 @@ namespace BudgetBadger.Logic
             throw new NotImplementedException();
         }
 
-        public Task<Result> SoftDeletePayeeAsync(Guid id)
+        public async Task<Result> SoftDeletePayeeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (payee.IsNew || payee.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError"));
+                }
+
+                if (payee.IsStartingBalance)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"));
+                }
+
+                var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
+
+                if (payeeTransactions.Any(t => t.IsActive))
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteActiveTransactionsError"));
+                }
+
+                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+
+                if (account.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountPayeeError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                payee.DeletedDateTime = DateTime.Now;
+                payee.ModifiedDateTime = DateTime.Now;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result> HidePayeeAsync(Guid id)
+        public async Task<Result> HidePayeeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+
+                // check for validation to Hide
+                var errors = new List<string>();
+
+                if (!payee.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeHideInactiveError"));
+                }
+
+                if (payee.IsStartingBalance)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeHideStartingBalanceError"));
+                }
+
+                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+
+                if (account.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeHideAccountPayeeError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                payee.HiddenDateTime = DateTime.Now;
+                payee.ModifiedDateTime = DateTime.Now;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result> UnhidePayeeAsync(Guid id)
+        public async Task<Result> UnhidePayeeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (payee.IsNew)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideNewError"));
+                }
+
+                if (payee.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideActiveError"));
+                }
+
+                if (payee.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideDeletedError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                payee.HiddenDateTime = null;
+                payee.ModifiedDateTime = DateTime.Now;
+
+                await _payeeDataAccess.UpdatePayeeAsync(payee);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public bool FilterPayee(Payee payee, string searchText)

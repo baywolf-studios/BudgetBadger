@@ -123,7 +123,7 @@ namespace BudgetBadger.Models
             set => SetProperty(ref modifiedDateTime, value);
         }
 
-        public bool IsActive { get => !IsNew && !Envelope.IsDeleted; }
+        public bool IsActive { get => !IsNew && Envelope.IsActive; }
 
         public Budget()
         {

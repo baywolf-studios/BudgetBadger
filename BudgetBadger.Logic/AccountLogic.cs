@@ -228,7 +228,7 @@ namespace BudgetBadger.Logic
 
                 if (accountTransactions.Any(t => t.IsActive) || payeeTransactions.Any(t => t.IsActive))
                 {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeletePendingTransactionsError"));
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteActiveTransactionsError"));
                 }
 
                 if (errors.Any())
