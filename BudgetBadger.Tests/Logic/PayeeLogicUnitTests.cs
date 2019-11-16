@@ -15,7 +15,6 @@ namespace BudgetBadger.Tests.Logic
     {
         IResourceContainer resourceContainer { get; set; }
         IPayeeDataAccess PayeeDataAccess { get; set; }
-        IEnvelopeDataAccess envelopeDataAccess { get; set; }
         ITransactionDataAccess transactionDataAccess { get; set; }
         IAccountDataAccess accountDataAccess { get; set; }
         PayeeLogic PayeeLogic { get; set; }
@@ -25,7 +24,6 @@ namespace BudgetBadger.Tests.Logic
         {
             accountDataAccess = A.Fake<IAccountDataAccess>();
             transactionDataAccess = A.Fake<ITransactionDataAccess>();
-            envelopeDataAccess = A.Fake<IEnvelopeDataAccess>();
             PayeeDataAccess = A.Fake<IPayeeDataAccess>();
             resourceContainer = A.Fake<IResourceContainer>();
             PayeeLogic = new PayeeLogic(PayeeDataAccess, accountDataAccess, transactionDataAccess, resourceContainer);
