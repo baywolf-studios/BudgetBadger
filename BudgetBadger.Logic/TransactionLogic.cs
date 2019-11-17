@@ -257,6 +257,18 @@ namespace BudgetBadger.Logic
                     return result;
                 }
 
+                if (transactionToDelete.IsSplit)
+                {
+                    var relatedTransactions = await _transactionDataAccess.ReadSplitTransactionsAsync(transactionToDelete.SplitId.Value).ConfigureAwait(false);
+                    if (relatedTransactions.Count() == 2) //need to unsplit, need better logic here!!!
+                    {
+                        var relatedTransaction = relatedTransactions.FirstOrDefault(t => t.Id != transactionToDelete.Id);
+                        relatedTransaction.SplitId = null;
+                        relatedTransaction.ModifiedDateTime = DateTime.Now;
+                        await _transactionDataAccess.UpdateTransactionAsync(relatedTransaction).ConfigureAwait(false);
+                    }
+                }
+
                 transactionToDelete.ModifiedDateTime = DateTime.Now;
                 transactionToDelete.DeletedDateTime = DateTime.Now;
                 await _transactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);

@@ -7,6 +7,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BudgetBadger.Tests.Logic
@@ -94,25 +95,71 @@ namespace BudgetBadger.Tests.Logic
         [Test]
         public async Task SoftDeleteTransaction_SplitTransactionTwoSplits_Successful()
         {
-            Assert.Fail();
+            // arrange
+            var splitTransactions = TestTransactions.GetSplitTransactions(2);
+            var splitTransactionToDelete = splitTransactions.FirstOrDefault();
+
+            A.CallTo(() => transactionDataAccess.ReadTransactionAsync(splitTransactionToDelete.Id)).Returns(splitTransactionToDelete);
+            A.CallTo(() => transactionDataAccess.ReadSplitTransactionsAsync(splitTransactionToDelete.SplitId.Value)).Returns(splitTransactions);
+
+            // act
+            var result = await transactionLogic.SoftDeleteTransactionAsync(splitTransactionToDelete.Id);
+
+            //assert
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
-        public async Task SoftDeleteTransaction_SplitTransactionTwoSplits_ConvertsRemainingTransactionToNoLongerBeSplit()
+        public async Task SoftDeleteTransaction_SplitTransactionTwoSplits_RemovesSplitIdFromRemainingTransaction()
         {
-            Assert.Fail();
+            // arrange
+            var splitTransactions = TestTransactions.GetSplitTransactions(2);
+            var splitTransactionToDelete = splitTransactions.FirstOrDefault();
+            var remainingTransaction = splitTransactions.FirstOrDefault(s => s.Id != splitTransactionToDelete.Id);
+
+            A.CallTo(() => transactionDataAccess.ReadTransactionAsync(splitTransactionToDelete.Id)).Returns(splitTransactionToDelete);
+            A.CallTo(() => transactionDataAccess.ReadSplitTransactionsAsync(splitTransactionToDelete.SplitId.Value)).Returns(splitTransactions);
+
+            // act
+            var result = await transactionLogic.SoftDeleteTransactionAsync(splitTransactionToDelete.Id);
+
+            //assert
+            A.CallTo(() => transactionDataAccess.UpdateTransactionAsync(A<Transaction>.That.Matches(t => t.Id == remainingTransaction.Id && !t.SplitId.HasValue))).MustHaveHappened();
         }
 
         [Test]
-        public async Task SoftDeleteTransaction_SplitTransactionMoreThanTwoSplits_Successful()
+        public async Task SoftDeleteTransaction_SplitTransactionMoreThanTwoSplits_Successful([Random(3, 100, 5)] int splits)
         {
-            Assert.Fail();
+            // arrange
+            var splitTransactions = TestTransactions.GetSplitTransactions(splits);
+            var splitTransactionToDelete = splitTransactions.FirstOrDefault();
+
+            A.CallTo(() => transactionDataAccess.ReadTransactionAsync(splitTransactionToDelete.Id)).Returns(splitTransactionToDelete);
+            A.CallTo(() => transactionDataAccess.ReadSplitTransactionsAsync(splitTransactionToDelete.SplitId.Value)).Returns(splitTransactions);
+
+            // act
+            var result = await transactionLogic.SoftDeleteTransactionAsync(splitTransactionToDelete.Id);
+
+            //assert
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
-        public async Task SoftDeleteTransaction_SplitTransactionMoreThanTwoSplits_LeavesRemainingSplitTransactions()
+        public async Task SoftDeleteTransaction_SplitTransactionMoreThanTwoSplits_LeavesRemainingSplitTransactions([Random(3, 100, 5)] int splits)
         {
-            Assert.Fail();
+            // arrange
+            var splitTransactions = TestTransactions.GetSplitTransactions(splits);
+            var splitTransactionToDelete = splitTransactions.FirstOrDefault();
+            var remainingTransaction = splitTransactions.FirstOrDefault(s => s.Id != splitTransactionToDelete.Id);
+
+            A.CallTo(() => transactionDataAccess.ReadTransactionAsync(splitTransactionToDelete.Id)).Returns(splitTransactionToDelete);
+            A.CallTo(() => transactionDataAccess.ReadSplitTransactionsAsync(splitTransactionToDelete.SplitId.Value)).Returns(splitTransactions);
+
+            // act
+            var result = await transactionLogic.SoftDeleteTransactionAsync(splitTransactionToDelete.Id);
+
+            //assert
+            A.CallTo(() => transactionDataAccess.UpdateTransactionAsync(A<Transaction>.That.Matches(t => t.Id == remainingTransaction.Id))).MustNotHaveHappened();
         }
     }
 }
