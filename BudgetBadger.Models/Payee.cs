@@ -71,7 +71,7 @@ namespace BudgetBadger.Models
 
         public bool IsHidden { get => HiddenDateTime != null; }
 
-        public bool IsActive { get => !IsNew && !IsDeleted && !IsActive; }
+        public bool IsActive { get => !IsNew && !IsDeleted && !IsHidden; }
 
         public bool IsStartingBalance
         {
