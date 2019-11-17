@@ -56,25 +56,25 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteAccount_DeleteOneOfTwoSplitTransactions_Successful()
+        public async Task SoftDeleteAccount_SplitTransactionTwoSplits_Successful()
         {
             Assert.Fail();
         }
 
         [Test]
-        public async Task SoftDeleteAccount_DeleteOneOfTwoSplitTransactions_ConvertsRemainingTransactionToNoLongerBeSplit()
+        public async Task SoftDeleteAccount_SplitTransactionTwoSplits_ConvertsRemainingTransactionToNoLongerBeSplit()
         {
             Assert.Fail();
         }
 
         [Test]
-        public async Task SoftDeleteAccount_DeleteOneOfMoreThanTwoSplitTransactions_Successful()
+        public async Task SoftDeleteAccount_SplitTransactionMoreThanTwoSplits_Successful()
         {
             Assert.Fail();
         }
 
         [Test]
-        public async Task SoftDeleteAccount_DeleteOneOfMoreThanTwoSplitTransactions_LeavesRemainingSplitTransactions()
+        public async Task SoftDeleteAccount_SplitTransactionMoreThanTwoSplits_LeavesRemainingSplitTransactions()
         {
             Assert.Fail();
         }
