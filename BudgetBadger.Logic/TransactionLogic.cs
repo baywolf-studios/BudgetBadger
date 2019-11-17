@@ -236,7 +236,39 @@ namespace BudgetBadger.Logic
 
         public async Task<Result> SoftDeleteTransactionAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var transactionToDelete = await _transactionDataAccess.ReadTransactionAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (transactionToDelete.IsNew || transactionToDelete.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("TransactionDeleteInactiveError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                transactionToDelete.ModifiedDateTime = DateTime.Now;
+                transactionToDelete.DeletedDateTime = DateTime.Now;
+                await _transactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result> SaveSplitTransactionAsync(IEnumerable<Transaction> transactions)
