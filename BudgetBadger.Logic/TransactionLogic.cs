@@ -271,6 +271,7 @@ namespace BudgetBadger.Logic
 
                 transactionToDelete.ModifiedDateTime = DateTime.Now;
                 transactionToDelete.DeletedDateTime = DateTime.Now;
+                transactionToDelete.SplitId = null;
                 await _transactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);
                 result.Success = true;
             }
