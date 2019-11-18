@@ -110,6 +110,24 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task SoftDeleteTransaction_SplitTransactionTwoSplits_RemovesSplitIdFromTransaction()
+        {
+            // arrange
+            var splitTransactions = TestTransactions.GetSplitTransactions(2);
+            var splitTransactionToDelete = splitTransactions.FirstOrDefault();
+            var remainingTransaction = splitTransactions.FirstOrDefault(s => s.Id != splitTransactionToDelete.Id);
+
+            A.CallTo(() => transactionDataAccess.ReadTransactionAsync(splitTransactionToDelete.Id)).Returns(splitTransactionToDelete);
+            A.CallTo(() => transactionDataAccess.ReadSplitTransactionsAsync(splitTransactionToDelete.SplitId.Value)).Returns(splitTransactions);
+
+            // act
+            var result = await transactionLogic.SoftDeleteTransactionAsync(splitTransactionToDelete.Id);
+
+            //assert
+            A.CallTo(() => transactionDataAccess.UpdateTransactionAsync(A<Transaction>.That.Matches(t => t.Id == splitTransactionToDelete.Id && !t.SplitId.HasValue))).MustHaveHappened();
+        }
+
+        [Test]
         public async Task SoftDeleteTransaction_SplitTransactionTwoSplits_RemovesSplitIdFromRemainingTransaction()
         {
             // arrange
