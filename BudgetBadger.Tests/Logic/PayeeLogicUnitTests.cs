@@ -30,30 +30,30 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeletePayee_ActivePayee_Successful()
+        public async Task SoftDeletePayee_HiddenPayee_Successful()
         {
             // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
+            var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
             // assert
             Assert.IsTrue(result.Success);
         }
 
         [Test]
-        public async Task SoftDeletePayee_ActivePayee_UpdatesPayee()
+        public async Task SoftDeletePayee_HiddenPayee_UpdatesPayee()
         {
             // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
+            var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
             // assert
             A.CallTo(() => PayeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
@@ -90,32 +90,32 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeletePayee_HiddenPayee_Successful()
+        public async Task SoftDeletePayee_ActivePayee_Unsuccessful()
         {
             // arrange
-            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var activePayee = TestPayees.ActivePayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
 
             // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
+            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
 
             // assert
-            Assert.IsTrue(result.Success);
+            Assert.IsFalse(result.Success);
         }
 
         [Test]
         public async Task SoftDeletePayee_PayeeWithActiveTransactions_Unsuccessful()
         {
             // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activePayee.Id)).Returns(new List<Transaction>() { activeTransaction });
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
+            var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
             // assert
             Assert.IsFalse(result.Success);
@@ -125,48 +125,14 @@ namespace BudgetBadger.Tests.Logic
         public async Task SoftDeletePayee_PayeeWithDeletedTransactions_Successful()
         {
             // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activePayee.Id)).Returns(new List<Transaction>() { inactiveTransaction });
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
-
-            // assert
-            Assert.IsTrue(result.Success);
-        }
-
-        [Test]
-        public async Task SoftDeletePayee_PayeePayeeWithActiveTransactions_Unsuccessful()
-        {
-            // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
-            var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
-
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activePayee.Id)).Returns(new List<Transaction>() { activeTransaction });
-
-            // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
-
-            // assert
-            Assert.IsFalse(result.Success);
-        }
-
-        [Test]
-        public async Task SoftDeletePayee_PayeePayeeWithDeletedTransactions_Successful()
-        {
-            // arrange
-            var activePayee = TestPayees.ActivePayee.DeepCopy();
-            var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
-
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activePayee.Id)).Returns(new List<Transaction>() { inactiveTransaction });
-
-            // act
-            var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
+            var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
             // assert
             Assert.IsTrue(result.Success);
@@ -270,6 +236,21 @@ namespace BudgetBadger.Tests.Logic
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(hiddenPayee.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HidePayee_StartingBalancePayee_Unsuccessful()
+        {
+            // arrange
+            var startingPayee = Constants.StartingBalancePayee.DeepCopy();
+
+            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
+
+            // act
+            var result = await PayeeLogic.HidePayeeAsync(startingPayee.Id);
 
             // assert
             Assert.IsFalse(result.Success);

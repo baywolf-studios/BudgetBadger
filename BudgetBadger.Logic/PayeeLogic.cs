@@ -227,9 +227,19 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (payee.IsNew || payee.IsDeleted)
+                if (payee.IsNew)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError"));
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteNewError"));
+                }
+
+                if (payee.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteDeletedError"));
+                }
+
+                if (payee.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteActiveError"));
                 }
 
                 if (payee.IsStartingBalance)
