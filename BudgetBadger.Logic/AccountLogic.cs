@@ -218,9 +218,19 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (account.IsNew || account.IsDeleted)
+                if (account.IsNew)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteInactiveError"));
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteNewError"));
+                }
+
+                if (account.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteDeletedError"));
+                }
+
+                if (account.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteActiveError"));
                 }
 
                 var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);

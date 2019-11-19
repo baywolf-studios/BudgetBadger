@@ -32,30 +32,30 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteAccount_ActiveAccount_Successful()
+        public async Task SoftDeleteAccount_HiddenAccount_Successful()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             Assert.IsTrue(result.Success);
         }
 
         [Test]
-        public async Task SoftDeleteAccount_ActiveAccount_UpdatesAccount()
+        public async Task SoftDeleteAccount_HiddenAccount_UpdatesAccount()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.Ignored)).MustHaveHappened();
@@ -92,32 +92,32 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteAccount_HiddenAccount_Successful()
+        public async Task SoftDeleteAccount_ActiveAccount_Unsuccessful()
         {
             // arrange
-            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
 
             // assert
-            Assert.IsTrue(result.Success);
+            Assert.IsFalse(result.Success);
         }
 
         [Test]
         public async Task SoftDeleteAccount_AccountWithActiveTransactions_Unsuccessful()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
             var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
-            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(hiddenAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             Assert.IsFalse(result.Success);
@@ -127,14 +127,14 @@ namespace BudgetBadger.Tests.Logic
         public async Task SoftDeleteAccount_AccountWithDeletedTransactions_Successful()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
             var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
-            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(hiddenAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             Assert.IsTrue(result.Success);
@@ -144,14 +144,14 @@ namespace BudgetBadger.Tests.Logic
         public async Task SoftDeleteAccount_AccountPayeeWithActiveTransactions_Unsuccessful()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
             var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenAccount.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             Assert.IsFalse(result.Success);
@@ -161,14 +161,14 @@ namespace BudgetBadger.Tests.Logic
         public async Task SoftDeleteAccount_AccountPayeeWithDeletedTransactions_Successful()
         {
             // arrange
-            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
             var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(activeAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenAccount.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
-            var result = await accountLogic.SoftDeleteAccountAsync(activeAccount.Id);
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
             Assert.IsTrue(result.Success);
