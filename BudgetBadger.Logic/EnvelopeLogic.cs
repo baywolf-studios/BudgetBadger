@@ -612,19 +612,14 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteActiveError"));
                 }
 
-                if (envelope.IsBuffer)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteBufferError"));
-                }
-
-                if (envelope.IsIncome)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteIncomeError"));
                 }
 
-                if (envelope.IsGenericDebtEnvelope)
+                if (envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideGenericDebtError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteDebtError"));
                 }
 
                 if (envelope.IsSystem)
@@ -632,9 +627,9 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteSystemError"));
                 }
 
-                var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
+                var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(id).ConfigureAwait(false);
 
-                if (payeeTransactions.Any(t => t.IsActive))
+                if (envelopeTransactions.Any(t => t.IsActive))
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteActiveTransactionsError"));
                 }
@@ -678,19 +673,14 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideInactiveError"));
                 }
 
-                if (envelope.IsBuffer)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideBufferError"));
-                }
-
-                if (envelope.IsIncome)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideIncomeError"));
                 }
 
-                if (envelope.IsGenericDebtEnvelope)
+                if(envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideGenericDebtError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideDebtError"));
                 }
 
                 if (envelope.IsSystem)
@@ -721,9 +711,53 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result> UnhideEnvelopeAsync(Guid id)
+        public async Task<Result> UnhideEnvelopeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (envelope.IsNew)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideNewError"));
+                }
+
+                if (envelope.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideActiveError"));
+                }
+
+                if (envelope.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideDeletedError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                envelope.HiddenDateTime = null;
+                envelope.ModifiedDateTime = DateTime.Now;
+
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
@@ -897,19 +931,187 @@ namespace BudgetBadger.Logic
             throw new NotImplementedException();
         }
 
-        public Task<Result> SoftDeleteEnvelopeGroupAsync(Guid id)
+        public async Task<Result> SoftDeleteEnvelopeGroupAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (envelopeGroup.IsNew)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteNewError"));
+                }
+
+                if (envelopeGroup.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDeletedError"));
+                }
+
+                if (envelopeGroup.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveError"));
+                }
+
+                if (envelopeGroup.IsIncome)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteIncomeError"));
+                }
+
+                if (envelopeGroup.IsDebt)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDebtError"));
+                }
+
+                if (envelopeGroup.IsSystem)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
+                }
+
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
+                var envelopeGroupEnvelopes = envelopes.Where(e => e.Group.Id == id);
+
+                if (envelopeGroupEnvelopes.Any(t => t.IsActive))
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveEnvelopesError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                envelopeGroup.DeletedDateTime = DateTime.Now;
+                envelopeGroup.ModifiedDateTime = DateTime.Now;
+
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result> HideEnvelopeGroupAsync(Guid id)
+        public async Task<Result> HideEnvelopeGroupAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
+
+                // check for validation to Hide
+                var errors = new List<string>();
+
+                if (!envelopeGroup.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideInactiveError"));
+                }
+
+                if (envelopeGroup.IsIncome)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteIncomeError"));
+                }
+
+                if (envelopeGroup.IsDebt)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDebtError"));
+                }
+
+                if (envelopeGroup.IsSystem)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
+                }
+
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
+                var envelopeGroupEnvelopes = envelopes.Where(e => e.Group.Id == id);
+
+                if (envelopeGroupEnvelopes.Any(t => t.IsActive))
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveEnvelopesError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                envelopeGroup.HiddenDateTime = DateTime.Now;
+                envelopeGroup.ModifiedDateTime = DateTime.Now;
+
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
-        public Task<Result> UnhideEnvelopeGroupAsync(Guid id)
+        public async Task<Result> UnhideEnvelopeGroupAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = new Result();
+
+            try
+            {
+                var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
+
+                // check for validation to delete
+                var errors = new List<string>();
+
+                if (envelopeGroup.IsNew)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideNewError"));
+                }
+
+                if (envelopeGroup.IsActive)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideActiveError"));
+                }
+
+                if (envelopeGroup.IsDeleted)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideDeletedError"));
+                }
+
+                if (errors.Any())
+                {
+                    result.Success = false;
+                    result.Message = string.Join(Environment.NewLine, errors);
+                    return result;
+                }
+
+                envelopeGroup.HiddenDateTime = null;
+                envelopeGroup.ModifiedDateTime = DateTime.Now;
+
+                await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
+
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText)

@@ -154,6 +154,22 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task SoftDeleteEnvelope_EnvelopeWithDebtEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
+            debtEnvelope.Id = Guid.NewGuid();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(debtEnvelope.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
         public async Task SoftDeleteEnvelope_IncomeEnvelope_Unsuccessful()
         {
             // arrange
@@ -284,6 +300,22 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task HideEnvelope_EnvelopeWithDebtEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
+            debtEnvelope.Id = Guid.NewGuid();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeAsync(debtEnvelope.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
         public async Task HideEnvelope_IncomeEnvelope_Unsuccessful()
         {
             // arrange
@@ -393,6 +425,349 @@ namespace BudgetBadger.Tests.Logic
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(activeEnvelope.Id);
+
+            // assert 
+            Assert.IsFalse(result.Success);
+        }
+
+
+
+
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_HiddenEnvelopeGroup_Successful()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsTrue(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_HiddenEnvelopeGroup_UpdatesEnvelopeGroup()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_NewEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(newEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_DeletedEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_ActiveEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(activeEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_EnvelopeGroupWithActiveEnvelopes_Unsuccessful()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var activeEnvelopes = TestEnvelopes.ActiveEnvelope.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { activeEnvelopes });
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_EnvelopeGroupWithDeletedEnvelopes_Unsuccessful()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { deletedEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_IncomeEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(incomeEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_DebtEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(debtEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelopeGroup_SystemEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(systemEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_ActiveEnvelopeGroup_Successful()
+        {
+            // arrange
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsTrue(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_ActiveEnvelopeGroup_UpdatesEnvelopeGroup()
+        {
+            // arrange
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_NewEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(newEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_DeletedEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_HiddenEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_IncomeEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(incomeEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_DebtEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(debtEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task HideEnvelopeGroup_SystemEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.HideEnvelopeGroupAsync(systemEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideEnvelopeGroup_HiddenEnvelopeGroup_Successful()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsTrue(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideEnvelopeGroup_HiddenEnvelopeGroup_UpdatesEnvelopeGroup()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task UnhideEnvelopeGroup_DeletedEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideEnvelopeGroup_NewEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(newEnvelopeGroup.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task UnhideEnvelopeGroup_ActiveEnvelopeGroup_Unsuccessful()
+        {
+            // arrange
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+
+            // act
+            var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
 
             // assert 
             Assert.IsFalse(result.Success);
