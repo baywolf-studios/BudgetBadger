@@ -3,34 +3,34 @@ using BudgetBadger.Models;
 
 namespace BudgetBadger.Tests.TestModels
 {
-    public static class TestEnvelopes
+    public static class TestEnvelopeGroups
     {
-        public static readonly Envelope NewEnvelope = new Envelope
+        public static readonly EnvelopeGroup NewEnvelopeGroup = new EnvelopeGroup
         {
-            Description = nameof(NewEnvelope)
+            Description = nameof(NewEnvelopeGroup)
         };
 
-        public static readonly Envelope ActiveEnvelope = new Envelope
+        public static readonly EnvelopeGroup ActiveEnvelopeGroup = new EnvelopeGroup
         {
             Id = Guid.NewGuid(),
-            Description = nameof(ActiveEnvelope),
+            Description = nameof(ActiveEnvelopeGroup),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
 
-        public static readonly Envelope HiddenEnvelope = new Envelope
+        public static readonly EnvelopeGroup HiddenEnvelopeGroup = new EnvelopeGroup
         {
             Id = Guid.NewGuid(),
-            Description = nameof(HiddenEnvelope),
+            Description = nameof(HiddenEnvelopeGroup),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now
         };
 
-        public static readonly Envelope SoftDeletedEnvelope = new Envelope
+        public static readonly EnvelopeGroup SoftDeletedEnvelopeGroup = new EnvelopeGroup
         {
             Id = Guid.NewGuid(),
-            Description = nameof(SoftDeletedEnvelope),
+            Description = nameof(SoftDeletedEnvelopeGroup),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now,
