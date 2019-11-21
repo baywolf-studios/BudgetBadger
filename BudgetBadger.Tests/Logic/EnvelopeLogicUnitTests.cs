@@ -515,6 +515,7 @@ namespace BudgetBadger.Tests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var activeEnvelopes = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            activeEnvelopes.Group = hiddenEnvelopeGroup;
 
             A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
             A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { activeEnvelopes });
@@ -527,11 +528,12 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public async Task SoftDeleteEnvelopeGroup_EnvelopeGroupWithDeletedEnvelopes_Unsuccessful()
+        public async Task SoftDeleteEnvelopeGroup_EnvelopeGroupWithDeletedEnvelopes_Successful()
         {
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
+            deletedEnvelope.Group = hiddenEnvelopeGroup;
 
             A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
             A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { deletedEnvelope });
@@ -540,7 +542,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
 
             // assert
-            Assert.IsFalse(result.Success);
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
