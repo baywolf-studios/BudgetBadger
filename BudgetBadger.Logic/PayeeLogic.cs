@@ -474,7 +474,7 @@ namespace BudgetBadger.Logic
         }
 
 
-
+        //deleting these
         async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
         {
             var errors = new List<string>();

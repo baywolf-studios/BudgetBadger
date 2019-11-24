@@ -127,6 +127,8 @@ namespace BudgetBadger.Models
 
         public bool IsActive { get => !IsNew && !IsDeleted && !IsHidden; }
 
+        public bool IsGenericHiddenAccount { get => Id == Constants.GenericHiddenAccount.Id; }
+
         public Account()
         {
             Id = Guid.Empty;
@@ -191,13 +193,17 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-
+            if (IsGenericHiddenAccount == account.IsGenericHiddenAccount)
+            {
                 if (Type.Equals(account.Type))
                 {
                     return String.Compare(Description, account.Description);
                 }
 
                 return Type.CompareTo(account.Type);
+            }
+
+            return IsGenericHiddenAccount.CompareTo(account.IsGenericHiddenAccount);
         }
 
         public int CompareTo(object obj)

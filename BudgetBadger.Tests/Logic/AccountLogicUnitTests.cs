@@ -7,6 +7,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BudgetBadger.Tests.Logic
@@ -312,6 +313,70 @@ namespace BudgetBadger.Tests.Logic
 
             // assert 
             Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task GetAccounts_HiddenAccount_HiddenAccountNotReturned()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, activeAccount });
+
+            // act
+            var result = await accountLogic.GetAccountsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenAccount.Id));
+        }
+
+        [Test]
+        public async Task GetAccounts_HiddenAccount_GenericHiddenAccountReturned()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, activeAccount });
+
+            // act
+            var result = await accountLogic.GetAccountsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(p => p.IsGenericHiddenAccount));
+        }
+
+        [Test]
+        public async Task GetAccountsForSelection_HiddenAccount_HiddenAccountNotReturned()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, activeAccount });
+
+            // act
+            var result = await accountLogic.GetAccountsForSelectionAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenAccount.Id));
+        }
+
+        [Test]
+        public async Task GetHiddenAccounts_ActiveAccount_ActiveAccountNotReturned()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, activeAccount });
+
+            // act
+            var result = await accountLogic.GetHiddenAccountsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == activeAccount.Id));
         }
 
     }
