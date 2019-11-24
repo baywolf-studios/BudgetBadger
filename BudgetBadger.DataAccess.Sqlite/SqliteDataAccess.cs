@@ -189,7 +189,55 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             @Now, 
                                             @Now);
 
-                                    COMMIT;";
+                                CREATE TRIGGER Payee_U BEFORE UPDATE ON Payee FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER Payee_I BEFORE INSERT ON Payee FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER Account_U BEFORE UPDATE ON Account FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER Account_I BEFORE INSERT ON Account FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER Envelope_U BEFORE UPDATE ON Envelope FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER Envelope_I BEFORE INSERT ON Envelope FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER EnvelopeGroup_U BEFORE UPDATE ON EnvelopeGroup FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                CREATE TRIGGER EnvelopeGroup_I BEFORE INSERT ON EnvelopeGroup FOR EACH ROW
+                                WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                BEGIN
+	                                SELECT RAISE(ABORT, ‘Error’);
+                                END;
+
+                                COMMIT;";
 
             command.Parameters.AddWithValue("@Now", DateTime.Now);
 
@@ -428,6 +476,54 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         WHERE a.Id IS NOT NULL AND p.Id IS NOT NULL AND e.Id IS NOT NULL;
 
                                         DROP TABLE _Transaction_old;
+
+                                        CREATE TRIGGER Payee_U BEFORE UPDATE ON Payee FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER Payee_I BEFORE INSERT ON Payee FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER Account_U BEFORE UPDATE ON Account FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER Account_I BEFORE INSERT ON Account FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER Envelope_U BEFORE UPDATE ON Envelope FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER Envelope_I BEFORE INSERT ON Envelope FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER EnvelopeGroup_U BEFORE UPDATE ON EnvelopeGroup FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
+
+                                        CREATE TRIGGER EnvelopeGroup_I BEFORE INSERT ON EnvelopeGroup FOR EACH ROW
+                                        WHEN NEW.DeletedDateTime IS NOT NULL AND NEW.HiddenDateTime IS NULL
+                                        BEGIN
+	                                        SELECT RAISE(ABORT, ‘Error’);
+                                        END;
                 
                                         PRAGMA user_version=1;
                                         COMMIT;
