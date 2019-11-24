@@ -16,6 +16,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Budget>> SaveBudgetAsync(Budget budget);
         Task<Result<IReadOnlyList<Budget>>> GetBudgetsAsync(BudgetSchedule schedule);
         Task<Result<IReadOnlyList<Budget>>> GetBudgetsForSelectionAsync(BudgetSchedule schedule);
+        Task<Result<IReadOnlyList<Budget>>> GetHiddenBudgetsAsync(BudgetSchedule schedule);
         Task<Result<Budget>> GetBudgetAsync(Guid envelopeId, BudgetSchedule schedule);
         Task<Result<Budget>> GetBudgetAsync(Guid id);
         Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Budget budget);
@@ -24,7 +25,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<int>> GetEnvelopesCountAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForReportAsync();
-        Task<Result<IReadOnlyList<Envelope>>> GetHiddenEnvelopesAsync();
         Task<Result> SoftDeleteEnvelopeAsync(Guid id);
         Task<Result> HideEnvelopeAsync(Guid id);
         Task<Result> UnhideEnvelopeAsync(Guid id);

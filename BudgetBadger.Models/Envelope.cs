@@ -100,6 +100,11 @@ namespace BudgetBadger.Models
             get => Id == Constants.GenericDebtEnvelope.Id;
         }
 
+        public bool IsGenericHiddenEnvelope
+        {
+            get => Id == Constants.GenericHiddenEnvelope.Id;
+        }
+
         public string ExtendedDescription
         {
             get

@@ -57,12 +57,29 @@ namespace BudgetBadger.Models
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
+        public static readonly Envelope GenericHiddenEnvelope = new Envelope
+        {
+            Id = new Guid("{f8d9fbfe-973e-452d-95eb-d4b876ebceda}"),
+            Description = nameof(GenericHiddenEnvelope),
+            Group = SystemEnvelopeGroup,
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now,
+            HiddenDateTime = DateTime.Now
+        };
         public static readonly Payee StartingBalancePayee = new Payee 
         { 
             Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}"), 
             Description = nameof(StartingBalancePayee),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now 
+        };
+        public static readonly Payee GenericHiddenPayee = new Payee
+        {
+            Id = new Guid("{f8d9fbfe-973e-452d-95eb-d4b876ebceda}"),
+            Description = nameof(GenericHiddenEnvelope),
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now,
+            HiddenDateTime = DateTime.Now
         };
     }
 }

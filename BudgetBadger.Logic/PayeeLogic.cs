@@ -130,9 +130,14 @@ namespace BudgetBadger.Logic
                 // may move to a "Payee Group" type setup
                 var payees = allPayees.Where(p =>
                                              !p.IsStartingBalance
-                                             && p.IsActive);
+                                             && p.IsActive).ToList();
 
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
+                if (allPayees.Any(p => p.IsHidden))
+                {
+                    payees.Add(Constants.GenericHiddenPayee.DeepCopy());
+                }
+
+                var tasks = payees.Select(GetPopulatedPayee);
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
 
@@ -190,7 +195,12 @@ namespace BudgetBadger.Logic
 
                 var payees = allPayees.Where(p =>
                                              !p.IsStartingBalance
-                                             && p.IsActive);
+                                             && p.IsActive).ToList();
+
+                if (allPayees.Any(p => p.IsHidden))
+                {
+                    payees.Add(Constants.GenericHiddenPayee.DeepCopy());
+                }
 
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
 
@@ -211,9 +221,35 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IReadOnlyList<Account>>> GetHiddenPayeesAsync()
+        public async Task<Result<IReadOnlyList<Payee>>> GetHiddenPayeesAsync()
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyList<Payee>>();
+
+            try
+            {
+                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+
+                var payees = allPayees.Where(p =>
+                                             !p.IsStartingBalance
+                                             && p.IsHidden);
+
+                var tasks = payees.Select(GetPopulatedPayee);
+
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
+                filteredPopulatedPayees.Sort();
+
+                result.Success = true;
+                result.Data = filteredPopulatedPayees;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result> SoftDeletePayeeAsync(Guid id)
@@ -424,6 +460,10 @@ namespace BudgetBadger.Logic
             else if (payeeToPopulate.IsAccount)
             {
                 payeeToPopulate.Group = _resourceContainer.GetResourceString("PayeeTransferGroup");
+            }
+            else if (payeeToPopulate.IsHidden)
+            {
+                payeeToPopulate.Group = _resourceContainer.GetResourceString("Hidden");
             }
             else
             {
