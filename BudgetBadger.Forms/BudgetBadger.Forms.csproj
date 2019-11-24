@@ -20,14 +20,14 @@
     <PackageReference Include="Dropbox.Api" Version="4.9.4" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.0.1" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
     <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="17.1.0.41" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.41" />
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="17.1.0.41" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.908675" />
-    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1367" />
+    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
   </ItemGroup>
 
   <ItemGroup>
