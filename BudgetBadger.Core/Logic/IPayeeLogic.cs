@@ -14,7 +14,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Payee>>> GetPayeesAsync();
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync();
         Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync();
-        Task<Result<IReadOnlyList<Account>>> GetHiddenPayeesAsync();
+        Task<Result<IReadOnlyList<Payee>>> GetHiddenPayeesAsync();
         Task<Result> SoftDeletePayeeAsync(Guid id);
         Task<Result> HidePayeeAsync(Guid id);
         Task<Result> UnhidePayeeAsync(Guid id);

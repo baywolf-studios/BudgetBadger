@@ -263,6 +263,48 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IReadOnlyList<Budget>>> GetHiddenBudgetsAsync(BudgetSchedule schedule)
+        {
+            var result = new Result<IReadOnlyList<Budget>>();
+
+            try
+            {
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
+                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden);
+
+                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
+                var hiddenBudgets = budgets.Where(b => !b.Envelope.IsSystem && b.Envelope.IsHidden).ToList();
+
+                foreach (var envelope in hiddenEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+                {
+                    hiddenBudgets.Add(new Budget
+                    {
+                        Schedule = schedule.DeepCopy(),
+                        Envelope = envelope.DeepCopy(),
+                        Amount = 0m
+                    });
+                }
+
+                var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
+                var tasks = hiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
+
+                var budgetsToReturnTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var budgetsToReturn = budgetsToReturnTemp.ToList();
+
+                budgetsToReturn.Sort();
+
+                result.Success = true;
+                result.Data = budgetsToReturn;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<Budget>> GetBudgetAsync(Guid envelopeId, BudgetSchedule schedule)
         {
             var result = new Result<Budget>();
@@ -581,11 +623,6 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IReadOnlyList<Envelope>>> GetHiddenEnvelopesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Result> SoftDeleteEnvelopeAsync(Guid id)
         {
             var result = new Result();
@@ -628,10 +665,15 @@ namespace BudgetBadger.Logic
                 }
 
                 var envelopeTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(id).ConfigureAwait(false);
-
                 if (envelopeTransactions.Any(t => t.IsActive))
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteActiveTransactionsError"));
+                }
+
+                var envelopeBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(id).ConfigureAwait(false);
+                if (envelopeBudgets.Any(b => b.Amount != 0))
+                {
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteNonZeroBudgetsError"));
                 }
 
                 if (errors.Any())
@@ -1618,8 +1660,5 @@ namespace BudgetBadger.Logic
 
             return result;
         }
-
-
-
     }
 }

@@ -7,6 +7,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BudgetBadger.Tests.Logic
@@ -326,5 +327,98 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsFalse(result.Success);
         }
 
+        [Test]
+        public async Task GetPayees_HiddenPayee_HiddenPayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+
+            // act
+            var result = await PayeeLogic.GetPayeesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenPayee.Id));
+        }
+
+        [Test]
+        public async Task GetPayees_HiddenPayee_GenericHiddenPayeeReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
+
+            // act
+            var result = await PayeeLogic.GetPayeesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(p => p.IsGenericHiddenPayee));
+        }
+
+        [Test]
+        public async Task GetPayeesForSelection_HiddenPayee_HiddenPayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+
+            // act
+            var result = await PayeeLogic.GetPayeesForSelectionAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenPayee.Id));
+        }
+
+        [Test]
+        public async Task GetPayeesForReport_HiddenPayee_HiddenPayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+
+            // act
+            var result = await PayeeLogic.GetPayeesForReportAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenPayee.Id));
+        }
+
+        [Test]
+        public async Task GetPayeesForReport_HiddenPayee_GenericHiddenPayeeReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
+
+            // act
+            var result = await PayeeLogic.GetPayeesForReportAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(p => p.IsGenericHiddenPayee));
+        }
+
+        [Test]
+        public async Task GetHiddenPayees_ActivePayee_ActivePayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var activePayee = TestPayees.ActivePayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+
+            // act
+            var result = await PayeeLogic.GetHiddenPayeesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == activePayee.Id));
+        }
     }
 }

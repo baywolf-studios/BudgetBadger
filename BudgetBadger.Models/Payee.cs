@@ -78,6 +78,11 @@ namespace BudgetBadger.Models
             get => Id == Constants.StartingBalancePayee.Id;
         }
 
+        public bool IsGenericHiddenPayee
+        {
+            get => Id == Constants.GenericHiddenPayee.Id;
+        }
+
         // calculated
         string group;
         public string Group
@@ -162,17 +167,23 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsAccount.Equals(payee.IsAccount))
+            if (IsGenericHiddenPayee.Equals(payee.IsGenericHiddenPayee))
             {
-                if (Group.Equals(payee.Group))
+
+                if (IsAccount.Equals(payee.IsAccount))
                 {
-                    return String.Compare(Description, payee.Description);
+                    if (Group.Equals(payee.Group))
+                    {
+                        return String.Compare(Description, payee.Description);
+                    }
+
+                    return String.Compare(Group, payee.Group);
                 }
 
-                return String.Compare(Group, payee.Group);
+                return -1 * IsAccount.CompareTo(payee.IsAccount);
             }
 
-            return -1 * IsAccount.CompareTo(payee.IsAccount);
+            return IsGenericHiddenPayee.CompareTo(payee.IsGenericHiddenPayee);
         }
 
         public int CompareTo(object obj)

@@ -7,6 +7,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BudgetBadger.Tests.Logic
@@ -209,6 +210,22 @@ namespace BudgetBadger.Tests.Logic
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(ignoredEnvelope.Id);
+
+            // assert
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task SoftDeleteEnvelope_EnvelopeHasNonZeroBudgets_Unsuccessful()
+        {
+            // arrange
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(activeEnvelope.Id)).Returns(new List<Budget> { new Budget() { Amount = 100 } });
+
+            // act
+            var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(activeEnvelope.Id);
 
             // assert
             Assert.IsFalse(result.Success);
@@ -429,10 +446,6 @@ namespace BudgetBadger.Tests.Logic
             // assert 
             Assert.IsFalse(result.Success);
         }
-
-
-
-
 
         [Test]
         public async Task SoftDeleteEnvelopeGroup_HiddenEnvelopeGroup_Successful()
@@ -775,5 +788,19 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsFalse(result.Success);
         }
 
+        [Test]
+        public async Task GetBudgets_HiddenEnvelope_GenericHiddenEnvelopeReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetBudgetsAsync(new BudgetSchedule());
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(e => e.Envelope.IsGenericHiddenEnvelope));
+        }
     }
 }
