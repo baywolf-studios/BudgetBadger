@@ -81,5 +81,13 @@ namespace BudgetBadger.Models
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now
         };
+        public static readonly Account GenericHiddenAccount = new Account
+        {
+            Id = new Guid("{f8d9fbfe-973e-452d-95eb-d4b876ebceda}"),
+            Description = nameof(GenericHiddenAccount),
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now,
+            HiddenDateTime = DateTime.Now
+        };
     }
 }

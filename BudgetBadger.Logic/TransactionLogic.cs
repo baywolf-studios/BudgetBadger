@@ -668,7 +668,7 @@ namespace BudgetBadger.Logic
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
-
+        //deleting these
         async Task<Result> ValidateDeleteTransactionAsync(Guid transactionId)
         {
             var errors = new List<string>();

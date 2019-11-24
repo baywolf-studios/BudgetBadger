@@ -168,9 +168,13 @@ namespace BudgetBadger.Logic
             var result = new Result<IReadOnlyList<Account>>();
 
             var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
-            IEnumerable<Account> accounts;
 
-            accounts = allAccounts.Where(a => a.IsActive);
+            var accounts = allAccounts.Where(a => a.IsActive).ToList();
+
+            if (allAccounts.Any(a => a.IsHidden))
+            {
+                accounts.Add(Constants.GenericHiddenAccount);
+            }
 
             var tasks = accounts.Select(GetPopulatedAccount);
 
@@ -204,7 +208,21 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<IReadOnlyList<Account>>> GetHiddenAccountsAsync()
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyList<Account>>();
+
+            var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+
+            var accounts = allAccounts.Where(a => a.IsHidden);
+
+            var tasks = accounts.Select(GetPopulatedAccount);
+
+            var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
+            accountsToReturn.Sort();
+
+            result.Success = true;
+            result.Data = accountsToReturn;
+
+            return result;
         }
 
         public async Task<Result> SoftDeleteAccountAsync(Guid id)
@@ -469,7 +487,14 @@ namespace BudgetBadger.Logic
             account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance ?? 0;
 
             // group
-            account.Group = _resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
+            if (account.IsHidden)
+            {
+                account.Group = _resourceContainer.GetResourceString("Hidden");
+            }
+            else
+            {
+                account.Group = _resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
+            }
 
             return account;
         }
