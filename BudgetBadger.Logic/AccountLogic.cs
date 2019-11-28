@@ -168,17 +168,21 @@ namespace BudgetBadger.Logic
             var result = new Result<IReadOnlyList<Account>>();
 
             var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+            var activeAndHiddenAccounts = allAccounts.Where(a => a.IsActive || a.IsHidden);
 
-            var accounts = allAccounts.Where(a => a.IsActive).ToList();
+            var tasks = activeAndHiddenAccounts.Select(GetPopulatedAccount);
+            var populatedAccounts = (await Task.WhenAll(tasks)).ToList();
 
-            if (allAccounts.Any(a => a.IsHidden))
+            var accountsToReturn = populatedAccounts.Where(p => p.IsActive).ToList();
+
+            if (populatedAccounts.Any(a => a.IsHidden))
             {
-                accounts.Add(Constants.GenericHiddenAccount);
+                var hiddenAccounts = populatedAccounts.Where(a => a.IsHidden);
+
+                var genericHiddenAccount = PopulateGenericHiddenAccount(hiddenAccounts);
+                accountsToReturn.Add(genericHiddenAccount);
             }
 
-            var tasks = accounts.Select(GetPopulatedAccount);
-
-            var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
             accountsToReturn.Sort();
 
             result.Success = true;
@@ -538,7 +542,19 @@ namespace BudgetBadger.Logic
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
         }
 
+        Account PopulateGenericHiddenAccount(IEnumerable<Account> hiddenAccounts)
+        {
+            var genericHiddenAccount = Constants.GenericHiddenAccount.DeepCopy();
 
+            genericHiddenAccount.Pending = hiddenAccounts.Sum(a => a.Pending);
+            genericHiddenAccount.Posted = hiddenAccounts.Sum(a => a.Posted);
+            genericHiddenAccount.Balance = hiddenAccounts.Sum(a => a.Balance);
+            genericHiddenAccount.Payment = hiddenAccounts.Sum(a => a.Payment);
+            genericHiddenAccount.Description = _resourceContainer.GetResourceString("Hidden");
+            genericHiddenAccount.Group = _resourceContainer.GetResourceString("Hidden");
+
+            return genericHiddenAccount;
+        }
 
 
         async Task<Result> ValidateDeleteAccountAsync(Guid accountId)
