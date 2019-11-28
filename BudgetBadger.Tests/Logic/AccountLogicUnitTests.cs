@@ -73,7 +73,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
-            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.That.Matches(p => p.Id == hiddenAccount.Id))).MustHaveHappened();
+            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.That.Matches(e => e.Id == hiddenAccount.Id))).MustHaveHappened();
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -228,7 +228,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.HideAccountAsync(activeAccount.Id);
 
             // assert
-            A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.That.Matches(a => a.Id == activeAccount.Id))).MustHaveHappened();
+            A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.HideAccountAsync(activeAccount.Id);
 
             // assert
-            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.That.Matches(p => p.Id == activeAccount.Id))).MustHaveHappened();
+            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.HideAccountAsync(activeAccount.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.That.Matches(e => e.Id == activeAccount.Id))).MustHaveHappened();
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
         }
 
         [Test]
