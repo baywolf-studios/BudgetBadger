@@ -200,7 +200,35 @@ namespace BudgetBadger.Tests.Logic
             var result = await accountLogic.HideAccountAsync(activeAccount.Id);
 
             // assert
-            A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.Ignored)).MustHaveHappened();
+            A.CallTo(() => accountDataAccess.UpdateAccountAsync(A<Account>.That.Matches(a => a.Id == activeAccount.Id))).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task HideAccount_ActiveAccount_UpdatesTransferPayee()
+        {
+            // arrange
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
+
+            // act
+            var result = await accountLogic.HideAccountAsync(activeAccount.Id);
+
+            // assert
+            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.That.Matches(p => p.Id == activeAccount.Id))).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task HideAccount_ActiveAccount_UpdatesDebtEnvelope()
+        {
+            // arrange
+            var activeAccount = TestAccounts.ActiveAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(activeAccount.Id)).Returns(activeAccount);
+
+            // act
+            var result = await accountLogic.HideAccountAsync(activeAccount.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.That.Matches(e => e.Id == activeAccount.Id))).MustHaveHappened();
         }
 
         [Test]
