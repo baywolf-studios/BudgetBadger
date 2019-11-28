@@ -404,6 +404,32 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task GetAccounts_HiddenAccounts_BalanceCombinedOnGenericHiddenAccount()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var hiddenAccount2 = TestAccounts.HiddenAccount.DeepCopy();
+            hiddenAccount2.Id = Guid.NewGuid();
+
+            var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
+            activeTransaction.Amount = 50;
+
+            var activeTransaction2 = TestTransactions.ActiveTransaction.DeepCopy();
+            activeTransaction2.Amount = 55;
+
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, hiddenAccount2 });
+            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(hiddenAccount.Id)).Returns(new List<Transaction> { activeTransaction });
+            A.CallTo(() => transactionDataAccess.ReadAccountTransactionsAsync(hiddenAccount2.Id)).Returns(new List<Transaction> { activeTransaction2 });
+
+            // act
+            var result = await accountLogic.GetAccountsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.FirstOrDefault(p => p.IsGenericHiddenAccount).Balance == (activeTransaction.Amount + activeTransaction2.Amount));
+        }
+
+        [Test]
         public async Task GetAccountsForSelection_HiddenAccount_HiddenAccountNotReturned()
         {
             // arrange
