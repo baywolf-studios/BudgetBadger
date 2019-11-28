@@ -266,10 +266,21 @@ namespace BudgetBadger.Logic
                     return result;
                 }
 
-                account.DeletedDateTime = DateTime.Now;
-                account.ModifiedDateTime = DateTime.Now;
+                var now = DateTime.Now;
 
-                await _accountDataAccess.UpdateAccountAsync(account);
+                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                payee.DeletedDateTime = now;
+                payee.ModifiedDateTime = now;
+                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+
+                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                envelope.DeletedDateTime = now;
+                envelope.ModifiedDateTime = now;
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+
+                account.DeletedDateTime = now;
+                account.ModifiedDateTime = now;
+                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
             }
@@ -305,10 +316,21 @@ namespace BudgetBadger.Logic
                     return result;
                 }
 
-                account.HiddenDateTime = DateTime.Now;
-                account.ModifiedDateTime = DateTime.Now;
+                var now = DateTime.Now;
 
-                await _accountDataAccess.UpdateAccountAsync(account);
+                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                payee.HiddenDateTime = now;
+                payee.ModifiedDateTime = now;
+                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+
+                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                envelope.HiddenDateTime = now;
+                envelope.ModifiedDateTime = now;
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+
+                account.HiddenDateTime = now;
+                account.ModifiedDateTime = now;
+                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
             }
