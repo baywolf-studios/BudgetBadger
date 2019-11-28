@@ -172,32 +172,42 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var transactions = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }).ConfigureAwait(false);
-                var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
-
-                var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
-                var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
-
-                while (startMonth <= endMonth)
+                if (envelopeId == Constants.GenericHiddenEnvelope.Id)
                 {
-                    var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth && t.ServiceDate > startMonth.AddMonths(-1));
-                    var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
-                    dataPoints.Add(new DataPoint<DateTime, decimal>
+                    var hiddenEnvelopes = await _envelopeLogic.GetHiddenEnvelopesAsync();
+                    foreach (var hiddenEnvelope in hiddenEnvelopes.Data)
                     {
-                        XLabel = _resourceContainer.GetFormattedString("{0:Y}", startMonth),
-                        XValue = startMonth,
-                        YLabel = _resourceContainer.GetFormattedString("{0:C}", monthTotal),
-                        YValue = monthTotal
-                    });
-                    startMonth = startMonth.AddMonths(1);
+                    }
                 }
+                else
+                {
+                    var transactions = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }).ConfigureAwait(false);
+                    var activeTransactions = transactions.Data.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
-                var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
-                var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
-                dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
+                    var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    var endMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
 
-                result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
-                result.Success = true;
+                    while (startMonth <= endMonth)
+                    {
+                        var monthTransactions = activeTransactions.Where(t => t.ServiceDate <= startMonth && t.ServiceDate > startMonth.AddMonths(-1));
+                        var monthTotal = monthTransactions.Sum(t => t.Amount ?? 0);
+                        dataPoints.Add(new DataPoint<DateTime, decimal>
+                        {
+                            XLabel = _resourceContainer.GetFormattedString("{0:Y}", startMonth),
+                            XValue = startMonth,
+                            YLabel = _resourceContainer.GetFormattedString("{0:C}", monthTotal),
+                            YValue = monthTotal
+                        });
+                        startMonth = startMonth.AddMonths(1);
+                    }
+
+                    var beginDateMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    var endDateMonth = new DateTime(endDate.Year, endDate.Month, 1).AddMonths(1).AddTicks(-1);
+                    dataPoints = dataPoints.Where(d => d.XValue >= beginDateMonth && d.XValue <= endDateMonth).ToList();
+
+                    result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
+                    result.Success = true;
+                }
             }
             catch (Exception ex)
             {

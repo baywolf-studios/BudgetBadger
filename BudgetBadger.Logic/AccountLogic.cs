@@ -522,6 +522,11 @@ namespace BudgetBadger.Logic
                 account.Group = _resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
             }
 
+            if (account.IsGenericHiddenAccount)
+            {
+                account.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenAccount));
+            }
+
             return account;
         }
 
