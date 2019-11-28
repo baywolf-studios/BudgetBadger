@@ -470,6 +470,11 @@ namespace BudgetBadger.Logic
                 payeeToPopulate.Group = payeeToPopulate.Description[0].ToString().ToUpper();
             }
 
+            if (payeeToPopulate.IsStartingBalance)
+            {
+                payeeToPopulate.Description = _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
+            }
+
             return payeeToPopulate;
         }
 

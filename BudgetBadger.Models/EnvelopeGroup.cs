@@ -65,20 +65,13 @@ namespace BudgetBadger.Models
 
         public bool IsActive { get => !IsNew && !IsDeleted && !IsHidden; }
 
-        public bool IsIncome
-        {
-            get => Id == Constants.IncomeEnvelopeGroup.Id;
-        }
+        public bool IsIncome { get => Id == Constants.IncomeEnvelopeGroup.Id; }
 
-        public bool IsSystem
-        {
-            get => Id == Constants.SystemEnvelopeGroup.Id;
-        }
+        public bool IsSystem { get => Id == Constants.SystemEnvelopeGroup.Id; }
 
-        public bool IsDebt
-        {
-            get => Id == Constants.DebtEnvelopeGroup.Id;
-        }
+        public bool IsDebt { get => Id == Constants.DebtEnvelopeGroup.Id; }
+
+        public bool IsGenericHiddenEnvelopeGroup { get => Id == Constants.GenericHiddenEnvelopeGroup.Id; }
 
         public EnvelopeGroup()
         {
@@ -146,17 +139,22 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsDebt.Equals(group.IsDebt))
+            if (IsGenericHiddenEnvelopeGroup.Equals(group.IsGenericHiddenEnvelopeGroup))
             {
-                if (IsIncome.Equals(group.IsIncome))
+                if (IsDebt.Equals(group.IsDebt))
                 {
-                    return String.Compare(Description, group.Description);
+                    if (IsIncome.Equals(group.IsIncome))
+                    {
+                        return String.Compare(Description, group.Description);
+                    }
+
+                    return -1 * IsIncome.CompareTo(group.IsIncome);
                 }
 
-                return -1 * IsIncome.CompareTo(group.IsIncome);
+                return -1 * IsDebt.CompareTo(group.IsDebt);
             }
 
-            return -1 * IsDebt.CompareTo(group.IsDebt);
+            return IsGenericHiddenEnvelopeGroup.CompareTo(group.IsGenericHiddenEnvelopeGroup);
         }
     }
 }

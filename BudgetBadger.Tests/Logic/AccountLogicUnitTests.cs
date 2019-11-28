@@ -442,7 +442,7 @@ namespace BudgetBadger.Tests.Logic
 
             // assert 
             Assert.IsTrue(result.Success);
-            Assert.That(!result.Data.Any(p => p.Id == hiddenAccount.Id));
+            Assert.That(!result.Data.Any(p => p.IsHidden));
         }
 
         [Test]
