@@ -63,6 +63,34 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task SoftDeleteAccount_HiddenAccount_UpdatesTransferPayee()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
+
+            // assert
+            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.That.Matches(p => p.Id == hiddenAccount.Id))).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task SoftDeleteAccount_HiddenAccount_UpdatesDebtEnvelope()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.SoftDeleteAccountAsync(hiddenAccount.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.That.Matches(e => e.Id == hiddenAccount.Id))).MustHaveHappened();
+        }
+
+        [Test]
         public async Task SoftDeleteAccount_NewAccount_Unsuccessful()
         {
             // arrange
