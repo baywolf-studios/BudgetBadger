@@ -155,7 +155,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeLogic.GetEnvelopeGroupsAsync();
+                var result = await _envelopeLogic.GetEnvelopeGroupsForSelectionAsync();
 
                 if (result.Success)
                 {
