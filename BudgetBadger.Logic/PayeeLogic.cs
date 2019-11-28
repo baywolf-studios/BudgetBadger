@@ -475,6 +475,11 @@ namespace BudgetBadger.Logic
                 payeeToPopulate.Description = _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
             }
 
+            if (payeeToPopulate.IsGenericHiddenPayee)
+            {
+                payeeToPopulate.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenPayee));
+            }
+
             return payeeToPopulate;
         }
 

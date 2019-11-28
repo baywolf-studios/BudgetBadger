@@ -833,7 +833,7 @@ namespace BudgetBadger.Tests.Logic
 
             // assert 
             Assert.IsTrue(result.Success);
-            Assert.That(!result.Data.Any(p => p.IsHidden));
+            Assert.That(!result.Data.Any(p => p.Id == hiddenEnvelopeGroup.Id));
         }
 
         [Test]
@@ -853,6 +853,22 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task GetBudgets_HiddenEnvelope_HiddenEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Envelope.Id == hiddenEnvelope.Id));
+        }
+
+        [Test]
         public async Task GetBudgets_HiddenEnvelope_GenericHiddenEnvelopeReturned()
         {
             // arrange
@@ -860,11 +876,90 @@ namespace BudgetBadger.Tests.Logic
             A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
 
             // act
-            var result = await EnvelopeLogic.GetBudgetsAsync(new BudgetSchedule());
+            var result = await EnvelopeLogic.GetBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
 
             // assert 
             Assert.IsTrue(result.Success);
             Assert.That(result.Data.Any(e => e.Envelope.IsGenericHiddenEnvelope));
+        }
+
+        [Test]
+        public async Task GetEnvelopesForSelection_HiddenEnvelope_HiddenEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopesForSelectionAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenEnvelope.Id));
+        }
+
+        [Test]
+        public async Task GetBudgetsForSelection_HiddenEnvelope_HiddenEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetBudgetsForSelectionAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Envelope.Id == hiddenEnvelope.Id));
+        }
+
+        [Test]
+        public async Task GetEnvelopesForReport_HiddenEnvelope_HiddenEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopesForReportAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenEnvelope.Id));
+        }
+
+        [Test]
+        public async Task GetEnvelopesForReport_HiddenEnvelope_GenericHiddenEnvelopeReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopesForReportAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(p => p.IsGenericHiddenEnvelope));
+        }
+
+        [Test]
+        public async Task GetHiddenBudgets_ActiveEnvelope_ActiveEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetHiddenBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Envelope.IsActive));
         }
     }
 }
