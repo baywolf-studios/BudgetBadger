@@ -194,17 +194,22 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
+            if (IsGenericHiddenEnvelope.Equals(envelope.IsGenericHiddenEnvelope))
             {
-                if (Group.Equals(envelope.Group))
+                if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
                 {
-                    return String.Compare(Description, envelope.Description);
+                    if (Group.Equals(envelope.Group))
+                    {
+                        return String.Compare(Description, envelope.Description);
+                    }
+
+                    return Group.CompareTo(envelope.Group);
                 }
 
-                return Group.CompareTo(envelope.Group);
+                return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
             }
 
-            return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
+            return IsGenericHiddenEnvelope.CompareTo(envelope.IsGenericHiddenEnvelope);
         }
     }
 }

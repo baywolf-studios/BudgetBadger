@@ -3,6 +3,13 @@ namespace BudgetBadger.Models
 {
     public static class Constants
     {
+        public static readonly Payee StartingBalancePayee = new Payee
+        {
+            Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}"),
+            Description = nameof(StartingBalancePayee),
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now
+        };
         public static readonly EnvelopeGroup IncomeEnvelopeGroup = new EnvelopeGroup
         { 
             Id = new Guid("{b797f2af-bef2-4685-bbd6-73417414e6ce}"), 
@@ -57,21 +64,22 @@ namespace BudgetBadger.Models
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
-        public static readonly Envelope GenericHiddenEnvelope = new Envelope
+        public static readonly EnvelopeGroup GenericHiddenEnvelopeGroup = new EnvelopeGroup
         {
             Id = new Guid("{f8d9fbfe-973e-452d-95eb-d4b876ebceda}"),
             Description = nameof(GenericHiddenEnvelope),
-            Group = SystemEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now
         };
-        public static readonly Payee StartingBalancePayee = new Payee 
-        { 
-            Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}"), 
-            Description = nameof(StartingBalancePayee),
+        public static readonly Envelope GenericHiddenEnvelope = new Envelope
+        {
+            Id = new Guid("{f8d9fbfe-973e-452d-95eb-d4b876ebceda}"),
+            Description = nameof(GenericHiddenEnvelope),
+            Group = GenericHiddenEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
-            ModifiedDateTime = DateTime.Now 
+            ModifiedDateTime = DateTime.Now,
+            HiddenDateTime = DateTime.Now
         };
         public static readonly Payee GenericHiddenPayee = new Payee
         {

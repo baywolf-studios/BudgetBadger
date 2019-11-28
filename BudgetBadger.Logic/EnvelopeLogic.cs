@@ -955,6 +955,14 @@ namespace BudgetBadger.Logic
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+
+                if (envelopeGroups.Any(e => e.IsHidden))
+                {
+                    var genericHiddenGroup = Constants.GenericHiddenEnvelopeGroup.DeepCopy();
+                    genericHiddenGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenEnvelopeGroup));
+                    filteredEnvelopeGroups.Add(genericHiddenGroup);
+                }
+
                 filteredEnvelopeGroups.Sort();
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
@@ -968,9 +976,46 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public Task<Result<IReadOnlyList<EnvelopeGroup>>> GetHiddenEnvelopeGroupsAsync()
+        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsForSelectionAsync()
         {
-            throw new NotImplementedException();
+            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
+
+            try
+            {
+                var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                filteredEnvelopeGroups.Sort();
+                result.Success = true;
+                result.Data = filteredEnvelopeGroups;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetHiddenEnvelopeGroupsAsync()
+        {
+            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
+
+            try
+            {
+                var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsHidden && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                filteredEnvelopeGroups.Sort();
+                result.Success = true;
+                result.Data = filteredEnvelopeGroups;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public async Task<Result> SoftDeleteEnvelopeGroupAsync(Guid id)

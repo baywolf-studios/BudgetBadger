@@ -789,6 +789,70 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task GetEnvelopeGroups_HiddenEnvelopeGroup_HiddenEnvelopeGroupNotReturned()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopeGroupsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == hiddenEnvelopeGroup.Id));
+        }
+
+        [Test]
+        public async Task GetEnvelopeGroups_HiddenEnvelopeGroup_GenericHiddenEnvelopeGroupReturned()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopeGroupsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(result.Data.Any(p => p.IsGenericHiddenEnvelopeGroup));
+        }
+
+        [Test]
+        public async Task GetEnvelopeGroupsForSelection_HiddenEnvelopeGroup_HiddenEnvelopeGroupNotReturned()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+
+            // act
+            var result = await EnvelopeLogic.GetEnvelopeGroupsForSelectionAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.IsHidden));
+        }
+
+        [Test]
+        public async Task GetHiddenEnvelopeGroups_ActiveEnvelopeGroup_ActiveEnvelopeGroupNotReturned()
+        {
+            // arrange
+            var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
+            var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+
+            // act
+            var result = await EnvelopeLogic.GetHiddenEnvelopeGroupsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.IsActive));
+        }
+
+        [Test]
         public async Task GetBudgets_HiddenEnvelope_GenericHiddenEnvelopeReturned()
         {
             // arrange
