@@ -79,20 +79,11 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete an account with balance.
+        ///   Looks up a localized string similar to Cannot delete account with active transactions.
         /// </summary>
-        public static string AccountDeleteBalanceError {
+        public static string AccountDeleteActiveTransactionsError {
             get {
-                return ResourceManager.GetString("AccountDeleteBalanceError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete an account with future transactions.
-        /// </summary>
-        public static string AccountDeleteFutureTransactionsError {
-            get {
-                return ResourceManager.GetString("AccountDeleteFutureTransactionsError", resourceCulture);
+                return ResourceManager.GetString("AccountDeleteActiveTransactionsError", resourceCulture);
             }
         }
         
@@ -106,11 +97,11 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete an account with pending transactions.
+        ///   Looks up a localized string similar to Cannot delete account unless it&apos;s hidden.
         /// </summary>
-        public static string AccountDeletePendingTransactionsError {
+        public static string AccountDeleteNotHiddenError {
             get {
-                return ResourceManager.GetString("AccountDeletePendingTransactionsError", resourceCulture);
+                return ResourceManager.GetString("AccountDeleteNotHiddenError", resourceCulture);
             }
         }
         
@@ -120,6 +111,15 @@ namespace BudgetBadger.Language {
         public static string AccountEditPageTitle {
             get {
                 return ResourceManager.GetString("AccountEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide inactive account.
+        /// </summary>
+        public static string AccountHideInactiveError {
+            get {
+                return ResourceManager.GetString("AccountHideInactiveError", resourceCulture);
             }
         }
         
@@ -304,6 +304,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot unhide account unless it’s hidden.
+        /// </summary>
+        public static string AccountUnhideNotHiddenError {
+            get {
+                return ResourceManager.GetString("AccountUnhideNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account balance is required.
         /// </summary>
         public static string AccountValidBalanceError {
@@ -399,6 +408,15 @@ namespace BudgetBadger.Language {
         public static string AlertGeneralError {
             get {
                 return ResourceManager.GetString("AlertGeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide Unsuccessful.
+        /// </summary>
+        public static string AlertHideUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertHideUnsuccessful", resourceCulture);
             }
         }
         
@@ -619,6 +637,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unhide Unsuccessful.
+        /// </summary>
+        public static string AlertUnhideUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertUnhideUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes!.
         /// </summary>
         public static string AlertYes {
@@ -727,6 +754,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hiding.
+        /// </summary>
+        public static string BusyTextHiding {
+            get {
+                return ResourceManager.GetString("BusyTextHiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string BusyTextLoading {
@@ -759,6 +795,15 @@ namespace BudgetBadger.Language {
         public static string BusyTextUndoingDelete {
             get {
                 return ResourceManager.GetString("BusyTextUndoingDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhiding.
+        /// </summary>
+        public static string BusyTextUnhiding {
+            get {
+                return ResourceManager.GetString("BusyTextUnhiding", resourceCulture);
             }
         }
         
@@ -907,6 +952,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string EditButton {
+            get {
+                return ResourceManager.GetString("EditButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the + button to add your first account.
         /// </summary>
         public static string EmptyAccountHelperSubtitle {
@@ -988,6 +1042,42 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No hidden accounts.
+        /// </summary>
+        public static string EmptyHiddenAccountsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyHiddenAccountsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No hidden envelope groups.
+        /// </summary>
+        public static string EmptyHiddenEnvelopeGroupsHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyHiddenEnvelopeGroupsHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No hidden envelopes.
+        /// </summary>
+        public static string EmptyHiddenEnvelopesHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyHiddenEnvelopesHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No hidden payees.
+        /// </summary>
+        public static string EmptyHiddenPayeesHelperTitle {
+            get {
+                return ResourceManager.GetString("EmptyHiddenPayeesHelperTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a Payee using the + button.
         /// </summary>
         public static string EmptyPayeeHelperTitle {
@@ -1042,29 +1132,20 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an envelope with transactions.
+        /// </summary>
+        public static string EnvelopeDeleteActiveTransactionsError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteActiveTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete debt envelopes.
         /// </summary>
         public static string EnvelopeDeleteDebtError {
             get {
                 return ResourceManager.GetString("EnvelopeDeleteDebtError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete nvelope with future budget amounts.
-        /// </summary>
-        public static string EnvelopeDeleteFutureBudgetsError {
-            get {
-                return ResourceManager.GetString("EnvelopeDeleteFutureBudgetsError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete nvelope with future transactions.
-        /// </summary>
-        public static string EnvelopeDeleteFutureTransactionsError {
-            get {
-                return ResourceManager.GetString("EnvelopeDeleteFutureTransactionsError", resourceCulture);
             }
         }
         
@@ -1078,6 +1159,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an envelope with budget amounts.
+        /// </summary>
+        public static string EnvelopeDeleteNonZeroBudgetsError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteNonZeroBudgetsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete envelope unless it&apos;s hidden.
+        /// </summary>
+        public static string EnvelopeDeleteNotHiddenError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete envelope with a remaining balance.
         /// </summary>
         public static string EnvelopeDeleteRemainingBalanceError {
@@ -1087,11 +1186,47 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete system envelope.
+        /// </summary>
+        public static string EnvelopeDeleteSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeDeleteSystemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Budget.
         /// </summary>
         public static string EnvelopeEditPageTitle {
             get {
                 return ResourceManager.GetString("EnvelopeEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete envelope group with active envelopes.
+        /// </summary>
+        public static string EnvelopeGroupDeleteActiveEnvelopesError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupDeleteActiveEnvelopesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete envelope group unless it&apos;s hidden.
+        /// </summary>
+        public static string EnvelopeGroupDeleteNotHiddenError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupDeleteNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete system envelope group.
+        /// </summary>
+        public static string EnvelopeGroupDeleteSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupDeleteSystemError", resourceCulture);
             }
         }
         
@@ -1110,6 +1245,33 @@ namespace BudgetBadger.Language {
         public static string EnvelopeGroupEverydayExpenses {
             get {
                 return ResourceManager.GetString("EnvelopeGroupEverydayExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide envelope group with active envelopes.
+        /// </summary>
+        public static string EnvelopeGroupHideActiveEnvelopesError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupHideActiveEnvelopesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide an inactive envelope group.
+        /// </summary>
+        public static string EnvelopeGroupHideInactiveError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupHideInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide system envelope group.
+        /// </summary>
+        public static string EnvelopeGroupHideSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupHideSystemError", resourceCulture);
             }
         }
         
@@ -1186,11 +1348,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot unhide envelope group unless it&apos;s hidden.
+        /// </summary>
+        public static string EnvelopeGroupUnhideNotHiddenError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupUnhideNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Envelope group name is required.
         /// </summary>
         public static string EnvelopeGroupValidDescriptionError {
             get {
                 return ResourceManager.GetString("EnvelopeGroupValidDescriptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide an inactive envelope.
+        /// </summary>
+        public static string EnvelopeHideInactiveError {
+            get {
+                return ResourceManager.GetString("EnvelopeHideInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide a system envelope.
+        /// </summary>
+        public static string EnvelopeHideSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeHideSystemError", resourceCulture);
             }
         }
         
@@ -1348,6 +1537,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot unhide an envelope unless it&apos;s currently hidden.
+        /// </summary>
+        public static string EnvelopeUnhideNotHiddenError {
+            get {
+                return ResourceManager.GetString("EnvelopeUnhideNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget amount is required.
         /// </summary>
         public static string EnvelopeValidAmountError {
@@ -1461,6 +1659,60 @@ namespace BudgetBadger.Language {
         public static string HelpLabel {
             get {
                 return ResourceManager.GetString("HelpLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden.
+        /// </summary>
+        public static string Hidden {
+            get {
+                return ResourceManager.GetString("Hidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden Accounts.
+        /// </summary>
+        public static string HiddenAccountsPageTitle {
+            get {
+                return ResourceManager.GetString("HiddenAccountsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden Envelope Groups.
+        /// </summary>
+        public static string HiddenEnvelopeGroupsPageTitle {
+            get {
+                return ResourceManager.GetString("HiddenEnvelopeGroupsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden Envelopes.
+        /// </summary>
+        public static string HiddenEnvelopesPageTitle {
+            get {
+                return ResourceManager.GetString("HiddenEnvelopesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden Payees.
+        /// </summary>
+        public static string HiddenPayeesPageTitle {
+            get {
+                return ResourceManager.GetString("HiddenPayeesPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        public static string HideButton {
+            get {
+                return ResourceManager.GetString("HideButton", resourceCulture);
             }
         }
         
@@ -1582,6 +1834,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete payee with active transactions.
+        /// </summary>
+        public static string PayeeDeleteActiveTransactionsError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteActiveTransactionsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete a payee with future transactions.
         /// </summary>
         public static string PayeeDeleteFutureTransactionsError {
@@ -1600,6 +1861,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete payee unless it’s hidden.
+        /// </summary>
+        public static string PayeeDeleteNotHiddenError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteNotHiddenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete the starting balance payee.
         /// </summary>
         public static string PayeeDeleteStartingBalanceError {
@@ -1609,11 +1879,38 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete system payee.
+        /// </summary>
+        public static string PayeeDeleteSystemError {
+            get {
+                return ResourceManager.GetString("PayeeDeleteSystemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Payee.
         /// </summary>
         public static string PayeeEditPageTitle {
             get {
                 return ResourceManager.GetString("PayeeEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide inactive payee.
+        /// </summary>
+        public static string PayeeHideInactiveError {
+            get {
+                return ResourceManager.GetString("PayeeHideInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide system payee.
+        /// </summary>
+        public static string PayeeHideSystemError {
+            get {
+                return ResourceManager.GetString("PayeeHideSystemError", resourceCulture);
             }
         }
         
@@ -1695,6 +1992,15 @@ namespace BudgetBadger.Language {
         public static string PayeeTrendsReportPageTitle {
             get {
                 return ResourceManager.GetString("PayeeTrendsReportPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot unhide payee unless it’s hidden.
+        /// </summary>
+        public static string PayeeUnhideNotHiddenError {
+            get {
+                return ResourceManager.GetString("PayeeUnhideNotHiddenError", resourceCulture);
             }
         }
         
@@ -2460,6 +2766,15 @@ namespace BudgetBadger.Language {
         public static string UndoDeleteButton {
             get {
                 return ResourceManager.GetString("UndoDeleteButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhide.
+        /// </summary>
+        public static string UnhideButton {
+            get {
+                return ResourceManager.GetString("UnhideButton", resourceCulture);
             }
         }
         
