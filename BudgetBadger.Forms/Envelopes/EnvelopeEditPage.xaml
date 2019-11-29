@@ -381,7 +381,7 @@
                     <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="6"
+                        Grid.Column="7"
                         Command="{Binding UnhideCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
@@ -402,6 +402,7 @@
                         Grid.Column="7"
                         Margin="16,0"
                         Command="{Binding QuickBudgetCommand}"
+                        HorizontalOptions="EndAndExpand"
                         IsVisible="{Binding Budget.IsActive}"
                         Style="{StaticResource PrimaryActionButtonStyle}"
                         Text="{ext:Translate QuickBudgetButton}"
@@ -409,7 +410,7 @@
                     <uc:Button2
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Grid.Column="7"
+                        Grid.Column="6"
                         Command="{Binding SoftDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
