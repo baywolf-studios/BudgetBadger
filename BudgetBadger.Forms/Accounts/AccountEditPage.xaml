@@ -121,7 +121,7 @@
                             </uc:Button2.IsVisible>
                             <uc:Button2.Triggers>
                                 <DataTrigger
-                                    Binding="{Binding Account.IsDeleted}"
+                                    Binding="{Binding Account.IsHidden}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
@@ -199,7 +199,7 @@
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
-                                Binding="{Binding Account.IsDeleted}"
+                                Binding="{Binding Account.IsHidden}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
