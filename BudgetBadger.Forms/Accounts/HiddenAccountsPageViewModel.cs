@@ -89,7 +89,7 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
         }
 
@@ -132,6 +132,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
+                SelectedAccount = null;
             }
             finally
             {

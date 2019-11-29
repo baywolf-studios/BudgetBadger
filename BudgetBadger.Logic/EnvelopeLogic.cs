@@ -664,32 +664,12 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (envelope.IsNew)
+                if (envelope.IsNew || envelope.IsDeleted || envelope.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteNewError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteNotHiddenError"));
                 }
 
-                if (envelope.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteDeletedError"));
-                }
-
-                if (envelope.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteActiveError"));
-                }
-
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteIncomeError"));
-                }
-
-                if (envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteDebtError"));
-                }
-
-                if (envelope.IsSystem)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteSystemError"));
                 }
@@ -745,17 +725,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideInactiveError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideIncomeError"));
-                }
-
-                if(envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeHideDebtError"));
-                }
-
-                if (envelope.IsSystem)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideSystemError"));
                 }
@@ -794,19 +764,9 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (envelope.IsNew)
+                if (envelope.IsNew || envelope.IsActive || envelope.IsDeleted)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideNewError"));
-                }
-
-                if (envelope.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideActiveError"));
-                }
-
-                if (envelope.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideDeletedError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideNotHiddenError"));
                 }
 
                 if (errors.Any())
@@ -1059,32 +1019,12 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (envelopeGroup.IsNew)
+                if (envelopeGroup.IsNew || envelopeGroup.IsDeleted || envelopeGroup.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteNewError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteNotHiddenError"));
                 }
 
-                if (envelopeGroup.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDeletedError"));
-                }
-
-                if (envelopeGroup.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveError"));
-                }
-
-                if (envelopeGroup.IsIncome)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteIncomeError"));
-                }
-
-                if (envelopeGroup.IsDebt)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDebtError"));
-                }
-
-                if (envelopeGroup.IsSystem)
+                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
                 }
@@ -1136,19 +1076,9 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideInactiveError"));
                 }
 
-                if (envelopeGroup.IsIncome)
+                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteIncomeError"));
-                }
-
-                if (envelopeGroup.IsDebt)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteDebtError"));
-                }
-
-                if (envelopeGroup.IsSystem)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideSystemError"));
                 }
 
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
@@ -1156,7 +1086,7 @@ namespace BudgetBadger.Logic
 
                 if (envelopeGroupEnvelopes.Any(t => t.IsActive))
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveEnvelopesError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideActiveEnvelopesError"));
                 }
 
                 if (errors.Any())
@@ -1193,19 +1123,9 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (envelopeGroup.IsNew)
+                if (envelopeGroup.IsNew || envelopeGroup.IsActive || envelopeGroup.IsDeleted)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideNewError"));
-                }
-
-                if (envelopeGroup.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideActiveError"));
-                }
-
-                if (envelopeGroup.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideDeletedError"));
+                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideNotHiddenError"));
                 }
 
                 if (errors.Any())

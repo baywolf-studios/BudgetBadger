@@ -240,19 +240,9 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (account.IsNew)
+                if (account.IsNew || account.IsDeleted || account.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteNewError"));
-                }
-
-                if (account.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteDeletedError"));
-                }
-
-                if (account.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteActiveError"));
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteNotHiddenError"));
                 }
 
                 var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);
@@ -358,19 +348,9 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (account.IsNew)
+                if (account.IsNew || account.IsActive || account.IsDeleted)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideNewError"));
-                }
-
-                if (account.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideActiveError"));
-                }
-
-                if (account.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideDeletedError"));
+                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideNotHiddenError"));
                 }
 
                 if (errors.Any())
