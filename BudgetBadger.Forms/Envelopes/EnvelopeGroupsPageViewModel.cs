@@ -143,12 +143,19 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (envelopeGroup.IsGenericHiddenEnvelopeGroup)
             {
-                { PageParameter.EnvelopeGroup, envelopeGroup }
-            };
+                await _navigationService.NavigateAsync(PageName.HiddenEnvelopeGroupsPage);
+            }
+            else
+            { 
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.EnvelopeGroup, envelopeGroup }
+                };
 
-            await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+                await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+            }
         }
 
         public async Task ExecuteRefreshCommand()
