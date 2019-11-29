@@ -216,7 +216,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
             if (Budget != null && Budget.Envelope != null)
             {
-                return Budget.Envelope.IsActive;
+                return Budget.Envelope.IsHidden;
             }
             else
             {
