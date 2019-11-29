@@ -194,7 +194,7 @@ namespace BudgetBadger.Logic
 
                 if (budgetsToPopulateTemp.Any(b => b.Envelope.IsHidden))
                 {
-                    var genericHiddenBudget = PopulateGenericHiddenBudget(budgetsToPopulateTemp.Where(b => b.Envelope.IsHidden));
+                    var genericHiddenBudget = GetGenericHiddenBudget(populatedSchedule, budgetsToPopulateTemp.Where(b => b.Envelope.IsHidden));
                     budgetsToReturn.Add(genericHiddenBudget);
                 }
 
@@ -244,15 +244,7 @@ namespace BudgetBadger.Logic
 
                 var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt).ToList();
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
-                var genericDebtBudget = new Budget
-                {
-                    Envelope = GetGenericDebtEnvelope(),
-                    Amount = debtBudgets.Sum(b => b.Amount),
-                    Activity = debtBudgets.Sum(b => b.Activity),
-                    PastAmount = debtBudgets.Sum(b => b.PastAmount),
-                    PastActivity = debtBudgets.Sum(b => b.PastActivity),
-                    IgnoreOverspend = true
-                };
+                var genericDebtBudget = GetGenericDebtBudget(populatedSchedule, debtBudgets);
                 budgetsToReturn.Add(genericDebtBudget);
 
                 budgetsToReturn.Sort();
@@ -1283,6 +1275,27 @@ namespace BudgetBadger.Logic
                                         IEnumerable<Transaction> envelopeTransactions,
                                         IEnumerable<Budget> envelopeBudgets)
         {
+            if (budget.Envelope.IsIncome)
+            {
+                budget.Envelope = GetIncomeEnvelope();
+            }
+            else if (budget.Envelope.IsBuffer)
+            {
+                budget.Envelope = GetBufferEnvelope();
+            }
+            else if (budget.Envelope.IsSystem)
+            {
+                budget.Envelope = GetIgnoredEnvelope();
+            }
+            else if (budget.Envelope.IsGenericDebtEnvelope)
+            {
+                budget.Envelope = GetGenericDebtEnvelope();
+            }
+            else if (budget.Envelope.IsGenericHiddenEnvelope)
+            {
+                budget.Envelope = GetGenericHiddenEnvelope();
+            }
+
             var activeTransactions = envelopeTransactions.Where(t => t.IsActive);
 
             budget.PastAmount = envelopeBudgets
@@ -1301,44 +1314,6 @@ namespace BudgetBadger.Logic
             if (budget.Envelope.IgnoreOverspend)
             {
                 budget.IgnoreOverspend = true;
-            }
-
-            if (budget.Envelope.Group.IsIncome)
-            {
-                budget.Envelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup));
-            }
-            else if (budget.Envelope.Group.IsSystem)
-            {
-                budget.Envelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup));
-            }
-            else if (budget.Envelope.Group.IsDebt)
-            {
-                budget.Envelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
-            }
-            else if (budget.Envelope.Group.IsGenericHiddenEnvelopeGroup)
-            {
-                budget.Envelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenEnvelopeGroup));
-            }
-
-            if (budget.Envelope.IsIncome)
-            {
-                budget.Envelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope));
-            }
-            else if (budget.Envelope.IsBuffer)
-            {
-                budget.Envelope.Description = _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope));
-            }
-            else if (budget.Envelope.IsSystem)
-            {
-                budget.Envelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope));
-            }
-            else if (budget.Envelope.IsGenericDebtEnvelope)
-            {
-                budget.Envelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
-            }
-            else if (budget.Envelope.IsGenericHiddenEnvelope)
-            {
-                budget.Envelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenEnvelope));
             }
 
             return budget;
@@ -1434,25 +1409,6 @@ namespace BudgetBadger.Logic
             budgetSchedule.Description = _resourceContainer.GetFormattedString("{0:Y}", budgetSchedule.BeginDate);
 
             return budgetSchedule;
-        }
-
-        Budget PopulateGenericHiddenBudget(IEnumerable<Budget> hiddenBudgets)
-        {
-            var budgetSchedule = hiddenBudgets.FirstOrDefault().Schedule;
-            var genericHiddenEnvelope = Constants.GenericHiddenEnvelope.DeepCopy();
-            genericHiddenEnvelope.Description = _resourceContainer.GetResourceString("GenericHiddenEnvelope");
-            genericHiddenEnvelope.Group.Description = _resourceContainer.GetResourceString("GenericHiddenEnvelopeGroup");
-            var genericHiddenBudget = new Budget()
-            {
-                Envelope = genericHiddenEnvelope,
-                Schedule = budgetSchedule,
-                PastAmount = hiddenBudgets.Sum(b => b.PastAmount),
-                PastActivity = hiddenBudgets.Sum(b => b.PastActivity),
-                Activity = hiddenBudgets.Sum(b => b.Activity),
-                Amount = hiddenBudgets.Sum(b => b.Amount)
-            };
-            
-            return genericHiddenBudget;
         }
 
         async Task<Result> ValidateBudgetAsync(Budget budget)
@@ -1699,15 +1655,113 @@ namespace BudgetBadger.Logic
             return currentSchedule.BeginDate.AddDays(-1);
         }
 
+        EnvelopeGroup GetDebtEnvelopeGroup()
+        {
+            var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
+            debtEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
+            return debtEnvelopeGroup;
+        }
+
         Envelope GetGenericDebtEnvelope()
         {
             var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
             genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
-            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
+            genericDebtEnvelope.Group = GetDebtEnvelopeGroup();
             return genericDebtEnvelope;
         }
 
+        Budget GetGenericDebtBudget(BudgetSchedule schedule, IEnumerable<Budget> debtBudgets = null)
+        {
+            var debtBudget = new Budget
+            {
+                Envelope = GetGenericDebtEnvelope(),
+                Schedule = schedule
+            };
 
+            if (debtBudgets != null)
+            {
+                debtBudget.PastAmount = debtBudgets.Sum(b => b.PastAmount);
+                debtBudget.PastActivity = debtBudgets.Sum(b => b.PastActivity);
+                debtBudget.Activity = debtBudgets.Sum(b => b.Activity);
+                debtBudget.Amount = debtBudgets.Sum(b => b.Amount);
+            }
+
+            return debtBudget;
+        }
+
+        EnvelopeGroup GetIncomeEnvelopeGroup()
+        {
+            var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
+
+            incomeEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup));
+
+            return incomeEnvelopeGroup;
+        }
+
+        Envelope GetIncomeEnvelope()
+        {
+            var incomeEnvelope = Constants.IncomeEnvelope.DeepCopy();
+            incomeEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope));
+            incomeEnvelope.Group = GetIncomeEnvelopeGroup();
+            return incomeEnvelope;
+        }
+
+        Envelope GetBufferEnvelope()
+        {
+            var bufferEnvelope = Constants.IncomeEnvelope.DeepCopy();
+            bufferEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope));
+            bufferEnvelope.Group = GetIncomeEnvelopeGroup();
+            return bufferEnvelope;
+        }
+
+        EnvelopeGroup GetSystemEnvelopeGroup()
+        {
+            var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
+
+            systemEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup));
+
+            return systemEnvelopeGroup;
+        }
+
+        Envelope GetIgnoredEnvelope()
+        {
+            var ignoredEnvelope = Constants.IgnoredEnvelope.DeepCopy();
+            ignoredEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope));
+            ignoredEnvelope.Group = GetSystemEnvelopeGroup();
+            return ignoredEnvelope;
+        }
+
+        EnvelopeGroup GetGenericHiddenEnvelopeGroup()
+        {
+            var genericHiddenEnvelopeGroup = Constants.GenericHiddenEnvelopeGroup.DeepCopy();
+            genericHiddenEnvelopeGroup.Description = _resourceContainer.GetResourceString("Hidden");
+            return genericHiddenEnvelopeGroup;
+        }
+
+        Envelope GetGenericHiddenEnvelope()
+        {
+            var genericHiddenEnvelope = Constants.GenericHiddenEnvelope.DeepCopy();
+            genericHiddenEnvelope.Description = _resourceContainer.GetResourceString("Hidden");
+            genericHiddenEnvelope.Group = GetGenericHiddenEnvelopeGroup();
+            return genericHiddenEnvelope;
+        }
+
+        Budget GetGenericHiddenBudget(BudgetSchedule schedule, IEnumerable<Budget> hiddenBudgets = null)
+        {
+            var hiddenGenericBudget = new Budget();
+            hiddenGenericBudget.Envelope = GetGenericHiddenEnvelope();
+            hiddenGenericBudget.Schedule = schedule;
+
+            if (hiddenBudgets != null)
+            {
+                hiddenGenericBudget.PastAmount = hiddenBudgets.Sum(b => b.PastAmount);
+                hiddenGenericBudget.PastActivity = hiddenBudgets.Sum(b => b.PastActivity);
+                hiddenGenericBudget.Activity = hiddenBudgets.Sum(b => b.Activity);
+                hiddenGenericBudget.Amount = hiddenBudgets.Sum(b => b.Amount);
+            }
+
+            return hiddenGenericBudget;
+        }
 
         public async Task<Result<IReadOnlyList<Envelope>>> GetDeletedEnvelopesAsync()
         {
