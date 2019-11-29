@@ -134,7 +134,7 @@ namespace BudgetBadger.Logic
 
                 if (allPayees.Any(p => p.IsHidden))
                 {
-                    payees.Add(Constants.GenericHiddenPayee.DeepCopy());
+                    payees.Add(GetGenericHiddenPayee());
                 }
 
                 var tasks = payees.Select(GetPopulatedPayee);
@@ -199,7 +199,7 @@ namespace BudgetBadger.Logic
 
                 if (allPayees.Any(p => p.IsHidden))
                 {
-                    payees.Add(Constants.GenericHiddenPayee.DeepCopy());
+                    payees.Add(GetGenericHiddenPayee());
                 }
 
                 var tasks = payees.Select(p => GetPopulatedPayee(p));
@@ -447,6 +447,16 @@ namespace BudgetBadger.Logic
 
         async Task<Payee> GetPopulatedPayee(Payee payee)
         {
+            if (payee.IsStartingBalance)
+            {
+                return GetStartingBalancePayee();
+            }
+
+            if( payee.IsGenericHiddenPayee)
+            {
+                return GetGenericHiddenPayee();
+            }
+
             var payeeToPopulate = payee.DeepCopy();
 
             var payeeAccount = await _accountDataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
@@ -470,19 +480,28 @@ namespace BudgetBadger.Logic
                 payeeToPopulate.Group = payeeToPopulate.Description[0].ToString().ToUpper();
             }
 
-            if (payeeToPopulate.IsStartingBalance)
-            {
-                payeeToPopulate.Description = _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
-            }
-
-            if (payeeToPopulate.IsGenericHiddenPayee)
-            {
-                payeeToPopulate.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenPayee));
-            }
-
             return payeeToPopulate;
         }
 
+        Payee GetStartingBalancePayee()
+        {
+            var startingBalancePayee = Constants.StartingBalancePayee.DeepCopy();
+
+            startingBalancePayee.Description = _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
+            startingBalancePayee.Group = String.Empty;
+
+            return startingBalancePayee;
+        }
+
+        Payee GetGenericHiddenPayee()
+        {
+            var hiddenPayee = Constants.GenericHiddenPayee.DeepCopy();
+
+            hiddenPayee.Description = _resourceContainer.GetResourceString("Hidden");
+            hiddenPayee.Group = _resourceContainer.GetResourceString("Hidden");
+
+            return hiddenPayee;
+        }
 
         //deleting these
         async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
