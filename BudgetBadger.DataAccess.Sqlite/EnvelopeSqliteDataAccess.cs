@@ -397,13 +397,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope AS E ON B.EnvelopeId = E.Id
@@ -481,20 +483,22 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            BS.BeginDate        AS BudgetScheduleBeginDate, 
                                            BS.EndDate          AS BudgetScheduleEndDate,
                                            BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime,  
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
                                            B.EnvelopeId, 
                                            E.Description       AS EnvelopeDescription, 
                                            E.Notes             AS EnvelopeNotes, 
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
@@ -581,13 +585,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
@@ -675,13 +681,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
@@ -962,7 +970,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime
+                                               DeletedDateTime,
+                                               HiddenDateTime
                                         FROM   EnvelopeGroup";
 
                         using (var reader = command.ExecuteReader())
@@ -1008,13 +1017,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                E.IgnoreOverspend,
                                                E.CreatedDateTime, 
                                                E.ModifiedDateTime, 
-                                               E.DeletedDateTime, 
+                                               E.DeletedDateTime,
+                                               E.HiddenDateTime,
                                                E.EnvelopeGroupId, 
                                                EG.Description      AS EnvelopeGroupDescription, 
                                                EG.Notes            AS EnvelopeGroupNotes, 
                                                EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                                EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                               EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                         FROM   Envelope AS E
                                         JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id";
 

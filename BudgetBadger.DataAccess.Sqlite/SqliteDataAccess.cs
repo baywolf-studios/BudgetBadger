@@ -362,7 +362,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDateTime   TEXT)
+                                             HiddenDateTime   TEXT
                                           ); 
 
                                         INSERT INTO EnvelopeGroup (Id, Description, Notes, CreatedDateTime, ModifiedDateTime, DeletedDateTime, HiddenDateTime)
