@@ -609,9 +609,7 @@ namespace BudgetBadger.Logic
 
                 if (envelopes.Any(e => e.IsHidden))
                 {
-                    var genericHiddenENvelope = Constants.GenericHiddenEnvelope.DeepCopy();
-                    genericHiddenENvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenEnvelopeGroup));
-                    genericHiddenENvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenEnvelope));
+                    var genericHiddenENvelope = GetGenericHiddenEnvelope();
 
                     envelopesToReturn.Add(genericHiddenENvelope);
                 }
