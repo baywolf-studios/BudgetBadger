@@ -151,6 +151,7 @@ namespace BudgetBadger.Logic
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                var test = ex.StackTrace;
             }
 
             return result;
@@ -263,38 +264,21 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (payee.IsNew)
+                if (payee.IsNew || payee.IsDeleted || payee.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteNewError"));
-                }
-
-                if (payee.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteDeletedError"));
-                }
-
-                if (payee.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteActiveError"));
-                }
-
-                if (payee.IsStartingBalance)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"));
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteNotHiddenError"));
                 }
 
                 var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
-
                 if (payeeTransactions.Any(t => t.IsActive))
                 {
                     errors.Add(_resourceContainer.GetResourceString("PayeeDeleteActiveTransactionsError"));
                 }
 
                 var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-
-                if (account.IsActive)
+                if (payee.IsStartingBalance || account.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountPayeeError"));
+                    errors.Add(_resourceContainer.GetResourceString("PayeeDeleteSystemError"));
                 }
 
                 if (errors.Any())
@@ -336,16 +320,11 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("PayeeHideInactiveError"));
                 }
 
-                if (payee.IsStartingBalance)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeHideStartingBalanceError"));
-                }
-
                 var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
-                if (account.IsActive)
+                if (payee.IsStartingBalance || account.IsActive)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeHideAccountPayeeError"));
+                    errors.Add(_resourceContainer.GetResourceString("PayeeHideSystemError"));
                 }
 
                 if (errors.Any())
@@ -382,19 +361,9 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (payee.IsNew)
+                if (payee.IsNew || payee.IsActive || payee.IsDeleted)
                 {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideNewError"));
-                }
-
-                if (payee.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideActiveError"));
-                }
-
-                if (payee.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideDeletedError"));
+                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideNotHiddenError"));
                 }
 
                 if (errors.Any())
