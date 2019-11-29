@@ -5,11 +5,11 @@ using BudgetBadger.Forms.UserControls;
 using Prism.Navigation;
 using Xamarin.Forms;
 
-namespace BudgetBadger.Forms.Envelopes
+namespace BudgetBadger.Forms.Accounts
 {
-	public partial class DeletedEnvelopeGroupsPage : BasePage
+    public partial class HiddenAccountsPage : BasePage
     {
-        public DeletedEnvelopeGroupsPage()
+        public HiddenAccountsPage()
         {
             InitializeComponent();
         }

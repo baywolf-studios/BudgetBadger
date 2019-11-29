@@ -21,10 +21,5 @@ namespace BudgetBadger.Core.Logic
         Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount);
 
         bool FilterAccount(Account account, string searchText);
-
-        // removing these
-        Task<Result> DeleteAccountAsync(Guid id);
-        Task<Result> UndoDeleteAccountAsync(Guid id);
-        Task<Result<IReadOnlyList<Account>>> GetDeletedAccountsAsync();
     }
 }

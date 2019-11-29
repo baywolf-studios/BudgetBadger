@@ -355,7 +355,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 try
                 {
-                    var result = await _transLogic.Value.DeleteTransactionAsync(transaction.Id);
+                    var result = await _transLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
                     if (!result.Success)
                     {

@@ -35,7 +35,6 @@ namespace BudgetBadger.Forms.Settings
         string _detect;
 
         public ICommand SyncToggleCommand { get; set; }
-        public ICommand ShowDeletedCommand { get; set; }
         public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
         public ICommand SyncCommand { get; set; }
@@ -140,7 +139,6 @@ namespace BudgetBadger.Forms.Settings
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
-            ShowDeletedCommand = new DelegateCommand<string>(async (obj) => await ExecuteShowDeletedCommand(obj));
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
@@ -300,11 +298,6 @@ namespace BudgetBadger.Forms.Settings
 
             ShowSync = DropboxEnabled;
             LastSynced = _syncFactory.GetLastSyncDateTime();
-        }
-
-        public async Task ExecuteShowDeletedCommand(string pageName)
-        {
-            await _navigationService.NavigateAsync(pageName);
         }
 
         public async Task ExecuteRestoreProCommand()

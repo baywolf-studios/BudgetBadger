@@ -241,7 +241,7 @@ namespace BudgetBadger.Forms.Transactions
             try
             {
                 BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
-                var result = await _transLogic.DeleteTransactionAsync(Transaction.Id);
+                var result = await _transLogic.SoftDeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
                     _needToSync = true;

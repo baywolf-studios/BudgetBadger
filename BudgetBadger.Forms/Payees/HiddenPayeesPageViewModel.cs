@@ -13,19 +13,19 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 
-namespace BudgetBadger.Forms.Envelopes
+namespace BudgetBadger.Forms.Payees
 {
-    public class DeletedEnvelopesPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class HiddenPayeesPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
-        readonly IEnvelopeLogic _envelopeLogic;
+        readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
-        public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
-        public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelope((Envelope)env, SearchText); }
+        public ICommand RefreshCommand { get; set; }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -34,49 +34,52 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Envelope> _envelopes;
-        public IReadOnlyList<Envelope> Envelopes
+        IReadOnlyList<Payee> _payees;
+        public IReadOnlyList<Payee> Payees
         {
-            get => _envelopes;
-            set => SetProperty(ref _envelopes, value);
+            get => _payees;
+            set => SetProperty(ref _payees, value);
         }
 
-        Envelope _selectedEnvelope;
-        public Envelope SelectedEnvelope
+        Payee _selectedPayee;
+        public Payee SelectedPayee
         {
-            get => _selectedEnvelope;
-            set => SetProperty(ref _selectedEnvelope, value);
+            get => _selectedPayee;
+            set => SetProperty(ref _selectedPayee, value);
         }
 
-        bool _noEnvelopes;
-        public bool NoEnvelopes
-        {
-            get => _noEnvelopes;
-            set => SetProperty(ref _noEnvelopes, value);
-        }
+        public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
 
         string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set => SetProperty(ref _searchText, value);
+            set { SetProperty(ref _searchText, value); RaisePropertyChanged("HasSearchText"); }
         }
 
-        public DeletedEnvelopesPageViewModel(IResourceContainer resourceContainer,
+        bool _noPayees;
+        public bool NoPayees
+        {
+            get => _noPayees;
+            set => SetProperty(ref _noPayees, value);
+        }
+
+        public HiddenPayeesPageViewModel(
+            IResourceContainer resourceContainer,
             INavigationService navigationService,
-            IEnvelopeLogic envelopeLogic,
-            IPageDialogService dialogService)
+            IPageDialogService dialogService,
+            IPayeeLogic payeeLogic)
         {
             _resourceContainer = resourceContainer;
-            _envelopeLogic = envelopeLogic;
+            _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Envelopes = new List<Envelope>();
-            SelectedEnvelope = null;
+            Payees = new List<Payee>();
+            SelectedPayee = null;
 
+            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -92,6 +95,21 @@ namespace BudgetBadger.Forms.Envelopes
         {
         }
 
+        public async Task ExecuteSelectedCommand(Payee payee)
+        {
+            if (payee == null)
+            {
+                return;
+            }
+
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Payee, payee }
+            };
+
+            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+        }
+
         public async Task ExecuteRefreshCommand()
         {
             if (IsBusy)
@@ -103,37 +121,23 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeLogic.GetDeletedEnvelopesAsync();
+                var result = await _payeeLogic.GetHiddenPayeesAsync();
 
                 if (result.Success)
                 {
-                    Envelopes = result.Data;
+                    Payees = result.Data;
                 }
                 else
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
 
-                NoEnvelopes = (Envelopes?.Count ?? 0) == 0;
+                NoPayees = (Payees?.Count ?? 0) == 0;
             }
             finally
             {
                 IsBusy = false;
             }
-        }
-
-        public async Task ExecuteSelectedCommand(Envelope envelope)
-        {
-            if (envelope == null)
-            {
-                return;
-            }
-
-            var parameters = new NavigationParameters
-            {
-                { PageParameter.Envelope, envelope }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
     }
 }
