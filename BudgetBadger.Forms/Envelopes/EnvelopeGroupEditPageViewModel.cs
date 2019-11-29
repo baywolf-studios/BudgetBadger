@@ -14,7 +14,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -71,7 +71,7 @@ namespace BudgetBadger.Forms.Payees
             UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)
