@@ -638,6 +638,29 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<IReadOnlyList<Envelope>>> GetHiddenEnvelopesAsync()
+        {
+            var result = new Result<IReadOnlyList<Envelope>>();
+
+            try
+            {
+                var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
+                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden).ToList();
+
+                hiddenEnvelopes.Sort();
+
+                result.Success = true;
+                result.Data = hiddenEnvelopes;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result> SoftDeleteEnvelopeAsync(Guid id)
         {
             var result = new Result();
