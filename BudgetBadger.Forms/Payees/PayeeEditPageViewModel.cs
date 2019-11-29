@@ -14,7 +14,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BindableBase, INavigationAware
+    public class PayeeEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
@@ -71,7 +71,7 @@ namespace BudgetBadger.Forms.Payees
             UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)

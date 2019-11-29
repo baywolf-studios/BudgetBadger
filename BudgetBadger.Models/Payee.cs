@@ -169,7 +169,6 @@ namespace BudgetBadger.Models
 
             if (IsGenericHiddenPayee.Equals(payee.IsGenericHiddenPayee))
             {
-
                 if (IsAccount.Equals(payee.IsAccount))
                 {
                     if (Group.Equals(payee.Group))
