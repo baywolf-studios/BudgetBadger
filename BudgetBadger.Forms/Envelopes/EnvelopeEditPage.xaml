@@ -412,7 +412,7 @@
                         Grid.Column="7"
                         Command="{Binding SoftDeleteCommand}"
                         HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryActionButtonStyle}"
+                        Style="{StaticResource SecondaryDestructionButtonStyle}"
                         Text="{ext:Translate DeleteButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
