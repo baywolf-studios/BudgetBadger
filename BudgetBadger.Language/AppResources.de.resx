@@ -120,17 +120,8 @@
   <data name="AccountBalanceLabel" xml:space="preserve">
     <value>Balance</value>
   </data>
-  <data name="AccountDeleteBalanceError" xml:space="preserve">
-    <value>Konto mit Kontostand kann nicht gelöscht werden</value>
-  </data>
-  <data name="AccountDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Ein Konto mit zukünftigen Transaktionen kann nicht gelöscht werden</value>
-  </data>
   <data name="AccountDeleteInactiveError" xml:space="preserve">
     <value>Ein inaktives Konto kann nicht gelöscht werden</value>
-  </data>
-  <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
-    <value>Ein Konto mit ausstehenden Transaktionen kann nicht gelöscht werden</value>
   </data>
   <data name="AccountEditPageTitle" xml:space="preserve">
     <value>Konto bearbeiten</value>
@@ -393,17 +384,11 @@
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
     <value>Umschläge können nicht gelöscht werden</value>
   </data>
-  <data name="EnvelopeDeleteFutureBudgetsError" xml:space="preserve">
-    <value>Nvelope kann nicht mit zukünftigen Budgetbeträgen gelöscht werden</value>
-  </data>
-  <data name="EnvelopeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Nvelope kann nicht mit zukünftigen Transaktionen gelöscht werden</value>
-  </data>
   <data name="EnvelopeDeleteIncomeError" xml:space="preserve">
     <value>Einnahmenumschläge können nicht gelöscht werden</value>
   </data>
   <data name="EnvelopeDeleteRemainingBalanceError" xml:space="preserve">
-    <value>Umschlag mit Restguthaben kann nicht gelöscht werden</value>
+    <value>Umschlag mit einem Restsaldo kann nicht gelöscht werden</value>
   </data>
   <data name="EnvelopeEditPageTitle" xml:space="preserve">
     <value>Budget bearbeiten</value>
@@ -923,5 +908,125 @@
   </data>
   <data name="BudgetValidAlreadyExists" xml:space="preserve">
     <value>Budget ist bereits vorhanden</value>
+  </data>
+  <data name="EnvelopeDeleteNonZeroBudgetsError" xml:space="preserve">
+    <value>Ein Umschlag mit Budgetbeträgen kann nicht gelöscht werden</value>
+  </data>
+  <data name="EnvelopeDeleteSystemError" xml:space="preserve">
+    <value>Systemumschlag kann nicht gelöscht werden</value>
+  </data>
+  <data name="EnvelopeDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Ein Umschlag mit Transaktionen kann nicht gelöscht werden</value>
+  </data>
+  <data name="EnvelopeDeleteNotHiddenError" xml:space="preserve">
+    <value>Umschlag kann nur gelöscht werden, wenn er ausgeblendet ist</value>
+  </data>
+  <data name="EnvelopeHideInactiveError" xml:space="preserve">
+    <value>Ein inaktiver Umschlag kann nicht ausgeblendet werden</value>
+  </data>
+  <data name="EnvelopeHideSystemError" xml:space="preserve">
+    <value>Ein Systemumschlag kann nicht ausgeblendet werden</value>
+  </data>
+  <data name="EnvelopeUnhideNotHiddenError" xml:space="preserve">
+    <value>Ein Umschlag kann nur eingeblendet werden, wenn er derzeit ausgeblendet ist.</value>
+  </data>
+  <data name="EnvelopeGroupDeleteNotHiddenError" xml:space="preserve">
+    <value>Umschlaggruppe kann nur gelöscht werden, wenn sie ausgeblendet ist</value>
+  </data>
+  <data name="EnvelopeGroupDeleteSystemError" xml:space="preserve">
+    <value>Systemumschlaggruppe kann nicht gelöscht werden</value>
+  </data>
+  <data name="EnvelopeGroupDeleteActiveEnvelopesError" xml:space="preserve">
+    <value>Umschlaggruppe mit aktiven Umschlägen kann nicht gelöscht werden</value>
+  </data>
+  <data name="EnvelopeGroupHideInactiveError" xml:space="preserve">
+    <value>Eine inaktive Umschlaggruppe kann nicht ausgeblendet werden.</value>
+  </data>
+  <data name="EnvelopeGroupHideSystemError" xml:space="preserve">
+    <value>Systemumschlaggruppe kann nicht ausgeblendet werden</value>
+  </data>
+  <data name="EnvelopeGroupHideActiveEnvelopesError" xml:space="preserve">
+    <value>Umschlaggruppe mit aktiven Umschlägen nicht ausblenden</value>
+  </data>
+  <data name="EnvelopeGroupUnhideNotHiddenError" xml:space="preserve">
+    <value>Hüllkurvengruppe nur dann einblenden, wenn sie ausgeblendet ist</value>
+  </data>
+  <data name="AccountDeleteNotHiddenError" xml:space="preserve">
+    <value>Konto kann nur gelöscht werden, wenn es ausgeblendet ist</value>
+  </data>
+  <data name="AccountDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Konto mit aktiven Transaktionen kann nicht gelöscht werden</value>
+  </data>
+  <data name="AccountHideInactiveError" xml:space="preserve">
+    <value>Inaktives Konto nicht ausgeblendet</value>
+  </data>
+  <data name="AccountUnhideNotHiddenError" xml:space="preserve">
+    <value>Konto kann nur eingeblendet werden, wenn es ausgeblendet ist</value>
+  </data>
+  <data name="PayeeDeleteNotHiddenError" xml:space="preserve">
+    <value>Empfänger kann nicht gelöscht werden, es sei denn, er ist ausgeblendet</value>
+  </data>
+  <data name="PayeeDeleteSystemError" xml:space="preserve">
+    <value>Systemempfänger kann nicht gelöscht werden</value>
+  </data>
+  <data name="PayeeDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Empfänger mit aktiven Buchungen kann nicht gelöscht werden</value>
+  </data>
+  <data name="PayeeHideInactiveError" xml:space="preserve">
+    <value>Inaktive Empfängerin nicht ausgeblendet</value>
+  </data>
+  <data name="PayeeHideSystemError" xml:space="preserve">
+    <value>Systemempfänger kann nicht ausgeblendet werden</value>
+  </data>
+  <data name="PayeeUnhideNotHiddenError" xml:space="preserve">
+    <value>Zahlungsempfänger kann nicht eingeblendet werden, es sei denn, er ist versteckt</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Versteckte</value>
+  </data>
+  <data name="HiddenAccountsPageTitle" xml:space="preserve">
+    <value>Versteckte Konten</value>
+  </data>
+  <data name="EmptyHiddenAccountsHelperTitle" xml:space="preserve">
+    <value>Keine versteckten Konten</value>
+  </data>
+  <data name="HiddenPayeesPageTitle" xml:space="preserve">
+    <value>Versteckte Zahlungsempfänger</value>
+  </data>
+  <data name="EmptyHiddenPayeesHelperTitle" xml:space="preserve">
+    <value>Keine versteckten Empfänger</value>
+  </data>
+  <data name="HiddenEnvelopeGroupsPageTitle" xml:space="preserve">
+    <value>Versteckte Umschlaggruppen</value>
+  </data>
+  <data name="EmptyHiddenEnvelopeGroupsHelperTitle" xml:space="preserve">
+    <value>Keine versteckten Umschlaggruppen</value>
+  </data>
+  <data name="HiddenEnvelopesPageTitle" xml:space="preserve">
+    <value>Versteckte Umschläge</value>
+  </data>
+  <data name="EmptyHiddenEnvelopesHelperTitle" xml:space="preserve">
+    <value>Keine versteckten Umschläge</value>
+  </data>
+  <data name="AlertHideUnsuccessful" xml:space="preserve">
+    <value>Ausblenden erfolglos</value>
+  </data>
+  <data name="BusyTextHiding" xml:space="preserve">
+    <value>Versteckt</value>
+  </data>
+  <data name="BusyTextUnhiding" xml:space="preserve">
+    <value>Einblenden</value>
+  </data>
+  <data name="EditButton" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="HideButton" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="UnhideButton" xml:space="preserve">
+    <value>Einblenden</value>
+  </data>
+  <data name="AlertUnhideUnsuccessful" xml:space="preserve">
+    <value>Einblendung erfolglos</value>
   </data>
 </root>
