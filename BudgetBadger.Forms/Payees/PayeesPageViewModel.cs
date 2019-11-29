@@ -140,12 +140,19 @@ namespace BudgetBadger.Forms.Payees
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
+                await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
 
-            await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+            }
         }
 
         public async Task ExecuteRefreshCommand()

@@ -52,7 +52,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDatetime   TEXT
+                                             HiddenDateTime   TEXT
                                           );
 
                                     CREATE TABLE IF NOT EXISTS Account 
@@ -314,7 +314,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                              CreatedDateTime  TEXT NOT NULL, 
                                              ModifiedDateTime TEXT NOT NULL, 
                                              DeletedDateTime  TEXT,
-                                             HiddenDatetime   TEXT
+                                             HiddenDateTime   TEXT
                                           );
 
                                         INSERT INTO Payee (Id, Description, Notes, CreatedDateTime, ModifiedDateTime, DeletedDateTime, HiddenDateTime)
