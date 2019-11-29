@@ -36,7 +36,6 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.Value.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
 
         bool _needToSync;
@@ -108,7 +107,6 @@ namespace BudgetBadger.Forms.Envelopes
             SaveCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteDeleteCommand(a));
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -232,21 +230,6 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.EnvelopeGroup, envelopeGroup }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
-        }
-
-        public async Task ExecuteDeleteCommand(EnvelopeGroup envelopeGroup)
-        {
-            var result = await _envelopeGroupLogic.Value.DeleteEnvelopeGroupAsync(envelopeGroup.Id);
-
-            if (result.Success)
-            {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
         }
     }
 }

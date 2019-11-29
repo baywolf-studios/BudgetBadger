@@ -16,7 +16,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class DeletedEnvelopeGroupsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class HiddenEnvelopeGroupsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -63,7 +63,7 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        public DeletedEnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
+        public HiddenEnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
                                            INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic)
@@ -104,7 +104,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeLogic.GetDeletedEnvelopeGroupsAsync();
+                var result = await _envelopeLogic.GetHiddenEnvelopeGroupsAsync();
 
                 if (result.Success)
                 {

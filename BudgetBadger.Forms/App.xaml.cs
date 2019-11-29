@@ -90,8 +90,6 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            await CleanupDeletedAccounts();
-            await CleanupBudgets();
             await VerifyPurchases();
             await SyncOnStartOrResume();
         }
@@ -215,22 +213,22 @@ namespace BudgetBadger.Forms
             containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage), tabletView: typeof(AccountInfoDetailedPage));
             containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
-            containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenAccountsPage, HiddenAccountsPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(desktopView: typeof(PayeesDetailedPage), tabletView: typeof(PayeesDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(desktopView: typeof(PayeeInfoDetailedPage), tabletView: typeof(PayeeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedPayeesPage, DeletedPayeesPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenPayeesPage, HiddenPayeesPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(desktopView: typeof(EnvelopesDetailedPage), tabletView: typeof(EnvelopesDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTransferPage, EnvelopeTransferPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenEnvelopesPage, HiddenEnvelopesPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>(desktopView: typeof(EnvelopeGroupsDetailedPage), tabletView: typeof(EnvelopeGroupsDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenEnvelopeGroupsPage, HiddenEnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
@@ -342,67 +340,6 @@ namespace BudgetBadger.Forms
             }
 
             return new Result { Success = true };
-        }
-
-        async Task CleanupDeletedAccounts()
-        {
-            try
-            {
-                var settings = Container.Resolve<ISettings>();
-
-                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpAccountDebtEnvelopes), out bool cleanedUp);
-
-                if (!cleanedUp)
-                {
-                    var accountLogic = Container.Resolve<IAccountLogic>();
-                    var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
-                    if (deletedAccountsResult.Success)
-                    {
-                        foreach (var account in deletedAccountsResult.Data)
-                        {
-                            await accountLogic.DeleteAccountAsync(account.Id);
-                        }
-                    }
-
-                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpAccountDebtEnvelopes, true.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
-        async Task CleanupBudgets()
-        {
-            try
-            {
-                var settings = Container.Resolve<ISettings>();
-
-                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpBudgets), out bool cleanedUp);
-
-                if (!cleanedUp)
-                {
-                    var envelopeDataAccess = Container.Resolve<IEnvelopeDataAccess>();
-                    var budgets = await envelopeDataAccess.ReadBudgetsAsync();
-                    foreach (var budget in budgets)
-                    {
-                        var newAmount = StaticResourceContainer.Current.GetRoundedDecimal(budget.Amount);
-                        if (budget.Amount != newAmount)
-                        {
-                            budget.Amount = newAmount;
-                            budget.ModifiedDateTime = DateTime.Now;
-                            await envelopeDataAccess.UpdateBudgetAsync(budget);
-                        }
-                    }
-
-                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpBudgets, true.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
         }
     }
 }

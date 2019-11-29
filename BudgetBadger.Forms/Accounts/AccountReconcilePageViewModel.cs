@@ -374,7 +374,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.Value.DeleteTransactionAsync(transaction.Id);
+            var result = await _transactionLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {

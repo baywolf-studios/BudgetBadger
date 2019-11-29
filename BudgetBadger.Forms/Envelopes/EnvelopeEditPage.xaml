@@ -183,9 +183,9 @@
                             Grid.Row="6"
                             Grid.Column="0"
                             Margin="16,0,0,0"
-                            Command="{Binding DeleteCommand}"
+                            Command="{Binding HideCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate DeleteButton}">
+                            Text="{ext:Translate HideButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -207,9 +207,9 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Command="{Binding UndoDeleteCommand}"
+                            Command="{Binding UnhideCommand}"
                             Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="{ext:Translate UndoDeleteButton}">
+                            Text="{ext:Translate UnhideButton}">
                             <uc:Button2.IsVisible>
                                 <OnIdiom x:TypeArguments="x:Boolean">
                                     <OnIdiom.Phone>true</OnIdiom.Phone>
@@ -342,10 +342,10 @@
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="6"
-                        Command="{Binding DeleteCommand}"
+                        Command="{Binding HideCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate DeleteButton}"
+                        Text="{ext:Translate HideButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
@@ -360,10 +360,10 @@
                         Grid.Row="0"
                         Grid.RowSpan="2"
                         Grid.Column="6"
-                        Command="{Binding UndoDeleteCommand}"
+                        Command="{Binding UnhideCommand}"
                         HorizontalOptions="EndAndExpand"
                         Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="{ext:Translate UndoDeleteButton}"
+                        Text="{ext:Translate UnhideButton}"
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger

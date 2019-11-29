@@ -42,14 +42,5 @@ namespace BudgetBadger.Core.Logic
         bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText);
         bool FilterEnvelope(Envelope envelope, string searchText);
         bool FilterBudget(Budget budget, string searchText);
-
-        
-        // removing these
-        Task<Result> DeleteEnvelopeGroupAsync(Guid id);
-        Task<Result> UndoDeleteEnvelopeGroupAsync(Guid id);
-        Task<Result> DeleteEnvelopeAsync(Guid id);
-        Task<Result> UndoDeleteEnvelopeAsync(Guid id);
-        Task<Result<IReadOnlyList<EnvelopeGroup>>> GetDeletedEnvelopeGroupsAsync();
-        Task<Result<IReadOnlyList<Envelope>>> GetDeletedEnvelopesAsync();
     }
 }

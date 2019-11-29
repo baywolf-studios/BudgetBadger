@@ -35,7 +35,6 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SelectedCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand TransferCommand { get; set; }
         public ICommand SaveCommand { get; set; }
@@ -116,7 +115,6 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Budget>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
             SaveCommand = new DelegateCommand<Budget>(async e => await ExecuteSaveCommand(e));
@@ -231,11 +229,18 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (budget.Envelope.IsGenericHiddenEnvelope)
             {
-                { PageParameter.Budget, budget }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.HiddenEnvelopesPage);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Budget, budget }
+                };
+                await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
+            }
         }
 
         public async Task ExecuteAddCommand()
@@ -257,21 +262,6 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.Budget, budget }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
-        }
-
-        public async Task ExecuteDeleteCommand(Budget budget)
-        {
-            var result = await _envelopeLogic.Value.DeleteEnvelopeAsync(budget.Envelope.Id);
-
-            if (result.Success)
-            {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
         }
 
         public async Task ExecuteAddTransactionCommand()

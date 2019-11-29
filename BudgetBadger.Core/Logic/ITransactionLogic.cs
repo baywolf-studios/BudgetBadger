@@ -24,8 +24,5 @@ namespace BudgetBadger.Core.Logic
         bool FilterTransaction(Transaction transaction, string searchText);
 
         Task<Result<Transaction>> GetCorrectedTransaction(Transaction transaction);
-
-        //removing
-        Task<Result> DeleteTransactionAsync(Guid transactionId);
     }
 }

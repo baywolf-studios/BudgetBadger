@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Views
             }
         }
 
-        async void Handle_Tapped(object sender, EventArgs e)
+        void Handle_Tapped(object sender, EventArgs e)
         {
             var frame = (ContentButton)sender;
             var test = Detail;
