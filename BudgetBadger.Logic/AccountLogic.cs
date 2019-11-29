@@ -380,10 +380,21 @@ namespace BudgetBadger.Logic
                     return result;
                 }
 
-                account.HiddenDateTime = null;
-                account.ModifiedDateTime = DateTime.Now;
+                var now = DateTime.Now;
 
-                await _accountDataAccess.UpdateAccountAsync(account);
+                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                payee.HiddenDateTime = null;
+                payee.ModifiedDateTime = now;
+                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+
+                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                envelope.HiddenDateTime = null;
+                envelope.ModifiedDateTime = now;
+                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+
+                account.HiddenDateTime = null;
+                account.ModifiedDateTime = now;
+                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
             }

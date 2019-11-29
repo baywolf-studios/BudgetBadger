@@ -25,6 +25,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<int>> GetEnvelopesCountAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForReportAsync();
+        Task<Result<IReadOnlyList<Envelope>>> GetHiddenEnvelopesAsync();
         Task<Result> SoftDeleteEnvelopeAsync(Guid id);
         Task<Result> HideEnvelopeAsync(Guid id);
         Task<Result> UnhideEnvelopeAsync(Guid id);

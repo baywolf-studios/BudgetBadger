@@ -961,5 +961,21 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsTrue(result.Success);
             Assert.That(!result.Data.Any(p => p.Envelope.IsActive));
         }
+
+        [Test]
+        public async Task GetHiddenEnvelopes_ActiveEnvelope_ActiveEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetHiddenEnvelopesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.IsActive));
+        }
     }
 }

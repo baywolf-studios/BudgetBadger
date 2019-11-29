@@ -330,6 +330,34 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
+        public async Task UnhideAccount_HiddenAccount_UpdatesTransferPayee()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.UnhideAccountAsync(hiddenAccount.Id);
+
+            // assert
+            A.CallTo(() => payeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public async Task UnhideAccount_HiddenAccount_UpdatesDebtEnvelope()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountAsync(hiddenAccount.Id)).Returns(hiddenAccount);
+
+            // act
+            var result = await accountLogic.UnhideAccountAsync(hiddenAccount.Id);
+
+            // assert
+            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
         public async Task UnhideAccount_DeletedAccount_Unsuccessful()
         {
             // arrange
