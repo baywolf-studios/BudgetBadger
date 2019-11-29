@@ -95,6 +95,8 @@ namespace BudgetBadger.Forms.Reports
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SelectedCommand = new DelegateCommand<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
 
+            Payees = new List<DataPoint<Payee, decimal>>();
+
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
             if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
