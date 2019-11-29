@@ -179,7 +179,7 @@ namespace BudgetBadger.Logic
             {
                 var hiddenAccounts = populatedAccounts.Where(a => a.IsHidden);
 
-                var genericHiddenAccount = PopulateGenericHiddenAccount(hiddenAccounts);
+                var genericHiddenAccount = GetGenericHiddenAccount(hiddenAccounts);
                 accountsToReturn.Add(genericHiddenAccount);
             }
 
@@ -480,7 +480,6 @@ namespace BudgetBadger.Logic
 
         async Task<Account> GetPopulatedAccount(Account account)
         {
-
             var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
             var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
             var accountDebtBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
@@ -558,16 +557,20 @@ namespace BudgetBadger.Logic
             return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
         }
 
-        Account PopulateGenericHiddenAccount(IEnumerable<Account> hiddenAccounts)
+        Account GetGenericHiddenAccount(IEnumerable<Account> hiddenAccounts = null)
         {
             var genericHiddenAccount = Constants.GenericHiddenAccount.DeepCopy();
-
-            genericHiddenAccount.Pending = hiddenAccounts.Sum(a => a.Pending);
-            genericHiddenAccount.Posted = hiddenAccounts.Sum(a => a.Posted);
-            genericHiddenAccount.Balance = hiddenAccounts.Sum(a => a.Balance);
-            genericHiddenAccount.Payment = hiddenAccounts.Sum(a => a.Payment);
+            
             genericHiddenAccount.Description = _resourceContainer.GetResourceString("Hidden");
             genericHiddenAccount.Group = _resourceContainer.GetResourceString("Hidden");
+
+            if (hiddenAccounts != null)
+            {
+                genericHiddenAccount.Pending = hiddenAccounts.Sum(a => a.Pending);
+                genericHiddenAccount.Posted = hiddenAccounts.Sum(a => a.Posted);
+                genericHiddenAccount.Balance = hiddenAccounts.Sum(a => a.Balance);
+                genericHiddenAccount.Payment = hiddenAccounts.Sum(a => a.Payment);
+            }
 
             return genericHiddenAccount;
         }

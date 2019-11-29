@@ -246,7 +246,7 @@ namespace BudgetBadger.Logic
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
                 var genericDebtBudget = new Budget
                 {
-                    Envelope = ReadGenericDebtEnvelope(),
+                    Envelope = GetGenericDebtEnvelope(),
                     Amount = debtBudgets.Sum(b => b.Amount),
                     Activity = debtBudgets.Sum(b => b.Activity),
                     PastAmount = debtBudgets.Sum(b => b.PastAmount),
@@ -586,7 +586,7 @@ namespace BudgetBadger.Logic
                 var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
 
                 activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
-                activeEnvelopes.Add(ReadGenericDebtEnvelope());
+                activeEnvelopes.Add(GetGenericDebtEnvelope());
 
                 activeEnvelopes.Sort();
 
@@ -1699,7 +1699,7 @@ namespace BudgetBadger.Logic
             return currentSchedule.BeginDate.AddDays(-1);
         }
 
-        Envelope ReadGenericDebtEnvelope()
+        Envelope GetGenericDebtEnvelope()
         {
             var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
             genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
