@@ -96,7 +96,7 @@
                             </uc:Button2.IsVisible>
                             <uc:Button2.Triggers>
                                 <DataTrigger
-                                    Binding="{Binding EnvelopeGroup.IsDeleted}"
+                                    Binding="{Binding EnvelopeGroup.IsHidden}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
@@ -174,7 +174,7 @@
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
-                                Binding="{Binding EnvelopeGroup.IsDeleted}"
+                                Binding="{Binding EnvelopeGroup.IsHidden}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />
