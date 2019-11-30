@@ -130,7 +130,7 @@
                             </uc:Button2.IsVisible>
                             <uc:Button2.Triggers>
                                 <DataTrigger
-                                    Binding="{Binding Budget.Envelope.IsHidden}"
+                                    Binding="{Binding EnvelopeGroup.IsHidden}"
                                     TargetType="Button"
                                     Value="false">
                                     <Setter Property="IsVisible" Value="false" />
@@ -228,7 +228,7 @@
                         VerticalOptions="Center">
                         <uc:Button2.Triggers>
                             <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsHidden}"
+                                Binding="{Binding EnvelopeGroup.IsHidden}"
                                 TargetType="Button"
                                 Value="false">
                                 <Setter Property="IsVisible" Value="false" />

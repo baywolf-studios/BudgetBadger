@@ -232,7 +232,8 @@ namespace BudgetBadger.Logic
 
                 var payees = allPayees.Where(p =>
                                              !p.IsStartingBalance
-                                             && p.IsHidden);
+                                             && p.IsHidden
+                                             && !p.IsDeleted);
 
                 var tasks = payees.Select(GetPopulatedPayee);
 

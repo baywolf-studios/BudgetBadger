@@ -216,7 +216,7 @@ namespace BudgetBadger.Logic
 
             var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
-            var accounts = allAccounts.Where(a => a.IsHidden);
+            var accounts = allAccounts.Where(a => a.IsHidden && !a.IsDeleted);
 
             var tasks = accounts.Select(GetPopulatedAccount);
 
