@@ -68,14 +68,14 @@
                                 <syncfusion:GroupColumnDescription ColumnName="Group" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="Description">
+                                <data:SortComparer PropertyName="Group">
                                     <data:SortComparer.Comparer>
                                         <comparers:PayeeComparer />
                                     </data:SortComparer.Comparer>
                                 </data:SortComparer>
                             </syncfusion:SfDataGrid.SortComparers>
                             <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="Description" SortDirection="Ascending" />
+                                <syncfusion:SortColumnDescription ColumnName="Group" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
