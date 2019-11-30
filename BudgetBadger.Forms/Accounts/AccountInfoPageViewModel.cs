@@ -166,8 +166,12 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)

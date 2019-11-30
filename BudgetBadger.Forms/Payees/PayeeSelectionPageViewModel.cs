@@ -95,7 +95,14 @@ namespace BudgetBadger.Forms.Payees
             if (payee != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
             }
+
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
+            
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
