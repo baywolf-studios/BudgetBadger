@@ -115,7 +115,6 @@ namespace BudgetBadger.Forms.Envelopes
                 }
 
                 NoEnvelopes = (Envelopes?.Count ?? 0) == 0;
-                SelectedEnvelope = null;
             }
             finally
             {

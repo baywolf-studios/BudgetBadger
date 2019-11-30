@@ -133,7 +133,6 @@ namespace BudgetBadger.Forms.Payees
                 }
 
                 NoPayees = (Payees?.Count ?? 0) == 0;
-                SelectedPayee = null;
             }
             finally
             {

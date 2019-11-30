@@ -132,7 +132,6 @@ namespace BudgetBadger.Forms.Accounts
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
-                SelectedAccount = null;
             }
             finally
             {
