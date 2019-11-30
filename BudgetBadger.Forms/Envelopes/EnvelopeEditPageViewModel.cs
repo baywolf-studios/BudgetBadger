@@ -234,34 +234,41 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 return;
             }
+            var confirm = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertConfirmation"),
+                _resourceContainer.GetResourceString("AlertConfirmDelete"),
+                _resourceContainer.GetResourceString("AlertOk"),
+                _resourceContainer.GetResourceString("AlertCancel"));
 
-            IsBusy = true;
-
-            try
+            if (confirm)
             {
-                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
-                var result = await _envelopeLogic.SoftDeleteEnvelopeAsync(Budget.Envelope.Id);
-                if (result.Success)
-                {
-                    _needToSync = true;
+                IsBusy = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
+                try
+                {
+                    BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
+                    var result = await _envelopeLogic.SoftDeleteEnvelopeAsync(Budget.Envelope.Id);
+                    if (result.Success)
                     {
-                        await _navigationService.GoBackAsync();
+                        _needToSync = true;
+
+                        if (Device.RuntimePlatform == Device.macOS)
+                        {
+                            await _navigationService.GoBackAsync();
+                        }
+                        else
+                        {
+                            await _navigationService.GoBackToRootAsync();
+                        }
                     }
                     else
                     {
-                        await _navigationService.GoBackToRootAsync();
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                     }
                 }
-                else
+                finally
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    IsBusy = false;
                 }
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
 
