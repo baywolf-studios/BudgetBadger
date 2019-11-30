@@ -132,7 +132,7 @@ namespace BudgetBadger.Logic
                                              !p.IsStartingBalance
                                              && p.IsActive).ToList();
 
-                if (allPayees.Any(p => p.IsHidden))
+                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted))
                 {
                     payees.Add(GetGenericHiddenPayee());
                 }
@@ -198,7 +198,7 @@ namespace BudgetBadger.Logic
                                              !p.IsStartingBalance
                                              && p.IsActive).ToList();
 
-                if (allPayees.Any(p => p.IsHidden))
+                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted))
                 {
                     payees.Add(GetGenericHiddenPayee());
                 }

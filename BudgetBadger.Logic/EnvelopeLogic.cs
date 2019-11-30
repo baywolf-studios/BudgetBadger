@@ -169,11 +169,11 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var activeOrHiddenEnvelopes = envelopes.Where(e => (e.IsActive || e.IsHidden) && !e.IsSystem && !e.Group.IsIncome);
+                var activeOrHiddenEnvelopes = envelopes.Where(e => (e.IsActive || (e.IsHidden && !e.IsDeleted)) && !e.IsSystem && !e.Group.IsIncome);
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
                 var activeOrHiddenBudgets = budgets
-                    .Where(b => (b.IsActive || b.Envelope.IsHidden) && !b.Envelope.IsSystem && !b.Envelope.Group.IsIncome)
+                    .Where(b => (b.IsActive || (b.Envelope.IsHidden && !b.Envelope.IsDeleted)) && !b.Envelope.IsSystem && !b.Envelope.Group.IsIncome)
                     .ToList();
 
                 foreach (var envelope in activeOrHiddenEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
@@ -607,7 +607,7 @@ namespace BudgetBadger.Logic
                                                       && !e.Group.IsSystem
                                                       && !e.Group.IsDebt).ToList();
 
-                if (envelopes.Any(e => e.IsHidden))
+                if (envelopes.Any(e => e.IsHidden && !e.IsDeleted))
                 {
                     var genericHiddenENvelope = GetGenericHiddenEnvelope();
 
@@ -944,7 +944,7 @@ namespace BudgetBadger.Logic
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
 
-                if (envelopeGroups.Any(e => e.IsHidden))
+                if (envelopeGroups.Any(e => e.IsHidden && !e.IsDeleted))
                 {
                     var genericHiddenGroup = GetGenericHiddenEnvelopeGroup();
                     filteredEnvelopeGroups.Add(genericHiddenGroup);
