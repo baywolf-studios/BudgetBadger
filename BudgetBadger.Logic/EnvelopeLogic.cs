@@ -268,10 +268,10 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden);
+                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden && !e.IsDeleted);
 
                 var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
-                var hiddenBudgets = budgets.Where(b => !b.Envelope.IsSystem && b.Envelope.IsHidden).ToList();
+                var hiddenBudgets = budgets.Where(b => !b.Envelope.IsSystem && b.Envelope.IsHidden && !b.Envelope.IsDeleted).ToList();
 
                 foreach (var envelope in hiddenEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
@@ -635,7 +635,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden).ToList();
+                var hiddenEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsHidden && !e.IsDeleted).ToList();
 
                 hiddenEnvelopes.Sort();
 
@@ -991,7 +991,7 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsHidden && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsHidden && !e.IsDeleted && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
                 filteredEnvelopeGroups.Sort();
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
