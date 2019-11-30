@@ -93,6 +93,12 @@ namespace BudgetBadger.Forms.Accounts
             if (account != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
             }
         }
 

@@ -91,6 +91,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async Task ExecuteSelectedCommand(Account account)

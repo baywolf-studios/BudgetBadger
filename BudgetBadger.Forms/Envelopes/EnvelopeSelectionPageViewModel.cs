@@ -96,6 +96,12 @@ namespace BudgetBadger.Forms.Envelopes
             if (envelope != null || budget != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
             }
         }
 

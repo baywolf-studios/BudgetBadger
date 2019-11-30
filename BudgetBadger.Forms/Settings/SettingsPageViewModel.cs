@@ -187,7 +187,7 @@ namespace BudgetBadger.Forms.Settings
             //var spanish = new CultureInfo("es");
             //result.Add(spanish.DisplayName, spanish);
 
-            return result.ToList(); ;
+            return result.ToList();
         }
 
         List<KeyValuePair<string, CultureInfo>> GetCurrencies()
