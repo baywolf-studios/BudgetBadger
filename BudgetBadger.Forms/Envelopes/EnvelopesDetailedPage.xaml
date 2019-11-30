@@ -89,14 +89,14 @@
                                 <syncfusion:GroupColumnDescription ColumnName="Envelope.Group.Description" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="Envelope.Description">
+                                <data:SortComparer PropertyName="Envelope.Group.Description">
                                     <data:SortComparer.Comparer>
                                         <comparers:BudgetComparer />
                                     </data:SortComparer.Comparer>
                                 </data:SortComparer>
                             </syncfusion:SfDataGrid.SortComparers>
                             <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="Envelope.Description" SortDirection="Ascending" />
+                                <syncfusion:SortColumnDescription ColumnName="Envelope.Group.Description" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
