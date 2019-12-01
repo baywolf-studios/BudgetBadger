@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,8 +87,8 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _lastSynced, value);
         }
 
-        List<KeyValuePair<string, CultureInfo>> _languageList;
-        public List<KeyValuePair<string, CultureInfo>> LanguageList
+        ObservableCollection<KeyValuePair<string, CultureInfo>> _languageList;
+        public ObservableCollection<KeyValuePair<string, CultureInfo>> LanguageList
         {
             get => _languageList;
             set => SetProperty(ref _languageList, value);
@@ -100,8 +101,8 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _selectedLanguage, value);
         }
 
-        List<KeyValuePair<string, CultureInfo>> _currencyFormatList;
-        public List<KeyValuePair<string, CultureInfo>> CurrencyFormatList
+        ObservableCollection<KeyValuePair<string, CultureInfo>> _currencyFormatList;
+        public ObservableCollection<KeyValuePair<string, CultureInfo>> CurrencyFormatList
         {
             get => _currencyFormatList;
             set => SetProperty(ref _currencyFormatList, value);
@@ -134,8 +135,8 @@ namespace BudgetBadger.Forms.Settings
 
             HasPro = false;
             IsBusy = false;
-            CurrencyFormatList = new List<KeyValuePair<string, CultureInfo>>();
-            LanguageList = new List<KeyValuePair<string, CultureInfo>>();
+            CurrencyFormatList = new ObservableCollection<KeyValuePair<string, CultureInfo>>();
+            LanguageList = new ObservableCollection<KeyValuePair<string, CultureInfo>>();
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
@@ -446,7 +447,10 @@ namespace BudgetBadger.Forms.Settings
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             LanguageList.Clear();
-            LanguageList.AddRange(GetLanguages());
+            foreach (var language in GetLanguages())
+            {
+                LanguageList.Add(language);
+            }
 
             var currentLanguage = _settings.GetValueOrDefault(AppSettings.Language);
             if (LanguageList.Any(d => d.Value.Name == currentLanguage))
@@ -459,7 +463,10 @@ namespace BudgetBadger.Forms.Settings
             }
 
             CurrencyFormatList.Clear();
-            CurrencyFormatList.AddRange(GetCurrencies());
+            foreach (var currency in GetCurrencies())
+            {
+                CurrencyFormatList.Add(currency);
+            }
 
             var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
             if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
