@@ -190,7 +190,7 @@ namespace BudgetBadger.Logic
                 var tasks = activeOrHiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
                 var budgetsToPopulateTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var budgetsToReturn = budgetsToPopulateTemp.Where(b => b.IsActive).ToList();
+                var budgetsToReturn = budgetsToPopulateTemp.Where(b => b.Envelope.IsActive).ToList();
 
                 if (budgetsToPopulateTemp.Any(b => b.Envelope.IsHidden))
                 {
