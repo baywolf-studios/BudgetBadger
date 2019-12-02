@@ -223,7 +223,7 @@
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding LanguageList}"
                         Label="{ext:Translate LanguageLabel}"
-                        SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+                        SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
@@ -236,7 +236,7 @@
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding CurrencyFormatList}"
                         Label="{ext:Translate CurrencyLabel}"
-                        SelectedItem="{Binding SelectedCurrencyFormat, Mode=TwoWay}">
+                        SelectedIndex="{Binding SelectedCurrencyFormatIndex, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
