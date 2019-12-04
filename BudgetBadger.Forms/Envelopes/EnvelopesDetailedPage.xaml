@@ -122,6 +122,12 @@
                                                         TargetType="dt:TextColumn">
                                                         <Setter Property="IsReadOnly" Value="true"/>
                                                     </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
+                                                        Value="true"
+                                                        TargetType="dt:TextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
                                                 </dt:TextColumn.Triggers>
                                             </dt:TextColumn>
                                         </DataTemplate>
@@ -185,6 +191,20 @@
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
+                                                        Value="true"
+                                                        TargetType="dt:CurrencyCalculatorColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorColumn.Triggers>
                                             </dt:CurrencyCalculatorColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
