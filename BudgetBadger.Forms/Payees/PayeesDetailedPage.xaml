@@ -100,6 +100,12 @@
                                                         TargetType="dt:TextColumn">
                                                         <Setter Property="IsReadOnly" Value="true"/>
                                                     </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding IsGenericHiddenPayee}"
+                                                        Value="true"
+                                                        TargetType="dt:TextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
                                                 </dt:TextColumn.Triggers>
                                             </dt:TextColumn>
                                         </DataTemplate>
@@ -124,6 +130,12 @@
                                                     <DataTrigger
                                                         Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
                                                         Value="false"
+                                                        TargetType="dt:MultilineTextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding IsGenericHiddenPayee}"
+                                                        Value="true"
                                                         TargetType="dt:MultilineTextColumn">
                                                         <Setter Property="IsReadOnly" Value="true"/>
                                                     </DataTrigger>
