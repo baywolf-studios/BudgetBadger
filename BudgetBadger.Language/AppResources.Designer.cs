@@ -376,6 +376,24 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation.
+        /// </summary>
+        public static string AlertConfirmation {
+            get {
+                return ResourceManager.GetString("AlertConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the item?.
+        /// </summary>
+        public static string AlertConfirmDelete {
+            get {
+                return ResourceManager.GetString("AlertConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debt Envelopes.
         /// </summary>
         public static string AlertDebtEnvelopes {
