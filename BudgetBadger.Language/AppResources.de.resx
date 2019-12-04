@@ -1029,4 +1029,10 @@
   <data name="AlertUnhideUnsuccessful" xml:space="preserve">
     <value>Einblendung erfolglos</value>
   </data>
+  <data name="AlertConfirmation" xml:space="preserve">
+    <value>Bestätigung</value>
+  </data>
+  <data name="AlertConfirmDelete" xml:space="preserve">
+    <value>Löschen Sie das Element?</value>
+  </data>
 </root>

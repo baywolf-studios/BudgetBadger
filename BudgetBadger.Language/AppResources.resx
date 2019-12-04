@@ -1029,4 +1029,10 @@
   <data name="AlertUnhideUnsuccessful" xml:space="preserve">
     <value>Unhide Unsuccessful</value>
   </data>
+  <data name="AlertConfirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="AlertConfirmDelete" xml:space="preserve">
+    <value>Delete the item?</value>
+  </data>
 </root>
