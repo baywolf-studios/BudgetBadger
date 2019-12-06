@@ -37,8 +37,8 @@ steps:
 - task: MSBuild@1
   inputs:
     solution: '**/*macOS.csproj'
-    platform: 'any cpu'
     configuration: 'Release'
+    msbuildArguments: '/p:Configuration=Release /p:Platform=AnyCPU'
 
 - task: PublishBuildArtifacts@1
   inputs:
