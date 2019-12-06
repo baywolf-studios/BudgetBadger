@@ -36,6 +36,7 @@ steps:
     solutionFile: '**/*iOS.csproj'
     configuration: 'Release'
     packageApp: true
+    args: /p:IpaPackageDir="/Users/vsts/agent/2.153.2/work/1/a"
 
 - task: PublishBuildArtifacts@1
   inputs:
