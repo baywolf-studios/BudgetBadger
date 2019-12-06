@@ -47,10 +47,10 @@ steps:
     solutionFile: '**/*iOS.csproj'
     configuration: '$(buildConfiguration)'
     packageApp: true
-    args: /p:IpaPackageDir="$(Build.BinariesDirectory)"
+    args: /p:IpaPackageDir="$(outputDirectory)"
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)'
+    PathtoPublish: '$(outputDirectory)'
     ArtifactName: 'BudgetBadger'
     publishLocation: 'Container'
