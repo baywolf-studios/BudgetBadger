@@ -39,6 +39,7 @@ using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using Newtonsoft.Json;
 using BudgetBadger.Core.Utilities;
+using Prism.Logging;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -106,6 +107,8 @@ namespace BudgetBadger.Forms
             var timer = Stopwatch.StartNew();
 
             var container = containerRegistry.GetContainer();
+
+            container.Register<ILoggerFacade, ConsoleLogger>();
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();

@@ -17,7 +17,7 @@ namespace BudgetBadger.iOS.Renderers
 
         public override void ViewWillAppear(bool animated)
         {
-            base.ViewDidAppear(animated);
+            base.ViewWillAppear(animated);
             ViewController.NavigationController.InteractivePopGestureRecognizer.Enabled = true;
             ViewController.NavigationController.InteractivePopGestureRecognizer.Delegate = new InteractivePopRecognizer(ViewController.NavigationController);
         }

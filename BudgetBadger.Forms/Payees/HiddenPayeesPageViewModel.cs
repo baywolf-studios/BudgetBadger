@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class HiddenPayeesPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class HiddenPayeesPageViewModel : BindableBase, INavigatedAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;

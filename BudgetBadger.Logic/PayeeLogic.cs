@@ -403,16 +403,22 @@ namespace BudgetBadger.Logic
         }
 
 
-        Task<Result> ValidatePayeeAsync(Payee payee)
+        async Task<Result> ValidatePayeeAsync(Payee payee)
         {
             var errors = new List<string>();
+
+            var account = await _accountDataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
+            if (payee.IsStartingBalance || account.IsActive)
+            {
+                errors.Add(_resourceContainer.GetResourceString("PayeeSaveSystemError"));
+            }
 
             if (string.IsNullOrEmpty(payee.Description))
             {
                 errors.Add(_resourceContainer.GetResourceString("PayeeValidDescriptionError"));
             }
 
-            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
+            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
         async Task<Payee> GetPopulatedPayee(Payee payee)

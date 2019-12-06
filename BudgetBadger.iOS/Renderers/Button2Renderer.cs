@@ -21,7 +21,7 @@ namespace BudgetBadger.iOS.Renderers
         {
             base.OnElementChanged(e);
 
-            if (e?.OldElement != null)
+            if (e?.OldElement != null && this.Control != null)
             {
                 this.Control.TouchCancel -= this.Control_Released;
                 this.Control.TouchDragExit -= this.Control_Released;

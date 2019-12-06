@@ -1397,6 +1397,11 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
+            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
+            {
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeSaveSystemError"));
+            }
+
             if (string.IsNullOrEmpty(envelope.Description))
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeValidDescriptionError"));
@@ -1421,6 +1426,11 @@ namespace BudgetBadger.Logic
         Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
             var errors = new List<string>();
+
+            if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
+            {
+                errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupSaveSystemError"));
+            }
 
             if (string.IsNullOrEmpty(envelopeGroup.Description))
             {
