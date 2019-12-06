@@ -5,7 +5,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-- group: budgetbager_variables
+- group: budgetbadger_variables
 
 steps:
 - task: UseDotNet@2
