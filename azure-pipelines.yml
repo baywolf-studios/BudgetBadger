@@ -31,6 +31,12 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'Budget_Badger_AppStore.mobileprovision'
 
+- task: XamarinAndroid@1
+  inputs:
+    projectFile: '**/*droid.csproj'
+    configuration: 'Release'
+    jdkOption: 'JDKVersion'
+
 - task: XamariniOS@2
   inputs:
     solutionFile: '**/*iOS.csproj'
