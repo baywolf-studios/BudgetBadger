@@ -1035,4 +1035,16 @@
   <data name="AlertConfirmDelete" xml:space="preserve">
     <value>Löschen Sie das Element?</value>
   </data>
+  <data name="PayeeSaveSystemError" xml:space="preserve">
+    <value>Systemempfänger kann nicht bearbeitet werden</value>
+  </data>
+  <data name="EnvelopeSaveSystemError" xml:space="preserve">
+    <value>Systemumschlag kann nicht bearbeitet werden</value>
+  </data>
+  <data name="EnvelopeGroupSaveSystemError" xml:space="preserve">
+    <value>Systemumschlaggruppe kann nicht bearbeitet werden</value>
+  </data>
+  <data name="AccountSaveSystemError" xml:space="preserve">
+    <value>Systemkonto kann nicht bearbeitet werden</value>
+  </data>
 </root>
