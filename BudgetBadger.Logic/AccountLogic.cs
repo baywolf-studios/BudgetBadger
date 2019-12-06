@@ -245,6 +245,11 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("AccountDeleteNotHiddenError"));
                 }
 
+                if (account.IsGenericHiddenAccount)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteSystemError"));
+                }
+
                 var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);
                 var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
 
@@ -297,6 +302,11 @@ namespace BudgetBadger.Logic
 
                 // check for validation to delete
                 var errors = new List<string>();
+
+                if (account.IsGenericHiddenAccount)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountHideSystemError"));
+                }
 
                 if (!account.IsActive)
                 {

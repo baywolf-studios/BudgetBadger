@@ -277,7 +277,7 @@ namespace BudgetBadger.Logic
                 }
 
                 var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-                if (payee.IsStartingBalance || account.IsActive)
+                if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
                 {
                     errors.Add(_resourceContainer.GetResourceString("PayeeDeleteSystemError"));
                 }
@@ -323,7 +323,7 @@ namespace BudgetBadger.Logic
 
                 var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
-                if (payee.IsStartingBalance || account.IsActive)
+                if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
                 {
                     errors.Add(_resourceContainer.GetResourceString("PayeeHideSystemError"));
                 }
@@ -408,7 +408,7 @@ namespace BudgetBadger.Logic
             var errors = new List<string>();
 
             var account = await _accountDataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
-            if (payee.IsStartingBalance || account.IsActive)
+            if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
             {
                 errors.Add(_resourceContainer.GetResourceString("PayeeSaveSystemError"));
             }
