@@ -8,7 +8,7 @@ pool:
   vmImage: 'macos-latest'
 
 steps:
-- script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MonoVersion)
+- script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
   displayName: 'Select the Xamarin SDK version'
   enabled: true
   
