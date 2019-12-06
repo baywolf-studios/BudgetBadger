@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Resources;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
-using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
