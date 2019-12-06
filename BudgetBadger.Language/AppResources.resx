@@ -1035,4 +1035,16 @@
   <data name="AlertConfirmDelete" xml:space="preserve">
     <value>Delete the item?</value>
   </data>
+  <data name="PayeeSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system payee</value>
+  </data>
+  <data name="EnvelopeSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system envelope</value>
+  </data>
+  <data name="EnvelopeGroupSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system envelope group</value>
+  </data>
+  <data name="AccountSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system account</value>
+  </data>
 </root>
