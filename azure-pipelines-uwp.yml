@@ -19,12 +19,18 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+- task: DownloadSecureFile@1
+  name: signingCert
+  displayName: 'Download CA certificate'
+  inputs:
+    secureFile: 'BudgetBadger.UWP_StoreKey.pfx'
+
 - task: VSBuild@1
   inputs:
     platform: 'x86'
     solution: '**/*UWP.sln'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="$(Build.BinariesDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+    msbuildArgs: '/p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="$(Build.BinariesDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
 
 
 - task: PublishBuildArtifacts@1
