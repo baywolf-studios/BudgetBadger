@@ -5,7 +5,7 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-- group: budgetbager_variables
+- group: budgetbadger_variables
 
 steps:
 - script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
