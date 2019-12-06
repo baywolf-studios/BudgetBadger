@@ -27,7 +27,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '**/*droid*.sln'
+    restoreSolution: '**/*.sln'
 
 - task: XamarinAndroid@1
   inputs:
