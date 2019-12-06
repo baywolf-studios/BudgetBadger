@@ -34,6 +34,12 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'Budget_Badger_Mac_AppStore.provisionprofile'
 
+- task: VSBuild@1
+  inputs:
+    solution: '**\*macOS.csproj'
+    platform: 'any cpu'
+    configuration: 'Release'
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.BinariesDirectory)'
