@@ -76,6 +76,22 @@
                             ItemsSource="{Binding Accounts}"
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedAccount}">
+                            <syncfusion:SfListView.LeftSwipeTemplate>
+                                <DataTemplate>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ReconcileCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <Label
+                                            FontSize="{StaticResource ListItemFontSize}"
+                                            HorizontalOptions="Center"
+                                            Text="{ext:Translate ReconcileAccountButton}"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"
+                                            VerticalOptions="Center"
+                                            LineBreakMode="NoWrap"/>
+                                    </ContentView>
+                                </DataTemplate>
+                            </syncfusion:SfListView.LeftSwipeTemplate>
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
                                     <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
