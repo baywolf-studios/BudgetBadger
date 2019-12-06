@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
+variables:
+- group: budgetbager_variables
+
 steps:
 - script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
   displayName: 'Select the Xamarin SDK version'
@@ -41,5 +44,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.BinariesDirectory)'
-    ArtifactName: 'BudgetBadger'
+    ArtifactName: 'BudgetBadger.iOS'
     publishLocation: 'Container'
