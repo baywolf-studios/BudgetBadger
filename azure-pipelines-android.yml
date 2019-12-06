@@ -29,13 +29,6 @@ steps:
     configuration: 'Release'
     jdkOption: 'JDKVersion'
 
-- task: XamariniOS@2
-  inputs:
-    solutionFile: '**/*iOS.csproj'
-    configuration: 'Release'
-    packageApp: true
-    args: /p:IpaPackageDir="$(Build.BinariesDirectory)"
-
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.BinariesDirectory)'
