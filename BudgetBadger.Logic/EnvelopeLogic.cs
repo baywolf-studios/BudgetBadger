@@ -667,7 +667,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteNotHiddenError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteSystemError"));
                 }
@@ -723,7 +723,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideInactiveError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideSystemError"));
                 }
@@ -1021,7 +1021,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteNotHiddenError"));
                 }
 
-                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
+                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
                 }
@@ -1073,7 +1073,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideInactiveError"));
                 }
 
-                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
+                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideSystemError"));
                 }
@@ -1397,7 +1397,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
+            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeSaveSystemError"));
             }
@@ -1427,7 +1427,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem)
+            if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupSaveSystemError"));
             }
