@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-	public partial class DeletedEnvelopesPage : BasePage
+	public partial class HiddenEnvelopeGroupsPage : BasePage
     {
-        public DeletedEnvelopesPage()
+        public HiddenEnvelopeGroupsPage()
         {
             InitializeComponent();
         }

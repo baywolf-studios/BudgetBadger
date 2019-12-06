@@ -20,7 +20,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -144,9 +144,12 @@ namespace BudgetBadger.Forms.Envelopes
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
-
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -164,7 +167,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
@@ -328,7 +331,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.Value.DeleteTransactionAsync(transaction.Id);
+            var result = await _transactionLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {

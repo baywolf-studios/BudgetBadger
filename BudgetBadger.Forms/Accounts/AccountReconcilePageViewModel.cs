@@ -18,7 +18,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountReconcilePageViewModel : BindableBase, INavigationAware
+    public class AccountReconcilePageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -202,7 +202,7 @@ namespace BudgetBadger.Forms.Accounts
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
@@ -216,8 +216,12 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -374,7 +378,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.Value.DeleteTransactionAsync(transaction.Id);
+            var result = await _transactionLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {

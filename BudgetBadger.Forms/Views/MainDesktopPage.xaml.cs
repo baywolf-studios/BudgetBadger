@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Views
 {
-    public partial class MainDesktopPage : MasterDetailPage, INavigatingAware
+    public partial class MainDesktopPage : MasterDetailPage, IInitialize
     {
         readonly ISettings _settings;
         readonly INavigationService _navigationService;
@@ -85,6 +85,7 @@ namespace BudgetBadger.Forms.Views
         void Handle_Tapped(object sender, EventArgs e)
         {
             var frame = (ContentButton)sender;
+            var test = Detail;
 
             SetAllInactive(frame.Id);
 
@@ -112,7 +113,7 @@ namespace BudgetBadger.Forms.Views
             _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             int.TryParse(_settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appCount);
 

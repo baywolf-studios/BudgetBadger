@@ -16,7 +16,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-	public class DeletedAccountsPageViewModel : BindableBase, INavigationAware
+	public class HiddenAccountsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
@@ -63,7 +63,7 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _noAccounts, value);
         }
 
-        public DeletedAccountsPageViewModel(IResourceContainer resourceContainer,
+        public HiddenAccountsPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService, 
             IPageDialogService dialogService, 
             IAccountLogic accountLogic)
@@ -84,13 +84,17 @@ namespace BudgetBadger.Forms.Accounts
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async Task ExecuteSelectedCommand(Account account)
@@ -120,7 +124,7 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                var result = await _accountLogic.GetDeletedAccountsAsync();
+                var result = await _accountLogic.GetHiddenAccountsAsync();
 
                 if (result.Success)
                 {

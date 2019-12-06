@@ -34,11 +34,6 @@
                         <RowDefinition Height="{StaticResource ListDoubleItemHeight}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
-                        <RowDefinition Height="{StaticResource ListItemHeight}" />
-                        <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="{StaticResource ListGroupHeaderHeight}" />
@@ -219,131 +214,41 @@
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
-                        Text="{ext:Translate DeletedLabel}" />
-                    <uc:ContentButton
-                        Grid.Row="7"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource SettingsButtonStyle}"
-                        Command="{Binding ShowDeletedCommand}"
-                        CommandParameter="DeletedEnvelopeGroupsPage">
-                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
-                            <svg:SvgCachedImage
-                                HeightRequest="24"
-                                HorizontalOptions="End"
-                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                Source="envelopegroup.svg"
-                                VerticalOptions="Center"
-                                WidthRequest="24">
-                            </svg:SvgCachedImage>
-                            <Label
-                                Style="{StaticResource ListItemLabelStyle}"
-                                Text="{ext:Translate DeletedEnvelopeGroupsLabel}">
-                        </Label>
-                        </StackLayout>
-                    </uc:ContentButton>
-                    <uc:ContentButton
-                        Grid.Row="8"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource SettingsButtonStyle}"
-                        Command="{Binding ShowDeletedCommand}"
-                        CommandParameter="DeletedEnvelopesPage">
-                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
-                            <svg:SvgCachedImage
-                                HeightRequest="24"
-                                HorizontalOptions="End"
-                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                Source="envelope.svg"
-                                VerticalOptions="Center"
-                                WidthRequest="24">
-                            </svg:SvgCachedImage>
-                            <Label
-                                Style="{StaticResource ListItemLabelStyle}"
-                                Text="{ext:Translate DeletedEnvelopesLabel}">
-                            </Label>
-                        </StackLayout>
-                    </uc:ContentButton>
-                    <uc:ContentButton
-                        Grid.Row="9"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource SettingsButtonStyle}"
-                        Command="{Binding ShowDeletedCommand}"
-                        CommandParameter="DeletedAccountsPage">
-                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
-                            <svg:SvgCachedImage
-                                HeightRequest="24"
-                                HorizontalOptions="End"
-                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                Source="account.svg"
-                                VerticalOptions="Center"
-                                WidthRequest="24">
-                            </svg:SvgCachedImage>
-                            <Label
-                                Style="{StaticResource ListItemLabelStyle}"
-                                Text="{ext:Translate DeletedAccountsLabel}">
-                            </Label>
-                        </StackLayout>  
-                    </uc:ContentButton>
-                    <uc:ContentButton
-                        Grid.Row="10"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource SettingsButtonStyle}"
-                        Command="{Binding ShowDeletedCommand}"
-                        CommandParameter="DeletedPayeesPage">
-                        <StackLayout Orientation="Horizontal" Margin="16,0" Spacing="16">
-                            <svg:SvgCachedImage
-                                HeightRequest="24"
-                                HorizontalOptions="End"
-                                ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                Source="payees.svg"
-                                VerticalOptions="Center"
-                                WidthRequest="24">
-                            </svg:SvgCachedImage>
-                            <Label
-                                Style="{StaticResource ListItemLabelStyle}"
-                                Text="{ext:Translate DeletedPayeesLabel}">
-                            </Label>
-                        </StackLayout>
-                    </uc:ContentButton>
-                    <Label
-                        Grid.Row="11"
-                        Grid.ColumnSpan="3"
-                        Margin="16,12,16,0"
-                        Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate InternationalLabel}" />
                     <uc:DropdownSelector
-                        Grid.Row="12"
+                        Grid.Row="7"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding LanguageList}"
                         Label="{ext:Translate LanguageLabel}"
-                        SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+                        SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
                     </uc:DropdownSelector>
                     <uc:DropdownSelector
-                        Grid.Row="13"
+                        Grid.Row="8"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding CurrencyFormatList}"
                         Label="{ext:Translate CurrencyLabel}"
-                        SelectedItem="{Binding SelectedCurrencyFormat, Mode=TwoWay}">
+                        SelectedIndex="{Binding SelectedCurrencyFormatIndex, Mode=TwoWay}">
                         <uc:DropdownSelector.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:DropdownSelector.Behaviors>
                     </uc:DropdownSelector>
                     <Label
-                        Grid.Row="14"
+                        Grid.Row="9"
                         Grid.ColumnSpan="3"
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate HelpLabel}" />
                     <uc:ContentButton
-                        Grid.Row="15"
+                        Grid.Row="10"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource SettingsButtonStyle}"
@@ -355,7 +260,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="16"
+                        Grid.Row="11"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource SettingsButtonStyle}"

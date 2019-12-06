@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class DeletedPayeesPageViewModel : BindableBase, INavigationAware
+    public class HiddenPayeesPageViewModel : BindableBase, INavigatedAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
@@ -64,7 +64,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        public DeletedPayeesPageViewModel(
+        public HiddenPayeesPageViewModel(
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
@@ -82,11 +82,15 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
@@ -121,7 +125,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetDeletedPayeesAsync();
+                var result = await _payeeLogic.GetHiddenPayeesAsync();
 
                 if (result.Success)
                 {

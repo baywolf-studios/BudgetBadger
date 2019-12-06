@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class DeletedEnvelopesPageViewModel : BindableBase, INavigationAware
+    public class HiddenEnvelopesPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -62,7 +62,7 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _searchText, value);
         }
 
-        public DeletedEnvelopesPageViewModel(IResourceContainer resourceContainer,
+        public HiddenEnvelopesPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IEnvelopeLogic envelopeLogic,
             IPageDialogService dialogService)
@@ -79,11 +79,15 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
@@ -103,7 +107,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                var result = await _envelopeLogic.GetDeletedEnvelopesAsync();
+                var result = await _envelopeLogic.GetHiddenEnvelopesAsync();
 
                 if (result.Success)
                 {

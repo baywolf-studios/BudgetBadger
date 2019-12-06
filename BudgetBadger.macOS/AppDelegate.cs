@@ -41,7 +41,6 @@ namespace BudgetBadger.macOS
             Syncfusion.ListView.XForms.MacOS.SfListViewRenderer.Init();
             CachedImageRenderer.Init();
             var ignore = typeof(SvgCachedImage);
-            EntryRenderer2.Initialize();
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
 

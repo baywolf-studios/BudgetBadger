@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class PayeeTrendsReportPageViewModel: BindableBase, INavigationAware
+    public class PayeeTrendsReportPageViewModel: BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -113,6 +113,8 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
+            Payees = new List<Payee>();
+
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
             if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
@@ -125,15 +127,19 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var payeesResult = await _payeeLogic.GetPayeesForReportAsync();
             if (payeesResult.Success)

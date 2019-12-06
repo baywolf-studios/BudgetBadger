@@ -61,36 +61,18 @@
                             </syncfusion:SfListView.HeaderTemplate>
                             <syncfusion:SfListView.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <Grid ColumnSpacing="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <ContentView Grid.Column="0" BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                            <ContentView.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                            </ContentView.GestureRecognizers>
-                                            <svg:SvgCachedImage
-                                                HeightRequest="24"
-                                                HorizontalOptions="Center"
-                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                Source="edit.svg"
-                                                VerticalOptions="Center"
-                                                WidthRequest="24" />
-                                        </ContentView>
-                                        <ContentView Grid.Column="1" BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                            <ContentView.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                            </ContentView.GestureRecognizers>
-                                            <svg:SvgCachedImage
-                                                HeightRequest="24"
-                                                HorizontalOptions="Center"
-                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                Source="delete.svg"
-                                                VerticalOptions="Center"
-                                                WidthRequest="24" />
-                                        </ContentView>
-                                    </Grid>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <Label
+                                            FontSize="{StaticResource ListItemFontSize}"
+                                            HorizontalOptions="Center"
+                                            Text="{ext:Translate EditButton}"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"
+                                            VerticalOptions="Center"
+                                            LineBreakMode="NoWrap"/>
+                                    </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfListView.RightSwipeTemplate>
                             <syncfusion:SfListView.DataSource>

@@ -14,7 +14,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -47,8 +47,9 @@ namespace BudgetBadger.Forms.Payees
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
-        public ICommand UndoDeleteCommand { get; set; }
+        public ICommand SoftDeleteCommand { get; set; }
+        public ICommand HideCommand { get; set; }
+        public ICommand UnhideCommand { get; set; }
 
 		public EnvelopeGroupEditPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
@@ -65,11 +66,12 @@ namespace BudgetBadger.Forms.Payees
 			EnvelopeGroup = new EnvelopeGroup();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
-            UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
+            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand());
+            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand());
+            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
         }
 
-        public void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)
@@ -93,8 +95,12 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async Task ExecuteSaveCommand()
@@ -132,9 +138,55 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteDeleteCommand()
+        public async Task ExecuteSoftDeleteCommand()
         {
 			if (IsBusy)
+            {
+                return;
+            }
+
+            var confirm = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertConfirmation"),
+                _resourceContainer.GetResourceString("AlertConfirmDelete"),
+                _resourceContainer.GetResourceString("AlertOk"),
+                _resourceContainer.GetResourceString("AlertCancel"));
+
+            if (confirm)
+            {
+
+                IsBusy = true;
+
+                try
+                {
+                    BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
+                    var result = await _envelopeLogic.SoftDeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
+                    if (result.Success)
+                    {
+                        _needToSync = true;
+
+                        if (Device.RuntimePlatform == Device.macOS)
+                        {
+                            await _navigationService.GoBackAsync();
+                        }
+                        else
+                        {
+                            await _navigationService.GoBackToRootAsync();
+                        }
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    }
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            }
+        }
+
+        public async Task ExecuteHideCommand()
+        {
+            if (IsBusy)
             {
                 return;
             }
@@ -143,8 +195,8 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
-                var result = await _envelopeLogic.DeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
+                BusyText = _resourceContainer.GetResourceString("BusyTextHiding");
+                var result = await _envelopeLogic.HideEnvelopeGroupAsync(EnvelopeGroup.Id);
                 if (result.Success)
                 {
                     _needToSync = true;
@@ -160,7 +212,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertHideUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally
@@ -169,7 +221,7 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteUndoDeleteCommand()
+        public async Task ExecuteUnhideCommand()
         {
             if (IsBusy)
             {
@@ -180,8 +232,8 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
-                var result = await _envelopeLogic.UndoDeleteEnvelopeGroupAsync(EnvelopeGroup.Id);
+                BusyText = _resourceContainer.GetResourceString("BusyTextUnhiding");
+                var result = await _envelopeLogic.UnhideEnvelopeGroupAsync(EnvelopeGroup.Id);
                 if (result.Success)
                 {
                     _needToSync = true;
@@ -190,7 +242,7 @@ namespace BudgetBadger.Forms.Payees
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertUnhideUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally

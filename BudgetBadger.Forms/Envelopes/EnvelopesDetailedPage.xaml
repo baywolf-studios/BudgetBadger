@@ -71,50 +71,32 @@
                             </syncfusion:SfDataGrid.LeftSwipeTemplate>
                             <syncfusion:SfDataGrid.RightSwipeTemplate>
                                 <DataTemplate>
-                                    <Grid ColumnSpacing="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <ContentView Grid.Column="0" BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                            <ContentView.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                            </ContentView.GestureRecognizers>
-                                            <svg:SvgCachedImage
-                                                HeightRequest="24"
-                                                HorizontalOptions="Center"
-                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                Source="edit.svg"
-                                                VerticalOptions="Center"
-                                                WidthRequest="24" />
-                                        </ContentView>
-                                        <ContentView Grid.Column="1" BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                            <ContentView.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                            </ContentView.GestureRecognizers>
-                                            <svg:SvgCachedImage
-                                                HeightRequest="24"
-                                                HorizontalOptions="Center"
-                                                ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                Source="delete.svg"
-                                                VerticalOptions="Center"
-                                                WidthRequest="24" />
-                                        </ContentView>
-                                    </Grid>
+                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
+                                        <ContentView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
+                                        </ContentView.GestureRecognizers>
+                                        <Label
+                                            FontSize="{StaticResource ListItemFontSize}"
+                                            HorizontalOptions="Center"
+                                            Text="{ext:Translate EditButton}"
+                                            TextColor="{StaticResource DataGridContextActionTextColor}"
+                                            VerticalOptions="Center"
+                                            LineBreakMode="NoWrap"/>
+                                    </ContentView>
                                 </DataTemplate>
                             </syncfusion:SfDataGrid.RightSwipeTemplate>
                             <syncfusion:SfDataGrid.GroupColumnDescriptions>
                                 <syncfusion:GroupColumnDescription ColumnName="Envelope.Group.Description" />
                             </syncfusion:SfDataGrid.GroupColumnDescriptions>
                             <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="Envelope.Description">
+                                <data:SortComparer PropertyName="Envelope.Group.Description">
                                     <data:SortComparer.Comparer>
                                         <comparers:BudgetComparer />
                                     </data:SortComparer.Comparer>
                                 </data:SortComparer>
                             </syncfusion:SfDataGrid.SortComparers>
                             <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="Envelope.Description" SortDirection="Ascending" />
+                                <syncfusion:SortColumnDescription ColumnName="Envelope.Group.Description" SortDirection="Ascending" />
                             </syncfusion:SfDataGrid.SortColumnDescriptions>
                             <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                                 <syncfusion:GridTemplateColumn
@@ -137,6 +119,12 @@
                                                     <DataTrigger
                                                         Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
                                                         Value="false"
+                                                        TargetType="dt:TextColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
+                                                        Value="true"
                                                         TargetType="dt:TextColumn">
                                                         <Setter Property="IsReadOnly" Value="true"/>
                                                     </DataTrigger>
@@ -203,6 +191,20 @@
                                                 SaveCommandParameter="{Binding .}"
                                                 SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
                                                 SelectedCommandParameter="{Binding .}">
+                                                <dt:CurrencyCalculatorColumn.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                        Value="false"
+                                                        TargetType="dt:CurrencyCalculatorColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
+                                                        Value="true"
+                                                        TargetType="dt:CurrencyCalculatorColumn">
+                                                        <Setter Property="IsReadOnly" Value="true"/>
+                                                    </DataTrigger>
+                                                </dt:CurrencyCalculatorColumn.Triggers>
                                             </dt:CurrencyCalculatorColumn>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
