@@ -241,31 +241,31 @@ namespace BudgetBadger.DataAccess.Sqlite
 
             command.Parameters.AddWithValue("@Now", DateTime.Now);
 
-            command.Parameters.AddWithValue("@DebtEnvelopeGroupId", Constants.DebtEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@DebtEnvelopeGroupId", Constants.DebtEnvelopeGroup.Id.ToByteArray());
             command.Parameters.AddWithValue("@DebtEnvelopeGroupDescription", nameof(Constants.DebtEnvelopeGroup));
 
-            command.Parameters.AddWithValue("@IncomeEnvelopeGroupId", Constants.IncomeEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeGroupId", Constants.IncomeEnvelopeGroup.Id.ToByteArray());
             command.Parameters.AddWithValue("@IncomeEnvelopeGroupDescription", nameof(Constants.IncomeEnvelopeGroup));
 
-            command.Parameters.AddWithValue("@SystemEnvelopeGroupId", Constants.SystemEnvelopeGroup.Id);
+            command.Parameters.AddWithValue("@SystemEnvelopeGroupId", Constants.SystemEnvelopeGroup.Id.ToByteArray());
             command.Parameters.AddWithValue("@SystemEnvelopeGroupDescription", nameof(Constants.SystemEnvelopeGroup));
 
-            command.Parameters.AddWithValue("@BufferEnvelopeId", Constants.BufferEnvelope.Id);
+            command.Parameters.AddWithValue("@BufferEnvelopeId", Constants.BufferEnvelope.Id.ToByteArray());
             command.Parameters.AddWithValue("@BufferEnvelopeDescription", nameof(Constants.BufferEnvelope));
-            command.Parameters.AddWithValue("@BufferEnvelopeEnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@BufferEnvelopeEnvelopeGroupId", Constants.BufferEnvelope.Group?.Id.ToByteArray());
             command.Parameters.AddWithValue("@BufferEnvelopeIgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
 
-            command.Parameters.AddWithValue("@IgnoredEnvelopeId", Constants.IgnoredEnvelope.Id);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeId", Constants.IgnoredEnvelope.Id.ToByteArray());
             command.Parameters.AddWithValue("@IgnoredEnvelopeDescription", nameof(Constants.IgnoredEnvelope));
-            command.Parameters.AddWithValue("@IgnoredEnvelopeEnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@IgnoredEnvelopeEnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id.ToByteArray());
             command.Parameters.AddWithValue("@IgnoredEnvelopeIgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
 
-            command.Parameters.AddWithValue("@IncomeEnvelopeId", Constants.IncomeEnvelope.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeId", Constants.IncomeEnvelope.Id.ToByteArray());
             command.Parameters.AddWithValue("@IncomeEnvelopeDescription", nameof(Constants.IncomeEnvelope));
-            command.Parameters.AddWithValue("@IncomeEnvelopeEnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
+            command.Parameters.AddWithValue("@IncomeEnvelopeEnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id.ToByteArray());
             command.Parameters.AddWithValue("@IncomeEnvelopeIgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
 
-            command.Parameters.AddWithValue("@StartingBalancePayeeId", Constants.StartingBalancePayee.Id);
+            command.Parameters.AddWithValue("@StartingBalancePayeeId", Constants.StartingBalancePayee.Id.ToByteArray());
             command.Parameters.AddWithValue("@StartingBalancePayeeDescription", nameof(Constants.StartingBalancePayee));
 
             command.ExecuteNonQuery();

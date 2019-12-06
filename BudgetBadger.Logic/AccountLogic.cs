@@ -524,6 +524,11 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
+            if (account.IsGenericHiddenAccount)
+            {
+                errors.Add(_resourceContainer.GetResourceString("AccountSaveSystemError"));
+            }
+
             if (account.IsNew && !account.Balance.HasValue)
             {
                 errors.Add(_resourceContainer.GetResourceString("AccountValidBalanceError"));
@@ -553,141 +558,6 @@ namespace BudgetBadger.Logic
             }
 
             return genericHiddenAccount;
-        }
-
-
-        async Task<Result> ValidateDeleteAccountAsync(Guid accountId)
-        {
-            var errors = new List<string>();
-
-            var tempAccount = await _accountDataAccess.ReadAccountAsync(accountId).ConfigureAwait(false);
-            var account = await GetPopulatedAccount(tempAccount).ConfigureAwait(false);
-
-            if (account.IsNew)
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountDeleteInactiveError"));
-            }
-
-            if (account.Balance != 0)
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountDeleteBalanceError"));
-            }
-
-            var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
-            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
-
-            if (accountTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now)
-                || payeeTransactions.Any(t => t.IsActive && t.ServiceDate > DateTime.Now))
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountDeleteFutureTransactionsError"));
-            }
-
-            if (accountTransactions.Any(t => t.IsActive && t.Pending)
-                || payeeTransactions.Any(t => t.IsActive && t.Pending))
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountDeletePendingTransactionsError"));
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
-        }
-
-        public async Task<Result> DeleteAccountAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var validationResult = await ValidateDeleteAccountAsync(id).ConfigureAwait(false);
-                if (!validationResult.Success)
-                {
-                    return validationResult;
-                }
-
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-                account.ModifiedDateTime = DateTime.Now;
-                account.DeletedDateTime = DateTime.Now;
-                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
-
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                payee.ModifiedDateTime = DateTime.Now;
-                payee.DeletedDateTime = DateTime.Now;
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-
-                var debtEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
-                debtEnvelope.ModifiedDateTime = DateTime.Now;
-                debtEnvelope.DeletedDateTime = DateTime.Now;
-                await _envelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
-
-                var reconcileResult = await ReconcileAccount(account.Id, DateTime.Now, 0);
-
-                return reconcileResult;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result> UndoDeleteAccountAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-                if (account.IsDeleted)
-                {
-                    account.ModifiedDateTime = DateTime.Now;
-                    account.DeletedDateTime = null;
-                    await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
-
-                    var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                    payee.ModifiedDateTime = DateTime.Now;
-                    payee.DeletedDateTime = null;
-                    await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-
-                    var debtEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
-                    debtEnvelope.ModifiedDateTime = DateTime.Now;
-                    debtEnvelope.DeletedDateTime = null;
-                    await _envelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
-
-                    result.Success = true;
-                }
-                else
-                {
-                    result.Success = false;
-                    result.Message = _resourceContainer.GetResourceString("AccountUndoDeleteNotDeletedError");
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Account>>> GetDeletedAccountsAsync()
-        {
-            var result = new Result<IReadOnlyList<Account>>();
-
-            var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
-
-            var accounts = allAccounts.Where(a => a.IsDeleted);
-
-            var tasks = accounts.Select(GetPopulatedAccount);
-
-            var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-            accountsToReturn.Sort();
-
-            result.Success = true;
-            result.Data = accountsToReturn;
-
-            return result;
         }
     }
 }
