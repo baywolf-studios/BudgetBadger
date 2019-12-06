@@ -29,3 +29,9 @@ steps:
     projectFile: '**/*droid*.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.BinariesDirectory)'
+    artifact: 'AndroidTest'
+    publishLocation: 'pipeline'
