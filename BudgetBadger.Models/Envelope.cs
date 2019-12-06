@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
-using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
