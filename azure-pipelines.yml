@@ -31,3 +31,9 @@ steps:
     configuration: 'Release'
     buildForSimulator: true
     packageApp: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'BudgetBadger.iOS'
+    publishLocation: 'Container'
