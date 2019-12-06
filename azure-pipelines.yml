@@ -14,6 +14,11 @@ variables:
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+
 - task: Boots@1
   inputs:
     uri: 'https://aka.ms/xamarin-android-commercial-d16-2-macos'
