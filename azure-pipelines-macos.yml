@@ -34,9 +34,9 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'Budget_Badger_Mac_AppStore.provisionprofile'
 
-- task: VSBuild@1
+- task: MSBuild@1
   inputs:
-    solution: '**\*macOS.csproj'
+    solution: '**/*macOS.csproj'
     platform: 'any cpu'
     configuration: 'Release'
 
