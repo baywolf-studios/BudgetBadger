@@ -22,7 +22,7 @@ steps:
 - task: VSBuild@1
   inputs:
     platform: 'x86'
-    solution: '**/*UWP.sln'
+    solution: '**/*UWP.csproj'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="$(Build.BinariesDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
