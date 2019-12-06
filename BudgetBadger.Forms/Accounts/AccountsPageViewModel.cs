@@ -35,6 +35,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand EditCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand ReconcileCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
 
         bool _needToSync;
@@ -106,6 +107,7 @@ namespace BudgetBadger.Forms.Accounts
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
+            ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
         }
 
         public override async void OnActivated()
@@ -231,6 +233,16 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+        }
+
+        public async Task ExecuteReconcileCommand(Account account)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, account }
+            };
+
+            await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
         }
     }
 }
