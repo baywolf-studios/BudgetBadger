@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Resources;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
-using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
@@ -114,9 +113,20 @@ namespace BudgetBadger.Models
             set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
         }
 
+        DateTime? hiddenDateTime;
+        public DateTime? HiddenDateTime
+        {
+            get => hiddenDateTime;
+            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+        }
+
         public bool IsDeleted { get => DeletedDateTime != null; }
 
-        public bool IsActive { get => !IsNew && !IsDeleted; }
+        public bool IsHidden { get => HiddenDateTime != null; }
+
+        public bool IsActive { get => !IsNew && !IsDeleted && !IsHidden; }
+
+        public bool IsGenericHiddenAccount { get => Id == Constants.GenericHiddenAccount.Id; }
 
         public Account()
         {
@@ -182,13 +192,17 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-
+            if (IsGenericHiddenAccount == account.IsGenericHiddenAccount)
+            {
                 if (Type.Equals(account.Type))
                 {
                     return String.Compare(Description, account.Description);
                 }
 
                 return Type.CompareTo(account.Type);
+            }
+
+            return IsGenericHiddenAccount.CompareTo(account.IsGenericHiddenAccount);
         }
 
         public int CompareTo(object obj)

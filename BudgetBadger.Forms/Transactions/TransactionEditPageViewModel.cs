@@ -14,7 +14,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionEditPageViewModel : BindableBase, INavigationAware
+    public class TransactionEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -82,7 +82,7 @@ namespace BudgetBadger.Forms.Transactions
             SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
         }
 
-		public async void OnNavigatingTo(INavigationParameters parameters)
+		public async Task InitializeAsync(INavigationParameters parameters)
 		{
             var goBack = parameters.GetValue<bool>(PageParameter.GoBack);
             if (goBack)
@@ -160,8 +160,12 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async Task ExecuteSaveCommand()
@@ -241,7 +245,7 @@ namespace BudgetBadger.Forms.Transactions
             try
             {
                 BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
-                var result = await _transLogic.DeleteTransactionAsync(Transaction.Id);
+                var result = await _transLogic.SoftDeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
                     _needToSync = true;

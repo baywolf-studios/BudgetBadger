@@ -38,6 +38,8 @@ using Microsoft.Data.Sqlite;
 using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using Newtonsoft.Json;
+using BudgetBadger.Core.Utilities;
+using Prism.Logging;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -89,8 +91,6 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            await CleanupDeletedAccounts();
-            await CleanupBudgets();
             await VerifyPurchases();
             await SyncOnStartOrResume();
         }
@@ -107,6 +107,8 @@ namespace BudgetBadger.Forms
             var timer = Stopwatch.StartNew();
 
             var container = containerRegistry.GetContainer();
+
+            container.Register<ILoggerFacade, ConsoleLogger>();
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
@@ -128,11 +130,10 @@ namespace BudgetBadger.Forms
             //default dataaccess
             var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
-            container.UseInstance(new SqliteConnection(defaultConnectionString), serviceKey: "defaultConnection");
             container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"), Arg.Of<IResourceContainer>())));
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -144,15 +145,10 @@ namespace BudgetBadger.Forms
             //sync dataaccess
             var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
             container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
-            container.UseInstance(new SqliteConnection(syncConnectionString), serviceKey: "syncConnection");
-            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))),
-                                                   serviceKey: "syncAccountDataAccess");
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
-                                                 serviceKey: "syncPayeeDataAccess");
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
-                                                    serviceKey: "syncEnvelopeDataAccess");
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"), Arg.Of<IResourceContainer>())),
-                                                       serviceKey: "syncTransactionDataAccess");
+            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncAccountDataAccess");
+            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncPayeeDataAccess");
+            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncEnvelopeDataAccess");
+            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncTransactionDataAccess");
 
             //sync directory for filesyncproviders
             container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
@@ -214,28 +210,28 @@ namespace BudgetBadger.Forms
 
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
 
-            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<MyPage>("NavigationPage");
             containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage), tabletView: typeof(AccountInfoDetailedPage));
             containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
-            containerRegistry.RegisterForNavigation<DeletedAccountsPage, DeletedAccountsPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenAccountsPage, HiddenAccountsPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(desktopView: typeof(PayeesDetailedPage), tabletView: typeof(PayeesDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(desktopView: typeof(PayeeInfoDetailedPage), tabletView: typeof(PayeeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedPayeesPage, DeletedPayeesPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenPayeesPage, HiddenPayeesPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(desktopView: typeof(EnvelopesDetailedPage), tabletView: typeof(EnvelopesDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTransferPage, EnvelopeTransferPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedEnvelopesPage, DeletedEnvelopesPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenEnvelopesPage, HiddenEnvelopesPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>(desktopView: typeof(EnvelopeGroupsDetailedPage), tabletView: typeof(EnvelopeGroupsDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
-            containerRegistry.RegisterForNavigation<DeletedEnvelopeGroupsPage, DeletedEnvelopeGroupsPageViewModel>();
+            containerRegistry.RegisterForNavigation<HiddenEnvelopeGroupsPage, HiddenEnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
             containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
@@ -347,67 +343,6 @@ namespace BudgetBadger.Forms
             }
 
             return new Result { Success = true };
-        }
-
-        async Task CleanupDeletedAccounts()
-        {
-            try
-            {
-                var settings = Container.Resolve<ISettings>();
-
-                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpAccountDebtEnvelopes), out bool cleanedUp);
-
-                if (!cleanedUp)
-                {
-                    var accountLogic = Container.Resolve<IAccountLogic>();
-                    var deletedAccountsResult = await accountLogic.GetDeletedAccountsAsync();
-                    if (deletedAccountsResult.Success)
-                    {
-                        foreach (var account in deletedAccountsResult.Data)
-                        {
-                            await accountLogic.DeleteAccountAsync(account.Id);
-                        }
-                    }
-
-                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpAccountDebtEnvelopes, true.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
-        async Task CleanupBudgets()
-        {
-            try
-            {
-                var settings = Container.Resolve<ISettings>();
-
-                bool.TryParse(settings.GetValueOrDefault(AppSettings.CleanedUpBudgets), out bool cleanedUp);
-
-                if (!cleanedUp)
-                {
-                    var envelopeDataAccess = Container.Resolve<IEnvelopeDataAccess>();
-                    var budgets = await envelopeDataAccess.ReadBudgetsAsync();
-                    foreach (var budget in budgets)
-                    {
-                        var newAmount = StaticResourceContainer.Current.GetRoundedDecimal(budget.Amount);
-                        if (budget.Amount != newAmount)
-                        {
-                            budget.Amount = newAmount;
-                            budget.ModifiedDateTime = DateTime.Now;
-                            await envelopeDataAccess.UpdateBudgetAsync(budget);
-                        }
-                    }
-
-                    await settings.AddOrUpdateValueAsync(AppSettings.CleanedUpBudgets, true.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
         }
     }
 }

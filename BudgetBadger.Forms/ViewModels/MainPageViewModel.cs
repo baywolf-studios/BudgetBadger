@@ -14,7 +14,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.ViewModels
 {
-    public class MainPageViewModel : INavigatingAware
+    public class MainPageViewModel : IInitializeAsync
     {
         readonly INavigationService _navigationService;
         readonly ITransactionLogic _transactionLogic;
@@ -43,11 +43,11 @@ namespace BudgetBadger.Forms.ViewModels
         {
             if (!string.IsNullOrEmpty(pageName))
             {
-                await _navigationService.NavigateAsync(pageName);
+                await _navigationService.NavigateAsync(pageName, animated: false);
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             bool.TryParse(_settings.GetValueOrDefault(AppSettings.AskedForReview), out bool alreadyAskedForRevew);
 

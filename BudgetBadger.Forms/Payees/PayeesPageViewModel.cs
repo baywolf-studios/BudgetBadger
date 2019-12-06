@@ -35,7 +35,6 @@ namespace BudgetBadger.Forms.Payees
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
 
@@ -108,7 +107,6 @@ namespace BudgetBadger.Forms.Payees
             SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Payee>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
         }
 
@@ -142,12 +140,19 @@ namespace BudgetBadger.Forms.Payees
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
+                await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
 
-            await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -228,21 +233,6 @@ namespace BudgetBadger.Forms.Payees
                 { PageParameter.Payee, payee }
             };
             await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
-        }
-
-        public async Task ExecuteDeleteCommand(Payee payee)
-        {
-            var result = await _payeeLogic.Value.DeletePayeeAsync(payee.Id);
-
-            if (result.Success)
-            {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
         }
 
         public async Task ExecuteAddTransactionCommand()

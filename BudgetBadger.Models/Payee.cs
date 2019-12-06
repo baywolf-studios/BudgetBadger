@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Models.Interfaces;
-using Newtonsoft.Json;
 
 namespace BudgetBadger.Models
 {
@@ -60,13 +59,27 @@ namespace BudgetBadger.Models
             set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
         }
 
+        DateTime? hiddenDateTime;
+        public DateTime? HiddenDateTime
+        {
+            get => hiddenDateTime;
+            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+        }
+
         public bool IsDeleted { get => DeletedDateTime != null; }
 
-        public bool IsActive { get => !IsNew && !IsDeleted; }
+        public bool IsHidden { get => HiddenDateTime != null; }
+
+        public bool IsActive { get => !IsNew && !IsDeleted && !IsHidden; }
 
         public bool IsStartingBalance
         {
             get => Id == Constants.StartingBalancePayee.Id;
+        }
+
+        public bool IsGenericHiddenPayee
+        {
+            get => Id == Constants.GenericHiddenPayee.Id;
         }
 
         // calculated
@@ -97,7 +110,9 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
+            
             var payee = (Payee)this.MemberwiseClone();
+
             payee.Description = this.Description == null ? null : String.Copy(this.Description);
             payee.Notes = this.Notes == null ? null : String.Copy(this.Notes);
             payee.Group = this.Group == null ? null : String.Copy(this.Group);
@@ -153,17 +168,22 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            if (IsAccount.Equals(payee.IsAccount))
+            if (IsGenericHiddenPayee.Equals(payee.IsGenericHiddenPayee))
             {
-                if (Group.Equals(payee.Group))
+                if (IsAccount.Equals(payee.IsAccount))
                 {
-                    return String.Compare(Description, payee.Description);
+                    if (Group.Equals(payee.Group))
+                    {
+                        return String.Compare(Description, payee.Description);
+                    }
+
+                    return String.Compare(Group, payee.Group);
                 }
 
-                return String.Compare(Group, payee.Group);
+                return -1 * IsAccount.CompareTo(payee.IsAccount);
             }
 
-            return -1 * IsAccount.CompareTo(payee.IsAccount);
+            return IsGenericHiddenPayee.CompareTo(payee.IsGenericHiddenPayee);
         }
 
         public int CompareTo(object obj)

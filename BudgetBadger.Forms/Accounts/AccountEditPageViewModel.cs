@@ -18,7 +18,7 @@ using BudgetBadger.Core.LocalizedResources;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigationAware
+    public class AccountEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
@@ -63,8 +63,9 @@ namespace BudgetBadger.Forms.Accounts
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
-        public ICommand UndoDeleteCommand { get; set; }
+        public ICommand HideCommand { get; set; }
+        public ICommand UnhideCommand { get; set; }
+        public ICommand SoftDeleteCommand { get; set; }
 
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
@@ -81,8 +82,9 @@ namespace BudgetBadger.Forms.Accounts
             Account = new Account();
 
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
-            UndoDeleteCommand = new DelegateCommand(async () => await ExecuteUndoDeleteCommand());
+            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand());
+            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
+            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand());
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -100,11 +102,15 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if(parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
@@ -155,7 +161,54 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteDeleteCommand()
+        public async Task ExecuteSoftDeleteCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            var confirm = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertConfirmation"),
+                _resourceContainer.GetResourceString("AlertConfirmDelete"),
+                _resourceContainer.GetResourceString("AlertOk"),
+                _resourceContainer.GetResourceString("AlertCancel"));
+
+            if (confirm)
+            {
+                IsBusy = true;
+
+                try
+                {
+                    BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
+
+                    var result = await _accountLogic.SoftDeleteAccountAsync(Account.Id);
+                    if (result.Success)
+                    {
+                        _needToSync = true;
+
+                        if (Device.RuntimePlatform == Device.macOS)
+                        {
+                            await _navigationService.GoBackAsync();
+                        }
+                        else
+                        {
+                            await _navigationService.GoBackToRootAsync();
+                        }
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+
+                    }
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            }
+        }
+
+        public async Task ExecuteHideCommand()
         {
 			if (IsBusy)
             {
@@ -166,9 +219,9 @@ namespace BudgetBadger.Forms.Accounts
 
 			try
 			{
-				BusyText = _resourceContainer.GetResourceString("BusyTextDeleting");
+				BusyText = _resourceContainer.GetResourceString("BusyTextHiding");
 
-                var result = await _accountLogic.DeleteAccountAsync(Account.Id);
+                var result = await _accountLogic.HideAccountAsync(Account.Id);
 				if (result.Success)
 				{
                     _needToSync = true;
@@ -184,7 +237,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
 				else
 				{
-					await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+					await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertHideUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
 
                 }
 			}
@@ -194,7 +247,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteUndoDeleteCommand()
+        public async Task ExecuteUnhideCommand()
         {
             if (IsBusy)
             {
@@ -205,8 +258,8 @@ namespace BudgetBadger.Forms.Accounts
 
             try
             {
-                BusyText = _resourceContainer.GetResourceString("BusyTextUndoingDelete");
-                var result = await _accountLogic.UndoDeleteAccountAsync(Account.Id);
+                BusyText = _resourceContainer.GetResourceString("BusyTextUnhiding");
+                var result = await _accountLogic.UnhideAccountAsync(Account.Id);
                 if (result.Success)
                 {
                     _needToSync = true;
@@ -215,7 +268,7 @@ namespace BudgetBadger.Forms.Accounts
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertUndoDeleteUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertHideUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
             finally

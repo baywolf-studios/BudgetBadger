@@ -120,17 +120,8 @@
   <data name="AccountBalanceLabel" xml:space="preserve">
     <value>Balance</value>
   </data>
-  <data name="AccountDeleteBalanceError" xml:space="preserve">
-    <value>Cannot delete an account with balance</value>
-  </data>
-  <data name="AccountDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete an account with future transactions</value>
-  </data>
   <data name="AccountDeleteInactiveError" xml:space="preserve">
     <value>Cannot delete an inactive account</value>
-  </data>
-  <data name="AccountDeletePendingTransactionsError" xml:space="preserve">
-    <value>Cannot delete an account with pending transactions</value>
   </data>
   <data name="AccountEditPageTitle" xml:space="preserve">
     <value>Edit Account</value>
@@ -392,12 +383,6 @@
   </data>
   <data name="EnvelopeDeleteDebtError" xml:space="preserve">
     <value>Cannot delete debt envelopes</value>
-  </data>
-  <data name="EnvelopeDeleteFutureBudgetsError" xml:space="preserve">
-    <value>Cannot delete nvelope with future budget amounts</value>
-  </data>
-  <data name="EnvelopeDeleteFutureTransactionsError" xml:space="preserve">
-    <value>Cannot delete nvelope with future transactions</value>
   </data>
   <data name="EnvelopeDeleteIncomeError" xml:space="preserve">
     <value>Cannot delete income envelopes</value>
@@ -923,5 +908,149 @@
   </data>
   <data name="BudgetValidAlreadyExists" xml:space="preserve">
     <value>Budget already exists</value>
+  </data>
+  <data name="EnvelopeDeleteNonZeroBudgetsError" xml:space="preserve">
+    <value>Cannot delete an envelope with budget amounts</value>
+  </data>
+  <data name="EnvelopeDeleteSystemError" xml:space="preserve">
+    <value>Cannot delete system envelope</value>
+  </data>
+  <data name="EnvelopeDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Cannot delete an envelope with transactions</value>
+  </data>
+  <data name="EnvelopeDeleteNotHiddenError" xml:space="preserve">
+    <value>Cannot delete envelope unless it's hidden</value>
+  </data>
+  <data name="EnvelopeHideInactiveError" xml:space="preserve">
+    <value>Cannot hide an inactive envelope</value>
+  </data>
+  <data name="EnvelopeHideSystemError" xml:space="preserve">
+    <value>Cannot hide a system envelope</value>
+  </data>
+  <data name="EnvelopeUnhideNotHiddenError" xml:space="preserve">
+    <value>Cannot unhide an envelope unless it's currently hidden</value>
+  </data>
+  <data name="EnvelopeGroupDeleteNotHiddenError" xml:space="preserve">
+    <value>Cannot delete envelope group unless it's hidden</value>
+  </data>
+  <data name="EnvelopeGroupDeleteSystemError" xml:space="preserve">
+    <value>Cannot delete system envelope group</value>
+  </data>
+  <data name="EnvelopeGroupDeleteActiveEnvelopesError" xml:space="preserve">
+    <value>Cannot delete envelope group with active envelopes</value>
+  </data>
+  <data name="EnvelopeGroupHideInactiveError" xml:space="preserve">
+    <value>Cannot hide an inactive envelope group</value>
+  </data>
+  <data name="EnvelopeGroupHideSystemError" xml:space="preserve">
+    <value>Cannot hide system envelope group</value>
+  </data>
+  <data name="EnvelopeGroupHideActiveEnvelopesError" xml:space="preserve">
+    <value>Cannot hide envelope group with active envelopes</value>
+  </data>
+  <data name="EnvelopeGroupUnhideNotHiddenError" xml:space="preserve">
+    <value>Cannot unhide envelope group unless it's hidden</value>
+  </data>
+  <data name="AccountDeleteNotHiddenError" xml:space="preserve">
+    <value>Cannot delete account unless it's hidden</value>
+  </data>
+  <data name="AccountDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Cannot delete account with active transactions</value>
+  </data>
+  <data name="AccountHideInactiveError" xml:space="preserve">
+    <value>Cannot hide inactive account</value>
+  </data>
+  <data name="AccountUnhideNotHiddenError" xml:space="preserve">
+    <value>Cannot unhide account unless it’s hidden</value>
+  </data>
+  <data name="PayeeDeleteNotHiddenError" xml:space="preserve">
+    <value>Cannot delete payee unless it’s hidden</value>
+  </data>
+  <data name="PayeeDeleteSystemError" xml:space="preserve">
+    <value>Cannot delete system payee</value>
+  </data>
+  <data name="PayeeDeleteActiveTransactionsError" xml:space="preserve">
+    <value>Cannot delete payee with active transactions</value>
+  </data>
+  <data name="PayeeHideInactiveError" xml:space="preserve">
+    <value>Cannot hide inactive payee</value>
+  </data>
+  <data name="PayeeHideSystemError" xml:space="preserve">
+    <value>Cannot hide system payee</value>
+  </data>
+  <data name="PayeeUnhideNotHiddenError" xml:space="preserve">
+    <value>Cannot unhide payee unless it’s hidden</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="HiddenAccountsPageTitle" xml:space="preserve">
+    <value>Hidden Accounts</value>
+  </data>
+  <data name="EmptyHiddenAccountsHelperTitle" xml:space="preserve">
+    <value>No hidden accounts</value>
+  </data>
+  <data name="HiddenPayeesPageTitle" xml:space="preserve">
+    <value>Hidden Payees</value>
+  </data>
+  <data name="EmptyHiddenPayeesHelperTitle" xml:space="preserve">
+    <value>No hidden payees</value>
+  </data>
+  <data name="HiddenEnvelopeGroupsPageTitle" xml:space="preserve">
+    <value>Hidden Envelope Groups</value>
+  </data>
+  <data name="EmptyHiddenEnvelopeGroupsHelperTitle" xml:space="preserve">
+    <value>No hidden envelope groups</value>
+  </data>
+  <data name="HiddenEnvelopesPageTitle" xml:space="preserve">
+    <value>Hidden Envelopes</value>
+  </data>
+  <data name="EmptyHiddenEnvelopesHelperTitle" xml:space="preserve">
+    <value>No hidden envelopes</value>
+  </data>
+  <data name="AlertHideUnsuccessful" xml:space="preserve">
+    <value>Hide Unsuccessful</value>
+  </data>
+  <data name="BusyTextHiding" xml:space="preserve">
+    <value>Hiding</value>
+  </data>
+  <data name="BusyTextUnhiding" xml:space="preserve">
+    <value>Unhiding</value>
+  </data>
+  <data name="EditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="HideButton" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="UnhideButton" xml:space="preserve">
+    <value>Unhide</value>
+  </data>
+  <data name="AlertUnhideUnsuccessful" xml:space="preserve">
+    <value>Unhide Unsuccessful</value>
+  </data>
+  <data name="AlertConfirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="AlertConfirmDelete" xml:space="preserve">
+    <value>Delete the item?</value>
+  </data>
+  <data name="PayeeSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system payee</value>
+  </data>
+  <data name="EnvelopeSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system envelope</value>
+  </data>
+  <data name="EnvelopeGroupSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system envelope group</value>
+  </data>
+  <data name="AccountSaveSystemError" xml:space="preserve">
+    <value>Cannot edit system account</value>
+  </data>
+  <data name="AccountDeleteSystemError" xml:space="preserve">
+    <value>Cannot delete system account</value>
+  </data>
+  <data name="AccountHideSystemError" xml:space="preserve">
+    <value>Cannot hide system account</value>
   </data>
 </root>

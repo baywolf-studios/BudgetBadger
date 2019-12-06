@@ -19,7 +19,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : BindableBase, INavigationAware
+    public class PayeeInfoPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -143,8 +143,12 @@ namespace BudgetBadger.Forms.Payees
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -162,7 +166,7 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
@@ -320,7 +324,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteDeleteTransactionCommand(Transaction transaction)
         {
-            var result = await _transactionLogic.Value.DeleteTransactionAsync(transaction.Id);
+            var result = await _transactionLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
             if (result.Success)
             {

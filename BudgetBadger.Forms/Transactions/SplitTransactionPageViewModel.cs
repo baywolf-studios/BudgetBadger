@@ -18,7 +18,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class SplitTransactionPageViewModel : BindableBase, INavigationAware
+    public class SplitTransactionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly INavigationService _navigationService;
@@ -160,7 +160,7 @@ namespace BudgetBadger.Forms.Transactions
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
@@ -263,8 +263,12 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -355,7 +359,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 try
                 {
-                    var result = await _transLogic.Value.DeleteTransactionAsync(transaction.Id);
+                    var result = await _transLogic.Value.SoftDeleteTransactionAsync(transaction.Id);
 
                     if (!result.Success)
                     {

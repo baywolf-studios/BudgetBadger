@@ -9,44 +9,10 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class AccountSqliteDataAccess : IAccountDataAccess
+    public class AccountSqliteDataAccess : SqliteDataAccess, IAccountDataAccess
     {
-        readonly string _connectionString;
-
-        public AccountSqliteDataAccess(string connectionString)
+        public AccountSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
-
-            Initialize();
-        }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS Account 
-                                      ( 
-                                         Id               BLOB PRIMARY KEY NOT NULL, 
-                                         Description      TEXT NOT NULL, 
-                                         OnBudget         INTEGER NOT NULL, 
-                                         Notes            TEXT, 
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT
-                                      );
-                                    ";
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task CreateAccountAsync(Account account)
@@ -67,22 +33,25 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                  Notes, 
                                                  CreatedDateTime, 
                                                  ModifiedDateTime, 
-                                                 DeletedDateTime) 
+                                                 DeletedDateTime,
+                                                 HiddenDateTime) 
                                     VALUES     (@Id, 
                                                 @Description, 
                                                 @OnBudget, 
                                                 @Notes, 
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime,
+                                                @HiddenDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Id", account.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", account.Description);
                         command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
                         command.Parameters.AddWithValue("@Notes", account.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", account.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
@@ -104,7 +73,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE Account WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -130,11 +99,12 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            AC.Notes, 
                                            AC.CreatedDateTime, 
                                            AC.ModifiedDateTime, 
-                                           AC.DeletedDateTime
+                                           AC.DeletedDateTime,
+                                           AC.HiddenDateTime
                                     FROM   Account AS AC 
                                     WHERE  AC.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -148,7 +118,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -178,7 +149,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            A.Notes, 
                                            A.CreatedDateTime, 
                                            A.ModifiedDateTime, 
-                                           A.DeletedDateTime
+                                           A.DeletedDateTime,
+                                           A.HiddenDateTime
                                     FROM   Account AS A";
 
                         using (var reader = command.ExecuteReader())
@@ -193,7 +165,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -222,16 +195,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            Notes = @Notes, 
                                            CreatedDateTime = @CreatedDateTime, 
                                            ModifiedDateTime = @ModifiedDateTime, 
-                                           DeletedDateTime = @DeletedDateTime 
+                                           DeletedDateTime = @DeletedDateTime,
+                                           HiddenDateTime = @HiddenDateTime
                                     WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", account.Id);
+                        command.Parameters.AddWithValue("@Id", account.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", account.Description);
                         command.Parameters.AddWithValue("@OnBudget", account.OnBudget);
                         command.Parameters.AddWithValue("@Notes", account.Notes);
                         command.Parameters.AddWithValue("@CreatedDateTime", account.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", account.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", account.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", account.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }

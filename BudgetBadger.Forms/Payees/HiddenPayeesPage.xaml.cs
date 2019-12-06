@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public partial class DeletedPayeesPage : BasePage
+    public partial class HiddenPayeesPage : BasePage
     {
-        public DeletedPayeesPage()
+        public HiddenPayeesPage()
         {
             InitializeComponent();
         }

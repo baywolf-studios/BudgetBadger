@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -113,6 +113,8 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
+            Envelopes = new List<Envelope>();
+
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
             if (Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Desktop || Xamarin.Forms.Device.Idiom == Xamarin.Forms.TargetIdiom.Tablet)
@@ -125,15 +127,19 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             var envelopesResult = await _envelopeLogic.GetEnvelopesForReportAsync();
             if (envelopesResult.Success)

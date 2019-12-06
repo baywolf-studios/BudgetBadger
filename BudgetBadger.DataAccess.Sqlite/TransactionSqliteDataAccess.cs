@@ -10,53 +10,10 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class TransactionSqliteDataAccess : ITransactionDataAccess
+    public class TransactionSqliteDataAccess : SqliteDataAccess, ITransactionDataAccess
     {
-        readonly string _connectionString;
-        readonly IResourceContainer _resourceContainer;
-
-        public TransactionSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer)
+        public TransactionSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
-            _resourceContainer = resourceContainer;
-
-            Initialize();
-        }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS [Transaction]
-                                          ( 
-                                             Id                 BLOB PRIMARY KEY NOT NULL, 
-                                             Amount             TEXT NOT NULL, 
-                                             Posted             INTEGER NOT NULL,
-                                             ReconciledDateTime TEXT,
-                                             AccountId          BLOB NOT NULL, 
-                                             PayeeId            BLOB NOT NULL, 
-                                             EnvelopeId         BLOB NOT NULL,
-                                             SplitId            BLOB, 
-                                             ServiceDate        TEXT NOT NULL, 
-                                             Notes              TEXT, 
-                                             CreatedDateTime    TEXT NOT NULL, 
-                                             ModifiedDateTime   TEXT NOT NULL, 
-                                             DeletedDateTime    TEXT 
-                                          );
-                                        ";
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task CreateTransactionAsync(Transaction transaction)
@@ -98,14 +55,14 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                      @ModifiedDateTime, 
                                                      @DeletedDateTime) ";
 
-                        command.Parameters.AddWithValue("@Id", transaction.Id);
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
+                        command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId?.ToByteArray() ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                         command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
@@ -147,7 +104,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -206,7 +163,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  AccountId = @AccountId";
 
-                        command.Parameters.AddWithValue("@AccountId", accountId);
+                        command.Parameters.AddWithValue("@AccountId", accountId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -266,7 +223,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  PayeeId = @PayeeId";
 
-                        command.Parameters.AddWithValue("@PayeeId", payeeId);
+                        command.Parameters.AddWithValue("@PayeeId", payeeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -326,7 +283,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  EnvelopeId = @EnvelopeId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -386,7 +343,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         FROM   [Transaction]
                                         WHERE  SplitId = @SplitId";
 
-                        command.Parameters.AddWithValue("@SplitId", splitId);
+                        command.Parameters.AddWithValue("@SplitId", splitId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -500,14 +457,14 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                DeletedDateTime = @DeletedDateTime 
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", transaction.Id);
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(transaction.Amount));
+                        command.Parameters.AddWithValue("@Id", transaction.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@Amount", transaction.Amount);
                         command.Parameters.AddWithValue("@Posted", transaction.Posted);
                         command.Parameters.AddWithValue("@ReconciledDateTime", transaction.ReconciledDateTime ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id);
-                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id);
-                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@AccountId", transaction.Account?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@PayeeId", transaction.Payee?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", transaction.Envelope?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@SplitId", transaction.SplitId?.ToByteArray() ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceDate", transaction.ServiceDate);
                         command.Parameters.AddWithValue("@Notes", transaction.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", transaction.CreatedDateTime);
@@ -520,7 +477,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task DeleteTransaction(Guid id)
+        public async Task DeleteTransactionAsync(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -533,7 +490,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE [Transaction] WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }

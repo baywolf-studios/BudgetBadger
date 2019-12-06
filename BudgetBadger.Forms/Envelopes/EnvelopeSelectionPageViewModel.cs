@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware
+    public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -96,10 +96,16 @@ namespace BudgetBadger.Forms.Envelopes
             if (envelope != null || budget != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
+            }
+
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
             }
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             _transferEnvelopeSelection = parameters.GetValue<bool>(PageParameter.TransferEnvelopeSelection);
 

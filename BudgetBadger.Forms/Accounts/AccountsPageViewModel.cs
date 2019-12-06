@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BaseViewModel, INavigatingAware
+    public class AccountsPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IAccountLogic> _accountLogic;
@@ -33,9 +33,9 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand RefreshCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand ReconcileCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
 
         bool _needToSync;
@@ -105,9 +105,9 @@ namespace BudgetBadger.Forms.Accounts
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
-            DeleteCommand = new DelegateCommand<Account>(async a => await ExecuteDeleteCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
+            ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
         }
 
         public override async void OnActivated()
@@ -133,8 +133,12 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        // this gets hit before the OnAppearing
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        // this gets hit before the OnActivated
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
@@ -156,12 +160,19 @@ namespace BudgetBadger.Forms.Accounts
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (account.IsGenericHiddenAccount)
             {
-                { PageParameter.Account, account }
-            };
+                await _navigationService.NavigateAsync(PageName.HiddenAccountsPage);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, account }
+                };
 
-            await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.AccountInfoPage, parameters);
+            }
         }
 
         public async Task ExecuteRefreshCommand()
@@ -209,21 +220,6 @@ namespace BudgetBadger.Forms.Accounts
             await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
-        public async Task ExecuteDeleteCommand(Account account)
-        {
-            var result = await _accountLogic.Value.DeleteAccountAsync(account.Id);
-
-            if (result.Success)
-            {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDeleteUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
-        }
-
         public async Task ExecuteAddTransactionCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
@@ -241,6 +237,16 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+        }
+
+        public async Task ExecuteReconcileCommand(Account account)
+        {
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, account }
+            };
+
+            await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
         }
     }
 }

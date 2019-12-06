@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeSelectionPageViewModel : BindableBase, INavigationAware
+    public class PayeeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
@@ -95,10 +95,17 @@ namespace BudgetBadger.Forms.Payees
             if (payee != null)
             {
                 await _navigationService.GoBackAsync(parameters);
+                return;
             }
+
+            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            {
+                await InitializeAsync(parameters);
+            }
+            
         }
 
-        public async void OnNavigatingTo(INavigationParameters parameters)
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

@@ -10,339 +10,11 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class EnvelopeSqliteDataAccess : IEnvelopeDataAccess
+    public class EnvelopeSqliteDataAccess : SqliteDataAccess, IEnvelopeDataAccess
     {
-        readonly string _connectionString;
-        readonly IResourceContainer _resourceContainer;
-
-        public EnvelopeSqliteDataAccess(string connectionString,
-            IResourceContainer resourceContainer)
+        public EnvelopeSqliteDataAccess(string connectionString) : base(connectionString)
         {
-            _connectionString = connectionString;
-            _resourceContainer = resourceContainer;
-
-            Initialize();
         }
-
-        async void Initialize()
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"CREATE TABLE IF NOT EXISTS EnvelopeGroup 
-                                      ( 
-                                         Id               BLOB PRIMARY KEY NOT NULL, 
-                                         Description      TEXT NOT NULL, 
-                                         Notes            TEXT, 
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT 
-                                      ); 
-
-                                    CREATE TABLE IF NOT EXISTS Envelope 
-                                      ( 
-                                         Id               BLOB PRIMARY KEY NOT NULL, 
-                                         Description      TEXT NOT NULL, 
-                                         EnvelopeGroupId  BLOB NOT NULL, 
-                                         Notes            TEXT, 
-                                         IgnoreOverspend  INTEGER NOT NULL,
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT,
-                                         FOREIGN KEY(EnvelopeGroupId) REFERENCES EnvelopeGroup(Id)
-                                      ); 
-            
-                                    CREATE TABLE IF NOT EXISTS BudgetSchedule 
-                                      ( 
-                                         Id          BLOB PRIMARY KEY NOT NULL, 
-                                         BeginDate   TEXT NOT NULL,
-                                         EndDate     TEXT NOT NULL,
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT
-                                      );
-            
-                                    CREATE TABLE IF NOT EXISTS Budget 
-                                      ( 
-                                         Id               BLOB PRIMARY KEY NOT NULL, 
-                                         Amount           TEXT NOT NULL,
-                                         IgnoreOverspend  INTEGER NOT NULL, 
-                                         BudgetScheduleId BLOB NOT NULL, 
-                                         EnvelopeId       BLOB NOT NULL,
-                                         CreatedDateTime  TEXT NOT NULL, 
-                                         ModifiedDateTime TEXT NOT NULL, 
-                                         DeletedDateTime  TEXT,
-                                         FOREIGN KEY(BudgetScheduleId) REFERENCES BudgetSchedule(Id),
-                                         FOREIGN KEY(EnvelopeId) REFERENCES Envelope(Id)
-                                      );";
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-
-            // envelope groups
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                (Id, 
-                                                 Description, 
-                                                 Notes, 
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @Notes, 
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE EnvelopeGroup
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;
-                                    ";
-
-                        command.Parameters.AddWithValue("@Id", Constants.DebtEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup)));
-                        command.Parameters.AddWithValue("@Notes", Constants.DebtEnvelopeGroup.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.DebtEnvelopeGroup.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.DebtEnvelopeGroup.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.DebtEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                (Id, 
-                                                 Description, 
-                                                 Notes, 
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @Notes, 
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE EnvelopeGroup
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup)));
-                        command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelopeGroup.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelopeGroup.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelopeGroup.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.IncomeEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-
-                    }
-                });
-            }
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO EnvelopeGroup
-                                                (Id, 
-                                                 Description, 
-                                                 Notes, 
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @Notes, 
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE EnvelopeGroup
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.SystemEnvelopeGroup.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup)));
-                        command.Parameters.AddWithValue("@Notes", Constants.SystemEnvelopeGroup.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.SystemEnvelopeGroup.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.SystemEnvelopeGroup.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.SystemEnvelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                (Id, 
-                                                 Description, 
-                                                 EnvelopeGroupId, 
-                                                 Notes, 
-                                                 IgnoreOverspend,
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @EnvelopeGroupId,
-                                                @Notes, 
-                                                @IgnoreOverspend,
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE Envelope
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.BufferEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.BufferEnvelope.Group?.Id);
-                        command.Parameters.AddWithValue("@Notes", Constants.BufferEnvelope.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@IgnoreOverspend", Constants.BufferEnvelope.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.BufferEnvelope.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.BufferEnvelope.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.BufferEnvelope.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                (Id, 
-                                                 Description, 
-                                                 EnvelopeGroupId, 
-                                                 Notes, 
-                                                 IgnoreOverspend,
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @EnvelopeGroupId,
-                                                @Notes, 
-                                                @IgnoreOverspend,
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE Envelope
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.IgnoredEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IgnoredEnvelope.Group?.Id);
-                        command.Parameters.AddWithValue("@Notes", Constants.IgnoredEnvelope.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IgnoredEnvelope.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.IgnoredEnvelope.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IgnoredEnvelope.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.IgnoredEnvelope.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"INSERT OR IGNORE INTO Envelope 
-                                                (Id, 
-                                                 Description, 
-                                                 EnvelopeGroupId, 
-                                                 Notes, 
-                                                 IgnoreOverspend,
-                                                 CreatedDateTime, 
-                                                 ModifiedDateTime, 
-                                                 DeletedDateTime) 
-                                    VALUES     (@Id, 
-                                                @Description, 
-                                                @EnvelopeGroupId,
-                                                @Notes, 
-                                                @IgnoreOverspend,
-                                                @CreatedDateTime, 
-                                                @ModifiedDateTime, 
-                                                @DeletedDateTime);
-
-                                    UPDATE Envelope
-                                    SET    Description = @Description
-                                    WHERE  Id = @Id;";
-
-                        command.Parameters.AddWithValue("@Id", Constants.IncomeEnvelope.Id);
-                        command.Parameters.AddWithValue("@Description", _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope)));
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id);
-                        command.Parameters.AddWithValue("@Notes", Constants.IncomeEnvelope.Notes ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@IgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@CreatedDateTime", Constants.IncomeEnvelope.CreatedDateTime);
-                        command.Parameters.AddWithValue("@ModifiedDateTime", Constants.IncomeEnvelope.ModifiedDateTime);
-                        command.Parameters.AddWithValue("@DeletedDateTime", Constants.IncomeEnvelope.DeletedDateTime ?? (object)DBNull.Value);
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-        }
-
 
         public async Task CreateBudgetAsync(Budget budget)
         {
@@ -371,11 +43,11 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
+                        command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@Amount", budget.Amount);
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
-                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
+                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", budget.ModifiedDateTime);
 
@@ -409,7 +81,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
+                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id.ToByteArray());
                         command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
                         command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                         command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
@@ -441,7 +113,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                  IgnoreOverspend,
                                                  CreatedDateTime, 
                                                  ModifiedDateTime, 
-                                                 DeletedDateTime) 
+                                                 DeletedDateTime,
+                                                 HiddenDateTime) 
                                     VALUES     (@Id, 
                                                 @Description, 
                                                 @EnvelopeGroupId,
@@ -449,16 +122,18 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                 @IgnoreOverspend,
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime,
+                                                @HiddenDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", envelope.Id);
+                        command.Parameters.AddWithValue("@Id", envelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelope.Description);
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", envelope.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", envelope.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", envelope.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
@@ -484,20 +159,23 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                  Notes, 
                                                  CreatedDateTime, 
                                                  ModifiedDateTime, 
-                                                 DeletedDateTime) 
+                                                 DeletedDateTime,
+                                                 HiddenDateTime) 
                                     VALUES     (@Id, 
                                                 @Description, 
                                                 @Notes, 
                                                 @CreatedDateTime, 
                                                 @ModifiedDateTime, 
-                                                @DeletedDateTime)";
+                                                @DeletedDateTime,
+                                                @HiddenDateTime)";
 
-                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelopeGroup.Description);
                         command.Parameters.AddWithValue("@Notes", envelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", envelopeGroup.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", envelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", envelopeGroup.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
@@ -519,7 +197,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE FROM Budget WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -541,7 +219,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE BudgetSchedule WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -563,7 +241,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE Envelope WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -585,7 +263,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
                         command.CommandText = @"DELETE EnvelopeGroup WHERE Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         command.ExecuteNonQuery();
                     }
@@ -622,20 +300,22 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope AS E ON B.EnvelopeId = E.Id
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  B.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -665,6 +345,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -672,7 +353,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
                                             CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                             ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                            HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 };
@@ -715,13 +397,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule AS BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope AS E ON B.EnvelopeId = E.Id
@@ -755,6 +439,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -762,7 +447,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
                                             CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                             ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                            HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -797,27 +483,29 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            BS.BeginDate        AS BudgetScheduleBeginDate, 
                                            BS.EndDate          AS BudgetScheduleEndDate,
                                            BS.CreatedDateTime  AS BudgetScheduleCreatedDateTime, 
-                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime,  
+                                           BS.ModifiedDateTime AS BudgetScheduleModifiedDateTime, 
                                            B.EnvelopeId, 
                                            E.Description       AS EnvelopeDescription, 
                                            E.Notes             AS EnvelopeNotes, 
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  BS.Id = @ScheduleId";
 
-                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -847,6 +535,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -854,7 +543,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
                                             CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                             ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                            HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -895,20 +585,22 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @EnvelopeId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -938,6 +630,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -945,7 +638,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
                                             CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                             ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                            HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 });
@@ -987,21 +681,23 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.IgnoreOverspend   AS EnvelopeIgnoreOverspend,
                                            E.CreatedDateTime   AS EnvelopeCreatedDateTime, 
                                            E.ModifiedDateTime  AS EnvelopeModifiedDateTime, 
-                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime, 
+                                           E.DeletedDateTime   AS EnvelopeDeletedDateTime,
+                                           E.HiddenDateTime    AS EnvelopeHiddenDateTime,
                                            EG.Id               AS EnvelopeGroupId, 
                                            EG.Description      AS EnvelopeGroupDescription,
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Budget AS B 
                                     JOIN   BudgetSchedule BS ON B.BudgetScheduleId = BS.Id
                                     JOIN   Envelope E ON B.EnvelopeId = E.Id
                                     JOIN   EnvelopeGroup EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @EnvelopeId AND BS.Id = @ScheduleId";
 
-                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId);
-                        command.Parameters.AddWithValue("@ScheduleId", scheduleId);
+                        command.Parameters.AddWithValue("@EnvelopeId", envelopeId.ToByteArray());
+                        command.Parameters.AddWithValue("@ScheduleId", scheduleId.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1031,6 +727,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
                                         Group = new EnvelopeGroup
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
@@ -1038,7 +735,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                             Notes = reader["EnvelopeGroupNotes"].ToString(),
                                             CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                             ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                            DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                            HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                         }
                                     }
                                 };
@@ -1071,7 +769,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     FROM   BudgetSchedule
                                     WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1156,17 +854,19 @@ namespace BudgetBadger.DataAccess.Sqlite
                                            E.CreatedDateTime, 
                                            E.ModifiedDateTime, 
                                            E.DeletedDateTime, 
-                                           E.EnvelopeGroupId, 
+                                           E.EnvelopeGroupId,
+                                           E.HiddenDateTime,
                                            EG.Description      AS EnvelopeGroupDescription, 
                                            EG.Notes            AS EnvelopeGroupNotes, 
                                            EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                            EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                           EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                           EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                     FROM   Envelope AS E
                                     JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id
                                     WHERE  E.Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1185,11 +885,13 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         Notes = reader["EnvelopeGroupNotes"].ToString(),
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                     },
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -1199,14 +901,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                 });
             }
             
-        }
-
-        public Envelope ReadGenericDebtEnvelope()
-        {
-            var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
-            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
-            genericDebtEnvelope.Group.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
-            return genericDebtEnvelope;
         }
 
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
@@ -1227,11 +921,12 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime
+                                               DeletedDateTime,
+                                               HiddenDateTime
                                         FROM   EnvelopeGroup
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
 
                         using (var reader = command.ExecuteReader())
                         {
@@ -1244,7 +939,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 };
                             }
                         }
@@ -1274,7 +970,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes, 
                                                CreatedDateTime, 
                                                ModifiedDateTime, 
-                                               DeletedDateTime
+                                               DeletedDateTime,
+                                               HiddenDateTime
                                         FROM   EnvelopeGroup";
 
                         using (var reader = command.ExecuteReader())
@@ -1288,7 +985,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Notes = reader["Notes"].ToString(),
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -1319,13 +1017,15 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                E.IgnoreOverspend,
                                                E.CreatedDateTime, 
                                                E.ModifiedDateTime, 
-                                               E.DeletedDateTime, 
+                                               E.DeletedDateTime,
+                                               E.HiddenDateTime,
                                                E.EnvelopeGroupId, 
                                                EG.Description      AS EnvelopeGroupDescription, 
                                                EG.Notes            AS EnvelopeGroupNotes, 
                                                EG.CreatedDateTime  AS EnvelopeGroupCreatedDateTime, 
                                                EG.ModifiedDateTime AS EnvelopeGroupModifiedDateTime, 
-                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime 
+                                               EG.DeletedDateTime  AS EnvelopeGroupDeletedDateTime,
+                                               EG.HiddenDateTime   AS EnvelopeGroupHiddenDateTime
                                         FROM   Envelope AS E
                                         JOIN   EnvelopeGroup AS EG ON E.EnvelopeGroupId = EG.Id";
 
@@ -1346,11 +1046,13 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         Notes = reader["EnvelopeGroupNotes"].ToString(),
                                         CreatedDateTime = Convert.ToDateTime(reader["EnvelopeGroupCreatedDateTime"], CultureInfo.InvariantCulture),
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeGroupModifiedDateTime"], CultureInfo.InvariantCulture),
-                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture)
+                                        DeletedDateTime = reader["EnvelopeGroupDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupDeletedDateTime"], CultureInfo.InvariantCulture),
+                                        HiddenDateTime = reader["EnvelopeGroupHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeGroupHiddenDateTime"], CultureInfo.InvariantCulture)
                                     },
                                     CreatedDateTime = Convert.ToDateTime(reader["CreatedDateTime"], CultureInfo.InvariantCulture),
                                     ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
-                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture)
+                                    DeletedDateTime = reader["DeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DeletedDateTime"], CultureInfo.InvariantCulture),
+                                    HiddenDateTime = reader["HiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HiddenDateTime"], CultureInfo.InvariantCulture)
                                 });
                             }
                         }
@@ -1382,8 +1084,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", budget.Id);
-                        command.Parameters.AddWithValue("@Amount", _resourceContainer.GetRoundedDecimal(budget.Amount));
+                        command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@Amount", budget.Amount);
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
                         command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
                         command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
@@ -1415,7 +1117,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                ModifiedDateTime = @ModifiedDateTime
                                         WHERE  Id = @Id";
 
-                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id);
+                        command.Parameters.AddWithValue("@Id", budgetSchedule.Id.ToByteArray());
                         command.Parameters.AddWithValue("@BeginDate", budgetSchedule.BeginDate);
                         command.Parameters.AddWithValue("@EndDate", budgetSchedule.EndDate);
                         command.Parameters.AddWithValue("@CreatedDateTime", budgetSchedule.CreatedDateTime);
@@ -1446,17 +1148,19 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                IgnoreOverspend = @IgnoreOverspend,
                                                CreatedDateTime = @CreatedDateTime, 
                                                ModifiedDateTime = @ModifiedDateTime, 
-                                               DeletedDateTime = @DeletedDateTime 
+                                               DeletedDateTime = @DeletedDateTime,
+                                               HiddenDateTime = @HiddenDateTime
                                         WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", envelope.Id);
+                        command.Parameters.AddWithValue("@Id", envelope.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelope.Description);
-                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeGroupId", envelope.Group?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Notes", envelope.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@IgnoreOverspend", envelope.IgnoreOverspend);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelope.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", envelope.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", envelope.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", envelope.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
@@ -1481,15 +1185,17 @@ namespace BudgetBadger.DataAccess.Sqlite
                                                Notes = @Notes,
                                                CreatedDateTime = @CreatedDateTime, 
                                                ModifiedDateTime = @ModifiedDateTime, 
-                                               DeletedDateTime = @DeletedDateTime 
+                                               DeletedDateTime = @DeletedDateTime,
+                                               HiddenDateTime = @HiddenDateTime
                                         WHERE  Id = @Id ";
 
-                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id);
+                        command.Parameters.AddWithValue("@Id", envelopeGroup.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Description", envelopeGroup.Description);
                         command.Parameters.AddWithValue("@Notes", envelopeGroup.Notes ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedDateTime", envelopeGroup.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", envelopeGroup.ModifiedDateTime);
                         command.Parameters.AddWithValue("@DeletedDateTime", envelopeGroup.DeletedDateTime ?? (object)DBNull.Value);
+                        command.Parameters.AddWithValue("@HiddenDateTime", envelopeGroup.HiddenDateTime ?? (object)DBNull.Value);
 
                         command.ExecuteNonQuery();
                     }
