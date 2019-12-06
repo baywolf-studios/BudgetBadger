@@ -20,17 +20,6 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
-- task: InstallAppleCertificate@2
-  inputs:
-    certSecureFile: 'ios_distribution_cert.p12'
-    certPwd: '$(ios_distribution_cert_password)'
-    keychain: 'temp'
-
-- task: InstallAppleProvisioningProfile@1
-  inputs:
-    provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'Budget_Badger_AppStore.mobileprovision'
-
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/*droid.csproj'
