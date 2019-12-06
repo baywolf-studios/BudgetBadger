@@ -4,6 +4,10 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
+variables:
+   buildConfiguration: 'Release'
+   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+
 steps:
 - script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
   displayName: 'Select the Xamarin SDK version'
@@ -34,13 +38,14 @@ steps:
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/*droid.csproj'
-    configuration: 'Release'
+    outputDirectory: '$(outputDirectory)'
+    configuration: '$(buildConfiguration)'
     jdkOption: 'JDKVersion'
 
 - task: XamariniOS@2
   inputs:
     solutionFile: '**/*iOS.csproj'
-    configuration: 'Release'
+    configuration: '$(buildConfiguration)'
     packageApp: true
     args: /p:IpaPackageDir="$(Build.BinariesDirectory)"
 
