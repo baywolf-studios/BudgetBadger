@@ -1047,4 +1047,10 @@
   <data name="AccountSaveSystemError" xml:space="preserve">
     <value>Systemkonto kann nicht bearbeitet werden</value>
   </data>
+  <data name="AccountDeleteSystemError" xml:space="preserve">
+    <value>Systemkonto kann nicht gelöscht werden</value>
+  </data>
+  <data name="AccountHideSystemError" xml:space="preserve">
+    <value>Systemkonto kann nicht ausgeblendet werden</value>
+  </data>
 </root>

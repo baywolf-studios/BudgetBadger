@@ -106,6 +106,15 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete system account.
+        /// </summary>
+        public static string AccountDeleteSystemError {
+            get {
+                return ResourceManager.GetString("AccountDeleteSystemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Account.
         /// </summary>
         public static string AccountEditPageTitle {
@@ -120,6 +129,15 @@ namespace BudgetBadger.Language {
         public static string AccountHideInactiveError {
             get {
                 return ResourceManager.GetString("AccountHideInactiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot hide system account.
+        /// </summary>
+        public static string AccountHideSystemError {
+            get {
+                return ResourceManager.GetString("AccountHideSystemError", resourceCulture);
             }
         }
         
