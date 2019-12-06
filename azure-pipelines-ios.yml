@@ -44,5 +44,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.BinariesDirectory)'
-    ArtifactName: 'BudgetBadger'
+    ArtifactName: 'BudgetBadger.iOS'
     publishLocation: 'Container'
