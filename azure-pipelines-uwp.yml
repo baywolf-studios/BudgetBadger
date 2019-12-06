@@ -11,6 +11,12 @@ variables:
   appxPackageDir: '$(Build.BinariesDirectory)\AppxPackages\\'
 
 steps:
+- task: DownloadSecureFile@1
+  name: signingCert
+  displayName: 'Download CA certificate'
+  inputs:
+    secureFile: 'BudgetBadger.UWP_StoreKey.pfx'
+
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
@@ -27,8 +33,7 @@ steps:
     platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
-
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint=""/p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
 
 - task: PublishBuildArtifacts@1
   inputs:
