@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace BudgetBadger.Models
 {
@@ -25,8 +26,10 @@ namespace BudgetBadger.Models
 
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
+            if (!Thread.CurrentThread.IsBackground)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
