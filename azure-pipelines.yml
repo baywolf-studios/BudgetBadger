@@ -23,12 +23,22 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'ios_distribution.cer'
+    certPwd: '$(ios_distribution_cert_password)'
+    keychain: 'temp'
+
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'Budget_Badger_AppStore.mobileprovision'
+
 - task: XamariniOS@2
   inputs:
     solutionFile: '**/*iOS.csproj'
     configuration: 'Release'
-    buildForSimulator: true
-    packageApp: false
+    packageApp: true
 
 - task: PublishBuildArtifacts@1
   inputs:
