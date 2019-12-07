@@ -51,8 +51,14 @@ steps:
     packageApp: true
     args: /p:IpaPackageDir="$(Build.BinariesDirectory)"
 
-- task: PublishBuildArtifacts@1
+- task: CopyFiles@2
   inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)'
-    ArtifactName: 'BudgetBadger.iOS'
-    publishLocation: 'Container'
+    SourceFolder: '$(Build.BinariesDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'BudgetBadger.iOS'
+    publishLocation: 'pipeline'
