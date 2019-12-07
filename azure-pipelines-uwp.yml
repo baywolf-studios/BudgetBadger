@@ -37,6 +37,7 @@ steps:
     SourceFolder: '$(Build.BinariesDirectory)'
     Contents: 'AppxPackages\*.appxupload'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   inputs:
