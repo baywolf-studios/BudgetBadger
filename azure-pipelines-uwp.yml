@@ -35,9 +35,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.BinariesDirectory)'
-    Contents: |
-      **
-      AppxPackages\*.appxupload
+    Contents: 'AppxPackages\*.appxupload'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
