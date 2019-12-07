@@ -30,8 +30,14 @@ steps:
     configuration: 'Release'
     jdkOption: 'JDKVersion'
 
-- task: PublishBuildArtifacts@1
+- task: CopyFiles@2
   inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)'
-    ArtifactName: 'BudgetBadger.Android'
-    publishLocation: 'Container'
+    SourceFolder: '$(Build.BinariesDirectory)'
+    Contents: '*.apk'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'BudgetBadger.Android'
+    publishLocation: 'pipeline'
