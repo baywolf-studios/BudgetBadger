@@ -44,9 +44,9 @@ namespace BudgetBadger.iOS
 
             LoadApplication(new App(new iOSInitializer()));
 
-            var statusBarColor = ((Color)Xamarin.Forms.Application.Current.Resources["AppBarColor"]).ToUIColor();
+            //var statusBarColor = ((Color)Xamarin.Forms.Application.Current.Resources["AppBarColor"]).ToUIColor();
 
-            UITabBar.Appearance.SelectedImageTintColor = statusBarColor;
+            //UITabBar.Appearance.SelectedImageTintColor = statusBarColor;
 
             //var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
             //if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))

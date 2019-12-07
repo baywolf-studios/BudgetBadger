@@ -25,7 +25,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                 {
                     using (var db = new SqliteConnection(_connectionString))
                     {
-                        if (File.Exists(db.DataSource))
+                        if (DatabaseExists(db))
                         {
                             UpgradeDatabase(db);
                         }
@@ -36,6 +36,22 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 });
             }
+        }
+
+        bool DatabaseExists(SqliteConnection db)
+        {
+            var exists = false;
+
+            if (File.Exists(db.DataSource))
+            {
+                db.Open();
+                var command = db.CreateCommand();
+                command.CommandText = @"SELECT COUNT(1) FROM sqlite_master WHERE type='table' AND name='Account';";
+                exists = Convert.ToBoolean(command.ExecuteScalar());
+                db.Close();
+            }
+
+            return exists;
         }
 
         void CreateDatabase(SqliteConnection db)

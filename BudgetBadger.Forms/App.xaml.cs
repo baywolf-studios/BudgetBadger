@@ -316,8 +316,11 @@ namespace BudgetBadger.Forms
             {
                 var syncFactory = Container.Resolve<ISyncFactory>();
                 var syncService = syncFactory.GetSyncService();
-                await syncService.FullSync();
-                await syncFactory.SetLastSyncDateTime(DateTime.Now);
+                var syncResult = await syncService.FullSync();
+                if (syncResult.Success)
+                {
+                    await syncFactory.SetLastSyncDateTime(DateTime.Now);
+                }
             }
             else
             {

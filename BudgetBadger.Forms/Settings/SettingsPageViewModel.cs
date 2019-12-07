@@ -21,7 +21,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class SettingsPageViewModel : BaseViewModel, IInitialize
+    public class SettingsPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -144,9 +144,15 @@ namespace BudgetBadger.Forms.Settings
             SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new DelegateCommand(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
+
+            ResetLocalization();
         }
 
-        public void Initialize(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
             ResetLocalization();
         }
