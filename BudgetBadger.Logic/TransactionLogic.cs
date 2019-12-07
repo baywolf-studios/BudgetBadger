@@ -460,7 +460,7 @@ namespace BudgetBadger.Logic
         {
             transaction.Payee = await _payeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
             var payeeAccount = await _accountDataAccess.ReadAccountAsync(transaction.Payee.Id).ConfigureAwait(false);
-            transaction.Payee.IsAccount = payeeAccount.IsActive;
+            transaction.Payee.IsAccount = !payeeAccount.IsNew;
 
             transaction.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
 
