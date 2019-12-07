@@ -50,9 +50,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
-      **
-      BudgetBadger.macOS\bin\Release\*.pkg
+    Contents: 'BudgetBadger.macOS\bin\Release\*.pkg'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
