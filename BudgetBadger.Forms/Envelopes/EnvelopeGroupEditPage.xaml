@@ -118,7 +118,7 @@
                             Grid.Row="3"
                             Grid.Column="0"
                             Margin="16,0,0,0"
-                            Command="{Binding DeleteCommand}"
+                            Command="{Binding SoftDeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
                             Text="{ext:Translate DeleteButton}">
                             <uc:Button2.IsVisible>
