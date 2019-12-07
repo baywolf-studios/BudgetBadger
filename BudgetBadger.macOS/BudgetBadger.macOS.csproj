@@ -57,11 +57,11 @@
     <XamMacArch>
     </XamMacArch>
     <AOTMode>All</AOTMode>
-    <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
-    <CodeSignProvision>Budget Badger Mac AppStore</CodeSignProvision>
+    <CodeSigningKey>3rd Party Mac Developer Application: Bay Wolf Studios LLC (6CVLHK7WDY)</CodeSigningKey>
     <PackageSigningKey>3rd Party Mac Developer Installer: Bay Wolf Studios LLC (6CVLHK7WDY)</PackageSigningKey>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
+    <CodeSignProvision>Budget Badger Mac AppStore</CodeSignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
