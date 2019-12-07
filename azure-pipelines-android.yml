@@ -40,6 +40,11 @@ steps:
     configuration: 'Release'
     jdkOption: 'JDKVersion'
 
+- task: AndroidSigning@3
+  inputs:
+    apkFiles: '$(Build.BinariesDirectory)/*.apk'
+    apksign: false
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.BinariesDirectory)'
