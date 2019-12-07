@@ -12,7 +12,9 @@
     xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
-    android:TabbedPage.ToolbarPlacement="Bottom">
+    android:TabbedPage.ToolbarPlacement="Bottom"
+    SelectedTabColor="{StaticResource AppBarColor}"
+    BarBackgroundColor="{StaticResource BackgroundColor}">
     <TabbedPage.Effects>
         <effects:BottomBarNoShiftEffect />
     </TabbedPage.Effects>
