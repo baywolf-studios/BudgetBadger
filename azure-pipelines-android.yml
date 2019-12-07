@@ -33,9 +33,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.BinariesDirectory)'
-    Contents: |
-      **
-      *.apk
+    Contents: '*.apk'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
