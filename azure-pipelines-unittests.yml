@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'macos-latest'
+
+variables:
+- group: budgetbadger_variables
+
+steps:
+- script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
+  displayName: 'Select the Xamarin SDK version'
+  enabled: true
+  
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '**/*.sln'
+
+- task: XamarinAndroid@1
+  inputs:
+    projectFile: '**/*droid.csproj'
+    outputDirectory: '$(Build.BinariesDirectory)'
+    configuration: 'Release'
+    jdkOption: 'JDKVersion'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.BinariesDirectory)'
+    ArtifactName: 'BudgetBadger.Android'
+    publishLocation: 'Container'
