@@ -21,7 +21,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
-    public class SettingsPageViewModel : BaseViewModel, IInitializeAsync
+    public class SettingsPageViewModel : BaseViewModel, IInitialize
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -146,7 +146,7 @@ namespace BudgetBadger.Forms.Settings
             LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             ResetLocalization();
         }
