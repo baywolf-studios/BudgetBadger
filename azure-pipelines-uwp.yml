@@ -8,6 +8,16 @@ variables:
 - group: budgetbadger_variables
 
 steps:
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'appsettings.json'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)\BudgetBadger.Forms'
+    
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'

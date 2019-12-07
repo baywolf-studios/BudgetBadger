@@ -8,6 +8,16 @@ variables:
 - group: budgetbadger_variables
 
 steps:
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'appsettings.json'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)/BudgetBadger.Forms'
+    
 - script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
   displayName: 'Select the Xamarin SDK version'
   enabled: true
