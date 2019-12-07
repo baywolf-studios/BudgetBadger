@@ -52,6 +52,7 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: 'BudgetBadger.macOS/bin/Release/*.pkg'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   inputs:
