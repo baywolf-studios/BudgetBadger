@@ -47,8 +47,16 @@ steps:
     configuration: 'Release'
     msbuildArguments: '/p:Configuration=Release /p:Platform=AnyCPU'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+      **
+      BudgetBadger.macOS\bin\Release\*.pkg
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: 'BudgetBadger.macOS'
     publishLocation: 'pipeline'
