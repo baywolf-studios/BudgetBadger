@@ -9,13 +9,12 @@ variables:
 
 steps:
 - task: DownloadSecureFile@1
-  name: appsettings
   inputs:
     secureFile: 'appsettings.json'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(appsettings.secureFilePath)'
+    SourceFolder: '$(Agent.TempDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.SourcesDirectory)/BudgetBadger.Forms'
 
