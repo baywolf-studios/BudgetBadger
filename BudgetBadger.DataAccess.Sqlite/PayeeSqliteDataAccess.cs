@@ -18,6 +18,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreatePayeeAsync(Payee payee)
         {
+            await Init();
+
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -59,6 +61,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeletePayeeAsync(Guid id)
         {
+            await Init();
+
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -80,7 +84,9 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Payee> ReadPayeeAsync(Guid id)
         {
-            using(await MultiThreadLock.UseWaitAsync())
+            await Init();
+
+            using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
@@ -128,7 +134,9 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Payee>> ReadPayeesAsync()
         {
-            using(await MultiThreadLock.UseWaitAsync())
+            await Init();
+
+            using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
@@ -174,7 +182,9 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdatePayeeAsync(Payee payee)
         {
-            using(await MultiThreadLock.UseWaitAsync())
+            await Init();
+
+            using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
                 {
@@ -208,6 +218,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<int> GetPayeesCountAsync()
         {
+            await Init();
+
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
