@@ -332,7 +332,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             try
             {
-                BusyText = _resourceContainer.GetResourceString("BusyTextUnhide");
+                BusyText = _resourceContainer.GetResourceString("BusyTextUnhiding");
                 var result = await _envelopeLogic.UnhideEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
