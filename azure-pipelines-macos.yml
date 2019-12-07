@@ -29,10 +29,17 @@ steps:
     certPwd: '$(mac_distribution_cert_password)'
     keychain: 'temp'
 
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'mac_installer_distribution_cert.p12'
+    certPwd: '$(mac_distribution_cert_password)'
+    keychain: 'temp'
+
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'Budget_Badger_Mac_AppStore.provisionprofile'
+
 
 - task: MSBuild@1
   inputs:
