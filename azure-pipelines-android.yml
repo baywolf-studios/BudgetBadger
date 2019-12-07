@@ -45,6 +45,7 @@ steps:
     apkFiles: '$(Build.BinariesDirectory)/*.apk'
     apksignerKeystoreFile: 'budgetbadger.keystore'
     apksignerKeystorePassword: '$(android_keystore_password)'
+    apksignerKeystoreAlias: 'budgetbadger'
 
 - task: CopyFiles@2
   inputs:
