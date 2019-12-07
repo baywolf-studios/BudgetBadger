@@ -45,7 +45,7 @@ steps:
   inputs:
     solution: '**/*macOS.csproj'
     configuration: 'Release'
-    msbuildArguments: '/p:Configuration=Release /p:Platform=AnyCPU'
+    msbuildArguments: '/p:Configuration=Release /p:Platform=AnyCPU /p:OutDir=$(Build.BinariesDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
