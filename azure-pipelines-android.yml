@@ -43,7 +43,8 @@ steps:
 - task: AndroidSigning@3
   inputs:
     apkFiles: '$(Build.BinariesDirectory)/*.apk'
-    apksign: false
+    apksignerKeystoreFile: 'budgetbadger.keystore'
+    apksignerKeystorePassword: '$(android_keystore_password)'
 
 - task: CopyFiles@2
   inputs:
