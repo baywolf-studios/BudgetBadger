@@ -27,7 +27,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SaveCommand { get; set; }
 
         bool _needToSync;
-        bool _toEnvelopeRequested;
+        bool _fromEnvelopeRequested;
 
         Envelope _fromEnvelope;
         public Envelope FromEnvelope
@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms.Envelopes
             _dialogService = dialogService;
             _syncFactory = syncFactory;
 
-            _toEnvelopeRequested = false;
+            _fromEnvelopeRequested = false;
             FromEnvelope = new Envelope();
             ToEnvelope = new Envelope();
             Schedule = new BudgetSchedule();
@@ -107,13 +107,13 @@ namespace BudgetBadger.Forms.Envelopes
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);
             if (envelope != null)
             {
-                if (_toEnvelopeRequested)
+                if (_fromEnvelopeRequested)
                 {
-                    ToEnvelope = envelope.DeepCopy();
+                    FromEnvelope = envelope.DeepCopy();
                 }
                 else
                 {
-                    FromEnvelope = envelope.DeepCopy();
+                    ToEnvelope = envelope.DeepCopy();
                 }
             }
 
@@ -134,7 +134,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteFromEnvelopeSelectedCommand()
         {
-            _toEnvelopeRequested = false;
+            _fromEnvelopeRequested = false;
 
             var parameters = new NavigationParameters
             {
@@ -145,7 +145,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteToEnvelopeSelectedCommand()
         {
-            _toEnvelopeRequested = true;
+            _fromEnvelopeRequested = true;
 
             var parameters = new NavigationParameters
             {

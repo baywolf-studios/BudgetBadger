@@ -35,17 +35,17 @@
                     Label="{ext:Translate EnvelopeTransferDateLabel}"
                     Text="{Binding Schedule.Description}" />
                 <uc:ButtonSelector
-                    Grid.Row="1"
-                    Margin="16,0"
-                    Command="{Binding FromEnvelopeSelectedCommand}"
-                    Label="{ext:Translate EnvelopeTransferFromLabel}"
-                    Text="{Binding FromEnvelope.Description}" />
-                <uc:ButtonSelector
                     Grid.Row="2"
                     Margin="16,0"
                     Command="{Binding ToEnvelopeSelectedCommand}"
                     Label="{ext:Translate EnvelopeTransferToLabel}"
                     Text="{Binding ToEnvelope.Description}" />
+                <uc:ButtonSelector
+                    Grid.Row="1"
+                    Margin="16,0"
+                    Command="{Binding FromEnvelopeSelectedCommand}"
+                    Label="{ext:Translate EnvelopeTransferFromLabel}"
+                    Text="{Binding FromEnvelope.Description}" />
                 <uc:CurrencyCalculatorEntry
                     Grid.Row="3"
                     Margin="16,0"
