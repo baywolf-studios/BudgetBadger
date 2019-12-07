@@ -8,10 +8,6 @@ variables:
 - group: budgetbadger_variables
 
 steps:
-- script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(mono_version)
-  displayName: 'Select the Xamarin SDK version'
-  enabled: true
-  
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
@@ -23,15 +19,17 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
-- task: XamarinAndroid@1
+- task: MSBuild@1
   inputs:
-    projectFile: '**/*droid.csproj'
-    outputDirectory: '$(Build.BinariesDirectory)'
+    solution: '**/*.Tests.csproj'
+    platform: 'AnyCPU'
     configuration: 'Release'
-    jdkOption: 'JDKVersion'
 
-- task: PublishBuildArtifacts@1
+- task: VSTest@2
   inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)'
-    ArtifactName: 'BudgetBadger.Android'
-    publishLocation: 'Container'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
