@@ -367,6 +367,13 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("PayeeUnhideNotHiddenError"));
                 }
 
+                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+
+                if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("PayeeUnhideSystemError"));
+                }
+
                 if (errors.Any())
                 {
                     result.Success = false;
