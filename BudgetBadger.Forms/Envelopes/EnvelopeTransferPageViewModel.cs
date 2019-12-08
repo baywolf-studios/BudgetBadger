@@ -134,7 +134,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteFromEnvelopeSelectedCommand()
         {
-            _fromEnvelopeRequested = false;
+            _fromEnvelopeRequested = true;
 
             var parameters = new NavigationParameters
             {
@@ -145,7 +145,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteToEnvelopeSelectedCommand()
         {
-            _fromEnvelopeRequested = true;
+            _fromEnvelopeRequested = false;
 
             var parameters = new NavigationParameters
             {

@@ -1023,7 +1023,23 @@ namespace BudgetBadger.Tests.Logic
 
             // assert 
             Assert.IsTrue(result.Success);
-            Assert.That(!result.Data.Any(p => p.IsActive));
+            Assert.That(!result.Data.Any(p => p.IsDeleted));
+        }
+
+        [Test]
+        public async Task GetHiddenEnvelopes_SystemEnvelope_SystemEnvelopeNotReturned()
+        {
+            // arrange
+            var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
+            var systemEnvelope = Constants.IgnoredEnvelope.DeepCopy();
+            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, systemEnvelope });
+
+            // act
+            var result = await EnvelopeLogic.GetHiddenEnvelopesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == systemEnvelope.Id));
         }
     }
 }

@@ -303,14 +303,14 @@ namespace BudgetBadger.Logic
                 // check for validation to delete
                 var errors = new List<string>();
 
-                if (account.IsGenericHiddenAccount)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountHideSystemError"));
-                }
-
                 if (!account.IsActive)
                 {
                     errors.Add(_resourceContainer.GetResourceString("AccountHideInactiveError"));
+                }
+
+                if (account.IsGenericHiddenAccount)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountHideSystemError"));
                 }
 
                 if (errors.Any())
@@ -361,6 +361,11 @@ namespace BudgetBadger.Logic
                 if (account.IsNew || account.IsActive || account.IsDeleted)
                 {
                     errors.Add(_resourceContainer.GetResourceString("AccountUnhideNotHiddenError"));
+                }
+
+                if (account.IsGenericHiddenAccount)
+                {
+                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideSystemError"));
                 }
 
                 if (errors.Any())
