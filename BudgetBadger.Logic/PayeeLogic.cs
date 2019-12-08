@@ -132,7 +132,7 @@ namespace BudgetBadger.Logic
                                              !p.IsStartingBalance
                                              && p.IsActive).ToList();
 
-                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted))
+                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted && !p.IsStartingBalance))
                 {
                     payees.Add(GetGenericHiddenPayee());
                 }
@@ -198,7 +198,7 @@ namespace BudgetBadger.Logic
                                              !p.IsStartingBalance
                                              && p.IsActive).ToList();
 
-                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted))
+                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted && !p.IsStartingBalance))
                 {
                     payees.Add(GetGenericHiddenPayee());
                 }
@@ -484,119 +484,6 @@ namespace BudgetBadger.Logic
             hiddenPayee.Group = _resourceContainer.GetResourceString("Hidden");
 
             return hiddenPayee;
-        }
-
-        //deleting these
-        async Task<Result> ValidateDeletePayeeAsync(Guid payeeId)
-        {
-            var errors = new List<string>();
-
-            var payee = await _payeeDataAccess.ReadPayeeAsync(payeeId).ConfigureAwait(false);
-            var populatePayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
-
-            if (!populatePayee.IsActive)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteInactiveError"));
-            }
-
-            if (populatePayee.IsAccount)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteAccountError"));
-            }
-
-            if (populatePayee.Id == Constants.StartingBalancePayee.Id)
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteStartingBalanceError"));
-            }
-
-            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(populatePayee.Id).ConfigureAwait(false);
-            if (payeeTransactions.Any(t => t.IsActive && t.ServiceDate >= DateTime.Now))
-            {
-                errors.Add(_resourceContainer.GetResourceString("PayeeDeleteFutureTransactionsError"));
-            }
-
-            return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
-        }
-
-        public async Task<Result<IReadOnlyList<Payee>>> GetDeletedPayeesAsync()
-        {
-            var result = new Result<IReadOnlyList<Payee>>();
-
-            try
-            {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
-
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsDeleted);
-
-                var tasks = payees.Select(GetPopulatedPayee);
-
-                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
-
-                result.Success = true;
-                result.Data = filteredPopulatedPayees;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result> DeletePayeeAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var validationResult = await ValidateDeletePayeeAsync(id).ConfigureAwait(false);
-                if (!validationResult.Success)
-                {
-                    return validationResult;
-                }
-
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                payee.ModifiedDateTime = DateTime.Now;
-                payee.DeletedDateTime = DateTime.Now;
-
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result> UndoDeletePayeeAsync(Guid id)
-        {
-            var result = new Result();
-
-            try
-            {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
-                payee.ModifiedDateTime = DateTime.Now;
-                payee.DeletedDateTime = null;
-
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-                result.Success = true;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
         }
     }
 }
