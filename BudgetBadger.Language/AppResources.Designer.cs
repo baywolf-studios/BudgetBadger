@@ -1918,5 +1918,29 @@ namespace BudgetBadger.Language {
                 return ResourceManager.GetString("AccountHideSystemError", resourceCulture);
             }
         }
+        
+        public static string EnvelopeUnhideSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeUnhideSystemError", resourceCulture);
+            }
+        }
+        
+        public static string EnvelopeGroupUnhideSystemError {
+            get {
+                return ResourceManager.GetString("EnvelopeGroupUnhideSystemError", resourceCulture);
+            }
+        }
+        
+        public static string PayeeUnhideSystemError {
+            get {
+                return ResourceManager.GetString("PayeeUnhideSystemError", resourceCulture);
+            }
+        }
+        
+        public static string AccountUnhideSystemError {
+            get {
+                return ResourceManager.GetString("AccountUnhideSystemError", resourceCulture);
+            }
+        }
     }
 }
