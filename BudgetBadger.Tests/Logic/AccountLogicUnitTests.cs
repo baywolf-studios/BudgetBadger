@@ -489,5 +489,20 @@ namespace BudgetBadger.Tests.Logic
             Assert.That(!result.Data.Any(p => p.Id == activeAccount.Id));
         }
 
+        [Test]
+        public async Task GetHiddenAccounts_DeletedAccount_DeletedAccountNotReturned()
+        {
+            // arrange
+            var hiddenAccount = TestAccounts.HiddenAccount.DeepCopy();
+            var deletedAccount = TestAccounts.SoftDeletedAccount.DeepCopy();
+            A.CallTo(() => accountDataAccess.ReadAccountsAsync()).Returns(new List<Account> { hiddenAccount, deletedAccount });
+
+            // act
+            var result = await accountLogic.GetHiddenAccountsAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == deletedAccount.Id));
+        }
     }
 }

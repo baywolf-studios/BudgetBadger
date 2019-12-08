@@ -420,5 +420,37 @@ namespace BudgetBadger.Tests.Logic
             Assert.IsTrue(result.Success);
             Assert.That(!result.Data.Any(p => p.Id == activePayee.Id));
         }
+
+        [Test]
+        public async Task GetHiddenPayees_DeletedPayee_DeletedPayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var deletedPayee = TestPayees.SoftDeletedPayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, deletedPayee });
+
+            // act
+            var result = await PayeeLogic.GetHiddenPayeesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == deletedPayee.Id));
+        }
+
+        [Test]
+        public async Task GetHiddenPayees_StartingBalancePayee_StartingBalancePayeeNotReturned()
+        {
+            // arrange
+            var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+            var startingBalancePayee = Constants.StartingBalancePayee.DeepCopy();
+            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, startingBalancePayee });
+
+            // act
+            var result = await PayeeLogic.GetHiddenPayeesAsync();
+
+            // assert 
+            Assert.IsTrue(result.Success);
+            Assert.That(!result.Data.Any(p => p.Id == startingBalancePayee.Id));
+        }
     }
 }

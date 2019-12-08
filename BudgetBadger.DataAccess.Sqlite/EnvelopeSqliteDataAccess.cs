@@ -1127,8 +1127,8 @@ namespace BudgetBadger.DataAccess.Sqlite
                         command.Parameters.AddWithValue("@Id", budget.Id.ToByteArray());
                         command.Parameters.AddWithValue("@Amount", budget.Amount);
                         command.Parameters.AddWithValue("@IgnoreOverspend", budget.IgnoreOverspend);
-                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id);
-                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id);
+                        command.Parameters.AddWithValue("@EnvelopeId", budget.Envelope?.Id.ToByteArray());
+                        command.Parameters.AddWithValue("@BudgetScheduleId", budget.Schedule?.Id.ToByteArray());
                         command.Parameters.AddWithValue("@CreatedDateTime", budget.CreatedDateTime);
                         command.Parameters.AddWithValue("@ModifiedDateTime", budget.ModifiedDateTime);
 
