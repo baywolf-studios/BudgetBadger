@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -858,11 +858,11 @@
   <data name="AccountBalanceHint" xml:space="preserve">
     <value>Fügen Sie ein Konto mit einem positiven Saldo hinzu, dann budgetieren Sie es in Umschläge</value>
   </data>
-  <data name="AlertDebtEnvelopes" xml:space="preserve">
-    <value>Schuldenumschlag</value>
-  </data>
   <data name="AlertMessageDebtEnvelopes" xml:space="preserve">
     <value>Da dieses Konto eine negative Bilanz aufweist, wurde ein Schuldenumschlag angelegt.</value>
+  </data>
+  <data name="AlertDebtEnvelopes" xml:space="preserve">
+    <value>Schuldenumschlag</value>
   </data>
   <data name="AlertBudgetBadger" xml:space="preserve">
     <value>Budget Badger</value>
@@ -900,11 +900,11 @@
   <data name="RestoreProButton" xml:space="preserve">
     <value>Restaurieren</value>
   </data>
-  <data name="UnlockReportsLabel" xml:space="preserve">
-    <value>Berichte mit Budget Badger Pro entsperren</value>
-  </data>
   <data name="UnlockCloudSyncLabel" xml:space="preserve">
     <value>Cloud-Sync mit Budget Badger Pro entsperren</value>
+  </data>
+  <data name="UnlockReportsLabel" xml:space="preserve">
+    <value>Berichte mit Budget Badger Pro entsperren</value>
   </data>
   <data name="BudgetValidAlreadyExists" xml:space="preserve">
     <value>Budget ist bereits vorhanden</value>
@@ -1052,5 +1052,8 @@
   </data>
   <data name="AccountHideSystemError" xml:space="preserve">
     <value>Systemkonto kann nicht ausgeblendet werden</value>
+  </data>
+  <data name="EnvelopeUnhideSystemError" xml:space="preserve">
+    <value>Systemhülle kann nicht eingeblendet werden</value>
   </data>
 </root>
