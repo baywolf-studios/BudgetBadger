@@ -532,7 +532,7 @@
     <value>Always Ignore</value>
   </data>
   <data name="OverspendingTypeDoNotIgnore" xml:space="preserve">
-    <value>Don&apos;t Ignore</value>
+    <value>Don’t Ignore</value>
   </data>
   <data name="OverspendingTypeIgnore" xml:space="preserve">
     <value>Ignore</value>
@@ -919,7 +919,7 @@
     <value>Cannot delete an envelope with transactions</value>
   </data>
   <data name="EnvelopeDeleteNotHiddenError" xml:space="preserve">
-    <value>Cannot delete envelope unless it&apos;s hidden</value>
+    <value>Cannot delete envelope unless it’s hidden</value>
   </data>
   <data name="EnvelopeHideInactiveError" xml:space="preserve">
     <value>Cannot hide an inactive envelope</value>
@@ -928,10 +928,10 @@
     <value>Cannot hide a system envelope</value>
   </data>
   <data name="EnvelopeUnhideNotHiddenError" xml:space="preserve">
-    <value>Cannot unhide an envelope unless it&apos;s currently hidden</value>
+    <value>Cannot unhide an envelope unless it’s currently hidden</value>
   </data>
   <data name="EnvelopeGroupDeleteNotHiddenError" xml:space="preserve">
-    <value>Cannot delete envelope group unless it&apos;s hidden</value>
+    <value>Cannot delete envelope group unless it’s hidden</value>
   </data>
   <data name="EnvelopeGroupDeleteSystemError" xml:space="preserve">
     <value>Cannot delete system envelope group</value>
@@ -949,10 +949,10 @@
     <value>Cannot hide envelope group with active envelopes</value>
   </data>
   <data name="EnvelopeGroupUnhideNotHiddenError" xml:space="preserve">
-    <value>Cannot unhide envelope group unless it&apos;s hidden</value>
+    <value>Cannot unhide envelope group unless it’s hidden</value>
   </data>
   <data name="AccountDeleteNotHiddenError" xml:space="preserve">
-    <value>Cannot delete account unless it&apos;s hidden</value>
+    <value>Cannot delete account unless it’s hidden</value>
   </data>
   <data name="AccountDeleteActiveTransactionsError" xml:space="preserve">
     <value>Cannot delete account with active transactions</value>
@@ -1055,5 +1055,14 @@
   </data>
   <data name="EnvelopeUnhideSystemError" xml:space="preserve">
     <value>Cannot unhide system envelope</value>
+  </data>
+  <data name="EnvelopeGroupUnhideSystemError" xml:space="preserve">
+    <value>Cannot unhide system envelope group</value>
+  </data>
+  <data name="PayeeUnhideSystemError" xml:space="preserve">
+    <value>Cannot unhide system payee</value>
+  </data>
+  <data name="AccountUnhideSystemError" xml:space="preserve">
+    <value>Cannot unhide system account</value>
   </data>
 </root>
