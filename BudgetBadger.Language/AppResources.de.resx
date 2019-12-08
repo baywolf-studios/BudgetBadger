@@ -1056,4 +1056,13 @@
   <data name="EnvelopeUnhideSystemError" xml:space="preserve">
     <value>Systemhülle kann nicht eingeblendet werden</value>
   </data>
+  <data name="EnvelopeGroupUnhideSystemError" xml:space="preserve">
+    <value>Systemumschlaggruppe kann nicht eingeblendet werden</value>
+  </data>
+  <data name="PayeeUnhideSystemError" xml:space="preserve">
+    <value>Systemempfänger kann systemempfänger nicht einblenden</value>
+  </data>
+  <data name="AccountUnhideSystemError" xml:space="preserve">
+    <value>Systemkonto kann nicht eingeblendet werden</value>
+  </data>
 </root>
