@@ -7,6 +7,8 @@ namespace BudgetBadger.Core.DataAccess
 {
     public interface IPayeeDataAccess
     {
+        Task Init();
+
         Task CreatePayeeAsync(Payee payee);
         Task<Payee> ReadPayeeAsync(Guid id);
         Task<IReadOnlyList<Payee>> ReadPayeesAsync();

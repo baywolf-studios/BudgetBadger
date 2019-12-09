@@ -73,6 +73,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncTransactions(ITransactionDataAccess sourceTransactionDataAccess, ITransactionDataAccess targetTransactionDataAccess)
         {
+            await sourceTransactionDataAccess.Init();
+            await targetTransactionDataAccess.Init();
+
             var sourceTransactions = await sourceTransactionDataAccess.ReadTransactionsAsync();
             var targetTransactions = await targetTransactionDataAccess.ReadTransactionsAsync();
 

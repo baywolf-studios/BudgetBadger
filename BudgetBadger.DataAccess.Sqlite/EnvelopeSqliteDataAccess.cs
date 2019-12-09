@@ -18,7 +18,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetAsync(Budget budget)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -62,7 +62,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -100,7 +100,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeAsync(Envelope envelope)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -150,7 +150,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -194,7 +194,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteBudgetAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -218,7 +218,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteBudgetScheduleAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -242,7 +242,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteEnvelopeAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -266,7 +266,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteEnvelopeGroupAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -290,7 +290,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Budget> ReadBudgetAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -388,7 +388,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -484,7 +484,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -581,7 +581,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -679,7 +679,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -777,7 +777,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -823,7 +823,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -866,7 +866,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Envelope> ReadEnvelopeAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -937,7 +937,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -988,7 +988,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1036,7 +1036,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1104,7 +1104,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1141,7 +1141,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1174,7 +1174,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeAsync(Envelope envelope)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1215,7 +1215,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1252,7 +1252,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<int> GetEnvelopesCountAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -1279,7 +1279,7 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<int> GetEnvelopeGroupsCountAsync()
         {
-            await Init();
+            
 
             using (await MultiThreadLock.UseWaitAsync())
             {

@@ -7,6 +7,8 @@ namespace BudgetBadger.Core.DataAccess
 {
     public interface ITransactionDataAccess
     {
+        Task Init();
+
         Task CreateTransactionAsync(Transaction transaction);
         Task<Transaction> ReadTransactionAsync(Guid id);
         Task<IReadOnlyList<Transaction>> ReadAccountTransactionsAsync(Guid accountId);

@@ -7,6 +7,8 @@ namespace BudgetBadger.Core.DataAccess
 {
     public interface IEnvelopeDataAccess
     {
+        Task Init();
+
         Task CreateEnvelopeAsync(Envelope envelope);
         Task<Envelope> ReadEnvelopeAsync(Guid id);
         Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync();
