@@ -139,6 +139,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncEnvelopeGroups(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
         {
+            await sourceEnvelopeDataAccess.Init();
+            await targetEnvelopeDataAccess.Init();
+
             var sourceEnvelopeGroups = await sourceEnvelopeDataAccess.ReadEnvelopeGroupsAsync();
             var targetEnvelopeGroups = await targetEnvelopeDataAccess.ReadEnvelopeGroupsAsync();
 
@@ -167,6 +170,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncEnvelopes(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
         {
+            await sourceEnvelopeDataAccess.Init();
+            await targetEnvelopeDataAccess.Init();
+
             var sourceEnvelopes = await sourceEnvelopeDataAccess.ReadEnvelopesAsync();
             var targetEnvelopes = await targetEnvelopeDataAccess.ReadEnvelopesAsync();
 
@@ -195,6 +201,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncBudgetSchedules(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
         {
+            await sourceEnvelopeDataAccess.Init();
+            await targetEnvelopeDataAccess.Init();
+
             var sourceBudgetSchedules = await sourceEnvelopeDataAccess.ReadBudgetSchedulesAsync();
             var targetBudgetSchedules = await targetEnvelopeDataAccess.ReadBudgetSchedulesAsync();
 
@@ -223,6 +232,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncBudgets(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
         {
+            await sourceEnvelopeDataAccess.Init();
+            await targetEnvelopeDataAccess.Init();
+
             var sourceBudgets = await sourceEnvelopeDataAccess.ReadBudgetsAsync();
             var targetBudgets = await targetEnvelopeDataAccess.ReadBudgetsAsync();
 

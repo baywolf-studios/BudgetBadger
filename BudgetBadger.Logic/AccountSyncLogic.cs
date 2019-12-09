@@ -73,6 +73,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncAccounts(IAccountDataAccess sourceAccountDataAccess, IAccountDataAccess targetAccountDataAccess)
         {
+            await sourceAccountDataAccess.Init();
+            await targetAccountDataAccess.Init();
+
             var sourceAccounts = await sourceAccountDataAccess.ReadAccountsAsync();
             var targetAccounts = await targetAccountDataAccess.ReadAccountsAsync();
 

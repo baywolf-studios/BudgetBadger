@@ -73,6 +73,9 @@ namespace BudgetBadger.Logic
 
         async Task SyncPayees(IPayeeDataAccess sourcePayeeDataAccess, IPayeeDataAccess targetPayeeDataAccess)
         {
+            await sourcePayeeDataAccess.Init();
+            await targetPayeeDataAccess.Init();
+
             var sourcePayees = await sourcePayeeDataAccess.ReadPayeesAsync();
             var targetPayees = await targetPayeeDataAccess.ReadPayeesAsync();
 

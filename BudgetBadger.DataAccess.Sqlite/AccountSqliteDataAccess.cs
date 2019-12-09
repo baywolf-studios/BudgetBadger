@@ -17,8 +17,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateAccountAsync(Account account)
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -64,8 +62,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task DeleteAccountAsync(Guid id)
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -87,8 +83,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Account> ReadAccountAsync(Guid id)
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -139,8 +133,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Account>> ReadAccountsAsync()
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -188,8 +180,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateAccountAsync(Account account)
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -226,8 +216,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<int> GetAccountsCountAsync()
         {
-            await Init();
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
