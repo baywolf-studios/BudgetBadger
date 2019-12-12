@@ -20,7 +20,7 @@
     <PackageReference Include="Dropbox.Api" Version="4.9.4" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.6" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
     <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="17.1.0.41" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.41" />
