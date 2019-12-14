@@ -410,3 +410,4 @@ ASALocalRun/
 
 # End of https://www.gitignore.io/api/macos,linux,windows,visualstudio,xamarinstudio
 BudgetBadger.Forms/appsettings.json
+BudgetBadger.Forms/AppSecrets.cs

@@ -39,8 +39,6 @@ using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using BudgetBadger.Core.Utilities;
 using Prism.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.FileProviders;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -58,8 +56,7 @@ namespace BudgetBadger.Forms
 
         protected override async void OnInitialized()
         {
-            var config = Container.Resolve<IConfiguration>();
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(config.GetValue<string>("syncfusionlicensekey"));
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSecrets.SyncFusionLicenseKey);
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
@@ -113,9 +110,6 @@ namespace BudgetBadger.Forms
 #if DEBUG
             container.Register<ILoggerFacade, ConsoleLogger>();
 #endif
-            var embeddedFileProvider = new EmbeddedFileProvider(typeof(App).Assembly);
-            var config = new ConfigurationBuilder().AddJsonFile(embeddedFileProvider, "appsettings.json", false, false).Build();
-            container.UseInstance<IConfiguration>(config);
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
             container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
@@ -178,7 +172,7 @@ namespace BudgetBadger.Forms
                 Arg.Index<string>(3),
                 null),
                 _ => SyncMode.DropboxSync,
-                _ => config.GetValue<string>("dropboxappkey"),
+                _ => AppSecrets.DropBoxAppKey,
                 _ => "",
                 _ => "budgetbadger://authorize"));
 
