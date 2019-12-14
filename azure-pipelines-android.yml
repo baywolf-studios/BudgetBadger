@@ -10,7 +10,7 @@ variables:
 steps:
 - task: DownloadSecureFile@1
   inputs:
-    secureFile: 'appsettings.json'
+    secureFile: 'AppSecrets.cs'
 
 - task: CopyFiles@2
   inputs:
