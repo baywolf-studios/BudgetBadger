@@ -117,13 +117,15 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="SearchImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="search.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label >
+               <Label.Text>
+                   <x:String >&#xf002;</x:String>
+               </Label.Text>
+            <Label.FontFamily>
+                <OnPlatform x:TypeArguments="x:String">
+                    <On Platform="macOS" Value="fontawesome" />
+                </OnPlatform>
+            </Label.FontFamily>
+        </Label>
     </uc:ContentButton>
 </Grid>
