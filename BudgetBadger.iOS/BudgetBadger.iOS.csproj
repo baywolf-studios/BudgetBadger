@@ -220,6 +220,7 @@
     <BundleResource Include="Resources\expander.svg" />
     <BundleResource Include="Resources\transaction.svg" />
     <BundleResource Include="Resources\lock.svg" />
+    <BundleResource Include="Resources\Fonts\fa-regular-400.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -349,6 +350,7 @@
     <Folder Include="Assets.xcassets\payeeswhitetabicon.png.imageset\" />
     <Folder Include="Assets.xcassets\reportswhitetabicon.png.imageset\" />
     <Folder Include="Assets.xcassets\settingswhitetabicon.png.imageset\" />
+    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

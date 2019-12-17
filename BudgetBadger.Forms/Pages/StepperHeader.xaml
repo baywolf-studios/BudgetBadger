@@ -117,15 +117,12 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <Label >
-               <Label.Text>
-                   <x:String >&#xf002;</x:String>
-               </Label.Text>
-            <Label.FontFamily>
-                <OnPlatform x:TypeArguments="x:String">
-                    <On Platform="macOS" Value="fontawesome" />
-                </OnPlatform>
-            </Label.FontFamily>
-        </Label>
+        <Label Text="&#xf00c;" 
+           FontSize="50"
+           TextColor="SkyBlue"
+           VerticalOptions="Center" 
+           HorizontalOptions="Center"
+               FontFamily="Font Awesome 5 Free">
+    </Label>
     </uc:ContentButton>
 </Grid>
