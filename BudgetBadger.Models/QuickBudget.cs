@@ -4,6 +4,13 @@ namespace BudgetBadger.Models
 {
     public class QuickBudget : BaseModel
     {
+        QuickBudgetType type;
+        public QuickBudgetType Type
+        {
+            get => type;
+            set => SetProperty(ref type, value);
+        }
+
         string description;
         public string Description
         {
