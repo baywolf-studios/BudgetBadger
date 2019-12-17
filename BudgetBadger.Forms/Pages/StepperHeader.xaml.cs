@@ -76,7 +76,6 @@ namespace BudgetBadger.Forms.Pages
             NextFrame.BindingContext = this;
             NextImage.BindingContext = this;
             EntryControl.BindingContext = this;
-            SearchImage.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
@@ -117,8 +116,8 @@ namespace BudgetBadger.Forms.Pages
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "cancel.svg";
+                //SearchImage.ReplaceStringMap = ReplaceColor;
+                //SearchImage.Source = "cancel.svg";
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
@@ -135,8 +134,8 @@ namespace BudgetBadger.Forms.Pages
             {
                 SearchText = string.Empty;
 
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "search.svg";
+                //SearchImage.ReplaceStringMap = ReplaceColor;
+                //SearchImage.Source = "search.svg";
 
                 //hide it
                 var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);

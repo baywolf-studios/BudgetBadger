@@ -48,5 +48,7 @@
 	<string>public.app-category.finance</string>
 	<key>NSRequiresAquaSystemAppearance</key>
 	<true/>
+	<key>ATSApplicationFontsPath</key>
+	<string>Fonts/fontawesome.ttf</string>
 </dict>
 </plist>
