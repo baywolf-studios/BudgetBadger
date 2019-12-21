@@ -23,4 +23,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.910310" />
+  </ItemGroup>
 </Project>
