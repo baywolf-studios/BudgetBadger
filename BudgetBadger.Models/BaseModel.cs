@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Xamarin.Forms;
 
 namespace BudgetBadger.Models
 {
@@ -27,10 +26,10 @@ namespace BudgetBadger.Models
 
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            Device.BeginInvokeOnMainThread(() =>
+            if (!Thread.CurrentThread.IsBackground)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            });
+            }
         }
     }
 }
