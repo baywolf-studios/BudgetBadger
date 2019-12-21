@@ -15,4 +15,7 @@
     <Folder Include="Purchase\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.910310" />
+  </ItemGroup>
 </Project>
