@@ -118,13 +118,16 @@
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
+            BackgroundColor="Red"
+            x:Name="SearchIcon"
             FontFamily="{StaticResource IconFontFamily}"
             Text="{StaticResource SearchIcon}"
            FontSize="24"
            TextColor="White"
-            LineHeight="24"
-           VerticalOptions="Center" 
+           VerticalOptions="Center"
            HorizontalOptions="Center"
+           VerticalTextAlignment="Center"
+            HorizontalTextAlignment="Center"
                >
     </Label>
     </uc:ContentButton>

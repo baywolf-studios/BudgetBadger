@@ -61,7 +61,7 @@
 	<string>Light</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fonts/fa-regular-400.ttf</string>
+		<string>fontawesome-webfont.ttf</string>
 	</array>
 </dict>
 </plist>

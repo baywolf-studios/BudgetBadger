@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Forms.Animation;
+using BudgetBadger.Forms.Style;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Pages
@@ -116,8 +117,7 @@ namespace BudgetBadger.Forms.Pages
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                //SearchImage.ReplaceStringMap = ReplaceColor;
-                //SearchImage.Source = "cancel.svg";
+                SearchIcon.Text = Icons.Cancel;
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
@@ -134,8 +134,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 SearchText = string.Empty;
 
-                //SearchImage.ReplaceStringMap = ReplaceColor;
-                //SearchImage.Source = "search.svg";
+                SearchIcon.Text = Icons.Search;
 
                 //hide it
                 var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);

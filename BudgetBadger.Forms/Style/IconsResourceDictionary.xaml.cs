@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Style
 {
-    public partial class FontIconResourceDictionary : ResourceDictionary
+    public partial class IconsResourceDictionary : ResourceDictionary
     {
-        public FontIconResourceDictionary()
+        public IconsResourceDictionary()
         {
             InitializeComponent();
         }
