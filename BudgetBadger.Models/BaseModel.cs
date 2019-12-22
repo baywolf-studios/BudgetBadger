@@ -26,10 +26,7 @@ namespace BudgetBadger.Models
 
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            if (!Thread.CurrentThread.IsBackground)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
