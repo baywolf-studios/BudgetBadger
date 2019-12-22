@@ -231,12 +231,10 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <BundleResource Include="Resources\Fonts\fontawesome.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </BundleResource>
+    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
+    <BundleResource Include="Resources\Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>
