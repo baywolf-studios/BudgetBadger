@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    x:Class="BudgetBadger.Forms.Style.IconsResourceDictionary">
+                    x:Class="BudgetBadger.Forms.Style.FontIconResourceDictionary">
     <OnPlatform x:Key="IconFontFamily" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="FontAwesome" />
         <On Platform="Android" Value="materialdesignicons-webfont.ttf#Material Design Icons" />
@@ -13,11 +13,5 @@
         <On Platform="iOS, macOS" Value="&#xf002;" />
         <On Platform="Android" Value="&#xf349;" />
         <On Platform="UWP" Value="&#xe721;" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="CancelIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf00d;" />
-        <On Platform="Android" Value="&#xf739;" />
-        <On Platform="UWP" Value="&#xE711;" />
     </OnPlatform>
 </ResourceDictionary>

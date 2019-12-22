@@ -13,7 +13,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <style:FontIconResourceDictionary />
+                <style:IconsResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         <ResourceDictionary>
