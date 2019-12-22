@@ -8,8 +8,14 @@
     xmlns:local="clr-namespace:BudgetBadger.Forms"
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
     xmlns:sfdatagrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:style="clr-namespace:BudgetBadger.Forms.Style">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <style:FontIconResourceDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
         <ResourceDictionary>
             <converters:IntEnumConverter x:Key="IntEnumConverter" />
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />

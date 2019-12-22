@@ -220,7 +220,7 @@
     <BundleResource Include="Resources\expander.svg" />
     <BundleResource Include="Resources\transaction.svg" />
     <BundleResource Include="Resources\lock.svg" />
-    <BundleResource Include="Resources\Fonts\fa-regular-400.ttf" />
+    <BundleResource Include="Resources\Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

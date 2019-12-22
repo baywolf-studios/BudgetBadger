@@ -49,6 +49,6 @@
 	<key>NSRequiresAquaSystemAppearance</key>
 	<true/>
 	<key>ATSApplicationFontsPath</key>
-	<string>Fonts/fontawesome.ttf</string>
+	<string>Fonts</string>
 </dict>
 </plist>

@@ -117,12 +117,15 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <Label Text="&#xf00c;" 
-           FontSize="50"
-           TextColor="SkyBlue"
+        <Label
+            FontFamily="{StaticResource IconFontFamily}"
+            Text="{StaticResource SearchIcon}"
+           FontSize="24"
+           TextColor="White"
+            LineHeight="24"
            VerticalOptions="Center" 
            HorizontalOptions="Center"
-               FontFamily="Font Awesome 5 Free">
+               >
     </Label>
     </uc:ContentButton>
 </Grid>

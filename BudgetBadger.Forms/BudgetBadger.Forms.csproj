@@ -48,6 +48,7 @@
   <ItemGroup>
     <Folder Include="Purchase\" />
     <Folder Include="Pages\" />
+    <Folder Include="Style\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />
