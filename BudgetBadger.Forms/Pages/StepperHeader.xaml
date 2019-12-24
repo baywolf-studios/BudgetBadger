@@ -124,8 +124,6 @@
             Text="{StaticResource SearchIcon}"
            FontSize="24"
            TextColor="White"
-           VerticalOptions="Center"
-           HorizontalOptions="Center"
            VerticalTextAlignment="Center"
             HorizontalTextAlignment="Center"
                >
