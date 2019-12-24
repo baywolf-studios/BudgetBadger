@@ -33,10 +33,11 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public ImageSource ToolbarItemIcon
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
+        public string ToolbarItemIcon
         {
-            get => ToolbarItemImage.Source;
-            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
+            get => (string)GetValue(ToolbarItemIconProperty);
+            set => SetValue(ToolbarItemIconProperty, value);
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);

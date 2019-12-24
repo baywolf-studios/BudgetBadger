@@ -18,7 +18,7 @@
             PreviousCommand="{Binding PreviousCommand}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
 
     <p:BasePage.Body>
