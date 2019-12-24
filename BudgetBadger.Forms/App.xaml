@@ -14,6 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <style:IconsResourceDictionary />
+                <style:LightThemeResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         <ResourceDictionary>
@@ -67,6 +68,9 @@
             </OnPlatform>
 
             <x:Double x:Key="MaxWidth">720</x:Double>
+
+            <Color x:Key="WhiteColor">#ffffff</Color>
+            <Color x:Key="BlackColor">#1d1f24</Color>
 
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>

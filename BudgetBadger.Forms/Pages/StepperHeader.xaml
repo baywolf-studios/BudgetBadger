@@ -37,14 +37,10 @@
         Grid.Column="0"
         Command="{Binding ToolbarItemCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
+        <Label
             x:Name="ToolbarItemImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="{Binding ToolbarItemIcon}"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="PreviousFrame"
@@ -118,15 +114,8 @@
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
-            BackgroundColor="Red"
             x:Name="SearchIcon"
-            FontFamily="{StaticResource IconFontFamily}"
-            Text="{StaticResource SearchIcon}"
-           FontSize="24"
-           TextColor="White"
-           VerticalTextAlignment="Center"
-            HorizontalTextAlignment="Center"
-               >
-    </Label>
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource SearchIcon}"/>
     </uc:ContentButton>
 </Grid>
