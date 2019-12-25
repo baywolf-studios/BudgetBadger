@@ -4,7 +4,7 @@
                     x:Class="BudgetBadger.Forms.Style.IconsResourceDictionary">
     <OnPlatform x:Key="IconFontFamily" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="FontAwesome" />
-        <On Platform="Android" Value="materialdesignicons-webfont.ttf#Material Design Icons" />
+        <On Platform="Android" Value="MaterialIcons-Regular.ttf#Material Design Icons" />
         <On Platform="UWP" Value="Assets/Fonts/SegMDL2.ttf#Segoe MDL2 Assests" />
     </OnPlatform>
 
@@ -25,5 +25,40 @@
         <On Platform="iOS, macOS" Value="&#xf067;" />
         <On Platform="Android" Value="&#xe145;" />
         <On Platform="UWP" Value="&#xE711;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="ChevronLeftIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf053;" />
+        <On Platform="Android" Value="&#xe5cb;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="ChevronRightIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf054;" />
+        <On Platform="Android" Value="&#xe5cc;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="EnvelopeIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf0e0;" />
+        <On Platform="Android" Value="&#xe0be;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="BankIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf19c;" />
+        <On Platform="Android" Value="&#xe84f;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="PayeesIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf007;" />
+        <On Platform="Android" Value="&#xe7fd;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="ChartIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf080;" />
+        <On Platform="Android" Value="&#xe26b;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="SettingsIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf013;" />
+        <On Platform="Android" Value="&#xe8b8;" />
     </OnPlatform>
 </ResourceDictionary>

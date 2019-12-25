@@ -48,14 +48,10 @@
         Grid.Column="1"
         Command="{Binding PreviousCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="PreviousImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="previous.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="PreviousIcon"
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource ChevronLeftIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="NextFrame"
@@ -63,14 +59,10 @@
         Grid.Column="3"
         Command="{Binding NextCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="NextImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="next.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="NextIcon"
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource ChevronRightIcon}"/>
     </uc:ContentButton>
     <ContentView
         x:Name="SearchBoxFrame"

@@ -13,4 +13,12 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
+
+    <Style x:Key="MasterDetailIconStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource Key=IconFontFamily}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="TextColor" Value="{DynamicResource Key=BlackColor}" />
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>

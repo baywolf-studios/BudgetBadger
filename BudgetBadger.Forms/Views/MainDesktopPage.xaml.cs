@@ -15,12 +15,6 @@ namespace BudgetBadger.Forms.Views
     public partial class MainDesktopPage : MasterDetailPage, IInitialize
     {
         readonly ISettings _settings;
-        readonly INavigationService _navigationService;
-
-        Color _backgroundColor
-        {
-            get => (Color)Application.Current.Resources["BackgroundColor"];
-        }
 
         Color _secondaryTextColor
         {
@@ -103,11 +97,10 @@ namespace BudgetBadger.Forms.Views
 
         }
 
-        public MainDesktopPage(INavigationService navigationService, ISettings settings)
+        public MainDesktopPage(ISettings settings)
         {
             InitializeComponent();
 
-            _navigationService = navigationService;
             _settings = settings;
 
             _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
