@@ -21,40 +21,50 @@
     <TabbedPage.Children>
         <NavigationPage
             Title="{ext:Translate EnvelopesPageTitle}"
-            BarTextColor="White"
-            Icon="{StaticResource EnvelopesTabIcon}">
+            BarTextColor="White">
+            <NavigationPage.IconImageSource>
+                <FontImageSource Glyph="{StaticResource EnvelopeIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+            </NavigationPage.IconImageSource>
             <x:Arguments>
-                <envelopes:EnvelopesDetailedPage />
+                <envelopes:EnvelopesPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
             Title="{ext:Translate AccountsPageTitle}"
-            BarTextColor="White"
-            Icon="{StaticResource AccountsTabIcon}">
+            BarTextColor="White">
+            <NavigationPage.IconImageSource>
+                <FontImageSource Glyph="{StaticResource AccountIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+            </NavigationPage.IconImageSource>
             <x:Arguments>
-                <accounts:AccountsDetailedPage />
+                <accounts:AccountsPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
             Title="{ext:Translate PayeesPageTitle}"
-            BarTextColor="White"
-            Icon="{StaticResource PayeesTabIcon}">
+            BarTextColor="White">
+            <NavigationPage.IconImageSource>
+                <FontImageSource Glyph="{StaticResource PayeeIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+            </NavigationPage.IconImageSource>
             <x:Arguments>
-                <payees:PayeesDetailedPage />
+                <payees:PayeesPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
             Title="{ext:Translate ReportsPageTitle}"
-            BarTextColor="White"
-            Icon="{StaticResource ReportsTabIcon}">
+            BarTextColor="White">
+            <NavigationPage.IconImageSource>
+                <FontImageSource Glyph="{StaticResource ReportIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+            </NavigationPage.IconImageSource>
             <x:Arguments>
                 <reports:ReportsPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
             Title="{ext:Translate SettingsPageTitle}"
-            BarTextColor="White"
-            Icon="{StaticResource SettingsTabIcon}">
+            BarTextColor="White">
+            <NavigationPage.IconImageSource>
+                <FontImageSource Glyph="{StaticResource SettingIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+            </NavigationPage.IconImageSource>
             <x:Arguments>
                 <settings:SettingsPage />
             </x:Arguments>

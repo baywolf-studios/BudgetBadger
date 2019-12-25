@@ -3,62 +3,62 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     x:Class="BudgetBadger.Forms.Style.IconsResourceDictionary">
     <OnPlatform x:Key="IconFontFamily" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="FontAwesome" />
-        <On Platform="Android" Value="MaterialIcons-Regular.ttf#Material Design Icons" />
+        <On Platform="iOS, macOS" Value="Ionicons" />
+        <On Platform="Android" Value="ionicons.ttf#Ionicons" />
         <On Platform="UWP" Value="Assets/Fonts/SegMDL2.ttf#Segoe MDL2 Assests" />
     </OnPlatform>
 
 
     <OnPlatform x:Key="SearchIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf002;" />
-        <On Platform="Android" Value="&#xe8b6;" />
+        <On Platform="iOS, macOS" Value="&#xf4a5;" />
+        <On Platform="Android" Value="&#xf375;" />
         <On Platform="UWP" Value="&#xe721;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="CancelIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf00d;" />
-        <On Platform="Android" Value="&#xe5cd;" />
+    <OnPlatform x:Key="CloseIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf406;" />
+        <On Platform="Android" Value="&#xf2c0;" />
         <On Platform="UWP" Value="&#xE711;" />
     </OnPlatform>
 
     <OnPlatform x:Key="AddIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf067;" />
-        <On Platform="Android" Value="&#xe145;" />
+        <On Platform="iOS, macOS" Value="&#xf102;" />
+        <On Platform="Android" Value="&#xf273;" />
         <On Platform="UWP" Value="&#xE711;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="ChevronLeftIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf053;" />
-        <On Platform="Android" Value="&#xe5cb;" />
+    <OnPlatform x:Key="ArrowBackIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf3cf;" />
+        <On Platform="Android" Value="&#xf27d;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="ChevronRightIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf054;" />
-        <On Platform="Android" Value="&#xe5cc;" />
+    <OnPlatform x:Key="ArrowForwardIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf3d1;" />
+        <On Platform="Android" Value="&#xf287;" />
     </OnPlatform>
 
     <OnPlatform x:Key="EnvelopeIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf0e0;" />
-        <On Platform="Android" Value="&#xe0be;" />
+        <On Platform="iOS, macOS" Value="&#xf1b8;" />
+        <On Platform="Android" Value="&#xf322;" />
     </OnPlatform>
 
     <OnPlatform x:Key="AccountIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf19c;" />
-        <On Platform="Android" Value="&#xe84f;" />
+        <On Platform="iOS, macOS" Value="&#xf142;" />
+        <On Platform="Android" Value="&#xf2b3;" />
     </OnPlatform>
 
     <OnPlatform x:Key="PayeeIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf007;" />
-        <On Platform="Android" Value="&#xe7fd;" />
+        <On Platform="iOS, macOS" Value="&#xf47c;" />
+        <On Platform="Android" Value="&#xf343;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ReportIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf080;" />
-        <On Platform="Android" Value="&#xe26b;" />
+        <On Platform="iOS, macOS" Value="&#xf21c;" />
+        <On Platform="Android" Value="&#xf385;" />
     </OnPlatform>
 
     <OnPlatform x:Key="SettingIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf013;" />
-        <On Platform="Android" Value="&#xe8b8;" />
+        <On Platform="iOS, macOS" Value="&#xf412;" />
+        <On Platform="Android" Value="&#xf377;" />
     </OnPlatform>
 </ResourceDictionary>

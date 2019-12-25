@@ -116,7 +116,7 @@ namespace BudgetBadger.Forms.Pages
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                SearchIcon.Text = Icons.Cancel;
+                SearchIcon.Text = Icons.Close;
 
                 //show it
                 SearchBoxFrame.IsVisible = true;

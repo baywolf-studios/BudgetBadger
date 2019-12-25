@@ -234,9 +234,8 @@
     <Folder Include="Resources\Fonts\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Fonts\fontawesome-webfont.ttf" />
-    <BundleResource Include="Resources\Fonts\Framework7Icons-Regular.ttf" />
-    <BundleResource Include="Resources\Fonts\SFSymbolsFallback.ttf" />
+    <BundleResource Include="Resources\Fonts\ionicons.ttf" />
+    <BundleResource Include="Resources\Fonts\SegMDL2.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

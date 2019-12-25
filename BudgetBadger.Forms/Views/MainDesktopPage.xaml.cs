@@ -14,106 +14,64 @@ namespace BudgetBadger.Forms.Views
 {
     public partial class MainDesktopPage : MasterDetailPage, IInitialize
     {
-        readonly ISettings _settings;
-
-        Color _secondaryTextColor
+        void SetAllInactive(string pageName)
         {
-            get => (Color)Application.Current.Resources["SecondaryTextColor"];
-        }
-
-        Color _primaryTextColor
-        {
-            get => (Color)Application.Current.Resources["PrimaryTextColor"];
-        }
-
-        string _replaceColorMap;
-
-        void SetAllInactive(Guid excluded)
-        {
-            if (excluded != EnvelopesFrame.Id)
+            if (pageName != "EnvelopesPage")
             {
                 EnvelopesFrame.BackgroundColor = EnvelopesFrame.RestingBackgroundColor;
-                EnvelopesIcon.ReplaceStringMap.Clear();
-                EnvelopesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                EnvelopesIcon.ReloadImage();
-                EnvelopesLabel.TextColor = _secondaryTextColor;
+            }
+            else
+            {
+                EnvelopesFrame.BackgroundColor = EnvelopesFrame.ActiveBackgroundColor;
             }
 
-            if (excluded != AccountsFrame.Id)
+            if (pageName != "AccountsPage")
             {
                 AccountsFrame.BackgroundColor = AccountsFrame.RestingBackgroundColor;
-                AccountsIcon.ReplaceStringMap.Clear();
-                AccountsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                AccountsIcon.ReloadImage();
-                AccountsLabel.TextColor = _secondaryTextColor;
+            }
+            else
+            {
+                AccountsFrame.BackgroundColor = AccountsFrame.ActiveBackgroundColor;
             }
 
-            if (excluded != PayeesFrame.Id)
+            if (pageName != "PayeesPage")
             {
                 PayeesFrame.BackgroundColor = PayeesFrame.RestingBackgroundColor;
-                PayeesIcon.ReplaceStringMap.Clear();
-                PayeesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                PayeesIcon.ReloadImage();
-                PayeesLabel.TextColor = _secondaryTextColor;
+            }
+            else
+            {
+                PayeesFrame.BackgroundColor = PayeesFrame.ActiveBackgroundColor;
             }
 
-            if (excluded != ReportsFrame.Id)
+            if (pageName != "ReportsPage")
             {
                 ReportsFrame.BackgroundColor = ReportsFrame.RestingBackgroundColor;
-                ReportsIcon.ReplaceStringMap.Clear();
-                ReportsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                ReportsIcon.ReloadImage();
-                ReportsLabel.TextColor = _secondaryTextColor;
+            }
+            else
+            {
+                ReportsFrame.BackgroundColor = ReportsFrame.ActiveBackgroundColor;
             }
 
-            if (excluded != SettingsFrame.Id)
+            if (pageName != "SettingsPage")
             {
                 SettingsFrame.BackgroundColor = SettingsFrame.RestingBackgroundColor;
-                SettingsIcon.ReplaceStringMap.Clear();
-                SettingsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                SettingsIcon.ReloadImage();
-                SettingsLabel.TextColor = _secondaryTextColor;
+            }
+            else
+            {
+                SettingsFrame.BackgroundColor = SettingsFrame.ActiveBackgroundColor;
             }
         }
 
-        void Handle_Tapped(object sender, EventArgs e)
-        {
-            var frame = (ContentButton)sender;
-            var test = Detail;
-
-            SetAllInactive(frame.Id);
-
-            frame.BackgroundColor = frame.ActiveBackgroundColor;
-
-            var stackLayout = (StackLayout)frame.Content;
-
-            var currentIcon = (SvgCachedImage)stackLayout.Children.FirstOrDefault(c => c is SvgCachedImage);
-            currentIcon.ReplaceStringMap.Clear();
-            currentIcon.ReplaceStringMap.Add(_replaceColorMap, _primaryTextColor.GetHexString());
-            currentIcon.ReloadImage();
-
-            var currentLabel = (Label)stackLayout.Children.FirstOrDefault(c => c is Label);
-            currentLabel.TextColor = _primaryTextColor;
-
-        }
-
-        public MainDesktopPage(ISettings settings)
+        public MainDesktopPage()
         {
             InitializeComponent();
-
-            _settings = settings;
-
-            _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
         }
 
         public void Initialize(INavigationParameters parameters)
         {
-            int.TryParse(_settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appCount);
-
-            if (appCount == 0)
+            if (parameters.TryGetValue<string>(PageParameter.PageName, out string pageName))
             {
-                AccountsFrame.Command.Execute(AccountsFrame.CommandParameter);
-                Handle_Tapped(AccountsFrame, new EventArgs());
+                SetAllInactive(pageName);
             }
         }
     }
