@@ -74,9 +74,7 @@ namespace BudgetBadger.Forms.Pages
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             PreviousFrame.BindingContext = this;
-            PreviousImage.BindingContext = this;
             NextFrame.BindingContext = this;
-            NextImage.BindingContext = this;
             EntryControl.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
