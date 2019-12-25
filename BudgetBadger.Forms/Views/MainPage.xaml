@@ -34,7 +34,7 @@
             Title="{ext:Translate AccountsPageTitle}"
             BarTextColor="White">
             <NavigationPage.IconImageSource>
-                <FontImageSource Glyph="{StaticResource BankIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+                <FontImageSource Glyph="{StaticResource AccountIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
                 <accounts:AccountsPage />
@@ -44,7 +44,7 @@
             Title="{ext:Translate PayeesPageTitle}"
             BarTextColor="White">
             <NavigationPage.IconImageSource>
-                <FontImageSource Glyph="{StaticResource PayeesIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+                <FontImageSource Glyph="{StaticResource PayeeIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
                 <payees:PayeesPage />
@@ -54,7 +54,7 @@
             Title="{ext:Translate ReportsPageTitle}"
             BarTextColor="White">
             <NavigationPage.IconImageSource>
-                <FontImageSource Glyph="{StaticResource ChartIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+                <FontImageSource Glyph="{StaticResource ReportIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
                 <reports:ReportsPage />
@@ -64,7 +64,7 @@
             Title="{ext:Translate SettingsPageTitle}"
             BarTextColor="White">
             <NavigationPage.IconImageSource>
-                <FontImageSource Glyph="{StaticResource SettingsIcon}" FontFamily="{StaticResource IconFontFamily}"/>
+                <FontImageSource Glyph="{StaticResource SettingIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
                 <settings:SettingsPage />
