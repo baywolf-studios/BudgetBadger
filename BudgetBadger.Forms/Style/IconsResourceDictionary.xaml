@@ -42,22 +42,22 @@
         <On Platform="Android" Value="&#xe0be;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="BankIcon" x:TypeArguments="x:String">
+    <OnPlatform x:Key="AccountIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf19c;" />
         <On Platform="Android" Value="&#xe84f;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="PayeesIcon" x:TypeArguments="x:String">
+    <OnPlatform x:Key="PayeeIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf007;" />
         <On Platform="Android" Value="&#xe7fd;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="ChartIcon" x:TypeArguments="x:String">
+    <OnPlatform x:Key="ReportIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf080;" />
         <On Platform="Android" Value="&#xe26b;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="SettingsIcon" x:TypeArguments="x:String">
+    <OnPlatform x:Key="SettingIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf013;" />
         <On Platform="Android" Value="&#xe8b8;" />
     </OnPlatform>
