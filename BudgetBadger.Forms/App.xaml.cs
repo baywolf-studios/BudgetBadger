@@ -39,6 +39,7 @@ using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using BudgetBadger.Core.Utilities;
 using Prism.Logging;
+using Prism.Navigation;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -71,11 +72,33 @@ namespace BudgetBadger.Forms
                 int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
                 if (appOpenedCount > 0)
                 {
-                    await NavigationService.NavigateAsync("MainPage");
+                    if (Device.Idiom == TargetIdiom.Desktop)
+                    {
+                        var parameters = new NavigationParameters
+                        {
+                            { PageParameter.PageName, "EnvelopesPage" }
+                        };
+                        await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage", parameters);
+                    }
+                    else
+                    {
+                        await NavigationService.NavigateAsync("MainPage");
+                    }
                 }
                 else
                 {
-                    await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
+                    if (Device.Idiom == TargetIdiom.Desktop)
+                    {
+                        var parameters = new NavigationParameters
+                        {
+                            { PageParameter.PageName, "AccountsPage" }
+                        };
+                        await NavigationService.NavigateAsync("/MainPage/NavigationPage/AccountsPage", parameters);
+                    }
+                    else
+                    {
+                        await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
+                    }
                 }
             }
         }

@@ -25,6 +25,15 @@
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
+            <Color x:Key="white_color">#ffffff</Color>
+            <Color x:Key="black_color">#1d1f24</Color>
+
+            <OnIdiom x:Key="font_size_100" x:TypeArguments="x:Double">
+                <OnIdiom.Desktop>14</OnIdiom.Desktop>
+                <OnIdiom.Phone>16</OnIdiom.Phone>
+                <OnIdiom.Tablet>16</OnIdiom.Tablet>
+            </OnIdiom>
+
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
                 <On Platform="iOS">5</On>
                 <On Platform="Android">2</On>
@@ -68,9 +77,6 @@
             </OnPlatform>
 
             <x:Double x:Key="MaxWidth">720</x:Double>
-
-            <Color x:Key="WhiteColor">#ffffff</Color>
-            <Color x:Key="BlackColor">#1d1f24</Color>
 
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>
@@ -304,12 +310,6 @@
                 <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailTitleFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-
-            <x:Double x:Key="MasterDetailItemFontSize">14</x:Double>
-            <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailItemFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
 
             <x:Double x:Key="HelperControlFontSize">16</x:Double>

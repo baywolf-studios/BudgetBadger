@@ -26,9 +26,44 @@ namespace BudgetBadger.Forms.Style
             get => GetResource("SearchIcon");
         }
 
-        public static string Cancel
+        public static string Close
         {
-            get => GetResource("CancelIcon");
+            get => GetResource("CloseIcon");
+        }
+
+        public static string ArrowBack
+        {
+            get => GetResource("ArrowBackIcon");
+        }
+
+        public static string ArrowForward
+        {
+            get => GetResource("ArrowForwardIcon");
+        }
+
+        public static string Envelope
+        {
+            get => GetResource("EnvelopeIcon");
+        }
+
+        public static string Account
+        {
+            get => GetResource("AccountIcon");
+        }
+
+        public static string Payee
+        {
+            get => GetResource("PayeeIcon");
+        }
+
+        public static string Report
+        {
+            get => GetResource("ReportIcon");
+        }
+
+        public static string Setting
+        {
+            get => GetResource("SettingIcon");
         }
     }
 }

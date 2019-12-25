@@ -3,21 +3,35 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:style="clr-namespace:BudgetBadger.Forms.Style"
                     x:Class="BudgetBadger.Forms.Style.LightThemeResourceDictionary">
-    <ResourceDictionary.MergedDictionaries>
-        <style:IconsResourceDictionary/>
-    </ResourceDictionary.MergedDictionaries>
+    <Color x:Key="gray_10">#f5f7fa</Color>
+    <Color x:Key="gray_20">#ebeff5</Color>
+    <Color x:Key="gray_30">#dde3ed</Color>
+    <Color x:Key="gray_40">#c8d1e0</Color>
+    <Color x:Key="gray_50">#afbacc</Color>
+    <Color x:Key="gray_60">#8e99ab</Color>
+    <Color x:Key="gray_70">#707a8a</Color>
+    <Color x:Key="gray_80">#58606e</Color>
+    <Color x:Key="gray_90">#434a54</Color>
+    <Color x:Key="gray_100">#333840</Color>
+
     <Style x:Key="ToolbarIconStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{StaticResource Key=IconFontFamily}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
         <Setter Property="FontSize" Value="24" />
-        <Setter Property="TextColor" Value="{DynamicResource Key=WhiteColor}" />
+        <Setter Property="TextColor" Value="{DynamicResource Key=white_color}" />
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="MasterDetailIconStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{StaticResource Key=IconFontFamily}" />
+    <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
+        <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <Style x:Key="MasterDetailItemIconStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
         <Setter Property="FontSize" Value="24" />
-        <Setter Property="TextColor" Value="{DynamicResource Key=BlackColor}" />
+        <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>

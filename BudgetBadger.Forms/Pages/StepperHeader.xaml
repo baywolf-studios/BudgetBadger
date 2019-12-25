@@ -51,7 +51,7 @@
         <Label
             x:Name="PreviousIcon"
             Style="{DynamicResource Key=ToolbarIconStyle}"
-            Text="{StaticResource ChevronLeftIcon}"/>
+            Text="{StaticResource ArrowBackIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="NextFrame"
@@ -62,7 +62,7 @@
         <Label
             x:Name="NextIcon"
             Style="{DynamicResource Key=ToolbarIconStyle}"
-            Text="{StaticResource ChevronRightIcon}"/>
+            Text="{StaticResource ArrowForwardIcon}"/>
     </uc:ContentButton>
     <ContentView
         x:Name="SearchBoxFrame"

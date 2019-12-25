@@ -38,44 +38,41 @@
                     Grid.Row="1"
                     Margin="8,0"
                     BackgroundColor="{StaticResource SelectedItemColor}"
-                    Command="{prism:NavigateTo 'NavigationPage/EnvelopesPage'}"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/EnvelopesPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="EnvelopesPage"/>
+                    </uc:ContentButton.CommandParameter>
                     <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                        <Label
                             x:Name="EnvelopesIcon"
                             Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="envelope.svg"
-                            WidthRequest="24" />
+                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Text="{StaticResource EnvelopeIcon}"/>
                         <Label
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
                             Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="{ext:Translate EnvelopesPageTitle}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            VerticalOptions="Center" />
+                            Text="{ext:Translate EnvelopesPageTitle}"/>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/AccountsPage"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/AccountsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="AccountsPage"/>
+                    </uc:ContentButton.CommandParameter>
                     <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                        <Label
                             x:Name="AccountsIcon"
                             Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="account.svg"
-                            WidthRequest="24" />
+                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Text="{StaticResource AccountIcon}"/>
                         <Label
                             x:Name="AccountsLabel"
                             Margin="8,0"
@@ -88,19 +85,18 @@
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/PayeesPage"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/PayeesPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="PayeesPage"/>
+                    </uc:ContentButton.CommandParameter>
                     <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                        <Label
                             x:Name="PayeesIcon"
                             Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="payees.svg"
-                            WidthRequest="24" />
+                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Text="{StaticResource PayeeIcon}"/>
                         <Label
                             x:Name="PayeesLabel"
                             Margin="8,0"
@@ -113,19 +109,18 @@
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/ReportsPage"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/ReportsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="ReportsPage"/>
+                    </uc:ContentButton.CommandParameter>
                     <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                        <Label
                             x:Name="ReportsIcon"
                             Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="report.svg"
-                            WidthRequest="24" />
+                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Text="{StaticResource ReportIcon}"/>
                         <Label
                             x:Name="ReportsLabel"
                             Margin="8,0"
@@ -138,19 +133,18 @@
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/SettingsPage"
                     ForceActiveBackground="true"
                     Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/SettingsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="SettingsPage"/>
+                    </uc:ContentButton.CommandParameter>
                     <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                        <Label
                             x:Name="SettingsIcon"
                             Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="settings.svg"
-                            WidthRequest="24" />
+                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Text="{StaticResource SettingIcon}"/>
                         <Label
                             x:Name="SettingsLabel"
                             Margin="8,0"
