@@ -14,25 +14,16 @@
     <Color x:Key="gray_90">#434a54</Color>
     <Color x:Key="gray_100">#333840</Color>
 
-    <Style x:Key="ToolbarIconStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
-        <Setter Property="FontSize" Value="24" />
-        <Setter Property="TextColor" Value="{DynamicResource Key=white_color}" />
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-    </Style>
+    <Color x:Key="brand_10">#e8f4fa</Color>
+    <Color x:Key="brand_20">#bbe5fa</Color>
+    <Color x:Key="brand_30">#8dd4f7</Color>
+    <Color x:Key="brand_40">#53baed</Color>
+    <Color x:Key="brand_50">#229ad6</Color>
+    <Color x:Key="brand_60">#0c7bb3</Color>
+    <Color x:Key="brand_70">#066391</Color>
+    <Color x:Key="brand_80">#064d70</Color>
+    <Color x:Key="brand_90">#093952</Color>
+    <Color x:Key="brand_100">#0c2938</Color>
 
-    <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
-        <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
-        <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
-        <Setter Property="VerticalOptions" Value="Center"/>
-    </Style>
-
-    <Style x:Key="MasterDetailItemIconStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
-        <Setter Property="FontSize" Value="24" />
-        <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-    </Style>
+    
 </ResourceDictionary>

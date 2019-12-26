@@ -57,7 +57,7 @@
     </OnPlatform>
 
     <OnPlatform x:Key="SettingIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf412;" />
+        <On Platform="iOS, macOS" Value="&#xf4a7;" />
         <On Platform="Android" Value="&#xf377;" />
     </OnPlatform>
 </ResourceDictionary>
