@@ -8,7 +8,6 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
-    xmlns:local="clr-namespace:BudgetBadger.Forms.Views"
     xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"

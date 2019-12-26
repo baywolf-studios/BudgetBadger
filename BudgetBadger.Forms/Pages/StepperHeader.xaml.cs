@@ -98,20 +98,6 @@ namespace BudgetBadger.Forms.Pages
             };
         }
 
-        async void Handle_Tapped(object sender, System.EventArgs e)
-        {
-            var originalColor = ToolbarItemFrame.BackgroundColor;
-
-            ToolbarItemFrame.BackgroundColor = Color.Red;
-
-            var colorTask2 = ToolbarItemFrame.ColorTo(Color.Red, originalColor, (Color obj2) => ToolbarItemFrame.BackgroundColor = obj2, _animationLength, Easing.CubicInOut);
-            if (await Task.WhenAny(colorTask2, Task.Delay((int)_animationLength + 50)) != colorTask2)
-            {
-                ViewExtensions.CancelAnimations(ToolbarItemFrame);
-                ToolbarItemFrame.BackgroundColor = originalColor;
-            }
-        }
-
         async void SearchTapped(object sender, EventArgs e)
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden

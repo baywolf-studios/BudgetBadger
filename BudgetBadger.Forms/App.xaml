@@ -30,8 +30,8 @@
 
             <OnIdiom x:Key="font_size_100" x:TypeArguments="x:Double">
                 <OnIdiom.Desktop>14</OnIdiom.Desktop>
-                <OnIdiom.Phone>16</OnIdiom.Phone>
-                <OnIdiom.Tablet>16</OnIdiom.Tablet>
+                <OnIdiom.Phone>17</OnIdiom.Phone>
+                <OnIdiom.Tablet>17</OnIdiom.Tablet>
             </OnIdiom>
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">

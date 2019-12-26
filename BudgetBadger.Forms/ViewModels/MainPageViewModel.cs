@@ -16,35 +16,20 @@ namespace BudgetBadger.Forms.ViewModels
 {
     public class MainPageViewModel : IInitializeAsync
     {
-        readonly INavigationService _navigationService;
         readonly ITransactionLogic _transactionLogic;
         readonly ISettings _settings;
         readonly IPageDialogService _dialogService;
         readonly IResourceContainer _resourceContainer;
 
-        public ICommand NavigateCommand { get; set; }
-
-        public MainPageViewModel(INavigationService navigationService,
-            ITransactionLogic transactionLogic,
+        public MainPageViewModel(ITransactionLogic transactionLogic,
             ISettings settings,
             IPageDialogService dialogService,
             IResourceContainer resourceContainer)
         {
-            _navigationService = navigationService;
             _transactionLogic = transactionLogic;
             _settings = settings;
             _dialogService = dialogService;
             _resourceContainer = resourceContainer;
-
-            NavigateCommand = new DelegateCommand<string>(async a => await ExecuteNavigateCommand(a));
-        }
-
-        public async Task ExecuteNavigateCommand(string pageName)
-        {
-            if (!string.IsNullOrEmpty(pageName))
-            {
-                await _navigationService.NavigateAsync(pageName, animated: false);
-            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
