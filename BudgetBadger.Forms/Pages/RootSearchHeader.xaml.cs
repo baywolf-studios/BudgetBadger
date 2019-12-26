@@ -53,7 +53,7 @@ namespace BudgetBadger.Forms.Pages
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
-            svgSearch.BindingContext = this;
+            SearchIcon.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
