@@ -109,13 +109,27 @@ namespace BudgetBadger.Forms.DataTemplates
             InitializeComponent();
             if (dense)
             {
-                PickerControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                if (Application.Current.Resources.TryGetValue("DenseDataTableComboBoxColumnCellStyle", out object resource))
+                {
+                    PickerControl.Style = (Xamarin.Forms.Style)resource;
+                }
+
+                if (Application.Current.Resources.TryGetValue("DenseDataTableLabelColumnCellStyle", out object resource2))
+                {
+                    LabelControl.Style = (Xamarin.Forms.Style)resource2;
+                }
             }
             else
             {
-                PickerControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
-                LabelControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                if (Application.Current.Resources.TryGetValue("DataTableComboBoxColumnCellStyle", out object resource))
+                {
+                    PickerControl.Style = (Xamarin.Forms.Style)resource;
+                }
+
+                if (Application.Current.Resources.TryGetValue("DataTableLabelColumnCellStyle", out object resource2))
+                {
+                    LabelControl.Style = (Xamarin.Forms.Style)resource2;
+                }
             }
 
             PickerControl.ItemsSource = new ObservableCollection<object>();

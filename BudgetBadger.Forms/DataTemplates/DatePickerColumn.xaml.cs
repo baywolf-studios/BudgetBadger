@@ -70,24 +70,29 @@ namespace BudgetBadger.Forms.DataTemplates
         public DatePickerColumn(bool dense)
         {
             InitializeComponent();
-            if (Device.RuntimePlatform == Device.macOS)
+
+            if (dense)
             {
-                DateControl.FontSize = 12;
-                TextControl.FontSize = 12;
+                if (Application.Current.Resources.TryGetValue("DenseDataTableDatePickerColumnCellStyle", out object resource))
+                {
+                    DateControl.Style = (Xamarin.Forms.Style)resource;
+                }
+
+                if (Application.Current.Resources.TryGetValue("DenseDataTableTextColumnCellStyle", out object resource2))
+                {
+                    TextControl.Style = (Xamarin.Forms.Style)resource2;
+                }
             }
             else
             {
-                if (dense)
+                if (Application.Current.Resources.TryGetValue("DataTableDatePickerColumnCellStyle", out object resource))
                 {
-
-
-                    DateControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
-                    TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                    DateControl.Style = (Xamarin.Forms.Style)resource;
                 }
-                else
+
+                if (Application.Current.Resources.TryGetValue("DataTableTextColumnCellStyle", out object resource2))
                 {
-                    DateControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
-                    TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                    TextControl.Style = (Xamarin.Forms.Style)resource2;
                 }
             }
 

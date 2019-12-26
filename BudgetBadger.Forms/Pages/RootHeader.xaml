@@ -11,12 +11,8 @@
     <Label
         x:Name="LabelControl"
         Grid.Row="0"
-        FontAttributes="Bold"
-        FontSize="17"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center">
+        Style="{DynamicResource PageTitleStyle}">
         <Label.Margin>
             <OnPlatform x:TypeArguments="Thickness">
                 <On Platform="Android" Value="16,0,0,0" />

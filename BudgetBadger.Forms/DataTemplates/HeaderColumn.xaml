@@ -8,9 +8,7 @@
     <Label
         x:Name="TextControl"
         Text="{Binding Text}"
-        TextColor="{StaticResource SecondaryTextColor}"
         VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent"
         LineBreakMode="TailTruncation">
     </Label>
 </ContentView>

@@ -25,8 +25,8 @@
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
-            <Color x:Key="white">#ffffff</Color>
-            <Color x:Key="black">#1d1f24</Color>
+            <Color x:Key="static_white">#ffffff</Color>
+            <Color x:Key="static_black">#1d1f24</Color>
 
             <OnIdiom x:Key="font_size_50"
                      x:TypeArguments="x:Double"
@@ -53,10 +53,40 @@
                      Default="22"
                      Desktop="18"/>
 
+            <OnIdiom x:Key="font_size_400"
+                     x:TypeArguments="x:Double"
+                     Default="24"
+                     Desktop="20"/>
+
+            <OnIdiom x:Key="font_size_500"
+                     x:TypeArguments="x:Double"
+                     Default="27"
+                     Desktop="22"/>
+
+            <OnIdiom x:Key="font_size_600"
+                     x:TypeArguments="x:Double"
+                     Default="31"
+                     Desktop="25"/>
+
+            <Style x:Key="PageTitleStyle" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_100}" Desktop="{DynamicResource Key=font_size_200}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_50}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
             <Style x:Key="ToolbarIconStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
-                <Setter Property="FontSize" Value="24" />
-                <Setter Property="TextColor" Value="{StaticResource Key=gray_50}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_50}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
@@ -68,14 +98,18 @@
             </Style>
 
             <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=font_size_100}" />
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
 
             <Style x:Key="MasterDetailItemIconStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
-                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -92,6 +126,76 @@
                 <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
                 <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
             </Style>
+
+            <Style x:Key="DataGridColumnIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="DataTableColumnHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableColumnHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_50}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+            </Style>
+
+            <Style x:Key="DataTableLabelColumnCellStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableLabelColumnCellStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableTextColumnCellStyle" TargetType="Entry">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableTextColumnCellStyle" TargetType="Entry">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableComboBoxColumnCellStyle" TargetType="Picker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableComboBoxColumnCellStyle" TargetType="Picker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableDatePickerColumnCellStyle" TargetType="DatePicker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableDatePickerColumnCellStyle" TargetType="DatePicker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <x:Double x:Key="DataGridItemFontSize">14</x:Double>
+            <x:Double x:Key="DataGridHeaderDenseFontSize">11</x:Double>
+            <x:Double x:Key="DataGridItemDenseFontSize">13</x:Double>
+
+            <Color x:Key="DataGridContextActionTextColor">white</Color>
+            <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
+            <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
                 <On Platform="iOS">5</On>
@@ -327,18 +431,6 @@
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
             </Style>
-            
-            <x:Double x:Key="DataGridHeaderFontSize">12</x:Double>
-            <x:Double x:Key="DataGridItemFontSize">14</x:Double>
-            <x:Double x:Key="DataGridHeaderDenseFontSize">11</x:Double>
-            <x:Double x:Key="DataGridItemDenseFontSize">13</x:Double>
-            <x:Double x:Key="DataGridItemHeight">48</x:Double>
-
-            <x:Double x:Key="DataGridContextActionSize">48</x:Double>
-            <Color x:Key="DataGridContextActionTextColor">white</Color>
-            <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
-            <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
-            <Color x:Key="DataGridColumnBackground">transparent</Color>
             
             <x:Double x:Key="PageHeaderFontSize">20</x:Double>
             <Style x:Key="PageHeaderLabelStyle" TargetType="Label">

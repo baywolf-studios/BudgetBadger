@@ -23,13 +23,9 @@
         Grid.Row="0"
         Grid.Column="2"
         Margin="0"
-        FontAttributes="Bold"
-        FontSize="17"
-        HorizontalOptions="Center"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center" />
+        HorizontalOptions="Center"
+        Style="{DynamicResource PageTitleStyle}"/>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"
         Grid.Row="0"

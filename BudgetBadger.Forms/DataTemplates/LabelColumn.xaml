@@ -10,9 +10,6 @@
     <Label
         x:Name="TextControl"
         Text="{Binding Text}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent"
-        LineBreakMode="TailTruncation">
+        VerticalOptions="CenterAndExpand">
     </Label>
 </uc:ContentButton>
