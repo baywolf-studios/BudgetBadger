@@ -27,12 +27,41 @@
 
             <Color x:Key="white_color">#ffffff</Color>
             <Color x:Key="black_color">#1d1f24</Color>
+            <Color x:Key="transparent_color">Transparent</Color>
 
             <OnIdiom x:Key="font_size_100" x:TypeArguments="x:Double">
                 <OnIdiom.Desktop>14</OnIdiom.Desktop>
                 <OnIdiom.Phone>17</OnIdiom.Phone>
                 <OnIdiom.Tablet>17</OnIdiom.Tablet>
             </OnIdiom>
+
+            <Style x:Key="ToolbarIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="TextColor" Value="{StaticResource Key=white_color}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource Key=font_size_100}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MasterDetailItemIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MasterDetailItemButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=transparent_color}" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_10}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_10}" />
+            </Style>
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
                 <On Platform="iOS">5</On>
@@ -234,14 +263,9 @@
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
             </Style>
-
-            <Style x:Key="SidebarButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-            </Style>
             
             <Style x:Key="SettingsButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="ForceActiveBackground" Value="True"/>
                 <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
                 <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
                 <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />

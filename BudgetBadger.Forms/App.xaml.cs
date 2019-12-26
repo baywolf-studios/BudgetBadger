@@ -62,45 +62,39 @@ namespace BudgetBadger.Forms
 
             SQLitePCL.Batteries_V2.Init();
 
-            if (Device.Idiom == TargetIdiom.Desktop)
+            var settings = Container.Resolve<ISettings>();
+            int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+            if (appOpenedCount > 0)
             {
-                await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
-            }
-            else
-            {
-                var settings = Container.Resolve<ISettings>();
-                int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
-                if (appOpenedCount > 0)
+                if (Device.Idiom == TargetIdiom.Desktop)
                 {
-                    if (Device.Idiom == TargetIdiom.Desktop)
+                    var parameters = new NavigationParameters
                     {
-                        var parameters = new NavigationParameters
-                        {
-                            { PageParameter.PageName, "EnvelopesPage" }
-                        };
-                        await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage", parameters);
-                    }
-                    else
-                    {
-                        await NavigationService.NavigateAsync("MainPage");
-                    }
+                        { PageParameter.PageName, "EnvelopesPage" }
+                    };
+                    await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage", parameters);
                 }
                 else
                 {
-                    if (Device.Idiom == TargetIdiom.Desktop)
-                    {
-                        var parameters = new NavigationParameters
-                        {
-                            { PageParameter.PageName, "AccountsPage" }
-                        };
-                        await NavigationService.NavigateAsync("/MainPage/NavigationPage/AccountsPage", parameters);
-                    }
-                    else
-                    {
-                        await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
-                    }
+                    await NavigationService.NavigateAsync("MainPage");
                 }
             }
+            else
+            {
+                if (Device.Idiom == TargetIdiom.Desktop)
+                {
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.PageName, "AccountsPage" }
+                    };
+                    await NavigationService.NavigateAsync("/MainPage/NavigationPage/AccountsPage", parameters);
+                }
+                else
+                {
+                    await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
+                }
+            }
+            
         }
 
         protected async override void OnStart()

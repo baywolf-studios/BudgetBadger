@@ -36,9 +36,7 @@
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
                     Margin="8,0"
-                    BackgroundColor="{StaticResource SelectedItemColor}"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
+                    Style="{DynamicResource MasterDetailItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/EnvelopesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="EnvelopesPage"/>
@@ -60,8 +58,7 @@
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
+                    Style="{DynamicResource MasterDetailItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/AccountsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="AccountsPage"/>
@@ -84,8 +81,7 @@
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
+                    Style="{DynamicResource MasterDetailItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/PayeesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="PayeesPage"/>
@@ -108,8 +104,7 @@
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
+                    Style="{DynamicResource MasterDetailItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/ReportsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="ReportsPage"/>
@@ -132,8 +127,7 @@
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
+                    Style="{DynamicResource MasterDetailItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/SettingsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="SettingsPage"/>
