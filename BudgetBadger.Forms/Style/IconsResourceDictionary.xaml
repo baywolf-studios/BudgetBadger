@@ -8,7 +8,6 @@
         <On Platform="UWP" Value="Assets/Fonts/SegMDL2.ttf#Segoe MDL2 Assests" />
     </OnPlatform>
 
-
     <OnPlatform x:Key="SearchIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf4a5;" />
         <On Platform="Android" Value="&#xf375;" />

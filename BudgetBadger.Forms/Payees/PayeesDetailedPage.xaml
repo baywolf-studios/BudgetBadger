@@ -17,7 +17,7 @@
             PageTitle="{ext:Translate PayeesPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <uc:HelperControl

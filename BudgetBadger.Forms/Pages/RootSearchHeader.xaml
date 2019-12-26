@@ -4,7 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="0"
     RowSpacing="0">
@@ -49,14 +48,10 @@
         Grid.Column="0"
         Command="{Binding ToolbarItemCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
+        <Label
             x:Name="ToolbarItemImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="{Binding ToolbarItemIcon}"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
     <ContentView
         x:Name="SearchBoxFrame"
@@ -99,13 +94,9 @@
         Grid.Row="0"
         Grid.Column="2"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="svgSearch"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="search.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="SearchIcon"
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource SearchIcon}"/>
     </uc:ContentButton>
 </Grid>
