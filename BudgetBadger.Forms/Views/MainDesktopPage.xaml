@@ -29,7 +29,7 @@
                 <Label
                     Grid.Row="0"
                     Margin="16,0"
-                    Style="{StaticResource MasterDetailTitleLabelStyle}"
+                    Style="{StaticResource MasterDetailTitleStyle}"
                     Text="{ext:Translate BudgetBadger}"
                     VerticalOptions="Center" />
                 <uc:ContentButton

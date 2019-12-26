@@ -25,42 +25,72 @@
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
-            <Color x:Key="white_color">#ffffff</Color>
-            <Color x:Key="black_color">#1d1f24</Color>
-            <Color x:Key="transparent_color">Transparent</Color>
+            <Color x:Key="white">#ffffff</Color>
+            <Color x:Key="black">#1d1f24</Color>
 
-            <OnIdiom x:Key="font_size_100" x:TypeArguments="x:Double">
-                <OnIdiom.Desktop>14</OnIdiom.Desktop>
-                <OnIdiom.Phone>17</OnIdiom.Phone>
-                <OnIdiom.Tablet>17</OnIdiom.Tablet>
-            </OnIdiom>
+            <OnIdiom x:Key="font_size_50"
+                     x:TypeArguments="x:Double"
+                     Default="13"
+                     Desktop="11"/>
+
+            <OnIdiom x:Key="font_size_75"
+                     x:TypeArguments="x:Double"
+                     Default="15"
+                     Desktop="12"/>
+
+            <OnIdiom x:Key="font_size_100"
+                     x:TypeArguments="x:Double"
+                     Default="17"
+                     Desktop="14"/>
+
+            <OnIdiom x:Key="font_size_200"
+                     x:TypeArguments="x:Double"
+                     Default="19"
+                     Desktop="16"/>
+
+            <OnIdiom x:Key="font_size_300"
+                     x:TypeArguments="x:Double"
+                     Default="22"
+                     Desktop="18"/>
 
             <Style x:Key="ToolbarIconStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
                 <Setter Property="FontSize" Value="24" />
-                <Setter Property="TextColor" Value="{StaticResource Key=white_color}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=gray_50}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
+            <Style x:Key="MasterDetailTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_300}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
             <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=font_size_100}" />
-                <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
 
             <Style x:Key="MasterDetailItemIconStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
                 <Setter Property="FontSize" Value="24" />
-                <Setter Property="TextColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
             <Style x:Key="MasterDetailItemButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=transparent_color}" />
-                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_10}" />
-                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_10}" />
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+            </Style>
+
+            <Style x:Key="DataGridColumnStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
             </Style>
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
@@ -309,12 +339,6 @@
             <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
             <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
             <Color x:Key="DataGridColumnBackground">transparent</Color>
-
-            <Style x:Key="DataGridColumnStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=DataGridColumnBackground}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-            </Style>
             
             <x:Double x:Key="PageHeaderFontSize">20</x:Double>
             <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
@@ -327,13 +351,6 @@
             <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
-            </Style>
-
-            <x:Double x:Key="MasterDetailTitleFontSize">17</x:Double>
-            <Style x:Key="MasterDetailTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailTitleFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
 
             <x:Double x:Key="HelperControlFontSize">16</x:Double>

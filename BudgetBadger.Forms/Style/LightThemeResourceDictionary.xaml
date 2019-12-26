@@ -3,27 +3,30 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:style="clr-namespace:BudgetBadger.Forms.Style"
                     x:Class="BudgetBadger.Forms.Style.LightThemeResourceDictionary">
-    <Color x:Key="gray_10">#f5f7fa</Color>
-    <Color x:Key="gray_20">#ebeff5</Color>
-    <Color x:Key="gray_30">#dde3ed</Color>
-    <Color x:Key="gray_40">#c8d1e0</Color>
-    <Color x:Key="gray_50">#afbacc</Color>
-    <Color x:Key="gray_60">#8e99ab</Color>
-    <Color x:Key="gray_70">#707a8a</Color>
-    <Color x:Key="gray_80">#58606e</Color>
-    <Color x:Key="gray_90">#434a54</Color>
-    <Color x:Key="gray_100">#333840</Color>
 
-    <Color x:Key="brand_10">#e8f4fa</Color>
-    <Color x:Key="brand_20">#bbe5fa</Color>
-    <Color x:Key="brand_30">#8dd4f7</Color>
-    <Color x:Key="brand_40">#53baed</Color>
-    <Color x:Key="brand_50">#229ad6</Color>
-    <Color x:Key="brand_60">#0c7bb3</Color>
-    <Color x:Key="brand_70">#066391</Color>
-    <Color x:Key="brand_80">#064d70</Color>
-    <Color x:Key="brand_90">#093952</Color>
-    <Color x:Key="brand_100">#0c2938</Color>
+    <Color x:Key="gray_50">#ffffff</Color>
+    <Color x:Key="gray_75">#f5f7fa</Color>
+    <Color x:Key="gray_100">#ebeff5</Color>
+    <Color x:Key="gray_200">#dde3ed</Color>
+    <Color x:Key="gray_300">#c8d1e0</Color>
+    <Color x:Key="gray_400">#afbacc</Color>
+    <Color x:Key="gray_500">#8e99ab</Color>
+    <Color x:Key="gray_600">#707a8a</Color>
+    <Color x:Key="gray_700">#58606e</Color>
+    <Color x:Key="gray_800">#434a54</Color>
+    <Color x:Key="gray_900">#333840</Color>
+    <Color x:Key="gray_1000">#1d1f24</Color>
+
+    <Color x:Key="brand_100">#e8f4fa</Color>
+    <Color x:Key="brand_200">#bbe5fa</Color>
+    <Color x:Key="brand_300">#8dd4f7</Color>
+    <Color x:Key="brand_400">#53baed</Color>
+    <Color x:Key="brand_500">#229ad6</Color>
+    <Color x:Key="brand_600">#0c7bb3</Color>
+    <Color x:Key="brand_700">#066391</Color>
+    <Color x:Key="brand_800">#064d70</Color>
+    <Color x:Key="brand_900">#093952</Color>
+    <Color x:Key="brand_1000">#0c2938</Color>
 
     
 </ResourceDictionary>
