@@ -12,11 +12,9 @@
     <StackLayout Orientation="Vertical" Spacing="0">
         <DatePicker
             x:Name="DateControl"
-            BackgroundColor="Transparent"
             Format="d"
             InputTransparent="{Binding IsReadOnly}"
             IsEnabled="{Binding IsEnabled}"
-            TextColor="{StaticResource PrimaryTextColor}"
             VerticalOptions="CenterAndExpand">
             <DatePicker.IsVisible>
                 <OnPlatform x:TypeArguments="x:Boolean" Default="true">
@@ -29,11 +27,9 @@
         </DatePicker>
         <Entry
             x:Name="TextControl"
-            BackgroundColor="Transparent"
             InputTransparent="{Binding IsReadOnly}"
             IsEnabled="{Binding IsEnabled}"
             IsReadOnly="{Binding IsReadOnly}"
-            TextColor="{StaticResource PrimaryTextColor}"
             VerticalOptions="CenterAndExpand">
             <Entry.Margin>
                 <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">

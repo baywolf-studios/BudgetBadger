@@ -11,11 +11,9 @@
     Tapped="Handle_Tapped">
     <Entry
         x:Name="TextControl"
-        BackgroundColor="Transparent"
         InputTransparent="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
         IsReadOnly="{Binding IsReadOnly}"
-        TextColor="{StaticResource PrimaryTextColor}"
         VerticalOptions="CenterAndExpand">
         <Entry.Margin>
             <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">

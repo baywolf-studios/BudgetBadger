@@ -21,12 +21,8 @@
     <Label
         x:Name="LabelControl"
         Grid.Row="0"
-        FontAttributes="Bold"
-        FontSize="17"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center">
+        Style="{DynamicResource PageTitleStyle}">
         <Grid.Column>
             <OnPlatform x:TypeArguments="x:Int32">
                 <On Platform="Android" Value="1" />

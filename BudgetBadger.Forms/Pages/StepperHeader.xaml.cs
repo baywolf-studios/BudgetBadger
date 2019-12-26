@@ -61,12 +61,6 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(PreviousCommandProperty, value);
         }
 
-        public Dictionary<string, string> ReplaceColor
-        {
-            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
-        }
-
-
         public StepperHeader()
         {
             InitializeComponent();
