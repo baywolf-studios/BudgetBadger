@@ -2,8 +2,7 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters" 
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
     x:Class="BudgetBadger.Forms.UserControls.HelperControl"
     x:Name="this">
     <ContentView.Resources>
@@ -23,22 +22,18 @@
                     VerticalOptions="CenterAndExpand"
                     Spacing="8"
                     Margin="16">
-                    <svg:SvgCachedImage
-                        HeightRequest="96"
-                        WidthRequest="96"
+                    <Label
                         Margin="0,24"
-                        ReplaceStringMap="{Binding Source={StaticResource DisabledColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="{Binding Source={x:Reference this}, Path=ImagePath}"/>
+                        Style="{DynamicResource Key=HelperControlIconStyle}"
+                        Text="{Binding Source={x:Reference this}, Path=Icon}"/>
                     <Label
                         HorizontalTextAlignment="Center"
                         Text="{Binding Source={x:Reference this}, Path=Title}"
-                        Style="{StaticResource HelperControlLabelStyle}"
-                        FontSize="24"/>
+                        Style="{DynamicResource HelperControlTitleStyle}"/>
                     <Label
                         HorizontalTextAlignment="Center"
                         Text="{Binding Source={x:Reference this}, Path=Subtitle}"
-                        Style="{StaticResource HelperControlLabelStyle}"
-                        FontSize="14"/>
+                        Style="{DynamicResource HelperControlSubtitleStyle}"/>
                 </StackLayout>
             </Grid>
         </ControlTemplate>

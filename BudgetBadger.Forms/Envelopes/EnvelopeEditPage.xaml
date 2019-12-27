@@ -11,7 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate EnvelopeEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg">
+            ToolbarItemIcon="{StaticResource SaveIcon}">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Budget.Envelope.IsNew}"

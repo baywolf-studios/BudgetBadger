@@ -17,7 +17,7 @@
             PageTitle="{Binding Payee.Description}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg" />
+            ToolbarItemIcon="{StaticResource EditIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
@@ -27,7 +27,7 @@
             <uc:HelperControl
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
-                ImagePath="transaction.svg"
+                Icon="{StaticResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger

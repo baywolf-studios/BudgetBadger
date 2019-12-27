@@ -14,10 +14,8 @@
         InputTransparent="{Binding IsReadOnly}"
         IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
-        TextColor="{StaticResource PrimaryTextColor}"
         HorizontalTextAlignment="End"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
+        VerticalOptions="CenterAndExpand">
         <uc:CurrencyCalculator.Margin>
             <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
                 <On Platform="UWP" Value="0,8,0,0" />

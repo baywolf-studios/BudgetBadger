@@ -17,7 +17,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyHiddenEnvelopeGroupsHelperTitle}"
-            ImagePath="envelopegroup.svg"
+            Icon="{StaticResource EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <uc:PullToRefresh
                 Grid.Row="2"

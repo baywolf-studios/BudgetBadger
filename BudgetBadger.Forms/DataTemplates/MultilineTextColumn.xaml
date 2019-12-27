@@ -15,9 +15,7 @@
         IsReadOnly="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
         AutoSize="TextChanges"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="CenterAndExpand"
-        BackgroundColor="Transparent">
+        VerticalOptions="CenterAndExpand">
         <Editor.Effects>
             <ef:BorderlessEditorEffect/>
         </Editor.Effects>

@@ -16,12 +16,12 @@
             PageTitle="{ext:Translate AccountSelectionPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyAccountHelperTitle}"
-            ImagePath="account.svg"
+            Icon="{StaticResource AccountIcon}"
             ShowHelper="{Binding NoAccounts}"
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">

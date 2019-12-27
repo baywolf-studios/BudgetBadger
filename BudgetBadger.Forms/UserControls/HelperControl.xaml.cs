@@ -42,16 +42,16 @@ namespace BudgetBadger.Forms.UserControls
             set { SetValue(SubtitleProperty, value); }
         }
 
-        public static readonly BindableProperty ImagePathProperty = BindableProperty.Create(
-            nameof(ImagePath),
+        public static readonly BindableProperty IconProperty = BindableProperty.Create(
+            nameof(Icon),
             typeof(string),
             typeof(ContentView),
             string.Empty);
 
-        public string ImagePath
+        public string Icon
         {
-            get { return (string)GetValue(ImagePathProperty); }
-            set { SetValue(ImagePathProperty, value); }
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
         }
 
         public HelperControl()

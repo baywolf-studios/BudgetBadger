@@ -16,12 +16,12 @@
             SearchText="{Binding SearchText}"
             BackCommand="{Binding BackCommand}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyEnvelopeGroupHelperTitle}"
-            ImagePath="envelopegroup.svg"
+            Icon="{StaticResource EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <Grid
                 Margin="0"

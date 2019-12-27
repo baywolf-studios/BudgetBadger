@@ -19,7 +19,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyHiddenEnvelopesHelperTitle}"
-            ImagePath="envelope.svg"
+            Icon="{StaticResource EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}">
             <uc:PullToRefresh
                 Grid.Row="2"

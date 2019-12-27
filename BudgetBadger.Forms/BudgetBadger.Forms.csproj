@@ -52,5 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />
+    <Compile Remove="Style\IconResources %28copy%29.xaml.cs" />
   </ItemGroup>
 </Project>

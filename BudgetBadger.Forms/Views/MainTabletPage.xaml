@@ -25,7 +25,7 @@
                 <FontImageSource Glyph="{StaticResource EnvelopeIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
-                <envelopes:EnvelopesPage />
+                <envelopes:EnvelopesDetailedPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
@@ -35,7 +35,7 @@
                 <FontImageSource Glyph="{StaticResource AccountIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
-                <accounts:AccountsPage />
+                <accounts:AccountsDetailedPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage
@@ -45,7 +45,7 @@
                 <FontImageSource Glyph="{StaticResource PayeeIcon}" FontFamily="{StaticResource IconFontFamily}"/>
             </NavigationPage.IconImageSource>
             <x:Arguments>
-                <payees:PayeesPage />
+                <payees:PayeesDetailedPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage

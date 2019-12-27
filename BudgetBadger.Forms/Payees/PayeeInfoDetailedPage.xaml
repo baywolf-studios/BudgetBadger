@@ -18,7 +18,7 @@
             PageTitle="{Binding Payee.Description}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg" />
+            ToolbarItemIcon="{StaticResource EditIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid
@@ -33,7 +33,7 @@
             <uc:HelperControl
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
-                ImagePath="transaction.svg"
+                Icon="{StaticResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger
@@ -255,7 +255,7 @@
                                             <uc:ContentButton
                                                 Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}"
-                                                Style="{StaticResource DataGridColumnStyle}">
+                                                Style="{StaticResource DataTableColumnStyle}">
                                                 <svg:SvgCachedImage
                                                     Margin="16"
                                                     HeightRequest="24"
@@ -298,18 +298,12 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <uc:ContentButton
-                                                Style="{StaticResource DataGridColumnStyle}"
+                                                Style="{StaticResource DataTableColumnStyle}"
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
+                                                <Label
+                                                    Style="{DynamicResource Key=DataTableColumnIconStyle}"
+                                                    Text="{StaticResource ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>

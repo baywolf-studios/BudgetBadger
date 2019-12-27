@@ -61,13 +61,19 @@ namespace BudgetBadger.Forms.DataTemplates
         public CurrencyCalculatorColumn(bool dense)
         {
             InitializeComponent();
-            if(dense)
+            if (dense)
             {
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                if (Application.Current.Resources.TryGetValue("DenseDataTableTextColumnCellStyle", out object resource))
+                {
+                    TextControl.Style = (Xamarin.Forms.Style)resource;
+                }
             }
             else
             {
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                if (Application.Current.Resources.TryGetValue("DataTableTextColumnCellStyle", out object resource))
+                {
+                    TextControl.Style = (Xamarin.Forms.Style)resource;
+                }
             }
 
             TextControl.BindingContext = this;

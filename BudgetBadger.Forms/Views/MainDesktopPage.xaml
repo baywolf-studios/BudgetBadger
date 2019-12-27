@@ -29,14 +29,14 @@
                 <Label
                     Grid.Row="0"
                     Margin="16,0"
-                    Style="{StaticResource MasterDetailTitleStyle}"
+                    Style="{DynamicResource SideNavigationTitleStyle}"
                     Text="{ext:Translate BudgetBadger}"
                     VerticalOptions="Center" />
                 <uc:ContentButton
                     x:Name="EnvelopesFrame"
                     Grid.Row="1"
                     Margin="8,0"
-                    Style="{DynamicResource MasterDetailItemButtonStyle}"
+                    Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/EnvelopesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="EnvelopesPage"/>
@@ -45,12 +45,12 @@
                         <Label
                             x:Name="EnvelopesIcon"
                             Margin="8,12"
-                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
                             Text="{StaticResource EnvelopeIcon}"/>
                         <Label
                             x:Name="EnvelopesLabel"
                             Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate EnvelopesPageTitle}"/>
                     </StackLayout>
                 </uc:ContentButton>
@@ -58,7 +58,7 @@
                     x:Name="AccountsFrame"
                     Grid.Row="2"
                     Margin="8,0"
-                    Style="{DynamicResource MasterDetailItemButtonStyle}"
+                    Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/AccountsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="AccountsPage"/>
@@ -67,12 +67,12 @@
                         <Label
                             x:Name="AccountsIcon"
                             Margin="8,12"
-                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
                             Text="{StaticResource AccountIcon}"/>
                         <Label
                             x:Name="AccountsLabel"
                             Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate AccountsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -81,7 +81,7 @@
                     x:Name="PayeesFrame"
                     Grid.Row="3"
                     Margin="8,0"
-                    Style="{DynamicResource MasterDetailItemButtonStyle}"
+                    Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/PayeesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="PayeesPage"/>
@@ -90,12 +90,12 @@
                         <Label
                             x:Name="PayeesIcon"
                             Margin="8,12"
-                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
                             Text="{StaticResource PayeeIcon}"/>
                         <Label
                             x:Name="PayeesLabel"
                             Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate PayeesPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -104,7 +104,7 @@
                     x:Name="ReportsFrame"
                     Grid.Row="4"
                     Margin="8,0"
-                    Style="{DynamicResource MasterDetailItemButtonStyle}"
+                    Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/ReportsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="ReportsPage"/>
@@ -113,12 +113,12 @@
                         <Label
                             x:Name="ReportsIcon"
                             Margin="8,12"
-                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
                             Text="{StaticResource ReportIcon}"/>
                         <Label
                             x:Name="ReportsLabel"
                             Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate ReportsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -127,7 +127,7 @@
                     x:Name="SettingsFrame"
                     Grid.Row="6"
                     Margin="8,0"
-                    Style="{DynamicResource MasterDetailItemButtonStyle}"
+                    Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/SettingsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="SettingsPage"/>
@@ -136,12 +136,12 @@
                         <Label
                             x:Name="SettingsIcon"
                             Margin="8,12"
-                            Style="{DynamicResource Key=MasterDetailItemIconStyle}"
+                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
                             Text="{StaticResource SettingIcon}"/>
                         <Label
                             x:Name="SettingsLabel"
                             Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate SettingsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
