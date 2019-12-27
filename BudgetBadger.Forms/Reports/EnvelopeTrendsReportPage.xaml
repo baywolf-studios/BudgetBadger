@@ -81,7 +81,7 @@
                 IsBusy="{Binding IsBusy, Mode=OneWay}">
                 <uc:HelperControl
                     Title="{ext:Translate EmptyReportsHelperTitle}"
-                    ImagePath="report.svg"
+                    Icon="{StaticResource ReportIcon}"
                     ShowHelper="{Binding NoResults}">
                     <microcharts:ChartView Chart="{Binding EnvelopeChart}" />
                 </uc:HelperControl>

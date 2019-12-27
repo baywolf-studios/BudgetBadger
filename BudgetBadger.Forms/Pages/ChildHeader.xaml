@@ -3,7 +3,6 @@
     x:Class="BudgetBadger.Forms.Pages.ChildHeader"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="0"
     RowSpacing="0">
@@ -44,14 +43,10 @@
         Grid.Column="0"
         Command="{Binding BackCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="BackButtonImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="back.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="BackIcon"
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource ArrowBackIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"
@@ -59,13 +54,9 @@
         Grid.Column="2"
         Command="{Binding ToolbarItemCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
+        <Label
             x:Name="ToolbarItemImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="{Binding ToolbarItemIcon}"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
 </Grid>

@@ -11,7 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate EnvelopeTransferPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg" />
+            ToolbarItemIcon="{StaticResource SaveIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <ScrollView

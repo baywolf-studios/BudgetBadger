@@ -21,7 +21,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyAccountHelperTitle}"
-            ImagePath="account.svg"
+            Icon="{StaticResource AccountIcon}"
             ShowHelper="{Binding NoAccounts}"
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <Grid

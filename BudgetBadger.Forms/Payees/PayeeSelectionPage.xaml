@@ -16,12 +16,12 @@
             PageTitle="{ext:Translate PayeeSelectionPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            ImagePath="payees.svg"
+            Icon="{StaticResource PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                 <uc:PullToRefresh.PullableContent>

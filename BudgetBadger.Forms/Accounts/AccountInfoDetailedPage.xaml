@@ -20,7 +20,7 @@
             SearchCommand="{Binding SearchCommand}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg" />
+            ToolbarItemIcon="{StaticResource EditIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
         <Grid Margin="0" RowSpacing="0">
@@ -32,7 +32,7 @@
             <uc:HelperControl
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
-                ImagePath="transaction.svg"
+                Icon="{StaticResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger
@@ -300,15 +300,9 @@
                                                 Style="{StaticResource DataGridColumnStyle}"
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
+                                                <Label
+                                                    Style="{DynamicResource Key=DataGridColumnIconStyle}"
+                                                    Text="{StaticResource ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>

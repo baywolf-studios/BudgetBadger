@@ -140,7 +140,7 @@
                 Title="{ext:Translate AccountReconcileEmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                ImagePath="reconciled.svg"
+                Icon="{StaticResource LockIcon}"
                 IsVisible="{Binding ReconcileMode}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>

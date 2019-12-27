@@ -22,7 +22,7 @@
     <p:BaseDetailedPage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            ImagePath="payees.svg"
+            Icon="{StaticResource PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
@@ -158,15 +158,9 @@
                                                 Style="{StaticResource DataGridColumnStyle}"
                                                 Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
+                                                <Label
+                                                    Style="{DynamicResource Key=DataGridColumnIconStyle}"
+                                                    Text="{StaticResource ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>

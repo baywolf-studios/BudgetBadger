@@ -60,11 +60,17 @@ namespace BudgetBadger.Forms.DataTemplates
             InitializeComponent();
             if (dense)
             {
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemDenseFontSize"];
+                if (Application.Current.Resources.TryGetValue("DenseDataTableMultilineTextColumnCellStyle", out object resource))
+                {
+                    TextControl.Style = (Xamarin.Forms.Style)resource;
+                }
             }
             else
             {
-                TextControl.FontSize = (double)Application.Current.Resources["DataGridItemFontSize"];
+                if (Application.Current.Resources.TryGetValue("DataTableMultilineTextColumnCellStyle", out object resource))
+                {
+                    TextControl.Style = (Xamarin.Forms.Style)resource;
+                }
             }
             TextControl.BindingContext = this;
 

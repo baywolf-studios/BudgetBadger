@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Style
 {
-    public partial class LightThemeResourceDictionary : ResourceDictionary
+    public partial class LightThemeResources : ResourceDictionary
     {
-        public LightThemeResourceDictionary()
+        public LightThemeResources()
         {
             InitializeComponent();
         }

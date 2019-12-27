@@ -17,7 +17,7 @@
             PageTitle="{Binding Budget.Envelope.Description}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg" />
+            ToolbarItemIcon="{StaticResource EditIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
@@ -114,7 +114,7 @@
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                ImagePath="transaction.svg"
+                Icon="{StaticResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
                     <DataTrigger

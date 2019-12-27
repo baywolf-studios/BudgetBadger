@@ -19,7 +19,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyHiddenPayeesHelperTitle}"
-            ImagePath="payees.svg"
+            Icon="{StaticResource PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                 <uc:PullToRefresh.PullableContent>

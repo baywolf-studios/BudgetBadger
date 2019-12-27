@@ -20,7 +20,7 @@
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            ImagePath="payees.svg"
+            Icon="{StaticResource PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"

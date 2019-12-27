@@ -11,7 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate TransactionEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg">
+            ToolbarItemIcon="{StaticResource SaveIcon}">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Transaction.IsNew}"

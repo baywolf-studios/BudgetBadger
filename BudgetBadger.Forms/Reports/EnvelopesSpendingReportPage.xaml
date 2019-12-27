@@ -68,7 +68,7 @@
             <uc:HelperControl
                 Title="{ext:Translate EmptyReportsHelperTitle}"
                 Grid.Row="2"
-                ImagePath="report.svg"
+                Icon="{StaticResource ReportIcon}"
                 ShowHelper="{Binding NoResults}">
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>

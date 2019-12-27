@@ -46,11 +46,6 @@
         <On Platform="Android" Value="&#xf287;" />
     </OnPlatform>
 
-    <OnPlatform x:Key="LockIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf1b0;" />
-        <On Platform="Android" Value="&#xf31d;" />
-    </OnPlatform>
-
     <OnPlatform x:Key="EnvelopeIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1b8;" />
         <On Platform="Android" Value="&#xf322;" />
@@ -74,15 +69,5 @@
     <OnPlatform x:Key="SettingIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf4a7;" />
         <On Platform="Android" Value="&#xf377;" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="TransactionIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf170;" />
-        <On Platform="Android" Value="&#xf2e1;" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="EnvelopeGroupIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf435;" />
-        <On Platform="Android" Value="&#xf2f5;" />
     </OnPlatform>
 </ResourceDictionary>

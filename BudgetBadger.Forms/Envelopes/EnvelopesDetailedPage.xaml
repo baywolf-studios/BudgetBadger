@@ -26,7 +26,7 @@
         <uc:HelperControl
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
             Grid.Row="2"
-            ImagePath="envelope.svg"
+            Icon="{StaticResource EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <Grid

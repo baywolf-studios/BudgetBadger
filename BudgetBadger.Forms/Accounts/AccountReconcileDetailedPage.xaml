@@ -58,7 +58,7 @@
                 Title="{ext:Translate AccountReconcileEmptyTransactionsHelperTitle}"
                 Grid.Row="0"
                 Grid.ColumnSpan="2"
-                ImagePath="reconciled.svg"
+                Icon="{StaticResource LockIcon}"
                 IsVisible="{Binding ReconcileMode}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:HelperControl.Triggers>
@@ -327,15 +327,9 @@
                                                 Style="{StaticResource DataGridColumnStyle}"
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
+                                                <Label
+                                                    Style="{DynamicResource Key=DataGridColumnIconStyle}"
+                                                    Text="{StaticResource ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>

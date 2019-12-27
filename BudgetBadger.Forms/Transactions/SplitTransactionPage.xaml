@@ -15,7 +15,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate SplitTransactionPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg" />
+            ToolbarItemIcon="{StaticResource SaveIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <Grid
@@ -105,7 +105,7 @@
             <uc:HelperControl
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
-                ImagePath="transaction.svg"
+                Icon="{StaticResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
                 <uc:ListView
                     AllowSwiping="true"

@@ -16,12 +16,12 @@
             PageTitle="{ext:Translate EnvelopeSelectionPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:HelperControl
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
-            ImagePath="envelope.svg"
+            Icon="{StaticResource EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
