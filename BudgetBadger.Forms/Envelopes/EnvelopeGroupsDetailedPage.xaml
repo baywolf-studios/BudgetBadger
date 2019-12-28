@@ -143,7 +143,7 @@
                                             <uc:ContentButton
                                                 HeightRequest="{StaticResource ListItemHeight}"
                                                 WidthRequest="{StaticResource ListItemHeight}"
-                                                Style="{StaticResource DataGridColumnStyle}"
+                                                Style="{StaticResource DataTableColumnStyle}"
                                                 Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
                                                 <Label

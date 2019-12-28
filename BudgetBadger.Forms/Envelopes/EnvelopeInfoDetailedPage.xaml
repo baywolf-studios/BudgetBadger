@@ -249,7 +249,7 @@
                                             <uc:ContentButton
                                                 Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}"
-                                                Style="{StaticResource DataGridColumnStyle}">
+                                                Style="{StaticResource DataTableColumnStyle}">
                                                 <svg:SvgCachedImage
                                                     Margin="16"
                                                     HeightRequest="24"
@@ -292,7 +292,7 @@
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <uc:ContentButton
-                                                Style="{StaticResource DataGridColumnStyle}"
+                                                Style="{StaticResource DataTableColumnStyle}"
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
                                                 <Label
