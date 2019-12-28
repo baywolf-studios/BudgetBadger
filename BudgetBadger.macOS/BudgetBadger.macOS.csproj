@@ -61,6 +61,7 @@
     <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
     <HybridAOT>true</HybridAOT>
+    <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -85,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Clancey.SimpleAuth">
-      <Version>1.0.49</Version>
+      <Version>1.0.52</Version>
     </PackageReference>
     <PackageReference Include="Dropbox.Api">
       <Version>4.9.4</Version>
