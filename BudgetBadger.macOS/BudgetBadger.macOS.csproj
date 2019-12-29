@@ -185,6 +185,7 @@
     <Compile Include="InAppBilling.cs" />
     <Compile Include="Renderers\PickerRenderer.cs" />
     <Compile Include="Renderers\FormsNSPopUpButton.cs" />
+    <Compile Include="Renderers\FontImageSourceHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
