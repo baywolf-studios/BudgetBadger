@@ -100,7 +100,7 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <Image HeightRequest="24" WidthRequest="24" BackgroundColor="Red" VerticalOptions="Center" HorizontalOptions="Center">
+        <Image HeightRequest="24" WidthRequest="24" VerticalOptions="Center" HorizontalOptions="Center">
             <Image.Source>
                 <FontImageSource  x:Name="SearchIcon" Size="24" Glyph="{DynamicResource Key=SearchIcon}" Color="White" FontFamily="{DynamicResource Key=IconFontFamily}"/>
             </Image.Source>

@@ -36,14 +36,11 @@ namespace BudgetBadger.macOS.Renderers
                 var font = NSFont.FromFontName(fontsource.FontFamily ?? string.Empty, (float)fontsource.Size) ?? NSFont.SystemFontOfSize((float)fontsource.Size);
                 var iconcolor = fontsource.Color.IsDefault ? _defaultColor : fontsource.Color;
 
-                var strokeWidth = 0;
-
                 var attributedString = new NSAttributedString(fontsource.Glyph, font: font, foregroundColor: iconcolor.ToNSColor(), paragraphStyle: paragraph);
-                var stringSize = attributedString.GetSize();
 
-                image = new NSImage(stringSize);
+                image = new NSImage(size);
                 image.LockFocus();
-                attributedString.DrawInRect(new CGRect(x: 0, y: (stringSize.Height - fontsource.Size) / 2, width: stringSize.Width, height: stringSize.Height));
+                attributedString.DrawInRect(new CGRect(0, 0, size.Width, size.Height));
                 image.UnlockFocus();
             }
 
