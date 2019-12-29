@@ -48,11 +48,13 @@ namespace BudgetBadger.Models
             }
             set
             {
-                IgnoreOverspend = (value == OverspendingType.OverspendingTypeIgnore || value == OverspendingType.OverspendingTypeAlwaysIgnore);
+                var isIgnoreOverspend = (value == OverspendingType.OverspendingTypeIgnore || value == OverspendingType.OverspendingTypeAlwaysIgnore);
+                var isIgnoreOverspendAlways = (value == OverspendingType.OverspendingTypeAlwaysIgnore);
                 if (Envelope != null)
                 {
-                    Envelope.IgnoreOverspend = (value == OverspendingType.OverspendingTypeAlwaysIgnore);
+                    Envelope.IgnoreOverspend = isIgnoreOverspendAlways;
                 }
+                IgnoreOverspend = isIgnoreOverspend;
             }
         }
 
@@ -62,12 +64,14 @@ namespace BudgetBadger.Models
             get => ignoreOverspend;
             set
             {
-                SetProperty(ref ignoreOverspend, value);
-                if (value == false && Envelope != null)
+                if (SetProperty(ref ignoreOverspend, value))
+                {
+                    OnPropertyChanged(nameof(HandleOverspend));
+                }
+                if (value == false && Envelope != null && Envelope.IgnoreOverspend != false)
                 {
                     Envelope.IgnoreOverspend = false;
                 }
-                OnPropertyChanged(nameof(HandleOverspend));
             }
         }
 

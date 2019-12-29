@@ -591,10 +591,14 @@ namespace BudgetBadger.Logic
                 activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
                 activeEnvelopes.Add(GetGenericDebtEnvelope());
 
-                activeEnvelopes.Sort();
+                var tasks = activeEnvelopes.Select(GetPopulatedEnvelope);
+
+                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
+                populatedEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = activeEnvelopes;
+                result.Data = populatedEnvelopes;
             }
             catch (Exception ex)
             {
@@ -625,10 +629,14 @@ namespace BudgetBadger.Logic
                     envelopesToReturn.Add(genericHiddenENvelope);
                 }
 
-                envelopesToReturn.Sort();
+                var tasks = envelopesToReturn.Select(GetPopulatedEnvelope);
+
+                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
+                populatedEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = envelopesToReturn;
+                result.Data = populatedEnvelopes;
             }
             catch (Exception ex)
             {
@@ -653,10 +661,14 @@ namespace BudgetBadger.Logic
                     e.IsHidden &&
                     !e.IsDeleted).ToList();
 
-                hiddenEnvelopes.Sort();
+                var tasks = hiddenEnvelopes.Select(GetPopulatedEnvelope);
+
+                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
+                populatedEnvelopes.Sort();
 
                 result.Success = true;
-                result.Data = hiddenEnvelopes;
+                result.Data = populatedEnvelopes;
             }
             catch (Exception ex)
             {
@@ -1151,6 +1163,10 @@ namespace BudgetBadger.Logic
             {
                 budget.Envelope = GetGenericHiddenEnvelope();
             }
+            else if (budget.Envelope.Group.IsDebt)
+            {
+                budget.Envelope.Group = GetDebtEnvelopeGroup();
+            }
 
             var activeTransactions = envelopeTransactions.Where(t => t.IsActive);
 
@@ -1173,6 +1189,16 @@ namespace BudgetBadger.Logic
             }
 
             return budget;
+        }
+
+        protected Envelope PopulateEnvelope(Envelope envelope)
+        {
+            if (envelope.Group.IsDebt)
+            {
+                envelope.Group = GetDebtEnvelopeGroup();
+            }
+
+            return envelope;
         }
 
         protected BudgetSchedule PopulateBudgetSchedule(BudgetSchedule budgetSchedule,
@@ -1336,7 +1362,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeSaveSystemError"));
             }
@@ -1366,7 +1392,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
+            if (envelopeGroup.IsIncome || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupSaveSystemError"));
             }
@@ -1482,6 +1508,13 @@ namespace BudgetBadger.Logic
             var budgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(budgetToPopulate.Envelope.Id).ConfigureAwait(false);
 
             return await Task.Run(() => PopulateBudget(budgetToPopulate, transactions, budgets));
+        }
+
+        async Task<Envelope> GetPopulatedEnvelope(Envelope envelope)
+        {
+            var envelopeToPopulate = envelope.DeepCopy();
+
+            return await Task.Run(() => PopulateEnvelope(envelopeToPopulate));
         }
 
         async Task<BudgetSchedule> GetPopulatedBudgetSchedule(BudgetSchedule budgetSchedule)
