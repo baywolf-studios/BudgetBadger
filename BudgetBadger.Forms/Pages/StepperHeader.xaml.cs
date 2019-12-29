@@ -96,7 +96,7 @@ namespace BudgetBadger.Forms.Pages
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                SearchIcon.Text = Icons.Close;
+                SearchIcon.Glyph = Icons.Close;
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
@@ -113,7 +113,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 SearchText = string.Empty;
 
-                SearchIcon.Text = Icons.Search;
+                SearchIcon.Glyph = Icons.Search;
 
                 //hide it
                 var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);
