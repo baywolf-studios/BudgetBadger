@@ -1336,7 +1336,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeSaveSystemError"));
             }
@@ -1366,7 +1366,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
+            if (envelopeGroup.IsIncome || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupSaveSystemError"));
             }
