@@ -79,17 +79,23 @@
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
 
-            <Style x:Key="SideNavigationItemIconStyle" TargetType="Label">
-                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
-                <Setter Property="FontSize">
+
+            <Style x:Key="SideNavigationItemIconStyle" TargetType="Image">
+                <Setter Property="WidthRequest">
                     <Setter.Value>
                         <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
+
+            <style:Alias x:Key="SideNavigationItemIconSize" Key="font_size_500" />
 
             <Style x:Key="SideNavigationItemButtonStyle" TargetType="uc:ContentButton">
                 <Setter Property="RestingBackgroundColor" Value="Transparent" />

@@ -45,9 +45,12 @@
                         <Image
                             x:Name="EnvelopesIcon"
                             Margin="8,12"
-                            HeightRequest="24" WidthRequest="24" VerticalOptions="Center" HorizontalOptions="Center">
+                            Style="{DynamicResource SideNavigationItemIconStyle}">
                             <Image.Source>
-                                <FontImageSource x:Name="SearchIcon" Size="24" Glyph="{DynamicResource Key=EnvelopeIcon}" Color="Black" FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                                <FontImageSource
+                                    x:Name="SearchIcon"
+                                    Size="{DynamicResource SideNavigationItemIconSize}"
+                                    Glyph="{DynamicResource Key=EnvelopeIcon}" Color="Black" FontFamily="{DynamicResource Key=IconFontFamily}"/>
                             </Image.Source>
                         </Image>
                         <Label
