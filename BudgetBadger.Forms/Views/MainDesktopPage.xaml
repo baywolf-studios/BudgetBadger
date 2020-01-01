@@ -12,152 +12,189 @@
             Title="Default"
             BackgroundColor="{StaticResource BackgroundColor}"
             NavigationPage.HasNavigationBar="false">
-            <Grid Margin="0" RowSpacing="8">
+            <Grid
+                Style="{DynamicResource Key=SideNavigationGridStyle}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="0" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{StaticResource AppBarGridSize}" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="48" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0" />
                 </Grid.RowDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Margin="16,0"
-                    Style="{DynamicResource SideNavigationTitleStyle}"
-                    Text="{ext:Translate BudgetBadger}"
-                    VerticalOptions="Center" />
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    Spacing="{DynamicResource Key=size_100}">
+                    <BoxView WidthRequest="0"/>
+                    <Label
+                        Style="{DynamicResource SideNavigationTitleStyle}"
+                        Text="{ext:Translate BudgetBadger}"/>
+                    <BoxView WidthRequest="0"/>
+                </StackLayout>
+                
                 <uc:ContentButton
                     x:Name="EnvelopesFrame"
-                    Grid.Row="1"
-                    Margin="8,0"
+                    Grid.Column="1"
+                    Grid.Row="2"
                     Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/EnvelopesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="EnvelopesPage"/>
                     </uc:ContentButton.CommandParameter>
-                    <StackLayout Orientation="Horizontal" Spacing="0">
+                    <StackLayout Orientation="Horizontal" Spacing="{DynamicResource Key=size_100}">
+                        <BoxView WidthRequest="0"/>
                         <Image
                             x:Name="EnvelopesIcon"
-                            Margin="8,12"
                             Style="{DynamicResource SideNavigationItemIconStyle}">
                             <Image.Source>
                                 <FontImageSource
-                                    x:Name="SearchIcon"
-                                    Size="{DynamicResource SideNavigationItemIconSize}"
-                                    Glyph="{DynamicResource Key=EnvelopeIcon}" Color="Black" FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                                    x:Name="EnvelopesIconFont"
+                                    Size="{DynamicResource Key=size_225}"
+                                    Color="{DynamicResource Key=gray_1000}"
+                                    FontFamily="{DynamicResource Key=IconFontFamily}"
+                                    Glyph="{DynamicResource Key=EnvelopeIcon}" />
                             </Image.Source>
                         </Image>
                         <Label
                             x:Name="EnvelopesLabel"
-                            Margin="8,0"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate EnvelopesPageTitle}"/>
+                        <BoxView WidthRequest="0"/>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="AccountsFrame"
-                    Grid.Row="2"
-                    Margin="8,0"
+                    Grid.Column="1"
+                    Grid.Row="3"
                     Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/AccountsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="AccountsPage"/>
                     </uc:ContentButton.CommandParameter>
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <Label
+                    <StackLayout Orientation="Horizontal" Spacing="{DynamicResource Key=size_100}">
+                        <BoxView WidthRequest="0"/>
+                        <Image
                             x:Name="AccountsIcon"
-                            Margin="8,12"
-                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
-                            Text="{StaticResource AccountIcon}"/>
+                            Style="{DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="AccountsIconFont"
+                                    Size="{DynamicResource Key=size_225}"
+                                    Color="{DynamicResource Key=gray_1000}"
+                                    FontFamily="{DynamicResource Key=IconFontFamily}"
+                                    Glyph="{DynamicResource Key=AccountIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="AccountsLabel"
-                            Margin="8,0"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate AccountsPageTitle}"
                             VerticalOptions="Center" />
+                        <BoxView WidthRequest="0"/>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="PayeesFrame"
-                    Grid.Row="3"
-                    Margin="8,0"
+                    Grid.Column="1"
+                    Grid.Row="4"
                     Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/PayeesPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="PayeesPage"/>
                     </uc:ContentButton.CommandParameter>
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <Label
+                    <StackLayout Orientation="Horizontal" Spacing="{DynamicResource Key=size_100}">
+                        <BoxView WidthRequest="0"/>
+                        <Image
                             x:Name="PayeesIcon"
-                            Margin="8,12"
-                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
-                            Text="{StaticResource PayeeIcon}"/>
+                            Style="{DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="PayeesIconFont"
+                                    Size="{DynamicResource Key=size_225}"
+                                    Color="{DynamicResource Key=gray_1000}"
+                                    FontFamily="{DynamicResource Key=IconFontFamily}"
+                                    Glyph="{DynamicResource Key=PayeeIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="PayeesLabel"
-                            Margin="8,0"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate PayeesPageTitle}"
                             VerticalOptions="Center" />
+                        <BoxView WidthRequest="0"/>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="ReportsFrame"
-                    Grid.Row="4"
-                    Margin="8,0"
+                    Grid.Column="1"
+                    Grid.Row="5"
                     Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/ReportsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="ReportsPage"/>
                     </uc:ContentButton.CommandParameter>
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <Label
+                    <StackLayout Orientation="Horizontal" Spacing="{DynamicResource Key=size_100}">
+                        <BoxView WidthRequest="0"/>
+                        <Image
                             x:Name="ReportsIcon"
-                            Margin="8,12"
-                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
-                            Text="{StaticResource ReportIcon}"/>
+                            Style="{DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="ReportsIconFont"
+                                    Size="{DynamicResource Key=size_225}"
+                                    Color="{DynamicResource Key=gray_1000}"
+                                    FontFamily="{DynamicResource Key=IconFontFamily}"
+                                    Glyph="{DynamicResource Key=ReportIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="ReportsLabel"
-                            Margin="8,0"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate ReportsPageTitle}"
                             VerticalOptions="Center" />
+                        <BoxView WidthRequest="0"/>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="SettingsFrame"
+                    Grid.Column="1"
                     Grid.Row="6"
-                    Margin="8,0"
                     Style="{DynamicResource SideNavigationItemButtonStyle}"
                     Command="{prism:NavigateTo '/MainPage/NavigationPage/SettingsPage'}">
                     <uc:ContentButton.CommandParameter>
                         <prism:NavigationParameter Key="pageName" Value="SettingsPage"/>
                     </uc:ContentButton.CommandParameter>
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <Label
+                    <StackLayout Orientation="Horizontal" Spacing="{DynamicResource Key=size_100}">
+                        <BoxView WidthRequest="0"/>
+                        <Image
                             x:Name="SettingsIcon"
-                            Margin="8,12"
-                            Style="{DynamicResource Key=SideNavigationItemIconStyle}"
-                            Text="{StaticResource SettingIcon}"/>
+                            Style="{DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="SettingsIconFont"
+                                    Size="{DynamicResource Key=size_225}"
+                                    Color="{DynamicResource Key=gray_1000}"
+                                    FontFamily="{DynamicResource Key=IconFontFamily}"
+                                    Glyph="{DynamicResource Key=SettingIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="SettingsLabel"
-                            Margin="8,0"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate SettingsPageTitle}"
                             VerticalOptions="Center" />
+                        <BoxView WidthRequest="0"/>
                     </StackLayout>
                 </uc:ContentButton>
-                <BoxView
-                    Grid.RowSpan="7"
-                    Grid.Column="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    WidthRequest="1" />
             </Grid>
         </ContentPage>
     </MasterDetailPage.Master>

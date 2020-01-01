@@ -2,6 +2,7 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     x:Class="BudgetBadger.Forms.Style.IconResources">
+
     <OnPlatform x:Key="IconFontFamily" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="Ionicons" />
         <On Platform="Android" Value="ionicons.ttf#Ionicons" />
@@ -34,6 +35,11 @@
     <OnPlatform x:Key="SaveIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1a6;" />
         <On Platform="Android" Value="&#xf1a9;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="DeleteIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf4c5;" />
+        <On Platform="Android" Value="&#xf398;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ArrowBackIcon" x:TypeArguments="x:String">

@@ -26,6 +26,7 @@
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
+            <!--static colors-->
             <Color x:Key="static_white">#ffffff</Color>
             <Color x:Key="static_black">#1d1f24</Color>
 
@@ -71,6 +72,20 @@
                 <Setter Property="FontSize" Value="{DynamicResource Key=font_size_300}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
                 <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HeightRequest" Value="{DynamicResource Key=size_400}"/>
+            </Style>
+
+            <Style x:Key="SideNavigationGridStyle" TargetType="Grid">
+                <Setter Property="RowSpacing" Value="{DynamicResource Key=size_50}"/>
+                <Setter Property="ColumnSpacing" Value="{DynamicResource Key=size_400}"/>
+            </Style>
+
+            <Style x:Key="SideNavigationItemButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+                <Setter Property="HeightRequest" Value="{DynamicResource Key=size_400}"/>
             </Style>
 
             <Style x:Key="SideNavigationItemLabelStyle" TargetType="Label">
@@ -79,28 +94,11 @@
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
 
-
             <Style x:Key="SideNavigationItemIconStyle" TargetType="Image">
-                <Setter Property="WidthRequest">
-                    <Setter.Value>
-                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="HeightRequest">
-                    <Setter.Value>
-                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="WidthRequest" Value="{DynamicResource size_225}"/>
+                <Setter Property="HeightRequest" Value="{DynamicResource size_225}"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <style:Alias x:Key="SideNavigationItemIconSize" Key="font_size_500" />
-
-            <Style x:Key="SideNavigationItemButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="Transparent" />
-                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
-                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
             </Style>
 
             <Style x:Key="DataTableColumnStyle" TargetType="uc:ContentButton">
