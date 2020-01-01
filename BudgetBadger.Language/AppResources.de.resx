@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountBalanceLabel" xml:space="preserve">
-    <value>Balance</value>
+    <value>Gleichgewicht</value>
   </data>
   <data name="AccountDeleteInactiveError" xml:space="preserve">
     <value>Ein inaktives Konto kann nicht gelöscht werden</value>
@@ -127,7 +127,7 @@
     <value>Konto bearbeiten</value>
   </data>
   <data name="AccountNameLabel" xml:space="preserve">
-    <value>Name</value>
+    <value>Namen</value>
   </data>
   <data name="AccountNetWorthLabel" xml:space="preserve">
     <value>Vermögen</value>
@@ -295,7 +295,7 @@
     <value>Löschen rückgängig machen</value>
   </data>
   <data name="CloudSyncLabel" xml:space="preserve">
-    <value>Cloud Sync</value>
+    <value>Cloud-Synchronisierung</value>
   </data>
   <data name="CurrencyLabel" xml:space="preserve">
     <value>Währung</value>
@@ -400,7 +400,7 @@
     <value>Gruppe</value>
   </data>
   <data name="EnvelopeGroupNameLabel" xml:space="preserve">
-    <value>Name</value>
+    <value>Namen</value>
   </data>
   <data name="EnvelopeGroupNewPageTitle" xml:space="preserve">
     <value>Neue Umschlaggruppe</value>
@@ -421,7 +421,7 @@
     <value>Briefumschlag</value>
   </data>
   <data name="EnvelopeNameLabel" xml:space="preserve">
-    <value>Name</value>
+    <value>Namen</value>
   </data>
   <data name="EnvelopeNewPageTitle" xml:space="preserve">
     <value>Neuer Umschlag</value>
@@ -556,7 +556,7 @@
     <value>Zahlungsempfänger</value>
   </data>
   <data name="PayeeNameLabel" xml:space="preserve">
-    <value>Name</value>
+    <value>Namen</value>
   </data>
   <data name="PayeeNewPageTitle" xml:space="preserve">
     <value>Neue Zahlung</value>
@@ -640,7 +640,7 @@
     <value>Budget für das letzte Jahr</value>
   </data>
   <data name="QuickBudgetBalance" xml:space="preserve">
-    <value>Balance</value>
+    <value>Gleichgewicht</value>
   </data>
   <data name="QuickBudgetButton" xml:space="preserve">
     <value>Schnelles Budget</value>
@@ -829,7 +829,7 @@
     <value>Undo Löschen</value>
   </data>
   <data name="InternationalLabel" xml:space="preserve">
-    <value>International</value>
+    <value>Internationalen</value>
   </data>
   <data name="DetectLabel" xml:space="preserve">
     <value>entdecken</value>

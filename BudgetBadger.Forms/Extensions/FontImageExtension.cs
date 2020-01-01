@@ -2,11 +2,11 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace BudgetBadger.Forms.Style
+namespace BudgetBadger.Forms.Extensions
 {
     [AcceptEmptyServiceProvider]
     [ContentProperty(nameof(GlyphKey))]
-    public class DynamicFontImageExtension : IMarkupExtension<ImageSource>
+    public class FontImageExtension : IMarkupExtension<ImageSource>
     {
         public string FontFamilyKey { get; set; }
         public string GlyphKey { get; set; }
