@@ -186,6 +186,7 @@
     <Compile Include="Renderers\PickerRenderer.cs" />
     <Compile Include="Renderers\FormsNSPopUpButton.cs" />
     <Compile Include="Renderers\FontImageSourceHandler.cs" />
+    <Compile Include="Renderers\FrameRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
