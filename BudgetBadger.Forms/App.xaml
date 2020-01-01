@@ -24,6 +24,7 @@
             <converters:CurrencyConverter x:Key="CurrencyConverter" />
             <converters:ShortDateConverter x:Key="ShortDateConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:DoubleToGridLengthConverter x:Key="DoubleToGridLengthConverter"/>
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <!--static colors-->

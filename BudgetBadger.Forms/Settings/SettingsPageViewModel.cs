@@ -9,6 +9,7 @@ using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Style;
 using Prism;
 using Prism.AppModel;
 using Prism.Commands;
@@ -425,6 +426,7 @@ namespace BudgetBadger.Forms.Settings
                 }
 
                 _localize.SetLocale(current);
+                TranslationProvider.Instance.Invalidate();
             }
             
         }
@@ -450,6 +452,7 @@ namespace BudgetBadger.Forms.Settings
                 }
 
                 _localize.SetLocale(current);
+                TranslationProvider.Instance.Invalidate();
             }
         }
 

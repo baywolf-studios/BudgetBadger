@@ -1,17 +1,15 @@
-﻿using BudgetBadger.Core.LocalizedResources;
+﻿using System;
 using BudgetBadger.Forms.Style;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace BudgetBadger.Forms.Extensions
 {
-    [ContentProperty("Text")]
-    public class TranslateExtension : IMarkupExtension<BindingBase>
+    [ContentProperty("Key")]
+    public class DynamicResourceExtension : IMarkupExtension<BindingBase>
     {
-        public string Text { get; set; }
+        public string Key { get; set; }
+        public IValueConverter Converter { get; set; }
 
         object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
         {
@@ -23,8 +21,9 @@ namespace BudgetBadger.Forms.Extensions
             var binding = new Binding
             {
                 Mode = BindingMode.OneWay,
-                Path = $"[{Text}]",
-                Source = TranslationProvider.Instance,
+                Path = $"[{Key}]",
+                Source = DynamicResourceProvider.Instance,
+                Converter = Converter
             };
             return binding;
         }

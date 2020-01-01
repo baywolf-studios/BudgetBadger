@@ -13,7 +13,8 @@
             BackgroundColor="{StaticResource BackgroundColor}"
             NavigationPage.HasNavigationBar="false">
             <Grid
-                Style="{DynamicResource Key=SideNavigationGridStyle}">
+                Style="{DynamicResource Key=SideNavigationGridStyle}"
+                Margin="{ext:Thickness LeftKey=size_500, TopKey=size_500, RightKey=size_500, BottomKey=size_500}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0" />
                     <ColumnDefinition Width="*" />
@@ -21,7 +22,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_225, Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
