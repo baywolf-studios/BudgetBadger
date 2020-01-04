@@ -308,7 +308,6 @@
                                                         </Image.Triggers>
                                                     </Image>
                                                 </Frame>
-                                                        
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
