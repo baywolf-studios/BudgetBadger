@@ -15,34 +15,53 @@
         <ContentView.GestureRecognizers>
             <TapGestureRecognizer x:Name="ToggleGestureRecognizer" CommandParameter="{Binding .}" />
         </ContentView.GestureRecognizers>
-        <svg:SvgCachedImage
-            HeightRequest="24"
-            HorizontalOptions="End"
-            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-            VerticalOptions="Center"
-            WidthRequest="24">
-            <svg:SvgCachedImage.Triggers>
-                <MultiTrigger TargetType="svg:SvgCachedImage">
-                    <MultiTrigger.Conditions>
-                        <BindingCondition Binding="{Binding Posted}" Value="true" />
-                        <BindingCondition Binding="{Binding Reconciled}" Value="false" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Source" Value="posted.svg" />
-                </MultiTrigger>
-                <DataTrigger
-                    Binding="{Binding Reconciled}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="reconciled.svg" />
-                </DataTrigger>
-                <DataTrigger
-                    Binding="{Binding Pending}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="pending.svg" />
-                </DataTrigger>
-            </svg:SvgCachedImage.Triggers>
-        </svg:SvgCachedImage>
+        <Frame HorizontalOptions="Center" VerticalOptions="Center" Padding="0" Margin="0" CornerRadius="9" HeightRequest="18" WidthRequest="18" HasShadow="False" BorderColor="Black" BackgroundColor="Transparent">
+                                                    <Image HeightRequest="14" WidthRequest="14" HorizontalOptions="Center" VerticalOptions="Center">
+                                                        <Image.Triggers>
+                                                            <MultiTrigger TargetType="Image">
+                                                                <MultiTrigger.Conditions>
+                                                                    <BindingCondition Binding="{Binding Posted}" Value="true" />
+                                                                    <BindingCondition Binding="{Binding Reconciled}" Value="false" />
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <FontImageSource
+                                                                            Size="14"
+                                                                            Color="Black"
+                                                                            Glyph="C"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </MultiTrigger>
+                                                            <DataTrigger
+                                                                Binding="{Binding Reconciled}"
+                                                                TargetType="Image"
+                                                                Value="true">
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <FontImageSource
+                                                                            Size="14"
+                                                                            Color="Black"
+                                                                            FontFamily="{DynamicResource Key=IconFontFamily}"
+                                                                            Glyph="{DynamicResource Key=LockIcon}"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                            <DataTrigger
+                                                                Binding="{Binding Pending}"
+                                                                TargetType="Image"
+                                                                Value="true">
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <FontImageSource
+                                                                            Size="14"
+                                                                            Color="Black"
+                                                                            Glyph="P"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                </Frame>
 
     </ContentView>
     <ContentView Grid.Column="1">

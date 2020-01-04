@@ -25,25 +25,18 @@ namespace BudgetBadger.macOS.Renderers
             var fontsource = imagesource as FontImageSource;
             if (fontsource != null)
             {
-                var size = new CGSize(fontsource.Size, fontsource.Size);
-                if (fontsource.Size <= 0)
-                {
-                    size.Width = 1;
-                    size.Height = 1;
-                }
-
-                var paragraph = new NSMutableParagraphStyle { Alignment = NSTextAlignment.Center };
-                var font = NSFont.FromFontName(fontsource.FontFamily ?? string.Empty, (float)fontsource.Size) ?? NSFont.SystemFontOfSize((float)fontsource.Size);
+                var font = NSFont.FromFontName(fontsource.FontFamily ?? string.Empty, (float)fontsource.Size) ??
+                    NSFont.SystemFontOfSize((float)fontsource.Size);
                 var iconcolor = fontsource.Color.IsDefault ? _defaultColor : fontsource.Color;
-
-                var attributedString = new NSAttributedString(fontsource.Glyph, font: font, foregroundColor: iconcolor.ToNSColor(), paragraphStyle: paragraph);
-
-                image = new NSImage(size);
+                var centerAlign = new NSMutableParagraphStyle() { Alignment = NSTextAlignment.Center };
+                var attString = new NSAttributedString(fontsource.Glyph, font: font, foregroundColor: iconcolor.ToNSColor(), paragraphStyle: centerAlign);
+                var stringSize = attString.GetSize();
+                image = new NSImage(stringSize);
                 image.LockFocus();
-                attributedString.DrawInRect(new CGRect(0, 0, size.Width, size.Height));
+                var actualDrawRect = new CGRect(0, 0, stringSize.Width, stringSize.Height);
+                attString.DrawInRect(actualDrawRect);
                 image.UnlockFocus();
             }
-
             return Task.FromResult(image);
         }
     }
