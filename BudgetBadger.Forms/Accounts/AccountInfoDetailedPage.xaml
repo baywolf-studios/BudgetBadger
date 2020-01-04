@@ -261,21 +261,8 @@
                                                 Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}"
                                                 Style="{StaticResource DataTableColumnStyle}">
-                                                <Frame
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    HasShadow="False"
-                                                    CornerRadius="10"
-                                                    HeightRequest="20"
-                                                    WidthRequest="20"
-                                                    VerticalOptions="Center"
-                                                    HorizontalOptions="Center"
-                                                    BorderColor="{StaticResource PrimaryTextColor}">
-                                                    <Image
-                                                        HeightRequest="12"
-                                                        WidthRequest="12"
-                                                        HorizontalOptions="Center"
-                                                        VerticalOptions="Center">
+                                                <Frame HorizontalOptions="Center" VerticalOptions="Center" Padding="0" Margin="0" CornerRadius="9" HeightRequest="18" WidthRequest="18" HasShadow="False" BorderColor="Black" BackgroundColor="Transparent">
+                                                    <Image HeightRequest="14" WidthRequest="14" HorizontalOptions="Center" VerticalOptions="Center">
                                                         <Image.Triggers>
                                                             <MultiTrigger TargetType="Image">
                                                                 <MultiTrigger.Conditions>
@@ -285,8 +272,8 @@
                                                                 <Setter Property="Source">
                                                                     <Setter.Value>
                                                                         <FontImageSource
-                                                                            Size="12"
-                                                                            Color="{StaticResource PrimaryTextColor}"
+                                                                            Size="14"
+                                                                            Color="Black"
                                                                             Glyph="C"/>
                                                                     </Setter.Value>
                                                                 </Setter>
@@ -298,8 +285,8 @@
                                                                 <Setter Property="Source">
                                                                     <Setter.Value>
                                                                         <FontImageSource
-                                                                            Size="12"
-                                                                            Color="{StaticResource PrimaryTextColor}"
+                                                                            Size="14"
+                                                                            Color="Black"
                                                                             FontFamily="{DynamicResource Key=IconFontFamily}"
                                                                             Glyph="{DynamicResource Key=LockIcon}"/>
                                                                     </Setter.Value>
@@ -312,8 +299,8 @@
                                                                 <Setter Property="Source">
                                                                     <Setter.Value>
                                                                         <FontImageSource
-                                                                            Size="12"
-                                                                            Color="{StaticResource PrimaryTextColor}"
+                                                                            Size="14"
+                                                                            Color="Black"
                                                                             Glyph="P"/>
                                                                     </Setter.Value>
                                                                 </Setter>
@@ -321,6 +308,7 @@
                                                         </Image.Triggers>
                                                     </Image>
                                                 </Frame>
+                                                        
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>

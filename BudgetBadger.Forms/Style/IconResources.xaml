@@ -57,6 +57,11 @@
         <On Platform="Android" Value="&#xf31d;" />
     </OnPlatform>
 
+    <OnPlatform x:Key="RadioOffIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf1f6;" />
+        <On Platform="Android" Value="&#xf31d;" />
+    </OnPlatform>
+
     <OnPlatform x:Key="EnvelopeIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1b8;" />
         <On Platform="Android" Value="&#xf322;" />
