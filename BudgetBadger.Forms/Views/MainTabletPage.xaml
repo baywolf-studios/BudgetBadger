@@ -12,8 +12,9 @@
     xmlns:reports="clr-namespace:BudgetBadger.Forms.Reports"
     xmlns:settings="clr-namespace:BudgetBadger.Forms.Settings"
     android:TabbedPage.ToolbarPlacement="Bottom"
-    SelectedTabColor="{StaticResource AppBarColor}"
-    BarBackgroundColor="{StaticResource BackgroundColor}">
+    BarBackgroundColor="{ext:DynamicResource Key=gray_75}"
+    SelectedTabColor="{ext:DynamicResource Key=brand_700}"
+    UnselectedTabColor="{ext:DynamicResource Key=gray_700}">
     <TabbedPage.Effects>
         <effects:BottomBarNoShiftEffect />
     </TabbedPage.Effects>

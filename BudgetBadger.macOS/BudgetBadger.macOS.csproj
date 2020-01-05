@@ -187,6 +187,7 @@
     <Compile Include="Renderers\FormsNSPopUpButton.cs" />
     <Compile Include="Renderers\FontImageSourceHandler.cs" />
     <Compile Include="Renderers\FrameRenderer.cs" />
+    <Compile Include="Renderers\MasterDetailRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

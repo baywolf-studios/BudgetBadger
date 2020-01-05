@@ -7,7 +7,7 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:local="clr-namespace:BudgetBadger.Forms"
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
-    xmlns:sfdatagrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:style="clr-namespace:BudgetBadger.Forms.Style">
     <Application.Resources>
@@ -69,30 +69,41 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
-            <Style x:Key="SideNavigationTitleStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_300}" />
-                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="VerticalTextAlignment" Value="Center"/>
-                <Setter Property="HeightRequest" Value="{DynamicResource Key=size_400}"/>
+            <Style x:Key="SideNavigationGridStyle" TargetType="uc:ResponsiveGrid">
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ColumnSpacing" Value="16"/>
+                <Setter Property="Padding" Value="16,0,16,0"/>
             </Style>
 
-            <Style x:Key="SideNavigationGridStyle" TargetType="Grid">
-                <Setter Property="RowSpacing" Value="{DynamicResource Key=size_50}"/>
-                <Setter Property="ColumnSpacing" Value="{DynamicResource Key=size_400}"/>
+            <Style x:Key="SideNavigationTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_300}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource Key=size_400}"/>
+                <Setter Property="Margin" Value="{ext:Thickness LeftKey=size_150, TopKey=size_200, RightKey=size_150, BottomKey=size_50}"/>
             </Style>
 
             <Style x:Key="SideNavigationItemButtonStyle" TargetType="uc:ContentButton">
                 <Setter Property="RestingBackgroundColor" Value="Transparent" />
-                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
-                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
-                <Setter Property="HeightRequest" Value="{DynamicResource Key=size_400}"/>
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=gray_100}" />
             </Style>
 
             <Style x:Key="SideNavigationItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
-                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_700}" />
+                <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineHeight" Value="{DynamicResource Key=size_400}"/>
+            </Style>
+
+            <Style x:Key="SideNavigationSelectedItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=brand_700}" />
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineHeight" Value="{DynamicResource Key=size_400}"/>
             </Style>
 
             <Style x:Key="SideNavigationItemIconStyle" TargetType="Image">
