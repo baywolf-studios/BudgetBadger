@@ -20,66 +20,66 @@ namespace BudgetBadger.Forms.Views
             if (pageName != "EnvelopesPage")
             {
                 EnvelopesFrame.BackgroundColor = EnvelopesFrame.RestingBackgroundColor;
-                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_700"];
-                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_700"];
+                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
             }
             else
             {
                 EnvelopesFrame.BackgroundColor = EnvelopesFrame.ActiveBackgroundColor;
-                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_700"];
-                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_700"];
+                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
             }
 
             if (pageName != "AccountsPage")
             {
                 AccountsFrame.BackgroundColor = AccountsFrame.RestingBackgroundColor;
-                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_700"];
-                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_700"];
+                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
             }
             else
             {
                 AccountsFrame.BackgroundColor = AccountsFrame.ActiveBackgroundColor;
-                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_700"];
-                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_700"];
+                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
             }
 
             if (pageName != "PayeesPage")
             {
                 PayeesFrame.BackgroundColor = PayeesFrame.RestingBackgroundColor;
-                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_700"];
-                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_700"];
+                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
             }
             else
             {
                 PayeesFrame.BackgroundColor = PayeesFrame.ActiveBackgroundColor;
-                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_700"];
-                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_700"];
+                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
             }
 
             if (pageName != "ReportsPage")
             {
                 ReportsFrame.BackgroundColor = ReportsFrame.RestingBackgroundColor;
-                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_700"];
-                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_700"];
+                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
             }
             else
             {
                 ReportsFrame.BackgroundColor = ReportsFrame.ActiveBackgroundColor;
-                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_700"];
-                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_700"];
+                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
             }
 
             if (pageName != "SettingsPage")
             {
                 SettingsFrame.BackgroundColor = SettingsFrame.RestingBackgroundColor;
-                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_700"];
-                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_700"];
+                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
             }
             else
             {
                 SettingsFrame.BackgroundColor = SettingsFrame.ActiveBackgroundColor;
-                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_700"];
-                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_700"];
+                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
             }
         }
 
