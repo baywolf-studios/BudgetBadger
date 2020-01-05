@@ -117,27 +117,18 @@ namespace BudgetBadger.Models
         public void Replace(T item) => ReplaceRange(new T[] { item });
 
         /// <summary> 
-        /// Clears the current collection and replaces it with the specified collection. 
+        /// Updates the current collection to match the specified collection. 
         /// </summary> 
         public void ReplaceRange(IEnumerable<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            CheckReentrancy();
+            var itemsToAdd = Items.Except(collection);
+            AddRange(itemsToAdd);
 
-            var previouslyEmpty = Items.Count == 0;
-
-            Items.Clear();
-
-            AddArrangeCore(collection);
-
-            var currentlyEmpty = Items.Count == 0;
-
-            if (previouslyEmpty && currentlyEmpty)
-                return;
-
-            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+            var itemsToRemove = collection.Except(Items);
+            RemoveRange(itemsToRemove);
         }
 
         private bool AddArrangeCore(IEnumerable<T> collection)

@@ -10,7 +10,7 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ListView2 : Xamarin.Forms.ListView
     {
-        readonly ObservableRangeCollection<object> internalItems;
+        readonly ObservableRangeCollection<ObservableGrouping<object, object>> internalItems;
 
         public static BindableProperty FilterProperty = BindableProperty.Create(nameof(Filter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateFilter);
         public Predicate<object> Filter
@@ -57,7 +57,7 @@ namespace BudgetBadger.Forms.UserControls
         public ListView2()
         {
             InitializeComponent();
-            internalItems = new ObservableRangeCollection<object>();
+            internalItems = new ObservableRangeCollection<ObservableGrouping<object, object>>();
         }
 
         private static void UpdateFilter(BindableObject bindable, object oldValue, object newValue)
@@ -117,6 +117,28 @@ namespace BudgetBadger.Forms.UserControls
                 //add any new groupedItems that don't already exist in the internalList
 
                 //remove any groups in the internalList if they don't exist in the groupedItems
+
+                var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => a2);
+                var targetGroupedItems = internalItems.ToDictionary(a => a.Key, a2 => a2);
+
+                //var groupedItemsToAdd = sourceGroupedItems.Keys.Except(targetGroupedItems.Keys);
+                //foreach (var groupKey in groupedItemsToAdd)
+                //{
+                //    var groupedItemToAdd = sourceGroupedItems[groupKey];
+                //    internalItems.Add(groupedItemToAdd);
+                //}
+
+                //var accountsToUpdate = sourceAccountsDictionary.Keys.Intersect(targetAccountsDictionary.Keys);
+                //foreach (var accountId in accountsToUpdate)
+                //{
+                //    var sourceAccount = sourceAccountsDictionary[accountId];
+                //    var targetAccount = targetAccountsDictionary[accountId];
+
+                //    if (sourceAccount.ModifiedDateTime > targetAccount.ModifiedDateTime)
+                //    {
+                //        await targetAccountDataAccess.UpdateAccountAsync(sourceAccount);
+                //    }
+                //}
 
                 foreach (var group in groupedItems)
                 {
