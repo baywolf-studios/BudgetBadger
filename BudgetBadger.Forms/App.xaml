@@ -93,7 +93,7 @@
             <Style x:Key="SideNavigationItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_600}" />
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="LineHeight" Value="{DynamicResource Key=size_400}"/>
             </Style>

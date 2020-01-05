@@ -112,47 +112,25 @@ namespace BudgetBadger.Forms.UserControls
             {
                 var groupedItems = filteredItems.GroupBy(g => GetPropertyValue(g, GroupPropertyDescription));
 
-                //merge each groupedItems into the internalList grouped item
+                var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => new ObservableGrouping<object, object>(a2.Key, a2));
+                var targetGroupedItems = internalItems.Select(i => i.Key);
 
-                //add any new groupedItems that don't already exist in the internalList
-
-                //remove any groups in the internalList if they don't exist in the groupedItems
-
-                var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => a2);
-                var targetGroupedItems = internalItems.ToDictionary(a => a.Key, a2 => a2);
-
-                //var groupedItemsToAdd = sourceGroupedItems.Keys.Except(targetGroupedItems.Keys);
-                //foreach (var groupKey in groupedItemsToAdd)
-                //{
-                //    var groupedItemToAdd = sourceGroupedItems[groupKey];
-                //    internalItems.Add(groupedItemToAdd);
-                //}
-
-                //var accountsToUpdate = sourceAccountsDictionary.Keys.Intersect(targetAccountsDictionary.Keys);
-                //foreach (var accountId in accountsToUpdate)
-                //{
-                //    var sourceAccount = sourceAccountsDictionary[accountId];
-                //    var targetAccount = targetAccountsDictionary[accountId];
-
-                //    if (sourceAccount.ModifiedDateTime > targetAccount.ModifiedDateTime)
-                //    {
-                //        await targetAccountDataAccess.UpdateAccountAsync(sourceAccount);
-                //    }
-                //}
-
-                foreach (var group in groupedItems)
+                var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems);
+                foreach (var groupKey in tempGroupedItemsToUpdate)
                 {
-                    //if (internalItems.Contains.)
+                    var sourceGroup = sourceGroupedItems[groupKey];
+
+                    var targetGroupToUpdate = internalItems.FirstOrDefault(i => i.Key == groupKey);
+                    targetGroupToUpdate.ReplaceRange(sourceGroup);
+                    sourceGroup.ReplaceRange(targetGroupToUpdate);
                 }
+
+                internalItems.ReplaceRange(sourceGroupedItems.Values);
             }
 
             if (IsSorted)
             {
                 internalItems.Sort(SortComparer);
-            }
-            else
-            {
-
             }
         }
 
