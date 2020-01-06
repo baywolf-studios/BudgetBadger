@@ -124,10 +124,10 @@ namespace BudgetBadger.Models
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            var itemsToAdd = Items.Except(collection);
+            var itemsToAdd = collection.Except(Items);
             AddRange(itemsToAdd);
 
-            var itemsToRemove = collection.Except(Items);
+            var itemsToRemove = Items.Except(collection);
             RemoveRange(itemsToRemove);
         }
 
