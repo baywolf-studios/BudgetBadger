@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using BudgetBadger.Models;
@@ -10,7 +12,12 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ListView2 : Xamarin.Forms.ListView
     {
-        readonly ObservableRangeCollection<ObservableGrouping<object, object>> internalItems;
+        public new static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(ListView2), null, propertyChanged: OnItemsSourceChanged);
+        public new IEnumerable ItemsSource
+        {
+            get => (IEnumerable)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
+        }
 
         public static BindableProperty FilterProperty = BindableProperty.Create(nameof(Filter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateFilter);
         public Predicate<object> Filter
@@ -57,80 +64,121 @@ namespace BudgetBadger.Forms.UserControls
         public ListView2()
         {
             InitializeComponent();
-            internalItems = new ObservableRangeCollection<ObservableGrouping<object, object>>();
+            base.ItemsSource = new ObservableRangeCollection<ObservableGrouping<object, object>>();
+        }
+
+        private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView)
+            {
+                if (oldValue != newValue)
+                {
+                    listView.ClearItems();
+                    if (oldValue is INotifyCollectionChanged oldCollection)
+                    {
+                        oldCollection.CollectionChanged -= NotifyCollectionChangedEventHandler;
+                    }
+                    if (newValue is INotifyCollectionChanged newCollection)
+                    {
+                        newCollection.CollectionChanged += NotifyCollectionChangedEventHandler;
+                    }
+                }
+            }
+        }
+
+        private static void NotifyCollectionChangedEventHandler(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (sender is ListView2 listView)
+            {
+                listView.UpdateItems();
+            }
         }
 
         private static void UpdateFilter(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
+            if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.internalItems.Clear();
+                listView.ClearItems();
                 listView.UpdateItems();
             }
         }
 
         private static void UpdateGrouped(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
+            if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.internalItems.Clear();
+                listView.ClearItems();
+                listView.IsGroupingEnabled = listView.IsGrouped;
                 listView.UpdateItems();
             }
         }
 
         private static void UpdateSorted(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
+            if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.internalItems.Clear();
+                listView.ClearItems();
                 listView.UpdateItems();
             }
         }
 
+        private void ClearItems()
+        {
+            ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).Clear();
+        }
+
         private void UpdateItems()
         {
-            var filteredItems = new List<object>();
-
-            // filtering
-            if (Filter != null)
+            if (ItemsSource == null)
             {
-                foreach (var item in internalItems)
-                {
-                    if (Filter.Invoke(item))
-                    {
-                        filteredItems.Add(item);
-                    }
-                }
+                ClearItems();
             }
             else
             {
-                filteredItems.AddRange(internalItems);
-            }
+                var filteredItems = new List<object>();
 
-            //grouping
-            if (IsGrouped)
-            {
-                var groupedItems = filteredItems.GroupBy(g => GetPropertyValue(g, GroupPropertyDescription));
-
-                var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => new ObservableGrouping<object, object>(a2.Key, a2));
-                var targetGroupedItems = internalItems.Select(i => i.Key);
-
-                var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems);
-                foreach (var groupKey in tempGroupedItemsToUpdate)
+                // filtering
+                if (Filter != null)
                 {
-                    var sourceGroup = sourceGroupedItems[groupKey];
-
-                    var targetGroupToUpdate = internalItems.FirstOrDefault(i => i.Key == groupKey);
-                    targetGroupToUpdate.ReplaceRange(sourceGroup);
-                    sourceGroup.ReplaceRange(targetGroupToUpdate);
+                    foreach (var item in ItemsSource)
+                    {
+                        if (Filter.Invoke(item))
+                        {
+                            filteredItems.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    var itemSource = ItemsSource?.Cast<object>().ToList();
+                    filteredItems.AddRange(itemSource);
                 }
 
-                internalItems.ReplaceRange(sourceGroupedItems.Values);
-            }
+                //grouping
+                if (IsGrouped)
+                {
+                    var groupedItems = filteredItems.GroupBy(g => GetPropertyValue(g, GroupPropertyDescription));
 
-            if (IsSorted)
-            {
-                internalItems.Sort(SortComparer);
+                    var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => new ObservableGrouping<object, object>(a2.Key, a2));
+                    var targetGroupedItems = ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).Select(i => i.Key);
+
+                    var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems);
+                    foreach (var groupKey in tempGroupedItemsToUpdate)
+                    {
+                        var sourceGroup = sourceGroupedItems[groupKey];
+
+                        var targetGroupToUpdate = ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
+                        targetGroupToUpdate.ReplaceRange(sourceGroup);
+                        sourceGroup.ReplaceRange(targetGroupToUpdate);
+                    }
+
+                    ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).ReplaceRange(sourceGroupedItems.Values);
+                }
+
+                if (IsSorted)
+                {
+                    ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).Sort(SortComparer);
+                }
             }
         }
 

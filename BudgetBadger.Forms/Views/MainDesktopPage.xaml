@@ -44,7 +44,7 @@
                                 <FontImageSource
                                     x:Name="EnvelopesIconFont"
                                     Size="{DynamicResource Key=size_225}"
-                                    Color="{DynamicResource Key=gray_700}"
+                                    Color="{DynamicResource Key=gray_600}"
                                     FontFamily="{DynamicResource Key=IconFontFamily}"
                                     Glyph="{DynamicResource Key=EnvelopeIcon}" />
                             </Image.Source>
@@ -52,7 +52,8 @@
                         <Label
                             x:Name="EnvelopesLabel"
                             Style="{StaticResource SideNavigationItemLabelStyle}"
-                            Text="{ext:Translate EnvelopesPageTitle}"/>
+                            Text="{ext:Translate EnvelopesPageTitle}">
+                        </Label>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
@@ -73,7 +74,7 @@
                                 <FontImageSource
                                     x:Name="AccountsIconFont"
                                     Size="{DynamicResource Key=size_225}"
-                                    Color="{DynamicResource Key=gray_700}"
+                                    Color="{DynamicResource Key=gray_600}"
                                     FontFamily="{DynamicResource Key=IconFontFamily}"
                                     Glyph="{DynamicResource Key=AccountIcon}" />
                             </Image.Source>
@@ -103,7 +104,7 @@
                                 <FontImageSource
                                     x:Name="PayeesIconFont"
                                     Size="{DynamicResource Key=size_225}"
-                                    Color="{DynamicResource Key=gray_700}"
+                                    Color="{DynamicResource Key=gray_600}"
                                     FontFamily="{DynamicResource Key=IconFontFamily}"
                                     Glyph="{DynamicResource Key=PayeeIcon}" />
                             </Image.Source>
@@ -133,7 +134,7 @@
                                 <FontImageSource
                                     x:Name="ReportsIconFont"
                                     Size="{DynamicResource Key=size_225}"
-                                    Color="{DynamicResource Key=gray_700}"
+                                    Color="{DynamicResource Key=gray_600}"
                                     FontFamily="{DynamicResource Key=IconFontFamily}"
                                     Glyph="{DynamicResource Key=ReportIcon}" />
                             </Image.Source>
@@ -163,7 +164,7 @@
                                 <FontImageSource
                                     x:Name="SettingsIconFont"
                                     Size="{DynamicResource Key=size_225}"
-                                    Color="{DynamicResource Key=gray_700}"
+                                    Color="{DynamicResource Key=gray_600}"
                                     FontFamily="{DynamicResource Key=IconFontFamily}"
                                     Glyph="{DynamicResource Key=SettingIcon}" />
                             </Image.Source>
