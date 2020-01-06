@@ -169,7 +169,7 @@ namespace BudgetBadger.Forms.UserControls
 
                         var targetGroupToUpdate = ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
                         targetGroupToUpdate.ReplaceRange(sourceGroup);
-                        sourceGroup.ReplaceRange(targetGroupToUpdate);
+                        sourceGroupedItems[groupKey] = targetGroupToUpdate;
                     }
 
                     ((ObservableRangeCollection<ObservableGrouping<object, object>>)base.ItemsSource).ReplaceRange(sourceGroupedItems.Values);
