@@ -42,6 +42,11 @@ namespace BudgetBadger.Models
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
+            if (!collection.Any())
+            {
+                return;
+            }
+
             CheckReentrancy();
 
             var startIndex = Count;
@@ -124,11 +129,17 @@ namespace BudgetBadger.Models
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            var itemsToAdd = collection.Except(Items);
-            AddRange(itemsToAdd);
+            var itemsToAdd = collection.Except(Items).ToList();
+            if (itemsToAdd.Any())
+            {
+                AddRange(itemsToAdd);
+            }
 
-            var itemsToRemove = Items.Except(collection);
-            RemoveRange(itemsToRemove);
+            var itemsToRemove = Items.Except(collection).ToList();
+            if (itemsToRemove.Any())
+            {
+                RemoveRange(itemsToRemove);
+            }
         }
 
         private bool AddArrangeCore(IEnumerable<T> collection)

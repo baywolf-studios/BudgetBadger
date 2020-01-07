@@ -64,7 +64,26 @@
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
-                        <uc:ListView
+                        <uc:ListView2
+                            Items="{Binding Accounts}"
+                            IsGrouped="True"
+                            GroupPropertyDescription="Type">
+                            <uc:ListView2.GroupHeaderTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                    <dt:GroupHeaderViewCell/>
+                                        </ViewCell>
+                                </DataTemplate>
+                            </uc:ListView2.GroupHeaderTemplate>
+                            <uc:ListView2.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                    <dt:AccountViewCell/>
+                                        </ViewCell>
+                                </DataTemplate>
+                            </uc:ListView2.ItemTemplate>
+                        </uc:ListView2>
+                        <!--<uc:ListView
                             AllowSwiping="true"
                             Filter="{Binding Filter}"
                             FilterText="{Binding SearchText}"
@@ -129,7 +148,7 @@
                                     <BoxView />
                                 </DataTemplate>
                             </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
+                        </uc:ListView>-->
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
                 <uc:Button2
