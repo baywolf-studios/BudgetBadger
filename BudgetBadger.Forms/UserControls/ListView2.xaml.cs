@@ -109,7 +109,10 @@ namespace BudgetBadger.Forms.UserControls
                     }
                     if (newValue is INotifyCollectionChanged newCollection)
                     {
-                        newCollection.CollectionChanged += NotifyCollectionChangedEventHandler;
+                        newCollection.CollectionChanged += (sender, e) =>
+                        {
+                            NotifyCollectionChangedEventHandler(listView, e);
+                        };
                     }
                     listView.UpdateItems();
                 }
@@ -118,7 +121,6 @@ namespace BudgetBadger.Forms.UserControls
 
         private static void NotifyCollectionChangedEventHandler(object sender, NotifyCollectionChangedEventArgs e)
         {
-           
             if (sender is ListView2 listView)
             {
                 listView.UpdateItems();
