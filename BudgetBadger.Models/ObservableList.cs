@@ -11,13 +11,13 @@ namespace BudgetBadger.Models
 	/// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
 	/// </summary> 
 	/// <typeparam name="T"></typeparam> 
-	public class ObservableRangeCollection<T> : ObservableCollection<T>
+	public class ObservableList<T> : ObservableCollection<T>
     {
 
         /// <summary> 
         /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
         /// </summary> 
-        public ObservableRangeCollection()
+        public ObservableList()
             : base()
         {
         }
@@ -27,7 +27,7 @@ namespace BudgetBadger.Models
         /// </summary> 
         /// <param name="collection">collection: The collection from which the elements are copied.</param> 
         /// <exception cref="System.ArgumentNullException">The collection parameter cannot be null.</exception> 
-        public ObservableRangeCollection(IEnumerable<T> collection)
+        public ObservableList(IEnumerable<T> collection)
             : base(collection)
         {
         }
@@ -41,19 +41,23 @@ namespace BudgetBadger.Models
                 throw new ArgumentException("Mode must be either Add or Reset for AddRange.", nameof(notificationMode));
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
-
             if (!collection.Any())
-            {
                 return;
-            }
 
             CheckReentrancy();
 
+            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
+
             var startIndex = Count;
 
-            var itemsAdded = AddArrangeCore(collection);
+            var itemAdded = false;
+            foreach (var item in collection)
+            {
+                Items.Add(item);
+                itemAdded = true;
+            }
 
-            if (!itemsAdded)
+            if (!itemAdded)
                 return;
 
             if (notificationMode == NotifyCollectionChangedAction.Reset)
@@ -62,8 +66,6 @@ namespace BudgetBadger.Models
 
                 return;
             }
-
-            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
 
             RaiseChangeNotificationEvents(
                 action: NotifyCollectionChangedAction.Add,
@@ -74,45 +76,49 @@ namespace BudgetBadger.Models
         /// <summary> 
         /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T). NOTE: with notificationMode = Remove, removed items starting index is not set because items are not guaranteed to be consecutive.
         /// </summary> 
-        public void RemoveRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Reset)
+        public void RemoveAll()
+        {
+            if (Items.Count > 0)
+            {
+                RemoveRange(0, Items.Count);
+            }
+        }
+
+        /// <summary> 
+        /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T). NOTE: with notificationMode = Remove, removed items starting index is not set because items are not guaranteed to be consecutive.
+        /// </summary> 
+        public void RemoveRange(int index, int count, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Remove)
         {
             if (notificationMode != NotifyCollectionChangedAction.Remove && notificationMode != NotifyCollectionChangedAction.Reset)
                 throw new ArgumentException("Mode must be either Remove or Reset for RemoveRange.", nameof(notificationMode));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            if (index < 0)
+                throw new ArgumentNullException(nameof(index));
+            if (Items.Count < count)
+                throw new ArgumentNullException(nameof(count));
 
             CheckReentrancy();
 
-            if (notificationMode == NotifyCollectionChangedAction.Reset)
+            var changedItems = new List<T>();
+            for (var i = index; i < count; i++)
             {
-                var raiseEvents = false;
-                foreach (var item in collection)
-                {
-                    Items.Remove(item);
-                    raiseEvents = true;
-                }
-
-                if (raiseEvents)
-                    RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
-
-                return;
-            }
-
-            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
-            for (var i = 0; i < changedItems.Count; i++)
-            {
-                if (!Items.Remove(changedItems[i]))
-                {
-                    changedItems.RemoveAt(i); //Can't use a foreach because changedItems is intended to be (carefully) modified
-                    i--;
-                }
+                changedItems.Add(Items[i]);
+                Items.RemoveAt(i);
             }
 
             if (changedItems.Count == 0)
+            {
                 return;
+            }
+
+            if (notificationMode == NotifyCollectionChangedAction.Reset)
+            {
+                RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+                return;
+            }
 
             RaiseChangeNotificationEvents(
                 action: NotifyCollectionChangedAction.Remove,
+                startingIndex: index,
                 changedItems: changedItems);
         }
 
@@ -138,19 +144,18 @@ namespace BudgetBadger.Models
             var itemsToRemove = Items.Except(collection).ToList();
             if (itemsToRemove.Any())
             {
-                RemoveRange(itemsToRemove);
-            }
-        }
+                var startIndex = 0;
+                for (var i = startIndex; i < Items.Count; i++)
+                {
+                    if (itemsToRemove.Contains(Items[i]))
+                    {
+                        continue;
+                    }
 
-        private bool AddArrangeCore(IEnumerable<T> collection)
-        {
-            var itemAdded = false;
-            foreach (var item in collection)
-            {
-                Items.Add(item);
-                itemAdded = true;
+                    RemoveRange(startIndex, i - 1);
+                    startIndex = i + 1;
+                }
             }
-            return itemAdded;
         }
 
         private void RaiseChangeNotificationEvents(NotifyCollectionChangedAction action, List<T> changedItems = null, int startingIndex = -1)
@@ -165,9 +170,9 @@ namespace BudgetBadger.Models
         }
     }
 
-    public static class ObservableRangeCollectionExtensions
+    public static class ObservableListExtensions
     {
-        public static void Sort<T>(this ObservableCollection<T> observable, IComparer<T> comparer)
+        public static void Sort<T>(this ObservableList<T> observable, IComparer<T> comparer)
         {
             List<T> sorted = observable.ToList();
             if (comparer == null)

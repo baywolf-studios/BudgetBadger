@@ -47,8 +47,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set { SetProperty(ref _accounts, value); RaisePropertyChanged(nameof(NetWorth)); }
@@ -98,7 +98,7 @@ namespace BudgetBadger.Forms.Accounts
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -184,13 +184,20 @@ namespace BudgetBadger.Forms.Accounts
 
             IsBusy = true;
 
+            if (Accounts.Any())
+            {
+                Accounts.Add(Accounts.First());
+                IsBusy = false;
+                return;
+            }
+
             try
             {
                 var result = await _accountLogic.Value.GetAccountsAsync();
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts = new ObservableList<Account>(result.Data);
                 }
                 else
                 {
