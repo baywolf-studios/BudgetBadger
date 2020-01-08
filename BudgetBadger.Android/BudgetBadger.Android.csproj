@@ -295,7 +295,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
-      <Project>{2E1C0AD0-6133-4482-8C1B-C99FF46D4BDA}</Project>
+      <Project>{8EDA47B3-B46F-4DE3-A4FF-D8352C691293}</Project>
       <Name>BudgetBadger.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
