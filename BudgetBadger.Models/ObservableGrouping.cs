@@ -6,7 +6,7 @@ namespace BudgetBadger.Models
     /// <summary>
 	/// Grouping of items by key into ObservableRange
 	/// </summary>
-	public class ObservableGrouping<TKey, TItem> : ObservableRangeCollection<TItem>
+	public class ObservableGrouping<TKey, TItem> : ObservableList<TItem>
     {
         /// <summary>
         /// Gets the key.

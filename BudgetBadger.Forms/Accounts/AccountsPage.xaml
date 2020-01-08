@@ -67,7 +67,7 @@
                         <uc:ListView2
                             Items="{Binding Accounts}"
                             IsGrouped="True"
-                            GroupPropertyDescription="Type">
+                            GroupPropertyDescription="Group">
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <ViewCell>

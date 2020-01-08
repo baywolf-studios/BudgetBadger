@@ -78,7 +78,7 @@ namespace BudgetBadger.Forms.UserControls
         public ListView2()
         {
             InitializeComponent();
-            InternalListView.ItemsSource = new ObservableRangeCollection<ObservableGrouping<object, object>>();
+            InternalListView.ItemsSource = new ObservableList<object>();
         }
 
         private static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
@@ -103,7 +103,6 @@ namespace BudgetBadger.Forms.UserControls
             {
                 if (oldValue != newValue)
                 {
-                    listView.ClearItems();
                     if (oldValue is INotifyCollectionChanged oldCollection)
                     {
                         oldCollection.CollectionChanged -= NotifyCollectionChangedEventHandler;
@@ -119,6 +118,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private static void NotifyCollectionChangedEventHandler(object sender, NotifyCollectionChangedEventArgs e)
         {
+           
             if (sender is ListView2 listView)
             {
                 listView.UpdateItems();
@@ -129,7 +129,6 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.ClearItems();
                 listView.UpdateItems();
             }
         }
@@ -138,9 +137,19 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.ClearItems();
-                listView.InternalListView.IsGroupingEnabled = listView.IsGrouped;
-                listView.InternalListView.GroupDisplayBinding = new Binding("Key");
+                if ((bool)newValue)
+                {
+                    listView.InternalListView.ItemsSource = new ObservableList<ObservableGrouping<object, object>>();
+                    listView.InternalListView.IsGroupingEnabled = listView.IsGrouped;
+                    listView.InternalListView.GroupDisplayBinding = new Binding("Key");
+                }
+                else
+                {
+                    listView.InternalListView.ItemsSource = new ObservableList<object>();
+                    listView.InternalListView.IsGroupingEnabled = listView.IsGrouped;
+                    listView.InternalListView.GroupDisplayBinding = null;
+                }
+                
                 listView.UpdateItems();
             }
         }
@@ -149,21 +158,22 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.ClearItems();
                 listView.UpdateItems();
             }
-        }
-
-        private void ClearItems()
-        {
-            ((ObservableRangeCollection<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Clear();
         }
 
         private void UpdateItems()
         {
             if (Items == null)
             {
-                //ClearItems();
+                if (IsGrouped)
+                {
+                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).RemoveAll();
+                }
+                else
+                {
+                    ((ObservableList<object>)InternalListView.ItemsSource).RemoveAll();
+                }
             }
             else
             {
@@ -192,24 +202,28 @@ namespace BudgetBadger.Forms.UserControls
                     var groupedItems = filteredItems.GroupBy(g => GetPropertyValue(g, GroupPropertyDescription));
 
                     var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => new ObservableGrouping<object, object>(a2.Key, a2));
-                    var targetGroupedItems = ((ObservableRangeCollection<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Select(i => i.Key);
+                    var targetGroupedItems = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Select(i => i.Key).ToList();
 
-                    var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems);
+                    var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems).ToList();
                     foreach (var groupKey in tempGroupedItemsToUpdate)
                     {
                         var sourceGroup = sourceGroupedItems[groupKey];
 
-                        var targetGroupToUpdate = ((ObservableRangeCollection<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
+                        var targetGroupToUpdate = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
                         targetGroupToUpdate.ReplaceRange(sourceGroup);
                         sourceGroupedItems[groupKey] = targetGroupToUpdate;
                     }
 
-                    ((ObservableRangeCollection<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(sourceGroupedItems.Values);
+                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(sourceGroupedItems.Values);
+                }
+                else
+                {
+                    ((ObservableList<object>)InternalListView.ItemsSource).ReplaceRange(filteredItems);
                 }
 
                 if (IsSorted)
                 {
-                    ((ObservableRangeCollection<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Sort(SortComparer);
+                    ((ObservableList<object>)InternalListView.ItemsSource).Sort(SortComparer);
                 }
             }
         }
