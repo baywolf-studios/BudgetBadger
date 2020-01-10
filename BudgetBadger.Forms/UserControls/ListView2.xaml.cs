@@ -12,6 +12,9 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ListView2 : StackLayout
     {
+        public static readonly BindableProperty HeaderProperty = BindableProperty.Create("Header", typeof(object), typeof(ListView), null);
+        public static readonly BindableProperty HeaderTemplateProperty = BindableProperty.Create("HeaderTemplate", typeof(DataTemplate), typeof(ListView), null);
+
         public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IEnumerable), typeof(ListView2), null, propertyChanged: OnItemsChanged);
         public IEnumerable Items
         {
