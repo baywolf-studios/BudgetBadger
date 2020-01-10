@@ -1607,7 +1607,7 @@ namespace BudgetBadger.Logic
 
         Envelope GetBufferEnvelope()
         {
-            var bufferEnvelope = Constants.IncomeEnvelope.DeepCopy();
+            var bufferEnvelope = Constants.BufferEnvelope.DeepCopy();
             bufferEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope));
             bufferEnvelope.Group = GetIncomeEnvelopeGroup();
             return bufferEnvelope;
