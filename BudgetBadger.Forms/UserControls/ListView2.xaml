@@ -4,5 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.UserControls.ListView2"
     Orientation="Vertical">
-    <ListView x:Name="InternalListView" CachingStrategy="RetainElement"/>
+    <ContentView x:Name="stickyHeader" IsVisible="false"/>
+    <SearchBar x:Name="SearchBox"
+               Text="{Binding SearchText}"/>
+    <ListView x:Name="InternalListView"
+              CachingStrategy="RetainElement"
+              SelectedItem="{Binding SelectedItem}"
+              SelectionMode="{Binding SelectionMode}"
+              HasUnevenRows="{Binding HasUnevenRows}"
+              RowHeight="{Binding RowHeight}"
+              SeparatorVisibility="{Binding SeparatorVisibility}"
+              SeparatorColor="{Binding SeparatorColor}"
+              HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
+              VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"/>
+    <ContentView x:Name="stickyFooter" IsVisible="false"/> 
 </StackLayout>

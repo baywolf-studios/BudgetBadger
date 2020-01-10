@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
 using BudgetBadger.Models;
 using Xamarin.Forms;
 
@@ -12,8 +13,110 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ListView2 : StackLayout
     {
-        public static readonly BindableProperty HeaderProperty = BindableProperty.Create("Header", typeof(object), typeof(ListView), null);
-        public static readonly BindableProperty HeaderTemplateProperty = BindableProperty.Create("HeaderTemplate", typeof(DataTemplate), typeof(ListView), null);
+        public static readonly BindableProperty HeaderProperty = BindableProperty.Create(nameof(Header), typeof(object), typeof(ListView), null, propertyChanged: UpdateHeader);
+        public object Header
+        {
+            get { return GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        public static readonly BindableProperty HeaderTemplateProperty = BindableProperty.Create(nameof(HeaderTemplate), typeof(DataTemplate), typeof(ListView), null, propertyChanged: UpdateHeader);
+        public DataTemplate HeaderTemplate
+        {
+            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
+            set { SetValue(HeaderTemplateProperty, value); }
+        }
+
+        public static BindableProperty IsHeaderStickyProperty = BindableProperty.Create(nameof(IsHeaderSticky), typeof(bool), typeof(ListView2), propertyChanged: UpdateHeader);
+        public bool IsHeaderSticky
+        {
+            get => (bool)GetValue(IsHeaderStickyProperty);
+            set => SetValue(IsHeaderStickyProperty, value);
+        }
+
+        public static readonly BindableProperty FooterProperty = BindableProperty.Create(nameof(Footer), typeof(object), typeof(ListView), null, propertyChanged: UpdateFooter);
+        public object Footer
+        {
+            get { return GetValue(FooterProperty); }
+            set { SetValue(FooterProperty, value); }
+        }
+
+        public static readonly BindableProperty FooterTemplateProperty = BindableProperty.Create(nameof(FooterTemplate), typeof(DataTemplate), typeof(ListView), null, propertyChanged: UpdateFooter);
+        public DataTemplate FooterTemplate
+        {
+            get { return (DataTemplate)GetValue(FooterTemplateProperty); }
+            set { SetValue(FooterTemplateProperty, value); }
+        }
+
+        public static BindableProperty IsFooterStickyProperty = BindableProperty.Create(nameof(IsFooterSticky), typeof(bool), typeof(ListView2), propertyChanged: UpdateFooter);
+        public bool IsFooterSticky
+        {
+            get => (bool)GetValue(IsFooterStickyProperty);
+            set => SetValue(IsFooterStickyProperty, value);
+        }
+
+        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(ListView), null, BindingMode.OneWayToSource);
+        public object SelectedItem
+        {
+            get { return GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
+
+        public static readonly BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(ListView), null);
+        public ICommand SelectedCommand
+        {
+            get { return (ICommand)GetValue(SelectedCommandProperty); }
+            set { SetValue(SelectedCommandProperty, value); }
+        }
+
+        public static readonly BindableProperty SelectionModeProperty = BindableProperty.Create(nameof(SelectionMode), typeof(ListViewSelectionMode), typeof(ListView), ListViewSelectionMode.Single);
+        public ListViewSelectionMode SelectionMode
+        {
+            get { return (ListViewSelectionMode)GetValue(SelectionModeProperty); }
+            set { SetValue(SelectionModeProperty, value); }
+        }
+
+        public static readonly BindableProperty HasUnevenRowsProperty = BindableProperty.Create(nameof(HasUnevenRows), typeof(bool), typeof(ListView), false);
+        public bool HasUnevenRows
+        {
+            get { return (bool)GetValue(HasUnevenRowsProperty); }
+            set { SetValue(HasUnevenRowsProperty, value); }
+        }
+
+        public static readonly BindableProperty RowHeightProperty = BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(ListView), -1);
+        public int RowHeight
+        {
+            get { return (int)GetValue(RowHeightProperty); }
+            set { SetValue(RowHeightProperty, value); }
+        }
+
+        public static readonly BindableProperty SeparatorVisibilityProperty = BindableProperty.Create(nameof(SeparatorVisibility), typeof(SeparatorVisibility), typeof(ListView), SeparatorVisibility.Default);
+        public SeparatorVisibility SeparatorVisibility
+        {
+            get { return (SeparatorVisibility)GetValue(SeparatorVisibilityProperty); }
+            set { SetValue(SeparatorVisibilityProperty, value); }
+        }
+
+        public static readonly BindableProperty SeparatorColorProperty = BindableProperty.Create(nameof(SeparatorColor), typeof(Color), typeof(ListView), Color.Default);
+        public Color SeparatorColor
+        {
+            get { return (Color)GetValue(SeparatorColorProperty); }
+            set { SetValue(SeparatorColorProperty, value); }
+        }
+
+        public static readonly BindableProperty HorizontalScrollBarVisibilityProperty = BindableProperty.Create(nameof(HorizontalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(ListView), ScrollBarVisibility.Default);
+        public ScrollBarVisibility HorizontalScrollBarVisibility
+        {
+            get { return (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty); }
+            set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
+        }
+
+        public static readonly BindableProperty VerticalScrollBarVisibilityProperty = BindableProperty.Create(nameof(VerticalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(ListView), ScrollBarVisibility.Default);
+        public ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get { return (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); }
+            set { SetValue(VerticalScrollBarVisibilityProperty, value); }
+        }
 
         public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IEnumerable), typeof(ListView2), null, propertyChanged: OnItemsChanged);
         public IEnumerable Items
@@ -29,18 +132,18 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ItemTemplateProperty, value);
         }
 
-        public static BindableProperty FilterProperty = BindableProperty.Create(nameof(Filter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateFilter);
-        public Predicate<object> Filter
+        public static BindableProperty SearchFilterProperty = BindableProperty.Create(nameof(SearchFilter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateItems);
+        public Predicate<object> SearchFilter
         {
-            get => (Predicate<object>)GetValue(FilterProperty);
-            set => SetValue(FilterProperty, value);
+            get => (Predicate<object>)GetValue(SearchFilterProperty);
+            set => SetValue(SearchFilterProperty, value);
         }
 
-        public static BindableProperty FilterTextProperty = BindableProperty.Create(nameof(FilterText), typeof(string), typeof(ListView2));
-        public string FilterText
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ListView2), propertyChanged: UpdateItems);
+        public string SearchText
         {
-            get => (string)GetValue(FilterTextProperty);
-            set => SetValue(FilterTextProperty, value);
+            get => (string)GetValue(SearchTextProperty);
+            set => SetValue(SearchTextProperty, value);
         }
 
         public static BindableProperty IsGroupedProperty = BindableProperty.Create(nameof(IsGrouped), typeof(bool), typeof(ListView2), propertyChanged: UpdateGrouped);
@@ -64,7 +167,7 @@ namespace BudgetBadger.Forms.UserControls
             set { SetValue(GroupHeaderTemplateProperty, value); }
         }
 
-        public static BindableProperty IsSortedProperty = BindableProperty.Create(nameof(IsSorted), typeof(bool), typeof(ListView2), propertyChanged: UpdateSorted);
+        public static BindableProperty IsSortedProperty = BindableProperty.Create(nameof(IsSorted), typeof(bool), typeof(ListView2), propertyChanged: UpdateItems);
         public bool IsSorted
         {
             get => (bool)GetValue(IsSortedProperty);
@@ -81,12 +184,86 @@ namespace BudgetBadger.Forms.UserControls
         public ListView2()
         {
             InitializeComponent();
+            SearchBox.BindingContext = this;
+            InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
+            InternalListView.ItemSelected += InternalListView_ItemSelected;
+        }
+
+        private void InternalListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (sender is ListView2)
+            {
+                if (SelectedCommand != null && SelectedCommand.CanExecute(e.SelectedItem))
+                {
+                    SelectedCommand.Execute(e.SelectedItem);
+                }
+            }
+        }
+
+        private static void UpdateHeader(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                if (listView.IsHeaderSticky)
+                {
+                    listView.InternalListView.Header = null;
+                    listView.InternalListView.HeaderTemplate = null;
+
+                    if (listView.HeaderTemplate != null)
+                    {
+                        var headerView = (View)listView.HeaderTemplate.CreateContent();
+                        headerView.BindingContext = listView.Header;
+                        listView.stickyHeader.Content = headerView;
+                        listView.stickyHeader.IsVisible = true;
+                    }
+                    else
+                    {
+                        listView.stickyHeader.Content = (View)listView.Header;
+                    }
+                }
+                else
+                {
+                    listView.stickyHeader.IsVisible = false;
+                    listView.InternalListView.Header = listView.Header;
+                    listView.InternalListView.HeaderTemplate = listView.HeaderTemplate;
+                }
+            }
+        }
+
+        private static void UpdateFooter(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                if (listView.IsFooterSticky || Device.RuntimePlatform == Device.macOS)
+                {
+                    listView.InternalListView.Footer = null;
+                    listView.InternalListView.FooterTemplate = null;
+
+                    if (listView.FooterTemplate != null)
+                    {
+                        var footerView = (View)listView.FooterTemplate.CreateContent();
+                        footerView.BindingContext = listView.Footer;
+                        listView.stickyFooter.Content = footerView;
+                        listView.stickyFooter.IsVisible = true;
+                    }
+                    else
+                    {
+                        listView.stickyFooter.Content = (View)listView.Footer;
+                    }
+                }
+                else
+                {
+                    listView.stickyFooter.IsVisible = false;
+                    listView.InternalListView.Footer = listView.Footer;
+                    listView.InternalListView.FooterTemplate = listView.FooterTemplate;
+                }
+            }
         }
 
         private static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
+            if (bindable is ListView2 listView && oldValue != newValue)
             {
                 listView.InternalListView.ItemTemplate = (DataTemplate)newValue;
             }
@@ -94,7 +271,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private static void OnGroupHeaderTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
+            if (bindable is ListView2 listView && oldValue != newValue)
             {
                 listView.InternalListView.GroupHeaderTemplate = (DataTemplate)newValue;
             }
@@ -102,38 +279,16 @@ namespace BudgetBadger.Forms.UserControls
 
         private static void OnItemsChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView)
-            {
-                if (oldValue != newValue)
-                {
-                    if (oldValue is INotifyCollectionChanged oldCollection)
-                    {
-                        oldCollection.CollectionChanged -= NotifyCollectionChangedEventHandler;
-                    }
-                    if (newValue is INotifyCollectionChanged newCollection)
-                    {
-                        newCollection.CollectionChanged += (sender, e) =>
-                        {
-                            NotifyCollectionChangedEventHandler(listView, e);
-                        };
-                    }
-                    listView.UpdateItems();
-                }
-            }
-        }
-
-        private static void NotifyCollectionChangedEventHandler(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (sender is ListView2 listView)
-            {
-                listView.UpdateItems();
-            }
-        }
-
-        private static void UpdateFilter(BindableObject bindable, object oldValue, object newValue)
-        {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
+                if (newValue is INotifyCollectionChanged newCollection)
+                {
+                    newCollection.CollectionChanged += (sender, e) =>
+                    {
+                        listView.UpdateItems();
+                    };
+                }
+
                 listView.UpdateItems();
             }
         }
@@ -159,7 +314,7 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
-        private static void UpdateSorted(BindableObject bindable, object oldValue, object newValue)
+        private static void UpdateItems(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
@@ -185,11 +340,11 @@ namespace BudgetBadger.Forms.UserControls
                 var filteredItems = new List<object>();
 
                 // filtering
-                if (Filter != null)
+                if (SearchFilter != null)
                 {
                     foreach (var item in Items)
                     {
-                        if (Filter.Invoke(item))
+                        if (SearchFilter.Invoke(item))
                         {
                             filteredItems.Add(item);
                         }
