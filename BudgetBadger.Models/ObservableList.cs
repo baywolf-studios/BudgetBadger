@@ -17,8 +17,7 @@ namespace BudgetBadger.Models
         /// <summary> 
         /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
         /// </summary> 
-        public ObservableList()
-            : base()
+        public ObservableList() : base()
         {
         }
 
@@ -35,29 +34,20 @@ namespace BudgetBadger.Models
         /// <summary> 
         /// Adds the elements of the specified collection to the end of the ObservableCollection(Of T). 
         /// </summary> 
-        public void AddRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Reset)
+        public void AddRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Add)
         {
             if (notificationMode != NotifyCollectionChangedAction.Add && notificationMode != NotifyCollectionChangedAction.Reset)
                 throw new ArgumentException("Mode must be either Add or Reset for AddRange.", nameof(notificationMode));
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
-            if (!collection.Any())
-                return;
 
             CheckReentrancy();
 
-            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
-
             var startIndex = Count;
 
-            var itemAdded = false;
-            foreach (var item in collection)
-            {
-                Items.Add(item);
-                itemAdded = true;
-            }
+            var itemsAdded = AddArrangeCore(collection);
 
-            if (!itemAdded)
+            if (!itemsAdded)
                 return;
 
             if (notificationMode == NotifyCollectionChangedAction.Reset)
@@ -66,6 +56,8 @@ namespace BudgetBadger.Models
 
                 return;
             }
+
+            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
 
             RaiseChangeNotificationEvents(
                 action: NotifyCollectionChangedAction.Add,
@@ -76,50 +68,54 @@ namespace BudgetBadger.Models
         /// <summary> 
         /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T). NOTE: with notificationMode = Remove, removed items starting index is not set because items are not guaranteed to be consecutive.
         /// </summary> 
-        public void RemoveAll()
-        {
-            if (Items.Count > 0)
-            {
-                RemoveRange(0, Items.Count);
-            }
-        }
-
-        /// <summary> 
-        /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T). NOTE: with notificationMode = Remove, removed items starting index is not set because items are not guaranteed to be consecutive.
-        /// </summary> 
-        public void RemoveRange(int index, int count, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Reset)
+        public void RemoveRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Reset)
         {
             if (notificationMode != NotifyCollectionChangedAction.Remove && notificationMode != NotifyCollectionChangedAction.Reset)
                 throw new ArgumentException("Mode must be either Remove or Reset for RemoveRange.", nameof(notificationMode));
-            if (index < 0)
-                throw new ArgumentNullException(nameof(index));
-            if (Items.Count < count)
-                throw new ArgumentNullException(nameof(count));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
             CheckReentrancy();
 
-            var changedItems = new List<T>();
-            for (var i = index; i < count; i++)
+            if (notificationMode == NotifyCollectionChangedAction.Reset)
             {
-                changedItems.Add(Items[i]);
-                Items.RemoveAt(i);
+                var raiseEvents = false;
+                foreach (var item in collection)
+                {
+                    Items.Remove(item);
+                    raiseEvents = true;
+                }
+
+                if (raiseEvents)
+                    RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+
+                return;
+            }
+
+            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
+            for (var i = 0; i < changedItems.Count; i++)
+            {
+                if (!Items.Remove(changedItems[i]))
+                {
+                    changedItems.RemoveAt(i); //Can't use a foreach because changedItems is intended to be (carefully) modified
+                    i--;
+                }
             }
 
             if (changedItems.Count == 0)
-            {
                 return;
-            }
-
-            if (notificationMode == NotifyCollectionChangedAction.Reset)
-            {
-                RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
-                return;
-            }
 
             RaiseChangeNotificationEvents(
                 action: NotifyCollectionChangedAction.Remove,
-                startingIndex: index,
                 changedItems: changedItems);
+        }
+
+        /// <summary> 
+        /// Removes every item from the collection 
+        /// </summary> 
+        public void RemoveAll()
+        {
+            RemoveRange(Items, NotifyCollectionChangedAction.Reset);
         }
 
         /// <summary> 
@@ -128,34 +124,38 @@ namespace BudgetBadger.Models
         public void Replace(T item) => ReplaceRange(new T[] { item });
 
         /// <summary> 
-        /// Updates the current collection to match the specified collection. 
+        /// Clears the current collection and replaces it with the specified collection. 
         /// </summary> 
         public void ReplaceRange(IEnumerable<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            var itemsToAdd = collection.Except(Items).ToList();
-            if (itemsToAdd.Any())
-            {
-                AddRange(itemsToAdd);
-            }
+            CheckReentrancy();
 
-            var itemsToRemove = Items.Except(collection).ToList();
-            if (itemsToRemove.Any())
-            {
-                var startIndex = 0;
-                for (var i = startIndex; i < Items.Count; i++)
-                {
-                    if (itemsToRemove.Contains(Items[i]))
-                    {
-                        continue;
-                    }
+            var previouslyEmpty = Items.Count == 0;
 
-                    RemoveRange(startIndex, i - 1);
-                    startIndex = i + 1;
-                }
+            Items.Clear();
+
+            AddArrangeCore(collection);
+
+            var currentlyEmpty = Items.Count == 0;
+
+            if (previouslyEmpty && currentlyEmpty)
+                return;
+
+            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+        }
+
+        private bool AddArrangeCore(IEnumerable<T> collection)
+        {
+            var itemAdded = false;
+            foreach (var item in collection)
+            {
+                Items.Add(item);
+                itemAdded = true;
             }
+            return itemAdded;
         }
 
         private void RaiseChangeNotificationEvents(NotifyCollectionChangedAction action, List<T> changedItems = null, int startingIndex = -1)
@@ -168,13 +168,13 @@ namespace BudgetBadger.Models
             else
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems: changedItems, startingIndex: startingIndex));
         }
-    }
 
-    public static class ObservableListExtensions
-    {
-        public static void Sort<T>(this ObservableList<T> observable, IComparer<T> comparer)
+        /// <summary> 
+        /// Sorts the current collection and replaces it with the specified collection. 
+        /// </summary>
+        public void Sort(IComparer<T> comparer)
         {
-            List<T> sorted = observable.ToList();
+            List<T> sorted = Items.ToList();
             if (comparer == null)
             {
                 sorted.Sort();
@@ -184,20 +184,42 @@ namespace BudgetBadger.Models
                 sorted.Sort(comparer);
             }
 
-            int ptr = 0;
-            while (ptr < sorted.Count)
-            {
-                if (!observable[ptr].Equals(sorted[ptr]))
-                {
-                    T t = observable[ptr];
-                    observable.RemoveAt(ptr);
-                    observable.Insert(sorted.IndexOf(t), t);
-                }
-                else
-                {
-                    ptr++;
-                }
-            }
+            CheckReentrancy();
+
+            var previouslyEmpty = Items.Count == 0;
+
+            Items.Clear();
+
+            AddArrangeCore(sorted);
+
+            var currentlyEmpty = Items.Count == 0;
+
+            if (previouslyEmpty && currentlyEmpty)
+                return;
+
+            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
         }
     }
 }
+
+//The MIT License(MIT)
+
+//Copyright(c) 2017 James Montemagno
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.

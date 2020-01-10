@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
@@ -67,7 +68,12 @@
                         <uc:ListView2
                             Items="{Binding Accounts}"
                             IsGrouped="True"
-                            GroupPropertyDescription="Group">
+                            GroupPropertyDescription="Group"
+                            HasUnevenRows="True"
+                            IsSorted="False">
+                            <uc:ListView2.SortComparer>
+                                <comparers:AccountComparer/>
+                            </uc:ListView2.SortComparer>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <ViewCell>
