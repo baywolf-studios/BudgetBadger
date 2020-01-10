@@ -34,6 +34,7 @@ namespace BudgetBadger.Forms.ViewModels
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
+            /*
             bool.TryParse(_settings.GetValueOrDefault(AppSettings.AskedForReview), out bool alreadyAskedForRevew);
 
             if (!alreadyAskedForRevew)
@@ -93,7 +94,7 @@ namespace BudgetBadger.Forms.ViewModels
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 }
