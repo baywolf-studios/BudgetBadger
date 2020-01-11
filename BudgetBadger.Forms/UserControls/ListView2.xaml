@@ -5,7 +5,7 @@
     x:Class="BudgetBadger.Forms.UserControls.ListView2"
     Orientation="Vertical">
     <ContentView x:Name="stickyHeader" IsVisible="false"/>
-    <SearchBar x:Name="SearchBox"
+    <SearchBar x:Name="SearchBar"
                Text="{Binding SearchText}"/>
     <ListView x:Name="InternalListView"
               CachingStrategy="RetainElement"
