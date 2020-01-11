@@ -132,6 +132,13 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ItemTemplateProperty, value);
         }
 
+        public static readonly BindableProperty HideSearchBarProperty = BindableProperty.Create(nameof(HideSearchBar), typeof(bool), typeof(ListView2), false, propertyChanged: UpdateHideSearchBar);
+        public bool HideSearchBar
+        {
+            get { return (bool)GetValue(HideSearchBarProperty); }
+            set { SetValue(HideSearchBarProperty, value); }
+        }
+
         public static BindableProperty SearchFilterProperty = BindableProperty.Create(nameof(SearchFilter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateItems);
         public Predicate<object> SearchFilter
         {
@@ -181,8 +188,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
-        private double previousYAvg;
-        private Dictionary<DateTime, double> previousYs = new Dictionary<DateTime, double>();
+        private double previousY;
         private double minY;
         private double maxY;
         private bool atStart = true;
@@ -202,16 +208,6 @@ namespace BudgetBadger.Forms.UserControls
 
         private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
         {
-            var removeKeys = previousYs.Keys.Where(k => k < DateTime.Now.AddMilliseconds(-750)).ToList();
-            foreach(var removeKey in removeKeys)
-            {
-                previousYs.Remove(removeKey);
-            }
-
-            previousYs.Add(DateTime.Now, e.ScrollY);
-
-            var currentYAvg = (previousYs.Sum(p => p.Value) / previousYs.Count);
-
             //set the maxY and minY to determine the start and end
             if (e.ScrollY > maxY)
             {
@@ -223,7 +219,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             //check if it's close enough to the end
-            if (currentYAvg / maxY > 0.9)
+            if (e.ScrollY / maxY > 0.9)
             {
                 atEnd = true;
             }
@@ -233,7 +229,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             //check if it's close enough to the beginning
-            if (currentYAvg / maxY < 0.5)
+            if (e.ScrollY / maxY < 0.5)
             {
                 atStart = true;
             }
@@ -243,7 +239,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             // determine if we're scrolling to the top
-            if (previousYAvg > currentYAvg)
+            if (previousY > e.ScrollY)
             {
                 scrollingToStart = true;
             }
@@ -251,15 +247,18 @@ namespace BudgetBadger.Forms.UserControls
             {
                 scrollingToStart = false;
             }
-            previousYAvg = currentYAvg;
+            previousY = (previousY + e.ScrollY) / 2;
 
-            var newSearchBarIsVisible = !atEnd && (atStart || scrollingToStart);
-            var shouldChange = (SearchBar.IsVisible != newSearchBarIsVisible && lastSearchBarChange < DateTime.Now);
-
-            if (shouldChange)
+            if (!HideSearchBar)
             {
-                SearchBar.IsVisible = newSearchBarIsVisible;
-                lastSearchBarChange = DateTime.Now.AddMilliseconds(500);
+                var newSearchBarIsVisible = !atEnd && (atStart || scrollingToStart);
+                var shouldChange = (SearchBar.IsVisible != newSearchBarIsVisible && lastSearchBarChange < DateTime.Now);
+
+                if (shouldChange)
+                {
+                    SearchBar.IsVisible = newSearchBarIsVisible;
+                    lastSearchBarChange = DateTime.Now.AddMilliseconds(250);
+                }
             }
         }
 
@@ -271,6 +270,14 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     SelectedCommand.Execute(e.SelectedItem);
                 }
+            }
+        }
+
+        private static void UpdateHideSearchBar(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                listView.SearchBar.IsVisible = (bool)newValue;
             }
         }
 
