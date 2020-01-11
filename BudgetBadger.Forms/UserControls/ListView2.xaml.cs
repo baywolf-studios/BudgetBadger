@@ -383,7 +383,18 @@ namespace BudgetBadger.Forms.UserControls
 
                 if (IsSorted)
                 {
-                    ((ObservableList<object>)InternalListView.ItemsSource).Sort(SortComparer);
+                    if (IsGrouped)
+                    {
+                        foreach(var group in ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource))
+                        {
+                            group.Sort(SortComparer);
+                        }
+                        ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Sort(SortComparer);
+                    }
+                    else
+                    {
+                        ((ObservableList<object>)InternalListView.ItemsSource).Sort(SortComparer);
+                    }
                 }
             }
         }
