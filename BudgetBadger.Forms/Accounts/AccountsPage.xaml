@@ -71,9 +71,6 @@
                             GroupPropertyDescription="Group"
                             HasUnevenRows="True"
                             IsSorted="False">
-                            <uc:ListView2.Header>
-                                <SearchBar/>
-                            </uc:ListView2.Header>
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
                             </uc:ListView2.SortComparer>
