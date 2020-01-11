@@ -181,11 +181,14 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
-        private int lastItemAppearedIndex = -1;
-        private bool scrollingToStart = false;
-        private bool atBottom = false;
-        private bool atTop = true;
-        private DateTime nextSearchBarShowChange;
+        private double previousY;
+        private double minY;
+        private double maxY;
+        private bool atStart = true;
+        private bool atEnd;
+        private bool scrollingToStart;
+        private DateTime lastScrollChange = DateTime.Now;
+        private DateTime lastSearchBarChange = DateTime.Now;
 
         public ListView2()
         {
@@ -194,87 +197,65 @@ namespace BudgetBadger.Forms.UserControls
             InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
             InternalListView.ItemSelected += InternalListView_ItemSelected;
-
-            InternalListView.ItemAppearing += InternalListView_ItemAppearing;
-            InternalListView.ItemDisappearing += InternalListView_ItemDisappearing;
+            InternalListView.Scrolled += InternalListView_Scrolled;
         }
 
-        private void InternalListView_ItemDisappearing(object sender, ItemVisibilityEventArgs e)
+        private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
         {
-            var test = e.Item;
-            var test2n = e.ItemIndex;
+            //set the maxY and minY to determine the start and end
+            if (e.ScrollY > maxY)
+            {
+                maxY = e.ScrollY;
+            }
+            if (e.ScrollY < minY)
+            {
+                minY = e.ScrollY;
+            }
+
+            //check if it's close enough to the end
+            if (CloseTo(e.ScrollY, maxY))
+            {
+                atEnd = true;
+            }
+            else
+            {
+                atEnd = false;
+            }
+
+            //check if it's close enough to the beginning
+            if (CloseTo(minY, e.ScrollY))
+            {
+                atStart = true;
+            }
+            else
+            {
+                atStart = false;
+            }
+
+            // determine if we're scrolling to the top
+            if (previousY > e.ScrollY)
+            {
+                scrollingToStart = true;
+            }
+            else
+            {
+                scrollingToStart = false;
+            }
+            previousY = e.ScrollY;
+
+            var newSearchBarIsVisible = !atEnd && (atStart || scrollingToStart);
+            var shouldChange = (SearchBar.IsVisible != newSearchBarIsVisible && lastSearchBarChange < DateTime.Now);
+
+            if (shouldChange)
+            {
+                SearchBar.IsVisible = newSearchBarIsVisible;
+                lastSearchBarChange = DateTime.Now.AddMilliseconds(250);
+            }
         }
 
-        private void InternalListView_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        private bool CloseTo(double current, double maximum)
         {
-                var itemAppearing = e.Item;
-                var itemAppearingIndex = e.ItemIndex;
-
-                if (itemAppearingIndex < lastItemAppearedIndex)
-                {
-                    scrollingToStart = true;
-                }
-                else
-                {
-                    scrollingToStart = false;
-                }
-
-                lastItemAppearedIndex = itemAppearingIndex;
-
-                if (IsGrouped)
-                {
-                    var lastGroup = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).LastOrDefault();
-                    if (lastGroup != null && lastGroup is ObservableList<object> lastGroupList)
-                    {
-                        var lastItem = lastGroupList.LastOrDefault();
-                        if (itemAppearing == lastItem)
-                        {
-                            scrollingToStart = false;
-                            atTop = false;
-                            atBottom = true;
-                        }
-                    }
-
-                    var firstGroup = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault();
-                    if (firstGroup != null && firstGroup is ObservableList<object> firstGroupList)
-                    {
-                        var firstItem = firstGroupList.LastOrDefault();
-                        if (itemAppearing == firstItem)
-                        {
-                            scrollingToStart = false;
-                            atTop = true;
-                            atBottom = false;
-                        }
-                    }
-                }
-                else
-                {
-                    var lastItem = ((ObservableList<object>)InternalListView.ItemsSource).LastOrDefault();
-                    if (itemAppearing == lastItem)
-                    {
-                        scrollingToStart = false;
-                        atTop = false;
-                        atBottom = true;
-                    }
-
-                    var firstItem = ((ObservableList<object>)InternalListView.ItemsSource).FirstOrDefault();
-                    if (itemAppearing == firstItem)
-                    {
-                        scrollingToStart = false;
-                        atTop = true;
-                        atBottom = false;
-                    }
-                }
-
-                var newShowSearchBarValue = atTop || scrollingToStart;
-                var shouldChange = SearchBar.IsVisible != newShowSearchBarValue && nextSearchBarShowChange < DateTime.Now;
-
-                if (shouldChange)
-                {
-                    SearchBar.IsVisible = newShowSearchBarValue;
-                    nextSearchBarShowChange = DateTime.Now.AddMilliseconds(250);
-                }
-            
+            return Math.Abs((Math.Abs(current) - Math.Abs(maximum)) / Math.Abs(maximum)) < 0.15;
         }
 
         private void InternalListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

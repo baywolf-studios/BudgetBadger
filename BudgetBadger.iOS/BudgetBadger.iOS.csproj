@@ -259,7 +259,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
       <Version>2.4.3.840</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.2.0.910310" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>1.1.12</Version>
