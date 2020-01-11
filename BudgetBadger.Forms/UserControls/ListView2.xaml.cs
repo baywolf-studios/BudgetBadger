@@ -202,7 +202,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
         {
-            var removeKeys = previousYs.Keys.Where(k => k < DateTime.Now.AddMilliseconds(-500)).ToList();
+            var removeKeys = previousYs.Keys.Where(k => k < DateTime.Now.AddMilliseconds(-750)).ToList();
             foreach(var removeKey in removeKeys)
             {
                 previousYs.Remove(removeKey);
@@ -233,7 +233,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             //check if it's close enough to the beginning
-            if (currentYAvg / maxY < 0.1)
+            if (currentYAvg / maxY < 0.5)
             {
                 atStart = true;
             }
