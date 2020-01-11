@@ -181,13 +181,13 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
-        private double previousY;
+        private double previousYAvg;
+        private Dictionary<DateTime, double> previousYs = new Dictionary<DateTime, double>();
         private double minY;
         private double maxY;
         private bool atStart = true;
         private bool atEnd;
         private bool scrollingToStart;
-        private DateTime lastScrollChange = DateTime.Now;
         private DateTime lastSearchBarChange = DateTime.Now;
 
         public ListView2()
@@ -202,6 +202,16 @@ namespace BudgetBadger.Forms.UserControls
 
         private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
         {
+            var removeKeys = previousYs.Keys.Where(k => k < DateTime.Now.AddMilliseconds(-500)).ToList();
+            foreach(var removeKey in removeKeys)
+            {
+                previousYs.Remove(removeKey);
+            }
+
+            previousYs.Add(DateTime.Now, e.ScrollY);
+
+            var currentYAvg = (previousYs.Sum(p => p.Value) / previousYs.Count);
+
             //set the maxY and minY to determine the start and end
             if (e.ScrollY > maxY)
             {
@@ -209,11 +219,11 @@ namespace BudgetBadger.Forms.UserControls
             }
             if (e.ScrollY < minY)
             {
-                minY = e.ScrollY;
+                minY = Math.Max(e.ScrollY, 0);
             }
 
             //check if it's close enough to the end
-            if (CloseTo(e.ScrollY, maxY))
+            if (currentYAvg / maxY > 0.9)
             {
                 atEnd = true;
             }
@@ -223,7 +233,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             //check if it's close enough to the beginning
-            if (CloseTo(minY, e.ScrollY))
+            if (currentYAvg / maxY < 0.1)
             {
                 atStart = true;
             }
@@ -233,7 +243,7 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             // determine if we're scrolling to the top
-            if (previousY > e.ScrollY)
+            if (previousYAvg > currentYAvg)
             {
                 scrollingToStart = true;
             }
@@ -241,7 +251,7 @@ namespace BudgetBadger.Forms.UserControls
             {
                 scrollingToStart = false;
             }
-            previousY = e.ScrollY;
+            previousYAvg = currentYAvg;
 
             var newSearchBarIsVisible = !atEnd && (atStart || scrollingToStart);
             var shouldChange = (SearchBar.IsVisible != newSearchBarIsVisible && lastSearchBarChange < DateTime.Now);
@@ -249,13 +259,8 @@ namespace BudgetBadger.Forms.UserControls
             if (shouldChange)
             {
                 SearchBar.IsVisible = newSearchBarIsVisible;
-                lastSearchBarChange = DateTime.Now.AddMilliseconds(250);
+                lastSearchBarChange = DateTime.Now.AddMilliseconds(500);
             }
-        }
-
-        private bool CloseTo(double current, double maximum)
-        {
-            return Math.Abs((Math.Abs(current) - Math.Abs(maximum)) / Math.Abs(maximum)) < 0.15;
         }
 
         private void InternalListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
