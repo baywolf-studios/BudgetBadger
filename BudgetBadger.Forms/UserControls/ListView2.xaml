@@ -6,7 +6,8 @@
     Orientation="Vertical">
     <ContentView x:Name="stickyHeader" IsVisible="false"/>
     <SearchBar x:Name="SearchBar"
-               Text="{Binding SearchText}"/>
+               Text="{Binding SearchText}"
+               IsVisible="True"/>
     <ListView x:Name="InternalListView"
               CachingStrategy="RetainElement"
               SelectedItem="{Binding SelectedItem}"

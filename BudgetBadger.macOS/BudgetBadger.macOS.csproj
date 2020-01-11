@@ -155,7 +155,7 @@
       <Version>2.4.3.840</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.2.0.910310</Version>
+      <Version>4.4.0.991477</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>1.1.12</Version>
@@ -188,6 +188,7 @@
     <Compile Include="Renderers\FontImageSourceHandler.cs" />
     <Compile Include="Renderers\FrameRenderer.cs" />
     <Compile Include="Renderers\MasterDetailRenderer.cs" />
+    <Compile Include="Renderers\ListViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

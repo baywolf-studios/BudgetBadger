@@ -69,8 +69,11 @@
                             Items="{Binding Accounts}"
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
-                            HasUnevenRows="False"
-                            IsSorted="True">
+                            HasUnevenRows="True"
+                            IsSorted="False">
+                            <uc:ListView2.Header>
+                                <SearchBar/>
+                            </uc:ListView2.Header>
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
                             </uc:ListView2.SortComparer>
