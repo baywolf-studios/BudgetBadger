@@ -70,7 +70,7 @@
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
                             HasUnevenRows="True"
-                            IsSorted="False">
+                            IsSorted="True">
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
                             </uc:ListView2.SortComparer>
