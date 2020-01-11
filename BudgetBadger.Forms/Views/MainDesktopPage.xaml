@@ -15,11 +15,11 @@
             <uc:ResponsiveGrid Style="{ext:DynamicResource Key=SideNavigationGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_400, Converter={StaticResource DoubleToGridLengthConverter}}" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_400, Converter={StaticResource DoubleToGridLengthConverter}}" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_400, Converter={StaticResource DoubleToGridLengthConverter}}" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_400, Converter={StaticResource DoubleToGridLengthConverter}}" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_400, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.ColumnSpan="12"

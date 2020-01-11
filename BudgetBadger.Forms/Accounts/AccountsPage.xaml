@@ -69,7 +69,7 @@
                             Items="{Binding Accounts}"
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
-                            HasUnevenRows="True"
+                            HasUnevenRows="False"
                             IsSorted="True">
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
@@ -88,6 +88,9 @@
                                         </ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
+                            <uc:ListView2.Footer>
+                                <BoxView  BackgroundColor="Red" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                            </uc:ListView2.Footer>
                         </uc:ListView2>
                         <!--<uc:ListView
                             AllowSwiping="true"

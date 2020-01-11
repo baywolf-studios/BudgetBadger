@@ -181,13 +181,100 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
+        private int lastItemAppearedIndex = -1;
+        private bool scrollingToStart = false;
+        private bool atBottom = false;
+        private bool atTop = true;
+        private DateTime nextSearchBarShowChange;
+
         public ListView2()
         {
             InitializeComponent();
-            SearchBox.BindingContext = this;
+            SearchBar.BindingContext = this;
             InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
             InternalListView.ItemSelected += InternalListView_ItemSelected;
+
+            InternalListView.ItemAppearing += InternalListView_ItemAppearing;
+            InternalListView.ItemDisappearing += InternalListView_ItemDisappearing;
+        }
+
+        private void InternalListView_ItemDisappearing(object sender, ItemVisibilityEventArgs e)
+        {
+            var test = e.Item;
+            var test2n = e.ItemIndex;
+        }
+
+        private void InternalListView_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+                var itemAppearing = e.Item;
+                var itemAppearingIndex = e.ItemIndex;
+
+                if (itemAppearingIndex < lastItemAppearedIndex)
+                {
+                    scrollingToStart = true;
+                }
+                else
+                {
+                    scrollingToStart = false;
+                }
+
+                lastItemAppearedIndex = itemAppearingIndex;
+
+                if (IsGrouped)
+                {
+                    var lastGroup = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).LastOrDefault();
+                    if (lastGroup != null && lastGroup is ObservableList<object> lastGroupList)
+                    {
+                        var lastItem = lastGroupList.LastOrDefault();
+                        if (itemAppearing == lastItem)
+                        {
+                            scrollingToStart = false;
+                            atTop = false;
+                            atBottom = true;
+                        }
+                    }
+
+                    var firstGroup = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault();
+                    if (firstGroup != null && firstGroup is ObservableList<object> firstGroupList)
+                    {
+                        var firstItem = firstGroupList.LastOrDefault();
+                        if (itemAppearing == firstItem)
+                        {
+                            scrollingToStart = false;
+                            atTop = true;
+                            atBottom = false;
+                        }
+                    }
+                }
+                else
+                {
+                    var lastItem = ((ObservableList<object>)InternalListView.ItemsSource).LastOrDefault();
+                    if (itemAppearing == lastItem)
+                    {
+                        scrollingToStart = false;
+                        atTop = false;
+                        atBottom = true;
+                    }
+
+                    var firstItem = ((ObservableList<object>)InternalListView.ItemsSource).FirstOrDefault();
+                    if (itemAppearing == firstItem)
+                    {
+                        scrollingToStart = false;
+                        atTop = true;
+                        atBottom = false;
+                    }
+                }
+
+                var newShowSearchBarValue = atTop || scrollingToStart;
+                var shouldChange = SearchBar.IsVisible != newShowSearchBarValue && nextSearchBarShowChange < DateTime.Now;
+
+                if (shouldChange)
+                {
+                    SearchBar.IsVisible = newShowSearchBarValue;
+                    nextSearchBarShowChange = DateTime.Now.AddMilliseconds(250);
+                }
+            
         }
 
         private void InternalListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -215,12 +302,13 @@ namespace BudgetBadger.Forms.UserControls
                         var headerView = (View)listView.HeaderTemplate.CreateContent();
                         headerView.BindingContext = listView.Header;
                         listView.stickyHeader.Content = headerView;
-                        listView.stickyHeader.IsVisible = true;
                     }
                     else
                     {
                         listView.stickyHeader.Content = (View)listView.Header;
                     }
+
+                    listView.stickyHeader.IsVisible = true;
                 }
                 else
                 {
@@ -245,12 +333,13 @@ namespace BudgetBadger.Forms.UserControls
                         var footerView = (View)listView.FooterTemplate.CreateContent();
                         footerView.BindingContext = listView.Footer;
                         listView.stickyFooter.Content = footerView;
-                        listView.stickyFooter.IsVisible = true;
                     }
                     else
                     {
                         listView.stickyFooter.Content = (View)listView.Footer;
                     }
+
+                    listView.stickyFooter.IsVisible = true;
                 }
                 else
                 {

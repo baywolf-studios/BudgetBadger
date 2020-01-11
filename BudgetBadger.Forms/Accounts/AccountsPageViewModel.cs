@@ -186,9 +186,13 @@ namespace BudgetBadger.Forms.Accounts
 
             if (Accounts.Any())
             {
-                var test = Accounts.Last().DeepCopy();
-                test.Description += "Test";
-                Accounts.Add(test);
+                for (int i = 0; i < 100; i++)
+                {
+                    var test = Accounts.First().DeepCopy();
+                    test.Description += i;
+                    Accounts.Add(test);
+                }
+                
                 IsBusy = false;
                 return;
             }
