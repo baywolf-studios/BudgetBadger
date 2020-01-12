@@ -6,6 +6,15 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class SelectableViewCell : ViewCell
     {
+        
+
+        public static BindableProperty SelectedBackgroundColorProperty = BindableProperty.Create(nameof(SelectedBackgroundColor), typeof(Color), typeof(SelectableViewCell), Color.Accent);
+        public Color SelectedBackgroundColor
+        {
+            get => (Color)GetValue(SelectedBackgroundColorProperty);
+            set => SetValue(SelectedBackgroundColorProperty, value);
+        }
+
         public SelectableViewCell()
         {
             InitializeComponent();
@@ -21,11 +30,11 @@ namespace BudgetBadger.Forms.UserControls
                     {
                         if (BindingContext == e.SelectedItem)
                         {
-                            View.BackgroundColor = Color.AliceBlue;
+                            View.BackgroundColor = SelectedBackgroundColor;
                         }
                         else
                         {
-                            View.BackgroundColor = Color.White;
+                            View.BackgroundColor = BackgroundColor;
                         }
                     };
                 }

@@ -78,14 +78,14 @@
                             </uc:ListView2.SortComparer>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
-                                    <dt:GroupHeaderViewCell Margin="-1" Padding="1" />
-                                        </ViewCell>
+                                    <uc:ViewCell>
+                                    <dt:GroupHeaderViewCell/>
+                                        </uc:ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>
                             <uc:ListView2.ItemTemplate>
                                 <DataTemplate>
-                                    <uc:SelectableViewCell>
+                                    <uc:SelectableViewCell BackgroundColor="Red" SelectedBackgroundColor="Blue">
                                     <dt:AccountViewCell/>
                                         </uc:SelectableViewCell>
                                 </DataTemplate>
