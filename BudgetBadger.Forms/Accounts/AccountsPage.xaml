@@ -71,6 +71,9 @@
                             GroupPropertyDescription="Group"
                             HasUnevenRows="True"
                             IsSorted="False"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            HideSearchBar="True"
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedAccount}">
                             <uc:ListView2.SortComparer>
@@ -79,7 +82,7 @@
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <uc:ViewCell>
-                                    <dt:GroupHeaderViewCell/>
+                                    <dt:GroupHeaderViewCell BackgroundColor="Green"/>
                                         </uc:ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>

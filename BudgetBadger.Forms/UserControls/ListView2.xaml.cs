@@ -146,7 +146,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SearchFilterProperty, value);
         }
 
-        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ListView2), propertyChanged: UpdateItems);
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ListView2), defaultBindingMode: BindingMode.TwoWay, propertyChanged: UpdateItems);
         public string SearchText
         {
             get => (string)GetValue(SearchTextProperty);
