@@ -73,7 +73,7 @@
                             IsSorted="False"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
-                            HideSearchBar="True"
+                            HideSearchBar="False"
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedAccount}">
                             <uc:ListView2.SortComparer>
