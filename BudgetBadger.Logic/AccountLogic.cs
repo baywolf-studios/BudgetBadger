@@ -463,6 +463,11 @@ namespace BudgetBadger.Logic
 
         public bool FilterAccount(Account account, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
+
             if (account != null)
             {
                 return account.Description.ToLower().Contains(searchText.ToLower());
