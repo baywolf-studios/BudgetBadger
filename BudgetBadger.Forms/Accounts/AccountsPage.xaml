@@ -81,8 +81,8 @@
                             </uc:ListView2.SortComparer>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <uc:ViewCell>
-                                    <dt:GroupHeaderViewCell BackgroundColor="Green"/>
+                                    <uc:ViewCell BackgroundColor="Green">
+                                    <dt:GroupHeaderViewCell />
                                         </uc:ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>

@@ -293,7 +293,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private static void UpdateHideSearchBar(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is ListView2 listView && oldValue != newValue)
+            if (bindable is ListView2 listView && listView.SearchBar.IsVisible != (bool)newValue)
             {
                 listView.SearchBar.IsVisible = (bool)newValue;
             }
