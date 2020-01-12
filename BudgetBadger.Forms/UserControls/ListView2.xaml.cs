@@ -188,6 +188,9 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
+        public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
+        public event EventHandler<ItemTappedEventArgs> ItemTapped;
+
         private double previousY;
         private double minY;
         private double maxY;
@@ -202,8 +205,34 @@ namespace BudgetBadger.Forms.UserControls
             SearchBar.BindingContext = this;
             InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
-            InternalListView.ItemSelected += InternalListView_ItemSelected;
+            InternalListView.ItemTapped += InternalListView_ItemTapped;
             InternalListView.Scrolled += InternalListView_Scrolled;
+        }
+
+        private void InternalListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            ItemTapped?.Invoke(this, new ItemTappedEventArgs(null, e.Item, -1));
+            
+            if (SelectionMode == ListViewSelectionMode.Single)
+            {
+                if (SelectedItem == e.Item)
+                {
+                    SelectedItem = null;
+                }
+                else
+                {
+                    SelectedItem = e.Item;
+                }
+
+
+                var selectedArgs = new SelectedItemChangedEventArgs(SelectedItem, -1);
+                ItemSelected?.Invoke(this, selectedArgs);
+
+                if (SelectedCommand != null && SelectedCommand.CanExecute(SelectedItem))
+                {
+                    SelectedCommand.Execute(e.Item);
+                }
+            }
         }
 
         private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
@@ -258,17 +287,6 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     SearchBar.IsVisible = newSearchBarIsVisible;
                     lastSearchBarChange = DateTime.Now.AddMilliseconds(250);
-                }
-            }
-        }
-
-        private void InternalListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (sender is ListView2)
-            {
-                if (SelectedCommand != null && SelectedCommand.CanExecute(e.SelectedItem))
-                {
-                    SelectedCommand.Execute(e.SelectedItem);
                 }
             }
         }
