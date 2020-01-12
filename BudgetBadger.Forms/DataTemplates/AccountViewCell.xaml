@@ -15,7 +15,7 @@
         Grid.Column="0"
         Margin="16,0,0,0"
         Style="{StaticResource Key=ListItemLabelStyle}"
-        Text="{Binding Description}" />
+        Text="{Binding Description}"/>
     <Label
         Grid.Column="1"
         Margin="0,0,16,0"

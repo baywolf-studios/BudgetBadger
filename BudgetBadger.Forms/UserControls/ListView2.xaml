@@ -11,12 +11,12 @@
     <ListView x:Name="InternalListView"
               CachingStrategy="RetainElement"
               SelectedItem="{Binding SelectedItem}"
-              SelectionMode="{Binding SelectionMode}"
               HasUnevenRows="{Binding HasUnevenRows}"
               RowHeight="{Binding RowHeight}"
               SeparatorVisibility="{Binding SeparatorVisibility}"
               SeparatorColor="{Binding SeparatorColor}"
               HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
-              VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"/>
+              VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"
+              SelectionMode="None"/>
     <ContentView x:Name="stickyFooter" IsVisible="false"/> 
 </StackLayout>

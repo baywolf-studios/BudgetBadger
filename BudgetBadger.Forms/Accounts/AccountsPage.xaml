@@ -70,22 +70,24 @@
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
                             HasUnevenRows="True"
-                            IsSorted="False">
+                            IsSorted="False"
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedAccount}">
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
                             </uc:ListView2.SortComparer>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                    <dt:GroupHeaderViewCell/>
+                                    <dt:GroupHeaderViewCell Margin="-1" Padding="1" />
                                         </ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>
                             <uc:ListView2.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
+                                    <uc:SelectableViewCell>
                                     <dt:AccountViewCell/>
-                                        </ViewCell>
+                                        </uc:SelectableViewCell>
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
                             <uc:ListView2.Footer>
