@@ -1,8 +1,6 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
 using BudgetBadger.iOS.Renderers;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Foundation;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
@@ -34,8 +32,6 @@ namespace BudgetBadger.iOS
             Syncfusion.SfDataGrid.XForms.iOS.SfDataGridRenderer.Init();
             Syncfusion.ListView.XForms.iOS.SfListViewRenderer.Init();
             Syncfusion.SfPullToRefresh.XForms.iOS.SfPullToRefreshRenderer.Init();
-            CachedImageRenderer.Init();
-            var ignore = typeof(SvgCachedImage);
             BorderedEditorRenderer.Initialize();
             CardRenderer.Initialize();
             Button2Renderer.Initialize();

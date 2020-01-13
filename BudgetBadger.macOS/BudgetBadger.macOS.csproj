@@ -145,15 +145,6 @@
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.4.5.880-pre</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading.Svg">
-      <Version>2.4.5.880-pre</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
-      <Version>2.4.3.840</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms">
       <Version>4.4.0.991477</Version>
     </PackageReference>
