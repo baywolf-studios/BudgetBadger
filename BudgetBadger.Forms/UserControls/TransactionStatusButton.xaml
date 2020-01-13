@@ -47,8 +47,8 @@
                             <FontImageSource
                                 Size="18"
                                 Color="{ext:DynamicResource Key=gray_1000}"
-                                FontFamily="{DynamicResource Key=IconFontFamily}"
-                                Glyph="{DynamicResource Key=LockIcon}"/>
+                                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                Glyph="{ext:DynamicResource Key=LockIcon}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>

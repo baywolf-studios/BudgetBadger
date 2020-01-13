@@ -3,6 +3,7 @@
     x:Class="BudgetBadger.Forms.Pages.RootSearchHeader"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="0"
@@ -50,7 +51,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
     <ContentView
@@ -96,7 +97,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="SearchIcon"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{StaticResource SearchIcon}"/>
     </uc:ContentButton>
 </Grid>

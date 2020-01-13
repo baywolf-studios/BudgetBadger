@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     BackgroundColor="{StaticResource AppBarColor}"
     ColumnSpacing="0"
@@ -25,7 +26,7 @@
         Margin="0"
         Text="{Binding PageTitle}"
         HorizontalOptions="Center"
-        Style="{DynamicResource PageTitleStyle}"/>
+        Style="{ext:DynamicResource PageTitleStyle}"/>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"
         Grid.Row="0"
@@ -34,7 +35,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
@@ -45,7 +46,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="PreviousIcon"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{StaticResource ArrowBackIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
@@ -56,7 +57,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="NextIcon"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{StaticResource ArrowForwardIcon}"/>
     </uc:ContentButton>
     <ContentView
@@ -102,7 +103,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Image BackgroundColor="Red" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" HorizontalOptions="Center">
             <Image.Source>
-                <FontImageSource  x:Name="SearchIcon" Size="24" Glyph="{DynamicResource Key=SearchIcon}" Color="White" FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                <FontImageSource  x:Name="SearchIcon" Size="24" Glyph="{ext:DynamicResource Key=SearchIcon}" Color="White" FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
             </Image.Source>
         </Image>
     </uc:ContentButton>

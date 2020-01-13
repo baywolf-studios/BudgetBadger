@@ -81,7 +81,7 @@
                 IsBusy="{Binding IsBusy, Mode=OneWay}">
                 <uc:EmptyState
                     Title="{ext:Translate EmptyReportsHelperTitle}"
-                    Icon="{ext:DynamicResource  ReportIcon}"
+                    Icon="{ext:DynamicResource ReportIcon}"
                     ShowHelper="{Binding NoResults}">
                     <microcharts:ChartView Chart="{Binding PayeeChart}" />
                 </uc:EmptyState>

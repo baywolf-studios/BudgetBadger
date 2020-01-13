@@ -2,6 +2,7 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     x:Class="BudgetBadger.Forms.UserControls.Accordion">
     <ContentView.Content>
         <StackLayout
@@ -24,9 +25,9 @@
                     <Image.Source>
                         <FontImageSource
                             Size="24"
-                            Glyph="{DynamicResource Key=ArrowDropRight}"
+                            Glyph="{ext:DynamicResource Key=ArrowDropRight}"
                             Color="{StaticResource IdleColor}"
-                            FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                            FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
                     </Image.Source>
                 </Image>
                 <ContentView

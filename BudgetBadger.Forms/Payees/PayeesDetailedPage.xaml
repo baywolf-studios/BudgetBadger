@@ -158,7 +158,7 @@
                                                 Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
                                                 <Label
-                                                    Style="{DynamicResource Key=DataTableColumnIconStyle}"
+                                                    Style="{ext:DynamicResource Key=DataTableColumnIconStyle}"
                                                     Text="{StaticResource ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
