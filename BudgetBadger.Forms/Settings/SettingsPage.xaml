@@ -178,7 +178,7 @@
                         <Image.Source>
                             <FontImageSource
                                 Size="24"
-                                Glyph="{DynamicResource Key=Lock Icon}"
+                                Glyph="{DynamicResource Key=LockIcon}"
                                 Color="{StaticResource PrimaryTextColor}"
                                 FontFamily="{DynamicResource Key=IconFontFamily}"/>
                         </Image.Source>
