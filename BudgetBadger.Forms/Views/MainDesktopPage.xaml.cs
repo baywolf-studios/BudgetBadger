@@ -26,8 +26,8 @@ namespace BudgetBadger.Forms.Views
             else
             {
                 EnvelopesFrame.BackgroundColor = EnvelopesFrame.ActiveBackgroundColor;
-                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
-                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
             if (pageName != "AccountsPage")
@@ -39,8 +39,8 @@ namespace BudgetBadger.Forms.Views
             else
             {
                 AccountsFrame.BackgroundColor = AccountsFrame.ActiveBackgroundColor;
-                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
-                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
             if (pageName != "PayeesPage")
@@ -52,8 +52,8 @@ namespace BudgetBadger.Forms.Views
             else
             {
                 PayeesFrame.BackgroundColor = PayeesFrame.ActiveBackgroundColor;
-                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
-                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
             if (pageName != "ReportsPage")
@@ -65,8 +65,8 @@ namespace BudgetBadger.Forms.Views
             else
             {
                 ReportsFrame.BackgroundColor = ReportsFrame.ActiveBackgroundColor;
-                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
-                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
             if (pageName != "SettingsPage")
@@ -78,8 +78,8 @@ namespace BudgetBadger.Forms.Views
             else
             {
                 SettingsFrame.BackgroundColor = SettingsFrame.ActiveBackgroundColor;
-                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_1000"];
-                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_1000"];
+                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
         }
 

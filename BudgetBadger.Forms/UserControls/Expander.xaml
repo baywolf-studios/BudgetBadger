@@ -14,15 +14,22 @@
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <svg:SvgCachedImage
+                <Image
                     x:Name="IconControl"
                     HeightRequest="24"
                     WidthRequest="24"
                     Grid.Column="0"
-                    ReplaceStringMap="{Binding Source={StaticResource IdleColor}, Converter={StaticResource ReplaceColorMap}}"
-                    Source="expander.svg"
+                    VerticalOptions="Center"
                     HorizontalOptions="Start"
-                    InputTransparent="true"/>
+                    InputTransparent="true">
+                    <Image.Source>
+                        <FontImageSource
+                            Size="24"
+                            Glyph="{DynamicResource Key=ArrowDropRight}"
+                            Color="{StaticResource IdleColor}"
+                            FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                    </Image.Source>
+                </Image>
                 <ContentView
                     x:Name="HeaderView"
                     Grid.Column="1"/>
