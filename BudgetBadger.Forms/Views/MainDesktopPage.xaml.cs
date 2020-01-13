@@ -6,7 +6,6 @@ using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.Style;
 using BudgetBadger.Forms.UserControls;
-using FFImageLoading.Svg.Forms;
 using Prism.Ioc;
 using Prism.Navigation;
 using Xamarin.Forms;

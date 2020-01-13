@@ -75,6 +75,7 @@ namespace BudgetBadger.Models
                 SetProperty(ref posted, value);
                 OnPropertyChanged(nameof(Pending));
                 OnPropertyChanged(nameof(Reconciled));
+                OnPropertyChanged(nameof(TransactionStatus));
             }
         }
 
@@ -90,10 +91,28 @@ namespace BudgetBadger.Models
                 OnPropertyChanged(nameof(Pending));
                 OnPropertyChanged(nameof(Posted));
                 OnPropertyChanged(nameof(Reconciled));
+                OnPropertyChanged(nameof(TransactionStatus));
             }
         }
 
         public bool Reconciled { get => ReconciledDateTime.HasValue; }
+
+        public TransactionStatus TransactionStatus
+        {
+            get
+            {
+                if (Reconciled)
+                {
+                    return TransactionStatus.Reconciled;
+                }
+                if (Posted)
+                {
+                    return TransactionStatus.Posted;
+                }
+
+                return TransactionStatus.Pending;
+            }
+        }
 
         Account account;
         public Account Account

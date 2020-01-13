@@ -25,7 +25,6 @@
     <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="17.1.0.41" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.41" />
     <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="17.1.0.41" />
-    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />

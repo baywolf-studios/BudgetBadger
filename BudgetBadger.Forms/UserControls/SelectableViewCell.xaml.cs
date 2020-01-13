@@ -6,8 +6,6 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class SelectableViewCell : ViewCell
     {
-        
-
         public static BindableProperty SelectedBackgroundColorProperty = BindableProperty.Create(nameof(SelectedBackgroundColor), typeof(Color), typeof(SelectableViewCell), Color.Accent);
         public Color SelectedBackgroundColor
         {

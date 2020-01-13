@@ -9,7 +9,6 @@
     xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
@@ -257,58 +256,9 @@
                                     MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <uc:ContentButton
-                                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"
-                                                Style="{StaticResource DataTableColumnStyle}">
-                                                <Frame HorizontalOptions="Center" VerticalOptions="Center" Padding="0" Margin="0" CornerRadius="9" HeightRequest="18" WidthRequest="18" HasShadow="False" BorderColor="Black" BackgroundColor="Transparent">
-                                                    <Image HeightRequest="14" WidthRequest="14" HorizontalOptions="Center" VerticalOptions="Center">
-                                                        <Image.Triggers>
-                                                            <MultiTrigger TargetType="Image">
-                                                                <MultiTrigger.Conditions>
-                                                                    <BindingCondition Binding="{Binding Posted}" Value="true" />
-                                                                    <BindingCondition Binding="{Binding Reconciled}" Value="false" />
-                                                                </MultiTrigger.Conditions>
-                                                                <Setter Property="Source">
-                                                                    <Setter.Value>
-                                                                        <FontImageSource
-                                                                            Size="14"
-                                                                            Color="Black"
-                                                                            Glyph="C"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </MultiTrigger>
-                                                            <DataTrigger
-                                                                Binding="{Binding Reconciled}"
-                                                                TargetType="Image"
-                                                                Value="true">
-                                                                <Setter Property="Source">
-                                                                    <Setter.Value>
-                                                                        <FontImageSource
-                                                                            Size="14"
-                                                                            Color="Black"
-                                                                            FontFamily="{DynamicResource Key=IconFontFamily}"
-                                                                            Glyph="{DynamicResource Key=LockIcon}"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                            <DataTrigger
-                                                                Binding="{Binding Pending}"
-                                                                TargetType="Image"
-                                                                Value="true">
-                                                                <Setter Property="Source">
-                                                                    <Setter.Value>
-                                                                        <FontImageSource
-                                                                            Size="14"
-                                                                            Color="Black"
-                                                                            Glyph="P"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                        </Image.Triggers>
-                                                    </Image>
-                                                </Frame>
-                                            </uc:ContentButton>
+                                            <uc:TransactionStatusButton
+                                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                                Transaction="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

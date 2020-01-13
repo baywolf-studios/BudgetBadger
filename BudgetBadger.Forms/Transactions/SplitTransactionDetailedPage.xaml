@@ -6,7 +6,6 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
@@ -254,40 +253,9 @@
                                     MappingName=".">
                                     <syncfusion:GridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <uc:ContentButton
-                                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"
-                                                Style="{StaticResource DataTableColumnStyle}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24">
-                                                    <svg:SvgCachedImage.Triggers>
-                                                        <MultiTrigger TargetType="svg:SvgCachedImage">
-                                                            <MultiTrigger.Conditions>
-                                                                <BindingCondition Binding="{Binding Posted}" Value="true" />
-                                                                <BindingCondition Binding="{Binding Reconciled}" Value="false" />
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter Property="Source" Value="posted.svg" />
-                                                        </MultiTrigger>
-                                                        <DataTrigger
-                                                            Binding="{Binding Reconciled}"
-                                                            TargetType="svg:SvgCachedImage"
-                                                            Value="true">
-                                                            <Setter Property="Source" Value="reconciled.svg" />
-                                                        </DataTrigger>
-                                                        <DataTrigger
-                                                            Binding="{Binding Pending}"
-                                                            TargetType="svg:SvgCachedImage"
-                                                            Value="true">
-                                                            <Setter Property="Source" Value="pending.svg" />
-                                                        </DataTrigger>
-                                                    </svg:SvgCachedImage.Triggers>
-                                                </svg:SvgCachedImage>
-                                            </uc:ContentButton>
+                                            <uc:TransactionStatusButton
+                                                ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                                Transaction="{Binding .}"/>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:BudgetBadger.Models;assembly=BudgetBadger.Models"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    x:Class="BudgetBadger.Forms.UserControls.TransactionStatusButton">
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer x:Name="ToggleGestureRecognizer" />
+    </ContentView.GestureRecognizers>
+    <Frame
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Padding="0"
+        Margin="0"
+        CornerRadius="12"
+        HeightRequest="24"
+        WidthRequest="24"
+        HasShadow="False"
+        BorderColor="Black"
+        BackgroundColor="Transparent">
+        <Image
+            HeightRequest="14"
+            WidthRequest="14"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+            <Image.Triggers>
+                <DataTrigger
+                    Binding="{Binding TransactionStatus}"
+                    TargetType="Image"
+                    Value="{x:Static model:TransactionStatus.Posted}">
+                    <Setter Property="Source">
+                        <Setter.Value>
+                            <FontImageSource
+                                Size="18"
+                                Color="{ext:DynamicResource Key=gray_1000}"
+                                Glyph="C"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding TransactionStatus}"
+                    TargetType="Image"
+                    Value="{x:Static model:TransactionStatus.Reconciled}">
+                    <Setter Property="Source">
+                        <Setter.Value>
+                            <FontImageSource
+                                Size="18"
+                                Color="{ext:DynamicResource Key=gray_1000}"
+                                FontFamily="{DynamicResource Key=IconFontFamily}"
+                                Glyph="{DynamicResource Key=LockIcon}"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding TransactionStatus}"
+                    TargetType="Image"
+                    Value="{x:Static model:TransactionStatus.Pending}">
+                    <Setter Property="Source">
+                        <Setter.Value>
+                            <FontImageSource
+                                Size="18"
+                                Color="{ext:DynamicResource Key=gray_1000}"
+                                Glyph="P"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Image.Triggers>
+        </Image>
+    </Frame>
+</ContentView>

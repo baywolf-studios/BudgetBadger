@@ -1,7 +1,5 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.UWP.Renderers;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using Prism;

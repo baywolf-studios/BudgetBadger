@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<uc:SelectableViewCell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedViewCell">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="56"/>
+        </Grid.ColumnDefinitions>
+    </Grid>
+</uc:SelectableViewCell>

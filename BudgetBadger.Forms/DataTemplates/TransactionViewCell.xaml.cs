@@ -81,7 +81,7 @@ namespace BudgetBadger.Forms.DataTemplates
         {
             if (newValue != oldValue)
             {
-                (bindable as TransactionViewCell).ToggleGestureRecognizer.Command = newValue as ICommand;
+                (bindable as TransactionViewCell).TransactionStatusButton.ToggleCommand = newValue as ICommand;
             }
         }
 
