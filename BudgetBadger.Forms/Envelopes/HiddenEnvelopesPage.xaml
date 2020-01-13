@@ -17,9 +17,9 @@
             SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyHiddenEnvelopesHelperTitle}"
-            Icon="{StaticResource EnvelopeIcon}"
+            Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}">
             <uc:PullToRefresh
                 Grid.Row="2"
@@ -62,6 +62,6 @@
                     </uc:ListView>
                 </uc:PullToRefresh.PullableContent>
             </uc:PullToRefresh>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

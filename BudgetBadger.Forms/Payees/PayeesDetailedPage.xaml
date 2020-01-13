@@ -19,9 +19,9 @@
             ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            Icon="{StaticResource PayeeIcon}"
+            Icon="{ext:DynamicResource  PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
@@ -215,6 +215,6 @@
                         VerticalOptions="Center" />
                 </Grid>
             </Grid>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BaseDetailedPage.Body>
 </p:BaseDetailedPage>

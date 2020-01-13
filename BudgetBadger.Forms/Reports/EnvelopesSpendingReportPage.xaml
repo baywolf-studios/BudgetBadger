@@ -23,15 +23,15 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0" IsExpanded="true">
-                <uc:Expander.IsVisible>
+            <uc:Accordion Grid.Row="0" IsExpanded="true">
+                <uc:Accordion.IsVisible>
                     <OnIdiom x:TypeArguments="x:Boolean">
                         <OnIdiom.Phone>true</OnIdiom.Phone>
                         <OnIdiom.Tablet>false</OnIdiom.Tablet>
                         <OnIdiom.Desktop>false</OnIdiom.Desktop>
                     </OnIdiom>
-                </uc:Expander.IsVisible>
-                <uc:Expander.HeaderContent>
+                </uc:Accordion.IsVisible>
+                <uc:Accordion.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Label
                             HorizontalOptions="Start"
@@ -39,8 +39,8 @@
                             Text="{ext:Translate FilterLabel}"
                             VerticalOptions="Center" />
                     </Grid>
-                </uc:Expander.HeaderContent>
-                <uc:Expander.BodyContent>
+                </uc:Accordion.HeaderContent>
+                <uc:Accordion.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -58,17 +58,17 @@
                             Date="{Binding EndDate}"
                             Label="{ext:Translate EndDateLabel}" />
                     </Grid>
-                </uc:Expander.BodyContent>
-            </uc:Expander>
+                </uc:Accordion.BodyContent>
+            </uc:Accordion>
             <BoxView
                 Grid.Row="1"
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate EmptyReportsHelperTitle}"
                 Grid.Row="2"
-                Icon="{StaticResource ReportIcon}"
+                Icon="{ext:DynamicResource  ReportIcon}"
                 ShowHelper="{Binding NoResults}">
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
@@ -123,7 +123,7 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <BoxView
                 Grid.Row="3"
                 Margin="0"

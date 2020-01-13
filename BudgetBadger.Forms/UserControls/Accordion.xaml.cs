@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class Expander : ContentView
+    public partial class Accordion : ContentView
     {
         uint _animationLength = 150;
 
@@ -17,11 +17,11 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty IsExpandedProperty =
             BindableProperty.Create(nameof(IsExpanded),
                                     typeof(bool),
-                                    typeof(Expander),
+                                    typeof(Accordion),
                                     defaultValue: false,
                                     propertyChanged: (bindable, oldVal, newVal) =>
                                     {
-                                        ((Expander)bindable).UpdateBodyVisibility((bool)newVal);
+                                        ((Accordion)bindable).UpdateBodyVisibility((bool)newVal);
                                     });
 
         public bool IsExpanded
@@ -56,7 +56,7 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
-        public Expander()
+        public Accordion()
         {
             InitializeComponent();
             IconControl.BindingContext = this;

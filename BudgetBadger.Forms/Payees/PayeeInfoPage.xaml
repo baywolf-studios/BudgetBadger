@@ -23,19 +23,19 @@
             Margin="0"
             ColumnSpacing="16"
             RowSpacing="0">
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
-                Icon="{StaticResource TransactionIcon}"
+                Icon="{ext:DynamicResource  TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
+                <uc:EmptyState.Triggers>
                     <DataTrigger
                         Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
+                        TargetType="uc:EmptyState"
                         Value="true">
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
-                </uc:HelperControl.Triggers>
+                </uc:EmptyState.Triggers>
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView
@@ -105,7 +105,7 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <uc:Button2
                 x:Name="NewTransactionButton"
                 Grid.Row="0"

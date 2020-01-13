@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class HelperControl : ContentView
+    public partial class EmptyState : ContentView
     {
         public static readonly BindableProperty ShowHelperProperty = BindableProperty.Create(
             nameof(ShowHelper),
@@ -54,7 +54,7 @@ namespace BudgetBadger.Forms.UserControls
             set { SetValue(IconProperty, value); }
         }
 
-        public HelperControl()
+        public EmptyState()
         {
             InitializeComponent();
         }

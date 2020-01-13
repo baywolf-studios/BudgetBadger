@@ -18,9 +18,9 @@
             ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            Icon="{StaticResource PayeeIcon}"
+            Icon="{ext:DynamicResource  PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
             <Grid
                 Margin="0"
@@ -107,6 +107,6 @@
                     Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="End" />
             </Grid>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

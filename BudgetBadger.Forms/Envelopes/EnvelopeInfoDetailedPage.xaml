@@ -30,19 +30,19 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="0"
-                Icon="{StaticResource TransactionIcon}"
+                Icon="{ext:DynamicResource  TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
+                <uc:EmptyState.Triggers>
                     <DataTrigger
                         Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
+                        TargetType="uc:EmptyState"
                         Value="true">
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
-                </uc:HelperControl.Triggers>
+                </uc:EmptyState.Triggers>
                 <uc:PullToRefresh
                     Margin="16,0"
                     IsBusy="{Binding IsBusy}"
@@ -280,7 +280,7 @@
                         </uc:DataGrid>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <BoxView
                 Grid.Row="1"
                 Margin="0"
