@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     x:Class="BudgetBadger.Forms.UserControls.EmptyState"
     x:Name="this">
     <ContentView.Resources>

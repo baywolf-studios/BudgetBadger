@@ -93,9 +93,9 @@
                                     <Image.Source>
                                         <FontImageSource
                                             Size="24"
-                                            Glyph="{DynamicResource Key=LockIcon}"
+                                            Glyph="{ext:DynamicResource Key=LockIcon}"
                                             Color="{StaticResource PrimaryTextColor}"
-                                            FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                                            FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
                                     </Image.Source>
                                     <Image.Triggers>
                                         <DataTrigger

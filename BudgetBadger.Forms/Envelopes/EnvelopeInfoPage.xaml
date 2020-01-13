@@ -152,8 +152,8 @@
                                                 <FontImageSource
                                                     Size="24"
                                                     Color="{StaticResource DataGridContextActionTextColor}"
-                                                    FontFamily="{DynamicResource Key=IconFontFamily}"
-                                                    Glyph="{DynamicResource Key=DeleteIcon}" />
+                                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                                    Glyph="{ext:DynamicResource Key=DeleteIcon}" />
                                             </Image.Source>
                                         </Image>
                                     </ContentView>

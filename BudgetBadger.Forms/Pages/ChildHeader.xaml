@@ -3,6 +3,7 @@
     x:Class="BudgetBadger.Forms.Pages.ChildHeader"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="0"
     RowSpacing="0">
@@ -19,7 +20,7 @@
         Grid.Row="0"
         Grid.Column="1"
         Text="{Binding PageTitle}"
-        Style="{DynamicResource PageTitleStyle}">
+        Style="{ext:DynamicResource PageTitleStyle}">
         <Label.Margin>
             <OnPlatform x:TypeArguments="Thickness">
                 <On Platform="Android" Value="16,0,0,0" />
@@ -45,7 +46,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="BackIcon"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{StaticResource ArrowBackIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
@@ -56,7 +57,7 @@
         Style="{StaticResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
-            Style="{DynamicResource Key=ToolbarIconStyle}"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
             Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
 </Grid>

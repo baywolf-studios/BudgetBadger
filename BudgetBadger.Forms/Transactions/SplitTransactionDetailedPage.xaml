@@ -57,8 +57,8 @@
                                                 <FontImageSource
                                                     Size="24"
                                                     Color="{StaticResource DataGridContextActionTextColor}"
-                                                    FontFamily="{DynamicResource Key=IconFontFamily}"
-                                                    Glyph="{DynamicResource Key=DeleteIcon}" />
+                                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                                    Glyph="{ext:DynamicResource Key=DeleteIcon}" />
                                             </Image.Source>
                                         </Image>
                                     </ContentView>
@@ -272,8 +272,8 @@
                                                 Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
                                                 CommandParameter="{Binding .}">
                                                 <Label
-                                                    Style="{DynamicResource Key=DataTableColumnIconStyle}"
-                                                    Text="{DynamicResource Key=ArrowForwardIcon}"/>
+                                                    Style="{ext:DynamicResource Key=DataTableColumnIconStyle}"
+                                                    Text="{ext:DynamicResource Key=ArrowForwardIcon}"/>
                                             </uc:ContentButton>
                                         </DataTemplate>
                                     </syncfusion:GridTemplateColumn.CellTemplate>
