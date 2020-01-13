@@ -31,19 +31,23 @@
             <Color x:Key="static_white">#ffffff</Color>
             <Color x:Key="static_black">#1d1f24</Color>
 
-            <Style x:Key="HelperControlIconStyle" TargetType="Label">
+            <Style x:Key="EmptyStateIconStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=size_900}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}"/>
             </Style>
 
-            <Style x:Key="HelperControlTitleStyle" TargetType="Label">
+            <Style x:Key="EmptyStateTitleStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=font_size_400}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
-            <Style x:Key="HelperControlSubtitleStyle" TargetType="Label">
+            <Style x:Key="EmptyStateSubtitleStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
             <Style x:Key="PageTitleStyle" TargetType="Label">

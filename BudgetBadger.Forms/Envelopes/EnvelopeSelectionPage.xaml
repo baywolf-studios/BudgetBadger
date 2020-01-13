@@ -19,9 +19,9 @@
             ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
-            Icon="{StaticResource EnvelopeIcon}"
+            Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
@@ -55,6 +55,6 @@
                     </uc:ListView>
                 </uc:PullToRefresh.PullableContent>
             </uc:PullToRefresh>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

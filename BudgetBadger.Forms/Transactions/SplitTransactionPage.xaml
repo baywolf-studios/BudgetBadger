@@ -26,16 +26,16 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0" IsExpanded="true">
-                <uc:Expander.Triggers>
+            <uc:Accordion Grid.Row="0" IsExpanded="true">
+                <uc:Accordion.Triggers>
                     <DataTrigger
                         Binding="{Binding NoTransactions}"
-                        TargetType="uc:Expander"
+                        TargetType="uc:Accordion"
                         Value="true">
                         <Setter Property="IsExpanded" Value="false" />
                     </DataTrigger>
-                </uc:Expander.Triggers>
-                <uc:Expander.HeaderContent>
+                </uc:Accordion.Triggers>
+                <uc:Accordion.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -54,8 +54,8 @@
                             Text="{Binding Total, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
-                </uc:Expander.HeaderContent>
-                <uc:Expander.BodyContent>
+                </uc:Accordion.HeaderContent>
+                <uc:Accordion.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -94,17 +94,17 @@
                             Text="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Start" />
                     </Grid>
-                </uc:Expander.BodyContent>
-            </uc:Expander>
+                </uc:Accordion.BodyContent>
+            </uc:Accordion>
             <BoxView
                 Grid.Row="1"
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
-                Icon="{StaticResource TransactionIcon}"
+                Icon="{ext:DynamicResource TransactionIcon}" 
                 ShowHelper="{Binding NoTransactions}">
                 <uc:ListView
                     AllowSwiping="true"
@@ -151,7 +151,7 @@
                         </DataTemplate>
                     </syncfusion:SfListView.FooterTemplate>
                 </uc:ListView>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <uc:Button2
                 x:Name="NewTransactionButton"
                 Grid.Row="2"

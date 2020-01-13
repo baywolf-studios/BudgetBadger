@@ -33,8 +33,8 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
-                <uc:Expander.HeaderContent>
+            <uc:Accordion Grid.Row="0" Grid.ColumnSpan="2">
+                <uc:Accordion.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -53,8 +53,8 @@
                             Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
-                </uc:Expander.HeaderContent>
-                <uc:Expander.BodyContent>
+                </uc:Accordion.HeaderContent>
+                <uc:Accordion.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -136,28 +136,28 @@
                             </Label.Triggers>
                         </Label>
                     </Grid>
-                </uc:Expander.BodyContent>
-            </uc:Expander>
+                </uc:Accordion.BodyContent>
+            </uc:Accordion>
             <BoxView
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
                 Margin="0"
                 BackgroundColor="{StaticResource DividerColor}"
                 HeightRequest="1" />
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Icon="{StaticResource TransactionIcon}"
+                Icon="{ext:DynamicResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
+                <uc:EmptyState.Triggers>
                     <DataTrigger
                         Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
+                        TargetType="uc:EmptyState"
                         Value="true">
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
-                </uc:HelperControl.Triggers>
+                </uc:EmptyState.Triggers>
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView
@@ -227,7 +227,7 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <uc:Button2
                 Grid.Row="2"
                 Grid.Column="0"

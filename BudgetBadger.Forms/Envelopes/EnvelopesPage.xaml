@@ -21,10 +21,10 @@
     </p:BasePage.Header>
 
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
             Grid.Row="2"
-            Icon="{StaticResource EnvelopeIcon}"
+            Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
             <Grid
@@ -36,8 +36,8 @@
                     <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <uc:Expander Grid.Row="0">
-                    <uc:Expander.HeaderContent>
+                <uc:Accordion Grid.Row="0">
+                    <uc:Accordion.HeaderContent>
                         <Grid ColumnSpacing="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -56,8 +56,8 @@
                                 Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
                                 VerticalOptions="Center" />
                         </Grid>
-                    </uc:Expander.HeaderContent>
-                    <uc:Expander.BodyContent>
+                    </uc:Accordion.HeaderContent>
+                    <uc:Accordion.BodyContent>
                         <Grid ColumnSpacing="16" RowSpacing="8">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -118,8 +118,8 @@
                                 Style="{StaticResource PageSubheaderLabelStyle}"
                                 Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}" />
                         </Grid>
-                    </uc:Expander.BodyContent>
-                </uc:Expander>
+                    </uc:Accordion.BodyContent>
+                </uc:Accordion>
                 <BoxView
                     Grid.Row="1"
                     Margin="0"
@@ -207,6 +207,6 @@
                     Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="End" />
             </Grid>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

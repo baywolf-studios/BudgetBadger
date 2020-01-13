@@ -17,9 +17,9 @@
             SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyHiddenAccountsHelperTitle}"
-            Icon="{StaticResource AccountIcon}"
+            Icon="{ext:DynamicResource  AccountIcon}"
             ShowHelper="{Binding NoAccounts}">
             <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                 <uc:PullToRefresh.PullableContent>
@@ -52,6 +52,6 @@
                     </uc:ListView>
                 </uc:PullToRefresh.PullableContent>
             </uc:PullToRefresh>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

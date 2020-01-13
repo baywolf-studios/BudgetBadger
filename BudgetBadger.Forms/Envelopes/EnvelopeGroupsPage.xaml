@@ -18,9 +18,9 @@
             ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeGroupHelperTitle}"
-            Icon="{StaticResource EnvelopeGroupIcon}"
+            Icon="{ext:DynamicResource  EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
             <Grid
                 Margin="0"
@@ -87,6 +87,6 @@
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
             </Grid>
-        </uc:HelperControl>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

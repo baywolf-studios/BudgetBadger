@@ -32,22 +32,22 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0" Grid.ColumnSpan="2">
-                <uc:Expander.Triggers>
+            <uc:Accordion Grid.Row="0" Grid.ColumnSpan="2">
+                <uc:Accordion.Triggers>
                     <DataTrigger
                         Binding="{Binding StatementMode}"
-                        TargetType="uc:Expander"
+                        TargetType="uc:Accordion"
                         Value="true">
                         <Setter Property="IsExpanded" Value="false" />
                     </DataTrigger>
                     <DataTrigger
                         Binding="{Binding ReconcileMode}"
-                        TargetType="uc:Expander"
+                        TargetType="uc:Accordion"
                         Value="true">
                         <Setter Property="IsExpanded" Value="true" />
                     </DataTrigger>
-                </uc:Expander.Triggers>
-                <uc:Expander.HeaderContent>
+                </uc:Accordion.Triggers>
+                <uc:Accordion.HeaderContent>
                     <Grid ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -66,8 +66,8 @@
                             Text="{Binding Difference, Converter={StaticResource CurrencyConverter}}"
                             VerticalOptions="Center" />
                     </Grid>
-                </uc:Expander.HeaderContent>
-                <uc:Expander.BodyContent>
+                </uc:Accordion.HeaderContent>
+                <uc:Accordion.BodyContent>
                     <Grid ColumnSpacing="16" RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -102,8 +102,8 @@
                             Style="{StaticResource PageSubheaderLabelStyle}"
                             Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}" />
                     </Grid>
-                </uc:Expander.BodyContent>
-            </uc:Expander>
+                </uc:Accordion.BodyContent>
+            </uc:Accordion>
             <BoxView
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
@@ -136,21 +136,21 @@
                         Number="{Binding StatementAmount}" />
                 </Grid>
             </ScrollView>
-            <uc:HelperControl
+            <uc:EmptyState
                 Title="{ext:Translate AccountReconcileEmptyTransactionsHelperTitle}"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Icon="{StaticResource LockIcon}"
+                Icon="{ext:DynamicResource  LockIcon}"
                 IsVisible="{Binding ReconcileMode}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
+                <uc:EmptyState.Triggers>
                     <DataTrigger
                         Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
+                        TargetType="uc:EmptyState"
                         Value="true">
                         <Setter Property="Margin" Value="0,0,0,56" />
                     </DataTrigger>
-                </uc:HelperControl.Triggers>
+                </uc:EmptyState.Triggers>
                 <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView
@@ -220,7 +220,7 @@
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-            </uc:HelperControl>
+            </uc:EmptyState>
             <Grid
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
