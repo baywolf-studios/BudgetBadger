@@ -86,22 +86,27 @@
                                 Orientation="Horizontal"
                                 Spacing="16"
                                 HeightRequest="48">
-                                <svg:SvgCachedImage
+                                <Image
                                     HeightRequest="24"
-                                    HorizontalOptions="End"
-                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                    Source="lock.svg"
+                                    WidthRequest="24"
                                     VerticalOptions="Center"
-                                    WidthRequest="24">
-                                    <svg:SvgCachedImage.Triggers>
+                                    HorizontalOptions="End">
+                                    <Image.Source>
+                                        <FontImageSource
+                                            Size="24"
+                                            Glyph="{DynamicResource Key=Lock Icon}"
+                                            Color="{StaticResource PrimaryTextColor}"
+                                            FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                                    </Image.Source>
+                                    <Image.Triggers>
                                         <DataTrigger
                                             Binding="{Binding Value}"
-                                            TargetType="svg:SvgCachedImage"
+                                            TargetType="Image"
                                             Value="true">
                                             <Setter Property="IsVisible" Value="false" />
                                         </DataTrigger>
-                                    </svg:SvgCachedImage.Triggers>
-                                </svg:SvgCachedImage>
+                                    </Image.Triggers>
+                                </Image>
                                 <Label Style="{StaticResource ListItemLabelStyle}" Text="{Binding Key}" />
                             </StackLayout>
                         </DataTemplate>

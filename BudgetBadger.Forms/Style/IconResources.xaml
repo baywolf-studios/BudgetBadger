@@ -47,6 +47,11 @@
         <On Platform="Android" Value="&#xf27d;" />
     </OnPlatform>
 
+    <OnPlatform x:Key="ArrowDropRightIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf114;" />
+        <On Platform="Android" Value="&#xf284;" />
+    </OnPlatform>
+
     <OnPlatform x:Key="ArrowForwardIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf3d1;" />
         <On Platform="Android" Value="&#xf287;" />
@@ -95,5 +100,10 @@
     <OnPlatform x:Key="EnvelopeGroupIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf435;" />
         <On Platform="Android" Value="&#xf2f5;" />
+    </OnPlatform>
+
+    <OnPlatform x:Key="DropBoxIcon" x:TypeArguments="x:String">
+        <On Platform="iOS, macOS" Value="&#xf234;" />
+        <On Platform="Android" Value="&#xf234;" />
     </OnPlatform>
 </ResourceDictionary>

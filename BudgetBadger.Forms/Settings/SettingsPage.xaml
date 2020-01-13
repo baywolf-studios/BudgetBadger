@@ -103,16 +103,21 @@
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate CloudSyncLabel}" />
-                    <svg:SvgCachedImage
+                    <Image
+                        HeightRequest="24"
+                        WidthRequest="24"
                         Grid.Row="4"
                         Grid.Column="0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="dropbox.svg"
                         VerticalOptions="Center"
-                        WidthRequest="24">
-                    </svg:SvgCachedImage>
+                        HorizontalOptions="End">
+                        <Image.Source>
+                            <FontImageSource
+                                Size="24"
+                                Glyph="{DynamicResource Key=DropBoxIcon}"
+                                Color="{StaticResource PrimaryTextColor}"
+                                FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                        </Image.Source>
+                    </Image>
                     <Grid
                         Grid.Row="4"
                         Grid.Column="1"
@@ -162,25 +167,30 @@
                             </Label.Triggers>
                         </Label>
                     </Grid>
-                    <svg:SvgCachedImage
+                    <Image
+                        HeightRequest="24"
+                        WidthRequest="24"
                         Grid.Row="4"
                         Grid.Column="2"
                         Margin="16,0"
-                        HeightRequest="24"
-                        HorizontalOptions="End"
-                        ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                        Source="lock.svg"
                         VerticalOptions="Center"
-                        WidthRequest="24">
-                        <svg:SvgCachedImage.Triggers>
+                        HorizontalOptions="End">
+                        <Image.Source>
+                            <FontImageSource
+                                Size="24"
+                                Glyph="{DynamicResource Key=Lock Icon}"
+                                Color="{StaticResource PrimaryTextColor}"
+                                FontFamily="{DynamicResource Key=IconFontFamily}"/>
+                        </Image.Source>
+                        <Image.Triggers>
                             <DataTrigger
                                 Binding="{Binding HasPro}"
-                                TargetType="svg:SvgCachedImage"
+                                TargetType="Image"
                                 Value="true">
                                 <Setter Property="IsVisible" Value="false" />
                             </DataTrigger>
-                        </svg:SvgCachedImage.Triggers>
-                    </svg:SvgCachedImage>
+                        </Image.Triggers>
+                    </Image>
                     <Switch
                         Grid.Row="4"
                         Grid.Column="2"
