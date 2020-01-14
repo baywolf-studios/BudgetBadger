@@ -2,9 +2,11 @@
 <uc:SelectableViewCell
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedViewCell">
-    <Grid>
+    <Grid
+        ColumnSpacing="32">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
@@ -12,5 +14,47 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="56"/>
         </Grid.ColumnDefinitions>
+        <uc:TextEntry
+            x:Name="DescriptionControl"
+            Grid.Column="0"
+            Text="{Binding Description}"
+            IsBorderless="True">
+            <uc:TextEntry.GestureRecognizers>
+                <TapGestureRecognizer Tapped="HandleTapped"/>
+            </uc:TextEntry.GestureRecognizers>
+            </uc:TextEntry>
+        <Label
+            Grid.Column="1"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{Binding Pending}"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Label
+            Grid.Column="2"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{Binding Posted}"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Label
+            Grid.Column="3"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+            HorizontalTextAlignment="End"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Image
+            Grid.Column="4"
+            HeightRequest="{ext:DynamicResource size_250}"
+            WidthRequest="{ext:DynamicResource size_250}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+            <Image.Source>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_250}"
+                    Color="{StaticResource DataGridContextActionTextColor}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=DeleteIcon}" />
+            </Image.Source>
+        </Image>
     </Grid>
 </uc:SelectableViewCell>
