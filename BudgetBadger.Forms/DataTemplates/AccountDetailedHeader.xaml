@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedHeader"
+    ColumnSpacing="32">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="56"/>
+        </Grid.ColumnDefinitions>
+        <Label
+            Grid.Column="0"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{ext:Translate AccountNameLabel}"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Label
+            Grid.Column="1"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{ext:Translate AccountPendingLabel}"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Label
+            Grid.Column="2"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{ext:Translate AccountPostedLabel}"
+            VerticalTextAlignment="Center">
+        </Label>
+        <Label
+            Grid.Column="3"
+            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
+            Text="{ext:Translate AccountBalanceLabel}"
+            HorizontalTextAlignment="End"
+            VerticalTextAlignment="Center">
+        </Label>
+</Grid>

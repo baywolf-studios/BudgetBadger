@@ -3,7 +3,8 @@
     x:Class="BudgetBadger.Forms.UserControls.TextEntry"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Orientation="Vertical">
+    Orientation="Vertical"
+    BackgroundColor="Blue">
     <StackLayout.Spacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
@@ -14,21 +15,19 @@
         x:Name="LabelControl"
         FontSize="12"
         Text="{Binding Label}"
-        TextColor="{StaticResource IdleColor}" />
+        TextColor="{StaticResource IdleColor}"
+        IsVisible="False"/>
     <Entry
         x:Name="TextControl"
+        BackgroundColor="Red"
         FontSize="16"
+        InputTransparent="{Binding IsReadOnly}"
+        VerticalOptions="CenterAndExpand"
+        IsEnabled="{Binding IsEnabled}"
+        IsReadOnly="{Binding IsReadOnly}"
         IsPassword="{Binding IsPassword}"
         Keyboard="{Binding Keyboard}"
-        Text="{Binding Text}"
         TextColor="{StaticResource PrimaryTextColor}">
-        <Entry.Keyboard>
-            <Keyboard x:FactoryMethod="Create">
-                <x:Arguments>
-                    <KeyboardFlags>Spellcheck,Suggestions,CapitalizeWord</KeyboardFlags>
-                </x:Arguments>
-            </Keyboard>
-        </Entry.Keyboard>
     </Entry>
     <Label
         x:Name="HintErrorControl"

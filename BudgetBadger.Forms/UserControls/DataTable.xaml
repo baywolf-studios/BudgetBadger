@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<uc:ListView2
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.UserControls.DataTable"
+    HideSearchBar="True">
+</uc:ListView2>

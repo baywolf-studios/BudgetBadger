@@ -456,6 +456,11 @@ namespace BudgetBadger.Forms.UserControls
                     filteredItems.AddRange(itemSource);
                 }
 
+                if (IsSorted)
+                {
+                    filteredItems.Sort(SortComparer);
+                }
+
                 //grouping
                 if (IsGrouped)
                 {
@@ -474,27 +479,17 @@ namespace BudgetBadger.Forms.UserControls
                         sourceGroupedItems[groupKey] = targetGroupToUpdate;
                     }
 
-                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(sourceGroupedItems.Values);
+                    var newItems = sourceGroupedItems.Values.ToList();
+                    if (IsSorted)
+                    {
+                        newItems.Sort(SortComparer);
+                    }
+
+                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(newItems);
                 }
                 else
                 {
                     ((ObservableList<object>)InternalListView.ItemsSource).ReplaceRange(filteredItems);
-                }
-
-                if (IsSorted)
-                {
-                    if (IsGrouped)
-                    {
-                        foreach(var group in ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource))
-                        {
-                            group.Sort(SortComparer);
-                        }
-                        ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Sort(SortComparer);
-                    }
-                    else
-                    {
-                        ((ObservableList<object>)InternalListView.ItemsSource).Sort(SortComparer);
-                    }
                 }
             }
         }

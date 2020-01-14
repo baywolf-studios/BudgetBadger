@@ -38,7 +38,39 @@
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
-                        <uc:DataGrid
+                        <uc:DataTable
+                            Items="{Binding Accounts}"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            SelectedItem="{Binding SelectedAccount}"
+                            SelectedCommand="{Binding SelectedCommand}"
+                            IsGrouped="True"
+                            GroupPropertyDescription="Group">
+                            <uc:DataTable.Header>
+                                    <dt:AccountDetailedHeader/>
+                            </uc:DataTable.Header>
+                            <uc:ListView2.GroupHeaderTemplate>
+                                <DataTemplate>
+                                    <uc:ViewCell BackgroundColor="Green">
+                                    <dt:GroupHeaderViewCell />
+                                        </uc:ViewCell>
+                                </DataTemplate>
+                            </uc:ListView2.GroupHeaderTemplate>
+                            <uc:DataTable.ItemTemplate>
+                                <DataTemplate>
+                                    <dt:AccountDetailedViewCell
+                                        SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}">
+                                        <dt:AccountDetailedViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate ReconcileAccountButton}"
+                                                Command="{Binding BindingContext.ReconcileCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </dt:AccountDetailedViewCell.ContextActions>
+                                    </dt:AccountDetailedViewCell>
+                                </DataTemplate>
+                            </uc:DataTable.ItemTemplate>
+                        </uc:DataTable>
+                        <!--<uc:DataGrid
                             AllowSwiping="True"
                             ColumnSizer="Star"
                             Filter="{Binding Filter}"
@@ -209,7 +241,7 @@
                                     </syncfusion:GridTemplateColumn.CellTemplate>
                                 </syncfusion:GridTemplateColumn>
                             </syncfusion:SfDataGrid.Columns>
-                        </uc:DataGrid>
+                        </uc:DataGrid>-->
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
                 <BoxView
