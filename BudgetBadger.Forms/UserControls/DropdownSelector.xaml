@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<StackLayout
-    x:Class="BudgetBadger.Forms.UserControls.DropdownSelector"
+<Grid
+    x:Class="BudgetBadger.Forms.UserControls.Dropdown"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Orientation="Vertical">
-    <StackLayout.Spacing>
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    InputTransparent="{Binding IsReadOnly}">
+    <Grid.RowSpacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
             <On Platform="Android" Value="0" />
         </OnPlatform>
-    </StackLayout.Spacing>
+    </Grid.RowSpacing>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.RowSpan="3"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+        Clicked="Handle_Clicked"/>
     <Label
         x:Name="LabelControl"
-        FontSize="12"
+        Grid.Row="0"
         Text="{Binding Label}"
-        TextColor="{StaticResource IdleColor}" />
+        IsVisible="False"
+        InputTransparent="True"/>
     <Picker
         x:Name="PickerControl"
-        FontSize="16"
-        ItemsSource="{Binding ItemsSource, Mode=TwoWay}"
-        SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-        TextColor="{StaticResource PrimaryTextColor}" />
-</StackLayout>
+        Grid.Row="1"
+        VerticalOptions="CenterAndExpand"
+        IsEnabled="{Binding IsEnabled}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"/>
+    <Label
+        x:Name="ReadOnlyPickerControl"
+        Grid.Row="1"
+        Text="{Binding SelectedItem, Source={x:Reference PickerControl}}"
+        VerticalOptions="CenterAndExpand"
+        IsVisible="{Binding IsReadOnly}">
+    </Label>
+    <Label
+        x:Name="HintErrorControl"
+        Grid.Row="2"
+        IsVisible="false"
+        InputTransparent="True"/>
+</Grid>

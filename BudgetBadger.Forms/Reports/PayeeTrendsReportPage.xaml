@@ -49,7 +49,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <uc:DropdownSelector
+                        <uc:Dropdown
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
@@ -116,7 +116,7 @@
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{ext:Translate FilterLabel}"
                     VerticalOptions="Center" />
-                <uc:DropdownSelector
+                <uc:Dropdown
                     Grid.Column="2"
                     ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding Payees}"
