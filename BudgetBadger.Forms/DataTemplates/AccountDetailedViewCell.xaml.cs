@@ -28,10 +28,5 @@ namespace BudgetBadger.Forms.DataTemplates
                 SaveCommand.Execute(BindingContext);
             }
         }
-
-        private void HandleTapped(object sender, EventArgs e)
-        {
-            DescriptionControl.Focus();
-        }
     }
 }
