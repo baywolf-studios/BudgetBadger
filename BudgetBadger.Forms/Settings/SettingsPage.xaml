@@ -224,7 +224,7 @@
                         Margin="16,12,16,0"
                         Style="{StaticResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate InternationalLabel}" />
-                    <uc:DropdownSelector
+                    <uc:Dropdown
                         Grid.Row="7"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
@@ -232,12 +232,12 @@
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding LanguageList}"
                         Label="{ext:Translate LanguageLabel}"
-                        SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}">
-                        <uc:DropdownSelector.Behaviors>
+                        SelectedItem="{Binding SelectedLanguage}">
+                        <uc:Dropdown.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}" EventName="SelectedIndexChanged" />
-                        </uc:DropdownSelector.Behaviors>
-                    </uc:DropdownSelector>
-                    <uc:DropdownSelector
+                        </uc:Dropdown.Behaviors>
+                    </uc:Dropdown>
+                    <uc:Dropdown
                         Grid.Row="8"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
@@ -245,11 +245,11 @@
                         ItemDisplayBinding="{Binding Key}"
                         ItemsSource="{Binding CurrencyFormatList}"
                         Label="{ext:Translate CurrencyLabel}"
-                        SelectedIndex="{Binding SelectedCurrencyFormatIndex, Mode=TwoWay}">
-                        <uc:DropdownSelector.Behaviors>
+                        SelectedItem="{Binding SelectedCurrencyFormat}">
+                        <uc:Dropdown.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
-                        </uc:DropdownSelector.Behaviors>
-                    </uc:DropdownSelector>
+                        </uc:Dropdown.Behaviors>
+                    </uc:Dropdown>
                     <Label
                         Grid.Row="9"
                         Grid.ColumnSpan="3"

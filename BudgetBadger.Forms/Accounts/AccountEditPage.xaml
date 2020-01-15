@@ -62,7 +62,7 @@
                             Margin="16,0"
                             Label="{ext:Translate AccountNameLabel}"
                             Text="{Binding Account.Description}" />
-                        <uc:DropdownSelector
+                        <uc:Dropdown
                             Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"

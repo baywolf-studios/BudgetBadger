@@ -58,7 +58,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public IList<string> AccountTypes
         {
-            get => Enum.GetNames(typeof(AccountType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
+            get => Enum.GetNames(typeof(AccountType)).Select(_resourceContainer.GetResourceString).ToList();
         }
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
