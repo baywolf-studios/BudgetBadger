@@ -43,7 +43,7 @@
 
             <Style x:Key="ControlDescriptionLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
             </Style>
 
             <Style x:Key="ControlDescriptionLabelCompactStyle" TargetType="Label">
@@ -53,7 +53,7 @@
 
             <Style x:Key="ControlHintLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
             </Style>
 
             <Style x:Key="ControlHintLabelCompactStyle" TargetType="Label">
@@ -63,7 +63,7 @@
 
             <Style x:Key="ControlErrorLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
             </Style>
 
             <Style x:Key="ControlErrorLabelCompactStyle" TargetType="Label">
