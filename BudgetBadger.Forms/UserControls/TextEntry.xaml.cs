@@ -6,11 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BudgetBadger.Forms.Animation;
 using BudgetBadger.Forms.Effects;
+using BudgetBadger.Forms.Style;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class TextEntry : StackLayout
+    public partial class TextEntry : Grid
     {
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
@@ -119,14 +120,32 @@ namespace BudgetBadger.Forms.UserControls
 
         public event EventHandler Completed;
 
-        public TextEntry()
+        private bool _compact;
+
+        public TextEntry() : this(false) { }
+
+        public TextEntry(bool compact)
         {
             InitializeComponent();
-            
+
+            if (compact)
+            {
+                TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryCompactStyle"];
+                LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelCompactStyle"];
+                HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+            }
+            else
+            {
+                TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryStyle"];
+                LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelStyle"];
+                HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
+            }
+
+            _compact = compact;
+
+            ButtonBackground.BindingContext = this;
             LabelControl.BindingContext = this;
             TextControl.BindingContext = this;
-
-            Focused += Focused2;
 
             TextControl.Focused += Control_Focused;
             TextControl.Unfocused += TextControl_Completed;
@@ -141,7 +160,7 @@ namespace BudgetBadger.Forms.UserControls
             };
         }
 
-        void Focused2(object sender, FocusEventArgs e)
+        void Handle_Clicked(object sender, EventArgs e)
         {
             if (!IsReadOnly && IsEnabled && !TextControl.IsFocused)
             {
@@ -174,13 +193,27 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     textEntry.HintErrorControl.IsVisible = true;
                     textEntry.HintErrorControl.Text = textEntry.Error;
-                    textEntry.HintErrorControl.TextColor = (Color)Application.Current.Resources["ErrorColor"];
+                    if (textEntry._compact)
+                    {
+                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                    }
+                    else
+                    {
+                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                    }
                 }
                 else if (!String.IsNullOrEmpty(textEntry.Hint))
                 {
                     textEntry.HintErrorControl.IsVisible = true;
                     textEntry.HintErrorControl.Text = textEntry.Hint;
-                    textEntry.HintErrorControl.TextColor = (Color)Application.Current.Resources["IdleColor"];
+                    if (textEntry._compact)
+                    {
+                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                    }
+                    else
+                    {
+                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                    }
                 }
                 else
                 {

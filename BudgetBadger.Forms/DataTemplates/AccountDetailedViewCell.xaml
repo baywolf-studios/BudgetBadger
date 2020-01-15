@@ -19,10 +19,7 @@
             Grid.Column="0"
             Text="{Binding Description}"
             IsBorderless="True">
-            <uc:TextEntry.GestureRecognizers>
-                <TapGestureRecognizer Tapped="HandleTapped"/>
-            </uc:TextEntry.GestureRecognizers>
-            </uc:TextEntry>
+        </uc:TextEntry>
         <Label
             Grid.Column="1"
             Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"

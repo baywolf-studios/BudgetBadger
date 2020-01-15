@@ -31,6 +31,55 @@
             <Color x:Key="static_white">#ffffff</Color>
             <Color x:Key="static_black">#1d1f24</Color>
 
+            <Style x:Key="ControlEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+            </Style>
+
+            <Style x:Key="ControlEntryCompactStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlDescriptionLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlDescriptionLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+            </Style>
+
+            <Style x:Key="ControlHintLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlHintLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+            </Style>
+
+            <Style x:Key="ControlErrorLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlErrorLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+            </Style>
+
+            <Style x:Key="HiddenButtonStyle" TargetType="uc:Button2">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="Transparent" />
+                <Setter Property="ActiveBackgroundColor" Value="Transparent" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_0}" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+
             <Style x:Key="EmptyStateIconStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{DynamicResource Key=size_900}" />
                 <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
