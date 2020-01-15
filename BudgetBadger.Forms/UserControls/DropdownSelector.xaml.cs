@@ -69,8 +69,6 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (bindable is Dropdown dropdown)
             {
-                dropdown.changingItemsSource = true;
-
                 var items = dropdown.PickerControl.ItemsSource as ObservableList<object>;
 
                 var currentSelectedItem = dropdown.SelectedItem;
@@ -85,7 +83,6 @@ namespace BudgetBadger.Forms.UserControls
                 }
 
                 dropdown.PickerControl.SelectedItem = currentSelectedItem;
-                dropdown.changingItemsSource = false;
             }
         });
         public IList ItemsSource
@@ -172,7 +169,6 @@ namespace BudgetBadger.Forms.UserControls
         public event EventHandler<EventArgs> SelectedIndexChanged;
 
         private bool _compact;
-        public bool changingItemsSource;
 
         public Dropdown() : this(false) { }
 
@@ -223,19 +219,10 @@ namespace BudgetBadger.Forms.UserControls
 
         void PickerControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectedIndex != PickerControl.SelectedIndex && !changingItemsSource)
+            if (SelectedIndex != PickerControl.SelectedIndex)
             {
-                if (changingItemsSource)
-                {
-                    PickerControl.SelectedIndex = SelectedIndex;
-                    PickerControl.SelectedItem = SelectedItem;
-                }
-                else
-                {
-                    SelectedIndex = PickerControl.SelectedIndex;
-                    SelectedItem = PickerControl.SelectedItem;
-                }
-                
+                SelectedIndex = PickerControl.SelectedIndex;
+                SelectedItem = PickerControl.SelectedItem;
                 SelectedIndexChanged?.Invoke(this, e);
             }
         }
