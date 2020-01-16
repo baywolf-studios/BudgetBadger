@@ -54,4 +54,12 @@
     <Compile Remove="UserControls\ChildPage.xaml.cs" />
     <Compile Remove="Style\IconResources %28copy%29.xaml.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\DropdownSelector.xaml.cs">
+      <DependentUpon>Dropdown.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\Dropdown.xaml.cs">
+      <DependentUpon>Dropdown.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

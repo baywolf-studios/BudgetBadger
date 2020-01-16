@@ -146,37 +146,9 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public static BindableProperty IsBorderlessProperty =
-            BindableProperty.Create(nameof(IsBorderless),
-                typeof(bool),
-                typeof(TextEntry),
-                propertyChanged: (bindable, oldVal, newVal) =>
-                {
-                    if (bindable is Dropdown dropdown && oldVal != newVal)
-                    {
-                        if ((bool)newVal)
-                        {
-                            dropdown.PickerControl.Effects.Add(new BorderlessPickerEffect());
-                        }
-                        else
-                        {
-                            var toRemove = dropdown.PickerControl.Effects.FirstOrDefault(e => e is BorderlessPickerEffect);
-                            if (toRemove != null)
-                            {
-                                dropdown.PickerControl.Effects.Remove(toRemove);
-                            }
-                        }
-                    }
-                });
-        public bool IsBorderless
-        {
-            get => (bool)GetValue(IsBorderlessProperty);
-            set => SetValue(IsBorderlessProperty, value);
-        }
-
         public event EventHandler<EventArgs> SelectedIndexChanged;
 
-        private bool _compact;
+        private readonly bool _compact;
 
         public Dropdown() : this(false) { }
 

@@ -91,37 +91,9 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public static BindableProperty IsBorderlessProperty =
-            BindableProperty.Create(nameof(IsBorderless),
-                typeof(bool),
-                typeof(TextEntry),
-                propertyChanged: (bindable, oldVal, newVal) =>
-                {
-                    if (bindable is TextEntry textEntry && oldVal != newVal)
-                    {
-                        if ((bool)newVal)
-                        {
-                            textEntry.TextControl.Effects.Add(new BorderlessEntryEffect());
-                        }
-                        else
-                        {
-                            var toRemove = textEntry.TextControl.Effects.FirstOrDefault(e => e is BorderlessEntryEffect);
-                            if (toRemove != null)
-                            {
-                                textEntry.TextControl.Effects.Remove(toRemove);
-                            }
-                        }
-                    }
-                });
-        public bool IsBorderless
-        {
-            get => (bool)GetValue(IsBorderlessProperty);
-            set => SetValue(IsBorderlessProperty, value);
-        }
-
         public event EventHandler Completed;
 
-        private bool _compact;
+        private readonly bool _compact;
 
         public TextEntry() : this(false) { }
 

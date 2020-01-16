@@ -182,6 +182,7 @@
     <Compile Include="Renderers\ListViewRenderer.cs" />
     <Compile Include="Renderers\EntryRenderer.cs" />
     <Compile Include="Renderers\EditorRenderer.cs" />
+    <Compile Include="Renderers\DatePickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
