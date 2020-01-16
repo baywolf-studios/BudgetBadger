@@ -20,12 +20,9 @@
             Text="{Binding Description}"
             IsReadOnly="True">
         </uc:TextEntry>
-        <Label
-            Grid.Column="1"
-            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
-            Text="{Binding Pending}"
-            VerticalTextAlignment="Center">
-        </Label>
+        <uc:DateSelector
+            Grid.Column="1">
+        </uc:DateSelector>
         <Label
             Grid.Column="2"
             Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
