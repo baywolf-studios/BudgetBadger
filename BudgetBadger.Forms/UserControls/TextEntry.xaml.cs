@@ -47,6 +47,7 @@ namespace BudgetBadger.Forms.UserControls
                     if (bindable is TextEntry textEntry && oldVal != newVal)
                     {
                         textEntry.TextControl.Text = (string)newVal;
+                        textEntry.ReadOnlyTextControl.Text = (string)newVal;
                     }
                 });
         public string Text
@@ -131,12 +132,14 @@ namespace BudgetBadger.Forms.UserControls
             if (compact)
             {
                 TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryCompactStyle"];
+                ReadOnlyTextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelCompactStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelCompactStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
             }
             else
             {
                 TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryStyle"];
+                ReadOnlyTextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
             }
@@ -146,6 +149,7 @@ namespace BudgetBadger.Forms.UserControls
             ButtonBackground.BindingContext = this;
             LabelControl.BindingContext = this;
             TextControl.BindingContext = this;
+            ReadOnlyTextControl.BindingContext = this;
 
             TextControl.Focused += Control_Focused;
             TextControl.Unfocused += TextControl_Completed;

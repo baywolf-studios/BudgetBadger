@@ -18,7 +18,7 @@
             x:Name="DescriptionControl"
             Grid.Column="0"
             Text="{Binding Description}"
-            IsBorderless="True">
+            IsReadOnly="False">
         </uc:TextEntry>
         <Label
             Grid.Column="1"
@@ -48,10 +48,15 @@
             <Image.Source>
                 <FontImageSource
                     Size="{ext:DynamicResource size_250}"
-                    Color="{StaticResource DataGridContextActionTextColor}"
+                    Color="{ext:DynamicResource gray_900}"
                     FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                    Glyph="{ext:DynamicResource Key=DeleteIcon}" />
+                    Glyph="{ext:DynamicResource Key=EditIcon}" />
             </Image.Source>
         </Image>
+        <Button
+            x:Name="EditButton"
+            Grid.Column="4"
+            Clicked="Handle_Clicked">
+        </Button>
     </Grid>
 </uc:SelectableViewCell>

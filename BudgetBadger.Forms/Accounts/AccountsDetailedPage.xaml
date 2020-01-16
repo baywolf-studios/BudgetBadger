@@ -39,6 +39,7 @@
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:DataTable
+                            BackgroundColor="Green"
                             Items="{Binding Accounts}"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
@@ -51,7 +52,7 @@
                             </uc:DataTable.Header>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <uc:ViewCell BackgroundColor="Green">
+                                    <uc:ViewCell>
                                     <dt:GroupHeaderViewCell />
                                         </uc:ViewCell>
                                 </DataTemplate>
@@ -59,6 +60,8 @@
                             <uc:DataTable.ItemTemplate>
                                 <DataTemplate>
                                     <dt:AccountDetailedViewCell
+                                        BackgroundColor="White"
+                                        SelectedBackgroundColor="AliceBlue"
                                         SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}">
                                         <dt:AccountDetailedViewCell.ContextActions>
                                             <MenuItem
