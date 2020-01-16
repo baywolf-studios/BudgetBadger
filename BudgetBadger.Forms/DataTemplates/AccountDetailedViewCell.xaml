@@ -18,7 +18,7 @@
             x:Name="DescriptionControl"
             Grid.Column="0"
             Text="{Binding Description}"
-            IsReadOnly="False">
+            IsReadOnly="True">
         </uc:TextEntry>
         <Label
             Grid.Column="1"
@@ -39,24 +39,20 @@
             HorizontalTextAlignment="End"
             VerticalTextAlignment="Center">
         </Label>
-        <Image
-            Grid.Column="4"
-            HeightRequest="{ext:DynamicResource size_250}"
-            WidthRequest="{ext:DynamicResource size_250}"
-            HorizontalOptions="Center"
-            VerticalOptions="Center">
-            <Image.Source>
-                <FontImageSource
-                    Size="{ext:DynamicResource size_250}"
-                    Color="{ext:DynamicResource gray_900}"
-                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                    Glyph="{ext:DynamicResource Key=EditIcon}" />
-            </Image.Source>
-        </Image>
-        <Button
+        <uc:Button2
             x:Name="EditButton"
             Grid.Column="4"
+            Style="{ext:DynamicResource HiddenButtonStyle}"
+            HeightRequest="40"
             Clicked="Handle_Clicked">
-        </Button>
+            <uc:Button2.ImageSource>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_250}"
+                    Color="{ext:DynamicResource brand_600}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=EditIcon}" />
+                </uc:Button2.ImageSource>
+        </uc:Button2>
+        
     </Grid>
 </uc:SelectableViewCell>
