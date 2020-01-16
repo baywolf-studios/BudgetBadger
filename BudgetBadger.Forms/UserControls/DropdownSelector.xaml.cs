@@ -96,6 +96,14 @@ namespace BudgetBadger.Forms.UserControls
             if (bindable is Dropdown dropdown)
             {
                 dropdown.PickerControl.SelectedIndex = (int)newVal;
+                if ((int)newVal >= 0 && dropdown.PickerControl.Items.Count > (int)newVal)
+                {
+                    dropdown.ReadOnlyPickerControl.Text = dropdown.PickerControl.Items[(int)newVal];
+                }
+                else
+                {
+                    dropdown.ReadOnlyPickerControl.Text = string.Empty;      
+                }
             }
         });
         public int SelectedIndex
@@ -192,6 +200,8 @@ namespace BudgetBadger.Forms.UserControls
             }
 
             PickerControl.ItemsSource = new ObservableList<object>();
+
+            ButtonBackground.BindingContext = this;
             LabelControl.BindingContext = this;
             PickerControl.BindingContext = this;
             ReadOnlyPickerControl.BindingContext = this;

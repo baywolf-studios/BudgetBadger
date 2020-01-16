@@ -15,18 +15,22 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SaveCommandProperty, value);
         }
 
+        public static BindableProperty RefreshItemCommandProperty = BindableProperty.Create(nameof(RefreshItemCommand), typeof(ICommand), typeof(TextColumn));
+        public ICommand RefreshItemCommand
+        {
+            get => (ICommand)GetValue(RefreshItemCommandProperty);
+            set => SetValue(RefreshItemCommandProperty, value);
+        }
+
         public AccountDetailedViewCell()
         {
             InitializeComponent();
-            DescriptionControl.Completed += DescriptionControl_Completed;
         }
 
-        private void DescriptionControl_Completed(object sender, EventArgs e)
+        void Handle_Clicked(object sender, EventArgs e)
         {
-            if (SaveCommand != null && SaveCommand.CanExecute(BindingContext))
-            {
-                SaveCommand.Execute(BindingContext);
-            }
+            DescriptionControl.IsReadOnly = !DescriptionControl.IsReadOnly;
+
         }
     }
 }

@@ -180,6 +180,8 @@
     <Compile Include="Renderers\FrameRenderer.cs" />
     <Compile Include="Renderers\MasterDetailRenderer.cs" />
     <Compile Include="Renderers\ListViewRenderer.cs" />
+    <Compile Include="Renderers\EntryRenderer.cs" />
+    <Compile Include="Renderers\EditorRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

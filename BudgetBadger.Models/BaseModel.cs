@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace BudgetBadger.Models
 {
-    public class BaseModel : INotifyPropertyChanged
+    public class BaseModel : INotifyPropertyChanged, IChangeTracking
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,5 +28,9 @@ namespace BudgetBadger.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        
+        public bool IsChanged { get; set; }
+
+        public void AcceptChanges() => IsChanged = false;
     }
 }

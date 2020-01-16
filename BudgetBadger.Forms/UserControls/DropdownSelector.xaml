@@ -38,7 +38,6 @@
     <Label
         x:Name="ReadOnlyPickerControl"
         Grid.Row="1"
-        Text="{Binding SelectedItem, Source={x:Reference PickerControl}}"
         VerticalOptions="CenterAndExpand"
         IsVisible="{Binding IsReadOnly}">
     </Label>
