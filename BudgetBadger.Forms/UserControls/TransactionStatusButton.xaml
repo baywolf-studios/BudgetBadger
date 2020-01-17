@@ -75,7 +75,7 @@
                             <FontImageSource
                                 x:Name="ClearedImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_900}"
+                                Color="{ext:DynamicResource Key=blue_600}"
                                 Glyph="C"/>
                         </Setter.Value>
                     </Setter>
@@ -89,7 +89,7 @@
                             <FontImageSource
                                 x:Name="ReconciledImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_900}"
+                                Color="{ext:DynamicResource Key=blue_600}"
                                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                                 Glyph="{ext:DynamicResource Key=LockIcon}"/>
                         </Setter.Value>
@@ -104,7 +104,7 @@
                             <FontImageSource
                                 x:Name="PendingImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_900}"
+                                Color="{ext:DynamicResource Key=gray_600}"
                                 Glyph="P"/>
                         </Setter.Value>
                     </Setter>
