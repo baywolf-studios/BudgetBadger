@@ -35,8 +35,7 @@
         AutoSize="TextChanges"
         IsEnabled="{Binding IsEnabled}"
         Keyboard="{Binding Keyboard}"
-        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
-        VerticalOptions="CenterAndExpand">
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
     </Editor>
     <Label
         x:Name="ReadOnlyTextControl"

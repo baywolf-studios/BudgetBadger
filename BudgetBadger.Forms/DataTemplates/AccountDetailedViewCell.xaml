@@ -21,7 +21,9 @@
             IsReadOnly="True">
         </uc:TextEntry>
         <uc:DateSelector
-            Grid.Column="1">
+            Grid.Column="1"
+            IsReadOnly="True"
+            UseTextField="True">
         </uc:DateSelector>
         <Label
             Grid.Column="2"
