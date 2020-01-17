@@ -17,7 +17,7 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
                 typeof(string),
-                typeof(TextEntry),
+                typeof(TextField),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
                     if (bindable is Dropdown dropdown && oldVal != newVal)
@@ -38,14 +38,14 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(LabelProperty, value);
         }
 
-        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextField), propertyChanged: UpdateErrorAndHint);
         public string Hint
         {
             get => (string)GetValue(HintProperty);
             set => SetValue(HintProperty, value);
         }
 
-        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextField), propertyChanged: UpdateErrorAndHint);
         public string Error
         {
             get => (string)GetValue(ErrorProperty);
@@ -102,7 +102,7 @@ namespace BudgetBadger.Forms.UserControls
                 }
                 else
                 {
-                    dropdown.ReadOnlyPickerControl.Text = string.Empty;      
+                    dropdown.ReadOnlyPickerControl.Text = string.Empty;
                 }
             }
         });

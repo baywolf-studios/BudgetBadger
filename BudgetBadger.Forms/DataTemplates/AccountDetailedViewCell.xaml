@@ -14,11 +14,11 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="56"/>
         </Grid.ColumnDefinitions>
-        <uc:MultilineTextEntry
+        <uc:TextField
             x:Name="DescriptionControl"
             Grid.Column="0"
             Text="{Binding Description}">
-        </uc:MultilineTextEntry>
+        </uc:TextField>
         <uc:Dropdown
             x:Name="Picker"
             Grid.Column="1">

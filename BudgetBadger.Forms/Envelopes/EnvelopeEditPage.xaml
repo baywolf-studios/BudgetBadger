@@ -141,7 +141,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="0" />
                         </Grid.RowDefinitions>
-                        <uc:TextEntry
+                        <uc:TextField
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
@@ -172,7 +172,7 @@
                             ItemsSource="{Binding OverspendingTypes}"
                             Label="{ext:Translate EnvelopeOverspendingLabel}"
                             SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnumConverter}}" />
-                        <uc:MultilineTextEntry
+                        <uc:MultilineTextField
                             Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"

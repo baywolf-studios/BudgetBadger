@@ -11,23 +11,23 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class TextEntry : Grid
+    public partial class MultilineTextField : Grid
     {
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
                 typeof(string),
-                typeof(TextEntry),
+                typeof(MultilineTextField),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is TextEntry textEntry && oldVal != newVal)
+                    if (bindable is MultilineTextField multilineTextField && oldVal != newVal)
                     {
                         if (string.IsNullOrEmpty((string)newVal))
                         {
-                            textEntry.LabelControl.IsVisible = false;
+                            multilineTextField.LabelControl.IsVisible = false;
                         }
                         else
                         {
-                            textEntry.LabelControl.IsVisible = true;
+                            multilineTextField.LabelControl.IsVisible = true;
                         }
                     }
                 });
@@ -40,14 +40,14 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty TextProperty =
             BindableProperty.Create(nameof(Text),
                 typeof(string),
-                typeof(TextEntry),
+                typeof(MultilineTextField),
                 defaultBindingMode: BindingMode.TwoWay,
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is TextEntry textEntry && oldVal != newVal)
+                    if (bindable is MultilineTextField multilineTextField && oldVal != newVal)
                     {
-                        textEntry.TextControl.Text = (string)newVal;
-                        textEntry.ReadOnlyTextControl.Text = (string)newVal;
+                        multilineTextField.TextControl.Text = (string)newVal;
+                        multilineTextField.ReadOnlyTextControl.Text = (string)newVal;
                     }
                 });
         public string Text
@@ -56,35 +56,35 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(MultilineTextField), propertyChanged: UpdateErrorAndHint);
         public string Hint
         {
             get => (string)GetValue(HintProperty);
             set => SetValue(HintProperty, value);
         }
 
-        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(MultilineTextField), propertyChanged: UpdateErrorAndHint);
         public string Error
         {
             get => (string)GetValue(ErrorProperty);
             set => SetValue(ErrorProperty, value);
         }
 
-        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(TextEntry));
+        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(MultilineTextField));
         public bool IsPassword
         {
             get => (bool)GetValue(IsPasswordProperty);
             set => SetValue(IsPasswordProperty, value);
         }
 
-        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(TextEntry));
+        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextField));
         public Keyboard Keyboard
         {
             get => (Keyboard)GetValue(KeyboardProperty);
             set => SetValue(KeyboardProperty, value);
         }
 
-        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TextEntry));
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(MultilineTextField));
         public bool IsReadOnly
         {
             get => (bool)GetValue(IsReadOnlyProperty);
@@ -95,9 +95,9 @@ namespace BudgetBadger.Forms.UserControls
 
         private readonly bool _compact;
 
-        public TextEntry() : this(false) { }
+        public MultilineTextField() : this(false) { }
 
-        public TextEntry(bool compact)
+        public MultilineTextField(bool compact)
         {
             InitializeComponent();
 
@@ -163,37 +163,37 @@ namespace BudgetBadger.Forms.UserControls
 
         static void UpdateErrorAndHint(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is TextEntry textEntry && oldValue != newValue)
+            if (bindable is MultilineTextField multilineTextField && oldValue != newValue)
             {
-                if (!String.IsNullOrEmpty(textEntry.Error))
+                if (!String.IsNullOrEmpty(multilineTextField.Error))
                 {
-                    textEntry.HintErrorControl.IsVisible = true;
-                    textEntry.HintErrorControl.Text = textEntry.Error;
-                    if (textEntry._compact)
+                    multilineTextField.HintErrorControl.IsVisible = true;
+                    multilineTextField.HintErrorControl.Text = multilineTextField.Error;
+                    if (multilineTextField._compact)
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        multilineTextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                     else
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        multilineTextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                 }
-                else if (!String.IsNullOrEmpty(textEntry.Hint))
+                else if (!String.IsNullOrEmpty(multilineTextField.Hint))
                 {
-                    textEntry.HintErrorControl.IsVisible = true;
-                    textEntry.HintErrorControl.Text = textEntry.Hint;
-                    if (textEntry._compact)
+                    multilineTextField.HintErrorControl.IsVisible = true;
+                    multilineTextField.HintErrorControl.Text = multilineTextField.Hint;
+                    if (multilineTextField._compact)
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        multilineTextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                     else
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        multilineTextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                 }
                 else
                 {
-                    textEntry.HintErrorControl.IsVisible = false;
+                    multilineTextField.HintErrorControl.IsVisible = false;
                 }
             }
         }

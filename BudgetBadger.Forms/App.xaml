@@ -25,11 +25,46 @@
             <converters:ShortDateConverter x:Key="ShortDateConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:DoubleToGridLengthConverter x:Key="DoubleToGridLengthConverter"/>
+            <converters:InverseThicknessConverter x:Key="InverseThicknessConverter"/>
             <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <!--static colors-->
             <Color x:Key="static_white">#ffffff</Color>
             <Color x:Key="static_black">#1d1f24</Color>
+
+            <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+            </Style>
+
+            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource size_100}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ListSingleHeightItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ThickDividerStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_800}"/>
+                <Setter Property="CornerRadius" Value="{ext:DynamicResource size_25}"/>
+            </Style>
+
+            <Style x:Key="DividerStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_300}"/>
+                <Setter Property="CornerRadius" Value="{ext:DynamicResource size_25}"/>
+            </Style>
 
             <Style x:Key="ControlDatePickerStyle" TargetType="Picker">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
@@ -350,12 +385,12 @@
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListGroupHeaderHeight">32</x:Double>
             <Color x:Key="ListGroupHeaderTextColor">#064d70</Color>
-            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
+            <!--<Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
+            </Style>-->
 
             <x:Double x:Key="ListItemFontSize">16</x:Double>
             <x:Double x:Key="ListItemHeight">48</x:Double>
@@ -504,19 +539,6 @@
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
                 <Setter Property="Padding" Value="16,0" />
-            </Style>
-            
-            <x:Double x:Key="PageHeaderFontSize">20</x:Double>
-            <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageHeaderFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-
-            <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
-            <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

@@ -18,27 +18,27 @@ namespace BudgetBadger.Forms.UserControls
             {
                 if (Width <= 304)
                 {
-                    //Padding = new Thickness(16,0,16,0);
+                    Padding = new Thickness(16,0,16,0);
                     ColumnSpacing = 16;
                 }
                 else if (Width <= 768)
                 {
-                    //Padding = new Thickness(24, 0, 24, 0);
+                    Padding = new Thickness(24, 0, 24, 0);
                     ColumnSpacing = 24;
                 }
                 else if (Width <= 1280)
                 {
-                    //Padding = new Thickness(32, 0, 32, 0);
+                    Padding = new Thickness(32, 0, 32, 0);
                     ColumnSpacing = 32;
                 }
                 else if (Width <= 1768)
                 {
-                    //Padding = new Thickness(40, 0, 40, 0);
+                    Padding = new Thickness(40, 0, 40, 0);
                     ColumnSpacing = 40;
                 }
                 else
                 {
-                    //Padding = new Thickness(48, 0, 48, 0);
+                    Padding = new Thickness(48, 0, 48, 0);
                     ColumnSpacing = 48;
                 }
             }

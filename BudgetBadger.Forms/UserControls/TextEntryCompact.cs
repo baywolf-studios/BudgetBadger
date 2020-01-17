@@ -4,9 +4,9 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public class TextEntryCompact : TextEntry
+    public class TextFieldCompact : TextField
     {
-        public TextEntryCompact() : base(true) { }
+        public TextFieldCompact() : base(true) { }
     }
 }
 

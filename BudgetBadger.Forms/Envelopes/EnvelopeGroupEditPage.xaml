@@ -53,14 +53,14 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="0" />
                         </Grid.RowDefinitions>
-                        <uc:TextEntry
+                        <uc:TextField
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Label="{ext:Translate EnvelopeGroupNameLabel}"
                             Text="{Binding EnvelopeGroup.Description}" />
-                        <uc:MultilineTextEntry
+                        <uc:MultilineTextField
                             Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
