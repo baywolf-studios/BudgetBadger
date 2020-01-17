@@ -148,7 +148,7 @@
                             Margin="16,0"
                             Label="{ext:Translate EnvelopeNameLabel}"
                             Text="{Binding Budget.Envelope.Description}" />
-                        <uc:ButtonSelector
+                        <uc:ButtonTextField
                             Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"

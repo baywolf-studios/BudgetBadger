@@ -1,62 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<StackLayout
-    x:Class="BudgetBadger.Forms.UserControls.ButtonSelector"
+<Grid
+    x:Class="BudgetBadger.Forms.UserControls.ButtonTextField"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Name="LayoutControl"
-    Orientation="Vertical">
-    <StackLayout.Spacing>
+    InputTransparent="{Binding IsReadOnly}">
+    <Grid.RowSpacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
             <On Platform="Android" Value="0" />
         </OnPlatform>
-    </StackLayout.Spacing>
+    </Grid.RowSpacing>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.RowSpan="3"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+        Clicked="Handle_Clicked"/>
     <Label
         x:Name="LabelControl"
-        FontSize="12"
+        Grid.Row="0"
         Text="{Binding Label}"
-        TextColor="{StaticResource IdleColor}" />
-    <Grid>
-        <Picker
-            x:Name="PickerControl"
-            FontSize="16"
-            TextColor="{StaticResource PrimaryTextColor}">
-            <Picker.InputTransparent>
-                <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="UWP" Value="false" />
-                    <On Platform="Android, iOS, macOS" Value="true" />
-                </OnPlatform>
-            </Picker.InputTransparent>
-            <Picker.IsVisible>
-                <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="macOS" Value="false" />
-                    <On Platform="Android, iOS, UWP" Value="true" />
-                </OnPlatform>
-            </Picker.IsVisible>
-        </Picker>
-        <Entry
-            x:Name="TextControl"
-            FontSize="16"
-            IsReadOnly="true"
-            TextColor="{StaticResource PrimaryTextColor}">
-            <Entry.IsVisible>
-                <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="macOS" Value="true" />
-                    <On Platform="Android, iOS, UWP" Value="false" />
-                </OnPlatform>
-            </Entry.IsVisible>
-        </Entry>
-        <ContentView x:Name="PickerContentView">
-            <ContentView.InputTransparent>
-                <OnPlatform x:TypeArguments="x:Boolean">
-                    <On Platform="UWP" Value="true" />
-                    <On Platform="macOS, Android, iOS" Value="false" />
-                </OnPlatform>
-            </ContentView.InputTransparent>
-            <ContentView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
-            </ContentView.GestureRecognizers>
-        </ContentView>
-    </Grid>
-</StackLayout>
-
+        IsVisible="False"
+        InputTransparent="True"/>
+    <Entry
+        x:Name="TextControl"
+        Grid.Row="1"
+        IsEnabled="{Binding IsEnabled}"
+        IsPassword="{Binding IsPassword}"
+        Keyboard="{Binding Keyboard}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+        IsReadOnly="True"
+        InputTransparent="True"
+        VerticalOptions="CenterAndExpand">
+    </Entry>
+    <Label
+        x:Name="ReadOnlyTextControl"
+        Grid.Row="1"
+        VerticalOptions="CenterAndExpand"
+        IsVisible="{Binding IsReadOnly}">
+    </Label>
+    <Label
+        x:Name="HintErrorControl"
+        Grid.Row="2"
+        IsVisible="false"
+        InputTransparent="True"/>
+</Grid>

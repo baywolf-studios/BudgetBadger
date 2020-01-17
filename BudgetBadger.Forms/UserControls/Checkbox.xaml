@@ -5,7 +5,8 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    InputTransparent="{Binding IsReadOnly}">
+    InputTransparent="{Binding IsReadOnly}"
+    ColumnSpacing="{ext:DynamicResource size_85}">
     <Grid.RowSpacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
@@ -17,12 +18,6 @@
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnSpacing>
-        <OnPlatform x:TypeArguments="x:Double">
-            <On Platform="UWP, macOS, iOS" Value="8" />
-            <On Platform="Android" Value="0" />
-        </OnPlatform>
-    </Grid.ColumnSpacing>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>

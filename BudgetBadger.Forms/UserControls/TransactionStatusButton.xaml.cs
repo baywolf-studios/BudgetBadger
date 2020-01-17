@@ -86,30 +86,30 @@ namespace BudgetBadger.Forms.UserControls
 
             if (compact)
             {
-                FrameControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                FrameControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ReconciledImageControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ReconciledImageControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ReconciledImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ImageControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_85"]);
-                ImageControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_85"]);
-                PendingImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_85"]);
-                ClearedImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_85"]);
+                FrameControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                FrameControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                ReconciledImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                ReconciledImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                ReconciledImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
+                ImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_85"];
+                ImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_85"];
+                PendingImageSource.Size = (double)DynamicResourceProvider.Instance["size_85"];
+                ClearedImageSource.Size = (double)DynamicResourceProvider.Instance["size_85"];
                 CaptionControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelCompactStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelCompactStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
             }
             else
             {
-                FrameControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_225"]);
-                FrameControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_225"]);
-                ReconciledImageControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_225"]);
-                ReconciledImageControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_225"]);
-                ReconciledImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_225"]);
-                ImageControl.HeightRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ImageControl.WidthRequest = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                PendingImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
-                ClearedImageSource.Size = GetValue((OnIdiom<double>)DynamicResourceProvider.Instance["size_175"]);
+                FrameControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_225"];
+                FrameControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_225"];
+                ReconciledImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_225"];
+                ReconciledImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_225"];
+                ReconciledImageSource.Size = (double)DynamicResourceProvider.Instance["size_225"];
+                ImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                ImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_175"];
+                PendingImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
+                ClearedImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
                 CaptionControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
@@ -123,25 +123,6 @@ namespace BudgetBadger.Forms.UserControls
             ImageControl.BindingContext = this;
             ReconciledImageControl.BindingContext = this;
             CaptionControl.BindingContext = this;
-        }
-
-        double GetValue(OnIdiom<double> idiom)
-        {
-            switch (Device.Idiom)
-            {
-                case TargetIdiom.Phone:
-                    return idiom.Phone;
-                case TargetIdiom.Tablet:
-                    return idiom.Tablet;
-                case TargetIdiom.Desktop:
-                    return idiom.Desktop;
-                case TargetIdiom.TV:
-                    return idiom.TV;
-                case TargetIdiom.Watch:
-                    return idiom.Watch;
-                default:
-                    return idiom.Default;
-            }
         }
 
         void Handle_Clicked(object sender, EventArgs e)

@@ -11,6 +11,12 @@ namespace BudgetBadger.Forms.Style
             get
             {
                 Application.Current.Resources.TryGetValue(Key, out object resource);
+
+                if (resource is OnIdiom<double> onIdiom)
+                {
+                    return GetValue(onIdiom);
+                }
+
                 return resource;
             }
         }
@@ -22,6 +28,11 @@ namespace BudgetBadger.Forms.Style
         public void Invalidate()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+        }
+
+        double GetValue(OnIdiom<double> onIdiom)
+        {
+            return onIdiom;
         }
     }
 }

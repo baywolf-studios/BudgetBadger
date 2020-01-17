@@ -25,7 +25,7 @@
                     <Image.Source>
                         <FontImageSource
                             Size="24"
-                            Glyph="{ext:DynamicResource Key=ArrowDropRight}"
+                            Glyph="{ext:DynamicResource Key=ArrowDropRightIcon}"
                             Color="{StaticResource IdleColor}"
                             FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
                     </Image.Source>

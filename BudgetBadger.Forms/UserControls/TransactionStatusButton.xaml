@@ -7,13 +7,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     InputTransparent="{Binding IsReadOnly}"
-    ColumnSpacing="8">
-    <Grid.RowSpacing>
-        <OnPlatform x:TypeArguments="x:Double">
-            <On Platform="UWP, macOS, iOS" Value="4" />
-            <On Platform="Android" Value="0" />
-        </OnPlatform>
-    </Grid.RowSpacing>
+    ColumnSpacing="{ext:DynamicResource size_85}"
+    RowSpacing="{ext:DynamicResource size_40}">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
@@ -59,6 +54,9 @@
             <DataTrigger TargetType="Frame" Binding="{Binding Transaction.TransactionStatus}" Value="{x:Static model:TransactionStatus.Reconciled}">
                 <Setter Property="IsVisible" Value="False"/>
             </DataTrigger>
+            <DataTrigger TargetType="Frame" Binding="{Binding Transaction.TransactionStatus}" Value="{x:Static model:TransactionStatus.Posted}">
+                <Setter Property="BorderColor" Value="{ext:DynamicResource brand_600}"/>
+            </DataTrigger>
         </Frame.Triggers>
         <Image
             x:Name="ImageControl"
@@ -77,7 +75,7 @@
                             <FontImageSource
                                 x:Name="ClearedImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=brand_800}"
+                                Color="{ext:DynamicResource Key=brand_600}"
                                 Glyph="C"/>
                         </Setter.Value>
                     </Setter>
@@ -91,7 +89,7 @@
                             <FontImageSource
                                 x:Name="PendingImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_800}"
+                                Color="{ext:DynamicResource Key=brand_600}"
                                 Glyph="P"/>
                         </Setter.Value>
                     </Setter>
@@ -125,7 +123,7 @@
             <FontImageSource
                 x:Name="ReconciledImageSource"
                 Size="{ext:DynamicResource size_225}"
-                Color="{ext:DynamicResource Key=brand_800}"
+                Color="{ext:DynamicResource Key=brand_600}"
                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                 Glyph="{ext:DynamicResource Key=LockIcon}"/>
         </Image.Source>
