@@ -28,7 +28,6 @@
         Grid.RowSpan="3"
         Grid.ColumnSpan="2"
         Style="{ext:DynamicResource HiddenButtonStyle}"
-        BackgroundColor="Green"
         Clicked="Handle_Clicked"/>
     <Label
         x:Name="LabelControl"
@@ -57,6 +56,9 @@
             <DataTrigger TargetType="Frame" Binding="{Binding HasCaption}" Value="True">
                 <Setter Property="Grid.ColumnSpan" Value="1"/>
             </DataTrigger>
+            <DataTrigger TargetType="Frame" Binding="{Binding Transaction.TransactionStatus}" Value="{x:Static model:TransactionStatus.Reconciled}">
+                <Setter Property="IsVisible" Value="False"/>
+            </DataTrigger>
         </Frame.Triggers>
         <Image
             x:Name="ImageControl"
@@ -75,23 +77,8 @@
                             <FontImageSource
                                 x:Name="ClearedImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=blue_600}"
+                                Color="{ext:DynamicResource Key=brand_600}"
                                 Glyph="C"/>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-                <DataTrigger
-                    Binding="{Binding Transaction.TransactionStatus}"
-                    TargetType="Image"
-                    Value="{x:Static model:TransactionStatus.Reconciled}">
-                    <Setter Property="Source">
-                        <Setter.Value>
-                            <FontImageSource
-                                x:Name="ReconciledImageSource"
-                                Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=blue_600}"
-                                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                                Glyph="{ext:DynamicResource Key=LockIcon}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
@@ -112,6 +99,37 @@
             </Image.Triggers>
         </Image>
     </Frame>
+    <Image
+        x:Name="ReconciledImageControl"
+        Grid.Row="1"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
+        HeightRequest="{ext:DynamicResource size_175}"
+        WidthRequest="{ext:DynamicResource size_175}"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        InputTransparent="True"
+        IsVisible="False">
+        <Image.Triggers>
+            <DataTrigger TargetType="Image" Binding="{Binding HasCaption}" Value="True">
+                <Setter Property="Grid.ColumnSpan" Value="1"/>
+            </DataTrigger>
+            <DataTrigger
+                TargetType="Image"
+                Binding="{Binding Transaction.TransactionStatus}"
+                Value="{x:Static model:TransactionStatus.Reconciled}">
+                <Setter Property="IsVisible" Value="True"/>
+            </DataTrigger>
+        </Image.Triggers>
+        <Image.Source>
+            <FontImageSource
+                x:Name="ReconciledImageSource"
+                Size="{ext:DynamicResource size_175}"
+                Color="{ext:DynamicResource Key=brand_600}"
+                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                Glyph="{ext:DynamicResource Key=LockIcon}"/>
+        </Image.Source>
+    </Image>
     <Label
         x:Name="CaptionControl"
         Grid.Row="1"
