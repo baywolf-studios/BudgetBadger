@@ -50,7 +50,7 @@
         HeightRequest="{ext:DynamicResource size_225}"
         WidthRequest="{ext:DynamicResource size_225}"
         HasShadow="False"
-        BorderColor="{ext:DynamicResource gray_900}"
+        BorderColor="{ext:DynamicResource gray_600}"
         BackgroundColor="Transparent">
         <Frame.Triggers>
             <DataTrigger TargetType="Frame" Binding="{Binding HasCaption}" Value="True">
@@ -77,7 +77,7 @@
                             <FontImageSource
                                 x:Name="ClearedImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=brand_600}"
+                                Color="{ext:DynamicResource Key=brand_800}"
                                 Glyph="C"/>
                         </Setter.Value>
                     </Setter>
@@ -91,7 +91,7 @@
                             <FontImageSource
                                 x:Name="PendingImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_600}"
+                                Color="{ext:DynamicResource Key=gray_800}"
                                 Glyph="P"/>
                         </Setter.Value>
                     </Setter>
@@ -125,7 +125,7 @@
             <FontImageSource
                 x:Name="ReconciledImageSource"
                 Size="{ext:DynamicResource size_225}"
-                Color="{ext:DynamicResource Key=brand_600}"
+                Color="{ext:DynamicResource Key=brand_800}"
                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                 Glyph="{ext:DynamicResource Key=LockIcon}"/>
         </Image.Source>
