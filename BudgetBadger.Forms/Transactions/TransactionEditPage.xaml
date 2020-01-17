@@ -69,7 +69,8 @@
                             Grid.Column="1"
                             Margin="0,0,16,0"
                             Label="{ext:Translate TransactactionInflowLabel}"
-                            Number="{Binding Transaction.Inflow}" />
+                            Number="{Binding Transaction.Inflow}"
+                            IsReadOnly="True"/>
                         <uc:ButtonSelector
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
@@ -100,29 +101,21 @@
                                 </DataTrigger>
                             </uc:ButtonSelector.Triggers>
                         </uc:ButtonSelector>
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Row="5"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Date="{Binding Transaction.ServiceDate}"
                             Label="{ext:Translate TransactionServiceDateLabel}" />
-                        <uc:Checkbox
+                        <uc:TransactionStatusButton
                             Grid.Row="6"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
-                            Caption="{ext:Translate TransactionClearedLabel}"
-                            IsChecked="{Binding Transaction.Posted}"
-                            Label="{ext:Translate TransactionStatusLabel}">
-                            <uc:Checkbox.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Transaction.Reconciled}"
-                                    TargetType="uc:Checkbox"
-                                    Value="true">
-                                    <Setter Property="IsEnabled" Value="false" />
-                                    <Setter Property="Caption" Value="{ext:Translate TransactionReconciledLabel}" />
-                                </DataTrigger>
-                            </uc:Checkbox.Triggers>
-                        </uc:Checkbox>
+                            Transaction="{Binding Transaction}"
+                            ToggleCommand="{Binding TogglePostedTransactionCommand}"
+                            Label="{ext:Translate TransactionStatusLabel}"
+                            HasCaption="True">
+                        </uc:TransactionStatusButton>
                         <uc:MultilineTextEntry
                             Grid.Row="7"
                             Grid.ColumnSpan="2"

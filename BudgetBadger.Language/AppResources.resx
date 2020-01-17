@@ -729,6 +729,9 @@
   <data name="TransactionClearedLabel" xml:space="preserve">
     <value>Cleared</value>
   </data>
+    <data name="TransactionPendingLabel" xml:space="preserve">
+    <value>Pending</value>
+  </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
   </data>

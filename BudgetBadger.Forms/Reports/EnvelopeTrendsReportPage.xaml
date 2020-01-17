@@ -57,12 +57,12 @@
                             ItemsSource="{Binding Envelopes}"
                             Label="{ext:Translate EnvelopeLabel}"
                             SelectedItem="{Binding SelectedEnvelope}" />
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Row="1"
                             Grid.Column="0"
                             Date="{Binding BeginDate}"
                             Label="{ext:Translate BeginDateLabel}" />
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Row="1"
                             Grid.Column="1"
                             Date="{Binding EndDate}"
@@ -122,11 +122,11 @@
                     ItemsSource="{Binding Envelopes}"
                     Label="{ext:Translate EnvelopeLabel}"
                     SelectedItem="{Binding SelectedEnvelope}" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="3"
                     Date="{Binding BeginDate}"
                     Label="{ext:Translate BeginDateLabel}" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="4"
                     Date="{Binding EndDate}"
                     Label="{ext:Translate EndDateLabel}" />

@@ -32,12 +32,18 @@
     <uc:CurrencyCalculator
         x:Name="TextControl"
         Grid.Row="1"
-        InputTransparent="{Binding IsReadOnly}"
         IsEnabled="{Binding IsEnabled}"
-        IsReadOnly="{Binding IsReadOnly}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
         Number="{Binding Number}"
         VerticalOptions="CenterAndExpand">
     </uc:CurrencyCalculator>
+    <Label
+        x:Name="ReadOnlyTextControl"
+        Grid.Row="1"
+        VerticalOptions="CenterAndExpand"
+        Text="{Binding Text, Source={x:Reference TextControl}}"
+        IsVisible="{Binding IsReadOnly}">
+    </Label>
     <Label
         x:Name="HintErrorControl"
         Grid.Row="2"

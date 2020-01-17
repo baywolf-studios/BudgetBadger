@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class DateSelector : Grid
+    public partial class DatePicker : Grid
     {
         readonly IResourceContainer _resourceContainer;
         readonly ILocalize _localize;
@@ -18,10 +18,10 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
                 typeof(string),
-                typeof(DateSelector),
+                typeof(DatePicker),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is DateSelector datePicker && oldVal != newVal)
+                    if (bindable is DatePicker datePicker && oldVal != newVal)
                     {
                         if (string.IsNullOrEmpty((string)newVal))
                         {
@@ -39,28 +39,28 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(LabelProperty, value);
         }
 
-        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(DateSelector), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(DatePicker), propertyChanged: UpdateErrorAndHint);
         public string Hint
         {
             get => (string)GetValue(HintProperty);
             set => SetValue(HintProperty, value);
         }
 
-        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(DateSelector), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(DatePicker), propertyChanged: UpdateErrorAndHint);
         public string Error
         {
             get => (string)GetValue(ErrorProperty);
             set => SetValue(ErrorProperty, value);
         }
 
-        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(DateSelector));
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(DatePicker));
         public bool IsReadOnly
         {
             get => (bool)GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public static BindableProperty UseTextFieldProperty = BindableProperty.Create(nameof(UseTextField), typeof(bool), typeof(DateSelector));
+        public static BindableProperty UseTextFieldProperty = BindableProperty.Create(nameof(UseTextField), typeof(bool), typeof(DatePicker));
         public bool UseTextField
         {
             get => (bool)GetValue(UseTextFieldProperty);
@@ -70,12 +70,12 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty DateProperty =
             BindableProperty.Create(nameof(Date),
                 typeof(DateTime),
-                typeof(DateSelector),
+                typeof(DatePicker),
                 defaultValue: DateTime.Now,
                 defaultBindingMode: BindingMode.TwoWay,
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is DateSelector datePicker && oldVal != newVal)
+                    if (bindable is DatePicker datePicker && oldVal != newVal)
                     {
                         datePicker.DateControl.Date = ((DateTime)newVal).Date;
                         datePicker.TextControl.Text = datePicker._resourceContainer.GetFormattedString("{0:d}", newVal);
@@ -92,9 +92,9 @@ namespace BudgetBadger.Forms.UserControls
 
         private readonly bool _compact;
 
-        public DateSelector() : this(false) { }
+        public DatePicker() : this(false) { }
 
-        public DateSelector(bool compact)
+        public DatePicker(bool compact)
         {
             InitializeComponent();
 
@@ -202,7 +202,7 @@ namespace BudgetBadger.Forms.UserControls
 
         static void UpdateErrorAndHint(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is DateSelector datePicker && oldValue != newValue)
+            if (bindable is DatePicker datePicker && oldValue != newValue)
             {
                 if (!String.IsNullOrEmpty(datePicker.Error))
                 {
