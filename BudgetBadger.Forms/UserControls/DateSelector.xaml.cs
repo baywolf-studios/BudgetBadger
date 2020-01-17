@@ -18,7 +18,7 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
                 typeof(string),
-                typeof(TextEntry),
+                typeof(DateSelector),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
                     if (bindable is DateSelector datePicker && oldVal != newVal)
@@ -39,25 +39,32 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(LabelProperty, value);
         }
 
-        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(DateSelector), propertyChanged: UpdateErrorAndHint);
         public string Hint
         {
             get => (string)GetValue(HintProperty);
             set => SetValue(HintProperty, value);
         }
 
-        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(TextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(DateSelector), propertyChanged: UpdateErrorAndHint);
         public string Error
         {
             get => (string)GetValue(ErrorProperty);
             set => SetValue(ErrorProperty, value);
         }
 
-        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(Dropdown));
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(DateSelector));
         public bool IsReadOnly
         {
             get => (bool)GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
+        }
+
+        public static BindableProperty UseTextFieldProperty = BindableProperty.Create(nameof(UseTextField), typeof(bool), typeof(DateSelector));
+        public bool UseTextField
+        {
+            get => (bool)GetValue(UseTextFieldProperty);
+            set => SetValue(UseTextFieldProperty, value);
         }
 
         public static BindableProperty DateProperty =
@@ -71,6 +78,7 @@ namespace BudgetBadger.Forms.UserControls
                     if (bindable is DateSelector datePicker && oldVal != newVal)
                     {
                         datePicker.DateControl.Date = ((DateTime)newVal).Date;
+                        datePicker.TextControl.Text = datePicker._resourceContainer.GetFormattedString("{0:d}", newVal);
                         datePicker.ReadOnlyDatePickerControl.Text = datePicker._resourceContainer.GetFormattedString("{0:d}", newVal);
                     }
                 });
@@ -93,7 +101,7 @@ namespace BudgetBadger.Forms.UserControls
             if (compact)
             {
                 DateControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDatePickerCompactStyle"];
-                //TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryCompactStyle"];
+                TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryCompactStyle"];
                 ReadOnlyDatePickerControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelCompactStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelCompactStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
@@ -101,7 +109,7 @@ namespace BudgetBadger.Forms.UserControls
             else
             {
                 DateControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDatePickerStyle"];
-                //TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryStyle"];
+                TextControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlEntryStyle"];
                 ReadOnlyDatePickerControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
@@ -115,15 +123,16 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             DateControl.BindingContext = this;
             ReadOnlyDatePickerControl.BindingContext = this;
+            TextControl.BindingContext = this;
 
             DateControl.Focused += Control_Focused;
-            //TextControl.Focused += Control_Focused;
+            TextControl.Focused += Control_Focused;
 
             DateControl.Unfocused += DateControl_DateSelected;
             DateControl.DateSelected += DateControl_DateSelected;
 
-            //TextControl.Unfocused += TextControl_Completed;
-            //TextControl.Completed += TextControl_Completed;
+            TextControl.Unfocused += TextControl_Completed;
+            TextControl.Completed += TextControl_Completed;
 
             PropertyChanged += (sender, e) =>
             {
@@ -132,17 +141,20 @@ namespace BudgetBadger.Forms.UserControls
                     DateControl.IsEnabled = IsEnabled;
                 }
             };
+
+            TextControl.Text = _resourceContainer.GetFormattedString("{0:d}", Date);
+            ReadOnlyDatePickerControl.Text = _resourceContainer.GetFormattedString("{0:d}", Date);
         }
 
         void Handle_Clicked(object sender, EventArgs e)
         {
             if (!IsReadOnly && IsEnabled)
             {
-                //if (Device.RuntimePlatform == Device.UWP && !TextControl.IsFocused)
-                //{
-                //    TextControl.Focus();
-                //}
-                if (!DateControl.IsFocused)
+                if (UseTextField && !TextControl.IsFocused)
+                {
+                    TextControl.Focus();
+                }
+                else if (!DateControl.IsFocused)
                 {
                     DateControl.Focus();
                 }
@@ -154,29 +166,29 @@ namespace BudgetBadger.Forms.UserControls
             if (IsReadOnly || !IsEnabled)
             {
                 DateControl.Unfocus();
-                //TextControl.Unfocus();
+                TextControl.Unfocus();
             }
         }
 
-        //void TextControl_Completed(object sender, EventArgs e)
-        //{
-        //    var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
-        //    var dfi = locale.DateTimeFormat;
+        void TextControl_Completed(object sender, EventArgs e)
+        {
+            var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
+            var dfi = locale.DateTimeFormat;
 
-        //    if (DateTime.TryParse(TextControl.Text, dfi, DateTimeStyles.AllowWhiteSpaces, out DateTime result))
-        //    {
-        //        var dateChangedEventArgs = new DateChangedEventArgs(Date, result.Date);
-        //        if (!Date.Date.Equals(result.Date))
-        //        {
-        //            Date = result.Date;
-        //            DateSelected?.Invoke(this, dateChangedEventArgs);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        TextControl.Text = _resourceContainer.GetFormattedString("{0:d}", Date);
-        //    }
-        //}
+            if (DateTime.TryParse(TextControl.Text, dfi, DateTimeStyles.AllowWhiteSpaces, out DateTime result))
+            {
+                var dateChangedEventArgs = new DateChangedEventArgs(Date, result.Date);
+                if (!Date.Date.Equals(result.Date))
+                {
+                    Date = result.Date;
+                    DateSelected?.Invoke(this, dateChangedEventArgs);
+                }
+            }
+            else
+            {
+                TextControl.Text = _resourceContainer.GetFormattedString("{0:d}", Date);
+            }
+        }
 
         void DateControl_DateSelected(object sender, EventArgs e)
         {

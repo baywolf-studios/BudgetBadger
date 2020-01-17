@@ -34,9 +34,37 @@
         Grid.Row="1"
         Format="d"
         IsEnabled="{Binding IsEnabled}"
-        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
         VerticalOptions="CenterAndExpand">
+        <DatePicker.Triggers>
+            <DataTrigger TargetType="DatePicker" Binding="{Binding UseTextField}" Value="True">
+                <Setter Property="IsVisible" Value="False"/>
+            </DataTrigger>
+            <DataTrigger TargetType="DatePicker" Binding="{Binding IsReadOnly}" Value="True">
+                <Setter Property="IsVisible" Value="False"/>
+            </DataTrigger>
+        </DatePicker.Triggers>
     </DatePicker>
+    <Entry
+        x:Name="TextControl"
+        Grid.Row="1"
+        IsEnabled="{Binding IsEnabled}"
+        IsVisible="False"
+        VerticalOptions="CenterAndExpand">
+        <Entry.Margin>
+            <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
+                <On Platform="UWP" Value="0,8,0,0" />
+            </OnPlatform>
+        </Entry.Margin>
+        <Entry.Triggers>
+            <MultiTrigger TargetType="Entry">
+                <MultiTrigger.Conditions>
+                    <BindingCondition Binding="{Binding UseTextField}" Value="True" />
+                    <BindingCondition Binding="{Binding IsReadOnly}" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="IsVisible" Value="True" />
+            </MultiTrigger>
+        </Entry.Triggers>
+    </Entry>
     <Label
         x:Name="ReadOnlyDatePickerControl"
         Grid.Row="1"
