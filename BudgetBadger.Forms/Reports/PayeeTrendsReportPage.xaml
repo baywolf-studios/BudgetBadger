@@ -57,12 +57,12 @@
                             ItemsSource="{Binding Payees}"
                             Label="{ext:Translate PayeeLabel}"
                             SelectedItem="{Binding SelectedPayee}" />
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Row="1"
                             Grid.Column="0"
                             Date="{Binding BeginDate, Mode=TwoWay}"
                             Label="{ext:Translate BeginDateLabel}" />
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Row="1"
                             Grid.Column="1"
                             Date="{Binding EndDate, Mode=TwoWay}"
@@ -122,11 +122,11 @@
                     ItemsSource="{Binding Payees}"
                     Label="{ext:Translate PayeeLabel}"
                     SelectedItem="{Binding SelectedPayee}" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="3"
                     Date="{Binding BeginDate, Mode=TwoWay}"
                     Label="{ext:Translate BeginDateLabel}" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="4"
                     Date="{Binding EndDate, Mode=TwoWay}"
                     Label="{ext:Translate EndDateLabel}" />

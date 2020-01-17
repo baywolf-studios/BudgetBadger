@@ -1,66 +1,110 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Grid
+    x:Class="BudgetBadger.Forms.UserControls.TransactionStatusButton"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:model="clr-namespace:BudgetBadger.Models;assembly=BudgetBadger.Models"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:model="clr-namespace:BudgetBadger.Models;assembly=BudgetBadger.Models"
-    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
-    x:Class="BudgetBadger.Forms.UserControls.TransactionStatusButton">
-    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer x:Name="ToggleGestureRecognizer" />
-    </ContentView.GestureRecognizers>
+    InputTransparent="{Binding IsReadOnly}"
+    ColumnSpacing="8">
+    <Grid.RowSpacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </Grid.RowSpacing>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.RowSpan="3"
+        Grid.ColumnSpan="2"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        BackgroundColor="Green"
+        Clicked="Handle_Clicked"/>
+    <Label
+        x:Name="LabelControl"
+        Grid.Row="0"
+        Grid.ColumnSpan="2"
+        Text="{Binding Label}"
+        IsVisible="False"
+        InputTransparent="True"/>
     <Frame
+        x:Name="FrameControl"
+        Grid.Row="1"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
         HorizontalOptions="Center"
         VerticalOptions="Center"
         Padding="0"
         Margin="0"
-        CornerRadius="12"
-        HeightRequest="24"
-        WidthRequest="24"
+        InputTransparent="True"
+        CornerRadius="{ext:DynamicResource ControlCornerRadius}"
+        HeightRequest="{ext:DynamicResource size_225}"
+        WidthRequest="{ext:DynamicResource size_225}"
         HasShadow="False"
-        BorderColor="Black"
+        BorderColor="{ext:DynamicResource gray_900}"
         BackgroundColor="Transparent">
+        <Frame.Triggers>
+            <DataTrigger TargetType="Frame" Binding="{Binding HasCaption}" Value="True">
+                <Setter Property="Grid.ColumnSpan" Value="1"/>
+            </DataTrigger>
+        </Frame.Triggers>
         <Image
-            HeightRequest="14"
-            WidthRequest="14"
+            x:Name="ImageControl"
+            HeightRequest="{ext:DynamicResource size_175}"
+            WidthRequest="{ext:DynamicResource size_175}"
             HorizontalOptions="Center"
-            VerticalOptions="Center">
+            VerticalOptions="Center"
+            InputTransparent="True">
             <Image.Triggers>
                 <DataTrigger
-                    Binding="{Binding TransactionStatus}"
+                    Binding="{Binding Transaction.TransactionStatus}"
                     TargetType="Image"
                     Value="{x:Static model:TransactionStatus.Posted}">
                     <Setter Property="Source">
                         <Setter.Value>
                             <FontImageSource
-                                Size="18"
-                                Color="{ext:DynamicResource Key=gray_1000}"
+                                x:Name="ClearedImageSource"
+                                Size="{ext:DynamicResource size_175}"
+                                Color="{ext:DynamicResource Key=gray_900}"
                                 Glyph="C"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger
-                    Binding="{Binding TransactionStatus}"
+                    Binding="{Binding Transaction.TransactionStatus}"
                     TargetType="Image"
                     Value="{x:Static model:TransactionStatus.Reconciled}">
                     <Setter Property="Source">
                         <Setter.Value>
                             <FontImageSource
-                                Size="18"
-                                Color="{ext:DynamicResource Key=gray_1000}"
+                                x:Name="ReconciledImageSource"
+                                Size="{ext:DynamicResource size_175}"
+                                Color="{ext:DynamicResource Key=gray_900}"
                                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                                 Glyph="{ext:DynamicResource Key=LockIcon}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger
-                    Binding="{Binding TransactionStatus}"
+                    Binding="{Binding Transaction.TransactionStatus}"
                     TargetType="Image"
                     Value="{x:Static model:TransactionStatus.Pending}">
                     <Setter Property="Source">
                         <Setter.Value>
                             <FontImageSource
-                                Size="18"
-                                Color="{ext:DynamicResource Key=gray_1000}"
+                                x:Name="PendingImageSource"
+                                Size="{ext:DynamicResource size_175}"
+                                Color="{ext:DynamicResource Key=gray_900}"
                                 Glyph="P"/>
                         </Setter.Value>
                     </Setter>
@@ -68,4 +112,33 @@
             </Image.Triggers>
         </Image>
     </Frame>
-</ContentView>
+    <Label
+        x:Name="CaptionControl"
+        Grid.Row="1"
+        Grid.Column="1"
+        VerticalOptions="CenterAndExpand"
+        InputTransparent="True"
+        IsVisible="{Binding HasCaption}"
+        Text="{ext:Translate TransactionPendingLabel}">
+        <Label.Triggers>
+            <DataTrigger
+                Binding="{Binding Transaction.TransactionStatus}"
+                TargetType="Label"
+                Value="{x:Static model:TransactionStatus.Posted}">
+                <Setter Property="Text" Value="{ext:Translate TransactionClearedLabel}" />
+            </DataTrigger>
+            <DataTrigger
+                Binding="{Binding Transaction.TransactionStatus}"
+                TargetType="Label"
+                Value="{x:Static model:TransactionStatus.Reconciled}">
+                <Setter Property="Text" Value="{ext:Translate TransactionReconciledLabel}" />
+            </DataTrigger>
+        </Label.Triggers>
+    </Label>
+    <Label
+        x:Name="HintErrorControl"
+        Grid.Row="2"
+        Grid.ColumnSpan="2"
+        IsVisible="False"
+        InputTransparent="True"/>
+</Grid>

@@ -44,7 +44,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Row="0"
                     Date="{Binding StatementDate}"
                     Label="{ext:Translate AccountReconcileStatementDateLabel}" />

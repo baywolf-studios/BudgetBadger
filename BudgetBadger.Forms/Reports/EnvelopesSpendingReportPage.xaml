@@ -49,11 +49,11 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Column="0"
                             Date="{Binding BeginDate}"
                             Label="{ext:Translate BeginDateLabel}" />
-                        <uc:DateSelector
+                        <uc:DatePicker
                             Grid.Column="1"
                             Date="{Binding EndDate}"
                             Label="{ext:Translate EndDateLabel}" />
@@ -154,11 +154,11 @@
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{ext:Translate FilterLabel}"
                     VerticalOptions="Center" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="2"
                     Date="{Binding BeginDate}"
                     Label="{ext:Translate BeginDateLabel}" />
-                <uc:DateSelector
+                <uc:DatePicker
                     Grid.Column="3"
                     Date="{Binding EndDate}"
                     Label="{ext:Translate EndDateLabel}" />

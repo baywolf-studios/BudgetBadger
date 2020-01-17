@@ -1271,6 +1271,12 @@ namespace BudgetBadger.Language {
             }
         }
         
+        public static string TransactionPendingLabel {
+            get {
+                return ResourceManager.GetString("TransactionPendingLabel", resourceCulture);
+            }
+        }
+        
         public static string TransactionDeleteAccountDeletedError {
             get {
                 return ResourceManager.GetString("TransactionDeleteAccountDeletedError", resourceCulture);

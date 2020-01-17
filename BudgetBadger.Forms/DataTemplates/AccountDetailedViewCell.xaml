@@ -14,17 +14,15 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="56"/>
         </Grid.ColumnDefinitions>
-        <uc:TextEntry
+        <uc:MultilineTextEntry
             x:Name="DescriptionControl"
             Grid.Column="0"
-            Text="{Binding Description}"
-            IsReadOnly="True">
-        </uc:TextEntry>
-        <uc:DateSelector
-            Grid.Column="1"
-            IsReadOnly="True"
-            UseTextField="True">
-        </uc:DateSelector>
+            Text="{Binding Description}">
+        </uc:MultilineTextEntry>
+        <uc:Dropdown
+            x:Name="Picker"
+            Grid.Column="1">
+        </uc:Dropdown>
         <Label
             Grid.Column="2"
             Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"

@@ -25,6 +25,8 @@ namespace BudgetBadger.Forms.DataTemplates
         public AccountDetailedViewCell()
         {
             InitializeComponent();
+
+            Picker.ItemsSource = new List<string>() { "ahgf", "kjhjkh" };
         }
 
         void Handle_Clicked(object sender, EventArgs e)

@@ -59,6 +59,7 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand AccountSelectedCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SplitCommand { get; set; }
+        public ICommand TogglePostedTransactionCommand { get; set; }
 
         public TransactionEditPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
@@ -80,6 +81,7 @@ namespace BudgetBadger.Forms.Transactions
             AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
             DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
             SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
+            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(ExecuteTogglePostedTransaction);
         }
 
 		public async Task InitializeAsync(INavigationParameters parameters)
@@ -274,6 +276,14 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.InitialSplitTransaction, Transaction }
             };
             await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+        }
+
+        public void ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null && !transaction.Reconciled)
+            {
+                transaction.Posted = !transaction.Posted;
+            }
         }
     }
 }
