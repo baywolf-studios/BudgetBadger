@@ -104,8 +104,8 @@
         Grid.Row="1"
         Grid.Column="0"
         Grid.ColumnSpan="2"
-        HeightRequest="{ext:DynamicResource size_175}"
-        WidthRequest="{ext:DynamicResource size_175}"
+        HeightRequest="{ext:DynamicResource size_225}"
+        WidthRequest="{ext:DynamicResource size_225}"
         HorizontalOptions="Center"
         VerticalOptions="Center"
         InputTransparent="True"
@@ -124,7 +124,7 @@
         <Image.Source>
             <FontImageSource
                 x:Name="ReconciledImageSource"
-                Size="{ext:DynamicResource size_175}"
+                Size="{ext:DynamicResource size_225}"
                 Color="{ext:DynamicResource Key=brand_600}"
                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                 Glyph="{ext:DynamicResource Key=LockIcon}"/>
