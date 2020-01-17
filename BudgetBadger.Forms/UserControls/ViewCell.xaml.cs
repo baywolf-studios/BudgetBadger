@@ -6,6 +6,13 @@ namespace BudgetBadger.Forms.UserControls
 {
     public partial class ViewCell : Xamarin.Forms.ViewCell
     {
+        public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(ViewCell), default(Thickness),  propertyChanged: PaddingPropertyChanged);
+        public Thickness Padding
+        {
+            get { return (Thickness)GetValue(PaddingProperty); }
+            set { SetValue(PaddingProperty, value); }
+        }
+
         public static BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(SelectableViewCell), Color.Default);
         public Color BackgroundColor
         {
@@ -22,12 +29,32 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(View))
                 {
                     View.BackgroundColor = BackgroundColor;
-                    if (Device.RuntimePlatform == Device.macOS)
+
+                    if (View is Layout layout)
                     {
-                        View.Margin = new Thickness(-1);
+                        layout.Padding = Padding;
+                    }
+                    else if (View != null)
+                    {
+                        View.Margin = Padding;
                     }
                 }
             };
+        }
+
+        static void PaddingPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ViewCell viewCell && oldValue != newValue && newValue is Thickness thickness)
+            {
+                if (viewCell.View is Layout layout)
+                {
+                    layout.Padding = thickness;
+                }
+                else if (viewCell.View != null)
+                {
+                    viewCell.View.Margin = thickness;
+                }
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Grid
-    x:Class="BudgetBadger.Forms.UserControls.MultilineTextEntry"
+    x:Class="BudgetBadger.Forms.UserControls.MultilineTextField"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"

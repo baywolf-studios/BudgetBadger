@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BudgetBadger.Forms.Animation;
 using BudgetBadger.Forms.Effects;
 using BudgetBadger.Forms.Style;
@@ -11,23 +12,23 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class MultilineTextEntry : Grid
+    public partial class ButtonTextField : Grid
     {
         public static BindableProperty LabelProperty =
             BindableProperty.Create(nameof(Label),
                 typeof(string),
-                typeof(MultilineTextEntry),
+                typeof(ButtonTextField),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is MultilineTextEntry multilineTextEntry && oldVal != newVal)
+                    if (bindable is ButtonTextField TextField && oldVal != newVal)
                     {
                         if (string.IsNullOrEmpty((string)newVal))
                         {
-                            multilineTextEntry.LabelControl.IsVisible = false;
+                            TextField.LabelControl.IsVisible = false;
                         }
                         else
                         {
-                            multilineTextEntry.LabelControl.IsVisible = true;
+                            TextField.LabelControl.IsVisible = true;
                         }
                     }
                 });
@@ -40,14 +41,14 @@ namespace BudgetBadger.Forms.UserControls
         public static BindableProperty TextProperty =
             BindableProperty.Create(nameof(Text),
                 typeof(string),
-                typeof(MultilineTextEntry),
+                typeof(ButtonTextField),
                 defaultBindingMode: BindingMode.TwoWay,
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is MultilineTextEntry multilineTextEntry && oldVal != newVal)
+                    if (bindable is ButtonTextField TextField && oldVal != newVal)
                     {
-                        multilineTextEntry.TextControl.Text = (string)newVal;
-                        multilineTextEntry.ReadOnlyTextControl.Text = (string)newVal;
+                        TextField.TextControl.Text = (string)newVal;
+                        TextField.ReadOnlyTextControl.Text = (string)newVal;
                     }
                 });
         public string Text
@@ -56,48 +57,60 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(TextProperty, value);
         }
 
-        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(MultilineTextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty HintProperty = BindableProperty.Create(nameof(Hint), typeof(string), typeof(ButtonTextField), propertyChanged: UpdateErrorAndHint);
         public string Hint
         {
             get => (string)GetValue(HintProperty);
             set => SetValue(HintProperty, value);
         }
 
-        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(MultilineTextEntry), propertyChanged: UpdateErrorAndHint);
+        public static BindableProperty ErrorProperty = BindableProperty.Create(nameof(Error), typeof(string), typeof(ButtonTextField), propertyChanged: UpdateErrorAndHint);
         public string Error
         {
             get => (string)GetValue(ErrorProperty);
             set => SetValue(ErrorProperty, value);
         }
 
-        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(MultilineTextEntry));
+        public static BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(ButtonTextField));
         public bool IsPassword
         {
             get => (bool)GetValue(IsPasswordProperty);
             set => SetValue(IsPasswordProperty, value);
         }
 
-        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(MultilineTextEntry));
+        public static BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(ButtonTextField));
         public Keyboard Keyboard
         {
             get => (Keyboard)GetValue(KeyboardProperty);
             set => SetValue(KeyboardProperty, value);
         }
 
-        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(MultilineTextEntry));
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(ButtonTextField));
         public bool IsReadOnly
         {
             get => (bool)GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public event EventHandler Completed;
+        public static BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ButtonTextField));
+        public ICommand Command
+        {
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
+
+        public static BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ButtonTextField));
+        public object CommandParameter
+        {
+            get => (object)GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
+        }
 
         private readonly bool _compact;
 
-        public MultilineTextEntry() : this(false) { }
+        public ButtonTextField() : this(false) { }
 
-        public MultilineTextEntry(bool compact)
+        public ButtonTextField(bool compact)
         {
             InitializeComponent();
 
@@ -123,10 +136,6 @@ namespace BudgetBadger.Forms.UserControls
             TextControl.BindingContext = this;
             ReadOnlyTextControl.BindingContext = this;
 
-            TextControl.Focused += Control_Focused;
-            TextControl.Unfocused += TextControl_Completed;
-            TextControl.Completed += TextControl_Completed;
-
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(IsEnabled))
@@ -138,62 +147,48 @@ namespace BudgetBadger.Forms.UserControls
 
         void Handle_Clicked(object sender, EventArgs e)
         {
-            if (!IsReadOnly && IsEnabled && !TextControl.IsFocused)
+            if (!IsReadOnly && IsEnabled)
             {
-                TextControl.Focus();
-            }
-        }
-
-        void Control_Focused(object sender, FocusEventArgs e)
-        {
-            if (IsReadOnly || !IsEnabled)
-            {
-                TextControl.Unfocus();
-            }
-        }
-
-        void TextControl_Completed(object sender, EventArgs e)
-        {
-            if (Text != TextControl.Text)
-            {
-                Text = TextControl.Text;
-                Completed?.Invoke(this, new EventArgs());
+                if (Command?.CanExecute(CommandParameter) ?? false)
+                {
+                    Command?.Execute(CommandParameter);
+                }
             }
         }
 
         static void UpdateErrorAndHint(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is MultilineTextEntry multilineTextEntry && oldValue != newValue)
+            if (bindable is ButtonTextField TextField && oldValue != newValue)
             {
-                if (!String.IsNullOrEmpty(multilineTextEntry.Error))
+                if (!String.IsNullOrEmpty(TextField.Error))
                 {
-                    multilineTextEntry.HintErrorControl.IsVisible = true;
-                    multilineTextEntry.HintErrorControl.Text = multilineTextEntry.Error;
-                    if (multilineTextEntry._compact)
+                    TextField.HintErrorControl.IsVisible = true;
+                    TextField.HintErrorControl.Text = TextField.Error;
+                    if (TextField._compact)
                     {
-                        multilineTextEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                     else
                     {
-                        multilineTextEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                 }
-                else if (!String.IsNullOrEmpty(multilineTextEntry.Hint))
+                else if (!String.IsNullOrEmpty(TextField.Hint))
                 {
-                    multilineTextEntry.HintErrorControl.IsVisible = true;
-                    multilineTextEntry.HintErrorControl.Text = multilineTextEntry.Hint;
-                    if (multilineTextEntry._compact)
+                    TextField.HintErrorControl.IsVisible = true;
+                    TextField.HintErrorControl.Text = TextField.Hint;
+                    if (TextField._compact)
                     {
-                        multilineTextEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                     else
                     {
-                        multilineTextEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                 }
                 else
                 {
-                    multilineTextEntry.HintErrorControl.IsVisible = false;
+                    TextField.HintErrorControl.IsVisible = false;
                 }
             }
         }

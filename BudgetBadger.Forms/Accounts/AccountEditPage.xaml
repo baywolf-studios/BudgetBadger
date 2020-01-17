@@ -55,7 +55,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="0" />
                         </Grid.RowDefinitions>
-                        <uc:TextEntry
+                        <uc:TextField
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
@@ -88,7 +88,7 @@
                                 </DataTrigger>
                             </uc:CurrencyCalculatorEntry.Triggers>
                         </uc:CurrencyCalculatorEntry>
-                        <uc:MultilineTextEntry
+                        <uc:MultilineTextField
                             Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"

@@ -89,7 +89,7 @@
                             <FontImageSource
                                 x:Name="PendingImageSource"
                                 Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=brand_600}"
+                                Color="{ext:DynamicResource Key=gray_600}"
                                 Glyph="P"/>
                         </Setter.Value>
                     </Setter>

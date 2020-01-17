@@ -25,47 +25,41 @@
             Icon="{ext:DynamicResource AccountIcon}"
             ShowHelper="{Binding NoAccounts}"
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
+            <uc:ResponsiveGrid x:Name="ResponsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_40,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid
+                <Label
                     Grid.Row="0"
-                    Margin="16"
-                    ColumnSpacing="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{ext:Translate AccountNetWorthLabel}"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Column="1"
-                        HorizontalOptions="End"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Center" />
-                </Grid>
+                    Grid.Column="0"
+                    Grid.ColumnSpan="6"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{ext:Translate AccountNetWorthLabel}"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="6"
+                    Grid.ColumnSpan="6"
+                    HorizontalOptions="End"
+                    Style="{StaticResource PageHeaderLabelStyle}"
+                    Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
+                    VerticalOptions="Center" />
                 <BoxView
                     Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
+                    Grid.ColumnSpan="12"
+                    Style="{ext:DynamicResource ThickDividerStyle}"
+                    HeightRequest="{ext:DynamicResource size_40}" />
                 <uc:PullToRefresh
                     Grid.Row="2"
+                    Grid.ColumnSpan="12"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView2
+                            Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}, Converter={StaticResource InverseThicknessConverter}}"
                             Items="{Binding Accounts}"
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
@@ -73,28 +67,46 @@
                             IsSorted="True"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
-                            HideSearchBar="False"
+                            HideSearchBar="True"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedAccount}">
+                            SelectedItem="{Binding SelectedAccount}"
+                            SeparatorVisibility="None">
                             <uc:ListView2.SortComparer>
                                 <comparers:AccountComparer/>
                             </uc:ListView2.SortComparer>
                             <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <uc:ViewCell BackgroundColor="Green">
-                                    <dt:GroupHeaderViewCell />
-                                        </uc:ViewCell>
+                                    <uc:ViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Height="50"
+                                        Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
+                                        <dt:GroupHeaderViewCell />
+                                    </uc:ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>
                             <uc:ListView2.ItemTemplate>
                                 <DataTemplate>
-                                    <uc:SelectableViewCell BackgroundColor="Red" SelectedBackgroundColor="Blue">
-                                    <dt:AccountViewCell/>
-                                        </uc:SelectableViewCell>
+                                    <uc:SelectableViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                        Height="50"
+                                        Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
+                                        <dt:AccountViewCell/>
+                                        <uc:SelectableViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate ReconcileAccountButton}"
+                                                Command="{Binding BindingContext.ReconcileCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                            <MenuItem
+                                                Text="{ext:Translate EditButton}"
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </uc:SelectableViewCell.ContextActions>
+                                    </uc:SelectableViewCell>
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
                             <uc:ListView2.Footer>
-                                <BoxView  BackgroundColor="Red" HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                                <BoxView HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
                             </uc:ListView2.Footer>
                         </uc:ListView2>
                         <!--<uc:ListView
@@ -168,12 +180,13 @@
                 <uc:Button2
                     x:Name="NewTransactionButton"
                     Grid.Row="2"
-                    Margin="16,0,16,16"
+                    Grid.ColumnSpan="12"
+                    Margin="0,0,0,16"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
                     VerticalOptions="End" />
-            </Grid>
+            </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

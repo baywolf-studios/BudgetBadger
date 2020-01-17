@@ -22,15 +22,15 @@ namespace BudgetBadger.Forms.UserControls
                 typeof(CurrencyCalculatorEntry),
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is CurrencyCalculatorEntry textEntry && oldVal != newVal)
+                    if (bindable is CurrencyCalculatorEntry TextField && oldVal != newVal)
                     {
                         if (string.IsNullOrEmpty((string)newVal))
                         {
-                            textEntry.LabelControl.IsVisible = false;
+                            TextField.LabelControl.IsVisible = false;
                         }
                         else
                         {
-                            textEntry.LabelControl.IsVisible = true;
+                            TextField.LabelControl.IsVisible = true;
                         }
                     }
                 });
@@ -47,9 +47,9 @@ namespace BudgetBadger.Forms.UserControls
                 defaultBindingMode: BindingMode.TwoWay,
                 propertyChanged: (bindable, oldVal, newVal) =>
                 {
-                    if (bindable is CurrencyCalculatorEntry textEntry && oldVal != newVal)
+                    if (bindable is CurrencyCalculatorEntry TextField && oldVal != newVal)
                     {
-                        textEntry.TextControl.Number = (decimal?)newVal;
+                        TextField.TextControl.Number = (decimal?)newVal;
                     }
                 });
         public decimal? Number
@@ -158,37 +158,37 @@ namespace BudgetBadger.Forms.UserControls
 
         static void UpdateErrorAndHint(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is CurrencyCalculatorEntry textEntry && oldValue != newValue)
+            if (bindable is CurrencyCalculatorEntry TextField && oldValue != newValue)
             {
-                if (!String.IsNullOrEmpty(textEntry.Error))
+                if (!String.IsNullOrEmpty(TextField.Error))
                 {
-                    textEntry.HintErrorControl.IsVisible = true;
-                    textEntry.HintErrorControl.Text = textEntry.Error;
-                    if (textEntry._compact)
+                    TextField.HintErrorControl.IsVisible = true;
+                    TextField.HintErrorControl.Text = TextField.Error;
+                    if (TextField._compact)
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                     else
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlErrorLabelCompactStyle"];
                     }
                 }
-                else if (!String.IsNullOrEmpty(textEntry.Hint))
+                else if (!String.IsNullOrEmpty(TextField.Hint))
                 {
-                    textEntry.HintErrorControl.IsVisible = true;
-                    textEntry.HintErrorControl.Text = textEntry.Hint;
-                    if (textEntry._compact)
+                    TextField.HintErrorControl.IsVisible = true;
+                    TextField.HintErrorControl.Text = TextField.Hint;
+                    if (TextField._compact)
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                     else
                     {
-                        textEntry.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
+                        TextField.HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
                     }
                 }
                 else
                 {
-                    textEntry.HintErrorControl.IsVisible = false;
+                    TextField.HintErrorControl.IsVisible = false;
                 }
             }
         }

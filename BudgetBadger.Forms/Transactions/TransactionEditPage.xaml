@@ -116,7 +116,7 @@
                             Label="{ext:Translate TransactionStatusLabel}"
                             HasCaption="True">
                         </uc:TransactionStatusButton>
-                        <uc:MultilineTextEntry
+                        <uc:MultilineTextField
                             Grid.Row="7"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
