@@ -121,6 +121,7 @@ namespace BudgetBadger.Forms.UserControls
             LabelControl.BindingContext = this;
             FrameControl.BindingContext = this;
             ImageControl.BindingContext = this;
+            ReconciledImageControl.BindingContext = this;
             CaptionControl.BindingContext = this;
         }
 
