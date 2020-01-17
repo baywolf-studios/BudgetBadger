@@ -71,36 +71,36 @@
                             Label="{ext:Translate TransactactionInflowLabel}"
                             Number="{Binding Transaction.Inflow}"
                             IsReadOnly="True"/>
-                        <uc:ButtonSelector
+                        <uc:ButtonTextField
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding AccountSelectedCommand}"
                             Label="{ext:Translate TransactionAccountLabel}"
                             Text="{Binding Transaction.Account.Description}" />
-                        <uc:ButtonSelector
+                        <uc:ButtonTextField
                             Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding PayeeSelectedCommand}"
                             Label="{ext:Translate TransactionPayeeLabel}"
                             Text="{Binding Transaction.Payee.Description}" />
-                        <uc:ButtonSelector
+                        <uc:ButtonTextField
                             Grid.Row="4"
                             Grid.ColumnSpan="2"
                             Margin="16,0"
                             Command="{Binding EnvelopeSelectedCommand}"
                             Label="{ext:Translate TransactionEnvelopeLabel}"
                             Text="{Binding Transaction.Envelope.Description}">
-                            <uc:ButtonSelector.Triggers>
+                            <uc:ButtonTextField.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Transaction.Envelope.IsSystem}"
-                                    TargetType="uc:ButtonSelector"
+                                    TargetType="uc:ButtonTextField"
                                     Value="True">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
-                            </uc:ButtonSelector.Triggers>
-                        </uc:ButtonSelector>
+                            </uc:ButtonTextField.Triggers>
+                        </uc:ButtonTextField>
                         <uc:DatePicker
                             Grid.Row="5"
                             Grid.ColumnSpan="2"

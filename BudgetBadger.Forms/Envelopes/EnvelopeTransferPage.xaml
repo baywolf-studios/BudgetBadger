@@ -29,18 +29,18 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <uc:ButtonSelector
+                <uc:ButtonTextField
                     Grid.Row="0"
                     Margin="16,0"
                     Label="{ext:Translate EnvelopeTransferDateLabel}"
                     Text="{Binding Schedule.Description}" />
-                <uc:ButtonSelector
+                <uc:ButtonTextField
                     Grid.Row="1"
                     Margin="16,0"
                     Command="{Binding FromEnvelopeSelectedCommand}"
                     Label="{ext:Translate EnvelopeTransferFromLabel}"
                     Text="{Binding FromEnvelope.Description}" />
-                <uc:ButtonSelector
+                <uc:ButtonTextField
                     Grid.Row="2"
                     Margin="16,0"
                     Command="{Binding ToEnvelopeSelectedCommand}"
