@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class AccountDetailedViewCell : SelectableViewCell
+    public partial class AccountDetailedViewCell : Grid
     {
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(TextColumn));
         public ICommand SaveCommand
@@ -30,11 +30,15 @@ namespace BudgetBadger.Forms.DataTemplates
         void Handle_EditClicked(object sender, EventArgs e)
         {
             DescriptionControl.IsReadOnly = false;
+            EditButton.IsVisible = false;
+            SaveCancelContainer.IsVisible = true;
         }
 
         void Handle_SaveClicked(object sender, EventArgs e)
         {
             DescriptionControl.IsReadOnly = true;
+            EditButton.IsVisible = true;
+            SaveCancelContainer.IsVisible = false;
             if (SaveCommand?.CanExecute(BindingContext) ?? false)
             {
                 SaveCommand?.Execute(BindingContext);
@@ -44,6 +48,8 @@ namespace BudgetBadger.Forms.DataTemplates
         void Handle_CancelClicked(object sender, EventArgs e)
         {
             DescriptionControl.IsReadOnly = true;
+            EditButton.IsVisible = true;
+            SaveCancelContainer.IsVisible = false;
             if (RefreshItemCommand?.CanExecute(BindingContext) ?? false)
             {
                 RefreshItemCommand?.Execute(BindingContext);

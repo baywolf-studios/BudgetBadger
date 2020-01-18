@@ -25,14 +25,14 @@
                     Margin="16">
                     <Label
                         Margin="0,24"
-                        Style="{ext:DynamicResource Key=HelperControlIconStyle}"
+                        Style="{ext:DynamicResource Key=EmptyStateIconStyle}"
                         Text="{Binding Source={x:Reference this}, Path=Icon}"/>
                     <Label
                         Text="{Binding Source={x:Reference this}, Path=Title}"
-                        Style="{ext:DynamicResource HelperControlTitleStyle}"/>
+                        Style="{ext:DynamicResource EmptyStateTitleStyle}"/>
                     <Label
                         Text="{Binding Source={x:Reference this}, Path=Subtitle}"
-                        Style="{ext:DynamicResource HelperControlSubtitleStyle}"/>
+                        Style="{ext:DynamicResource EmptyStateSubtitleStyle}"/>
                 </StackLayout>
             </Grid>
         </ControlTemplate>

@@ -8,7 +8,7 @@
     RowSpacing="0">
     <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
-        <RowDefinition Height="{ext:DynamicResource size_10}"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
     </Grid.RowDefinitions>
     <Label
         Grid.Row="0"

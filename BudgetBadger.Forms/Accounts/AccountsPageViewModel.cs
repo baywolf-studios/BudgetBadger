@@ -229,12 +229,11 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteEditCommand(Account account)
         {
-            account.IsChanged = true;
-            //var parameters = new NavigationParameters
-            //{
-            //    { PageParameter.Account, account }
-            //};
-            //await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+            var parameters = new NavigationParameters
+            {
+                { PageParameter.Account, account }
+            };
+            await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
         }
 
         public async Task ExecuteAddTransactionCommand()
