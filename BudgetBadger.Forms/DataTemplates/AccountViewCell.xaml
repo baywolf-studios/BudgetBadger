@@ -7,14 +7,9 @@
     x:Name="accountCell"
     ColumnSpacing="16"
     RowSpacing="0">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="{ext:DynamicResource size_10}"/>
-    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*" />
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="1" />
     </Grid.ColumnDefinitions>
     <Label
         Grid.Row="0"
@@ -27,8 +22,4 @@
         HorizontalOptions="End"
         Style="{ext:DynamicResource Key=ListSingleHeightItemLabelStyle}"
         Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
-    <BoxView
-        Grid.Row="1"
-        Grid.ColumnSpan="2"
-        Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

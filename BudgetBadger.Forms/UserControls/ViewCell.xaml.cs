@@ -34,9 +34,10 @@ namespace BudgetBadger.Forms.UserControls
                     {
                         layout.Padding = Padding;
                     }
-                    else if (View != null)
+
+                    if (Device.RuntimePlatform == Device.macOS)
                     {
-                        View.Margin = Padding;
+                        View.Margin = new Thickness(-1);
                     }
                 }
             };
@@ -49,10 +50,6 @@ namespace BudgetBadger.Forms.UserControls
                 if (viewCell.View is Layout layout)
                 {
                     layout.Padding = thickness;
-                }
-                else if (viewCell.View != null)
-                {
-                    viewCell.View.Margin = thickness;
                 }
             }
         }

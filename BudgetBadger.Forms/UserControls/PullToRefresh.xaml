@@ -14,10 +14,10 @@
     </ContentView.Resources>
 
     <Grid>
-        <sf:SfPullToRefresh
-            x:Name="sfPull"
-            ProgressBackgroundColor="{StaticResource BusyIndicatorBackgroundColor}"
-            ProgressStrokeColor="{StaticResource BusyIndicatorColor}" />
+        <RefreshView
+            x:Name="pullToRefresh"
+            BackgroundColor="{StaticResource BusyIndicatorColor}"
+            RefreshColor="{StaticResource BusyIndicatorBackgroundColor}" />
         <StackLayout
             x:Name="activityIndicator"
             HorizontalOptions="CenterAndExpand"
