@@ -381,6 +381,11 @@ namespace BudgetBadger.Logic
 
         public bool FilterTransaction(Transaction transaction, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
+
             if (transaction != null)
             {
                 return transaction.Envelope.Description.ToLower().Contains(searchText.ToLower())

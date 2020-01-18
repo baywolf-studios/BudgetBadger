@@ -3,12 +3,10 @@
     x:Class="BudgetBadger.Forms.Accounts.AccountInfoPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
@@ -20,22 +18,21 @@
             ToolbarItemIcon="{StaticResource EditIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <Grid
-            Margin="0"
-            ColumnSpacing="16"
-            RowSpacing="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <uc:ResponsiveGrid x:Name="ResponsiveGrid" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="1" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
             </Grid.RowDefinitions>
-            <uc:Accordion Grid.Row="0" Grid.ColumnSpan="2">
+            <uc:Accordion
+                Grid.Row="0"
+                Grid.ColumnSpan="12"
+                VerticalOptions="Center">
                 <uc:Accordion.HeaderContent>
-                    <Grid ColumnSpacing="8">
+                    <Grid
+                        HeightRequest="{ext:DynamicResource size_550}"
+                        ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -140,25 +137,71 @@
             </uc:Accordion>
             <BoxView
                 Grid.Row="1"
-                Grid.ColumnSpan="2"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
+                Grid.ColumnSpan="12"
+                Style="{ext:DynamicResource MediumDividerStyle}"
+                HeightRequest="{ext:DynamicResource size_25}" />
             <uc:EmptyState
                 Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
-                Grid.ColumnSpan="2"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="12"
                 Icon="{ext:DynamicResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:EmptyState.Triggers>
-                    <DataTrigger
-                        Binding="{Binding NoTransactions}"
-                        TargetType="uc:EmptyState"
-                        Value="true">
-                        <Setter Property="Margin" Value="0,0,0,56" />
-                    </DataTrigger>
-                </uc:EmptyState.Triggers>
-                <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
+                <uc:PullToRefresh
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:PullToRefresh.PullableContent>
+                        <uc:ListView2
+                            Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}, Converter={StaticResource InverseThicknessConverter}}"
+                            Items="{Binding Transactions}"
+                            IsGrouped="True"
+                            GroupPropertyDescription="ServiceDate"
+                            RowHeight="{ext:DynamicResource size_700}"
+                            IsSorted="False"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            HideSearchBar="True"
+                            SelectedCommand="{Binding TransactionSelectedCommand}"
+                            SelectedItem="{Binding SelectedTransaction}"
+                            SeparatorVisibility="None">
+                            <uc:ListView2.SortComparer>
+                                <comparers:TransactionComparer/>
+                            </uc:ListView2.SortComparer>
+                            <uc:ListView2.GroupHeaderTemplate>
+                                <DataTemplate>
+                                    <uc:ViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
+                                        <dt:GroupHeaderViewCell />
+                                    </uc:ViewCell>
+                                </DataTemplate>
+                            </uc:ListView2.GroupHeaderTemplate>
+                            <uc:ListView2.ItemTemplate>
+                                <DataTemplate>
+                                    <uc:SelectableViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                        Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
+                                        <dt:TransactionViewCell
+                                            TransactionViewCellType="Account"
+                                            ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                        <uc:SelectableViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate DeleteButton}"
+                                                IsDestructive="True"
+                                                Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </uc:SelectableViewCell.ContextActions>
+                                    </uc:SelectableViewCell>
+                                </DataTemplate>
+                            </uc:ListView2.ItemTemplate>
+                            <uc:ListView2.Footer>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                            </uc:ListView2.Footer>
+                        </uc:ListView2>
+                    </uc:PullToRefresh.PullableContent>
+                </uc:PullToRefresh>
+                <!--<uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
                         <uc:ListView
                             AllowSwiping="true"
@@ -226,24 +269,24 @@
                             </syncfusion:SfListView.FooterTemplate>
                         </uc:ListView>
                     </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
+                </uc:PullToRefresh>-->
             </uc:EmptyState>
             <uc:Button2
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="0"
-                Margin="16,0,0,16"
+                Grid.ColumnSpan="6"
                 Command="{Binding ReconcileCommand}"
                 Style="{StaticResource SecondaryActionButtonStyle}"
                 Text="{ext:Translate ReconcileAccountButton}"
-                VerticalOptions="End" />
+                VerticalOptions="Center"/>
             <uc:Button2
-                Grid.Row="2"
-                Grid.Column="1"
-                Margin="0,0,16,16"
+                Grid.Row="3"
+                Grid.Column="6"
+                Grid.ColumnSpan="6"
                 Command="{Binding AddTransactionCommand}"
                 Style="{StaticResource PrimaryActionButtonStyle}"
                 Text="{ext:Translate AddTransactionButton}"
-                VerticalOptions="End" />
-        </Grid>
+                VerticalOptions="Center"/>
+        </uc:ResponsiveGrid>
     </p:BasePage.Body>
 </p:BasePage>

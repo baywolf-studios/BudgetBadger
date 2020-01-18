@@ -19,7 +19,7 @@
     <p:BasePage.Body>
         <uc:EmptyState
             Title="{ext:Translate EmptyHiddenAccountsHelperTitle}"
-            Icon="{ext:DynamicResource  AccountIcon}"
+            Icon="{ext:DynamicResource AccountIcon}"
             ShowHelper="{Binding NoAccounts}">
             <uc:ResponsiveGrid x:Name="ResponsiveGrid" RowSpacing="0">
                 <uc:PullToRefresh
@@ -59,22 +59,9 @@
                                         SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                         Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
                                         <dt:AccountViewCell/>
-                                        <uc:SelectableViewCell.ContextActions>
-                                            <MenuItem
-                                                Text="{ext:Translate ReconcileAccountButton}"
-                                                Command="{Binding BindingContext.ReconcileCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"/>
-                                            <MenuItem
-                                                Text="{ext:Translate EditButton}"
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"/>
-                                        </uc:SelectableViewCell.ContextActions>
                                     </uc:SelectableViewCell>
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
-                            <uc:ListView2.Footer>
-                                <BoxView HeightRequest="{ext:DynamicResource size_550}"/>
-                            </uc:ListView2.Footer>
                         </uc:ListView2>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>

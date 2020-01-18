@@ -475,8 +475,15 @@ namespace BudgetBadger.Forms.UserControls
                         var sourceGroup = sourceGroupedItems[groupKey];
 
                         var targetGroupToUpdate = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
-                        targetGroupToUpdate.ReplaceRange(sourceGroup);
-                        sourceGroupedItems[groupKey] = targetGroupToUpdate;
+                        if (targetGroupToUpdate != null)
+                        {
+                            targetGroupToUpdate.ReplaceRange(sourceGroup);
+                            sourceGroupedItems[groupKey] = targetGroupToUpdate;
+                        }
+                        else
+                        {
+                            ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Add(sourceGroupedItems[groupKey]);
+                        }
                     }
 
                     var newItems = sourceGroupedItems.Values.ToList();

@@ -20,6 +20,13 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(BackgroundColorProperty, value);
         }
 
+        public static readonly BindableProperty HeightRequestProperty = BindableProperty.Create(nameof(HeightRequest), typeof(double), typeof(ViewCell), default(double), propertyChanged: HeightPropertyChanged);
+        public double HeightRequest
+        {
+            get { return (double)GetValue(HeightRequestProperty); }
+            set { SetValue(HeightRequestProperty, value); }
+        }
+
         public ViewCell()
         {
             InitializeComponent();
@@ -51,6 +58,14 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     layout.Padding = thickness;
                 }
+            }
+        }
+
+        static void HeightPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ViewCell viewCell && oldValue != newValue)
+            {
+                viewCell.Height = (double)newValue;
             }
         }
     }

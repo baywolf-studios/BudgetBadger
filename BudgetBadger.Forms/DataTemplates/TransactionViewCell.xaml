@@ -3,83 +3,58 @@
     x:Class="BudgetBadger.Forms.DataTemplates.TransactionViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    ColumnSpacing="16"
-    HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
-    RowSpacing="4">
+    ColumnSpacing="{ext:DynamicResource Key=size_0}">
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="40" />
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450, Converter={StaticResource DoubleToGridLengthConverter}}" />
         <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
     <uc:TransactionStatusButton
         x:Name="TransactionStatusButton"
-        Grid.Row="0"
         Grid.Column="0"
-        Margin="16,0,0,0"
         Transaction="{Binding .}"/>
-    <ContentView Grid.Column="1">
-        <ContentView.InputTransparent>
-            <OnPlatform x:TypeArguments="x:Boolean">
-                <On Platform="Android, macOS" Value="False" />
-                <On Platform="iOS, UWP" Value="True" />
-            </OnPlatform>
-        </ContentView.InputTransparent>
-        <ContentView.GestureRecognizers>
-            <TapGestureRecognizer x:Name="SelectedGestureRecognizer" CommandParameter="{Binding .}" />
-        </ContentView.GestureRecognizers>
-        <Grid ColumnSpacing="16" RowSpacing="4">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label
-                x:Name="primaryLabel"
-                Grid.Row="0"
-                Grid.Column="0"
-                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                Text="{Binding Payee.Description}"
-                VerticalOptions="End" />
-            <Label
-                x:Name="secondaryLabel"
-                Grid.Row="1"
-                Grid.Column="0"
-                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Account.Description}"
-                VerticalOptions="Start" />
-            <Label
-                x:Name="rightSingleLabel"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                Style="{StaticResource Key=ListItemLabelStyle}"
-                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="Center" />
-            <Label
-                x:Name="rightPrimaryLabel"
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                IsVisible="false"
-                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="End" />
-            <Label
-                x:Name="rightSecondaryLabel"
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                IsVisible="false"
-                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Envelope.Description}"
-                VerticalOptions="Start" />
-        </Grid>
-    </ContentView>
+    <Label
+        x:Name="leftLabel"
+        Grid.Column="1"
+        VerticalOptions="Center"
+        LineBreakMode="WordWrap">
+        <Label.FormattedText>
+            <FormattedString>
+                <Span
+                    x:Name="primaryLeftSpan"
+                    Style="{ext:DynamicResource ListDoubleLinePrimaryItemSpanStyle}"
+                    Text="{Binding Payee.Description}"/>
+                <Span
+                    x:Name="newLineLeftSpan"
+                    Text="{x:Static x:Environment.NewLine}"/>
+                <Span
+                    x:Name="secondaryLeftSpan"
+                    Style="{ext:DynamicResource ListDoubleLineSecondaryItemSpanStyle}"
+                    Text="{Binding Account.Description}"/>
+            </FormattedString>
+        </Label.FormattedText>
+    </Label>
+    <Label
+        x:Name="rightLabel"
+        Grid.Column="2"
+        VerticalOptions="Center"
+        LineBreakMode="WordWrap">
+        <Label.FormattedText>
+            <FormattedString>
+                <Span
+                    x:Name="primaryRightSpan"
+                    Style="{ext:DynamicResource ListDoubleLinePrimaryItemSpanStyle}"
+                    Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"/>
+                <Span
+                    x:Name="newLineRightSpan"
+                    Text="{x:Static x:Environment.NewLine}"/>
+                <Span
+                    x:Name="secondaryRightSpan"
+                    Style="{ext:DynamicResource ListDoubleLineSecondaryItemSpanStyle}"
+                    Text="{Binding Envelope.Description}"/>
+            </FormattedString>
+        </Label.FormattedText>
+    </Label>
 </Grid>
