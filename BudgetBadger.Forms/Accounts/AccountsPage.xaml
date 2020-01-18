@@ -27,9 +27,10 @@
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <uc:ResponsiveGrid x:Name="ResponsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_40,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
@@ -38,7 +39,8 @@
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{ext:Translate AccountNetWorthLabel}"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    Padding="{ext:Thickness LeftKey=size_0, TopKey=size_200, RightKey=size_0,BottomKey=size_65}"/>
                 <Label
                     Grid.Row="0"
                     Grid.Column="6"
@@ -46,14 +48,16 @@
                     HorizontalOptions="End"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    Padding="{ext:Thickness LeftKey=size_0, TopKey=size_200, RightKey=size_0,BottomKey=size_65}"/>
                 <BoxView
                     Grid.Row="1"
                     Grid.ColumnSpan="12"
-                    Style="{ext:DynamicResource ThickDividerStyle}"
-                    HeightRequest="{ext:DynamicResource size_40}" />
+                    Style="{ext:DynamicResource MediumDividerStyle}"
+                    HeightRequest="{ext:DynamicResource size_25}" />
                 <uc:PullToRefresh
                     Grid.Row="2"
+                    Grid.RowSpan="2"
                     Grid.ColumnSpan="12"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
@@ -63,7 +67,7 @@
                             Items="{Binding Accounts}"
                             IsGrouped="True"
                             GroupPropertyDescription="Group"
-                            HasUnevenRows="True"
+                            RowHeight="{ext:DynamicResource size_500}"
                             IsSorted="True"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
@@ -78,7 +82,6 @@
                                 <DataTemplate>
                                     <uc:ViewCell
                                         BackgroundColor="{ext:DynamicResource gray_50}"
-                                        Height="50"
                                         Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
                                         <dt:GroupHeaderViewCell />
                                     </uc:ViewCell>
@@ -89,7 +92,6 @@
                                     <uc:SelectableViewCell
                                         BackgroundColor="{ext:DynamicResource gray_50}"
                                         SelectedBackgroundColor="{ext:DynamicResource brand_100}"
-                                        Height="50"
                                         Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
                                         <dt:AccountViewCell/>
                                         <uc:SelectableViewCell.ContextActions>
@@ -106,86 +108,19 @@
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
                             <uc:ListView2.Footer>
-                                <BoxView HeightRequest="{StaticResource Key=FooterHiddenButtonHeight}"/>
+                                <BoxView HeightRequest="{ext:DynamicResource size_550}"/>
                             </uc:ListView2.Footer>
                         </uc:ListView2>
-                        <!--<uc:ListView
-                            AllowSwiping="true"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                            IsBusy="{Binding IsBusy}"
-                            ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding Accounts}"
-                            SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedAccount}">
-                            <syncfusion:SfListView.LeftSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.ReconcileCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate ReconcileAccountButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.LeftSwipeTemplate>
-                            <syncfusion:SfListView.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.DataSource>
-                                <data:DataSource>
-                                    <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Group" />
-                                    </data:DataSource.GroupDescriptors>
-                                </data:DataSource>
-                            </syncfusion:SfListView.DataSource>
-                            <syncfusion:SfListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <dt:GroupHeaderViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.GroupHeaderTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:AccountViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>-->
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
                 <uc:Button2
                     x:Name="NewTransactionButton"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.ColumnSpan="12"
-                    Margin="0,0,0,16"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="End" />
+                    VerticalOptions="Center" />
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BasePage.Body>
