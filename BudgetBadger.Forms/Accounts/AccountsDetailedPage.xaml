@@ -31,7 +31,7 @@
                     <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
@@ -63,7 +63,7 @@
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
-                        <uc:ListView2
+                        <uc:DataTable
                             Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}, Converter={StaticResource InverseThicknessConverter}}"
                             Items="{Binding Accounts}"
                             IsGrouped="True"
@@ -72,20 +72,19 @@
                             IsSorted="True"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
-                            HideSearchBar="True"
                             SelectedCommand="{Binding SelectedCommand}"
                             SelectedItem="{Binding SelectedAccount}"
                             SeparatorVisibility="None">
-                            <uc:ListView2.SortComparer>
+                            <uc:DataTable.SortComparer>
                                 <comparers:AccountComparer/>
-                            </uc:ListView2.SortComparer>
-                            <uc:ListView2.Header>
+                            </uc:DataTable.SortComparer>
+                            <uc:DataTable.Header>
                                 <dt:AccountDetailedHeader
                                     HeightRequest="{ext:DynamicResource size_500}"
                                     BackgroundColor="{ext:DynamicResource gray_50}"
                                     Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}"/>
-                            </uc:ListView2.Header>
-                            <uc:ListView2.GroupHeaderTemplate>
+                            </uc:DataTable.Header>
+                            <uc:DataTable.GroupHeaderTemplate>
                                 <DataTemplate>
                                     <uc:ViewCell
                                         BackgroundColor="{ext:DynamicResource gray_50}"
@@ -93,8 +92,8 @@
                                         <dt:GroupHeaderViewCell />
                                     </uc:ViewCell>
                                 </DataTemplate>
-                            </uc:ListView2.GroupHeaderTemplate>
-                            <uc:ListView2.ItemTemplate>
+                            </uc:DataTable.GroupHeaderTemplate>
+                            <uc:DataTable.ItemTemplate>
                                 <DataTemplate>
                                     <uc:SelectableViewCell
                                         BackgroundColor="{ext:DynamicResource gray_50}"
@@ -114,11 +113,11 @@
                                         </uc:SelectableViewCell.ContextActions>
                                     </uc:SelectableViewCell>
                                 </DataTemplate>
-                            </uc:ListView2.ItemTemplate>
-                            <uc:ListView2.Footer>
-                                <BoxView HeightRequest="{ext:DynamicResource size_550}"/>
-                            </uc:ListView2.Footer>
-                        </uc:ListView2>
+                            </uc:DataTable.ItemTemplate>
+                            <uc:DataTable.Footer>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                            </uc:DataTable.Footer>
+                        </uc:DataTable>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
                 <uc:Button2
@@ -128,7 +127,8 @@
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"/>
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BaseDetailedPage.Body>

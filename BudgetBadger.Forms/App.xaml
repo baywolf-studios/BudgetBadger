@@ -149,7 +149,33 @@
                 <Setter Property="LineHeight" Value="1.5"/>
             </Style>
 
-            <Style x:Key="ListSingleHeightItemLabelStyle" TargetType="Label">
+            <Style x:Key="ListDoubleLinePrimaryItemSpanStyle" TargetType="Span">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="LineHeight" Value="1.5"/>
+            </Style>
+
+            <Style x:Key="ListDoubleLineSecondaryItemSpanStyle" TargetType="Span">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="LineHeight" Value="1.5"/>
+            </Style>
+
+            <Style x:Key="ListDoubleLinePrimaryItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineHeight" Value="1.5"/>
+            </Style>
+
+            <Style x:Key="ListDoubleLineSecondaryItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineHeight" Value="1.5"/>
+            </Style>
+
+            <Style x:Key="ListSingleLineItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />

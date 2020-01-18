@@ -19,6 +19,7 @@ namespace BudgetBadger.Forms.Style
 
                 if (resource == null)
                 {
+                    Console.WriteLine("Resource {0} not found", Key);
                     //throw new Exception();
                 }
 

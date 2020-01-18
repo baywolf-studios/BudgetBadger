@@ -30,7 +30,7 @@
                     <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
@@ -39,8 +39,7 @@
                     HorizontalOptions="Start"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{ext:Translate AccountNetWorthLabel}"
-                    VerticalOptions="Center"
-                    Padding="{ext:Thickness LeftKey=size_0, TopKey=size_200, RightKey=size_0,BottomKey=size_65}"/>
+                    VerticalOptions="Center"/>
                 <Label
                     Grid.Row="0"
                     Grid.Column="6"
@@ -48,8 +47,7 @@
                     HorizontalOptions="End"
                     Style="{StaticResource PageHeaderLabelStyle}"
                     Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Center"
-                    Padding="{ext:Thickness LeftKey=size_0, TopKey=size_200, RightKey=size_0,BottomKey=size_65}"/>
+                    VerticalOptions="Center"/>
                 <BoxView
                     Grid.Row="1"
                     Grid.ColumnSpan="12"
@@ -108,7 +106,7 @@
                                 </DataTemplate>
                             </uc:ListView2.ItemTemplate>
                             <uc:ListView2.Footer>
-                                <BoxView HeightRequest="{ext:DynamicResource size_550}"/>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
                             </uc:ListView2.Footer>
                         </uc:ListView2>
                     </uc:PullToRefresh.PullableContent>

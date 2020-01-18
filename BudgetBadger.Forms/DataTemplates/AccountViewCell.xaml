@@ -14,12 +14,12 @@
     <Label
         Grid.Row="0"
         Grid.Column="0"
-        Style="{ext:DynamicResource Key=ListSingleHeightItemLabelStyle}"
+        Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
         Text="{Binding Description}"/>
     <Label
         Grid.Row="0"
         Grid.Column="1"
         HorizontalOptions="End"
-        Style="{ext:DynamicResource Key=ListSingleHeightItemLabelStyle}"
+        Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
         Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
 </Grid>
