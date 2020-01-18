@@ -32,29 +32,6 @@
             <Color x:Key="static_white">#ffffff</Color>
             <Color x:Key="static_black">#1d1f24</Color>
 
-            <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource brand_600}" />
-                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource brand_500}" />
-                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_700}" />
-            </Style>
-
-            <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
-                <Setter Property="TextColor" Value="{ext:DynamicResource gray_50}" />
-                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource brand_600}" />
-                <Setter Property="RestingBorderColor" Value="{ext:DynamicResource brand_600}" />
-                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource brand_500}" />
-                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource brand_500}" />
-                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_700}" />
-                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource brand_700}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
-                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
-                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
-                <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
-                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_225, TopKey=size_0, RightKey=size_225, BottomKey=size_0}" />
-            </Style>
-
             <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
@@ -456,6 +433,36 @@
             <x:Double x:Key="HeaderHiddenButtonHeight">56</x:Double>
             <x:Double x:Key="FooterHiddenButtonHeight">56</x:Double>
             <x:Double x:Key="MinimumButtonWidth">64</x:Double>
+
+            <x:Double x:Key="PrimaryActionButtonFontSize">14</x:Double>
+            <x:Double x:Key="PrimaryActionButtonHeight">40</x:Double>
+            <Color x:Key="PrimaryActionButtonTextColor">white</Color>
+            <x:Double x:Key="PrimaryActionButtonBorderWidth">1</x:Double>
+            <Color x:Key="PrimaryActionButtonBackgroundColor">#0c7bb3</Color>
+            <Color x:Key="PrimaryActionButtonHoverBackgroundColor">#229ad6</Color>
+            <Color x:Key="PrimaryActionButtonActiveBackgroundColor">#066391</Color>
+            <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}" />
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="RestingBorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
+                <Setter Property="HoverBorderColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
+                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}" />
+                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
+                <Setter Property="Padding" Value="16,0" />
+            </Style>
+
+            <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
+                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
+                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
+            </Style>
 
             <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
             <x:Double x:Key="PrimaryDestructionButtonHeight">40</x:Double>

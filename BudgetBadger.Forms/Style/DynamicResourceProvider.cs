@@ -17,6 +17,11 @@ namespace BudgetBadger.Forms.Style
                     return GetValue(onIdiom);
                 }
 
+                if (resource == null)
+                {
+                    throw new Exception();
+                }
+
                 return resource;
             }
         }

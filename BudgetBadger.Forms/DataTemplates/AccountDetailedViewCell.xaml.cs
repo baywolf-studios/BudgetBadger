@@ -25,14 +25,29 @@ namespace BudgetBadger.Forms.DataTemplates
         public AccountDetailedViewCell()
         {
             InitializeComponent();
-
-            Picker.ItemsSource = new List<string>() { "ahgf", "kjhjkh" };
         }
 
-        void Handle_Clicked(object sender, EventArgs e)
+        void Handle_EditClicked(object sender, EventArgs e)
         {
-            DescriptionControl.IsReadOnly = !DescriptionControl.IsReadOnly;
+            DescriptionControl.IsReadOnly = false;
+        }
 
+        void Handle_SaveClicked(object sender, EventArgs e)
+        {
+            DescriptionControl.IsReadOnly = true;
+            if (SaveCommand?.CanExecute(BindingContext) ?? false)
+            {
+                SaveCommand?.Execute(BindingContext);
+            }
+        }
+
+        void Handle_CancelClicked(object sender, EventArgs e)
+        {
+            DescriptionControl.IsReadOnly = true;
+            if (RefreshItemCommand?.CanExecute(BindingContext) ?? false)
+            {
+                RefreshItemCommand?.Execute(BindingContext);
+            }
         }
     }
 }
