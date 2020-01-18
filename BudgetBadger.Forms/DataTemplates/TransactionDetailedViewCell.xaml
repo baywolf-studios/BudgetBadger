@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.TransactionDetailedViewCell"
+    ColumnSpacing="{ext:DynamicResource size_400}"
+    RowSpacing="{ext:DynamicResource size_0}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.ColumnDefinitions>
+    <Label
+        Grid.Row="0"
+        Grid.Column="0"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        VerticalOptions="Center"
+        Text="{ext:Translate TransactionServiceDateLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="1"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate TransactionEnvelopeLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="2"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate TransactionPayeeLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="3"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate TransactionOutflowLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="4"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate TransactionInflowLabel}">
+    </Label>
+    <uc:Button2
+        x:Name="EditButton"
+        Grid.Column="5"
+        Style="{ext:DynamicResource ActionButtonStyle}"
+        Clicked="Handle_EditClicked">
+        <uc:Button2.ImageSource>
+            <FontImageSource
+                Size="{ext:DynamicResource size_225}"
+                Color="{ext:DynamicResource brand_600}"
+                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                Glyph="{ext:DynamicResource Key=EditIcon}" />
+            </uc:Button2.ImageSource>
+    </uc:Button2>
+    <StackLayout
+        x:Name="SaveCancelContainer"
+        Spacing="{ext:DynamicResource size_100}"
+        Margin="0"
+        Padding="0"
+        Orientation="Horizontal"
+        Grid.Column="5"
+        HorizontalOptions="Center"
+        IsVisible="False">
+        <uc:Button2
+            x:Name="SaveButton"
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_SaveClicked">
+            <uc:Button2.ImageSource>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_225}"
+                    Color="{ext:DynamicResource brand_600}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=SaveIcon}" />
+                </uc:Button2.ImageSource>
+        </uc:Button2>
+        <uc:Button2
+            x:Name="CancelButton"
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_CancelClicked">
+            <uc:Button2.ImageSource>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_225}"
+                    Color="{ext:DynamicResource brand_600}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=CloseIcon}" />
+                </uc:Button2.ImageSource>
+        </uc:Button2>
+    </StackLayout>
+    <BoxView
+        Grid.Row="1"
+        Grid.ColumnSpan="6"
+        Style="{ext:DynamicResource DividerStyle}"/>
+</Grid>

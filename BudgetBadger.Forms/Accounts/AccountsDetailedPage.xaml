@@ -101,7 +101,7 @@
                                         SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                         Padding="{Binding Padding, Source={x:Reference ResponsiveGrid}}">
                                         <dt:AccountDetailedViewCell
-                                            SaveCommand="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"/>
+                                            SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"/>
                                         <uc:SelectableViewCell.ContextActions>
                                             <MenuItem
                                                 Text="{ext:Translate ReconcileAccountButton}"
