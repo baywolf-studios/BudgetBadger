@@ -1,72 +1,79 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<uc:SelectableViewCell
+<Grid
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedViewCell">
-    <Grid
-        ColumnSpacing="32">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="56"/>
-            <ColumnDefinition Width="56"/>
-        </Grid.ColumnDefinitions>
-        <uc:TextField
-            x:Name="DescriptionControl"
-            Grid.Column="0"
-            Text="{Binding Description}"
-            IsReadOnly="True">
-        </uc:TextField>
-        <Label
-            Grid.Column="1"
-            Style="{ext:DynamicResource ControlLabelStyle}"
-            Text="{Binding Pending, Converter={StaticResource CurrencyConverter}}"
-            HorizontalTextAlignment="End"
-            VerticalOptions="Center">
-        </Label>
-        <Label
-            Grid.Column="2"
-            Style="{ext:DynamicResource ControlLabelStyle}"
-            Text="{Binding Posted, Converter={StaticResource CurrencyConverter}}"
-            HorizontalTextAlignment="End"
-            VerticalOptions="Center">
-        </Label>
-        <Label
-            Grid.Column="3"
-            Style="{ext:DynamicResource ControlLabelStyle}"
-            Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
-            HorizontalTextAlignment="End"
-            VerticalOptions="Center">
-        </Label>
-        <uc:Button2
-            x:Name="EditButton"
-            Grid.Column="4"
-            Grid.ColumnSpan="2"
-            Style="{ext:DynamicResource HiddenButtonStyle}"
-            HeightRequest="40"
-            Clicked="Handle_EditClicked">
-            <uc:Button2.ImageSource>
-                <FontImageSource
-                    Size="{ext:DynamicResource size_250}"
-                    Color="{ext:DynamicResource brand_600}"
-                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                    Glyph="{ext:DynamicResource Key=EditIcon}" />
-                </uc:Button2.ImageSource>
-        </uc:Button2>
+    x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedViewCell"
+    ColumnSpacing="{ext:DynamicResource size_400}"
+    RowSpacing="{ext:DynamicResource size_0}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_900,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.ColumnDefinitions>
+    <uc:TextField
+        x:Name="DescriptionControl"
+        Grid.Column="0"
+        Text="{Binding Description}"
+        IsReadOnly="True">
+    </uc:TextField>
+    <Label
+        Grid.Column="1"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        Text="{Binding Pending, Converter={StaticResource CurrencyConverter}}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center">
+    </Label>
+    <Label
+        Grid.Column="2"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        Text="{Binding Posted, Converter={StaticResource CurrencyConverter}}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center">
+    </Label>
+    <Label
+        Grid.Column="3"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center">
+    </Label>
+    <uc:Button2
+        x:Name="EditButton"
+        Grid.Column="4"
+        Style="{ext:DynamicResource ActionButtonStyle}"
+        Clicked="Handle_EditClicked">
+        <uc:Button2.ImageSource>
+            <FontImageSource
+                Size="{ext:DynamicResource size_225}"
+                Color="{ext:DynamicResource brand_600}"
+                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                Glyph="{ext:DynamicResource Key=EditIcon}" />
+            </uc:Button2.ImageSource>
+    </uc:Button2>
+    <StackLayout
+        x:Name="SaveCancelContainer"
+        Spacing="{ext:DynamicResource size_100}"
+        Margin="0"
+        Padding="0"
+        Orientation="Horizontal"
+        Grid.Column="4"
+        HorizontalOptions="Center"
+        IsVisible="False">
         <uc:Button2
             x:Name="SaveButton"
-            Grid.Column="4"
-            Style="{ext:DynamicResource HiddenButtonStyle}"
-            HeightRequest="40"
-            Clicked="Handle_SaveClicked"
-            IsVisible="False">
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_SaveClicked">
             <uc:Button2.ImageSource>
                 <FontImageSource
-                    Size="{ext:DynamicResource size_250}"
+                    Size="{ext:DynamicResource size_225}"
                     Color="{ext:DynamicResource brand_600}"
                     FontFamily="{ext:DynamicResource Key=IconFontFamily}"
                     Glyph="{ext:DynamicResource Key=SaveIcon}" />
@@ -74,18 +81,19 @@
         </uc:Button2>
         <uc:Button2
             x:Name="CancelButton"
-            Grid.Column="5"
-            Style="{ext:DynamicResource HiddenButtonStyle}"
-            HeightRequest="40"
-            Clicked="Handle_CancelClicked"
-            IsVisible="False">
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_CancelClicked">
             <uc:Button2.ImageSource>
                 <FontImageSource
-                    Size="{ext:DynamicResource size_250}"
+                    Size="{ext:DynamicResource size_225}"
                     Color="{ext:DynamicResource brand_600}"
                     FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                    Glyph="{ext:DynamicResource Key=CancelIcon}" />
+                    Glyph="{ext:DynamicResource Key=CloseIcon}" />
                 </uc:Button2.ImageSource>
         </uc:Button2>
-    </Grid>
-</uc:SelectableViewCell>
+    </StackLayout>
+    <BoxView
+        Grid.Row="1"
+        Grid.ColumnSpan="5"
+        Style="{ext:DynamicResource DividerStyle}"/>
+</Grid>

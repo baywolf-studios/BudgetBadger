@@ -5,37 +5,52 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedHeader"
-    ColumnSpacing="32">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="56"/>
-        </Grid.ColumnDefinitions>
-        <Label
-            Grid.Column="0"
-            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
-            Text="{ext:Translate AccountNameLabel}"
-            VerticalTextAlignment="Center">
-        </Label>
-        <Label
-            Grid.Column="1"
-            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
-            Text="{ext:Translate AccountPendingLabel}"
-            VerticalTextAlignment="Center">
-        </Label>
-        <Label
-            Grid.Column="2"
-            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
-            Text="{ext:Translate AccountPostedLabel}"
-            VerticalTextAlignment="Center">
-        </Label>
-        <Label
-            Grid.Column="3"
-            Style="{ext:DynamicResource DataTableLabelColumnCellStyle}"
-            Text="{ext:Translate AccountBalanceLabel}"
-            HorizontalTextAlignment="End"
-            VerticalTextAlignment="Center">
-        </Label>
+    ColumnSpacing="{ext:DynamicResource size_400}"
+    RowSpacing="{ext:DynamicResource size_0}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_900,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.ColumnDefinitions>
+    <Label
+        Grid.Row="0"
+        Grid.Column="0"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        VerticalOptions="Center"
+        Text="{ext:Translate AccountNameLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="1"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate AccountPendingLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="2"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate AccountPostedLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="3"
+        Style="{ext:DynamicResource ControlLabelStyle}"
+        HorizontalTextAlignment="End"
+        VerticalOptions="Center"
+        Text="{ext:Translate AccountBalanceLabel}">
+    </Label>
+    <BoxView
+        Grid.Row="1"
+        Grid.ColumnSpan="5"
+        Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

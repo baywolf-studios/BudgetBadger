@@ -19,7 +19,7 @@ namespace BudgetBadger.Forms.Style
 
                 if (resource == null)
                 {
-                    throw new Exception();
+                    //throw new Exception();
                 }
 
                 return resource;
