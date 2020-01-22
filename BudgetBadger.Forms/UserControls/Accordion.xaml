@@ -7,8 +7,7 @@
     <ContentView.Content>
         <StackLayout
             Orientation="Vertical"
-            Spacing="16"
-            Margin="16">
+            Spacing="0">
             <Grid RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
