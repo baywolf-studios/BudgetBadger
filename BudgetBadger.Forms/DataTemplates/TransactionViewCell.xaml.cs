@@ -36,36 +36,37 @@ namespace BudgetBadger.Forms.DataTemplates
                 switch (transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
-                        primaryLeftSpan.SetBinding(Span.TextProperty, "Payee.Description");
-                        newLineLeftSpan.Text = Environment.NewLine;
-                        secondaryLeftSpan.SetBinding(Span.TextProperty, "Account.Description");
-                        primaryRightSpan.SetBinding(Span.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
-                        newLineRightSpan.Text = "";
-                        secondaryRightSpan.Text = "";
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Account:
-                        primaryLeftSpan.SetBinding(Span.TextProperty, "Payee.Description");
-                        newLineLeftSpan.Text = Environment.NewLine;
-                        secondaryLeftSpan.SetBinding(Span.TextProperty, "Envelope.Description");
-                        primaryRightSpan.SetBinding(Span.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
-                        newLineRightSpan.Text = "";
-                        secondaryRightSpan.Text = "";
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Payee:
-                        primaryLeftSpan.SetBinding(Span.TextProperty, "Envelope.Description");
-                        newLineLeftSpan.Text = Environment.NewLine;
-                        secondaryLeftSpan.SetBinding(Span.TextProperty, "Account.Description");
-                        primaryRightSpan.SetBinding(Span.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
-                        newLineRightSpan.Text = "";
-                        secondaryRightSpan.Text = "";
+                        rightSingleLabel.IsVisible = true;
+                        rightPrimaryLabel.IsVisible = false;
+                        rightSecondaryLabel.IsVisible = false;
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Full:
-                        primaryLeftSpan.SetBinding(Span.TextProperty, "Payee.Description");
-                        newLineLeftSpan.Text = Environment.NewLine;
-                        secondaryLeftSpan.SetBinding(Span.TextProperty, "Account.Description");
-                        primaryRightSpan.SetBinding(Span.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
-                        newLineRightSpan.Text = Environment.NewLine;
-                        secondaryRightSpan.SetBinding(Span.TextProperty, "Envelope.Description");
+                        rightSingleLabel.IsVisible = false;
+                        rightPrimaryLabel.IsVisible = true;
+                        rightSecondaryLabel.IsVisible = true;
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        rightPrimaryLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
+                        rightSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         break;
                 }
             }            
