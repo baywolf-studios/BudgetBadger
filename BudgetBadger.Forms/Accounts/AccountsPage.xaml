@@ -41,13 +41,11 @@
                     Spacing="{ext:DynamicResource size_40}"
                     Orientation="Vertical">
                     <Label
-                        Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Center"/>
+                        Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
                     <Label
-                        Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountNetWorthLabel}"
-                        VerticalOptions="Center"/>
+                        Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                        Text="{ext:Translate AccountNetWorthLabel}"/>
                 </StackLayout>
                 <StackLayout
                     IsVisible="{OnIdiom Default=False, Phone=True}"
@@ -59,15 +57,12 @@
                     Orientation="Horizontal">
                     <Label
                         Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Center"/>
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
                     <Label
                         Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountNetWorthLabel}"
-                        VerticalOptions="Center"/>
+                        Text="{ext:Translate AccountNetWorthLabel}"/>
                 </StackLayout>
                 <BoxView
-                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                     Grid.Row="1"
                     Grid.ColumnSpan="12"
                     Style="{ext:DynamicResource MediumDividerStyle}"

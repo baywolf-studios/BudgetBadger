@@ -17,7 +17,7 @@
     </Grid.ColumnDefinitions>
     <uc:Button2
         x:Name="ButtonBackground"
-        Grid.RowSpan="2"
+        Grid.Row="0"
         Grid.ColumnSpan="2"
         Style="{ext:DynamicResource HiddenButtonStyle}"
         Clicked="Handle_Tapped"/>
@@ -45,6 +45,5 @@
     <ContentView x:Name="BodyView"
                     Grid.Row="1"
                     Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                 InputTransparent="true"/>
+                    Grid.ColumnSpan="2"/>
 </Grid>
