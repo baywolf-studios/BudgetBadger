@@ -321,7 +321,7 @@
                                         HeightRequest="{ext:DynamicResource size_500}"
                                         BackgroundColor="{ext:DynamicResource gray_50}"
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                        <dt:TransactionGroupHeaderViewCell />
+                                        <dt:TransactionGroupHeaderViewCell HeightRequest="{ext:DynamicResource size_500}"/>
                                     </uc:ViewCell>
                                 </DataTemplate>
                             </uc:ListView2.GroupHeaderTemplate>
@@ -334,7 +334,8 @@
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:TransactionViewCell
                                             TransactionViewCellType="Account"
-                                            ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"/>
+                                            ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                            HeightRequest="{ext:DynamicResource size_675}"/>
                                         <uc:SelectableViewCell.ContextActions>
                                             <MenuItem
                                                 Text="{ext:Translate DeleteButton}"
