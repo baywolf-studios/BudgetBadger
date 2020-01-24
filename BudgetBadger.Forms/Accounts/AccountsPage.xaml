@@ -27,29 +27,45 @@
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{ext:DynamicResource Key=size_550,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
-                <Label
-                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                <StackLayout
+                    IsVisible="{OnIdiom Default=True, Phone=False}"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Grid.ColumnSpan="6"
-                    HorizontalOptions="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{ext:Translate AccountNetWorthLabel}"
-                    VerticalOptions="Center"/>
-                <Label
-                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
+                    Grid.ColumnSpan="12"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                    Spacing="{ext:DynamicResource size_40}"
+                    Orientation="Vertical">
+                    <Label
+                        Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
+                        VerticalOptions="Center"/>
+                    <Label
+                        Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                        Text="{ext:Translate AccountNetWorthLabel}"
+                        VerticalOptions="Center"/>
+                </StackLayout>
+                <StackLayout
+                    IsVisible="{OnIdiom Default=False, Phone=True}"
                     Grid.Row="0"
-                    Grid.Column="6"
-                    Grid.ColumnSpan="6"
-                    HorizontalOptions="End"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Center"/>
+                    Grid.Column="0"
+                    Grid.ColumnSpan="12"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                    Spacing="{ext:DynamicResource size_100}"
+                    Orientation="Horizontal">
+                    <Label
+                        Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"
+                        VerticalOptions="Center"/>
+                    <Label
+                        Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                        Text="{ext:Translate AccountNetWorthLabel}"
+                        VerticalOptions="Center"/>
+                </StackLayout>
                 <BoxView
                     Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                     Grid.Row="1"

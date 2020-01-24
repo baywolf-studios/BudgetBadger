@@ -132,6 +132,66 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
+            <Style x:Key="PageSubheaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageSubheaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageHeaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageHeaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_200}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+            </Style>
+
+            <Style x:Key="MobilePageSubheaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MobilePageSubheaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MobilePageHeaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MobilePageHeaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_200}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
             <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
@@ -143,21 +203,18 @@
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
             </Style>
 
-            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+            <Style x:Key="ListDoubleLineGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
             </Style>
 
-            <Style x:Key="ListDoubleLinePrimaryItemSpanStyle" TargetType="Span">
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
-            </Style>
-
-            <Style x:Key="ListDoubleLineSecondaryItemSpanStyle" TargetType="Span">
-                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
-                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
 
             <Style x:Key="ListDoubleLinePrimaryItemLabelStyle" TargetType="Label">

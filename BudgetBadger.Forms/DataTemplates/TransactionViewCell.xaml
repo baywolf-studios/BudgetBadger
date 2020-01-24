@@ -26,7 +26,7 @@
         Grid.Column="1"
         Grid.Row="0"
         VerticalOptions="End"
-        Style="{ext:DynamicResource ListDoubleLinePrimaryItemSpanStyle}"
+        Style="{ext:DynamicResource ListDoubleLinePrimaryItemLabelStyle}"
         Text="{Binding Payee.Description}">
     </Label>
     <Label
@@ -34,7 +34,7 @@
         Grid.Column="1"
         Grid.Row="1"
         VerticalOptions="Start"
-        Style="{ext:DynamicResource ListDoubleLineSecondaryItemSpanStyle}"
+        Style="{ext:DynamicResource ListDoubleLineSecondaryItemLabelStyle}"
         Text="{Binding Account.Description}">
     </Label>
     <Label
