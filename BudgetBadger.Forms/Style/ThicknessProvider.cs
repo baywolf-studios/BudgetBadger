@@ -89,21 +89,7 @@ namespace BudgetBadger.Forms.Style
 
         double GetValue(OnIdiom<double> idiom)
         {
-            switch (Device.Idiom)
-            {
-                case TargetIdiom.Phone:
-                    return idiom.Phone;
-                case TargetIdiom.Tablet:
-                    return idiom.Tablet;
-                case TargetIdiom.Desktop:
-                    return idiom.Desktop;
-                case TargetIdiom.TV:
-                    return idiom.TV;
-                case TargetIdiom.Watch:
-                    return idiom.Watch;
-                default:
-                    return idiom.Default;
-            }
+            return idiom;
         }
     }
 }

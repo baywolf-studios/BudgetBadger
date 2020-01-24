@@ -142,7 +142,7 @@
 
             <Style x:Key="PageSubheaderSecondaryLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}" />
-                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="StartAndExpand"/>
             </Style>
@@ -167,14 +167,14 @@
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             </Style>
 
             <Style x:Key="MobilePageSubheaderSecondaryLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}" />
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
             </Style>
 
             <Style x:Key="MobilePageHeaderPrimaryLabelStyle" TargetType="Label">
