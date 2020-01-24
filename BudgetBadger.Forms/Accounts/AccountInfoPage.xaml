@@ -37,12 +37,12 @@
                 IsVisible="{OnIdiom Default=True, Phone=False}"
                 Direction="Row"
                 Wrap="Wrap"
-                JustifyContent="Start"
+                JustifyContent="SpaceEvenly"
                 AlignContent="Center"
                 AlignItems="Center"
                 Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                 <StackLayout
-                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_100, RightKey=size_100,BottomKey=size_0}"
+                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
                     HeightRequest="{ext:DynamicResource size_800}"
                     Spacing="{ext:DynamicResource size_40}"
                     Orientation="Vertical">
