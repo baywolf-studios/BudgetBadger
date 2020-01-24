@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Grid
+    x:Class="BudgetBadger.Forms.DataTemplates.TransactionGroupHeaderViewCell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    x:Name="groupHeaderCell"
+    RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Label
+        Grid.Row="0"
+        Style="{ext:DynamicResource Key=ListDoubleLineGroupHeaderLabelStyle}"
+        Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
+    <BoxView
+        Grid.Row="1"
+        Style="{ext:DynamicResource DividerStyle}"/>
+</Grid>

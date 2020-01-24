@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class Accordion : ContentView
+    public partial class Accordion : Grid
     {
         uint _animationLength = 150;
 
