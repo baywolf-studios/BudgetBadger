@@ -32,238 +32,58 @@
                 Spacing="0"
                 Grid.Row="0"
                 Grid.ColumnSpan="12"
-                VerticalOptions="Center">
-            <FlexLayout
-                IsVisible="{OnIdiom Default=True, Phone=False}"
-                Direction="Row"
-                Wrap="Wrap"
-                JustifyContent="SpaceEvenly"
-                AlignContent="Center"
-                AlignItems="Center"
-                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                <StackLayout
-                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                    HeightRequest="{ext:DynamicResource size_800}"
-                    Spacing="{ext:DynamicResource size_40}"
-                    Orientation="Vertical">
-                    <Label
-                        Style="{StaticResource PageHeaderPrimaryLabelStyle}"
-                        Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"/>
-                    <Label
-                        Style="{StaticResource PageHeaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountBalanceLabel}"/>
-                </StackLayout>
-                <StackLayout
-                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                    Spacing="{ext:DynamicResource size_40}"
-                    HeightRequest="{ext:DynamicResource size_800}"
-                    Orientation="Vertical">
-                    <Label
-                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
-                        Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
-                    <Label
-                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountPendingLabel}"/>
-                </StackLayout>
-                <StackLayout
-                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                    Spacing="{ext:DynamicResource size_40}"
-                    HeightRequest="{ext:DynamicResource size_800}"
-                    Orientation="Vertical">
-                    <Label
-                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
-                        Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
-                    <Label
-                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountPostedLabel}"/>
-                </StackLayout>
-                <StackLayout
-                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                    Spacing="{ext:DynamicResource size_40}"
-                    HeightRequest="{ext:DynamicResource size_800}"
-                    Orientation="Vertical">
-                    <Label
-                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}">
-                        <Label.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Account.PaymentRequired}"
-                                TargetType="Label"
-                                Value="false">
-                                <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
-                            </DataTrigger>
-                            <DataTrigger
-                                Binding="{Binding Account.PaymentRequired}"
-                                TargetType="Label"
-                                Value="true">
-                                <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
-                                <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Label
-                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountPaymentLabel}">
-                        <Label.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Account.PaymentRequired}"
-                                TargetType="Label"
-                                Value="true">
-                                <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </StackLayout>
-            </FlexLayout>
-            </StackLayout>
-            <uc:Accordion
-                Grid.Row="0"
-                Grid.ColumnSpan="12"
-                IsVisible="{OnIdiom Default=False, Phone=True}"
-                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                <uc:Accordion.HeaderContent>
+                VerticalOptions="Start">
+                <FlexLayout
+                    IsVisible="{OnIdiom Default=True, Phone=False}"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="SpaceEvenly"
+                    AlignContent="Center"
+                    AlignItems="Center"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                     <StackLayout
-                        HeightRequest="{ext:DynamicResource size_600}"
-                        Spacing="{ext:DynamicResource size_100}"
-                        Orientation="Horizontal">
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        Orientation="Vertical">
                         <Label
-                            Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                            Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"
-                            VerticalOptions="Center"/>
+                            Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                            Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"/>
                         <Label
-                            Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
-                            Text="{ext:Translate AccountBalanceLabel}"
-                            VerticalOptions="Center"/>
+                            Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountBalanceLabel}"/>
                     </StackLayout>
-                </uc:Accordion.HeaderContent>
-                <uc:Accordion.BodyContent>
-                    <StackLayout Margin="0" Padding="0" Spacing="0">
-                    <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
-                        <StackLayout
-                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_100, RightKey=size_100,BottomKey=size_100}"
-                            Spacing="{ext:DynamicResource size_40}"
-                            HeightRequest="{ext:DynamicResource size_600}"
-                            Orientation="Vertical">
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
-                                Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                Text="{ext:Translate AccountPendingLabel}"/>
-                        </StackLayout>
-                        <StackLayout
-                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_100, RightKey=size_100,BottomKey=size_100}"
-                            Spacing="{ext:DynamicResource size_40}"
-                            HeightRequest="{ext:DynamicResource size_600}"
-                            Orientation="Vertical">
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
-                                Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                Text="{ext:Translate AccountPostedLabel}"/>
-                        </StackLayout>
-                        <StackLayout
-                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_100, RightKey=size_100,BottomKey=size_100}"
-                            Spacing="{ext:DynamicResource size_40}"
-                            HeightRequest="{ext:DynamicResource size_600}"
-                            Orientation="Vertical">
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}">
-                                <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding Account.PaymentRequired}"
-                                        TargetType="Label"
-                                        Value="false">
-                                        <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
-                                    </DataTrigger>
-                                    <DataTrigger
-                                        Binding="{Binding Account.PaymentRequired}"
-                                        TargetType="Label"
-                                        Value="true">
-                                        <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
-                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label
-                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                Text="{ext:Translate AccountPaymentLabel}">
-                                <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding Account.PaymentRequired}"
-                                        TargetType="Label"
-                                        Value="true">
-                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </StackLayout>
-                    </FlexLayout>
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Orientation="Vertical">
+                        <Label
+                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                            Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
+                        <Label
+                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountPendingLabel}"/>
                     </StackLayout>
-                    <!--<Grid ColumnSpacing="16" RowSpacing="8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Orientation="Vertical">
                         <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            HorizontalOptions="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{ext:Translate AccountPendingLabel}" />
+                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                            Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
                         <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            HorizontalOptions="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}" />
+                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountPostedLabel}"/>
+                    </StackLayout>
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Orientation="Vertical">
                         <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalOptions="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{ext:Translate AccountPostedLabel}" />
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalOptions="Center"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}" />
-                        <ContentView
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="2">
-                            <ContentView.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding PaymentCommand}" />
-                            </ContentView.GestureRecognizers>
-                        </ContentView>
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            HorizontalOptions="Center"
-                            InputTransparent="true"
-                            Style="{StaticResource PageSubheaderLabelStyle}"
-                            Text="{ext:Translate AccountPaymentLabel}">
-                            <Label.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Account.PaymentRequired}"
-                                    TargetType="Label"
-                                    Value="true">
-                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            HorizontalOptions="Center"
-                            InputTransparent="true"
-                            Style="{StaticResource PageSubheaderLabelStyle}">
+                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}">
                             <Label.Triggers>
                                 <DataTrigger
                                     Binding="{Binding Account.PaymentRequired}"
@@ -276,13 +96,108 @@
                                     TargetType="Label"
                                     Value="true">
                                     <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
-                                    <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+                                    <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                    </Grid>-->
-                </uc:Accordion.BodyContent>
-            </uc:Accordion>
+                        <Label
+                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountPaymentLabel}">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding Account.PaymentRequired}"
+                                    TargetType="Label"
+                                    Value="true">
+                                    <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </FlexLayout>
+                <uc:Accordion
+                    IsVisible="{OnIdiom Default=False, Phone=True}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                    <uc:Accordion.HeaderContent>
+                        <StackLayout
+                            HeightRequest="{ext:DynamicResource size_600}"
+                            Spacing="{ext:DynamicResource size_100}"
+                            Orientation="Horizontal">
+                            <Label
+                                Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountBalanceLabel}"/>
+                        </StackLayout>
+                    </uc:Accordion.HeaderContent>
+                    <uc:Accordion.BodyContent>
+                        <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                        <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                            <StackLayout
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                Spacing="{ext:DynamicResource size_40}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Orientation="Vertical">
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                    Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountPendingLabel}"/>
+                            </StackLayout>
+                            <StackLayout
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                Spacing="{ext:DynamicResource size_40}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Orientation="Vertical">
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                    Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountPostedLabel}"/>
+                            </StackLayout>
+                            <StackLayout
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                Spacing="{ext:DynamicResource size_40}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Orientation="Vertical">
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Account.PaymentRequired}"
+                                            TargetType="Label"
+                                            Value="false">
+                                            <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding Account.PaymentRequired}"
+                                            TargetType="Label"
+                                            Value="true">
+                                            <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
+                                            <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountPaymentLabel}">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Account.PaymentRequired}"
+                                            TargetType="Label"
+                                            Value="true">
+                                            <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </FlexLayout>
+                        </StackLayout>
+                    </uc:Accordion.BodyContent>
+                </uc:Accordion>
+            </StackLayout>
             <BoxView
                 Grid.Row="1"
                 Grid.ColumnSpan="12"
