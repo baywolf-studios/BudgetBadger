@@ -36,6 +36,7 @@ namespace BudgetBadger.Forms.UserControls
                 if (e.PropertyName == nameof(View))
                 {
                     View.BackgroundColor = BackgroundColor;
+                    View.HeightRequest = HeightRequest;
 
                     if (View is Layout layout)
                     {
@@ -66,6 +67,10 @@ namespace BudgetBadger.Forms.UserControls
             if (bindable is ViewCell viewCell && oldValue != newValue)
             {
                 viewCell.Height = (double)newValue;
+                if (viewCell.View != null)
+                {
+                    viewCell.View.HeightRequest = (double)newValue;
+                }
             }
         }
     }

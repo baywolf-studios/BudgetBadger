@@ -37,7 +37,7 @@ namespace BudgetBadger.Forms.UserControls
             activityIndicator.IsVisible = false;
             pullToRefresh.IsVisible = true;
 
-            //pullToRefresh.Refreshing += PullToRefresh_Refreshing;
+            pullToRefresh.Refreshing += PullToRefresh_Refreshing;
             PropertyChanged += (sender, e) => 
             {
                 if (e.PropertyName == nameof(IsBusy))

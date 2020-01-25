@@ -182,7 +182,7 @@ namespace BudgetBadger.Forms.Accounts
                 return;
             }
 
-            //IsBusy = true;
+            IsBusy = true;
 
             if (Accounts.Any())
             {
