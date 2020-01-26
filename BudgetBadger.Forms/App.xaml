@@ -115,6 +115,12 @@
                 <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
             </Style>
 
+            <Style x:Key="AccountPaymentButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+            </Style>
+
             <Style x:Key="ActionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
                 <Setter Property="RestingBackgroundColor" Value="Transparent" />

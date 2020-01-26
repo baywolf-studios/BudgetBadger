@@ -75,10 +75,10 @@
                                 <comparers:AccountComparer/>
                             </uc:DataTable.SortComparer>
                             <uc:DataTable.Header>
-                                <dt:AccountDetailedHeader
-                                    HeightRequest="{ext:DynamicResource size_500}"
-                                    BackgroundColor="{ext:DynamicResource gray_50}"
-                                    Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+                                    <dt:AccountDetailedHeader
+                                        HeightRequest="{ext:DynamicResource size_500}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
                             </uc:DataTable.Header>
                             <uc:DataTable.GroupHeaderTemplate>
                                 <DataTemplate>
