@@ -6,7 +6,7 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="{ext:DynamicResource Key=size_100}"
-    RowSpacing="4">
+    RowSpacing="{ext:DynamicResource Key=size_40}">
     <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>

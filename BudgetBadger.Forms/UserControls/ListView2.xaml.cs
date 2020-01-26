@@ -424,6 +424,10 @@ namespace BudgetBadger.Forms.UserControls
 
         private void UpdateItems()
         {
+            SelectedItem = null;
+            var selectedArgs = new SelectedItemChangedEventArgs(SelectedItem, -1);
+            ItemSelected?.Invoke(this, selectedArgs);
+
             if (Items == null)
             {
                 if (IsGrouped)
