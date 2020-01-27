@@ -16,24 +16,52 @@ namespace BudgetBadger.Forms.DataTemplates
                 switch (transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(0);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        ColumnDefinitions.Remove(envelopeColumn);
+                        if (!ColumnDefinitions.Contains(accountColumn))
+                        {
+                            ColumnDefinitions.Insert(1, accountColumn);
+                        }
+                        if (!ColumnDefinitions.Contains(payeeColumn))
+                        {
+                            ColumnDefinitions.Insert(2, accountColumn);
+                        }
                         break;
                     case TransactionViewCellType.Account:
-                        accountColumn.Width = new GridLength(0);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        ColumnDefinitions.Remove(accountColumn);
+                        if (!ColumnDefinitions.Contains(envelopeColumn))
+                        {
+                            ColumnDefinitions.Insert(1, envelopeColumn);
+                        }
+                        if (!ColumnDefinitions.Contains(payeeColumn))
+                        {
+                            ColumnDefinitions.Insert(2, accountColumn);
+                        }
                         break;
                     case TransactionViewCellType.Payee:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(0);
+                        ColumnDefinitions.Remove(payeeColumn);
+                        if (!ColumnDefinitions.Contains(accountColumn))
+                        {
+                            ColumnDefinitions.Insert(1, accountColumn);
+                        }
+                        if (!ColumnDefinitions.Contains(envelopeColumn))
+                        {
+                            ColumnDefinitions.Insert(2, envelopeColumn);
+                        }
                         break;
                     case TransactionViewCellType.Full:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        ColumnDefinitions.Remove(payeeColumn);
+                        if (!ColumnDefinitions.Contains(accountColumn))
+                        {
+                            ColumnDefinitions.Insert(1, accountColumn);
+                        }
+                        if (!ColumnDefinitions.Contains(envelopeColumn))
+                        {
+                            ColumnDefinitions.Insert(2, envelopeColumn);
+                        }
+                        if (!ColumnDefinitions.Contains(payeeColumn))
+                        {
+                            ColumnDefinitions.Insert(3, payeeColumn);
+                        }
                         break;
                 }
             }
