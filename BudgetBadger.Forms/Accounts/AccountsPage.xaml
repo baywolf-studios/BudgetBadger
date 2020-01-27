@@ -33,40 +33,111 @@
                     <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <StackLayout
-                    IsVisible="{OnIdiom Default=True, Phone=False}"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
                     Grid.Row="0"
-                    Grid.Column="0"
                     Grid.ColumnSpan="12"
-                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
-                    Spacing="{ext:DynamicResource size_40}"
-                    Orientation="Vertical">
-                    <Label
-                        Style="{StaticResource PageHeaderPrimaryLabelStyle}"
-                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
-                    <Label
-                        Style="{StaticResource PageHeaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountNetWorthLabel}"/>
-                </StackLayout>
-                <StackLayout
-                    IsVisible="{OnIdiom Default=False, Phone=True}"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="12"
-                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
-                    Spacing="{ext:DynamicResource size_100}"
-                    Orientation="Horizontal">
-                    <Label
-                        Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
-                    <Label
-                        Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
-                        Text="{ext:Translate AccountNetWorthLabel}"/>
+                    VerticalOptions="Start">
+                    <FlexLayout
+                        IsVisible="{OnIdiom Default=True, Phone=False}"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="SpaceEvenly"
+                        AlignContent="Center"
+                        AlignItems="Center"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                                Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountNetWorthLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding AssetsTotal, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountAssetsLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding DebtsTotal, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountDebtsLabel}"/>
+                        </StackLayout>
+                    </FlexLayout>
+                    <uc:Accordion
+                        IsVisible="{OnIdiom Default=False, Phone=True}"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Accordion.HeaderContent>
+                            <StackLayout
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Spacing="{ext:DynamicResource size_100}"
+                                Orientation="Horizontal">
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                    Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountNetWorthLabel}"/>
+                            </StackLayout>
+                        </uc:Accordion.HeaderContent>
+                        <uc:Accordion.BodyContent>
+                            <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                            <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding AssestsTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate AccountAssestsLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding DebtsTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate AccountDebtsLabel}"/>
+                                </StackLayout>
+                            </FlexLayout>
+                            </StackLayout>
+                        </uc:Accordion.BodyContent>
+                    </uc:Accordion>
                 </StackLayout>
                 <BoxView
                     Grid.Row="1"
                     Grid.ColumnSpan="12"
                     Style="{ext:DynamicResource MediumDividerStyle}"
-                    HeightRequest="{ext:DynamicResource size_25}" />
+                    HeightRequest="{ext:DynamicResource size_25}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
                 <uc:PullToRefresh
                     Grid.Row="2"
                     Grid.RowSpan="2"
