@@ -1,16 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<StackLayout
+<Grid
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.UserControls.ListView2"
-    Orientation="Vertical"
     Margin="0"
     Padding="0"
-    Spacing="0">
-    <ContentView x:Name="stickyHeader" IsVisible="false"/>
-    <SearchBar x:Name="SearchBar"
-               Text="{Binding SearchText}"/>
+    RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <ContentView
+        x:Name="stickyHeader"
+        Grid.Row="0" 
+        IsVisible="false"/>
+    <SearchBar
+        x:Name="SearchBar"
+        Grid.Row="1"
+        Text="{Binding SearchText}"/>
     <ListView x:Name="InternalListView"
+              Grid.Row="2" 
               CachingStrategy="RetainElement"
               SelectedItem="{Binding SelectedItem}"
               HasUnevenRows="{Binding HasUnevenRows}"
@@ -20,5 +31,8 @@
               HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
               VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"
               SelectionMode="None"/>
-    <ContentView x:Name="stickyFooter" IsVisible="false"/> 
-</StackLayout>
+    <ContentView
+        x:Name="stickyFooter"
+        Grid.Row="3"
+        IsVisible="false"/> 
+</Grid>

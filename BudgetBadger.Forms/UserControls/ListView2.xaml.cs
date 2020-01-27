@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
-    public partial class ListView2 : StackLayout
+    public partial class ListView2 : Grid
     {
         public static readonly BindableProperty HeaderProperty = BindableProperty.Create(nameof(Header), typeof(object), typeof(ListView), null, propertyChanged: UpdateHeader);
         public object Header

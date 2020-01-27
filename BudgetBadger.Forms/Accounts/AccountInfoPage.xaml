@@ -164,7 +164,8 @@
                                 Padding="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}">
                                 <StackLayout
                                     Spacing="{ext:DynamicResource size_40}"
-                                    Orientation="Vertical">
+                                    Orientation="Vertical"
+                                    InputTransparent="True">
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}">
                                         <Label.Triggers>
