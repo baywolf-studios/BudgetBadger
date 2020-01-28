@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -7,14 +8,35 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class TransactionDetailedViewCell : Grid
     {
-        public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(TextColumn));
+        public static readonly BindableProperty AccountsProperty = BindableProperty.Create(nameof(Accounts), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
+        public IEnumerable Accounts
+        {
+            get => (IEnumerable)GetValue(AccountsProperty);
+            set => SetValue(AccountsProperty, value);
+        }
+
+        public static readonly BindableProperty PayeesProperty = BindableProperty.Create(nameof(Payees), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
+        public IEnumerable Payees
+        {
+            get => (IEnumerable)GetValue(PayeesProperty);
+            set => SetValue(PayeesProperty, value);
+        }
+
+        public static readonly BindableProperty EnvelopesProperty = BindableProperty.Create(nameof(Envelopes), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
+        public IEnumerable Envelopes
+        {
+            get => (IEnumerable)GetValue(EnvelopesProperty);
+            set => SetValue(EnvelopesProperty, value);
+        }
+
+        public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(TransactionDetailedViewCell));
         public ICommand SaveCommand
         {
             get => (ICommand)GetValue(SaveCommandProperty);
             set => SetValue(SaveCommandProperty, value);
         }
 
-        public static BindableProperty RefreshItemCommandProperty = BindableProperty.Create(nameof(RefreshItemCommand), typeof(ICommand), typeof(TextColumn));
+        public static BindableProperty RefreshItemCommandProperty = BindableProperty.Create(nameof(RefreshItemCommand), typeof(ICommand), typeof(TransactionDetailedViewCell));
         public ICommand RefreshItemCommand
         {
             get => (ICommand)GetValue(RefreshItemCommandProperty);
@@ -76,6 +98,12 @@ namespace BudgetBadger.Forms.DataTemplates
         {
             EditButton.IsVisible = false;
             SaveCancelContainer.IsVisible = true;
+            accountControl.IsReadOnly = false;
+            envelopeControl.IsReadOnly = false;
+            payeeControl.IsReadOnly = false;
+            serviceDateControl.IsReadOnly = false;
+            outflowControl.IsReadOnly = false;
+            inflowControl.IsReadOnly = false;
         }
 
         void Handle_SaveClicked(object sender, EventArgs e)
@@ -86,6 +114,13 @@ namespace BudgetBadger.Forms.DataTemplates
             {
                 SaveCommand?.Execute(BindingContext);
             }
+
+            accountControl.IsReadOnly = true;
+            envelopeControl.IsReadOnly = true;
+            payeeControl.IsReadOnly = true;
+            serviceDateControl.IsReadOnly = true;
+            outflowControl.IsReadOnly = true;
+            inflowControl.IsReadOnly = true;
         }
 
         void Handle_CancelClicked(object sender, EventArgs e)
@@ -96,6 +131,13 @@ namespace BudgetBadger.Forms.DataTemplates
             {
                 RefreshItemCommand?.Execute(BindingContext);
             }
+
+            accountControl.IsReadOnly = true;
+            envelopeControl.IsReadOnly = true;
+            payeeControl.IsReadOnly = true;
+            serviceDateControl.IsReadOnly = true;
+            outflowControl.IsReadOnly = true;
+            inflowControl.IsReadOnly = true;
         }
     }
 }
