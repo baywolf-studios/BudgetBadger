@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Grid
+    x:Name="this"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
@@ -34,6 +35,9 @@
         Grid.Row="0"
         Grid.Column="1"
         VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
+        ItemDisplayBinding="{Binding Description}"
         SelectedItem="{Binding Account}">
     </uc:DropdownCompact>
     <uc:DropdownCompact
@@ -41,6 +45,9 @@
         Grid.Row="0"
         Grid.Column="2"
         VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
+        ItemDisplayBinding="{Binding Description}"
         SelectedItem="{Binding Envelope}">
     </uc:DropdownCompact>
     <uc:DropdownCompact
@@ -48,6 +55,9 @@
         Grid.Row="0"
         Grid.Column="3"
         VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+        ItemDisplayBinding="{Binding Description}"
         SelectedItem="{Binding Payee}">
     </uc:DropdownCompact>
     <uc:CurrencyCalculatorEntryCompact
@@ -55,6 +65,7 @@
         Grid.Row="0"
         Grid.Column="4"
         VerticalOptions="Center"
+        IsReadOnly="True"
         Number="{Binding Outflow}">
     </uc:CurrencyCalculatorEntryCompact>
     <uc:CurrencyCalculatorEntryCompact
@@ -62,6 +73,7 @@
         Grid.Row="0"
         Grid.Column="5"
         VerticalOptions="Center"
+        IsReadOnly="True"
         Number="{Binding Inflow}">
     </uc:CurrencyCalculatorEntryCompact>
     <uc:Button2

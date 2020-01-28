@@ -31,7 +31,7 @@
     <UseRefCounting>true</UseRefCounting>
     <HttpClientHandler>
     </HttpClientHandler>
-    <LinkMode>SdkOnly</LinkMode>
+    <LinkMode>None</LinkMode>
     <XamMacArch>
     </XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
