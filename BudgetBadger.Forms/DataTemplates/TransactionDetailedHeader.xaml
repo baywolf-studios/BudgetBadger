@@ -5,6 +5,7 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.DataTemplates.TransactionDetailedHeader"
+    HeightRequest="{ext:DynamicResource size_500}"
     ColumnSpacing="{ext:DynamicResource size_400}"
     RowSpacing="{ext:DynamicResource size_0}">
     <Grid.RowDefinitions>
@@ -21,6 +22,7 @@
         <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
     </Grid.ColumnDefinitions>
     <Label
+        x:Name="serviceDateControl"
         Grid.Row="0"
         Grid.Column="0"
         Style="{ext:DynamicResource ControlLabelStyle}"
@@ -28,6 +30,7 @@
         Text="{ext:Translate TransactionServiceDateLabel}">
     </Label>
     <Label
+        x:Name="accountControl"
         Grid.Row="0"
         Grid.Column="1"
         Style="{ext:DynamicResource ControlLabelStyle}"
@@ -36,6 +39,7 @@
         Text="{ext:Translate TransactionAccountLabel}">
     </Label>
     <Label
+        x:Name="envelopeControl"
         Grid.Row="0"
         Grid.Column="2"
         Style="{ext:DynamicResource ControlLabelStyle}"
@@ -44,6 +48,7 @@
         Text="{ext:Translate TransactionEnvelopeLabel}">
     </Label>
     <Label
+        x:Name="payeeControl"
         Grid.Row="0"
         Grid.Column="3"
         Style="{ext:DynamicResource ControlLabelStyle}"
@@ -52,23 +57,26 @@
         Text="{ext:Translate TransactionPayeeLabel}">
     </Label>
     <Label
+        x:Name="outflowControl"
         Grid.Row="0"
         Grid.Column="4"
         Style="{ext:DynamicResource ControlLabelStyle}"
         HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionOutflowLabel}">
+        Text="{ext:Translate TransactactionOutflowLabel}">
     </Label>
     <Label
+        x:Name="inflowControl"
         Grid.Row="0"
         Grid.Column="5"
         Style="{ext:DynamicResource ControlLabelStyle}"
         HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionInflowLabel}">
+        Text="{ext:Translate TransactactionInflowLabel}">
     </Label>
     <BoxView
+        x:Name="divider"
         Grid.Row="1"
-        Grid.ColumnSpan="6"
+        Grid.ColumnSpan="7"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

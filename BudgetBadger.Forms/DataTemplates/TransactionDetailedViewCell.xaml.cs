@@ -31,24 +31,37 @@ namespace BudgetBadger.Forms.DataTemplates
                 switch (transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(0);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        Children.Remove(envelopeControl);
+                        SetColumn(accountControl, 1);
+                        SetColumn(payeeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
+                        SetColumn(EditButton, 5);
+                        SetColumn(SaveCancelContainer, 5);
+                        ColumnDefinitions.Remove(envelopeColumn);
                         break;
                     case TransactionViewCellType.Account:
-                        accountColumn.Width = new GridLength(0);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        Children.Remove(accountControl);
+                        SetColumn(envelopeControl, 1);
+                        SetColumn(payeeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
+                        SetColumn(EditButton, 5);
+                        SetColumn(SaveCancelContainer, 5);
+                        ColumnDefinitions.Remove(accountColumn);
                         break;
                     case TransactionViewCellType.Payee:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(0);
-                        break;
-                    case TransactionViewCellType.Full:
-                        accountColumn.Width = new GridLength(1, GridUnitType.Star);
-                        envelopeColumn.Width = new GridLength(1, GridUnitType.Star);
-                        payeeColumn.Width = new GridLength(1, GridUnitType.Star);
+                        Children.Remove(payeeControl);
+                        SetColumn(accountControl, 1);
+                        SetColumn(envelopeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
+                        SetColumn(EditButton, 5);
+                        SetColumn(SaveCancelContainer, 5);
+                        ColumnDefinitions.Remove(payeeColumn);
                         break;
                 }
             }
