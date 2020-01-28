@@ -20,53 +20,50 @@
         <ColumnDefinition x:Name="inflowColumn" Width="*"/>
         <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
     </Grid.ColumnDefinitions>
-    <Label
+    <uc:DatePickerCompact
+        x:Name="serviceDateControl"
         Grid.Row="0"
         Grid.Column="0"
-        Style="{ext:DynamicResource ControlLabelStyle}"
+        UseTextField="{OnPlatform Default=False, macOS=True, UWP=True}"
+        IsReadOnly="True"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionServiceDateLabel}">
-    </Label>
-    <Label
+        Date="{Binding ServiceDate}">
+    </uc:DatePickerCompact>
+    <uc:DropdownCompact
+        x:Name="accountControl"
         Grid.Row="0"
         Grid.Column="1"
-        Style="{ext:DynamicResource ControlLabelStyle}"
-        HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionAccountLabel}">
-    </Label>
-    <Label
+        SelectedItem="{Binding Account}">
+    </uc:DropdownCompact>
+    <uc:DropdownCompact
+        x:Name="envelopeControl"
         Grid.Row="0"
         Grid.Column="2"
-        Style="{ext:DynamicResource ControlLabelStyle}"
-        HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionEnvelopeLabel}">
-    </Label>
-    <Label
+        SelectedItem="{Binding Envelope}">
+    </uc:DropdownCompact>
+    <uc:DropdownCompact
+        x:Name="payeeControl"
         Grid.Row="0"
         Grid.Column="3"
-        Style="{ext:DynamicResource ControlLabelStyle}"
-        HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionPayeeLabel}">
-    </Label>
-    <Label
+        SelectedItem="{Binding Payee}">
+    </uc:DropdownCompact>
+    <uc:CurrencyCalculatorEntryCompact
+        x:Name="outflowControl"
         Grid.Row="0"
         Grid.Column="4"
-        Style="{ext:DynamicResource ControlLabelStyle}"
-        HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionOutflowLabel}">
-    </Label>
-    <Label
+        Number="{Binding Outflow}">
+    </uc:CurrencyCalculatorEntryCompact>
+    <uc:CurrencyCalculatorEntryCompact
+        x:Name="inflowControl"
         Grid.Row="0"
         Grid.Column="5"
-        Style="{ext:DynamicResource ControlLabelStyle}"
-        HorizontalTextAlignment="End"
         VerticalOptions="Center"
-        Text="{ext:Translate TransactionInflowLabel}">
-    </Label>
+        Number="{Binding Inflow}">
+    </uc:CurrencyCalculatorEntryCompact>
     <uc:Button2
         x:Name="EditButton"
         Grid.Column="6"
@@ -82,11 +79,11 @@
     </uc:Button2>
     <StackLayout
         x:Name="SaveCancelContainer"
+        Grid.Column="6"
         Spacing="{ext:DynamicResource size_100}"
         Margin="0"
         Padding="0"
         Orientation="Horizontal"
-        Grid.Column="6"
         HorizontalOptions="Center"
         IsVisible="False">
         <uc:Button2
@@ -115,7 +112,8 @@
         </uc:Button2>
     </StackLayout>
     <BoxView
+        x:Name="divider"
         Grid.Row="1"
-        Grid.ColumnSpan="6"
+        Grid.ColumnSpan="7"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

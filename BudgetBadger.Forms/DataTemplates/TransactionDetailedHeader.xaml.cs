@@ -16,52 +16,31 @@ namespace BudgetBadger.Forms.DataTemplates
                 switch (transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
+                        Children.Remove(envelopeControl);
+                        SetColumn(accountControl, 1);
+                        SetColumn(payeeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(envelopeColumn);
-                        if (!ColumnDefinitions.Contains(accountColumn))
-                        {
-                            ColumnDefinitions.Insert(1, accountColumn);
-                        }
-                        if (!ColumnDefinitions.Contains(payeeColumn))
-                        {
-                            ColumnDefinitions.Insert(2, accountColumn);
-                        }
                         break;
                     case TransactionViewCellType.Account:
+                        Children.Remove(accountControl);
+                        SetColumn(envelopeControl, 1);
+                        SetColumn(payeeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(accountColumn);
-                        if (!ColumnDefinitions.Contains(envelopeColumn))
-                        {
-                            ColumnDefinitions.Insert(1, envelopeColumn);
-                        }
-                        if (!ColumnDefinitions.Contains(payeeColumn))
-                        {
-                            ColumnDefinitions.Insert(2, accountColumn);
-                        }
                         break;
                     case TransactionViewCellType.Payee:
+                        Children.Remove(payeeControl);
+                        SetColumn(accountControl, 1);
+                        SetColumn(envelopeControl, 2);
+                        SetColumnSpan(divider, 6);
+                        SetColumn(outflowControl, 3);
+                        SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(payeeColumn);
-                        if (!ColumnDefinitions.Contains(accountColumn))
-                        {
-                            ColumnDefinitions.Insert(1, accountColumn);
-                        }
-                        if (!ColumnDefinitions.Contains(envelopeColumn))
-                        {
-                            ColumnDefinitions.Insert(2, envelopeColumn);
-                        }
-                        break;
-                    case TransactionViewCellType.Full:
-                        ColumnDefinitions.Remove(payeeColumn);
-                        if (!ColumnDefinitions.Contains(accountColumn))
-                        {
-                            ColumnDefinitions.Insert(1, accountColumn);
-                        }
-                        if (!ColumnDefinitions.Contains(envelopeColumn))
-                        {
-                            ColumnDefinitions.Insert(2, envelopeColumn);
-                        }
-                        if (!ColumnDefinitions.Contains(payeeColumn))
-                        {
-                            ColumnDefinitions.Insert(3, payeeColumn);
-                        }
                         break;
                 }
             }
