@@ -214,6 +214,7 @@
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
@@ -221,24 +222,28 @@
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ListDoubleLinePrimaryItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ListDoubleLineSecondaryItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ListSingleLineItemLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ThickDividerStyle" TargetType="BoxView">
@@ -279,11 +284,13 @@
             <Style x:Key="ControlLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ControlLabelCompactStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ControlEntryStyle" TargetType="Entry">
@@ -309,21 +316,25 @@
             <Style x:Key="ControlHintLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ControlHintLabelCompactStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ControlErrorLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="ControlErrorLabelCompactStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
 
             <Style x:Key="HiddenButtonStyle" TargetType="uc:Button2">

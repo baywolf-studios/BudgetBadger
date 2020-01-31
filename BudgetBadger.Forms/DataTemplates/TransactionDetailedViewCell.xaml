@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Grid
-    x:Name="this"
+    x:Name="transactionGridViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
@@ -14,9 +14,9 @@
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
         <ColumnDefinition x:Name="serviceDateColumn" Width="*"/>
-        <ColumnDefinition x:Name="accountColumn" Width="*"/>
-        <ColumnDefinition x:Name="envelopeColumn" Width="*"/>
-        <ColumnDefinition x:Name="payeeColumn" Width="*"/>
+        <ColumnDefinition x:Name="accountColumn" Width="2*"/>
+        <ColumnDefinition x:Name="envelopeColumn" Width="3*"/>
+        <ColumnDefinition x:Name="payeeColumn" Width="2*"/>
         <ColumnDefinition x:Name="outflowColumn" Width="*"/>
         <ColumnDefinition x:Name="inflowColumn" Width="*"/>
         <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
@@ -36,7 +36,7 @@
         Grid.Column="1"
         VerticalOptions="Center"
         IsReadOnly="True"
-        ItemsSource="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
+        ItemsSource="{Binding Accounts, Source={x:Reference Name=transactionGridViewCell}}"
         ItemDisplayBinding="{Binding Description}"
         SelectedItem="{Binding Account}">
     </uc:DropdownCompact>
@@ -46,8 +46,8 @@
         Grid.Column="2"
         VerticalOptions="Center"
         IsReadOnly="True"
-        ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
-        ItemDisplayBinding="{Binding Description}"
+        ItemsSource="{Binding Envelopes, Source={x:Reference Name=transactionGridViewCell}}"
+        ItemDisplayBinding="{Binding ExtendedDescription}"
         SelectedItem="{Binding Envelope}">
     </uc:DropdownCompact>
     <uc:DropdownCompact
@@ -56,7 +56,7 @@
         Grid.Column="3"
         VerticalOptions="Center"
         IsReadOnly="True"
-        ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+        ItemsSource="{Binding Payees, Source={x:Reference Name=transactionGridViewCell}}"
         ItemDisplayBinding="{Binding Description}"
         SelectedItem="{Binding Payee}">
     </uc:DropdownCompact>
@@ -66,6 +66,7 @@
         Grid.Column="4"
         VerticalOptions="Center"
         IsReadOnly="True"
+        HorizontalTextAlignment="End"
         Number="{Binding Outflow}">
     </uc:CurrencyCalculatorEntryCompact>
     <uc:CurrencyCalculatorEntryCompact
@@ -74,13 +75,15 @@
         Grid.Column="5"
         VerticalOptions="Center"
         IsReadOnly="True"
+        HorizontalTextAlignment="End"
         Number="{Binding Inflow}">
     </uc:CurrencyCalculatorEntryCompact>
     <uc:Button2
         x:Name="EditButton"
         Grid.Column="6"
         Style="{ext:DynamicResource ActionButtonStyle}"
-        Clicked="Handle_EditClicked">
+        Clicked="Handle_EditClicked"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
         <uc:Button2.ImageSource>
             <FontImageSource
                 Size="{ext:DynamicResource size_225}"

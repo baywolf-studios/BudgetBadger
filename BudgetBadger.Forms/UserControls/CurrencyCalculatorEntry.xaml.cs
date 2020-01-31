@@ -86,6 +86,16 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsReadOnlyProperty, value);
         }
 
+        public TextAlignment HorizontalTextAlignment
+        {
+            get => TextControl.HorizontalTextAlignment;
+            set
+            {
+                TextControl.HorizontalTextAlignment = value;
+                ReadOnlyTextControl.HorizontalTextAlignment = value;
+            }
+        }
+
         public event EventHandler Completed;
 
         private bool _compact;
