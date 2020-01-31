@@ -209,6 +209,40 @@ namespace BudgetBadger.Forms.UserControls
             InternalListView.Scrolled += InternalListView_Scrolled;
         }
 
+        private void UpdateMac()
+        {
+            if (Device.RuntimePlatform == Device.macOS)
+            {
+                if (IsGrouped)
+                {
+                    InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RetainElement)
+                    {
+                        SelectionMode = ListViewSelectionMode.None
+                    };
+                }
+                else
+                {
+                    InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
+                    {
+                        SelectionMode = ListViewSelectionMode.None
+                    };
+                }
+                SetRow(InternalListView, 2);
+                Children.Add(InternalListView);
+                InternalListView.BindingContext = this;
+                InternalListView.ItemsSource = new ObservableList<object>();
+                InternalListView.ItemTapped += InternalListView_ItemTapped;
+                InternalListView.Scrolled += InternalListView_Scrolled;
+                InternalListView.SetBinding(SelectedItemProperty, nameof(SelectedItem));
+                InternalListView.SetBinding(HasUnevenRowsProperty, nameof(HasUnevenRows));
+                InternalListView.SetBinding(RowHeightProperty, nameof(RowHeight));
+                InternalListView.SetBinding(SeparatorVisibilityProperty, nameof(SeparatorVisibility));
+                InternalListView.SetBinding(SeparatorColorProperty, nameof(SeparatorColor));
+                InternalListView.SetBinding(HorizontalScrollBarVisibilityProperty, nameof(HorizontalScrollBarVisibility));
+                InternalListView.SetBinding(VerticalScrollBarVisibilityProperty, nameof(VerticalScrollBarVisibility));
+            }
+        }
+
         private void InternalListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             ItemTapped?.Invoke(this, new ItemTappedEventArgs(null, e.Item, -1));
@@ -397,6 +431,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
+                listView.UpdateMac();
                 if ((bool)newValue)
                 {
                     listView.InternalListView.ItemsSource = new ObservableList<ObservableGrouping<object, object>>();
@@ -470,33 +505,9 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     var groupedItems = filteredItems.GroupBy(g => GetPropertyValue(g, GroupPropertyDescription));
 
-                    var sourceGroupedItems = groupedItems.ToDictionary(a => a.Key, a2 => new ObservableGrouping<object, object>(a2.Key, a2));
-                    var targetGroupedItems = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Select(i => i.Key).ToList();
+                    var sourceGroupedItems = groupedItems.Select(a2 => new ObservableGrouping<object, object>(a2.Key, a2));
 
-                    var tempGroupedItemsToUpdate = sourceGroupedItems.Keys.Intersect(targetGroupedItems).ToList();
-                    foreach (var groupKey in tempGroupedItemsToUpdate)
-                    {
-                        var sourceGroup = sourceGroupedItems[groupKey];
-
-                        var targetGroupToUpdate = ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).FirstOrDefault(i => i.Key == groupKey);
-                        if (targetGroupToUpdate != null)
-                        {
-                            targetGroupToUpdate.ReplaceRange(sourceGroup);
-                            sourceGroupedItems[groupKey] = targetGroupToUpdate;
-                        }
-                        else
-                        {
-                            ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).Add(sourceGroupedItems[groupKey]);
-                        }
-                    }
-
-                    var newItems = sourceGroupedItems.Values.ToList();
-                    if (IsSorted)
-                    {
-                        newItems.Sort(SortComparer);
-                    }
-
-                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(newItems);
+                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(sourceGroupedItems);
                 }
                 else
                 {

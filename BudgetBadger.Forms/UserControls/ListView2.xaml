@@ -22,7 +22,7 @@
         Text="{Binding SearchText}"/>
     <ListView x:Name="InternalListView"
               Grid.Row="2" 
-              CachingStrategy="RetainElement"
+              CachingStrategy="RecycleElement"
               SelectedItem="{Binding SelectedItem}"
               HasUnevenRows="{Binding HasUnevenRows}"
               RowHeight="{Binding RowHeight}"

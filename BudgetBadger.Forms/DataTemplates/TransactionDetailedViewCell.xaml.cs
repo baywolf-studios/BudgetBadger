@@ -43,6 +43,13 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(RefreshItemCommandProperty, value);
         }
 
+        public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TransactionDetailedViewCell));
+        public bool IsReadOnly
+        {
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+        
         TransactionViewCellType transactionViewCellType;
         public TransactionViewCellType TransactionViewCellType
         {
