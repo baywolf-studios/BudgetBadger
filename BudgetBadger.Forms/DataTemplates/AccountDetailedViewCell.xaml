@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Grid
+    x:Name="accountDetailedViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
@@ -50,7 +51,7 @@
         Grid.Column="4"
         Style="{ext:DynamicResource ActionButtonStyle}"
         Clicked="Handle_EditClicked"
-        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}">
+        IsVisible="{Binding IsReadOnly, Source={x:Reference Name=accountDetailedViewCell}, Converter={StaticResource InverseBooleanConverter}}">
         <uc:Button2.ImageSource>
             <FontImageSource
                 Size="{ext:DynamicResource size_225}"

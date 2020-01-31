@@ -222,17 +222,16 @@
                     <uc:PullToRefresh.PullableContent>
                         <uc:DataTable
                             Items="{Binding Transactions}"
-                            IsSorted="False"
+                            IsSorted="True"
                             RowHeight="{ext:DynamicResource size_500}"
                             IsHeaderSticky="True"
                             SearchFilter="{Binding Filter}"
                             SearchText="{Binding SearchText}"
-                            HideSearchBar="True"
                             SelectedCommand="{Binding TransactionSelectedCommand}"
                             SelectedItem="{Binding SelectedTransaction}"
                             SeparatorVisibility="None">
                             <uc:DataTable.SortComparer>
-                                <comparers:TransactionComparer/>
+                                <comparers:TransactionComparer />
                             </uc:DataTable.SortComparer>
                             <uc:DataTable.Header>
                                     <dt:TransactionDetailedHeader
@@ -253,7 +252,8 @@
                                             Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                             Envelopes="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                             SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                            HeightRequest="{ext:DynamicResource size_675}"/>
+                                            HeightRequest="{ext:DynamicResource size_675}"
+                                            IsReadOnly="True"/>
                                         <uc:SelectableViewCell.ContextActions>
                                             <MenuItem
                                                 Text="{ext:Translate DeleteButton}"

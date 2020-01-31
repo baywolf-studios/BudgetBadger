@@ -8,24 +8,24 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class TransactionDetailedViewCell : Grid
     {
-        public static readonly BindableProperty AccountsProperty = BindableProperty.Create(nameof(Accounts), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
-        public IEnumerable Accounts
+        public static readonly BindableProperty AccountsProperty = BindableProperty.Create(nameof(Accounts), typeof(IList), typeof(TransactionDetailedViewCell), null);
+        public IList Accounts
         {
-            get => (IEnumerable)GetValue(AccountsProperty);
+            get => (IList)GetValue(AccountsProperty);
             set => SetValue(AccountsProperty, value);
         }
 
-        public static readonly BindableProperty PayeesProperty = BindableProperty.Create(nameof(Payees), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
-        public IEnumerable Payees
+        public static readonly BindableProperty PayeesProperty = BindableProperty.Create(nameof(Payees), typeof(IList), typeof(TransactionDetailedViewCell), null);
+        public IList Payees
         {
-            get => (IEnumerable)GetValue(PayeesProperty);
+            get => (IList)GetValue(PayeesProperty);
             set => SetValue(PayeesProperty, value);
         }
 
-        public static readonly BindableProperty EnvelopesProperty = BindableProperty.Create(nameof(Envelopes), typeof(IEnumerable), typeof(TransactionDetailedViewCell), null);
-        public IEnumerable Envelopes
+        public static readonly BindableProperty EnvelopesProperty = BindableProperty.Create(nameof(Envelopes), typeof(IList), typeof(TransactionDetailedViewCell), null);
+        public IList Envelopes
         {
-            get => (IEnumerable)GetValue(EnvelopesProperty);
+            get => (IList)GetValue(EnvelopesProperty);
             set => SetValue(EnvelopesProperty, value);
         }
 

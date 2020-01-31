@@ -240,6 +240,10 @@ namespace BudgetBadger.Forms.UserControls
                 InternalListView.SetBinding(SeparatorColorProperty, nameof(SeparatorColor));
                 InternalListView.SetBinding(HorizontalScrollBarVisibilityProperty, nameof(HorizontalScrollBarVisibility));
                 InternalListView.SetBinding(VerticalScrollBarVisibilityProperty, nameof(VerticalScrollBarVisibility));
+
+                UpdateHeader();
+                UpdateFooter();
+                UpdateHideSearchBar();
             }
         }
 
@@ -325,73 +329,86 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
+        private void UpdateHideSearchBar()
+        {
+            SearchBar.IsVisible = !HideSearchBar;
+        }
         private static void UpdateHideSearchBar(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                listView.SearchBar.IsVisible = !(bool)newValue;
+                listView.UpdateHideSearchBar();
             }
         }
 
+        private void UpdateHeader()
+        {
+            if (IsHeaderSticky)
+            {
+                InternalListView.Header = null;
+                InternalListView.HeaderTemplate = null;
+
+                if (HeaderTemplate != null)
+                {
+                    var headerView = (View)HeaderTemplate.CreateContent();
+                    headerView.BindingContext = Header;
+                    stickyHeader.Content = headerView;
+                }
+                else
+                {
+                    stickyHeader.Content = (View)Header;
+                }
+
+                stickyHeader.IsVisible = true;
+            }
+            else
+            {
+                stickyHeader.IsVisible = false;
+                InternalListView.Header = Header;
+                InternalListView.HeaderTemplate = HeaderTemplate;
+            }
+
+        }
         private static void UpdateHeader(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                if (listView.IsHeaderSticky)
-                {
-                    listView.InternalListView.Header = null;
-                    listView.InternalListView.HeaderTemplate = null;
-
-                    if (listView.HeaderTemplate != null)
-                    {
-                        var headerView = (View)listView.HeaderTemplate.CreateContent();
-                        headerView.BindingContext = listView.Header;
-                        listView.stickyHeader.Content = headerView;
-                    }
-                    else
-                    {
-                        listView.stickyHeader.Content = (View)listView.Header;
-                    }
-
-                    listView.stickyHeader.IsVisible = true;
-                }
-                else
-                {
-                    listView.stickyHeader.IsVisible = false;
-                    listView.InternalListView.Header = listView.Header;
-                    listView.InternalListView.HeaderTemplate = listView.HeaderTemplate;
-                }
+                listView.UpdateHeader();
             }
         }
 
+        private void UpdateFooter()
+        {
+            if (IsFooterSticky || Device.RuntimePlatform == Device.macOS)
+            {
+                InternalListView.Footer = null;
+                InternalListView.FooterTemplate = null;
+
+                if (FooterTemplate != null)
+                {
+                    var footerView = (View)FooterTemplate.CreateContent();
+                    footerView.BindingContext = Footer;
+                    stickyFooter.Content = footerView;
+                }
+                else
+                {
+                    stickyFooter.Content = (View)Footer;
+                }
+
+                stickyFooter.IsVisible = true;
+            }
+            else
+            {
+                stickyFooter.IsVisible = false;
+                InternalListView.Footer = Footer;
+                InternalListView.FooterTemplate = FooterTemplate;
+            }
+        }
         private static void UpdateFooter(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
             {
-                if (listView.IsFooterSticky || Device.RuntimePlatform == Device.macOS)
-                {
-                    listView.InternalListView.Footer = null;
-                    listView.InternalListView.FooterTemplate = null;
-
-                    if (listView.FooterTemplate != null)
-                    {
-                        var footerView = (View)listView.FooterTemplate.CreateContent();
-                        footerView.BindingContext = listView.Footer;
-                        listView.stickyFooter.Content = footerView;
-                    }
-                    else
-                    {
-                        listView.stickyFooter.Content = (View)listView.Footer;
-                    }
-
-                    listView.stickyFooter.IsVisible = true;
-                }
-                else
-                {
-                    listView.stickyFooter.IsVisible = false;
-                    listView.InternalListView.Footer = listView.Footer;
-                    listView.InternalListView.FooterTemplate = listView.FooterTemplate;
-                }
+                listView.UpdateFooter();
             }
         }
 
