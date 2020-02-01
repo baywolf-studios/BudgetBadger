@@ -252,8 +252,8 @@
                                             Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                             Envelopes="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                             SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                            HeightRequest="{ext:DynamicResource size_675}"
-                                            IsReadOnly="True"/>
+                                            RefreshItemCommand="{Binding BindingContext.RefreshTransactionCommand, Source={x:Reference Name=this}}"
+                                            HeightRequest="{ext:DynamicResource size_675}"/>
                                         <uc:SelectableViewCell.ContextActions>
                                             <MenuItem
                                                 Text="{ext:Translate DeleteButton}"
