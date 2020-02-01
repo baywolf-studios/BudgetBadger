@@ -40,6 +40,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand PaymentCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
         public ICommand SaveTransactionCommand { get; set; }
+        public ICommand RefreshTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -150,6 +151,7 @@ namespace BudgetBadger.Forms.Accounts
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -170,7 +172,10 @@ namespace BudgetBadger.Forms.Accounts
         {
             if (parameters.GetNavigationMode() == NavigationMode.Back)
             {
-                await InitializeAsync(parameters);
+                if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+                {
+                    await ExecuteRefreshTransactionCommand(transaction);
+                }
             }
         }
 
@@ -305,6 +310,18 @@ namespace BudgetBadger.Forms.Accounts
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
+        {
+            var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
+            if (updatedTransaction.Success)
+            {
+                var temp = Transactions.ToList();
+                temp.Remove(transaction);
+                temp.Add(updatedTransaction.Data);
+                Transactions = temp;
             }
         }
 
