@@ -159,11 +159,11 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <uc:DatePicker
-                        Grid.Row="0"
+                        Grid.Row="1"
                         Date="{Binding StatementDate}"
                         Label="{ext:Translate AccountReconcileStatementDateLabel}" />
                     <uc:CurrencyCalculatorEntry
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Label="{ext:Translate AccountReconcileStatementBalanceLabel}"
                         Number="{Binding StatementAmount}" />
                 </Grid>
