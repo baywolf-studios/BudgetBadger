@@ -8,7 +8,6 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    xmlns:system="clr-namespace:System;assembly=netstandard"
     x:Name="this">
     <p:BasePage.Header>
         <p:ChildSearchHeader
@@ -272,75 +271,6 @@
                         </uc:ListView2>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-                <!--<uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:ListView
-                            AllowSwiping="true"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            GroupHeaderSize="{StaticResource DenseListGroupHeaderHeight}"
-                            HasOtherTapGestureRecognizers="true"
-                            IsBusy="{Binding IsBusy}"
-                            ItemSize="{StaticResource ListDoubleItemHeight}"
-                            ItemsSource="{Binding Transactions}"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
-                            SelectedItem="{Binding SelectedTransaction}">
-                            <syncfusion:SfListView.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Image
-                                            HeightRequest="24"
-                                            WidthRequest="24"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center">
-                                            <Image.Source>
-                                                <FontImageSource
-                                                    Size="24"
-                                                    Color="{StaticResource DataGridContextActionTextColor}"
-                                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
-                                                    Glyph="{ext:DynamicResource Key=DeleteIcon}" />
-                                            </Image.Source>
-                                        </Image>
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.DataSource>
-                                <data:DataSource>
-                                    <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="ServiceDate" />
-                                    </data:DataSource.GroupDescriptors>
-                                </data:DataSource>
-                            </syncfusion:SfListView.DataSource>
-                            <syncfusion:SfListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <ContentView x:Name="denseGroupHeaderCell" HeightRequest="{StaticResource Key=DenseListGroupHeaderHeight}">
-                                        <Label
-                                            Margin="16,12,16,0"
-                                            Style="{StaticResource Key=DenseListGroupHeaderLabelStyle}"
-                                            Text="{Binding Key, Converter={StaticResource ShortDateConverter}}" />
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.GroupHeaderTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:TransactionViewCell
-                                        SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                        ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                        TransactionViewCellType="Account" />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>-->
             </uc:EmptyState>
             <FlexLayout
                 Grid.Row="3"
