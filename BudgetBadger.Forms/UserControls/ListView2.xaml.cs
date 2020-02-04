@@ -55,7 +55,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsFooterStickyProperty, value);
         }
 
-        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(ListView), null, BindingMode.OneWayToSource);
+        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(ListView), null, BindingMode.TwoWay, propertyChanged: UpdateSelectedItem);
         public object SelectedItem
         {
             get { return GetValue(SelectedItemProperty); }
@@ -249,7 +249,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private void InternalListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            ItemTapped?.Invoke(this, new ItemTappedEventArgs(null, e.Item, -1));
+            ItemTapped?.Invoke(this, e);
             
             if (SelectionMode == ListViewSelectionMode.Single)
             {
@@ -260,15 +260,6 @@ namespace BudgetBadger.Forms.UserControls
                 else
                 {
                     SelectedItem = e.Item;
-                }
-
-
-                var selectedArgs = new SelectedItemChangedEventArgs(SelectedItem, -1);
-                ItemSelected?.Invoke(this, selectedArgs);
-
-                if (SelectedCommand != null && SelectedCommand.CanExecute(SelectedItem))
-                {
-                    SelectedCommand.Execute(e.Item);
                 }
             }
         }
@@ -466,6 +457,29 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
+        private void UpdateSelectedItem()
+        {
+            if (InternalListView.SelectedItem != SelectedItem)
+            {
+                InternalListView.SelectedItem = SelectedItem;
+
+                var selectedArgs = new SelectedItemChangedEventArgs(SelectedItem, -1);
+                ItemSelected?.Invoke(this, selectedArgs);
+
+                if (SelectedCommand != null && SelectedCommand.CanExecute(SelectedItem))
+                {
+                    SelectedCommand.Execute(SelectedItem);
+                }
+            }
+        }
+        private static void UpdateSelectedItem(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                listView.UpdateSelectedItem();
+            }
+        }
+
         private static void UpdateItems(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
@@ -476,10 +490,6 @@ namespace BudgetBadger.Forms.UserControls
 
         private void UpdateItems()
         {
-            SelectedItem = null;
-            var selectedArgs = new SelectedItemChangedEventArgs(SelectedItem, -1);
-            ItemSelected?.Invoke(this, selectedArgs);
-
             if (Items == null)
             {
                 if (IsGrouped)

@@ -150,20 +150,19 @@
                 IsVisible="{Binding StatementMode}"
                 Orientation="Vertical">
                 <Grid
-                    Margin="0"
+                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_200, RightKey=size_0,BottomKey=size_0}"
                     RowSpacing="{ext:DynamicResource size_160}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_200,Converter={StaticResource DoubleToGridLengthConverter}}"/>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <uc:DatePicker
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Date="{Binding StatementDate}"
                         Label="{ext:Translate AccountReconcileStatementDateLabel}" />
                     <uc:CurrencyCalculatorEntry
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Label="{ext:Translate AccountReconcileStatementBalanceLabel}"
                         Number="{Binding StatementAmount}" />
                 </Grid>
