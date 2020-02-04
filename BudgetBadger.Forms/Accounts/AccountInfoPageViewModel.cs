@@ -59,22 +59,22 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        IReadOnlyList<Envelope> _envelopes;
-        public IReadOnlyList<Envelope> Envelopes
+        ObservableList<Envelope> _envelopes;
+        public ObservableList<Envelope> Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -137,9 +137,9 @@ namespace BudgetBadger.Forms.Accounts
             _purchaseService = purchaseService;
 
             Account = new Account();
-            Transactions = new List<Transaction>();
-            Payees = new List<Payee>();
-            Envelopes = new List<Envelope>();
+            Transactions = new ObservableList<Transaction>();
+            Payees = new ObservableList<Payee>();
+            Envelopes = new ObservableList<Envelope>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -156,6 +156,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
@@ -170,6 +172,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             if (parameters.GetNavigationMode() == NavigationMode.Back)
             {
                 if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
@@ -263,7 +267,7 @@ namespace BudgetBadger.Forms.Accounts
                         if (payeesResult.Success
                             && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
                         {
-                            Payees = payeesResult.Data;
+                            Payees.ReplaceRange(payeesResult.Data);
                         }
                         else if (!payeesResult.Success)
                         {
@@ -274,7 +278,7 @@ namespace BudgetBadger.Forms.Accounts
                         if (envelopesResult.Success
                             && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
                         {
-                            Envelopes = envelopesResult.Data;
+                            Envelopes.ReplaceRange(envelopesResult.Data);
                         }
                         else if (!envelopesResult.Success)
                         {
@@ -296,13 +300,12 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                     {
-                        Transactions = result.Data;
+                        Transactions.ReplaceRange(result.Data);
                     }
                     else if (!result.Success)
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
-                    SelectedTransaction = null;
                 }
 
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
@@ -318,10 +321,7 @@ namespace BudgetBadger.Forms.Accounts
             var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
             if (updatedTransaction.Success)
             {
-                var temp = Transactions.ToList();
-                temp.Remove(transaction);
-                temp.Add(updatedTransaction.Data);
-                Transactions = temp;
+                
             }
         }
 
