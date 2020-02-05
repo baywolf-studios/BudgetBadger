@@ -183,7 +183,8 @@
                                         SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:AccountDetailedViewCell
-                                            SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}">
+                                            SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                            RefreshItemCommand="{Binding BindingContext.RefreshAccountCommand, Source={x:Reference Name=this}}">
                                             <dt:AccountDetailedViewCell.Triggers>
                                                 <DataTrigger
                                                     Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
