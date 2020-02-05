@@ -37,7 +37,7 @@
         VerticalOptions="Center"
         IsReadOnly="True"
         ItemsSource="{Binding Accounts, Source={x:Reference Name=transactionDetailedViewCell}}"
-        ItemDisplayBinding="{Binding Description}"
+        ItemPropertyDescription="Description"
         SelectedItem="{Binding Account}">
     </uc:DropdownCompact>
     <uc:DropdownCompact
@@ -47,7 +47,7 @@
         VerticalOptions="Center"
         IsReadOnly="True"
         ItemsSource="{Binding Envelopes, Source={x:Reference Name=transactionDetailedViewCell}}"
-        ItemDisplayBinding="{Binding ExtendedDescription}"
+        ItemPropertyDescription="ExtendedDescription"
         SelectedItem="{Binding Envelope}">
     </uc:DropdownCompact>
     <uc:DropdownCompact
@@ -57,7 +57,7 @@
         VerticalOptions="Center"
         IsReadOnly="True"
         ItemsSource="{Binding Payees, Source={x:Reference Name=transactionDetailedViewCell}}"
-        ItemDisplayBinding="{Binding Description}"
+        ItemPropertyDescription="Description"
         SelectedItem="{Binding Payee}">
     </uc:DropdownCompact>
     <uc:CurrencyCalculatorEntryCompact

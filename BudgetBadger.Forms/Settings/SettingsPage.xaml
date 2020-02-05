@@ -229,7 +229,7 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
-                        ItemDisplayBinding="{Binding Key}"
+                        ItemPropertyDescription="Key"
                         ItemsSource="{Binding LanguageList}"
                         Label="{ext:Translate LanguageLabel}"
                         SelectedItem="{Binding SelectedLanguage}">
@@ -242,7 +242,7 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="16,8"
-                        ItemDisplayBinding="{Binding Key}"
+                        ItemPropertyDescription="Key"
                         ItemsSource="{Binding CurrencyFormatList}"
                         Label="{ext:Translate CurrencyLabel}"
                         SelectedItem="{Binding SelectedCurrencyFormat}">

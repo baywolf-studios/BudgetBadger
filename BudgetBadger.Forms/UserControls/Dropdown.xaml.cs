@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using BudgetBadger.Forms.Animation;
 using BudgetBadger.Forms.Effects;
@@ -59,30 +60,50 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public BindingBase ItemDisplayBinding
+        public static BindableProperty ItemPropertyDescriptionProperty = BindableProperty.Create(nameof(ItemPropertyDescription), typeof(string), typeof(Dropdown));
+        public string ItemPropertyDescription
         {
-            get => PickerControl.ItemDisplayBinding;
-            set => PickerControl.ItemDisplayBinding = value;
+            get => (string)GetValue(ItemPropertyDescriptionProperty);
+            set => SetValue(ItemPropertyDescriptionProperty, value);
+        }
+
+        string GetPropertyValue(object src, string propertyName)
+        {
+            if (src == null)
+            {
+                return string.Empty;
+            }
+            else if (string.IsNullOrEmpty(propertyName))
+            {
+                return src.ToString();
+            }
+            else
+            {
+                var propertyValue = src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
+                if (propertyValue == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return propertyValue.ToString();
+                }
+            }
         }
 
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(Dropdown), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if (bindable is Dropdown dropdown)
+            if (bindable is Dropdown dropdown && oldVal != newVal)
             {
-                var items = dropdown.PickerControl.ItemsSource as ObservableList<object>;
-
-                var currentSelectedItem = dropdown.SelectedItem;
-
+                var items2 = dropdown.PickerControl.Items;
+                items2.Clear();
                 if (newVal != null)
                 {
-                    items.ReplaceRange(((IList)newVal).Cast<object>());
+                    foreach (var i in (IList)newVal)
+                    {
+                        items2.Add(dropdown.GetPropertyValue(i, dropdown.ItemPropertyDescription));
+                    }
                 }
-                else
-                {
-                    items.Clear();
-                }
-
-                dropdown.PickerControl.SelectedItem = currentSelectedItem;
             }
         });
         public IList ItemsSource
@@ -93,16 +114,13 @@ namespace BudgetBadger.Forms.UserControls
 
         public static BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(Dropdown), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if (bindable is Dropdown dropdown)
+            if (bindable is Dropdown dropdown && oldVal != newVal && newVal is int intNewVal)
             {
-                dropdown.PickerControl.SelectedIndex = (int)newVal;
-                if ((int)newVal >= 0 && dropdown.PickerControl.Items.Count > (int)newVal)
+                dropdown.PickerControl.SelectedIndex = intNewVal;
+
+                if (intNewVal >= 0)
                 {
-                    dropdown.ReadOnlyPickerControl.Text = dropdown.PickerControl.Items[(int)newVal];
-                }
-                else
-                {
-                    dropdown.ReadOnlyPickerControl.Text = string.Empty;
+                    dropdown.SelectedItem = dropdown.ItemsSource[intNewVal];
                 }
             }
         });
@@ -114,27 +132,16 @@ namespace BudgetBadger.Forms.UserControls
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(Dropdown), null, BindingMode.TwoWay, propertyChanged: (bindable, oldVal, newVal) =>
         {
-            if (bindable is Dropdown dropdown)
+            if (bindable is Dropdown dropdown && oldVal != newVal)
             {
-                if (dropdown.PickerControl.ItemsSource != null
-                    && !(dropdown.PickerControl.ItemsSource.Contains(newVal))
-                    && newVal != null)
-                {
-                    dropdown.PickerControl.ItemsSource.Add(newVal);
-
-                }
-
-                if (dropdown.PickerControl.ItemsSource != null
-                    && dropdown.PickerControl.ItemsSource.Contains(oldVal)
-                    && !dropdown.ItemsSource.Contains(oldVal))
-                {
-                    dropdown.PickerControl.ItemsSource.Remove(oldVal);
-                }
-
                 var index = -1;
-                if (dropdown.PickerControl.ItemsSource != null)
+                var stringItem = dropdown.GetPropertyValue(newVal, dropdown.ItemPropertyDescription);
+
+                dropdown.ReadOnlyPickerControl.Text = stringItem;
+
+                if (dropdown.PickerControl.Items != null)
                 {
-                    index = dropdown.PickerControl.ItemsSource.IndexOf(newVal);
+                    index = dropdown.PickerControl.Items.IndexOf(stringItem);
                 }
 
                 dropdown.SelectedIndex = index;
@@ -171,8 +178,6 @@ namespace BudgetBadger.Forms.UserControls
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
             }
 
-            PickerControl.ItemsSource = new ObservableList<object>();
-
             ButtonBackground.BindingContext = this;
             LabelControl.BindingContext = this;
             PickerControl.BindingContext = this;
@@ -202,9 +207,8 @@ namespace BudgetBadger.Forms.UserControls
         void PickerControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedIndex != PickerControl.SelectedIndex)
-            {
+            { 
                 SelectedIndex = PickerControl.SelectedIndex;
-                SelectedItem = PickerControl.SelectedItem;
                 SelectedIndexChanged?.Invoke(this, e);
             }
         }
