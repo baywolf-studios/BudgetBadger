@@ -6,7 +6,7 @@
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Class="BudgetBadger.Forms.DataTemplates.AccountDetailedHeader"
     HeightRequest="{ext:DynamicResource size_500}"
-    ColumnSpacing="{ext:DynamicResource size_400}"
+    ColumnSpacing="{ext:DynamicResource size_175}"
     RowSpacing="{ext:DynamicResource size_0}">
     <Grid.RowDefinitions>
         <RowDefinition Height="*"/>

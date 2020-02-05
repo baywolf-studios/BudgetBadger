@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BaseViewModel, INavigatedAware
+    public class AccountsPageViewModel : BaseViewModel, INavigatedAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IAccountLogic> _accountLogic;
@@ -31,6 +31,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshAccountCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
@@ -108,10 +109,13 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
             ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
+            RefreshAccountCommand = new DelegateCommand<Account>(async a => await ExecuteRefreshAccountCommand(a));
         }
 
-        public override async void OnActivated()
+        public async Task InitializeAsync(INavigationParameters parameters)
         {
+            SelectedAccount = null;
+
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
@@ -140,9 +144,12 @@ namespace BudgetBadger.Forms.Accounts
         // this gets hit before the OnActivated
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(PageParameter.Account);
-            if (account != null)
+            SelectedAccount = null;
+
+            if (parameters.TryGetValue(PageParameter.Account, out Account account))
             {
+                await ExecuteRefreshAccountCommand(account);
+
                 if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
                 {
                     // show message about debt envelopes
@@ -184,22 +191,6 @@ namespace BudgetBadger.Forms.Accounts
 
             IsBusy = true;
 
-            if (Accounts.Any())
-            {
-                var tempAcc = new List<Account>();
-                for (int i = 0; i < 100; i++)
-                {
-                    var test = Accounts.First().DeepCopy();
-                    test.Description += i;
-                    tempAcc.Add(test);
-                }
-
-                Accounts.AddRange(tempAcc);
-
-                IsBusy = false;
-                return;
-            }
-
             try
             {
                 var result = await _accountLogic.Value.GetAccountsAsync();
@@ -218,6 +209,16 @@ namespace BudgetBadger.Forms.Accounts
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshAccountCommand(Account account)
+        {
+            var updatedAccount = await _accountLogic.Value.GetAccountAsync(account.Id);
+            if (updatedAccount.Success)
+            {
+                Accounts.Remove(account);
+                Accounts.Add(updatedAccount.Data);
             }
         }
 
