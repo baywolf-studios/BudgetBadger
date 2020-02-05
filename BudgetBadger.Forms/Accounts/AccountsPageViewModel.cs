@@ -114,8 +114,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            SelectedAccount = null;
-
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
@@ -124,6 +122,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public override async void OnDeactivated()
         {
+            SelectedAccount = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -144,8 +144,6 @@ namespace BudgetBadger.Forms.Accounts
         // this gets hit before the OnActivated
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            SelectedAccount = null;
-
             if (parameters.TryGetValue(PageParameter.Account, out Account account))
             {
                 await ExecuteRefreshAccountCommand(account);
@@ -217,7 +215,8 @@ namespace BudgetBadger.Forms.Accounts
             var updatedAccount = await _accountLogic.Value.GetAccountAsync(account.Id);
             if (updatedAccount.Success)
             {
-                Accounts.Remove(account);
+                var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
+                Accounts.Remove(accountToRemove);
                 Accounts.Add(updatedAccount.Data);
             }
         }

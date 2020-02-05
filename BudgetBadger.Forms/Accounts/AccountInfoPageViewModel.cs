@@ -156,8 +156,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            SelectedTransaction = null;
-
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
@@ -172,8 +170,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            SelectedTransaction = null;
-
             if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
                 await ExecuteRefreshTransactionCommand(transaction);
@@ -182,6 +178,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -318,7 +316,8 @@ namespace BudgetBadger.Forms.Accounts
             var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
             if (updatedTransaction.Success)
             {
-                Transactions.Remove(transaction);
+                var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                Transactions.Remove(transactionToRemove);
                 Transactions.Add(updatedTransaction.Data);
             }
         }
