@@ -482,7 +482,7 @@ namespace BudgetBadger.Logic
 
             foreach (var transactionGroup in transactionGroups)
             {
-                var combinedTransaction = transactionGroup.FirstOrDefault();
+                var combinedTransaction = transactionGroup.OrderBy(t => t.CreatedDateTime).FirstOrDefault();
                 if (transactionGroup.Count() > 1)
                 {
                     combinedTransaction.Id = combinedTransaction.SplitId.Value;

@@ -199,6 +199,10 @@ namespace BudgetBadger.Models
                 {
                     if (Group.Equals(envelope.Group))
                     {
+                        if (Description.Equals(envelope.Description))
+                        {
+                            return -1 * Nullable.Compare(CreatedDateTime, envelope.CreatedDateTime);
+                        }
                         return String.Compare(Description, envelope.Description);
                     }
 

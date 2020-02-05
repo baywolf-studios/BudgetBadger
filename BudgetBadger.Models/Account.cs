@@ -196,6 +196,10 @@ namespace BudgetBadger.Models
             {
                 if (Type.Equals(account.Type))
                 {
+                    if (Description.Equals(account.Description))
+                    {
+                        return -1 * Nullable.Compare(CreatedDateTime, account.CreatedDateTime);
+                    }
                     return String.Compare(Description, account.Description);
                 }
 

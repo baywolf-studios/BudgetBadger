@@ -19,7 +19,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         Children.Remove(envelopeControl);
                         SetColumn(accountControl, 1);
                         SetColumn(payeeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(envelopeColumn);
@@ -28,7 +28,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         Children.Remove(accountControl);
                         SetColumn(envelopeControl, 1);
                         SetColumn(payeeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(accountColumn);
@@ -37,7 +37,7 @@ namespace BudgetBadger.Forms.DataTemplates
                         Children.Remove(payeeControl);
                         SetColumn(accountControl, 1);
                         SetColumn(envelopeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
                         ColumnDefinitions.Remove(payeeColumn);

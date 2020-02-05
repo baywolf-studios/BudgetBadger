@@ -135,8 +135,6 @@ namespace BudgetBadger.Forms.Settings
 
             HasPro = false;
             IsBusy = false;
-            CurrencyFormatList = new List<KeyValuePair<string, CultureInfo>>();
-            LanguageList = new List<KeyValuePair<string, CultureInfo>>();
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
@@ -155,13 +153,10 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            ResetLocalization();
         }
 
         public override async void OnActivated()
         {
-            ResetLocalization();
-
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);

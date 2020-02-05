@@ -144,6 +144,10 @@ namespace BudgetBadger.Models
                 {
                     if (IsIncome.Equals(group.IsIncome))
                     {
+                        if (Description.Equals(group.Description))
+                        {
+                            return -1 * Nullable.Compare(CreatedDateTime, group.CreatedDateTime);
+                        }
                         return String.Compare(Description, group.Description);
                     }
 
