@@ -167,26 +167,34 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Account>>();
 
-            var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
-            var activeAndHiddenAccounts = allAccounts.Where(a => a.IsActive || (a.IsHidden && !a.IsDeleted));
-
-            var tasks = activeAndHiddenAccounts.Select(GetPopulatedAccount);
-            var populatedAccounts = (await Task.WhenAll(tasks)).ToList();
-
-            var accountsToReturn = populatedAccounts.Where(p => p.IsActive).ToList();
-
-            if (populatedAccounts.Any(a => a.IsHidden))
+            try
             {
-                var hiddenAccounts = populatedAccounts.Where(a => a.IsHidden);
+                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+                var activeAndHiddenAccounts = allAccounts.Where(a => a.IsActive || (a.IsHidden && !a.IsDeleted));
 
-                var genericHiddenAccount = GetGenericHiddenAccount(hiddenAccounts);
-                accountsToReturn.Add(genericHiddenAccount);
+                var tasks = activeAndHiddenAccounts.Select(GetPopulatedAccount);
+                var populatedAccounts = (await Task.WhenAll(tasks)).ToList();
+
+                var accountsToReturn = populatedAccounts.Where(p => p.IsActive).ToList();
+
+                if (populatedAccounts.Any(a => a.IsHidden))
+                {
+                    var hiddenAccounts = populatedAccounts.Where(a => a.IsHidden);
+
+                    var genericHiddenAccount = GetGenericHiddenAccount(hiddenAccounts);
+                    accountsToReturn.Add(genericHiddenAccount);
+                }
+
+                accountsToReturn.Sort();
+
+                result.Success = true;
+                result.Data = accountsToReturn;
             }
-
-            accountsToReturn.Sort();
-
-            result.Success = true;
-            result.Data = accountsToReturn;
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
             return result;
         }
@@ -195,17 +203,25 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Account>>();
 
-            var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+            try
+            {
+                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
-            var accounts = allAccounts.Where(a => a.IsActive);
+                var accounts = allAccounts.Where(a => a.IsActive);
 
-            var tasks = accounts.Select(GetPopulatedAccount);
+                var tasks = accounts.Select(GetPopulatedAccount);
 
-            var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-            accountsToReturn.Sort();
+                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
+                accountsToReturn.Sort();
 
-            result.Success = true;
-            result.Data = accountsToReturn;
+                result.Success = true;
+                result.Data = accountsToReturn;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
             return result;
         }
@@ -214,17 +230,25 @@ namespace BudgetBadger.Logic
         {
             var result = new Result<IReadOnlyList<Account>>();
 
-            var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+            try
+            { 
+                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
-            var accounts = allAccounts.Where(a => a.IsHidden && !a.IsDeleted);
+                var accounts = allAccounts.Where(a => a.IsHidden && !a.IsDeleted);
 
-            var tasks = accounts.Select(GetPopulatedAccount);
+                var tasks = accounts.Select(GetPopulatedAccount);
 
-            var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-            accountsToReturn.Sort();
+                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
+                accountsToReturn.Sort();
 
-            result.Success = true;
-            result.Data = accountsToReturn;
+                result.Success = true;
+                result.Data = accountsToReturn;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
             return result;
         }
