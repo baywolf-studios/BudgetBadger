@@ -321,7 +321,9 @@ namespace BudgetBadger.Forms.Accounts
             var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
             if (updatedTransaction.Success)
             {
-                
+                var newList = Transactions.Where(t => t.Id != transaction.Id).Select(t => t.DeepCopy()).ToList();
+                newList.Add(updatedTransaction.Data);
+                Transactions.ReplaceRange(newList);
             }
         }
 
