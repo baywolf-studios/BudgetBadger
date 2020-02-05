@@ -19,6 +19,7 @@
         <ColumnDefinition x:Name="payeeColumn" Width="2*"/>
         <ColumnDefinition x:Name="outflowColumn" Width="*"/>
         <ColumnDefinition x:Name="inflowColumn" Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450, Converter={StaticResource DoubleToGridLengthConverter}}"/>
         <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
     </Grid.ColumnDefinitions>
     <uc:DatePickerCompact
@@ -78,9 +79,13 @@
         HorizontalTextAlignment="End"
         Number="{Binding Inflow}">
     </uc:CurrencyCalculatorEntryCompact>
+    <uc:TransactionStatusButton
+        x:Name="TransactionStatusButton"
+        Grid.Column="6"
+        Transaction="{Binding .}"/>
     <uc:Button2
         x:Name="EditButton"
-        Grid.Column="6"
+        Grid.Column="7"
         Style="{ext:DynamicResource ActionButtonStyle}"
         Clicked="Handle_EditClicked"
         IsVisible="{Binding IsReadOnly, Source={x:Reference Name=transactionDetailedViewCell}, Converter={StaticResource InverseBooleanConverter}}">
@@ -94,7 +99,7 @@
     </uc:Button2>
     <StackLayout
         x:Name="SaveCancelContainer"
-        Grid.Column="6"
+        Grid.Column="7"
         Spacing="{ext:DynamicResource size_100}"
         Margin="0"
         Padding="0"
@@ -129,6 +134,6 @@
     <BoxView
         x:Name="divider"
         Grid.Row="1"
-        Grid.ColumnSpan="7"
+        Grid.ColumnSpan="8"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

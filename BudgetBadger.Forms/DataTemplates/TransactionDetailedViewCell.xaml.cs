@@ -43,6 +43,15 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(RefreshItemCommandProperty, value);
         }
 
+        public static readonly BindableProperty ToggleCommandProperty =
+            BindableProperty.Create(nameof(ToggleCommand), typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnToggleCommandPropertyChanged);
+
+        public ICommand ToggleCommand
+        {
+            get { return (ICommand)GetValue(ToggleCommandProperty); }
+            set { SetValue(ToggleCommandProperty, value); }
+        }
+
         public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(TransactionDetailedViewCell));
         public bool IsReadOnly
         {
@@ -63,33 +72,36 @@ namespace BudgetBadger.Forms.DataTemplates
                         Children.Remove(envelopeControl);
                         SetColumn(accountControl, 1);
                         SetColumn(payeeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
-                        SetColumn(EditButton, 5);
-                        SetColumn(SaveCancelContainer, 5);
+                        SetColumn(TransactionStatusButton, 5);
+                        SetColumn(EditButton, 6);
+                        SetColumn(SaveCancelContainer, 6);
                         ColumnDefinitions.Remove(envelopeColumn);
                         break;
                     case TransactionViewCellType.Account:
                         Children.Remove(accountControl);
                         SetColumn(envelopeControl, 1);
                         SetColumn(payeeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
-                        SetColumn(EditButton, 5);
-                        SetColumn(SaveCancelContainer, 5);
+                        SetColumn(TransactionStatusButton, 5);
+                        SetColumn(EditButton, 6);
+                        SetColumn(SaveCancelContainer, 6);
                         ColumnDefinitions.Remove(accountColumn);
                         break;
                     case TransactionViewCellType.Payee:
                         Children.Remove(payeeControl);
                         SetColumn(accountControl, 1);
                         SetColumn(envelopeControl, 2);
-                        SetColumnSpan(divider, 6);
+                        SetColumnSpan(divider, 7);
                         SetColumn(outflowControl, 3);
                         SetColumn(inflowControl, 4);
-                        SetColumn(EditButton, 5);
-                        SetColumn(SaveCancelContainer, 5);
+                        SetColumn(TransactionStatusButton, 5);
+                        SetColumn(EditButton, 6);
+                        SetColumn(SaveCancelContainer, 6);
                         ColumnDefinitions.Remove(payeeColumn);
                         break;
                 }
@@ -99,6 +111,14 @@ namespace BudgetBadger.Forms.DataTemplates
         public TransactionDetailedViewCell()
         {
             InitializeComponent();
+        }
+
+        static void OnToggleCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (newValue != oldValue)
+            {
+                (bindable as TransactionDetailedViewCell).TransactionStatusButton.ToggleCommand = newValue as ICommand;
+            }
         }
 
         void Handle_EditClicked(object sender, EventArgs e)

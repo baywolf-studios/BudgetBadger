@@ -269,7 +269,12 @@ namespace BudgetBadger.Models
                 return 1;
             }
 
-            return -1 * ServiceDate.CompareTo(transaction.ServiceDate);
+            if (ServiceDate.Date.Equals(transaction.ServiceDate.Date))
+            {
+                return -1 * Nullable.Compare(CreatedDateTime, transaction.CreatedDateTime);
+            }
+
+            return -1 * ServiceDate.Date.CompareTo(transaction.ServiceDate.Date);
         }
 
         public int CompareTo(object obj)

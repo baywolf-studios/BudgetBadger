@@ -19,6 +19,7 @@
         <ColumnDefinition x:Name="payeeColumn" Width="2*"/>
         <ColumnDefinition x:Name="outflowColumn" Width="*"/>
         <ColumnDefinition x:Name="inflowColumn" Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450, Converter={StaticResource DoubleToGridLengthConverter}}"/>
         <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
     </Grid.ColumnDefinitions>
     <Label
@@ -74,6 +75,6 @@
     <BoxView
         x:Name="divider"
         Grid.Row="1"
-        Grid.ColumnSpan="7"
+        Grid.ColumnSpan="8"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

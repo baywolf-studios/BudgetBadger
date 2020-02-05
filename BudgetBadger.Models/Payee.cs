@@ -174,6 +174,11 @@ namespace BudgetBadger.Models
                 {
                     if (Group.Equals(payee.Group))
                     {
+                        if (Description.Equals(payee.Description))
+                        {
+                            return -1 * Nullable.Compare(CreatedDateTime, payee.CreatedDateTime);
+                        }
+
                         return String.Compare(Description, payee.Description);
                     }
 

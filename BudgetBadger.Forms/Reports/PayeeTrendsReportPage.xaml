@@ -53,7 +53,7 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            ItemDisplayBinding="{Binding Description}"
+                            ItemPropertyDescription="Description"
                             ItemsSource="{Binding Payees}"
                             Label="{ext:Translate PayeeLabel}"
                             SelectedItem="{Binding SelectedPayee}" />
@@ -118,7 +118,7 @@
                     VerticalOptions="Center" />
                 <uc:Dropdown
                     Grid.Column="2"
-                    ItemDisplayBinding="{Binding Description}"
+                    ItemPropertyDescription="Description"
                     ItemsSource="{Binding Payees}"
                     Label="{ext:Translate PayeeLabel}"
                     SelectedItem="{Binding SelectedPayee}" />
