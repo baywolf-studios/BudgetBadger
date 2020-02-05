@@ -69,8 +69,7 @@
                             Grid.Column="1"
                             Margin="0,0,16,0"
                             Label="{ext:Translate TransactactionInflowLabel}"
-                            Number="{Binding Transaction.Inflow}"
-                            IsReadOnly="True"/>
+                            Number="{Binding Transaction.Inflow}"/>
                         <uc:ButtonTextField
                             Grid.Row="2"
                             Grid.ColumnSpan="2"

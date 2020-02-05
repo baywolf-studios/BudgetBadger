@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountsPageViewModel : BaseViewModel, INavigatedAware, IInitializeAsync
+    public class AccountsPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IAccountLogic> _accountLogic;
@@ -85,6 +85,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _hasPro, value);
         }
 
+        private bool backNav;
+
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
 		                             IPageDialogService dialogService,
@@ -112,12 +114,15 @@ namespace BudgetBadger.Forms.Accounts
             RefreshAccountCommand = new DelegateCommand<Account>(async a => await ExecuteRefreshAccountCommand(a));
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public override async void OnActivated()
         {
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            if (!Accounts.Any())
+            {
+                await ExecuteRefreshCommand();
+            }
         }
 
         public override async void OnDeactivated()
@@ -195,7 +200,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = new ObservableList<Account>(result.Data);
+                    Accounts.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -203,6 +208,10 @@ namespace BudgetBadger.Forms.Accounts
                 }
 
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
+            }
+            catch (Exception ex)
+            {
+                var temp = ex.Message;
             }
             finally
             {
