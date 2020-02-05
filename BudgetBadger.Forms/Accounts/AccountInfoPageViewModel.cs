@@ -174,12 +174,9 @@ namespace BudgetBadger.Forms.Accounts
         {
             SelectedTransaction = null;
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-                {
-                    await ExecuteRefreshTransactionCommand(transaction);
-                }
+                await ExecuteRefreshTransactionCommand(transaction);
             }
         }
 
@@ -321,9 +318,8 @@ namespace BudgetBadger.Forms.Accounts
             var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
             if (updatedTransaction.Success)
             {
-                var newList = Transactions.Where(t => t.Id != transaction.Id).Select(t => t.DeepCopy()).ToList();
-                newList.Add(updatedTransaction.Data);
-                Transactions.ReplaceRange(newList);
+                Transactions.Remove(transaction);
+                Transactions.Add(updatedTransaction.Data);
             }
         }
 
