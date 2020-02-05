@@ -38,6 +38,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand DeleteTransactionCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand SaveTransactionCommand { get; set; }
+        public ICommand RefreshTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -56,22 +57,22 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _account, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        IReadOnlyList<Envelope> _envelopes;
-        public IReadOnlyList<Envelope> Envelopes
+        ObservableList<Envelope> _envelopes;
+        public ObservableList<Envelope> Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -82,8 +83,8 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        IReadOnlyList<Transaction> _statementTransactions;
-        public IReadOnlyList<Transaction> StatementTransactions
+        ObservableList<Transaction> _statementTransactions;
+        public ObservableList<Transaction> StatementTransactions
         {
             get => _statementTransactions;
             set
@@ -184,10 +185,10 @@ namespace BudgetBadger.Forms.Accounts
             _purchaseService = purchaseService;
 
             Account = new Account();
-            Transactions = new List<Transaction>();
-            StatementTransactions = new List<Transaction>();
-            Payees = new List<Payee>();
-            Envelopes = new List<Envelope>();
+            Transactions = new ObservableList<Transaction>();
+            StatementTransactions = new ObservableList<Transaction>();
+            Payees = new ObservableList<Payee>();
+            Envelopes = new ObservableList<Envelope>();
             SelectedTransaction = null;
             StatementDate = DateTime.Now;
             StatementAmount = 0;
@@ -200,6 +201,7 @@ namespace BudgetBadger.Forms.Accounts
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -218,14 +220,16 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                await InitializeAsync(parameters);
+                await ExecuteRefreshTransactionCommand(transaction);
             }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -258,7 +262,7 @@ namespace BudgetBadger.Forms.Accounts
                         if (payeesResult.Success
                             && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
                         {
-                            Payees = payeesResult.Data;
+                            Payees.ReplaceRange(payeesResult.Data);
                         }
                         else if (!payeesResult.Success)
                         {
@@ -269,7 +273,7 @@ namespace BudgetBadger.Forms.Accounts
                         if (envelopesResult.Success
                             && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
                         {
-                            Envelopes = envelopesResult.Data;
+                            Envelopes.ReplaceRange(envelopesResult.Data);
                         }
                         else if (!envelopesResult.Success)
                         {
@@ -291,8 +295,8 @@ namespace BudgetBadger.Forms.Accounts
                     if (result.Success
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                     {
-                        Transactions = result.Data;
-                        StatementTransactions = result.Data;
+                        Transactions.ReplaceRange(result.Data);
+                        StatementTransactions.ReplaceRange(result.Data);
                     }
                     else if (!result.Success)
                     {
@@ -309,11 +313,22 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
+        public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
+        {
+            var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
+            if (updatedTransaction.Success)
+            {
+                var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                Transactions.Remove(transactionToRemove);
+                Transactions.Add(updatedTransaction.Data);
+            }
+        }
+
         public void UpdateStatementTransactions()
         {
             var temp = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
             temp.Sort();
-            StatementTransactions = temp;
+            StatementTransactions.ReplaceRange(temp);
 
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
