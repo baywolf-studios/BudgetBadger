@@ -278,8 +278,6 @@ namespace BudgetBadger.Forms.Accounts
                         }
                     }
 
-                    await RefreshSummary();
-
                     var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
                     if (result.Success
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
@@ -290,6 +288,8 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
+
+                    await RefreshSummary();
                 }
 
                 NoTransactions = (Transactions?.Count ?? 0) == 0;

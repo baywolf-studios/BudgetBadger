@@ -4,6 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
+    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
@@ -160,7 +161,11 @@
                     <uc:DatePicker
                         Grid.Row="0"
                         Date="{Binding StatementDate}"
-                        Label="{ext:Translate AccountReconcileStatementDateLabel}" />
+                        Label="{ext:Translate AccountReconcileStatementDateLabel}" >
+                        <uc:DatePicker.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding UpdateStatementTransactionsCommand}" EventName="DateSelected" />
+                        </uc:DatePicker.Behaviors>
+                    </uc:DatePicker>
                     <uc:CurrencyCalculatorEntry
                         Grid.Row="1"
                         Label="{ext:Translate AccountReconcileStatementBalanceLabel}"

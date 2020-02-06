@@ -52,7 +52,7 @@ namespace BudgetBadger.Forms.Accounts
         public ObservableList<Account> Accounts
         {
             get => _accounts;
-            set { SetProperty(ref _accounts, value); RaisePropertyChanged(nameof(NetWorth)); }
+            set => SetProperty(ref _accounts, value); 
         }
 
         Account _selectedAccount;
@@ -63,8 +63,8 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
-
-
+        public decimal Assests { get => Accounts.Where(a => (a.Balance ?? 0) > 0).Sum(a => a.Balance ?? 0); }
+        public decimal Debts { get => Accounts.Where(a => (a.Balance ?? 0) < 0).Sum(a => a.Balance ?? 0); }
 
         bool _noAccounts;
         public bool NoAccounts
@@ -86,8 +86,6 @@ namespace BudgetBadger.Forms.Accounts
             get => _hasPro;
             set => SetProperty(ref _hasPro, value);
         }
-
-        private bool backNav;
 
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
@@ -154,7 +152,7 @@ namespace BudgetBadger.Forms.Accounts
             if (parameters.TryGetValue(PageParameter.Account, out Account account))
             {
                 await ExecuteRefreshAccountCommand(account);
-
+                
                 if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
                 {
                     // show message about debt envelopes
@@ -163,6 +161,8 @@ namespace BudgetBadger.Forms.Accounts
                             _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
             }
+
+            RefreshSummary();
         }
 
         public async Task ExecuteSelectedCommand(Account account)
@@ -209,11 +209,8 @@ namespace BudgetBadger.Forms.Accounts
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
+                RefreshSummary();
                 NoAccounts = (Accounts?.Count ?? 0) == 0;
-            }
-            catch (Exception ex)
-            {
-                var temp = ex.Message;
             }
             finally
             {
@@ -274,6 +271,13 @@ namespace BudgetBadger.Forms.Accounts
             };
 
             await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+        }
+
+        void RefreshSummary()
+        {
+            RaisePropertyChanged(nameof(NetWorth));
+            RaisePropertyChanged(nameof(Assests));
+            RaisePropertyChanged(nameof(Debts));
         }
     }
 }
