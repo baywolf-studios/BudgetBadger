@@ -252,7 +252,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="{ext:Translate BackButton}"
                     FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" />
-                <BoxView WidthRequest="{ext:DynamicResource size_200}"/>
+                <BoxView IsVisible="{Binding ReconcileMode}" WidthRequest="{ext:DynamicResource size_200}"/>
                 <uc:Button2
                     Command="{Binding ReconcileCommand}"
                     IsVisible="{Binding ReconcileMode}"

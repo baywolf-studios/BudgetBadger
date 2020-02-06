@@ -27,7 +27,7 @@
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
