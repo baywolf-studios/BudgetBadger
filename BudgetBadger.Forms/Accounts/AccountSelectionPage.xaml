@@ -26,8 +26,6 @@
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <uc:PullToRefresh
-                    Grid.Row="2"
-                    Grid.RowSpan="2"
                     Grid.ColumnSpan="12"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
