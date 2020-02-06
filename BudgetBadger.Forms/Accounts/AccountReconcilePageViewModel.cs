@@ -39,6 +39,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand SaveTransactionCommand { get; set; }
         public ICommand RefreshTransactionCommand { get; set; }
+        public ICommand UpdateStatementTransactionsCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -75,24 +76,14 @@ namespace BudgetBadger.Forms.Accounts
         public ObservableList<Transaction> Transactions
         {
             get => _transactions;
-            set
-            {
-                SetProperty(ref _transactions, value);
-                RaisePropertyChanged(nameof(PostedTotal));
-                RaisePropertyChanged(nameof(Difference));
-            }
+            set => SetProperty(ref _transactions, value);
         }
 
         ObservableList<Transaction> _statementTransactions;
         public ObservableList<Transaction> StatementTransactions
         {
             get => _statementTransactions;
-            set
-            {
-                SetProperty(ref _statementTransactions, value);
-                RaisePropertyChanged(nameof(PostedTotal));
-                RaisePropertyChanged(nameof(Difference));
-            }
+            set => SetProperty(ref _statementTransactions, value);
         }
 
         Transaction _selectedTransaction;
@@ -116,11 +107,7 @@ namespace BudgetBadger.Forms.Accounts
         public DateTime StatementDate
         {
             get => _statementDate;
-            set
-            {
-                SetProperty(ref _statementDate, value);
-                UpdateStatementTransactions();
-            }
+            set => SetProperty(ref _statementDate, value);
         }
 
         decimal _statementAmount;
@@ -138,11 +125,7 @@ namespace BudgetBadger.Forms.Accounts
         public bool ReconcileMode
         {
             get => _reconcileMode;
-            set
-            {
-                SetProperty(ref _reconcileMode, value);
-                RaisePropertyChanged(nameof(StatementMode));
-            }
+            set => SetProperty(ref _reconcileMode, value);
         }
 
         public bool StatementMode
@@ -196,12 +179,13 @@ namespace BudgetBadger.Forms.Accounts
 
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            ToggleReconcileModeCommand = new DelegateCommand(ExecuteToggleReconcileModeCommand);
+            ToggleReconcileModeCommand = new DelegateCommand(async () => await ExecuteToggleReconcileModeCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
             RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
+            UpdateStatementTransactionsCommand = new DelegateCommand(async () => await ExecuteUpdateStatementTransactionsCommand());
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -224,6 +208,8 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await ExecuteRefreshTransactionCommand(transaction);
             }
+
+            await RefreshSummary();
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -281,16 +267,6 @@ namespace BudgetBadger.Forms.Accounts
                         }
                     }
 
-                    var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
-                    if (accountResult.Success)
-                    {
-                        Account = accountResult.Data;
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                    }
-
                     var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
                     if (result.Success
                         && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
@@ -302,10 +278,11 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
-                    SelectedTransaction = null;
+
+                    await RefreshSummary();
                 }
 
-                UpdateStatementTransactions();
+                await ExecuteUpdateStatementTransactionsCommand();
             }
             finally
             {
@@ -324,11 +301,12 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void UpdateStatementTransactions()
+        public async Task ExecuteUpdateStatementTransactionsCommand()
         {
             var temp = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
-            temp.Sort();
             StatementTransactions.ReplaceRange(temp);
+
+            await RefreshSummary();
 
             NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
         }
@@ -349,9 +327,10 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void ExecuteToggleReconcileModeCommand()
+        public async Task ExecuteToggleReconcileModeCommand()
         {
             ReconcileMode = !ReconcileMode;
+            await RefreshSummary();
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
@@ -378,8 +357,8 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         transactionFromList.Posted = transaction.Posted;
                     }
-                    RaisePropertyChanged(nameof(PostedTotal));
-                    RaisePropertyChanged(nameof(Difference));
+
+                    await RefreshSummary();
 
                     _needToSync = true;
                 }
@@ -413,7 +392,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 return;
             }
-
 
             if (transaction.IsSplit)
             {
@@ -455,6 +433,23 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+        }
+
+        async Task RefreshSummary()
+        {
+            var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
+            if (accountResult.Success)
+            {
+                Account = accountResult.Data;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+
+            RaisePropertyChanged(nameof(StatementMode));
+            RaisePropertyChanged(nameof(PostedTotal));
+            RaisePropertyChanged(nameof(Difference));
         }
     }
 }
