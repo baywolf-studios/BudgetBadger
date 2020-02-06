@@ -77,12 +77,7 @@ namespace BudgetBadger.Forms.Accounts
         public ObservableList<Transaction> Transactions
         {
             get => _transactions;
-            set
-            {
-                SetProperty(ref _transactions, value);
-                RaisePropertyChanged(nameof(PendingTotal));
-                RaisePropertyChanged(nameof(PostedTotal));
-            }
+            set => SetProperty(ref _transactions, value);
         }
 
         Transaction _selectedTransaction;
@@ -174,6 +169,8 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await ExecuteRefreshTransactionCommand(transaction);
             }
+
+            await RefreshSummary();
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -281,15 +278,7 @@ namespace BudgetBadger.Forms.Accounts
                         }
                     }
 
-                    var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
-                    if (accountResult.Success)
-                    {
-                        Account = accountResult.Data;
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                    }
+                    await RefreshSummary();
 
                     var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
                     if (result.Success
@@ -369,8 +358,7 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         transactionFromList.Posted = transaction.Posted;
                     }
-                    RaisePropertyChanged(nameof(PendingTotal));
-                    RaisePropertyChanged(nameof(PostedTotal));
+                    await RefreshSummary();
 
                     _needToSync = true;
                 }
@@ -403,6 +391,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
+                    await RefreshSummary();
                     _needToSync = true;
                 }
                 else
@@ -414,6 +403,22 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+        }
+
+        async Task RefreshSummary()
+        {
+            var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
+            if (accountResult.Success)
+            {
+                Account = accountResult.Data;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+
+            RaisePropertyChanged(nameof(PendingTotal));
+            RaisePropertyChanged(nameof(PostedTotal));
         }
     }
 }

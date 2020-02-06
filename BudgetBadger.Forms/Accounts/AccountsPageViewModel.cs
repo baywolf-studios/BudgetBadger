@@ -64,6 +64,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
 
+
+
         bool _noAccounts;
         public bool NoAccounts
         {
