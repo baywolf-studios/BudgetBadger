@@ -82,6 +82,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedAccount = null;
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)

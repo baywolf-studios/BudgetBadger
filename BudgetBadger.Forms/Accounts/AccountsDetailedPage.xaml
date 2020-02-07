@@ -67,10 +67,10 @@
                             Orientation="Vertical">
                             <Label
                                 Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
-                                Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                                Text="{Binding Assests, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
                                 Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                                Text="{ext:Translate AccountNetWorthLabel}"/>
+                                Text="Assests"/>
                         </StackLayout>
                         <StackLayout
                             Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
@@ -79,10 +79,10 @@
                             Orientation="Vertical">
                             <Label
                                 Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
-                                Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                                Text="{Binding Debts, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
                                 Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                                Text="{ext:Translate AccountNetWorthLabel}"/>
+                                Text="Debts"/>
                         </StackLayout>
                     </FlexLayout>
                     <uc:Accordion
@@ -111,10 +111,10 @@
                                     Orientation="Vertical">
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
-                                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                                        Text="{Binding Assests, Converter={StaticResource CurrencyConverter}}"/>
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                        Text="{ext:Translate AccountNetWorthLabel}"/>
+                                        Text="Assests"/>
                                 </StackLayout>
                                 <StackLayout
                                     Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
@@ -123,10 +123,10 @@
                                     Orientation="Vertical">
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
-                                        Text="{Binding NetWorth, Converter={StaticResource CurrencyConverter}}"/>
+                                        Text="{Binding Debts, Converter={StaticResource CurrencyConverter}}"/>
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                        Text="{ext:Translate AccountNetWorthLabel}"/>
+                                        Text="Debts"/>
                                 </StackLayout>
                             </FlexLayout>
                             </StackLayout>
