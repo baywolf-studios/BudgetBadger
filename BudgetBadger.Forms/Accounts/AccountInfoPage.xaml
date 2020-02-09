@@ -76,42 +76,47 @@
                             Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
                             Text="{ext:Translate AccountPostedLabel}"/>
                     </StackLayout>
-                    <StackLayout
-                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                        Spacing="{ext:DynamicResource size_40}"
-                        HeightRequest="{ext:DynamicResource size_800}"
-                        Orientation="Vertical">
-                        <Label
-                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}">
-                            <Label.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Account.PaymentRequired}"
-                                    TargetType="Label"
-                                    Value="false">
-                                    <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
-                                </DataTrigger>
-                                <DataTrigger
-                                    Binding="{Binding Account.PaymentRequired}"
-                                    TargetType="Label"
-                                    Value="true">
-                                    <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
-                                    <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Label
-                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                            Text="{ext:Translate AccountPaymentLabel}">
-                            <Label.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Account.PaymentRequired}"
-                                    TargetType="Label"
-                                    Value="true">
-                                    <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                    </StackLayout>
+                    <uc:ContentButton
+                                Command="{Binding PaymentCommand}"
+                                Style="{ext:DynamicResource AccountPaymentButtonStyle}"
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                Padding="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}">
+                        <StackLayout
+                            Spacing="{ext:DynamicResource size_40}"
+                            InputTransparent="True"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="false">
+                                        <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
+                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountPaymentLabel}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </uc:ContentButton>
                 </FlexLayout>
                 <uc:Accordion
                     IsVisible="{OnIdiom Default=False, Phone=True}"
