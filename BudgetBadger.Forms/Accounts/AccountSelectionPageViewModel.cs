@@ -36,8 +36,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -75,7 +75,7 @@ namespace BudgetBadger.Forms.Accounts
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -97,9 +97,9 @@ namespace BudgetBadger.Forms.Accounts
                 return;
             }
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                await InitializeAsync(parameters);
+                await ExecuteRefreshAccountCommand(transaction.Account);
             }
         }
 
@@ -138,7 +138,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -153,7 +153,18 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-		public async Task ExecuteAddCommand()
+        public async Task ExecuteRefreshAccountCommand(Account account)
+        {
+            var updatedAccount = await _accountLogic.GetAccountAsync(account.Id);
+            if (updatedAccount.Success)
+            {
+                var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
+                Accounts.Remove(accountToRemove);
+                Accounts.Add(updatedAccount.Data);
+            }
+        }
+
+        public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.AccountEditPage);
         }
