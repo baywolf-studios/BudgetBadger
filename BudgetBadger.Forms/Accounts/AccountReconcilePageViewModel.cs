@@ -227,6 +227,11 @@ namespace BudgetBadger.Forms.Accounts
                     _needToSync = false;
                 }
             }
+
+            if (!parameters.TryGetValue(PageParameter.Account, out Account _))
+            {
+                parameters.Add(PageParameter.Account, Account);
+            }
         }
 
         public async Task ExecuteRefreshCommand()

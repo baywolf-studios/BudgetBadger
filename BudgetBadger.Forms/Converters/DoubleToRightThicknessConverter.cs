@@ -11,7 +11,7 @@ namespace BudgetBadger.Forms.Converters
         {
             if (value is double leftRight)
             {
-                return new Thickness(leftRight, 0, leftRight, 0);
+                return new Thickness(0, 0, leftRight, 0);
             }
 
             throw new FormatException();
