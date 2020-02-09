@@ -87,6 +87,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _hardRefresh = true;
+
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
 		                             IPageDialogService dialogService,
@@ -119,9 +121,10 @@ namespace BudgetBadger.Forms.Accounts
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            if (!Accounts.Any())
+            if (_hardRefresh)
             {
                 await ExecuteRefreshCommand();
+                _hardRefresh = false;
             }
         }
 
@@ -179,6 +182,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (account.IsGenericHiddenAccount)
             {
+                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenAccountsPage);
             }
             else
