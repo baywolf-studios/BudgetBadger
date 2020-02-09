@@ -35,8 +35,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -73,7 +73,7 @@ namespace BudgetBadger.Forms.Accounts
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
@@ -92,9 +92,22 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Account, out Account account))
             {
-                await InitializeAsync(parameters);
+                await ExecuteRefreshAccountCommand(account);
+
+                if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
+                {
+                    // show message about debt envelopes
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDebtEnvelopes"),
+                            _resourceContainer.GetResourceString("AlertMessageDebtEnvelopes"),
+                            _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
+
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                await ExecuteRefreshAccountCommand(transaction.Account);
             }
         }
 
@@ -129,7 +142,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -141,6 +154,17 @@ namespace BudgetBadger.Forms.Accounts
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshAccountCommand(Account account)
+        {
+            var updatedAccount = await _accountLogic.GetAccountAsync(account.Id);
+            if (updatedAccount.Success)
+            {
+                var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
+                Accounts.Remove(accountToRemove);
+                Accounts.Add(updatedAccount.Data);
             }
         }
     }
