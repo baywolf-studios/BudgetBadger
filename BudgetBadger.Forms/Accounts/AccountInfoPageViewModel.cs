@@ -419,6 +419,7 @@ namespace BudgetBadger.Forms.Accounts
 
             RaisePropertyChanged(nameof(PendingTotal));
             RaisePropertyChanged(nameof(PostedTotal));
+            RaisePropertyChanged(nameof(Account.Balance));
         }
     }
 }

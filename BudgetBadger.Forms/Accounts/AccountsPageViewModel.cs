@@ -162,6 +162,11 @@ namespace BudgetBadger.Forms.Accounts
                 }
             }
 
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                await ExecuteRefreshAccountCommand(transaction.Account);
+            }
+
             RefreshSummary();
         }
 
