@@ -3,13 +3,14 @@
     x:Class="BudgetBadger.Forms.DataTemplates.PayeeViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    ColumnSpacing="16"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    ColumnSpacing="{ext:DynamicResource Key=size_100}"
     HeightRequest="{StaticResource Key=ListItemHeight}"
     RowSpacing="0">
     <Label
         Grid.Column="0"
         Margin="16,0"
-        Style="{StaticResource Key=ListItemLabelStyle}"
+        Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
         Text="{Binding Description}" />
 
 </Grid>
