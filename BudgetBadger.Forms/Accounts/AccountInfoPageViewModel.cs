@@ -210,7 +210,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
-                await ExecuteRefreshCommand();
+                await ExecuteRefreshTransactionCommand(transaction);
 
                 _needToSync = true;
             }
@@ -312,7 +312,10 @@ namespace BudgetBadger.Forms.Accounts
             {
                 var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
                 Transactions.Remove(transactionToRemove);
-                Transactions.Add(updatedTransaction.Data);
+                if (transaction.IsActive)
+                {
+                    Transactions.Add(updatedTransaction.Data);
+                }
             }
         }
 
