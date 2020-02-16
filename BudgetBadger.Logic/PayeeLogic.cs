@@ -399,6 +399,10 @@ namespace BudgetBadger.Logic
 
         public bool FilterPayee(Payee payee, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
             if (payee != null)
             {
                 return payee.Description.ToLower().Contains(searchText.ToLower());

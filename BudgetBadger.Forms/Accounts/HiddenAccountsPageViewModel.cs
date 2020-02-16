@@ -95,14 +95,6 @@ namespace BudgetBadger.Forms.Accounts
             if (parameters.TryGetValue(PageParameter.Account, out Account account))
             {
                 await ExecuteRefreshAccountCommand(account);
-
-                if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
-                {
-                    // show message about debt envelopes
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertDebtEnvelopes"),
-                            _resourceContainer.GetResourceString("AlertMessageDebtEnvelopes"),
-                            _resourceContainer.GetResourceString("AlertOk"));
-                }
             }
 
             if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))

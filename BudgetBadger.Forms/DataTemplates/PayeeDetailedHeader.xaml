@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    x:Class="BudgetBadger.Forms.DataTemplates.PayeeDetailedHeader"
+    HeightRequest="{ext:DynamicResource size_500}"
+    ColumnSpacing="{ext:DynamicResource size_175}"
+    RowSpacing="{ext:DynamicResource size_0}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1.5*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_900,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.ColumnDefinitions>
+    <Label
+        Grid.Row="0"
+        Grid.Column="0"
+        Style="{ext:DynamicResource ControlDescriptionLabelStyle}"
+        VerticalOptions="Center"
+        Text="{ext:Translate PayeeNameLabel}">
+    </Label>
+    <Label
+        Grid.Row="0"
+        Grid.Column="1"
+        Style="{ext:DynamicResource ControlDescriptionLabelStyle}"
+        VerticalOptions="Center"
+        Text="{ext:Translate PayeeNotesLabel}">
+    </Label>
+    <BoxView
+        Grid.Row="1"
+        Grid.ColumnSpan="5"
+        Style="{ext:DynamicResource DividerStyle}"/>
+</Grid>

@@ -36,8 +36,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -76,7 +76,7 @@ namespace BudgetBadger.Forms.Payees
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
@@ -87,6 +87,7 @@ namespace BudgetBadger.Forms.Payees
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedPayee = null;
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -97,12 +98,6 @@ namespace BudgetBadger.Forms.Payees
                 await _navigationService.GoBackAsync(parameters);
                 return;
             }
-
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-            
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -110,7 +105,7 @@ namespace BudgetBadger.Forms.Payees
             await ExecuteRefreshCommand();
         }
 
-		public async Task ExecuteAddCommand()
+        public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.PayeeEditPage);
         }
@@ -145,7 +140,7 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.ReplaceRange(result.Data);
                 }
                 else
                 {

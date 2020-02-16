@@ -13,6 +13,14 @@ namespace BudgetBadger.Forms.Comparers
 
         public int Compare(object x, object y)
         {
+            if (x is ObservableGrouping<object, object> ogroupX && y is ObservableGrouping<object, object> ogroupY)
+            {
+                var osourceX = ogroupX.FirstOrDefault();
+                var osourceY = ogroupY.FirstOrDefault();
+
+                return Compare(osourceX, osourceY);
+            }
+
             if (x is Group groupX && y is Group groupY)
             {
                 var sourceX = groupX.Source.FirstOrDefault();

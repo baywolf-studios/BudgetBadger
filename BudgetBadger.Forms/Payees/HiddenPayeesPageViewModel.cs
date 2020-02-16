@@ -25,6 +25,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshPayeeCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
@@ -34,8 +35,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -75,19 +76,17 @@ namespace BudgetBadger.Forms.Payees
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshPayeeCommand = new DelegateCommand<Payee>(async a => await ExecuteRefreshPayeeCommand(a));
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
+            SelectedPayee = null;
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -95,8 +94,17 @@ namespace BudgetBadger.Forms.Payees
             await ExecuteRefreshCommand();
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
+            {
+                await ExecuteRefreshPayeeCommand(payee);
+            }
+
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                await ExecuteRefreshPayeeCommand(transaction.Payee);
+            }
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -125,11 +133,11 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetHiddenPayeesAsync();
+                var result = await _payeeLogic.GetPayeesAsync();
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -141,6 +149,17 @@ namespace BudgetBadger.Forms.Payees
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshPayeeCommand(Payee payee)
+        {
+            var updatedPayee = await _payeeLogic.GetPayeeAsync(payee.Id);
+            if (updatedPayee.Success)
+            {
+                var payeeToRemove = Payees.FirstOrDefault(a => a.Id == payee.Id);
+                Payees.Remove(payeeToRemove);
+                Payees.Add(updatedPayee.Data);
             }
         }
     }

@@ -222,7 +222,7 @@
                     Text="{ext:Translate AddTransactionButton}"
                     Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                     VerticalOptions="Center"
-                    HorizontalOptions="End"/>
+                    HorizontalOptions="{OnIdiom Default=End, Phone=Fill}"/>
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BaseDetailedPage.Body>
