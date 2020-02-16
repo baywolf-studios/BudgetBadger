@@ -48,7 +48,7 @@
                             SelectedItem="{Binding SelectedPayee}"
                             SeparatorVisibility="None">
                             <uc:DataTable.SortComparer>
-                                <comparers:AccountComparer/>
+                                <comparers:PayeeComparer/>
                             </uc:DataTable.SortComparer>
                             <uc:DataTable.Header>
                                     <dt:PayeeDetailedHeader
