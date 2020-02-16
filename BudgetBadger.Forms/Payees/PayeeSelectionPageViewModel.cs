@@ -188,16 +188,20 @@ namespace BudgetBadger.Forms.Payees
                 Description = SearchText
             };
 
-            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
+            var result = await _payeeLogic.SavePayeeAsync(newPayee);
 
             if (result.Success)
             {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, result.Data }
+                };
+
+                await _navigationService.GoBackAsync(parameters);
             }
             else
             {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }
