@@ -1101,6 +1101,10 @@ namespace BudgetBadger.Logic
 
         public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
             if (envelopeGroup != null)
             {
                 return envelopeGroup.Description.ToLower().Contains(searchText.ToLower());
@@ -1113,6 +1117,10 @@ namespace BudgetBadger.Logic
 
         public bool FilterEnvelope(Envelope envelope, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
             if (envelope != null)
             {
                 return envelope.Group.Description.ToLower().Contains(searchText.ToLower())
@@ -1126,12 +1134,14 @@ namespace BudgetBadger.Logic
 
         public bool FilterBudget(Budget budget, string searchText)
         {
-            var text = searchText ?? "";
-
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
             if (budget != null && budget.Envelope != null)
             {
-                return budget.Envelope.Group.Description.ToLower().Contains(text.ToLower())
-                             || budget.Envelope.Description.ToLower().Contains(text.ToLower());
+                return budget.Envelope.Group.Description.ToLower().Contains(searchText.ToLower())
+                             || budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
             }
             else
             {

@@ -51,7 +51,7 @@
                             </uc:DataTable.SortComparer>
                             <uc:DataTable.Header>
                                     <dt:TransactionDetailedHeader
-                                        TransactionViewCellType="Account"
+                                        TransactionViewCellType="Payee"
                                         HeightRequest="{ext:DynamicResource size_500}"
                                         BackgroundColor="{ext:DynamicResource gray_50}"
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
@@ -64,7 +64,7 @@
                                         SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:TransactionDetailedViewCell
-                                            TransactionViewCellType="Account"
+                                            TransactionViewCellType="Payee"
                                             Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                             Envelopes="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                             ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"

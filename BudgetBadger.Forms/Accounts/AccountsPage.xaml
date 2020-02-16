@@ -203,7 +203,8 @@
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    HorizontalOptions="{OnIdiom Default=End, Phone=Fill}"/>
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BasePage.Body>

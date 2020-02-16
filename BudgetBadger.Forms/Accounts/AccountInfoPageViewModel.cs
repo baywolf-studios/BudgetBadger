@@ -312,7 +312,7 @@ namespace BudgetBadger.Forms.Accounts
             {
                 var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
                 Transactions.Remove(transactionToRemove);
-                if (transaction.IsActive)
+                if (updatedTransaction.Data.IsActive)
                 {
                     Transactions.Add(updatedTransaction.Data);
                 }

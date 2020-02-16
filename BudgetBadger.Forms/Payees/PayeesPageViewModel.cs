@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BaseViewModel
+    public class PayeesPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IPayeeLogic> _payeeLogic;
@@ -31,6 +31,7 @@ namespace BudgetBadger.Forms.Payees
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshPayeeCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
@@ -47,8 +48,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -84,6 +85,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _hardRefresh = true;
+
         public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                    INavigationService navigationService,
                                    IPageDialogService dialogService,
@@ -98,7 +101,7 @@ namespace BudgetBadger.Forms.Payees
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
@@ -108,6 +111,7 @@ namespace BudgetBadger.Forms.Payees
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
+            RefreshPayeeCommand = new DelegateCommand<Payee>(async a => await ExecuteRefreshPayeeCommand(a));
         }
 
         public override async void OnActivated()
@@ -115,11 +119,17 @@ namespace BudgetBadger.Forms.Payees
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            if (_hardRefresh)
+            {
+                await ExecuteRefreshCommand();
+                _hardRefresh = false;
+            }
         }
 
         public override async void OnDeactivated()
         {
+            SelectedPayee = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -130,6 +140,24 @@ namespace BudgetBadger.Forms.Payees
                     await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
                     _needToSync = false;
                 }
+            }
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        // this gets hit before the OnActivated
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
+            {
+                await ExecuteRefreshPayeeCommand(payee);
+            }
+
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                await ExecuteRefreshPayeeCommand(transaction.Payee);
             }
         }
 
@@ -170,7 +198,7 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -182,6 +210,17 @@ namespace BudgetBadger.Forms.Payees
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshPayeeCommand(Payee payee)
+        {
+            var updatedPayee = await _payeeLogic.Value.GetPayeeAsync(payee.Id);
+            if (updatedPayee.Success)
+            {
+                var payeeToRemove = Payees.FirstOrDefault(a => a.Id == payee.Id);
+                Payees.Remove(payeeToRemove);
+                Payees.Add(updatedPayee.Data);
             }
         }
 

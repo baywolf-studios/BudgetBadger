@@ -96,11 +96,6 @@ namespace BudgetBadger.Forms.Accounts
                 await _navigationService.GoBackAsync(parameters);
                 return;
             }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshAccountCommand(transaction.Account);
-            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -150,17 +145,6 @@ namespace BudgetBadger.Forms.Accounts
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        public async Task ExecuteRefreshAccountCommand(Account account)
-        {
-            var updatedAccount = await _accountLogic.GetAccountAsync(account.Id);
-            if (updatedAccount.Success)
-            {
-                var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
-                Accounts.Remove(accountToRemove);
-                Accounts.Add(updatedAccount.Data);
             }
         }
 
