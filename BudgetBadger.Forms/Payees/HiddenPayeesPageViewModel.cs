@@ -133,7 +133,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetPayeesAsync();
+                var result = await _payeeLogic.GetHiddenPayeesAsync();
 
                 if (result.Success)
                 {

@@ -26,7 +26,8 @@ namespace BudgetBadger.Forms.Payees
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
-		public ICommand AddCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
+        public ICommand AddCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
@@ -82,7 +83,8 @@ namespace BudgetBadger.Forms.Payees
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
+            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -176,6 +178,26 @@ namespace BudgetBadger.Forms.Payees
             else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteSaveSearchCommand()
+        {
+            var newPayee = new Payee
+            {
+                Description = SearchText
+            };
+
+            var result = await _payeeLogic.Value.SavePayeeAsync(newPayee);
+
+            if (result.Success)
+            {
+                _needToSync = true;
+                await ExecuteRefreshCommand();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
     }
