@@ -32,7 +32,7 @@
     </uc:MultilineTextField>
     <uc:Button2
         x:Name="EditButton"
-        Grid.Column="4"
+        Grid.Column="2"
         Style="{ext:DynamicResource ActionButtonStyle}"
         Clicked="Handle_EditClicked"
         IsVisible="{Binding IsReadOnly, Source={x:Reference Name=accountDetailedViewCell}, Converter={StaticResource InverseBooleanConverter}}">
@@ -50,7 +50,7 @@
         Margin="0"
         Padding="0"
         Orientation="Horizontal"
-        Grid.Column="4"
+        Grid.Column="2"
         HorizontalOptions="Center"
         IsVisible="False">
         <uc:Button2
@@ -80,6 +80,6 @@
     </StackLayout>
     <BoxView
         Grid.Row="1"
-        Grid.ColumnSpan="5"
+        Grid.ColumnSpan="3"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

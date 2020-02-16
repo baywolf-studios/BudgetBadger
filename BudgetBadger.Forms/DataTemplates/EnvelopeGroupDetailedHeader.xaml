@@ -32,6 +32,6 @@
     </Label>
     <BoxView
         Grid.Row="1"
-        Grid.ColumnSpan="5"
+        Grid.ColumnSpan="3"
         Style="{ext:DynamicResource DividerStyle}"/>
 </Grid>

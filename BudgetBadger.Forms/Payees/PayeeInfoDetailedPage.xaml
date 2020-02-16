@@ -65,7 +65,7 @@
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:TransactionDetailedViewCell
                                             TransactionViewCellType="Payee"
-                                            Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+                                            Accounts="{Binding BindingContext.Accounts, Source={x:Reference Name=this}}"
                                             Envelopes="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
                                             ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                             SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
