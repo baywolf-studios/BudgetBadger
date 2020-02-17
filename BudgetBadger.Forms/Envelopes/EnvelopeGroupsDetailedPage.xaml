@@ -71,7 +71,7 @@
                                                 </DataTrigger>
                                                 <DataTrigger
                                                     Binding="{Binding IsGenericHiddenEnvelopeGroup}"
-                                                    Value="false"
+                                                    Value="true"
                                                     TargetType="dt:EnvelopeGroupDetailedViewCell">
                                                     <Setter Property="IsReadOnly" Value="true"/>
                                                 </DataTrigger>

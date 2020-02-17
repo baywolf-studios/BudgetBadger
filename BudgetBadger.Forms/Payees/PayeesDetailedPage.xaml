@@ -83,7 +83,7 @@
                                                 </DataTrigger>
                                                 <DataTrigger
                                                     Binding="{Binding IsGenericHiddenPayee}"
-                                                    Value="false"
+                                                    Value="true"
                                                     TargetType="dt:PayeeDetailedViewCell">
                                                     <Setter Property="IsReadOnly" Value="true"/>
                                                 </DataTrigger>

@@ -194,7 +194,7 @@
                                                 </DataTrigger>
                                                 <DataTrigger
                                                     Binding="{Binding IsGenericHiddenAccount}"
-                                                    Value="false"
+                                                    Value="true"
                                                     TargetType="dt:AccountDetailedViewCell">
                                                     <Setter Property="IsReadOnly" Value="true"/>
                                                 </DataTrigger>
