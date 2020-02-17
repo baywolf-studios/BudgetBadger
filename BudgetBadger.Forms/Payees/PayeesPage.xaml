@@ -22,8 +22,7 @@
         <uc:EmptyState
             Title="{ext:Translate EmptyPayeeHelperTitle}"
             Icon="{ext:DynamicResource PayeeIcon}"
-            ShowHelper="{Binding NoPayees}"
-            Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
+            ShowHelper="{Binding NoPayees}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

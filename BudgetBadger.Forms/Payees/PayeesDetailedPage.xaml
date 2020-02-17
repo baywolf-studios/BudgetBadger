@@ -73,10 +73,16 @@
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:PayeeDetailedViewCell
                                             SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                            RefreshItemCommand="{Binding BindingContext.RefreshAccountCommand, Source={x:Reference Name=this}}">
+                                            RefreshItemCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
                                             <dt:PayeeDetailedViewCell.Triggers>
                                                 <DataTrigger
                                                     Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                    Value="false"
+                                                    TargetType="dt:PayeeDetailedViewCell">
+                                                    <Setter Property="IsReadOnly" Value="true"/>
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding IsGenericHiddenPayee}"
                                                     Value="false"
                                                     TargetType="dt:PayeeDetailedViewCell">
                                                     <Setter Property="IsReadOnly" Value="true"/>

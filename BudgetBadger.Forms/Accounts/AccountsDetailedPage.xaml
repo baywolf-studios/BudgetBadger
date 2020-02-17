@@ -192,6 +192,12 @@
                                                     TargetType="dt:AccountDetailedViewCell">
                                                     <Setter Property="IsReadOnly" Value="true"/>
                                                 </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding IsGenericHiddenAccount}"
+                                                    Value="false"
+                                                    TargetType="dt:AccountDetailedViewCell">
+                                                    <Setter Property="IsReadOnly" Value="true"/>
+                                                </DataTrigger>
                                             </dt:AccountDetailedViewCell.Triggers>
                                         </dt:AccountDetailedViewCell>
                                         <uc:SelectableViewCell.ContextActions>
