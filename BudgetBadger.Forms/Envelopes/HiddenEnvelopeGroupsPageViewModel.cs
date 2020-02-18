@@ -42,8 +42,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _selectedEnvelopeGroup, value);
         }
 
-        IReadOnlyList<EnvelopeGroup> _envelopeGroups;
-        public IReadOnlyList<EnvelopeGroup> EnvelopeGroups
+        ObservableList<EnvelopeGroup> _envelopeGroups;
+        public ObservableList<EnvelopeGroup> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
@@ -74,7 +74,7 @@ namespace BudgetBadger.Forms.Envelopes
             _envelopeLogic = envelopeLogic;
 
             SelectedEnvelopeGroup = null;
-            EnvelopeGroups = new List<EnvelopeGroup>();
+            EnvelopeGroups = new ObservableList<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -95,6 +95,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedEnvelopeGroup = null;
         }
 
         public async Task ExecuteRefreshCommand()
@@ -112,7 +113,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    EnvelopeGroups = result.Data;
+                    EnvelopeGroups.ReplaceRange(result.Data);
                 }
                 else
                 {

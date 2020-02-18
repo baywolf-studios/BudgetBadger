@@ -8,7 +8,6 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BaseDetailedPage.Header>
@@ -45,7 +44,7 @@
                             SelectedItem="{Binding SelectedEnvelopeGroup}"
                             SeparatorVisibility="None">
                             <uc:DataTable.SortComparer>
-                                <comparers:PayeeComparer/>
+                                <comparers:EnvelopeGroupComparer/>
                             </uc:DataTable.SortComparer>
                             <uc:DataTable.Header>
                                     <dt:EnvelopeGroupDetailedHeader

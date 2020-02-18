@@ -25,7 +25,7 @@
             ShowHelper="{Binding NoPayees}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <uc:PullToRefresh
