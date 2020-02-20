@@ -142,6 +142,12 @@
                                     Value="true">
                                     <Setter Property="IsVisible" Value="false" />
                                 </DataTrigger>
+                                <DataTrigger
+                                    Binding="{Binding Transaction.IsNew}"
+                                    TargetType="BoxView"
+                                    Value="true">
+                                    <Setter Property="IsVisible" Value="false" />
+                                </DataTrigger>
                             </BoxView.Triggers>
                         </BoxView>
                         <uc:Button2
