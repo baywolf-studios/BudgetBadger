@@ -24,219 +24,64 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <ScrollView
-                    Grid.Row="0"
-                    Margin="0"
-                    Padding="0"
-                    Orientation="Vertical">
-                    <Grid
-                        Margin="0"
-                        ColumnSpacing="16"
-                        RowSpacing="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="0" />
-                        </Grid.RowDefinitions>
-                        <uc:TextField
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Label="{ext:Translate EnvelopeGroupNameLabel}"
-                            Text="{Binding EnvelopeGroup.Description}" />
-                        <uc:MultilineTextField
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Label="{ext:Translate EnvelopeGroupNotesLabel}"
-                            Text="{Binding EnvelopeGroup.Notes}" />
-                        <uc:Button2
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding HideCommand}"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate HideButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding EnvelopeGroup.IsActive}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <uc:Button2
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="0,0,16,0"
-                            Command="{Binding UnhideCommand}"
-                            Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="{ext:Translate UnhideButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding EnvelopeGroup.IsHidden}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <uc:Button2
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="16,0,0,0"
-                            Command="{Binding SoftDeleteCommand}"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate DeleteButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding EnvelopeGroup.IsHidden}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                    </Grid>
-                </ScrollView>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <Grid
-                    Grid.Row="2"
-                    Margin="16"
-                    ColumnSpacing="16">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
+            <ScrollView
+                Orientation="Vertical">
+                <uc:ResponsiveGrid
+                    x:Name="responsiveGrid"
+                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_160, RightKey=size_0, BottomKey=size_0}"
+                    RowSpacing="{Binding Gutter, Source={x:Reference responsiveGrid}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Label
+                    <uc:TextField
                         Grid.Row="0"
                         Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="hidden"
-                        TextColor="Transparent"
-                        VerticalOptions="Center" />
-                    <Label
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate EnvelopeGroupNameLabel}"
+                        Text="{Binding EnvelopeGroup.Description}" />
+                    <uc:MultilineTextField
                         Grid.Row="1"
                         Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="hidden"
-                        TextColor="Transparent"
-                        VerticalOptions="Center" />
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="3"
-                        Command="{Binding HideCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate HideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding EnvelopeGroup.IsActive}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="3"
-                        Command="{Binding UnhideCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="{ext:Translate UnhideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding EnvelopeGroup.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Command="{Binding SoftDeleteCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate DeleteButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding EnvelopeGroup.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                </Grid>
-            </Grid>
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Keyboard="Text"
+                        Label="{ext:Translate EnvelopeGroupNotesLabel}"
+                        Text="{Binding EnvelopeGroup.Notes}" />
+                    <FlexLayout
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Direction="Row"
+                        AlignItems="Center"
+                        JustifyContent="End"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Button2
+                            Command="{Binding HideCommand}"
+                            IsVisible="{Binding EnvelopeGroup.IsActive}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate HideButton}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" />
+                        <uc:Button2
+                            Command="{Binding UnhideCommand}"
+                            IsVisible="{Binding EnvelopeGroup.IsHidden}"
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="{ext:Translate UnhideButton}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" />
+                        <BoxView
+                            IsVisible="{Binding EnvelopeGroup.IsHidden}"
+                            WidthRequest="{ext:DynamicResource size_200}"/>
+                        <uc:Button2
+                            Command="{Binding SoftDeleteCommand}"
+                            IsVisible="{Binding EnvelopeGroup.IsHidden}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate DeleteButton}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" />
+                    </FlexLayout>
+                </uc:ResponsiveGrid>
+            </ScrollView>
         </uc:BusyIndicator>
     </p:BasePage.Body>
 </p:BasePage>
