@@ -44,6 +44,7 @@
         x:Name="AmountControl"
         Grid.Column="3"
         Number="{Binding Amount}"
+        HorizontalTextAlignment="End"
         IsReadOnly="True">
     </uc:CurrencyCalculatorEntry>
     <Label

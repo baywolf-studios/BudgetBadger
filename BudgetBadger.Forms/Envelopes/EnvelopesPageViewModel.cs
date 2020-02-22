@@ -20,7 +20,7 @@ using BudgetBadger.Core.Purchase;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopesPageViewModel : BaseViewModel
+    public class EnvelopesPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
@@ -56,8 +56,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _schedule, value);
         }
 
-        IReadOnlyList<Budget> _budgets;
-        public IReadOnlyList<Budget> Budgets
+        ObservableList<Budget> _budgets;
+        public ObservableList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value); 
@@ -106,7 +106,7 @@ namespace BudgetBadger.Forms.Envelopes
             _purchaseService = purchaseService;
 
             Schedule = null;
-            Budgets = new List<Budget>();
+            Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -130,6 +130,8 @@ namespace BudgetBadger.Forms.Envelopes
 
         public override async void OnDeactivated()
         {
+            SelectedBudget = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -141,6 +143,26 @@ namespace BudgetBadger.Forms.Envelopes
                     _needToSync = false;
                 }
             }
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        // this gets hit before the OnActivated
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.TryGetValue(PageParameter.Budget, out Budget budget))
+            {
+                await ExecuteRefreshBudgetCommand(budget);
+            }
+
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                //await ExecuteRefreshBudgetCommand(transaction.Account);
+            }
+
+            RefreshSummary();
         }
 
         public async Task ExecuteRefreshCommand()
@@ -173,12 +195,12 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     if (budgetResult.Data.Any())
                     {
-                        Budgets = budgetResult.Data;
+                        Budgets.ReplaceRange(budgetResult.Data);
                         Schedule = Budgets.Any() ? Budgets.FirstOrDefault().Schedule.DeepCopy() : Schedule;
                     }
                     else
                     {
-                        Budgets = new List<Budget>();
+                        Budgets.RemoveAll();
                     }
                 }
                 else
@@ -186,11 +208,29 @@ namespace BudgetBadger.Forms.Envelopes
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
+                RefreshSummary();
                 NoEnvelopes = (Budgets?.Count ?? 0) == 0;
             }
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task ExecuteRefreshBudgetCommand(Budget budget)
+        {
+            var updatedBudget = await _envelopeLogic.Value.GetBudgetAsync(budget.Envelope.Id, budget.Schedule);
+            if (updatedBudget.Success)
+            {
+                var budgetToRemove = Budgets.FirstOrDefault(a => a.Id == budget.Id);
+                Budgets.Remove(budgetToRemove);
+                Budgets.Add(updatedBudget.Data);
+            }
+
+            var updatedSchedule = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
+            if (updatedSchedule.Success)
+            {
+                Schedule = updatedSchedule.Data;
             }
         }
 
@@ -307,6 +347,15 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+        }
+
+        void RefreshSummary()
+        {
+            RaisePropertyChanged(nameof(Schedule));
+            RaisePropertyChanged(nameof(Schedule.Past));
+            RaisePropertyChanged(nameof(Schedule.Income));
+            RaisePropertyChanged(nameof(Schedule.ToBudget));
+            RaisePropertyChanged(nameof(Schedule.Overspend));
         }
     }
 }

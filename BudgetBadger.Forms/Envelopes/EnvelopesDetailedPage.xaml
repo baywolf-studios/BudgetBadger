@@ -24,340 +24,261 @@
     <p:BaseDetailedPage.Body>
         <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
-            Grid.Row="2"
             Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="{ext:DynamicResource Key=size_800,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
-                <uc:PullToRefresh
+                <StackLayout
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
                     Grid.Row="0"
-                    Margin="16,0"
+                    Grid.ColumnSpan="12"
+                    VerticalOptions="Start">
+                    <FlexLayout
+                        IsVisible="{OnIdiom Default=True, Phone=False}"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="SpaceEvenly"
+                        AlignContent="Center"
+                        AlignItems="Center"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate SchedulePastLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleIncomeLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleBudgetedLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleOverLabel}"/>
+                        </StackLayout>
+                    </FlexLayout>
+                    <uc:Accordion
+                        IsVisible="{OnIdiom Default=False, Phone=True}"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Accordion.HeaderContent>
+                            <StackLayout
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Spacing="{ext:DynamicResource size_100}"
+                                Orientation="Horizontal">
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                    Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                            </StackLayout>
+                        </uc:Accordion.HeaderContent>
+                        <uc:Accordion.BodyContent>
+                            <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                            <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate SchedulePastLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleIncomeLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleBudgetedLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleOverLabel}"/>
+                                </StackLayout>
+                            </FlexLayout>
+                            </StackLayout>
+                        </uc:Accordion.BodyContent>
+                    </uc:Accordion>
+                </StackLayout>
+                <BoxView
+                    Grid.Row="1"
+                    Grid.ColumnSpan="12"
+                    Style="{ext:DynamicResource MediumDividerStyle}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                    HeightRequest="{ext:DynamicResource size_25}" />
+                <uc:PullToRefresh
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="12"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
-                        <uc:DataGrid
-                            AllowSwiping="True"
-                            ColumnSizer="Star"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            IsBusy="{Binding IsBusy}"
-                            ItemsSource="{Binding Budgets}"
-                            SelectedItem="{Binding SelectedBudget}">
-                            <syncfusion:SfDataGrid.GroupCaptionTextFormat>{Key}</syncfusion:SfDataGrid.GroupCaptionTextFormat>
-                            <syncfusion:SfDataGrid.LeftSwipeTemplate>
+                        <uc:DataTable
+                            Items="{Binding Budgets}"
+                            IsGrouped="True"
+                            GroupPropertyDescription="Envelope.Group.Description"
+                            RowHeight="{ext:DynamicResource size_500}"
+                            IsSorted="True"
+                            IsHeaderSticky="True"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            SelectedCommand="{Binding SelectedCommand}"
+                            SelectedItem="{Binding SelectedBudget}"
+                            SeparatorVisibility="None">
+                            <uc:DataTable.SortComparer>
+                                <comparers:BudgetComparer/>
+                            </uc:DataTable.SortComparer>
+                            <uc:DataTable.Header>
+                                    <dt:EnvelopeDetailedHeader
+                                        HeightRequest="{ext:DynamicResource size_500}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+                            </uc:DataTable.Header>
+                            <uc:DataTable.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EnvelopeTransferButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
+                                    <uc:ViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                        <dt:GroupHeaderViewCell />
+                                    </uc:ViewCell>
                                 </DataTemplate>
-                            </syncfusion:SfDataGrid.LeftSwipeTemplate>
-                            <syncfusion:SfDataGrid.RightSwipeTemplate>
+                            </uc:DataTable.GroupHeaderTemplate>
+                            <uc:DataTable.ItemTemplate>
                                 <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
+                                    <uc:SelectableViewCell
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                        <dt:EnvelopeDetailedViewCell
+                                            SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                            RefreshItemCommand="{Binding BindingContext.RefreshAccountCommand, Source={x:Reference Name=this}}">
+                                            <dt:EnvelopeDetailedViewCell.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                    Value="false"
+                                                    TargetType="dt:EnvelopeDetailedViewCell">
+                                                    <Setter Property="IsReadOnly" Value="true"/>
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
+                                                    Value="true"
+                                                    TargetType="dt:EnvelopeDetailedViewCell">
+                                                    <Setter Property="IsReadOnly" Value="true"/>
+                                                </DataTrigger>
+                                            </dt:EnvelopeDetailedViewCell.Triggers>
+                                        </dt:EnvelopeDetailedViewCell>
+                                        <uc:SelectableViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate EnvelopeTransferButton}"
+                                                Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                            <MenuItem
+                                                Text="{ext:Translate EditButton}"
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </uc:SelectableViewCell.ContextActions>
+                                    </uc:SelectableViewCell>
                                 </DataTemplate>
-                            </syncfusion:SfDataGrid.RightSwipeTemplate>
-                            <syncfusion:SfDataGrid.GroupColumnDescriptions>
-                                <syncfusion:GroupColumnDescription ColumnName="Envelope.Group.Description" />
-                            </syncfusion:SfDataGrid.GroupColumnDescriptions>
-                            <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="Envelope.Group.Description">
-                                    <data:SortComparer.Comparer>
-                                        <comparers:BudgetComparer />
-                                    </data:SortComparer.Comparer>
-                                </data:SortComparer>
-                            </syncfusion:SfDataGrid.SortComparers>
-                            <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="Envelope.Group.Description" SortDirection="Ascending" />
-                            </syncfusion:SfDataGrid.SortColumnDescriptions>
-                            <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Envelope.Description"
-                                    uc:StarSizerRatioHelpers.ColumnRatio="2">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeNameLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:TextColumn
-                                                Text="{Binding Envelope.Description}"
-                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:TextColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:TextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
-                                                        Value="true"
-                                                        TargetType="dt:TextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:TextColumn.Triggers>
-                                            </dt:TextColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Past">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn 
-                                                Text="{ext:Translate EnvelopePastLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:LabelColumn
-                                                Text="{Binding Past, Converter={StaticResource CurrencyConverter}}"
-                                                HorizontalTextAlignment="End"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                            </dt:LabelColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Activity">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn
-                                                Text="{ext:Translate EnvelopeActivityLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:LabelColumn
-                                                Text="{Binding Activity, Converter={StaticResource CurrencyConverter}}"
-                                                HorizontalTextAlignment="End"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                            </dt:LabelColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Amount">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn
-                                                Text="{ext:Translate EnvelopeAmountLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:CurrencyCalculatorColumn
-                                                IsReadOnly="{Binding BindingContext.HasPro, Source={x:Reference Name=this}, Converter={StaticResource InverseBooleanConverter}}"
-                                                Number="{Binding Amount}"
-                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:CurrencyCalculatorColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:CurrencyCalculatorColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
-                                                        Value="true"
-                                                        TargetType="dt:CurrencyCalculatorColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:CurrencyCalculatorColumn.Triggers>
-                                            </dt:CurrencyCalculatorColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Remaining">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn
-                                                Text="{ext:Translate EnvelopeRemainingLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:LabelColumn
-                                                Text="{Binding Remaining, Converter={StaticResource CurrencyConverter}}"
-                                                HorizontalTextAlignment="End"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                            </dt:LabelColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="56"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText=""
-                                    HeaderTextAlignment="Center"
-                                    MappingName=".">
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <uc:ContentButton
-                                                HeightRequest="{StaticResource ListItemHeight}"
-                                                WidthRequest="{StaticResource ListItemHeight}"
-                                                Style="{StaticResource DataTableColumnStyle}"
-                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}">
-                                                <Label
-                                                    Style="{ext:DynamicResource Key=DataTableColumnIconStyle}"
-                                                    Text="{ext:DynamicResource Key=ArrowForwardIcon}"/>
-                                            </uc:ContentButton>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                            </syncfusion:SfDataGrid.Columns>
-                        </uc:DataGrid>
+                            </uc:DataTable.ItemTemplate>
+                            <uc:DataTable.Footer>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                            </uc:DataTable.Footer>
+                        </uc:DataTable>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <Grid
-                    Grid.Row="2"
-                    Margin="16"
-                    ColumnSpacing="16"
-                    RowSpacing="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="0" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{ext:Translate ScheduleToBudgetLabel}"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate SchedulePastLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="3"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate ScheduleIncomeLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="4"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate ScheduleBudgetedLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="5"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate ScheduleOverLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="5"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="7"
-                        Command="{Binding AddTransactionCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="{ext:Translate AddTransactionButton}"
-                        VerticalOptions="Center" />
-                </Grid>
-            </Grid>
+                <uc:Button2
+                    x:Name="NewTransactionButton"
+                    Grid.Row="3"
+                    Grid.ColumnSpan="12"
+                    Command="{Binding AddTransactionCommand}"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    Text="{ext:Translate AddTransactionButton}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="{OnIdiom Default=End, Phone=Fill}"/>
+            </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BaseDetailedPage.Body>
 </p:BaseDetailedPage>
