@@ -545,7 +545,29 @@ namespace BudgetBadger.Forms.UserControls
 
         object GetPropertyValue(object src, string propertyName)
         {
-            return src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
+            //return src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
+
+            string[] nameParts = propertyName.Split('.');
+
+            if (nameParts.Length == 1)
+            {
+                return src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
+            }
+
+            foreach (var part in nameParts)
+            {
+                if (src == null) { return null; }
+
+                Type type = src.GetType();
+
+                PropertyInfo info = type.GetRuntimeProperty(part);
+
+                if (info == null)
+                { return null; }
+
+                src = info.GetValue(src, null);
+            }
+            return src;
         }
     }
 }

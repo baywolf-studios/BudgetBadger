@@ -24,6 +24,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshEnvelopeCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelope((Envelope)env, SearchText); }
 
@@ -34,8 +35,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Envelope> _envelopes;
-        public IReadOnlyList<Envelope> Envelopes
+        ObservableList<Envelope> _envelopes;
+        public ObservableList<Envelope> Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
@@ -72,18 +73,24 @@ namespace BudgetBadger.Forms.Envelopes
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Envelopes = new List<Envelope>();
+            Envelopes = new ObservableList<Envelope>();
             SelectedEnvelope = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshEnvelopeCommand = new DelegateCommand<Envelope>(async e => await ExecuteRefreshEnvelopeCommand(e));
             SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Envelope, out Envelope envelope))
             {
-                await InitializeAsync(parameters);
+                await ExecuteRefreshEnvelopeCommand(envelope);
+            }
+
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
+            {
+                await ExecuteRefreshEnvelopeCommand(transaction.Envelope);
             }
         }
 
@@ -94,6 +101,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedEnvelope = null;
         }
 
         public async Task ExecuteRefreshCommand()
@@ -111,7 +119,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    Envelopes = result.Data;
+                    Envelopes.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -124,6 +132,13 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task ExecuteRefreshEnvelopeCommand(Envelope envelope)
+        {
+            var envelopeToRemove = Envelopes.FirstOrDefault(a => a.Id == envelope.Id);
+            Envelopes.Remove(envelopeToRemove);
+            Envelopes.Add(envelope);
         }
 
         public async Task ExecuteSelectedCommand(Envelope envelope)

@@ -7,7 +7,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
@@ -19,194 +19,241 @@
             ToolbarItemCommand="{Binding AddCommand}"
             ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
-
     <p:BasePage.Body>
         <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
-            Grid.Row="2"
             Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
-                <uc:Accordion Grid.Row="0">
-                    <uc:Accordion.HeaderContent>
-                        <Grid ColumnSpacing="8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <StackLayout
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="12"
+                    VerticalOptions="Start">
+                    <FlexLayout
+                        IsVisible="{OnIdiom Default=True, Phone=False}"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="SpaceEvenly"
+                        AlignContent="Center"
+                        AlignItems="Center"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            Orientation="Vertical">
                             <Label
-                                Grid.Column="0"
-                                HorizontalOptions="Start"
-                                Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="{ext:Translate ScheduleToBudgetLabel}"
-                                VerticalOptions="Center" />
+                                Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
-                                Grid.Column="1"
-                                HorizontalOptions="End"
-                                Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
-                                VerticalOptions="Center" />
-                        </Grid>
-                    </uc:Accordion.HeaderContent>
-                    <uc:Accordion.BodyContent>
-                        <Grid ColumnSpacing="16" RowSpacing="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                                Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
                             <Label
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate SchedulePastLabel}" />
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}" />
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate SchedulePastLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
                             <Label
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate ScheduleIncomeLabel}" />
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}" />
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleIncomeLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
                             <Label
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate ScheduleBudgetedLabel}" />
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}" />
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleBudgetedLabel}"/>
+                        </StackLayout>
+                        <StackLayout
+                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                            Spacing="{ext:DynamicResource size_40}"
+                            HeightRequest="{ext:DynamicResource size_800}"
+                            Orientation="Vertical">
                             <Label
-                                Grid.Row="0"
-                                Grid.Column="3"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate ScheduleOverLabel}" />
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
-                                Grid.Row="1"
-                                Grid.Column="3"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}" />
-                        </Grid>
-                    </uc:Accordion.BodyContent>
-                </uc:Accordion>
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate ScheduleOverLabel}"/>
+                        </StackLayout>
+                    </FlexLayout>
+                    <uc:Accordion
+                        IsVisible="{OnIdiom Default=False, Phone=True}"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Accordion.HeaderContent>
+                            <StackLayout
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Spacing="{ext:DynamicResource size_100}"
+                                Orientation="Horizontal">
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                    Text="{Binding Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                            </StackLayout>
+                        </uc:Accordion.HeaderContent>
+                        <uc:Accordion.BodyContent>
+                            <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                            <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Past, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate SchedulePastLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Income, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleIncomeLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Budgeted, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleBudgetedLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_600}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Schedule.Overspend, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleOverLabel}"/>
+                                </StackLayout>
+                            </FlexLayout>
+                            </StackLayout>
+                        </uc:Accordion.BodyContent>
+                    </uc:Accordion>
+                </StackLayout>
                 <BoxView
                     Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
+                    Grid.ColumnSpan="12"
+                    Style="{ext:DynamicResource MediumDividerStyle}"
+                    HeightRequest="{ext:DynamicResource size_25}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
                 <uc:PullToRefresh
                     Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="12"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
                     <uc:PullToRefresh.PullableContent>
-                        <uc:ListView
-                            AllowSwiping="true"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                            IsBusy="{Binding IsBusy}"
-                            ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding Budgets}"
+                        <uc:ListView2
+                            Items="{Binding Budgets}"
+                            IsGrouped="True"
+                            GroupPropertyDescription="Envelope.Group.Description"
+                            RowHeight="{ext:DynamicResource size_500}"
+                            IsSorted="True"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            HideSearchBar="True"
                             SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedBudget}">
-                            <syncfusion:SfListView.LeftSwipeTemplate>
+                            SelectedItem="{Binding SelectedBudget}"
+                            SeparatorVisibility="None">
+                            <uc:ListView2.SortComparer>
+                                <comparers:BudgetComparer/>
+                            </uc:ListView2.SortComparer>
+                            <uc:ListView2.GroupHeaderTemplate>
                                 <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EnvelopeTransferButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
+                                    <uc:ViewCell
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}">
+                                        <dt:GroupHeaderViewCell />
+                                    </uc:ViewCell>
                                 </DataTemplate>
-                            </syncfusion:SfListView.LeftSwipeTemplate>
-                            <syncfusion:SfListView.RightSwipeTemplate>
+                            </uc:ListView2.GroupHeaderTemplate>
+                            <uc:ListView2.ItemTemplate>
                                 <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
+                                    <uc:SelectableViewCell
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                        <dt:BudgetViewCell/>
+                                        <uc:SelectableViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate EnvelopeTransferButton}"
+                                                Command="{Binding BindingContext.TransferCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                            <MenuItem
+                                                Text="{ext:Translate EditButton}"
+                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </uc:SelectableViewCell.ContextActions>
+                                    </uc:SelectableViewCell>
                                 </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.DataSource>
-                                <data:DataSource>
-                                    <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Envelope.Group.Description" />
-                                    </data:DataSource.GroupDescriptors>
-                                </data:DataSource>
-                            </syncfusion:SfListView.DataSource>
-                            <syncfusion:SfListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <dt:GroupHeaderViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.GroupHeaderTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:EnvelopeViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
+                            </uc:ListView2.ItemTemplate>
+                            <uc:ListView2.Footer>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                            </uc:ListView2.Footer>
+                        </uc:ListView2>
                     </uc:PullToRefresh.PullableContent>
                 </uc:PullToRefresh>
                 <uc:Button2
                     x:Name="NewTransactionButton"
-                    Grid.Row="2"
-                    Margin="16,0,16,16"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                    Grid.Row="3"
+                    Grid.ColumnSpan="12"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="End" />
-            </Grid>
+                    VerticalOptions="Center"
+                    HorizontalOptions="{OnIdiom Default=End, Phone=Fill}"/>
+            </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

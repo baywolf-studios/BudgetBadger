@@ -38,8 +38,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Budget> _budgets;
-        public IReadOnlyList<Budget> Budgets
+        ObservableList<Budget> _budgets;
+        public ObservableList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value);
@@ -77,7 +77,7 @@ namespace BudgetBadger.Forms.Envelopes
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Budgets = new List<Budget>();
+            Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
@@ -87,6 +87,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedBudget = null;
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -142,7 +143,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                     if (budgetResult.Success)
                     {
-                        Budgets = budgetResult.Data;
+                        Budgets.ReplaceRange(budgetResult.Data);
                     }
                     else
                     {
