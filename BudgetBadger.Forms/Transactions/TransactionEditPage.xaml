@@ -120,51 +120,32 @@
                         JustifyContent="End"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                         <uc:Button2
+                            x:Name="deleteButton"
                             Command="{Binding DeleteCommand}"
                             Style="{StaticResource SecondaryDestructionButtonStyle}"
                             Text="{ext:Translate DeleteButton}"
                             VerticalOptions="Center"
-                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" >
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Transaction.IsNew}"
-                                    TargetType="Button"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <BoxView WidthRequest="{ext:DynamicResource size_200}" >
+                            IsVisible="{Binding Transaction.IsNew, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                        <BoxView WidthRequest="{ext:DynamicResource size_200}" IsVisible="False" >
                             <BoxView.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SplitTransactionMode}"
-                                    TargetType="BoxView"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                                <DataTrigger
-                                    Binding="{Binding Transaction.IsNew}"
-                                    TargetType="BoxView"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
+                                <MultiTrigger TargetType="BoxView">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference deleteButton}}" Value="True" />
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference splitButton}}" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True" />
+                                </MultiTrigger>
                             </BoxView.Triggers>
                         </BoxView>
                         <uc:Button2
+                            x:Name="splitButton"
                             Command="{Binding SplitCommand}"
                             Style="{StaticResource PrimaryActionButtonStyle}"
                             Text="{ext:Translate SplitTransactionButton}"
                             VerticalOptions="Center"
-                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" >
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SplitTransactionMode}"
-                                    TargetType="Button"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
+                            IsVisible="{Binding SplitTransactionMode, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
                     </FlexLayout>
                 </uc:ResponsiveGrid>
             </ScrollView>

@@ -216,58 +216,40 @@
                         AlignItems="Center"
                         JustifyContent="End"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                    <uc:Button2
-                        Command="{Binding HideCommand}"
-                        FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate HideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsActive}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Command="{Binding UnhideCommand}"
-                        FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
-                        Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="{ext:Translate UnhideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Command="{Binding QuickBudgetCommand}"
-                        FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
-                        IsVisible="{Binding Budget.IsActive}"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="{ext:Translate QuickBudgetButton}"
-                        VerticalOptions="Center" />
-                    <uc:Button2
-                        Command="{Binding SoftDeleteCommand}"
-                        FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate DeleteButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
+                        <uc:Button2
+                            Command="{Binding HideCommand}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate HideButton}"
+                            IsVisible="{Binding Budget.Envelope.IsActive}"
+                            VerticalOptions="Center"/>
+                        <BoxView
+                            IsVisible="{Binding Budget.Envelope.IsActive}"
+                            WidthRequest="{ext:DynamicResource size_200}"/>
+                        <uc:Button2
+                            Command="{Binding QuickBudgetCommand}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                            IsVisible="{Binding Budget.Envelope.IsActive}"
+                            Style="{StaticResource PrimaryActionButtonStyle}"
+                            Text="{ext:Translate QuickBudgetButton}"
+                            VerticalOptions="Center" />
+                        <uc:Button2
+                            Command="{Binding UnhideCommand}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                            Style="{StaticResource SecondaryActionButtonStyle}"
+                            Text="{ext:Translate UnhideButton}"
+                            IsVisible="{Binding Budget.Envelope.IsHidden}"
+                            VerticalOptions="Center"/>
+                        <BoxView
+                            IsVisible="{Binding Budget.Envelope.IsHidden}"
+                            WidthRequest="{ext:DynamicResource size_200}"/>
+                        <uc:Button2
+                            Command="{Binding SoftDeleteCommand}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate DeleteButton}"
+                            IsVisible="{Binding Budget.Envelope.IsHidden}"
+                            VerticalOptions="Center"/>
                     </FlexLayout>
                 </uc:ResponsiveGrid>
             </ScrollView>
