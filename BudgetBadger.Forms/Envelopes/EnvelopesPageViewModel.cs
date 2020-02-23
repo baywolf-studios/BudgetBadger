@@ -32,6 +32,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshBudgetCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -91,6 +92,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _hardRefresh = true;
+
         public EnvelopesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                       INavigationService navigationService,
                                       Lazy<IEnvelopeLogic> envelopeLogic,
@@ -110,6 +113,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedBudget = null;
 
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshBudgetCommand = new DelegateCommand<Budget>(async e => await ExecuteRefreshBudgetCommand(e?.Envelope));
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
             SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
@@ -125,7 +129,11 @@ namespace BudgetBadger.Forms.Envelopes
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            if (_hardRefresh)
+            {
+                await ExecuteRefreshCommand();
+                _hardRefresh = false;
+            }
         }
 
         public override async void OnDeactivated()
@@ -149,20 +157,19 @@ namespace BudgetBadger.Forms.Envelopes
         {
         }
 
-        // this gets hit before the OnActivated
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.TryGetValue(PageParameter.Budget, out Budget budget))
             {
-                await ExecuteRefreshBudgetCommand(budget);
+                await ExecuteRefreshBudgetCommand(budget.Envelope);
             }
 
             if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                //await ExecuteRefreshBudgetCommand(transaction.Account);
+                await ExecuteRefreshBudgetCommand(transaction.Envelope);
             }
 
-            RefreshSummary();
+            await RefreshSummary();
         }
 
         public async Task ExecuteRefreshCommand()
@@ -208,7 +215,7 @@ namespace BudgetBadger.Forms.Envelopes
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
-                RefreshSummary();
+                await RefreshSummary();
                 NoEnvelopes = (Budgets?.Count ?? 0) == 0;
             }
             finally
@@ -217,20 +224,14 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteRefreshBudgetCommand(Budget budget)
+        public async Task ExecuteRefreshBudgetCommand(Envelope envelope)
         {
-            var updatedBudget = await _envelopeLogic.Value.GetBudgetAsync(budget.Envelope.Id, budget.Schedule);
+            var updatedBudget = await _envelopeLogic.Value.GetBudgetAsync(envelope.Id, Schedule);
             if (updatedBudget.Success)
             {
-                var budgetToRemove = Budgets.FirstOrDefault(a => a.Id == budget.Id);
+                var budgetToRemove = Budgets.FirstOrDefault(a => a.Envelope.Id == envelope.Id);
                 Budgets.Remove(budgetToRemove);
                 Budgets.Add(updatedBudget.Data);
-            }
-
-            var updatedSchedule = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
-            if (updatedSchedule.Success)
-            {
-                Schedule = updatedSchedule.Data;
             }
         }
 
@@ -271,6 +272,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (budget.Envelope.IsGenericHiddenEnvelope)
             {
+                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenEnvelopesPage);
             }
             else
@@ -333,15 +335,7 @@ namespace BudgetBadger.Forms.Envelopes
                     budgetInList.ModifiedDateTime = result.Data.ModifiedDateTime;
                 }
                 _needToSync = true;
-                var scheduleResult = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
-                if (scheduleResult.Success)
-                {
-                    Schedule = scheduleResult.Data;
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
+                await RefreshSummary();
             }
             else
             {
@@ -349,8 +343,27 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        void RefreshSummary()
+        async Task RefreshSummary()
         {
+            Result<BudgetSchedule> scheduleResult;
+            if (Schedule != null)
+            {
+                scheduleResult = await _envelopeLogic.Value.GetBudgetSchedule(Schedule);
+            }
+            else
+            {
+                scheduleResult = await _envelopeLogic.Value.GetCurrentBudgetScheduleAsync();
+            }
+
+            if (scheduleResult.Success)
+            {
+                Schedule = scheduleResult.Data;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+
             RaisePropertyChanged(nameof(Schedule));
             RaisePropertyChanged(nameof(Schedule.Past));
             RaisePropertyChanged(nameof(Schedule.Income));

@@ -170,6 +170,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (payee.IsGenericHiddenPayee)
             {
+                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
             }
             else
