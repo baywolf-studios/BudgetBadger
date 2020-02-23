@@ -233,7 +233,7 @@
                                         Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                         <dt:EnvelopeDetailedViewCell
                                             SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                            RefreshItemCommand="{Binding BindingContext.RefreshAccountCommand, Source={x:Reference Name=this}}">
+                                            RefreshItemCommand="{Binding BindingContext.RefreshBudgetCommand, Source={x:Reference Name=this}}">
                                             <dt:EnvelopeDetailedViewCell.Triggers>
                                                 <DataTrigger
                                                     Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
