@@ -229,12 +229,17 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshAccountCommand(Account account)
         {
+            var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
+            Accounts.Remove(accountToRemove);
+
             var updatedAccount = await _accountLogic.Value.GetAccountAsync(account.Id);
-            if (updatedAccount.Success)
+            if (updatedAccount.Success && updatedAccount.Data.IsActive)
             {
-                var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
-                Accounts.Remove(accountToRemove);
                 Accounts.Add(updatedAccount.Data);
+            }
+            else
+            {
+                Accounts.Add(account);
             }
         }
 
