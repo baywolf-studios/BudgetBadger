@@ -26,11 +26,6 @@
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
             <ScrollView
                 Orientation="Vertical">
-                <StackLayout
-                        Margin="0"
-                        Padding="0"
-                        Spacing="0"
-                        VerticalOptions="Start">
                     <uc:ResponsiveGrid
                         x:Name="responsiveGrid"
                         Margin="{ext:Thickness LeftKey=size_0, TopKey=size_160, RightKey=size_0, BottomKey=size_0}"
@@ -54,6 +49,7 @@
                             VerticalOptions="Start">
                             <FlexLayout
                                 IsVisible="{OnIdiom Default=True, Phone=False}"
+                                HeightRequest="{ext:DynamicResource size_800}"
                                 Direction="Row"
                                 Wrap="Wrap"
                                 JustifyContent="SpaceEvenly"
@@ -113,17 +109,20 @@
                                 IsVisible="{OnIdiom Default=False, Phone=True}"
                                 Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                 <uc:Accordion.HeaderContent>
-                                    <StackLayout
-                                        HeightRequest="{ext:DynamicResource size_600}"
-                                        Spacing="{ext:DynamicResource size_100}"
-                                        Orientation="Horizontal">
-                                        <Label
-                                            Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                                            Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
-                                        <Label
-                                            Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
-                                            Text="{ext:Translate ScheduleToBudgetLabel}"/>
-                                    </StackLayout>
+                                    <ContentView
+                                        HeightRequest="{ext:DynamicResource size_600}">
+                                        <StackLayout
+                                            VerticalOptions="Center"
+                                            Spacing="{ext:DynamicResource size_100}"
+                                            Orientation="Horizontal">
+                                            <Label
+                                                Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                                Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                                            <Label
+                                                Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                                Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                                        </StackLayout>
+                                    </ContentView>
                                 </uc:Accordion.HeaderContent>
                                 <uc:Accordion.BodyContent>
                                     <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
@@ -257,7 +256,6 @@
                                 VerticalOptions="Center"/>
                         </FlexLayout>
                     </uc:ResponsiveGrid>
-                </StackLayout>
             </ScrollView>
         </uc:BusyIndicator>
     </p:BasePage.Body>

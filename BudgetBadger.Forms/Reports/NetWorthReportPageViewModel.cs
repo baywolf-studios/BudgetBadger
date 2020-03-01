@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class NetWorthReportPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -101,14 +101,6 @@ namespace BudgetBadger.Forms.Reports
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
-        {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }
