@@ -20,7 +20,7 @@ using Prism;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class ReportsPageViewModel : BaseViewModel
+    public class ReportsPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -92,6 +92,15 @@ namespace BudgetBadger.Forms.Reports
             RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
             PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
             ReportCommand = new DelegateCommand<object>(async s => await ExecuteReportCommand(s));
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            SelectedReport = new KeyValuePair<string, bool>();
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
         }
 
         public override async void OnActivated()
