@@ -27,8 +27,8 @@
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
@@ -230,7 +230,8 @@
                         ItemPropertyDescription="Key"
                         ItemsSource="{Binding LanguageList}"
                         Label="{ext:Translate LanguageLabel}"
-                        SelectedItem="{Binding SelectedLanguage}">
+                        SelectedItem="{Binding SelectedLanguage}"
+                        VerticalOptions="Center">
                         <uc:Dropdown.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
@@ -242,7 +243,8 @@
                         ItemPropertyDescription="Key"
                         ItemsSource="{Binding CurrencyFormatList}"
                         Label="{ext:Translate CurrencyLabel}"
-                        SelectedItem="{Binding SelectedCurrencyFormat}">
+                        SelectedItem="{Binding SelectedCurrencyFormat}"
+                        VerticalOptions="Center">
                         <uc:Dropdown.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
