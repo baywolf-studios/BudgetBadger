@@ -40,26 +40,32 @@
                             Style="{StaticResource PageHeaderPrimaryLabelStyle}"
                             Text="{ext:Translate FilterLabel}"/>
                     </ContentView>
-                    <uc:DatePicker
+                    <ContentView
                         Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                        HeightRequest="{ext:DynamicResource size_800}"
-                        VerticalOptions="Center"
-                        Date="{Binding BeginDate}"
-                        Label="{ext:Translate BeginDateLabel}" />
-                    <uc:DatePicker
+                        HeightRequest="{ext:DynamicResource size_800}">
+                        <uc:DatePicker
+                            VerticalOptions="Center"
+                            Date="{Binding BeginDate}"
+                            Label="{ext:Translate BeginDateLabel}" />
+                    </ContentView>
+                    <ContentView
                         Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                        HeightRequest="{ext:DynamicResource size_800}"
-                        VerticalOptions="Center"
-                        Date="{Binding EndDate}"
-                        Label="{ext:Translate EndDateLabel}" />
-                    <uc:Dropdown
+                        HeightRequest="{ext:DynamicResource size_800}">
+                        <uc:DatePicker
+                            VerticalOptions="Center"
+                            Date="{Binding EndDate}"
+                            Label="{ext:Translate EndDateLabel}" />
+                    </ContentView>
+                    <ContentView
                         Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                        HeightRequest="{ext:DynamicResource size_800}"
-                        VerticalOptions="Center"
-                        ItemPropertyDescription="ExtendedDescription"
-                        ItemsSource="{Binding Envelopes}"
-                        Label="{ext:Translate EnvelopeLabel}"
-                        SelectedItem="{Binding SelectedEnvelope}" />
+                        HeightRequest="{ext:DynamicResource size_800}">
+                        <uc:Dropdown
+                            VerticalOptions="Center"
+                            ItemPropertyDescription="ExtendedDescription"
+                            ItemsSource="{Binding Envelopes}"
+                            Label="{ext:Translate EnvelopeLabel}"
+                            SelectedItem="{Binding SelectedEnvelope}" />
+                    </ContentView>
                 </FlexLayout>
                 <uc:Accordion
                     IsVisible="{OnIdiom Default=False, Phone=True}"
@@ -75,26 +81,32 @@
                     </uc:Accordion.HeaderContent>
                     <uc:Accordion.BodyContent>
                         <FlexLayout AlignContent="Center" AlignItems="Center" VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
-                            <uc:DatePicker
+                            <ContentView
                                 Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                                HeightRequest="{ext:DynamicResource size_800}"
-                                VerticalOptions="Center"
-                                Date="{Binding BeginDate}"
-                                Label="{ext:Translate BeginDateLabel}" />
-                            <uc:DatePicker
-                                HeightRequest="{ext:DynamicResource size_800}"
+                                HeightRequest="{ext:DynamicResource size_800}">
+                                <uc:DatePicker
+                                    VerticalOptions="Center"
+                                    Date="{Binding BeginDate}"
+                                    Label="{ext:Translate BeginDateLabel}" />
+                            </ContentView>
+                            <ContentView
                                 Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                                VerticalOptions="Center"
-                                Date="{Binding EndDate}"
-                                Label="{ext:Translate EndDateLabel}" />
-                            <uc:Dropdown
+                                HeightRequest="{ext:DynamicResource size_800}">
+                                <uc:DatePicker
+                                    VerticalOptions="Center"
+                                    Date="{Binding EndDate}"
+                                    Label="{ext:Translate EndDateLabel}" />
+                            </ContentView>
+                            <ContentView
                                 Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
-                                HeightRequest="{ext:DynamicResource size_800}"
-                                VerticalOptions="Center"
-                                ItemPropertyDescription="ExtendedDescription"
-                                ItemsSource="{Binding Envelopes}"
-                                Label="{ext:Translate EnvelopeLabel}"
-                                SelectedItem="{Binding SelectedEnvelope}" />
+                                HeightRequest="{ext:DynamicResource size_800}">
+                                <uc:Dropdown
+                                    VerticalOptions="Center"
+                                    ItemPropertyDescription="ExtendedDescription"
+                                    ItemsSource="{Binding Envelopes}"
+                                    Label="{ext:Translate EnvelopeLabel}"
+                                    SelectedItem="{Binding SelectedEnvelope}" />
+                            </ContentView>
                         </FlexLayout>
                     </uc:Accordion.BodyContent>
                 </uc:Accordion>
