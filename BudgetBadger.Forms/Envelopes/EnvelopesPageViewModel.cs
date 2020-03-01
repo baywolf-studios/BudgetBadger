@@ -231,7 +231,10 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 var budgetToRemove = Budgets.FirstOrDefault(a => a.Envelope.Id == envelope.Id);
                 Budgets.Remove(budgetToRemove);
-                Budgets.Add(updatedBudget.Data);
+                if (updatedBudget.Data.Envelope.IsActive)
+                {
+                    Budgets.Add(updatedBudget.Data);
+                }
             }
         }
 
