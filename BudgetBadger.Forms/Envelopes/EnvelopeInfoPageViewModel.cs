@@ -41,6 +41,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand RefreshCommand { get; set; }
         public ICommand TransferCommand { get; set; }
         public ICommand SaveTransactionCommand { get; set; }
+        public ICommand RefreshTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -59,22 +60,22 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _budget, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set => SetProperty(ref _transactions, value);
@@ -129,9 +130,9 @@ namespace BudgetBadger.Forms.Envelopes
             _purchaseService = purchaseService;
 
             Budget = new Budget();
-            Transactions = new List<Transaction>();
-            Accounts = new List<Account>();
-            Payees = new List<Payee>();
+            Transactions = new ObservableList<Transaction>();
+            Accounts = new ObservableList<Account>();
+            Payees = new ObservableList<Payee>();
             SelectedTransaction = null;
 
             EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
@@ -142,18 +143,21 @@ namespace BudgetBadger.Forms.Envelopes
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             TransferCommand = new DelegateCommand(async () => await ExecuteTransferCommand());
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
+            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                await InitializeAsync(parameters);
+                await ExecuteRefreshTransactionCommand(transaction);
             }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -242,7 +246,7 @@ namespace BudgetBadger.Forms.Envelopes
                     if (payeesResult.Success
                         && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
                     {
-                        Payees = payeesResult.Data;
+                        Payees.ReplaceRange(payeesResult.Data);
                     }
                     else if (!payeesResult.Success)
                     {
@@ -253,7 +257,7 @@ namespace BudgetBadger.Forms.Envelopes
                     if (accountsResult.Success
                         && (Accounts == null || !Accounts.SequenceEqual(accountsResult.Data)))
                     {
-                        Accounts = accountsResult.Data;
+                        Accounts.ReplaceRange(accountsResult.Data);
                     }
                     else if (!accountsResult.Success)
                     {
@@ -284,7 +288,7 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success
                     && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
                 {
-                    Transactions = result.Data;
+                    Transactions.ReplaceRange(result.Data);
                 }
                 else if (!result.Success)
                 {
@@ -300,13 +304,27 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
+        public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
+        {
+            var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
+            if (updatedTransaction.Success)
+            {
+                var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                Transactions.Remove(transactionToRemove);
+                if (updatedTransaction.Data.IsActive)
+                {
+                    Transactions.Add(updatedTransaction.Data);
+                }
+            }
+        }
+
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
         {
             if (transaction != null && !transaction.Reconciled)
             {
                 transaction.Posted = !transaction.Posted;
 
-                Result result = new Result();
+                Result result;
 
                 if (transaction.IsCombined)
                 {
@@ -335,7 +353,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                await ExecuteRefreshCommand();
+                await ExecuteRefreshTransactionCommand(transaction);
 
                 _needToSync = true;
             }

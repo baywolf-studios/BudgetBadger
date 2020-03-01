@@ -60,29 +60,29 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        IReadOnlyList<Envelope> _envelopes;
-        public IReadOnlyList<Envelope> Envelopes
+        ObservableList<Envelope> _envelopes;
+        public ObservableList<Envelope> Envelopes
         {
             get => _envelopes;
             set => SetProperty(ref _envelopes, value);
         }
 
-        IReadOnlyList<Transaction> _transactions;
-        public IReadOnlyList<Transaction> Transactions
+        ObservableList<Transaction> _transactions;
+        public ObservableList<Transaction> Transactions
         {
             get => _transactions;
             set
@@ -148,10 +148,10 @@ namespace BudgetBadger.Forms.Transactions
             _payeeLogic = payeeLogic;
             _purchaseService = purchaseService;
 
-            Transactions = new List<Transaction>();
-            Accounts = new List<Account>();
-            Payees = new List<Payee>();
-            Envelopes = new List<Envelope>();
+            Transactions = new ObservableList<Transaction>();
+            Accounts = new ObservableList<Account>();
+            Payees = new ObservableList<Payee>();
+            Envelopes = new ObservableList<Envelope>();
 
             AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteTransactionCommand(a));
@@ -175,7 +175,7 @@ namespace BudgetBadger.Forms.Transactions
                     var result = await _transLogic.Value.GetTransactionsFromSplitAsync(SplitId.Value);
                     if (result.Success)
                     {
-                        Transactions = result.Data;
+                        Transactions.ReplaceRange(result.Data);
                         Total = RunningTotal;
                         NoTransactions = (Transactions?.Count ?? 0) == 0;
                         return;
@@ -193,7 +193,7 @@ namespace BudgetBadger.Forms.Transactions
                 List<Transaction> tempTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
                 tempTransactions.Add(transaction);
                 tempTransactions.Sort();
-                Transactions = tempTransactions;
+                Transactions.ReplaceRange(tempTransactions);
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
@@ -223,7 +223,7 @@ namespace BudgetBadger.Forms.Transactions
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
 
-                        Transactions = new List<Transaction>
+                        Transactions = new ObservableList<Transaction>
                         {
                             split1,
                             split2
@@ -237,19 +237,19 @@ namespace BudgetBadger.Forms.Transactions
             var deletedTransaction = parameters.GetValue<Transaction>(PageParameter.DeletedTransaction);
             if (deletedTransaction != null)
             {
-                var tempTran5 = Transactions.Where(t => t.Id != deletedTransaction.Id).ToList();
-                tempTran5.Sort();
-                Transactions = tempTran5;
+                var tempTran5 = Transactions.Where(t => t.Id != deletedTransaction.Id);
+                Transactions.ReplaceRange(tempTran5);
                 NoTransactions = (Transactions?.Count ?? 0) == 0;
                 return;
             }
 
-            Transactions = Transactions.ToList();
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedTransaction = null;
+
             if (_needToSync)
             {
                 var syncService = _syncFactory.Value.GetSyncService();
@@ -288,7 +288,7 @@ namespace BudgetBadger.Forms.Transactions
                     if (payeesResult.Success
                         && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
                     {
-                        Payees = payeesResult.Data;
+                        Payees.ReplaceRange(payeesResult.Data);
                     }
                     else if (!payeesResult.Success)
                     {
@@ -299,7 +299,7 @@ namespace BudgetBadger.Forms.Transactions
                     if (accountsResult.Success
                         && (Accounts == null || !Accounts.SequenceEqual(accountsResult.Data)))
                     {
-                        Accounts = accountsResult.Data;
+                        Accounts.ReplaceRange(accountsResult.Data);
                     }
                     else if (!accountsResult.Success)
                     {
@@ -310,7 +310,7 @@ namespace BudgetBadger.Forms.Transactions
                     if (envelopesResult.Success
                         && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
                     {
-                        Envelopes = envelopesResult.Data;
+                        Envelopes.ReplaceRange(envelopesResult.Data);
                     }
                     else if (!envelopesResult.Success)
                     {
@@ -375,9 +375,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
             }
 
-            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            existingTransactions.Sort();
-            Transactions = existingTransactions;
+            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id);
+            Transactions.ReplaceRange(existingTransactions);
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
@@ -452,7 +451,7 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (transaction.IsActive)
                 {
-                    Result result = new Result();
+                    Result result;
 
                     if (transaction.IsCombined)
                     {
