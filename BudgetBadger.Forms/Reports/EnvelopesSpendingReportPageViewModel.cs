@@ -17,7 +17,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopesSpendingReportPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopesSpendingReportPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
@@ -111,19 +111,12 @@ namespace BudgetBadger.Forms.Reports
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
             await ExecuteRefreshCommand();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedEnvelope = null;
         }
 
         public async Task ExecuteRefreshCommand()

@@ -20,6 +20,8 @@
                 <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
             </Grid.RowDefinitions>
             <StackLayout
+                Grid.Row="0"
+                Grid.ColumnSpan="12"
                 Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
                 HeightRequest="{ext:DynamicResource size_600}"
                 Spacing="{ext:DynamicResource size_100}"
