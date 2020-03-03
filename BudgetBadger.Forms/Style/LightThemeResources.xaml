@@ -28,5 +28,15 @@
     <Color x:Key="brand_900">#093952</Color>
     <Color x:Key="brand_1000">#0c2938</Color>
 
+    <Color x:Key="red_100">#faf0f0</Color>
+    <Color x:Key="red_200">#fad4d4</Color>
+    <Color x:Key="red_300">#fab6b6</Color>
+    <Color x:Key="red_400">#fa8e8e</Color>
+    <Color x:Key="red_500">#f55353</Color>
+    <Color x:Key="red_600">#de1b1b</Color>
+    <Color x:Key="red_700">#b80d0d</Color>
+    <Color x:Key="red_800">#8f0e0e</Color>
+    <Color x:Key="red_900">#661414</Color>
+    <Color x:Key="red_1000">#451717</Color>
     
 </ResourceDictionary>
