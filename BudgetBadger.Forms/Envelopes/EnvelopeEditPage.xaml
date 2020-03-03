@@ -32,11 +32,17 @@
                         <uc:ResponsiveGrid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                            <RowDefinition Height="{ext:DynamicResource Key=size_160,Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         </uc:ResponsiveGrid.RowDefinitions>
                         <StackLayout
@@ -172,14 +178,14 @@
                             HeightRequest="{ext:DynamicResource size_25}"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
                         <uc:TextField
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeNameLabel}"
                             Text="{Binding Budget.Envelope.Description}" />
                         <uc:ButtonTextField
-                            Grid.Row="3"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
@@ -187,14 +193,14 @@
                             Label="{ext:Translate EnvelopeGroupLabel}"
                             Text="{Binding Budget.Envelope.Group.Description}" />
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="4"
+                            Grid.Row="7"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeAmountLabel}"
                             Number="{Binding Budget.Amount}" />
                         <uc:Dropdown
-                            Grid.Row="5"
+                            Grid.Row="9"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
@@ -203,14 +209,14 @@
                             Label="{ext:Translate EnvelopeOverspendingLabel}"
                             SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnumConverter}}" />
                         <uc:MultilineTextField
-                            Grid.Row="6"
+                            Grid.Row="11"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeNotesLabel}"
                             Text="{Binding Budget.Envelope.Notes}" />
                         <FlexLayout
-                            Grid.Row="7"
+                            Grid.Row="13"
                             Grid.Column="0"
                             Grid.ColumnSpan="12"
                             Direction="Row"

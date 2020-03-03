@@ -91,7 +91,7 @@
             x:Name="EntryFrame"
             Margin="8"
             Padding="0"
-            BackgroundColor="{StaticResource PrimaryActionButtonActiveBackgroundColor}">
+            BackgroundColor="{StaticResource AppBarColor}">
             <Entry
                 x:Name="EntryControl"
                 Margin="8,0"
