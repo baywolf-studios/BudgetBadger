@@ -2,7 +2,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'macos-10.14'
+  vmImage: 'macos-latest'
 
 variables:
 - group: budgetbadger_variables
@@ -22,11 +22,15 @@ steps:
   displayName: 'Select the Xamarin SDK version'
   enabled: true
   
+- script: sudo xcode-select -s /Application/Xcode.app/Contents/Developer
+  displayName: 'Select the xcode version'
+  enabled: true
+
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '3.x'
-
+e
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
