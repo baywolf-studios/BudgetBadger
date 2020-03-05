@@ -23,9 +23,9 @@ steps:
   enabled: true
   
 - script: sudo xcode-select -s /Application/Xcode.app/Contents/Developer
-  displayName: 'Select the xcode version'
+  displayName: 'Select Xcode version'
   enabled: true
-
+  
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
