@@ -22,15 +22,15 @@ steps:
   displayName: 'Select the Xamarin SDK version'
   enabled: true
   
-- script: sudo xcode-select -s /Application/Xcode.app/Contents/Developer
+- bash: sudo xcode-select -s /Application/Xcode.app/Contents/Developer
   displayName: 'Select Xcode version'
   enabled: true
-  
+
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '3.x'
-e
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
