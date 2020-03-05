@@ -22,7 +22,7 @@ steps:
   displayName: 'Select the Xamarin SDK version'
   enabled: true
   
-- bash: sudo xcode-select -s /Application/Xcode.app/Contents/Developer
+- bash: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
   displayName: 'Select Xcode version'
   enabled: true
 
