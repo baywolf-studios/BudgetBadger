@@ -14,10 +14,8 @@
     </ContentView.Resources>
 
     <Grid>
-        <RefreshView
-            x:Name="pullToRefresh"
-            BackgroundColor="{StaticResource BusyIndicatorColor}"
-            RefreshColor="{StaticResource BusyIndicatorBackgroundColor}" />
+        <ContentView
+            x:Name="pullToRefresh"/>
         <StackLayout
             x:Name="activityIndicator"
             HorizontalOptions="CenterAndExpand"
