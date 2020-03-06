@@ -33,28 +33,28 @@ namespace BudgetBadger.Forms.UserControls
         {
             InitializeComponent();
 
-            pullToRefresh.IsRefreshing = false;
-            activityIndicator.IsVisible = false;
-            pullToRefresh.IsVisible = true;
+            //pullToRefresh.IsRefreshing = false;
+            //activityIndicator.IsVisible = false;
+            //pullToRefresh.IsVisible = true;
 
-            pullToRefresh.Refreshing += PullToRefresh_Refreshing;
-            PropertyChanged += (sender, e) => 
-            {
-                if (e.PropertyName == nameof(IsBusy))
-                {
-                    if (!IsBusy)
-                    {
-                        pullToRefresh.IsRefreshing = false;
-                        activityIndicator.IsVisible = false;
-                        pullToRefresh.IsVisible = true;
-                    }
-                    else if (!pullToRefresh.IsRefreshing)
-                    {
-                        pullToRefresh.IsVisible = false;
-                        activityIndicator.IsVisible = true;
-                    }
-                }
-            };
+            //pullToRefresh.Refreshing += PullToRefresh_Refreshing;
+            //PropertyChanged += (sender, e) => 
+            //{
+            //    if (e.PropertyName == nameof(IsBusy))
+            //    {
+            //        if (!IsBusy)
+            //        {
+            //            pullToRefresh.IsRefreshing = false;
+            //            activityIndicator.IsVisible = false;
+            //            pullToRefresh.IsVisible = true;
+            //        }
+            //        else if (!pullToRefresh.IsRefreshing)
+            //        {
+            //            pullToRefresh.IsVisible = false;
+            //            activityIndicator.IsVisible = true;
+            //        }
+            //    }
+            //};
         }
 
         void PullToRefresh_Refreshing(object sender, EventArgs e)
