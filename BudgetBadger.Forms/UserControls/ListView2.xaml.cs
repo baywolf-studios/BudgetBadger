@@ -188,6 +188,27 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SortComparerProperty, value);
         }
 
+        public static BindableProperty RefreshCommandProperty = BindableProperty.Create(nameof(RefreshCommand), typeof(ICommand), typeof(ListView2));
+        public ICommand RefreshCommand
+        {
+            get => (ICommand)GetValue(RefreshCommandProperty);
+            set => SetValue(RefreshCommandProperty, value);
+        }
+
+        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(ListView2), defaultBindingMode: BindingMode.OneWay);
+        public bool IsBusy
+        {
+            get => (bool)GetValue(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
+        }
+
+        public static BindableProperty IsPullToRefreshEnabledProperty = BindableProperty.Create(nameof(IsPullToRefreshEnabled), typeof(bool), typeof(ListView2), defaultBindingMode: BindingMode.OneWay);
+        public bool IsPullToRefreshEnabled
+        {
+            get => (bool)GetValue(IsPullToRefreshEnabledProperty);
+            set => SetValue(IsPullToRefreshEnabledProperty, value);
+        }
+
         public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
         public event EventHandler<ItemTappedEventArgs> ItemTapped;
 
@@ -494,11 +515,11 @@ namespace BudgetBadger.Forms.UserControls
             {
                 if (IsGrouped)
                 {
-                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).RemoveAll();
+                    ((ObservableList<ObservableGrouping<object, object>>)InternalListView.ItemsSource).ReplaceRange(new ObservableList<ObservableGrouping<object, object>>());
                 }
                 else
                 {
-                    ((ObservableList<object>)InternalListView.ItemsSource).RemoveAll();
+                    ((ObservableList<object>)InternalListView.ItemsSource).ReplaceRange(new ObservableList<object>());
                 }
             }
             else

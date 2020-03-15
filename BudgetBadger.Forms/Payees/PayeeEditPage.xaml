@@ -72,7 +72,7 @@
                             FlexLayout.Grow="{OnIdiom Default=0, Phone=1}" />
                         <BoxView
                             IsVisible="{Binding Payee.IsHidden}"
-                            WidthRequest="{ext:DynamicResource size_200}"/>
+                            WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                         <uc:Button2
                             Command="{Binding SoftDeleteCommand}"
                             IsVisible="{Binding Payee.IsHidden}"

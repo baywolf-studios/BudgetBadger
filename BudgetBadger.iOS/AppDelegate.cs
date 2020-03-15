@@ -29,9 +29,6 @@ namespace BudgetBadger.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             SimpleAuth.NativeSafariAuthenticator.Activate();
-            Syncfusion.SfDataGrid.XForms.iOS.SfDataGridRenderer.Init();
-            Syncfusion.ListView.XForms.iOS.SfListViewRenderer.Init();
-            Syncfusion.SfPullToRefresh.XForms.iOS.SfPullToRefreshRenderer.Init();
             BorderedEditorRenderer.Initialize();
             CardRenderer.Initialize();
             Button2Renderer.Initialize();

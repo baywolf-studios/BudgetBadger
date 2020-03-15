@@ -57,7 +57,6 @@ namespace BudgetBadger.Forms
 
         protected override async void OnInitialized()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSecrets.SyncFusionLicenseKey);
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();

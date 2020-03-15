@@ -154,13 +154,15 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteRefreshPayeeCommand(Payee payee)
         {
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+
             var updatedPayee = await _payeeLogic.GetPayeeAsync(payee.Id);
-            if (updatedPayee.Success)
+            if (updatedPayee.Success && updatedPayee.Data.IsActive)
             {
-                var payeeToRemove = Payees.FirstOrDefault(a => a.Id == payee.Id);
-                Payees.Remove(payeeToRemove);
-                Payees.Add(updatedPayee.Data);
+                payees.Add(updatedPayee.Data);
             }
+
+            Payees.ReplaceRange(payees);
         }
     }
 }

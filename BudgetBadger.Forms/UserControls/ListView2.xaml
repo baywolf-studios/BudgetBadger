@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="BudgetBadger.Forms.UserControls.ListView2"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     Margin="0"
     Padding="0"
     RowSpacing="0">
@@ -30,6 +31,10 @@
               SeparatorColor="{Binding SeparatorColor}"
               HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility}"
               VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"
+              IsPullToRefreshEnabled="{Binding IsPullToRefreshEnabled}"
+              RefreshCommand="{Binding RefreshCommand}"
+              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+              RefreshControlColor="{ext:DynamicResource brand_600}"
               SelectionMode="None"/>
     <ContentView
         x:Name="stickyFooter"

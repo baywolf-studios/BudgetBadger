@@ -67,7 +67,7 @@
             x:Name="EntryFrame"
             Margin="8"
             Padding="0"
-            BackgroundColor="{StaticResource AppBarColor}">
+            BackgroundColor="{ext:DynamicResource brand_700}">
             <Entry
                 x:Name="EntryControl"
                 Margin="8,0"
