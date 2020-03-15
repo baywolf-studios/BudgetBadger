@@ -29,7 +29,6 @@
             <converters:DoubleToLeftRightThicknessConverter x:Key="DoubleToLeftRightThicknessConverter"/>
             <converters:DoubleToLeftThicknessConverter x:Key="DoubleToLeftThicknessConverter"/>
             <converters:DoubleToRightThicknessConverter x:Key="DoubleToRightThicknessConverter"/>
-            <local:SfDataGridStyle x:Key="sfDataGridStyle" />
 
             <!--will remove-->
             <x:Double x:Key="HeaderHiddenButtonHeight">56</x:Double>
@@ -98,7 +97,7 @@
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
-                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
             </Style>
 
             <Style x:Key="PrimaryDestructionButtonStyle" TargetType="uc:Button2">
@@ -115,7 +114,7 @@
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
-                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
             </Style>
 
             <Style x:Key="SecondaryActionButtonStyle" TargetType="uc:Button2">
@@ -132,7 +131,7 @@
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
-                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
             </Style>
             
             <Style x:Key="SettingsButtonStyle" TargetType="uc:ContentButton">
@@ -156,7 +155,7 @@
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
                 <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
                 <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
-                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
             </Style>
 
             <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">

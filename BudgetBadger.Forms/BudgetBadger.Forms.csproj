@@ -22,9 +22,6 @@
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
-    <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="17.1.0.41" />
-    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.41" />
-    <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="17.1.0.41" />
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />
@@ -49,6 +46,7 @@
     <Folder Include="Pages\" />
     <Folder Include="Style\" />
     <Folder Include="VisualStates\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />

@@ -27,67 +27,63 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <uc:PullToRefresh
-                    Grid.Row="0"
+                <uc:DataTable
                     Grid.ColumnSpan="12"
+                    Items="{Binding EnvelopeGroups}"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    IsHeaderSticky="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedEnvelopeGroup}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="True"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:DataTable
-                            Items="{Binding EnvelopeGroups}"
-                            RowHeight="{ext:DynamicResource size_500}"
-                            IsSorted="True"
-                            IsHeaderSticky="True"
-                            SearchFilter="{Binding Filter}"
-                            SearchText="{Binding SearchText}"
-                            SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedEnvelopeGroup}"
-                            SeparatorVisibility="None">
-                            <uc:DataTable.SortComparer>
-                                <comparers:EnvelopeGroupComparer/>
-                            </uc:DataTable.SortComparer>
-                            <uc:DataTable.Header>
-                                    <dt:EnvelopeGroupDetailedHeader
-                                        HeightRequest="{ext:DynamicResource size_500}"
-                                        BackgroundColor="{ext:DynamicResource gray_50}"
-                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
-                            </uc:DataTable.Header>
-                            <uc:DataTable.ItemTemplate>
-                                <DataTemplate>
-                                    <uc:SelectableViewCell
-                                        BackgroundColor="{ext:DynamicResource gray_50}"
-                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
-                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                        <dt:EnvelopeGroupDetailedViewCell
-                                            SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                            RefreshItemCommand="{Binding BindingContext.RefreshEnvelopeGroupCommand, Source={x:Reference Name=this}}">
-                                            <dt:EnvelopeGroupDetailedViewCell.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                    Value="false"
-                                                    TargetType="dt:EnvelopeGroupDetailedViewCell">
-                                                    <Setter Property="IsReadOnly" Value="true"/>
-                                                </DataTrigger>
-                                                <DataTrigger
-                                                    Binding="{Binding IsGenericHiddenEnvelopeGroup}"
-                                                    Value="true"
-                                                    TargetType="dt:EnvelopeGroupDetailedViewCell">
-                                                    <Setter Property="IsReadOnly" Value="true"/>
-                                                </DataTrigger>
-                                            </dt:EnvelopeGroupDetailedViewCell.Triggers>
-                                        </dt:EnvelopeGroupDetailedViewCell>
-                                        <uc:SelectableViewCell.ContextActions>
-                                            <MenuItem
-                                                Text="{ext:Translate EditButton}"
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"/>
-                                        </uc:SelectableViewCell.ContextActions>
-                                    </uc:SelectableViewCell>
-                                </DataTemplate>
-                            </uc:DataTable.ItemTemplate>
-                        </uc:DataTable>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
+                    <uc:DataTable.SortComparer>
+                        <comparers:EnvelopeGroupComparer/>
+                    </uc:DataTable.SortComparer>
+                    <uc:DataTable.Header>
+                            <dt:EnvelopeGroupDetailedHeader
+                                HeightRequest="{ext:DynamicResource size_500}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+                    </uc:DataTable.Header>
+                    <uc:DataTable.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <dt:EnvelopeGroupDetailedViewCell
+                                    SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                    RefreshItemCommand="{Binding BindingContext.RefreshEnvelopeGroupCommand, Source={x:Reference Name=this}}">
+                                    <dt:EnvelopeGroupDetailedViewCell.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                            Value="false"
+                                            TargetType="dt:EnvelopeGroupDetailedViewCell">
+                                            <Setter Property="IsReadOnly" Value="true"/>
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsGenericHiddenEnvelopeGroup}"
+                                            Value="true"
+                                            TargetType="dt:EnvelopeGroupDetailedViewCell">
+                                            <Setter Property="IsReadOnly" Value="true"/>
+                                        </DataTrigger>
+                                    </dt:EnvelopeGroupDetailedViewCell.Triggers>
+                                </dt:EnvelopeGroupDetailedViewCell>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:DataTable.ItemTemplate>
+                </uc:DataTable>
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BaseDetailedPage.Body>

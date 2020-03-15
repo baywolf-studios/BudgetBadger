@@ -232,7 +232,7 @@
                                 VerticalOptions="Center"/>
                             <BoxView
                                 IsVisible="{Binding Budget.Envelope.IsActive}"
-                                WidthRequest="{ext:DynamicResource size_200}"/>
+                                WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                             <uc:Button2
                                 Command="{Binding QuickBudgetCommand}"
                                 FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
@@ -249,7 +249,7 @@
                                 VerticalOptions="Center"/>
                             <BoxView
                                 IsVisible="{Binding Budget.Envelope.IsHidden}"
-                                WidthRequest="{ext:DynamicResource size_200}"/>
+                                WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                             <uc:Button2
                                 Command="{Binding SoftDeleteCommand}"
                                 FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"

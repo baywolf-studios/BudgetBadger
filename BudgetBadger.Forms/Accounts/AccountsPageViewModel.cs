@@ -229,18 +229,15 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteRefreshAccountCommand(Account account)
         {
-            var accountToRemove = Accounts.FirstOrDefault(a => a.Id == account.Id);
-            Accounts.Remove(accountToRemove);
+            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
             var updatedAccount = await _accountLogic.Value.GetAccountAsync(account.Id);
             if (updatedAccount.Success && updatedAccount.Data.IsActive)
             {
-                Accounts.Add(updatedAccount.Data);
+                accounts.Add(updatedAccount.Data);
             }
-            else
-            {
-                Accounts.Add(account);
-            }
+
+            Accounts.ReplaceRange(accounts);
         }
 
         public async Task ExecuteAddCommand()
@@ -251,11 +248,14 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteEditCommand(Account account)
         {
-            var parameters = new NavigationParameters
+            if (!account.IsGenericHiddenAccount)
             {
-                { PageParameter.Account, account }
-            };
-            await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, account }
+                };
+                await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()
@@ -279,12 +279,15 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteReconcileCommand(Account account)
         {
-            var parameters = new NavigationParameters
+            if (!account.IsGenericHiddenAccount)
             {
-                { PageParameter.Account, account }
-            };
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, account }
+                };
 
-            await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+                await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+            }
         }
 
         void RefreshSummary()

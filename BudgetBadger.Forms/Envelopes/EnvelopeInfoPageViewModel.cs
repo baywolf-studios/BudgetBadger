@@ -169,6 +169,11 @@ namespace BudgetBadger.Forms.Envelopes
                     _needToSync = false;
                 }
             }
+
+            if (!parameters.TryGetValue<Budget>(PageParameter.Budget, out _))
+            {
+                parameters.Add(PageParameter.Budget, Budget);
+            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -306,16 +311,15 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
         {
+            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
+
             var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
-            if (updatedTransaction.Success)
+            if (updatedTransaction.Success && updatedTransaction.Data.IsActive)
             {
-                var transactionToRemove = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-                Transactions.Remove(transactionToRemove);
-                if (updatedTransaction.Data.IsActive)
-                {
-                    Transactions.Add(updatedTransaction.Data);
-                }
+                transactions.Add(updatedTransaction.Data);
             }
+
+            Transactions.ReplaceRange(transactions);
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)

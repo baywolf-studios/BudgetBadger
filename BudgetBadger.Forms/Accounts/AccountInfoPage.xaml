@@ -220,62 +220,59 @@
                 Grid.ColumnSpan="12"
                 Icon="{ext:DynamicResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:PullToRefresh
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:ListView2
-                            Items="{Binding Transactions}"
-                            IsGrouped="True"
-                            GroupPropertyDescription="ServiceDate"
-                            IsSorted="False"
-                            HasUnevenRows="True"
-                            SearchFilter="{Binding Filter}"
-                            SearchText="{Binding SearchText}"
-                            HideSearchBar="True"
-                            SelectedCommand="{Binding TransactionSelectedCommand}"
-                            SelectedItem="{Binding SelectedTransaction}"
-                            SeparatorVisibility="None">
-                            <uc:ListView2.SortComparer>
-                                <comparers:TransactionComparer/>
-                            </uc:ListView2.SortComparer>
-                            <uc:ListView2.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <uc:ViewCell
-                                        HeightRequest="{ext:DynamicResource size_500}"
-                                        BackgroundColor="{ext:DynamicResource gray_50}"
-                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                        <dt:TransactionGroupHeaderViewCell HeightRequest="{ext:DynamicResource size_500}"/>
-                                    </uc:ViewCell>
-                                </DataTemplate>
-                            </uc:ListView2.GroupHeaderTemplate>
-                            <uc:ListView2.ItemTemplate>
-                                <DataTemplate>
-                                    <uc:SelectableViewCell
-                                        HeightRequest="{ext:DynamicResource size_675}"
-                                        BackgroundColor="{ext:DynamicResource gray_50}"
-                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
-                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                        <dt:TransactionViewCell
-                                            TransactionViewCellType="Account"
-                                            ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                            HeightRequest="{ext:DynamicResource size_675}"/>
-                                        <uc:SelectableViewCell.ContextActions>
-                                            <MenuItem
-                                                Text="{ext:Translate DeleteButton}"
-                                                IsDestructive="True"
-                                                Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"/>
-                                        </uc:SelectableViewCell.ContextActions>
-                                    </uc:SelectableViewCell>
-                                </DataTemplate>
-                            </uc:ListView2.ItemTemplate>
-                            <uc:ListView2.Footer>
-                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
-                            </uc:ListView2.Footer>
-                        </uc:ListView2>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
+                <uc:ListView2
+                    Items="{Binding Transactions}"
+                    IsGrouped="True"
+                    GroupPropertyDescription="ServiceDate"
+                    IsSorted="False"
+                    HasUnevenRows="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding TransactionSelectedCommand}"
+                    SelectedItem="{Binding SelectedTransaction}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="True"
+                IsBusy="{Binding IsBusy}"
+                RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:TransactionComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <uc:ViewCell
+                                HeightRequest="{ext:DynamicResource size_500}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <dt:TransactionGroupHeaderViewCell HeightRequest="{ext:DynamicResource size_500}"/>
+                            </uc:ViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.GroupHeaderTemplate>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                HeightRequest="{ext:DynamicResource size_675}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <dt:TransactionViewCell
+                                    TransactionViewCellType="Account"
+                                    ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                    HeightRequest="{ext:DynamicResource size_675}"/>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate DeleteButton}"
+                                        IsDestructive="True"
+                                        Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                    <uc:ListView2.Footer>
+                        <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                    </uc:ListView2.Footer>
+                </uc:ListView2>
             </uc:EmptyState>
             <FlexLayout
                 Grid.Row="3"
@@ -290,7 +287,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="{ext:Translate ReconcileAccountButton}"
                     FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-                <BoxView WidthRequest="{ext:DynamicResource size_200}"/>
+                <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                 <uc:Button2
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"

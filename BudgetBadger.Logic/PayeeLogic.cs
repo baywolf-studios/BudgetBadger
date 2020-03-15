@@ -51,7 +51,7 @@ namespace BudgetBadger.Logic
                 {
                     await _payeeDataAccess.CreatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = payeeToUpsert;
+                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -66,7 +66,7 @@ namespace BudgetBadger.Logic
                 {
                     await _payeeDataAccess.UpdatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = payeeToUpsert;
+                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false); ;
                 }
                 catch (Exception ex)
                 {

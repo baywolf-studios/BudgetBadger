@@ -226,16 +226,15 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteRefreshBudgetCommand(Envelope envelope)
         {
+            var budgets = Budgets.Where(a => a.Envelope.Id != envelope.Id).ToList();
+
             var updatedBudget = await _envelopeLogic.Value.GetBudgetAsync(envelope.Id, Schedule);
-            if (updatedBudget.Success)
+            if (updatedBudget.Success && updatedBudget.Data.Envelope.IsActive)
             {
-                var budgetToRemove = Budgets.FirstOrDefault(a => a.Envelope.Id == envelope.Id);
-                Budgets.Remove(budgetToRemove);
-                if (updatedBudget.Data.Envelope.IsActive)
-                {
-                    Budgets.Add(updatedBudget.Data);
-                }
+                budgets.Add(updatedBudget.Data);
             }
+
+            Budgets.ReplaceRange(budgets);
         }
 
         public async Task ExecuteNextCommand()
@@ -302,11 +301,14 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteEditCommand(Budget budget)
         {
-            var parameters = new NavigationParameters
+            if (!budget.Envelope.IsGenericHiddenEnvelope)
             {
-                { PageParameter.Budget, budget }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Budget, budget }
+                };
+                await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()
@@ -316,12 +318,15 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteTransferCommand(Budget budget)
         {
-            var parameters = new NavigationParameters
+            if (!budget.Envelope.IsGenericHiddenEnvelope)
             {
-                { PageParameter.Envelope, budget.Envelope },
-                { PageParameter.BudgetSchedule, Schedule }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Envelope, budget.Envelope },
+                    { PageParameter.BudgetSchedule, Schedule }
+                };
+                await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
+            }
         }
 
         public async Task ExecuteSaveCommand(Budget budget)
@@ -365,6 +370,11 @@ namespace BudgetBadger.Forms.Envelopes
             else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+
+            foreach (var budget in Budgets)
+            {
+                budget.Schedule = Schedule;
             }
 
             RaisePropertyChanged(nameof(Schedule));

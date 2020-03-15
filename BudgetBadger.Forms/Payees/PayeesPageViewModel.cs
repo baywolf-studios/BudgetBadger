@@ -17,6 +17,8 @@ using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -28,6 +30,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPageDialogService _dialogService;
         readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -92,7 +95,8 @@ namespace BudgetBadger.Forms.Payees
                                    IPageDialogService dialogService,
                                    Lazy<IPayeeLogic> payeeLogic,
                                    Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService)
+                                   Lazy<IPurchaseService> purchaseService,
+                                   IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
@@ -100,6 +104,7 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
@@ -111,7 +116,9 @@ namespace BudgetBadger.Forms.Payees
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            RefreshPayeeCommand = new DelegateCommand<Payee>(async a => await ExecuteRefreshPayeeCommand(a));
+            RefreshPayeeCommand = new DelegateCommand<Payee>(ExecuteRefreshPayeeCommand);
+
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
         }
 
         public override async void OnActivated()
@@ -148,16 +155,16 @@ namespace BudgetBadger.Forms.Payees
         }
 
         // this gets hit before the OnActivated
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
             {
-                await ExecuteRefreshPayeeCommand(payee);
+                ExecuteRefreshPayeeCommand(payee);
             }
 
             if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                await ExecuteRefreshPayeeCommand(transaction.Payee);
+                ExecuteRefreshPayeeCommand(transaction.Payee);
             }
         }
 
@@ -214,20 +221,12 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteRefreshPayeeCommand(Payee payee)
+        public void ExecuteRefreshPayeeCommand(Payee payee)
         {
-            var payeeToRemove = Payees.FirstOrDefault(a => a.Id == payee.Id);
-            Payees.Remove(payeeToRemove);
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+            payees.Add(payee);
 
-            var updatedPayee = await _payeeLogic.Value.GetPayeeAsync(payee.Id);
-            if (updatedPayee.Success && updatedPayee.Data.IsActive)
-            {
-                Payees.Add(updatedPayee.Data);
-            }
-            else
-            {
-                Payees.Add(payee);
-            }
+            Payees.ReplaceRange(payees);
         }
 
         public async Task ExecuteSaveCommand(Payee payee)
@@ -273,11 +272,14 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteEditCommand(Payee payee)
         {
-            var parameters = new NavigationParameters
+            if (!payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
-            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
+                await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()

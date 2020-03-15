@@ -35,8 +35,6 @@ namespace BudgetBadger.macOS
         {
             Xamarin.Forms.Forms.Init();
             SimpleAuth.NativeSafariAuthenticator.Activate();
-            Syncfusion.SfDataGrid.XForms.MacOS.SfDataGridRenderer.Init();
-            Syncfusion.ListView.XForms.MacOS.SfListViewRenderer.Init();
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
 

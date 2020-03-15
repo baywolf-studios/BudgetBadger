@@ -127,7 +127,7 @@
                             VerticalOptions="Center"
                             IsVisible="{Binding Transaction.IsNew, Converter={StaticResource InverseBooleanConverter}}"
                             FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-                        <BoxView WidthRequest="{ext:DynamicResource size_200}" IsVisible="False" >
+                        <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}" IsVisible="False" >
                             <BoxView.Triggers>
                                 <MultiTrigger TargetType="BoxView">
                                     <MultiTrigger.Conditions>

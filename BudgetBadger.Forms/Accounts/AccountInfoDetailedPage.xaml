@@ -221,10 +221,6 @@
                 Grid.ColumnSpan="12"
                 Icon="{ext:DynamicResource TransactionIcon}"
                 ShowHelper="{Binding NoTransactions}">
-                <uc:PullToRefresh
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
                         <uc:DataTable
                             Items="{Binding Transactions}"
                             IsSorted="True"
@@ -234,7 +230,10 @@
                             SearchText="{Binding SearchText}"
                             SelectedCommand="{Binding TransactionSelectedCommand}"
                             SelectedItem="{Binding SelectedTransaction}"
-                            SeparatorVisibility="None">
+                            SeparatorVisibility="None"
+                            IsPullToRefreshEnabled="True"
+                            IsBusy="{Binding IsBusy}"
+                            RefreshCommand="{Binding RefreshCommand}">
                             <uc:DataTable.SortComparer>
                                 <comparers:TransactionComparer />
                             </uc:DataTable.SortComparer>
@@ -284,8 +283,6 @@
                                 <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
                             </uc:DataTable.Footer>
                         </uc:DataTable>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
             </uc:EmptyState>
             <FlexLayout
                 Grid.Row="3"
@@ -300,7 +297,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="{ext:Translate ReconcileAccountButton}"
                     FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-                <BoxView WidthRequest="{ext:DynamicResource size_200}"/>
+                <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                 <uc:Button2
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"

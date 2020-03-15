@@ -44,72 +44,69 @@
                 Style="{ext:DynamicResource MediumDividerStyle}"
                 HeightRequest="{ext:DynamicResource size_25}"
                 Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
-            <uc:PullToRefresh
+            <uc:ListView2
                 Grid.Row="2"
                 Grid.RowSpan="2"
                 Grid.ColumnSpan="12"
+                Items="{Binding Reports}"
+                RowHeight="{ext:DynamicResource size_500}"
+                SearchFilter="{Binding Filter}"
+                SearchText="{Binding SearchText}"
+                HideSearchBar="True"
+                SelectedCommand="{Binding ReportCommand}"
+                SelectedItem="{Binding SelectedReport}"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="True"
                 IsBusy="{Binding IsBusy}"
                 RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView2
-                        Items="{Binding Reports}"
-                        RowHeight="{ext:DynamicResource size_500}"
-                        SearchFilter="{Binding Filter}"
-                        SearchText="{Binding SearchText}"
-                        HideSearchBar="True"
-                        SelectedCommand="{Binding ReportCommand}"
-                        SelectedItem="{Binding SelectedReport}"
-                        SeparatorVisibility="None">
-                        <uc:ListView2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding HasPro}"
-                                TargetType="uc:ListView2"
-                                Value="false">
-                                <Setter Property="SelectionMode" Value="None" />
-                            </DataTrigger>
-                        </uc:ListView2.Triggers>
-                        <uc:ListView2.ItemTemplate>
-                            <DataTemplate>
-                                <uc:SelectableViewCell
-                                    Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                                    BackgroundColor="{ext:DynamicResource gray_50}"
-                                    SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                    <StackLayout
-                                        Orientation="Horizontal"
-                                        Spacing="{ext:DynamicResource size_100}"
-                                        HeightRequest="{ext:DynamicResource size_500}">
-                                        <Image
-                                            HeightRequest="{ext:DynamicResource Key=size_225}"
-                                            WidthRequest="{ext:DynamicResource Key=size_225}"
-                                            VerticalOptions="Center"
-                                            HorizontalOptions="End">
-                                            <Image.Source>
-                                                <FontImageSource
-                                                    Size="{ext:DynamicResource Key=size_225}"
-                                                    Glyph="{ext:DynamicResource Key=LockIcon}"
-                                                    Color="{ext:DynamicResource gray_900}"
-                                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
-                                            </Image.Source>
-                                            <Image.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding Value}"
-                                                    TargetType="Image"
-                                                    Value="true">
-                                                    <Setter Property="IsVisible" Value="false" />
-                                                </DataTrigger>
-                                            </Image.Triggers>
-                                        </Image>
-                                        <Label Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}" Text="{Binding Key}" />
-                                    </StackLayout>
-                                </uc:SelectableViewCell>
-                            </DataTemplate>
-                        </uc:ListView2.ItemTemplate>
-                        <uc:ListView2.Footer>
-                            <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
-                        </uc:ListView2.Footer>
-                    </uc:ListView2>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
+                <uc:ListView2.Triggers>
+                    <DataTrigger
+                        Binding="{Binding HasPro}"
+                        TargetType="uc:ListView2"
+                        Value="false">
+                        <Setter Property="SelectionMode" Value="None" />
+                    </DataTrigger>
+                </uc:ListView2.Triggers>
+                <uc:ListView2.ItemTemplate>
+                    <DataTemplate>
+                        <uc:SelectableViewCell
+                            Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                            BackgroundColor="{ext:DynamicResource gray_50}"
+                            SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                            <StackLayout
+                                Orientation="Horizontal"
+                                Spacing="{ext:DynamicResource size_100}"
+                                HeightRequest="{ext:DynamicResource size_500}">
+                                <Image
+                                    HeightRequest="{ext:DynamicResource Key=size_225}"
+                                    WidthRequest="{ext:DynamicResource Key=size_225}"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End">
+                                    <Image.Source>
+                                        <FontImageSource
+                                            Size="{ext:DynamicResource Key=size_225}"
+                                            Glyph="{ext:DynamicResource Key=LockIcon}"
+                                            Color="{ext:DynamicResource gray_900}"
+                                            FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
+                                    </Image.Source>
+                                    <Image.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Value}"
+                                            TargetType="Image"
+                                            Value="true">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}" Text="{Binding Key}" />
+                            </StackLayout>
+                        </uc:SelectableViewCell>
+                    </DataTemplate>
+                </uc:ListView2.ItemTemplate>
+                <uc:ListView2.Footer>
+                    <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                </uc:ListView2.Footer>
+            </uc:ListView2>
             <FlexLayout
                 Grid.Row="3"
                 Grid.Column="0"
@@ -131,7 +128,7 @@
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="{ext:Translate RestoreProButton}"
                     FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-                <BoxView WidthRequest="{ext:DynamicResource size_200}"/>
+                <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                 <uc:Button2
                     Command="{Binding PurchaseProCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"

@@ -26,73 +26,69 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <uc:PullToRefresh
-                    Grid.Row="0"
+                <uc:ListView2
                     Grid.ColumnSpan="12"
+                    Items="{Binding EnvelopeGroups}"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedEnvelopeGroup}"
+                    SeparatorVisibility="None"
+                    IsHeaderSticky="True"
+                    IsPullToRefreshEnabled="True"
                     IsBusy="{Binding IsBusy}"
                     RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:ListView2
-                            Items="{Binding EnvelopeGroups}"
-                            RowHeight="{ext:DynamicResource size_500}"
-                            IsSorted="True"
-                            SearchFilter="{Binding Filter}"
-                            SearchText="{Binding SearchText}"
-                            HideSearchBar="True"
-                            SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedEnvelopeGroup}"
-                            SeparatorVisibility="None"
-                            IsHeaderSticky="True">
-                            <uc:ListView2.SortComparer>
-                                <comparers:EnvelopeGroupComparer/>
-                            </uc:ListView2.SortComparer>
-                            <uc:ListView2.Header>
-                                <ContentView HeightRequest="{ext:DynamicResource size_0}">
-                                    <ContentView.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding HasSearchText}"
-                                            TargetType="ContentView"
-                                            Value="True">
-                                            <Setter Property="HeightRequest" Value="{ext:DynamicResource size_600}" />
-                                        </DataTrigger>
-                                    </ContentView.Triggers>
-                                    <uc:Button2
-                                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                                        Command="{Binding SaveSearchCommand}"
-                                        IsVisible="False"
-                                        Style="{StaticResource SecondaryActionButtonStyle}"
-                                        Text="{Binding SearchText, StringFormat='+ {0}'}"
-                                        VerticalOptions="Center">
-                                        <uc:Button2.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding HasSearchText}"
-                                                TargetType="uc:Button2"
-                                                Value="True">
-                                                <Setter Property="IsVisible" Value="True" />
-                                            </DataTrigger>
-                                        </uc:Button2.Triggers>
-                                    </uc:Button2>
-                                </ContentView>
-                            </uc:ListView2.Header>
-                            <uc:ListView2.ItemTemplate>
-                                <DataTemplate>
-                                    <uc:SelectableViewCell
-                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                                        BackgroundColor="{ext:DynamicResource gray_50}"
-                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                        <dt:EnvelopeGroupViewCell/>
-                                        <uc:SelectableViewCell.ContextActions>
-                                            <MenuItem
-                                                Text="{ext:Translate EditButton}"
-                                                Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"/>
-                                        </uc:SelectableViewCell.ContextActions>
-                                    </uc:SelectableViewCell>
-                                </DataTemplate>
-                            </uc:ListView2.ItemTemplate>
-                        </uc:ListView2>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
+                    <uc:ListView2.SortComparer>
+                        <comparers:EnvelopeGroupComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.Header>
+                        <ContentView HeightRequest="{ext:DynamicResource size_0}">
+                            <ContentView.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding HasSearchText}"
+                                    TargetType="ContentView"
+                                    Value="True">
+                                    <Setter Property="HeightRequest" Value="{ext:DynamicResource size_600}" />
+                                </DataTrigger>
+                            </ContentView.Triggers>
+                            <uc:Button2
+                                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                Command="{Binding SaveSearchCommand}"
+                                IsVisible="False"
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Text="{Binding SearchText, StringFormat='+ {0}'}"
+                                VerticalOptions="Center">
+                                <uc:Button2.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding HasSearchText}"
+                                        TargetType="uc:Button2"
+                                        Value="True">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </uc:Button2.Triggers>
+                            </uc:Button2>
+                        </ContentView>
+                    </uc:ListView2.Header>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:EnvelopeGroupViewCell/>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                </uc:ListView2>
             </uc:ResponsiveGrid>
         </uc:EmptyState>
     </p:BasePage.Body>
