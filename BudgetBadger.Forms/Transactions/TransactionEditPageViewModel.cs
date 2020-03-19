@@ -11,6 +11,8 @@ using BudgetBadger.Models.Extensions;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Transactions
 {
@@ -21,6 +23,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
         readonly ISyncFactory _syncFactory;
+        readonly IEventAggregator _eventAggregator;
 
         bool _needToSync;
 
@@ -65,13 +68,15 @@ namespace BudgetBadger.Forms.Transactions
             INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
-                                        ISyncFactory syncFactory)
+                                        ISyncFactory syncFactory,
+                                        IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
             _syncFactory = syncFactory;
+            _eventAggregator = eventAggregator;
 
             Transaction = new Transaction();
 
@@ -196,13 +201,10 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
 
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Transaction, result.Data }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    _needToSync = true;
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

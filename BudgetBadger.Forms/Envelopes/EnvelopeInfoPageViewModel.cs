@@ -17,6 +17,8 @@ using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using Xamarin.Forms;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -31,6 +33,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -117,7 +120,8 @@ namespace BudgetBadger.Forms.Envelopes
                                          Lazy<ISyncFactory> syncFactory,
                                          Lazy<IAccountLogic> accountLogic,
                                          Lazy<IPayeeLogic> payeeLogic,
-                                         Lazy<IPurchaseService> purchaseService)
+                                         Lazy<IPurchaseService> purchaseService,
+                                         IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
@@ -128,6 +132,7 @@ namespace BudgetBadger.Forms.Envelopes
             _accountLogic = accountLogic;
             _payeeLogic = payeeLogic;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Budget = new Budget();
             Transactions = new ObservableList<Transaction>();
@@ -341,6 +346,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
                 }
                 else
@@ -388,6 +394,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
 
                     Result<Budget> budgetResult;

@@ -8,9 +8,11 @@ using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -29,6 +31,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
@@ -155,7 +158,8 @@ namespace BudgetBadger.Forms.Accounts
                                              Lazy<ISyncFactory> syncFactory,
                                              Lazy<IEnvelopeLogic> envelopeLogic,
                                              Lazy<IPayeeLogic> payeeLogic,
-                                             Lazy<IPurchaseService> purchaseService)
+                                             Lazy<IPurchaseService> purchaseService,
+                                             IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
@@ -166,6 +170,7 @@ namespace BudgetBadger.Forms.Accounts
             _envelopeLogic = envelopeLogic;
             _payeeLogic = payeeLogic;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Account = new Account();
             Transactions = new ObservableList<Transaction>();
@@ -366,7 +371,7 @@ namespace BudgetBadger.Forms.Accounts
                     }
 
                     await RefreshSummary();
-
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
                 }
                 else
@@ -429,6 +434,7 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
                 }
                 else
