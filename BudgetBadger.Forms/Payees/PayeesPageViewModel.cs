@@ -223,16 +223,14 @@ namespace BudgetBadger.Forms.Payees
 
         public void ExecuteRefreshPayeeCommand(Payee payee)
         {
-            var payees = Payees.Where(a => a.Id != payee.Id);
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
             if (payee != null)
             {
-                Payees.ReplaceRange(payees.Append(payee));
+                payees.Add(payee);
             }
-            else
-            {
-                Payees.ReplaceRange(payees);
-            }
+
+            Payees.ReplaceRange(payees);
         }
 
         public async Task ExecuteSaveCommand(Payee payee)
@@ -292,6 +290,14 @@ namespace BudgetBadger.Forms.Payees
         public async Task ExecuteAddTransactionCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+        }
+
+        private async Task RefreshPayeeFromTransaction(Transaction transaction)
+        {
+            if (transaction != null)
+            {
+                //var updatedPayee = await _p
+            }
         }
     }
 }
