@@ -154,16 +154,14 @@ namespace BudgetBadger.Forms.Payees
 
         public void ExecuteRefreshPayeeCommand(Payee payee)
         {
-            var payees = Payees.Where(a => a.Id != payee.Id);
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
             if (payee != null)
             {
-                Payees.ReplaceRange(payees.Append(payee));
+                payees.Add(payee);
             }
-            else
-            {
-                Payees.ReplaceRange(payees);
-            }
+
+            Payees.ReplaceRange(payees);
         }
     }
 }

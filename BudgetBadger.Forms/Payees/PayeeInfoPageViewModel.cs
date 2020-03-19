@@ -297,15 +297,13 @@ namespace BudgetBadger.Forms.Payees
 
         public void ExecuteRefreshTransactionCommand(Transaction transaction)
         {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id);
+            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
             if (transaction != null)
             {
-                Transactions.ReplaceRange(transactions.Append(transaction));
+                transactions.Add(transaction);
             }
-            else
-            {
-                Transactions.ReplaceRange(transactions);
-            }
+
+            Transactions.ReplaceRange(transactions);
         }
 
         public async Task ExecuteAddTransactionCommand()
