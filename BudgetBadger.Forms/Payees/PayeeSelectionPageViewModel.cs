@@ -6,9 +6,11 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -21,11 +23,11 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
@@ -70,19 +72,20 @@ namespace BudgetBadger.Forms.Payees
         public PayeeSelectionPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
-            IPayeeLogic payeeLogic)
+            IPayeeLogic payeeLogic,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
             SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
         }
@@ -157,30 +160,6 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteSaveCommand()
-        {
-            var newPayee = new Payee
-            {
-                Description = SearchText
-            };
-
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
-
-            if (result.Success)
-            {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Payee, result.Data }
-                };
-
-                await _navigationService.GoBackAsync(parameters);
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
-            }
-        }
-
         public async Task ExecuteSaveSearchCommand()
         {
             var newPayee = new Payee
@@ -192,6 +171,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
+                _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
                 var parameters = new NavigationParameters
                 {
                     { PageParameter.Payee, result.Data }

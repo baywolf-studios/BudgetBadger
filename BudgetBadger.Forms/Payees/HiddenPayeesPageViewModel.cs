@@ -81,7 +81,7 @@ namespace BudgetBadger.Forms.Payees
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            RefreshPayeeCommand = new DelegateCommand<Payee>(async a => await ExecuteRefreshPayeeCommand(a));
+            RefreshPayeeCommand = new DelegateCommand<Payee>(ExecuteRefreshPayeeCommand);
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -94,16 +94,16 @@ namespace BudgetBadger.Forms.Payees
             await ExecuteRefreshCommand();
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
             {
-                await ExecuteRefreshPayeeCommand(payee);
+                //await ExecuteRefreshPayeeCommand(payee);
             }
 
             if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
             {
-                await ExecuteRefreshPayeeCommand(transaction.Payee);
+                //await ExecuteRefreshPayeeCommand(transaction.Payee);
             }
         }
 
@@ -152,17 +152,18 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteRefreshPayeeCommand(Payee payee)
+        public void ExecuteRefreshPayeeCommand(Payee payee)
         {
-            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+            var payees = Payees.Where(a => a.Id != payee.Id);
 
-            var updatedPayee = await _payeeLogic.GetPayeeAsync(payee.Id);
-            if (updatedPayee.Success && updatedPayee.Data.IsActive)
+            if (payee != null)
             {
-                payees.Add(updatedPayee.Data);
+                Payees.ReplaceRange(payees.Append(payee));
             }
-
-            Payees.ReplaceRange(payees);
+            else
+            {
+                Payees.ReplaceRange(payees);
+            }
         }
     }
 }

@@ -99,7 +99,7 @@ namespace BudgetBadger.Logic
                 {
                     await _transactionDataAccess.CreateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = transactionToUpsert;
+                    result.Data = await GetPopulatedTransaction(transactionToUpsert);
                 }
                 catch (Exception ex)
                 {
@@ -115,7 +115,7 @@ namespace BudgetBadger.Logic
                 {
                     await _transactionDataAccess.UpdateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = transactionToUpsert;
+                    result.Data = await GetPopulatedTransaction(transactionToUpsert);
                 }
                 catch (Exception ex)
                 {

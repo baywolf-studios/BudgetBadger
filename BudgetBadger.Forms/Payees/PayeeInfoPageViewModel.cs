@@ -16,6 +16,8 @@ using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using Xamarin.Forms;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -30,6 +32,7 @@ namespace BudgetBadger.Forms.Payees
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -117,7 +120,8 @@ namespace BudgetBadger.Forms.Payees
                                       Lazy<ISyncFactory> syncFactory,
                                       Lazy<IAccountLogic> accountLogic,
                                       Lazy<IEnvelopeLogic> envelopeLogic,
-                                      Lazy<IPurchaseService> purchaseService)
+                                      Lazy<IPurchaseService> purchaseService,
+                                      IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _transactionLogic = transactionLogic;
@@ -128,6 +132,7 @@ namespace BudgetBadger.Forms.Payees
             _accountLogic = accountLogic;
             _envelopeLogic = envelopeLogic;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Payee = new Payee();
             Transactions = new ObservableList<Transaction>();
@@ -339,6 +344,7 @@ namespace BudgetBadger.Forms.Payees
                         transactionFromList.Posted = transaction.Posted;
                     }
 
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
                 }
                 else
@@ -376,6 +382,7 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                     _needToSync = true;
                 }
                 else

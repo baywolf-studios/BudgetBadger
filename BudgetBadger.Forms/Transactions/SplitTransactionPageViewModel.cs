@@ -8,9 +8,11 @@ using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -29,6 +31,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -136,7 +139,8 @@ namespace BudgetBadger.Forms.Transactions
                                              Lazy<IAccountLogic> accountLogic,
                                              Lazy<IEnvelopeLogic> envelopeLogic,
                                              Lazy<IPayeeLogic> payeeLogic,
-                                             Lazy<IPurchaseService> purchaseService)
+                                             Lazy<IPurchaseService> purchaseService,
+                                             IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
@@ -147,6 +151,7 @@ namespace BudgetBadger.Forms.Transactions
             _envelopeLogic = envelopeLogic;
             _payeeLogic = payeeLogic;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Transactions = new ObservableList<Transaction>();
             Accounts = new ObservableList<Account>();
@@ -464,6 +469,7 @@ namespace BudgetBadger.Forms.Transactions
 
                     if (result.Success)
                     {
+                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
                         _needToSync = true;
                     }
                     else
