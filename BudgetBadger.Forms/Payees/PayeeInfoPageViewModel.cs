@@ -147,15 +147,14 @@ namespace BudgetBadger.Forms.Payees
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
-            RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(ExecuteRefreshTransactionCommand);
+
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
+            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshTransactionCommand(transaction);
-            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -296,17 +295,17 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
+        public void ExecuteRefreshTransactionCommand(Transaction transaction)
         {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-
-            var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
-            if (updatedTransaction.Success && updatedTransaction.Data.IsActive)
+            var transactions = Transactions.Where(t => t.Id != transaction.Id);
+            if (transaction != null)
             {
-                transactions.Add(updatedTransaction.Data);
+                Transactions.ReplaceRange(transactions.Append(transaction));
             }
-
-            Transactions.ReplaceRange(transactions);
+            else
+            {
+                Transactions.ReplaceRange(transactions);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()
@@ -338,13 +337,10 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    var transactionFromList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-                    if (transactionFromList != null)
-                    {
-                        transactionFromList.Posted = transaction.Posted;
-                    }
-
-                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
+                    if (result is Result<Transaction> tranResult)
+                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                    else
+                        _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
                     _needToSync = true;
                 }
                 else
@@ -361,7 +357,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
-                await ExecuteRefreshTransactionCommand(transaction);
+                ExecuteRefreshTransactionCommand(transaction);
 
                 _needToSync = true;
             }

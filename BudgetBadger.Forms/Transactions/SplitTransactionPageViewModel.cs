@@ -399,20 +399,14 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.Value.SaveSplitTransactionAsync(Transactions);
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
                     _needToSync = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
+                    var param = new NavigationParameters
                     {
-                        var param = new NavigationParameters
-                        {
-                            { PageParameter.GoBack, true }
-                        };
-                        await _navigationService.GoBackAsync(param);
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                        { PageParameter.GoBack, true }
+                    };
+                    await _navigationService.GoBackAsync(param);
                 }
                 else
                 {
@@ -469,7 +463,10 @@ namespace BudgetBadger.Forms.Transactions
 
                     if (result.Success)
                     {
-                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
+                        if (result is Result<Transaction> tranResult)
+                            _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                        else
+                            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
                         _needToSync = true;
                     }
                     else
