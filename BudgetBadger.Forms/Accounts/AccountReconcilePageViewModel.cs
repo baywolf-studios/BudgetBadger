@@ -364,14 +364,11 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    var transactionFromList = Transactions.FirstOrDefault(t => t.Id == transaction.Id);
-                    if (transactionFromList != null)
-                    {
-                        transactionFromList.Posted = transaction.Posted;
-                    }
-
                     await RefreshSummary();
-                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
+                    if (result is Result<Transaction> tranResult)
+                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                    else
+                        _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
                     _needToSync = true;
                 }
                 else

@@ -346,7 +346,10 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
+                    if (result is Result<Transaction> tranResult)
+                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                    else
+                        _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
                     _needToSync = true;
                 }
                 else
