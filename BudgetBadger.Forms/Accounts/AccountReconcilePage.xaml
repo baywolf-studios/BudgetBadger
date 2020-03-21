@@ -184,7 +184,7 @@
                     Items="{Binding StatementTransactions}"
                     IsGrouped="True"
                     GroupPropertyDescription="ServiceDate"
-                    IsSorted="False"
+                    IsSorted="True"
                     HasUnevenRows="True"
                     SearchFilter="{Binding Filter}"
                     SearchText="{Binding SearchText}"

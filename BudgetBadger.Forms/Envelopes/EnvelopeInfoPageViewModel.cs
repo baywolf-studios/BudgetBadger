@@ -148,15 +148,16 @@ namespace BudgetBadger.Forms.Envelopes
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             TransferCommand = new DelegateCommand(async () => await ExecuteTransferCommand());
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
-            RefreshTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteRefreshTransactionCommand(t));
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(ExecuteRefreshTransactionCommand);
+
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
+            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
+            _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
+            _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshTransactionCommand(transaction);
-            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -314,14 +315,12 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteRefreshTransactionCommand(Transaction transaction)
+        public void ExecuteRefreshTransactionCommand(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-
-            var updatedTransaction = await _transactionLogic.Value.GetTransactionAsync(transaction.Id);
-            if (updatedTransaction.Success && updatedTransaction.Data.IsActive)
+            if (transaction != null)
             {
-                transactions.Add(updatedTransaction.Data);
+                transactions.Add(transaction);
             }
 
             Transactions.ReplaceRange(transactions);
@@ -347,9 +346,9 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
                     if (result is Result<Transaction> tranResult)
-                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                        _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                     else
-                        _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
+                        _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
                     _needToSync = true;
                 }
                 else
@@ -366,7 +365,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                await ExecuteRefreshTransactionCommand(transaction);
+                ExecuteRefreshTransactionCommand(transaction);
 
                 _needToSync = true;
             }
@@ -427,6 +426,24 @@ namespace BudgetBadger.Forms.Envelopes
             else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        void UpdateTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.Id != transaction.Id);
+            foreach (var tran in Transactions)
+            {
+                tran.Posted = transaction.Posted;
+            }
+        }
+
+        void UpdateSplitTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
+            foreach (var tran in Transactions)
+            {
+                tran.Posted = transaction.Posted;
             }
         }
     }
