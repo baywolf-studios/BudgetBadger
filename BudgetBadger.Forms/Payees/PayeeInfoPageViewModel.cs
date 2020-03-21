@@ -358,7 +358,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
-                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(transaction);
+                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
 
                 _needToSync = true;
             }

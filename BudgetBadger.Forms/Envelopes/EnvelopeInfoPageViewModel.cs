@@ -366,7 +366,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(transaction);
+                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
 
                 _needToSync = true;
             }
