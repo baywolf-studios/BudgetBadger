@@ -151,6 +151,8 @@ namespace BudgetBadger.Forms.Payees
 
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
+            _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
+            _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -322,7 +324,7 @@ namespace BudgetBadger.Forms.Payees
             {
                 transaction.Posted = !transaction.Posted;
 
-                Result result = new Result();
+                Result result;
 
                 if (transaction.IsCombined)
                 {
@@ -336,9 +338,9 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     if (result is Result<Transaction> tranResult)
-                        _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                        _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                     else
-                        _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
+                        _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
                     _needToSync = true;
                 }
                 else
@@ -387,6 +389,24 @@ namespace BudgetBadger.Forms.Payees
             else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        void UpdateTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.Id != transaction.Id);
+            foreach (var tran in Transactions)
+            {
+                tran.Posted = transaction.Posted;
+            }
+        }
+
+        void UpdateSplitTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
+            foreach (var tran in Transactions)
+            {
+                tran.Posted = transaction.Posted;
             }
         }
     }

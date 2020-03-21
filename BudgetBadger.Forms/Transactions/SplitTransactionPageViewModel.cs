@@ -464,9 +464,9 @@ namespace BudgetBadger.Forms.Transactions
                     if (result.Success)
                     {
                         if (result is Result<Transaction> tranResult)
-                            _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(tranResult.Data);
+                            _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                         else
-                            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
+                            _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
                         _needToSync = true;
                     }
                     else
