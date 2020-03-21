@@ -157,6 +157,7 @@ namespace BudgetBadger.Forms.Accounts
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -215,7 +216,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
-                ExecuteRefreshTransactionCommand(transaction);
+                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(transaction);
 
                 _needToSync = true;
             }
@@ -313,7 +314,7 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteRefreshTransactionCommand(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            if (transaction != null)
+            if (transaction != null && transaction.IsActive)
             {
                 transactions.Add(transaction);
             }
@@ -429,24 +430,6 @@ namespace BudgetBadger.Forms.Accounts
             RaisePropertyChanged(nameof(PendingTotal));
             RaisePropertyChanged(nameof(PostedTotal));
             RaisePropertyChanged(nameof(Account.Balance));
-        }
-
-        void UpdateTransactionStatus(Transaction transaction)
-        {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id);
-            foreach (var tran in Transactions)
-            {
-                tran.Posted = transaction.Posted;
-            }
-        }
-
-        void UpdateSplitTransactionStatus(Transaction transaction)
-        {
-            var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
-            foreach (var tran in Transactions)
-            {
-                tran.Posted = transaction.Posted;
-            }
         }
     }
 }

@@ -66,7 +66,7 @@ namespace BudgetBadger.Logic
                 {
                     await _payeeDataAccess.UpdatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false); ;
+                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -254,9 +254,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeletePayeeAsync(Guid id)
+        public async Task<Result<Payee>> SoftDeletePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -295,6 +295,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -305,9 +306,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> HidePayeeAsync(Guid id)
+        public async Task<Result<Payee>> HidePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -341,6 +342,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -351,9 +353,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> UnhidePayeeAsync(Guid id)
+        public async Task<Result<Payee>> UnhidePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -387,6 +389,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

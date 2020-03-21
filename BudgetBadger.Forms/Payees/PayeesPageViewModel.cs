@@ -119,6 +119,10 @@ namespace BudgetBadger.Forms.Payees
             RefreshPayeeCommand = new DelegateCommand<Payee>(ExecuteRefreshPayeeCommand);
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -225,7 +229,7 @@ namespace BudgetBadger.Forms.Payees
         {
             var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
-            if (payee != null)
+            if (payee != null && payee.IsActive)
             {
                 payees.Add(payee);
             }
@@ -292,11 +296,15 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
         }
 
-        private async Task RefreshPayeeFromTransaction(Transaction transaction)
+        async Task RefreshPayeeFromTransaction(Transaction transaction)
         {
-            if (transaction != null)
+            if (transaction != null && transaction.Payee != null)
             {
-                //var updatedPayee = await _p
+                var updatedPayeeResult = await _payeeLogic.Value.GetPayeeAsync(transaction.Payee.Id);
+                if (updatedPayeeResult.Success)
+                {
+                    ExecuteRefreshPayeeCommand(updatedPayeeResult.Data);
+                }
             }
         }
     }

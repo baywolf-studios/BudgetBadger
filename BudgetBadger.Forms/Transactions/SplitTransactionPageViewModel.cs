@@ -372,6 +372,7 @@ namespace BudgetBadger.Forms.Transactions
                         return;
                     }
 
+                    _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(transaction);
                     _needToSync = true;
                 }
                 finally

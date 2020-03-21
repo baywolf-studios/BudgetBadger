@@ -72,7 +72,7 @@
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                 <dt:PayeeDetailedViewCell
                                     SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                    RefreshItemCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
+                                    CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
                                     <dt:PayeeDetailedViewCell.Triggers>
                                         <DataTrigger
                                             Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"

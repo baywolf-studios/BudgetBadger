@@ -6,9 +6,11 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -21,11 +23,11 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand RefreshPayeeCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
@@ -69,19 +71,23 @@ namespace BudgetBadger.Forms.Payees
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
-            IPayeeLogic payeeLogic)
+            IPayeeLogic payeeLogic,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            RefreshPayeeCommand = new DelegateCommand<Payee>(ExecuteRefreshPayeeCommand);
+
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -96,15 +102,6 @@ namespace BudgetBadger.Forms.Payees
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
-            {
-                //await ExecuteRefreshPayeeCommand(payee);
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                //await ExecuteRefreshPayeeCommand(transaction.Payee);
-            }
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -156,12 +153,24 @@ namespace BudgetBadger.Forms.Payees
         {
             var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
-            if (payee != null)
+            if (payee != null && payee.IsHidden && !payee.IsDeleted)
             {
                 payees.Add(payee);
             }
 
             Payees.ReplaceRange(payees);
+        }
+
+        async Task RefreshPayeeFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Payee != null)
+            {
+                var updatedPayeeResult = await _payeeLogic.GetPayeeAsync(transaction.Payee.Id);
+                if (updatedPayeeResult.Success)
+                {
+                    ExecuteRefreshPayeeCommand(updatedPayeeResult.Data);
+                }
+            }
         }
     }
 }

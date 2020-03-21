@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using BudgetBadger.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class PayeeDetailedViewCell : Grid
     {
+        private Payee _payee { get; set; }
+
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(PayeeDetailedViewCell));
         public ICommand SaveCommand
         {
@@ -14,11 +17,11 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SaveCommandProperty, value);
         }
 
-        public static BindableProperty RefreshItemCommandProperty = BindableProperty.Create(nameof(RefreshItemCommand), typeof(ICommand), typeof(PayeeDetailedViewCell));
-        public ICommand RefreshItemCommand
+        public static BindableProperty CancelCommandProperty = BindableProperty.Create(nameof(CancelCommand), typeof(ICommand), typeof(PayeeDetailedViewCell));
+        public ICommand CancelCommand
         {
-            get => (ICommand)GetValue(RefreshItemCommandProperty);
-            set => SetValue(RefreshItemCommandProperty, value);
+            get => (ICommand)GetValue(CancelCommandProperty);
+            set => SetValue(CancelCommandProperty, value);
         }
 
         public static BindableProperty IsReadOnlyProperty = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(PayeeDetailedViewCell));
@@ -35,6 +38,11 @@ namespace BudgetBadger.Forms.DataTemplates
 
         void Handle_EditClicked(object sender, EventArgs e)
         {
+            if (BindingContext is Payee p)
+            {
+                _payee = p.DeepCopy();
+            }
+
             DescriptionControl.IsReadOnly = false;
             NotesControl.IsReadOnly = false;
             EditButton.IsVisible = false;
@@ -47,10 +55,13 @@ namespace BudgetBadger.Forms.DataTemplates
             NotesControl.IsReadOnly = true;
             EditButton.IsVisible = true;
             SaveCancelContainer.IsVisible = false;
+
             if (SaveCommand?.CanExecute(BindingContext) ?? false)
             {
                 SaveCommand?.Execute(BindingContext);
             }
+
+            _payee = null;
         }
 
         void Handle_CancelClicked(object sender, EventArgs e)
@@ -59,10 +70,13 @@ namespace BudgetBadger.Forms.DataTemplates
             NotesControl.IsReadOnly = true;
             EditButton.IsVisible = true;
             SaveCancelContainer.IsVisible = false;
-            if (RefreshItemCommand?.CanExecute(BindingContext) ?? false)
+
+            if (CancelCommand?.CanExecute(_payee) ?? false)
             {
-                RefreshItemCommand?.Execute(BindingContext);
+                CancelCommand?.Execute(_payee);
             }
+
+            _payee = null;
         }
     }
 }
