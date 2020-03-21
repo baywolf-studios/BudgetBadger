@@ -234,9 +234,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeleteTransactionAsync(Guid id)
+        public async Task<Result<Transaction>> SoftDeleteTransactionAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Transaction>();
 
             try
             {
@@ -274,6 +274,7 @@ namespace BudgetBadger.Logic
                 transactionToDelete.SplitId = null;
                 await _transactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);
                 result.Success = true;
+                result.Data = await GetPopulatedTransaction(transactionToDelete).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
