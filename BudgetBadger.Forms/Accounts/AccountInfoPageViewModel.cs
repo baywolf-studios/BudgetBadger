@@ -431,5 +431,23 @@ namespace BudgetBadger.Forms.Accounts
             RaisePropertyChanged(nameof(PostedTotal));
             RaisePropertyChanged(nameof(Account.Balance));
         }
+
+        void UpdateTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.Id == transaction.Id);
+            foreach (var tran in transactions)
+            {
+                tran.Posted = transaction.Posted;
+            }
+        }
+
+        void UpdateSplitTransactionStatus(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
+            foreach (var tran in transactions)
+            {
+                tran.Posted = transaction.Posted;
+            }
+        }
     }
 }
