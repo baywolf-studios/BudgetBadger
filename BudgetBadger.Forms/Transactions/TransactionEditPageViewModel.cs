@@ -252,6 +252,7 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.SoftDeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(Transaction);
                     _needToSync = true;
 
                     var parameters = new NavigationParameters

@@ -183,7 +183,7 @@
                                     Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
                                     ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
                                     SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                    RefreshItemCommand="{Binding BindingContext.RefreshTransactionCommand, Source={x:Reference Name=this}}"
+                                    CancelCommand="{Binding BindingContext.RefreshTransactionCommand, Source={x:Reference Name=this}}"
                                     HeightRequest="{ext:DynamicResource size_675}"
                                     IsReadOnly="{Binding IsCombined}">
                                     <dt:TransactionDetailedViewCell.Triggers>

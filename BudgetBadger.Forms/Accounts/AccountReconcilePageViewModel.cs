@@ -196,6 +196,7 @@ namespace BudgetBadger.Forms.Accounts
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -303,7 +304,7 @@ namespace BudgetBadger.Forms.Accounts
         public void ExecuteRefreshTransactionCommand(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            if (transaction != null)
+            if (transaction != null && transaction.IsActive)
             {
                 transactions.Add(transaction);
             }
@@ -383,7 +384,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
-                await ExecuteRefreshCommand();
+                _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(transaction);
 
                 _needToSync = true;
             }
@@ -462,8 +463,8 @@ namespace BudgetBadger.Forms.Accounts
 
         void UpdateTransactionStatus(Transaction transaction)
         {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id);
-            foreach (var tran in Transactions)
+            var transactions = Transactions.Where(t => t.Id == transaction.Id);
+            foreach (var tran in transactions)
             {
                 tran.Posted = transaction.Posted;
             }
@@ -472,7 +473,7 @@ namespace BudgetBadger.Forms.Accounts
         void UpdateSplitTransactionStatus(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
-            foreach (var tran in Transactions)
+            foreach (var tran in transactions)
             {
                 tran.Posted = transaction.Posted;
             }

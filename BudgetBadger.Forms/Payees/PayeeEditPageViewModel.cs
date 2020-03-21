@@ -165,6 +165,8 @@ namespace BudgetBadger.Forms.Payees
                     {
                         _needToSync = true;
 
+                        _eventAggregator.GetEvent<PayeeDeletedEvent>().Publish(result.Data);
+
                         if (Device.RuntimePlatform == Device.macOS)
                         {
                             await _navigationService.GoBackAsync();
@@ -203,6 +205,8 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
+                    _eventAggregator.GetEvent<PayeeHiddenEvent>().Publish(result.Data);
+
                     if (Device.RuntimePlatform == Device.macOS)
                     {
                         await _navigationService.GoBackAsync();
@@ -239,6 +243,8 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }

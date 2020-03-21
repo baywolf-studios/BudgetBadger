@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Input;
+using BudgetBadger.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class TransactionDetailedViewCell : Grid
     {
+        private Transaction _transaction { get; set; }
+
         public static readonly BindableProperty AccountsProperty = BindableProperty.Create(nameof(Accounts), typeof(IList), typeof(TransactionDetailedViewCell), null);
         public IList Accounts
         {
@@ -36,11 +39,11 @@ namespace BudgetBadger.Forms.DataTemplates
             set => SetValue(SaveCommandProperty, value);
         }
 
-        public static BindableProperty RefreshItemCommandProperty = BindableProperty.Create(nameof(RefreshItemCommand), typeof(ICommand), typeof(TransactionDetailedViewCell));
-        public ICommand RefreshItemCommand
+        public static BindableProperty CancelCommandProperty = BindableProperty.Create(nameof(CancelCommand), typeof(ICommand), typeof(TransactionDetailedViewCell));
+        public ICommand CancelCommand
         {
-            get => (ICommand)GetValue(RefreshItemCommandProperty);
-            set => SetValue(RefreshItemCommandProperty, value);
+            get => (ICommand)GetValue(CancelCommandProperty);
+            set => SetValue(CancelCommandProperty, value);
         }
 
         public static readonly BindableProperty ToggleCommandProperty =
@@ -123,6 +126,11 @@ namespace BudgetBadger.Forms.DataTemplates
 
         void Handle_EditClicked(object sender, EventArgs e)
         {
+            if (BindingContext is Transaction tran)
+            {
+                _transaction = tran.DeepCopy();
+            }
+
             EditButton.IsVisible = false;
             SaveCancelContainer.IsVisible = true;
             accountControl.IsReadOnly = false;
@@ -137,34 +145,38 @@ namespace BudgetBadger.Forms.DataTemplates
         {
             EditButton.IsVisible = true;
             SaveCancelContainer.IsVisible = false;
-            if (SaveCommand?.CanExecute(BindingContext) ?? false)
-            {
-                SaveCommand?.Execute(BindingContext);
-            }
-
             accountControl.IsReadOnly = true;
             envelopeControl.IsReadOnly = true;
             payeeControl.IsReadOnly = true;
             serviceDateControl.IsReadOnly = true;
             outflowControl.IsReadOnly = true;
             inflowControl.IsReadOnly = true;
+
+            if (SaveCommand?.CanExecute(BindingContext) ?? false)
+            {
+                SaveCommand?.Execute(BindingContext);
+            }
+
+            _transaction = null;
         }
 
         void Handle_CancelClicked(object sender, EventArgs e)
         {
             EditButton.IsVisible = true;
             SaveCancelContainer.IsVisible = false;
-            if (RefreshItemCommand?.CanExecute(BindingContext) ?? false)
-            {
-                RefreshItemCommand?.Execute(BindingContext);
-            }
-
             accountControl.IsReadOnly = true;
             envelopeControl.IsReadOnly = true;
             payeeControl.IsReadOnly = true;
             serviceDateControl.IsReadOnly = true;
             outflowControl.IsReadOnly = true;
             inflowControl.IsReadOnly = true;
+
+            if (CancelCommand?.CanExecute(_transaction) ?? false)
+            {
+                CancelCommand?.Execute(_transaction);
+            }
+
+            _transaction = null;
         }
     }
 }
