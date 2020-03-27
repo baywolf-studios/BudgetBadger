@@ -158,6 +158,13 @@ namespace BudgetBadger.Forms.Accounts
             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
             _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
+
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(async a => await RefreshSummary(a));
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(async a => await RefreshSummary(a));
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(async a => await RefreshSummary(a));
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(async a => await RefreshSummary(a));
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary(t.Account));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary(t.Account));
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -415,8 +422,13 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        async Task RefreshSummary()
+        async Task RefreshSummary(Account account = null)
         {
+            if (account != null && account.Id != Account.Id)
+            {
+                return;
+            }
+
             var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
             if (accountResult.Success)
             {
@@ -429,7 +441,7 @@ namespace BudgetBadger.Forms.Accounts
 
             RaisePropertyChanged(nameof(PendingTotal));
             RaisePropertyChanged(nameof(PostedTotal));
-            RaisePropertyChanged(nameof(Account.Balance));
+            RaisePropertyChanged("Account.Balance");
         }
 
         void UpdateTransactionStatus(Transaction transaction)

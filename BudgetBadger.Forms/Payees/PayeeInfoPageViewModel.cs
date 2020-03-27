@@ -154,6 +154,13 @@ namespace BudgetBadger.Forms.Payees
             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
             _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
+
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(async p => await RefreshSummary(p));
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(async p => await RefreshSummary(p));
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(async p => await RefreshSummary(p));
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(async p => await RefreshSummary(p));
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary(t.Payee));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary(t.Payee));
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -390,6 +397,24 @@ namespace BudgetBadger.Forms.Payees
             else
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        async Task RefreshSummary(Payee payee = null)
+        {
+            if (payee != null && payee.Id != Payee.Id)
+            {
+                return;
+            }
+
+            var payeeResult = await _payeeLogic.Value.GetPayeeAsync(Payee.Id);
+            if (payeeResult.Success)
+            {
+                Payee = payeeResult.Data;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeeResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
 

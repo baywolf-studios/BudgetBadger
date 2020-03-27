@@ -17,6 +17,8 @@ using Prism;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using BudgetBadger.Forms.Events;
+using Prism.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -28,6 +30,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
 		readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -94,7 +97,8 @@ namespace BudgetBadger.Forms.Accounts
 		                             IPageDialogService dialogService,
                                      Lazy<IAccountLogic> accountLogic,
                                      Lazy<ISyncFactory> syncFactory,
-                                     Lazy<IPurchaseService> purchaseService)
+                                     Lazy<IPurchaseService> purchaseService,
+                                     IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
@@ -102,6 +106,7 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
@@ -113,7 +118,13 @@ namespace BudgetBadger.Forms.Accounts
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
             ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
-            RefreshAccountCommand = new DelegateCommand<Account>(async a => await ExecuteRefreshAccountCommand(a));
+            RefreshAccountCommand = new DelegateCommand<Account>(ExecuteRefreshAccountCommand);
+
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -150,26 +161,8 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         // this gets hit before the OnActivated
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Account, out Account account))
-            {
-                await ExecuteRefreshAccountCommand(account);
-                
-                if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
-                {
-                    // show message about debt envelopes
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDebtEnvelopes"),
-                            _resourceContainer.Value.GetResourceString("AlertMessageDebtEnvelopes"),
-                            _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshAccountCommand(transaction.Account);
-            }
-
             RefreshSummary();
         }
 
@@ -227,14 +220,13 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteRefreshAccountCommand(Account account)
+        public void ExecuteRefreshAccountCommand(Account account)
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            var updatedAccount = await _accountLogic.Value.GetAccountAsync(account.Id);
-            if (updatedAccount.Success && updatedAccount.Data.IsActive)
+            if (account != null && account.IsActive)
             {
-                accounts.Add(updatedAccount.Data);
+                accounts.Add(account);
             }
 
             Accounts.ReplaceRange(accounts);
@@ -270,6 +262,7 @@ namespace BudgetBadger.Forms.Accounts
             if (result.Success)
             {
                 _needToSync = true;
+                _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -295,6 +288,18 @@ namespace BudgetBadger.Forms.Accounts
             RaisePropertyChanged(nameof(NetWorth));
             RaisePropertyChanged(nameof(Assests));
             RaisePropertyChanged(nameof(Debts));
+        }
+
+        async Task RefreshAccountFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Account != null)
+            {
+                var updatedAccountResult = await _accountLogic.Value.GetAccountAsync(transaction.Account.Id);
+                if (updatedAccountResult.Success)
+                {
+                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
+                }
+            }
         }
     }
 }

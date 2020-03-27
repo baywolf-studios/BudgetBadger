@@ -6,10 +6,12 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.AppModel;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -22,6 +24,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -68,12 +71,14 @@ namespace BudgetBadger.Forms.Accounts
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
-            IAccountLogic accountLogic)
+            IAccountLogic accountLogic,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
@@ -81,6 +86,12 @@ namespace BudgetBadger.Forms.Accounts
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -148,9 +159,33 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
+        public void ExecuteRefreshAccountCommand(Account account)
+        {
+            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
+
+            if (account != null && account.IsActive)
+            {
+                accounts.Add(account);
+            }
+
+            Accounts.ReplaceRange(accounts);
+        }
+
         public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.AccountEditPage);
+        }
+
+        async Task RefreshAccountFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Account != null)
+            {
+                var updatedAccountResult = await _accountLogic.GetAccountAsync(transaction.Account.Id);
+                if (updatedAccountResult.Success)
+                {
+                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
+                }
+            }
         }
     }
 }
