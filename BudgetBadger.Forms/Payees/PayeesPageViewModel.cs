@@ -158,18 +158,8 @@ namespace BudgetBadger.Forms.Payees
         {
         }
 
-        // this gets hit before the OnActivated
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Payee, out Payee payee))
-            {
-                ExecuteRefreshPayeeCommand(payee);
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                ExecuteRefreshPayeeCommand(transaction.Payee);
-            }
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -181,7 +171,6 @@ namespace BudgetBadger.Forms.Payees
 
             if (payee.IsGenericHiddenPayee)
             {
-                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
             }
             else

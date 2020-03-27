@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -25,6 +27,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
+        readonly IEventAggregator _eventAggregator;
 
         bool _needToSync;
 
@@ -71,13 +74,15 @@ namespace BudgetBadger.Forms.Accounts
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
                                         ISyncFactory syncFactory,
-                                        IResourceContainer resourceContainer)
+                                        IResourceContainer resourceContainer,
+                                        IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
+            _eventAggregator = eventAggregator;
 
             Account = new Account();
 
@@ -144,11 +149,9 @@ namespace BudgetBadger.Forms.Accounts
 
                     _needToSync = true;
 
-					var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Account, result.Data }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -186,14 +189,9 @@ namespace BudgetBadger.Forms.Accounts
                     {
                         _needToSync = true;
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        _eventAggregator.GetEvent<AccountDeletedEvent>().Publish(result.Data);
+
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -226,14 +224,9 @@ namespace BudgetBadger.Forms.Accounts
 				{
                     _needToSync = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    _eventAggregator.GetEvent<AccountHiddenEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
 				else
 				{
@@ -263,6 +256,8 @@ namespace BudgetBadger.Forms.Accounts
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    _eventAggregator.GetEvent<AccountUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }

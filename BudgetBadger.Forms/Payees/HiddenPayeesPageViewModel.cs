@@ -87,6 +87,9 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 

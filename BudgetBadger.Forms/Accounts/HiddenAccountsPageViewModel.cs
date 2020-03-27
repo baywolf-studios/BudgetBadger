@@ -6,10 +6,12 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.AppModel;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -22,6 +24,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -66,18 +69,26 @@ namespace BudgetBadger.Forms.Accounts
         public HiddenAccountsPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService, 
             IPageDialogService dialogService, 
-            IAccountLogic accountLogic)
+            IAccountLogic accountLogic,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -90,17 +101,8 @@ namespace BudgetBadger.Forms.Accounts
             await ExecuteRefreshCommand();
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Account, out Account account))
-            {
-                await ExecuteRefreshAccountCommand(account);
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshAccountCommand(transaction.Account);
-            }
         }
 
         public async Task ExecuteSelectedCommand(Account account)
@@ -149,17 +151,28 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteRefreshAccountCommand(Account account)
+        public void ExecuteRefreshAccountCommand(Account account)
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            var updatedAccount = await _accountLogic.GetAccountAsync(account.Id);
-            if (updatedAccount.Success)
+            if (account != null && account.IsActive)
             {
-                accounts.Add(updatedAccount.Data);
+                accounts.Add(account);
             }
 
             Accounts.ReplaceRange(accounts);
+        }
+
+        async Task RefreshAccountFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Account != null)
+            {
+                var updatedAccountResult = await _accountLogic.GetAccountAsync(transaction.Account.Id);
+                if (updatedAccountResult.Success)
+                {
+                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
+                }
+            }
         }
     }
 }

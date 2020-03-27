@@ -121,7 +121,7 @@ namespace BudgetBadger.Logic
                 await _accountDataAccess.UpdateAccountAsync(accountToUpsert).ConfigureAwait(false);
             }
 
-            return new Result<Account> { Success = true, Data = accountToUpsert };
+            return new Result<Account> { Success = true, Data = await GetPopulatedAccount(accountToUpsert).ConfigureAwait(false) };
         }
 
         public async Task<Result<int>> GetAccountsCountAsync()
@@ -253,9 +253,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeleteAccountAsync(Guid id)
+        public async Task<Result<Account>> SoftDeleteAccountAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Account>();
 
             try
             {
@@ -306,6 +306,7 @@ namespace BudgetBadger.Logic
                 await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
+                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -316,9 +317,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> HideAccountAsync(Guid id)
+        public async Task<Result<Account>> HideAccountAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Account>();
 
             try
             {
@@ -361,6 +362,7 @@ namespace BudgetBadger.Logic
                 await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
+                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -371,9 +373,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> UnhideAccountAsync(Guid id)
+        public async Task<Result<Account>> UnhideAccountAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Account>();
 
             try
             {
@@ -416,6 +418,7 @@ namespace BudgetBadger.Logic
                 await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
+                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
