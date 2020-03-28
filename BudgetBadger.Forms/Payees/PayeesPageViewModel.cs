@@ -110,18 +110,18 @@ namespace BudgetBadger.Forms.Payees
             SelectedPayee = null;
 
             SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             SaveCommand = new DelegateCommand<Payee>(async p => await ExecuteSaveCommand(p));
             SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            RefreshPayeeCommand = new DelegateCommand<Payee>(ExecuteRefreshPayeeCommand);
+            RefreshPayeeCommand = new DelegateCommand<Payee>(RefreshPayee);
 
-            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
-            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(ExecuteRefreshPayeeCommand);
-            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
-            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(ExecuteRefreshPayeeCommand);
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
@@ -132,7 +132,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (_hardRefresh)
             {
-                await ExecuteRefreshCommand();
+                await FullRefresh();
                 _hardRefresh = false;
             }
         }
@@ -182,48 +182,6 @@ namespace BudgetBadger.Forms.Payees
 
                 await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
             }
-        }
-
-        public async Task ExecuteRefreshCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                var result = await _payeeLogic.Value.GetPayeesAsync();
-
-                if (result.Success)
-                {
-                    Payees.ReplaceRange(result.Data);
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
-
-                NoPayees = (Payees?.Count ?? 0) == 0;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public void ExecuteRefreshPayeeCommand(Payee payee)
-        {
-            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
-
-            if (payee != null && payee.IsActive)
-            {
-                payees.Add(payee);
-            }
-
-            Payees.ReplaceRange(payees);
         }
 
         public async Task ExecuteSaveCommand(Payee payee)
@@ -285,14 +243,56 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
         }
 
-        async Task RefreshPayeeFromTransaction(Transaction transaction)
+        public async Task FullRefresh()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                var result = await _payeeLogic.Value.GetPayeesAsync();
+
+                if (result.Success)
+                {
+                    Payees.ReplaceRange(result.Data);
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
+
+                NoPayees = (Payees?.Count ?? 0) == 0;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public void RefreshPayee(Payee payee)
+        {
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+
+            if (payee != null && payee.IsActive)
+            {
+                payees.Add(payee);
+            }
+
+            Payees.ReplaceRange(payees);
+        }
+
+        public async Task RefreshPayeeFromTransaction(Transaction transaction)
         {
             if (transaction != null && transaction.Payee != null)
             {
                 var updatedPayeeResult = await _payeeLogic.Value.GetPayeeAsync(transaction.Payee.Id);
                 if (updatedPayeeResult.Success)
                 {
-                    ExecuteRefreshPayeeCommand(updatedPayeeResult.Data);
+                    RefreshPayee(updatedPayeeResult.Data);
                 }
             }
         }

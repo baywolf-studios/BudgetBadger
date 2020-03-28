@@ -112,18 +112,18 @@ namespace BudgetBadger.Forms.Accounts
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
             EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
             ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
-            RefreshAccountCommand = new DelegateCommand<Account>(ExecuteRefreshAccountCommand);
+            RefreshAccountCommand = new DelegateCommand<Account>(RefreshAccount);
 
-            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
@@ -134,7 +134,7 @@ namespace BudgetBadger.Forms.Accounts
 
             if (_hardRefresh)
             {
-                await ExecuteRefreshCommand();
+                await FullRefresh();
                 _hardRefresh = false;
             }
         }
@@ -189,49 +189,6 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteRefreshCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                var result = await _accountLogic.Value.GetAccountsAsync();
-
-                if (result.Success)
-                {
-                    Accounts.ReplaceRange(result.Data);
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
-
-                RefreshSummary();
-                NoAccounts = (Accounts?.Count ?? 0) == 0;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public void ExecuteRefreshAccountCommand(Account account)
-        {
-            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
-
-            if (account != null && account.IsActive)
-            {
-                accounts.Add(account);
-            }
-
-            Accounts.ReplaceRange(accounts);
-        }
-
         public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.AccountEditPage);
@@ -283,21 +240,64 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        void RefreshSummary()
+        public async Task FullRefresh()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                var result = await _accountLogic.Value.GetAccountsAsync();
+
+                if (result.Success)
+                {
+                    Accounts.ReplaceRange(result.Data);
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
+
+                RefreshSummary();
+                NoAccounts = (Accounts?.Count ?? 0) == 0;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public void RefreshSummary()
         {
             RaisePropertyChanged(nameof(NetWorth));
             RaisePropertyChanged(nameof(Assests));
             RaisePropertyChanged(nameof(Debts));
         }
 
-        async Task RefreshAccountFromTransaction(Transaction transaction)
+        public void RefreshAccount(Account account)
+        {
+            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
+
+            if (account != null && account.IsActive)
+            {
+                accounts.Add(account);
+            }
+
+            Accounts.ReplaceRange(accounts);
+        }
+
+        public async Task RefreshAccountFromTransaction(Transaction transaction)
         {
             if (transaction != null && transaction.Account != null)
             {
                 var updatedAccountResult = await _accountLogic.Value.GetAccountAsync(transaction.Account.Id);
                 if (updatedAccountResult.Success)
                 {
-                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
+                    RefreshAccount(updatedAccountResult.Data);
                 }
             }
         }

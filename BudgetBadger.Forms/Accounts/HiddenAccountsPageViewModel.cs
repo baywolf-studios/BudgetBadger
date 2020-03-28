@@ -82,12 +82,12 @@ namespace BudgetBadger.Forms.Accounts
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
 
-            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
@@ -98,7 +98,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -121,7 +121,8 @@ namespace BudgetBadger.Forms.Accounts
 
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh
+            ()
         {
             if (IsBusy)
             {
@@ -151,7 +152,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void ExecuteRefreshAccountCommand(Account account)
+        public void RefreshAccount(Account account)
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
@@ -163,14 +164,14 @@ namespace BudgetBadger.Forms.Accounts
             Accounts.ReplaceRange(accounts);
         }
 
-        async Task RefreshAccountFromTransaction(Transaction transaction)
+        public async Task RefreshAccountFromTransaction(Transaction transaction)
         {
             if (transaction != null && transaction.Account != null)
             {
                 var updatedAccountResult = await _accountLogic.GetAccountAsync(transaction.Account.Id);
                 if (updatedAccountResult.Success)
                 {
-                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
+                    RefreshAccount(updatedAccountResult.Data);
                 }
             }
         }

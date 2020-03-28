@@ -183,27 +183,30 @@ namespace BudgetBadger.Forms.Accounts
 
 
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             ToggleReconcileModeCommand = new DelegateCommand(async () => await ExecuteToggleReconcileModeCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
-            RefreshTransactionCommand = new DelegateCommand<Transaction>(ExecuteRefreshTransactionCommand);
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(RefreshTransaction);
             UpdateStatementTransactionsCommand = new DelegateCommand(async () => await ExecuteUpdateStatementTransactionsCommand());
 
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
-            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await ExecuteRefreshCommand());
-            _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(UpdateTransactionStatus);
-            _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(UpdateSplitTransactionStatus);
-            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(ExecuteRefreshTransactionCommand);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(RefreshTransaction);
+            _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await FullRefresh());
+            _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(RefreshTransactionStatus);
+            _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(RefreshSplitTransactionStatus);
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(RefreshTransaction);
 
-            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(async a => await RefreshSummary(a));
-            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(async a => await RefreshSummary(a));
-            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(async a => await RefreshSummary(a));
-            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(async a => await RefreshSummary(a));
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary(t.Account));
-            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary(t.Account));
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
+
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary());
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary());
+
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -217,7 +220,7 @@ namespace BudgetBadger.Forms.Accounts
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -245,78 +248,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 parameters.Add(PageParameter.Account, Account);
             }
-        }
-
-        public async Task ExecuteRefreshCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                if (Account.IsActive)
-                {
-                    if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
-                    {
-                        var payeesResult = await _payeeLogic.Value.GetPayeesForSelectionAsync();
-                        if (payeesResult.Success
-                            && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
-                        {
-                            Payees.ReplaceRange(payeesResult.Data);
-                        }
-                        else if (!payeesResult.Success)
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                        }
-
-                        var envelopesResult = await _envelopeLogic.Value.GetEnvelopesForSelectionAsync();
-                        if (envelopesResult.Success
-                            && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
-                        {
-                            Envelopes.ReplaceRange(envelopesResult.Data);
-                        }
-                        else if (!envelopesResult.Success)
-                        {
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), envelopesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                        }
-                    }
-
-                    var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
-                    if (result.Success
-                        && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
-                    {
-                        Transactions.ReplaceRange(result.Data);
-                        StatementTransactions.ReplaceRange(result.Data);
-                    }
-                    else if (!result.Success)
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                    }
-
-                    await RefreshSummary();
-                }
-
-                await ExecuteUpdateStatementTransactionsCommand();
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public void ExecuteRefreshTransactionCommand(Transaction transaction)
-        {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            if (transaction != null && transaction.IsActive)
-            {
-                transactions.Add(transaction);
-            }
-
-            Transactions.ReplaceRange(transactions);
         }
 
         public async Task ExecuteUpdateStatementTransactionsCommand()
@@ -451,17 +382,73 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        async Task RefreshSummary(Account account = null)
+        public async Task FullRefresh()
         {
-            if (account != null && account.Id != Account.Id)
+            if (IsBusy)
             {
                 return;
             }
 
+            IsBusy = true;
+
+            try
+            {
+                if (Account.IsActive)
+                {
+                    if (Device.Idiom == TargetIdiom.Desktop || Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        var payeesResult = await _payeeLogic.Value.GetPayeesForSelectionAsync();
+                        if (payeesResult.Success
+                            && (Payees == null || !Payees.SequenceEqual(payeesResult.Data)))
+                        {
+                            Payees.ReplaceRange(payeesResult.Data);
+                        }
+                        else if (!payeesResult.Success)
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        }
+
+                        var envelopesResult = await _envelopeLogic.Value.GetEnvelopesForSelectionAsync();
+                        if (envelopesResult.Success
+                            && (Envelopes == null || !Envelopes.SequenceEqual(envelopesResult.Data)))
+                        {
+                            Envelopes.ReplaceRange(envelopesResult.Data);
+                        }
+                        else if (!envelopesResult.Success)
+                        {
+                            await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), envelopesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        }
+                    }
+
+                    var result = await _transactionLogic.Value.GetAccountTransactionsAsync(Account);
+                    if (result.Success
+                        && (Transactions == null || !Transactions.SequenceEqual(result.Data)))
+                    {
+                        Transactions.ReplaceRange(result.Data);
+                        StatementTransactions.ReplaceRange(result.Data);
+                    }
+                    else if (!result.Success)
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                    }
+
+                    await RefreshSummary();
+                }
+
+                await ExecuteUpdateStatementTransactionsCommand();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task RefreshSummary()
+        {
             var accountResult = await _accountLogic.Value.GetAccountAsync(Account.Id);
             if (accountResult.Success)
             {
-                Account = accountResult.Data;
+                RefreshAccount(accountResult.Data);
             }
             else
             {
@@ -473,7 +460,62 @@ namespace BudgetBadger.Forms.Accounts
             RaisePropertyChanged(nameof(Difference));
         }
 
-        void UpdateTransactionStatus(Transaction transaction)
+        public void RefreshTransaction(Transaction transaction)
+        {
+            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
+            if (transaction != null && transaction.IsActive)
+            {
+                transactions.Add(transaction);
+            }
+
+            Transactions.ReplaceRange(transactions);
+        }
+
+        public void RefreshPayee(Payee payee)
+        {
+            foreach (var transaction in Transactions.Where(t => t.Payee.Id == payee.Id))
+            {
+                transaction.Payee = payee;
+            }
+
+            var payees = Payees.Where(p => p.Id != payee.Id).ToList();
+
+            if (payee != null && payee.IsActive)
+            {
+                payees.Add(payee);
+            }
+
+            Payees.ReplaceRange(payees);
+        }
+
+        public void RefreshEnvelope(Envelope envelope)
+        {
+            foreach (var transaction in Transactions.Where(t => t.Envelope.Id == envelope.Id))
+            {
+                transaction.Envelope = envelope;
+            }
+
+            var envelopes = Envelopes.Where(e => e.Id != envelope.Id).ToList();
+
+            if (envelope != null && envelope.IsActive)
+            {
+                envelopes.Add(envelope);
+            }
+
+            Envelopes.ReplaceRange(envelopes);
+        }
+
+        public void RefreshAccount(Account account)
+        {
+            Account = account;
+
+            foreach (var transaction in Transactions.Where(t => t.Account.Id == account.Id))
+            {
+                transaction.Account = account;
+            }
+        }
+
+        public void RefreshTransactionStatus(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.Id == transaction.Id);
             foreach (var tran in transactions)
@@ -482,7 +524,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        void UpdateSplitTransactionStatus(Transaction transaction)
+        public void RefreshSplitTransactionStatus(Transaction transaction)
         {
             var transactions = Transactions.Where(t => t.SplitId == transaction.SplitId);
             foreach (var tran in transactions)
