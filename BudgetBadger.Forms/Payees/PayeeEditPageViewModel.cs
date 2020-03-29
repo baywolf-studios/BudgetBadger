@@ -167,14 +167,7 @@ namespace BudgetBadger.Forms.Payees
 
                         _eventAggregator.GetEvent<PayeeDeletedEvent>().Publish(result.Data);
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -207,14 +200,7 @@ namespace BudgetBadger.Forms.Payees
 
                     _eventAggregator.GetEvent<PayeeHiddenEvent>().Publish(result.Data);
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

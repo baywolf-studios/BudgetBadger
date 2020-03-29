@@ -508,8 +508,10 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> BudgetTransferAsync(BudgetSchedule schedule, Guid fromEnvelopeId, Guid toEnvelopeId, decimal amount)
+        public async Task<Result<IReadOnlyList<Budget>>> BudgetTransferAsync(BudgetSchedule schedule, Guid fromEnvelopeId, Guid toEnvelopeId, decimal amount)
         {
+            var result = new Result<IReadOnlyList<Budget>>();
+
             // getting latest version of schedule and saving it before getting budgets
             // to fix issue with the budget schedule not being in the database
             // when saving the updated budget amounts
@@ -517,14 +519,18 @@ namespace BudgetBadger.Logic
             var scheduleSaveResult = await SaveBudgetScheduleAsync(populatedSchedule);
             if (!scheduleSaveResult.Success)
             {
-                return scheduleSaveResult;
+                result.Success = false;
+                result.Message = scheduleSaveResult.Message;
+                return result;
             }
 
             var budgetsResult = await GetBudgetsAsync(populatedSchedule);
 
             if (!budgetsResult.Success)
             {
-                return budgetsResult;
+                result.Success = false;
+                result.Message = budgetsResult.Message;
+                return result;
             }
 
             var budgets = budgetsResult.Data;
@@ -534,12 +540,12 @@ namespace BudgetBadger.Logic
 
             if (fromBudget == null)
             {
-                return new Result { Success = false, Message = _resourceContainer.GetResourceString("TransferValidFromerror") };
+                return new Result<IReadOnlyList<Budget>> { Success = false, Message = _resourceContainer.GetResourceString("TransferValidFromerror") };
             }
 
             if (toBudget == null)
             {
-                return new Result { Success = false, Message = _resourceContainer.GetResourceString("TransferValidToError") };
+                return new Result<IReadOnlyList<Budget>> { Success = false, Message = _resourceContainer.GetResourceString("TransferValidToError") };
             }
 
             fromBudget.Amount -= amount;
@@ -548,16 +554,27 @@ namespace BudgetBadger.Logic
             var fromResult = await SaveBudgetAsync(fromBudget).ConfigureAwait(false);
             if (!fromResult.Success)
             {
-                return fromResult;
+                result.Success = false;
+                result.Message = fromResult.Message;
+                return result;
             }
 
             var toResult = await SaveBudgetAsync(toBudget).ConfigureAwait(false);
             if (!toResult.Success)
             {
-                return toResult;
+                result.Success = false;
+                result.Message = toResult.Message;
+                return result;
             }
 
-            return new Result { Success = true };
+            result.Success = true;
+            result.Data = new List<Budget>()
+            {
+                fromResult.Data,
+                toResult.Data
+            };
+
+            return result;
         }
 
         public async Task<Result<int>> GetEnvelopesCountAsync()
@@ -679,9 +696,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeleteEnvelopeAsync(Guid id)
+        public async Task<Result<Envelope>> SoftDeleteEnvelopeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Envelope>();
 
             try
             {
@@ -725,6 +742,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelope);
 
                 result.Success = true;
+                result.Data = await GetPopulatedEnvelope(envelope).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -735,9 +753,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> HideEnvelopeAsync(Guid id)
+        public async Task<Result<Envelope>> HideEnvelopeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Envelope>();
 
             try
             {
@@ -769,6 +787,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelope);
 
                 result.Success = true;
+                result.Data = await GetPopulatedEnvelope(envelope).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -779,9 +798,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> UnhideEnvelopeAsync(Guid id)
+        public async Task<Result<Envelope>> UnhideEnvelopeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Envelope>();
 
             try
             {
@@ -813,6 +832,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeAsync(envelope);
 
                 result.Success = true;
+                result.Data = await GetPopulatedEnvelope(envelope).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -951,9 +971,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeleteEnvelopeGroupAsync(Guid id)
+        public async Task<Result<EnvelopeGroup>> SoftDeleteEnvelopeGroupAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<EnvelopeGroup>();
 
             try
             {
@@ -993,6 +1013,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
 
                 result.Success = true;
+                result.Data = envelopeGroup;
             }
             catch (Exception ex)
             {
@@ -1003,9 +1024,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> HideEnvelopeGroupAsync(Guid id)
+        public async Task<Result<EnvelopeGroup>> HideEnvelopeGroupAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<EnvelopeGroup>();
 
             try
             {
@@ -1045,6 +1066,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
 
                 result.Success = true;
+                result.Data = envelopeGroup;
             }
             catch (Exception ex)
             {
@@ -1055,9 +1077,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> UnhideEnvelopeGroupAsync(Guid id)
+        public async Task<Result<EnvelopeGroup>> UnhideEnvelopeGroupAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<EnvelopeGroup>();
 
             try
             {
@@ -1089,6 +1111,7 @@ namespace BudgetBadger.Logic
                 await _envelopeDataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
 
                 result.Success = true;
+                result.Data = envelopeGroup;
             }
             catch (Exception ex)
             {

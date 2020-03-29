@@ -11,6 +11,8 @@ using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -21,6 +23,7 @@ namespace BudgetBadger.Forms.Payees
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IEventAggregator _eventAggregator;
 
         bool _needToSync;
 
@@ -55,13 +58,15 @@ namespace BudgetBadger.Forms.Payees
             INavigationService navigationService,
                                               IPageDialogService dialogService,
 		                                      IEnvelopeLogic envelopeLogic,
-		                                      ISyncFactory syncFactory)
+		                                      ISyncFactory syncFactory,
+                                              IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
             _syncFactory = syncFactory;
+            _eventAggregator = eventAggregator;
 
 			EnvelopeGroup = new EnvelopeGroup();
 
@@ -121,11 +126,9 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.EnvelopeGroup, result.Data }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -163,14 +166,9 @@ namespace BudgetBadger.Forms.Payees
                     {
                         _needToSync = true;
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Publish(result.Data);
+
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -201,14 +199,9 @@ namespace BudgetBadger.Forms.Payees
                 {
                     _needToSync = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    _eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -237,6 +230,8 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    _eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }
