@@ -5,8 +5,10 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -20,6 +22,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand FromEnvelopeSelectedCommand { get; set; }
@@ -61,14 +64,16 @@ namespace BudgetBadger.Forms.Envelopes
             INavigationService navigationService,
                                       IEnvelopeLogic envelopeLogic,
                                       IPageDialogService dialogService,
-                                      ISyncFactory syncFactory)
+                                      ISyncFactory syncFactory,
+                                      IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
-
+            _eventAggregator = eventAggregator;
+            
             _fromEnvelopeRequested = false;
             FromEnvelope = new Envelope();
             ToEnvelope = new Envelope();
@@ -161,6 +166,11 @@ namespace BudgetBadger.Forms.Envelopes
             if (result.Success)
             {
                 _needToSync = true;
+                foreach (var budget in result.Data)
+                {
+                    _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(budget);
+                }
+
                 await _navigationService.GoBackAsync();
             }
             else
