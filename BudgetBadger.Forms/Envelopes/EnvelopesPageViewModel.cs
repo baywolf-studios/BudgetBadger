@@ -17,6 +17,8 @@ using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -28,6 +30,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand NextCommand { get; set; }
         public ICommand PreviousCommand { get; set; }
@@ -99,7 +102,8 @@ namespace BudgetBadger.Forms.Envelopes
                                       Lazy<IEnvelopeLogic> envelopeLogic,
                                       IPageDialogService dialogService,
                                       Lazy<ISyncFactory> syncFactory,
-                                      Lazy<IPurchaseService> purchaseService)
+                                      Lazy<IPurchaseService> purchaseService,
+                                      IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
@@ -107,6 +111,7 @@ namespace BudgetBadger.Forms.Envelopes
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             Schedule = null;
             Budgets = new ObservableList<Budget>();
@@ -335,14 +340,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                var budgetInList = Budgets.FirstOrDefault(b => b.Equals(budget));
-                if (budgetInList != null)
-                {
-                    budgetInList.Id = result.Data.Id;
-                    budgetInList.CreatedDateTime = result.Data.CreatedDateTime;
-                    budgetInList.ModifiedDateTime = result.Data.ModifiedDateTime;
-                }
                 _needToSync = true;
+                _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(result.Data);
                 await RefreshSummary();
             }
             else

@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -24,6 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
+        readonly IEventAggregator _eventAggregator;
 
         bool _needToSync;
 
@@ -74,13 +77,15 @@ namespace BudgetBadger.Forms.Envelopes
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
                                          ISyncFactory syncFactory,
-                                         IResourceContainer resourceContainer)
+                                         IResourceContainer resourceContainer,
+                                         IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
             _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
+            _eventAggregator = eventAggregator;
 
             Budget = new Budget();
 
@@ -193,12 +198,9 @@ namespace BudgetBadger.Forms.Envelopes
 
                     _needToSync = true;
 
-					var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Budget, result.Data },
-                        { PageParameter.Envelope, result.Data.Envelope }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -251,14 +253,9 @@ namespace BudgetBadger.Forms.Envelopes
                     {
                         _needToSync = true;
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Publish(result.Data);
+
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -301,14 +298,9 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     _needToSync = true;
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Publish(result.Data);
+
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -337,6 +329,8 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }

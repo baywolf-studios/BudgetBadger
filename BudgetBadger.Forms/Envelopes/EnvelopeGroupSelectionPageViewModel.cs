@@ -13,6 +13,8 @@ using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -23,6 +25,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -75,13 +78,15 @@ namespace BudgetBadger.Forms.Envelopes
                                            INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic,
-                                           ISyncFactory syncFactory)
+                                           ISyncFactory syncFactory,
+                                           IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
             _syncFactory = syncFactory;
+            _eventAggregator = eventAggregator;
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
@@ -133,13 +138,16 @@ namespace BudgetBadger.Forms.Envelopes
                 {
                     // add some 
                     var montlhyBills = new EnvelopeGroup{ Id = new Guid("{f3d90935-bb10-4cf7-ae4b-fa7ca041a6b1}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupMonthlyBills") };
-                    await _envelopeLogic.SaveEnvelopeGroupAsync(montlhyBills);
+                    var result1 = await _envelopeLogic.SaveEnvelopeGroupAsync(montlhyBills);
+                    _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result1.Data);
 
                     var everydayExpenses = new EnvelopeGroup { Id = new Guid("{ce3bc99c-610b-413c-a06a-5888ef596cf1}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupEverydayExpenses") };
-                    await _envelopeLogic.SaveEnvelopeGroupAsync(everydayExpenses);
+                    var result2 = await _envelopeLogic.SaveEnvelopeGroupAsync(everydayExpenses);
+                    _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result2.Data);
 
                     var savingsGoals = new EnvelopeGroup { Id = new Guid("{0f3e250f-db63-4c5e-8090-f1dca882fb53}"), Description = _resourceContainer.GetResourceString("EnvelopeGroupSavingsGoals") };
-                    await _envelopeLogic.SaveEnvelopeGroupAsync(savingsGoals);
+                    var result3 = await _envelopeLogic.SaveEnvelopeGroupAsync(savingsGoals);
+                    _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result3.Data);
 
                     // show message
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSuggestedEnvelopeGroups"),
@@ -217,6 +225,9 @@ namespace BudgetBadger.Forms.Envelopes
                 if (result.Success)
                 {
                     _needToSync = true;
+
+                    _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
+
                     await _navigationService.GoBackAsync();
                 }
                 else

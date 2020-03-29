@@ -17,6 +17,8 @@ using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -28,6 +30,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -90,7 +93,8 @@ namespace BudgetBadger.Forms.Envelopes
                                    IPageDialogService dialogService,
                                    Lazy<IEnvelopeLogic> envelopeGroupLogic,
                                    Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService)
+                                   Lazy<IPurchaseService> purchaseService,
+                                   IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeGroupLogic = envelopeGroupLogic;
@@ -98,6 +102,7 @@ namespace BudgetBadger.Forms.Envelopes
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
             SelectedEnvelopeGroup = null;
@@ -224,7 +229,7 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 _needToSync = true;
 
-                await ExecuteRefreshEnvelopeGroupCommand(result.Data);
+                _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -239,6 +244,8 @@ namespace BudgetBadger.Forms.Envelopes
             if (result.Success)
             {
                 _needToSync = true;
+
+                _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
             }
             else
             {
