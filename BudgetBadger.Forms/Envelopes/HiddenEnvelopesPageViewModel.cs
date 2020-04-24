@@ -6,9 +6,11 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
@@ -21,10 +23,10 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
-        public ICommand RefreshEnvelopeCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelope((Envelope)env, SearchText); }
 
@@ -66,37 +68,35 @@ namespace BudgetBadger.Forms.Envelopes
         public HiddenEnvelopesPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IEnvelopeLogic envelopeLogic,
-            IPageDialogService dialogService)
+            IPageDialogService dialogService,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
             Envelopes = new ObservableList<Envelope>();
             SelectedEnvelope = null;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            RefreshEnvelopeCommand = new DelegateCommand<Envelope>(async e => await ExecuteRefreshEnvelopeCommand(e));
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
+
+            _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(b => RefreshEnvelope(b.Envelope));
+            _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(RefreshEnvelope);
+            _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(RefreshEnvelope);
+            _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(RefreshEnvelope);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshEnvelopeFromTransaction(t));
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Envelope, out Envelope envelope))
-            {
-                await ExecuteRefreshEnvelopeCommand(envelope);
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshEnvelopeCommand(transaction.Envelope);
-            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -104,7 +104,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelope = null;
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -160,7 +160,7 @@ namespace BudgetBadger.Forms.Envelopes
             Envelopes.ReplaceRange(envelopes);
         }
 
-        public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
+        public async Task RefreshEnvelopeFromTransaction(Transaction transaction)
         {
             if (transaction != null && transaction.Payee != null)
             {
