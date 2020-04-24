@@ -13,6 +13,8 @@ using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -22,6 +24,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -66,18 +69,26 @@ namespace BudgetBadger.Forms.Envelopes
         public HiddenEnvelopeGroupsPageViewModel(IResourceContainer resourceContainer,
                                            INavigationService navigationService,
                                            IPageDialogService dialogService,
-                                           IEnvelopeLogic envelopeLogic)
+                                           IEnvelopeLogic envelopeLogic,
+                                           IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
+            _eventAggregator = eventAggregator;
 
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
 
             SelectedCommand = new DelegateCommand<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
+
+            _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshEnvelopeGroupFromTransaction(t));
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -90,7 +101,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -98,7 +109,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelopeGroup = null;
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -141,6 +152,30 @@ namespace BudgetBadger.Forms.Envelopes
             };
 
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+        }
+
+        public void RefreshEnvelopeGroup(EnvelopeGroup envelopeGroup)
+        {
+            var envelopeGroups = EnvelopeGroups.Where(a => a.Id != envelopeGroup.Id).ToList();
+
+            if (envelopeGroup != null && envelopeGroup.IsHidden && !envelopeGroup.IsDeleted)
+            {
+                envelopeGroups.Add(envelopeGroup);
+            }
+
+            EnvelopeGroups.ReplaceRange(envelopeGroups);
+        }
+
+        public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Payee != null)
+            {
+                var updatedGroupResult = await _envelopeLogic.GetEnvelopeGroupAsync(transaction.Envelope.Group.Id);
+                if (updatedGroupResult.Success)
+                {
+                    RefreshEnvelopeGroup(updatedGroupResult.Data);
+                }
+            }
         }
     }
 }

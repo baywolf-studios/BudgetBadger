@@ -22,6 +22,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<QuickBudget>>> GetQuickBudgetsAsync(Budget budget);
         Task<Result<IReadOnlyList<Budget>>> BudgetTransferAsync(BudgetSchedule schedule, Guid fromBudgetId, Guid toBudgetId, decimal amount);
 
+        Task<Result<Envelope>> GetEnvelopeAsync(Guid id);
         Task<Result<int>> GetEnvelopesCountAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync();
         Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForReportAsync();
@@ -32,6 +33,7 @@ namespace BudgetBadger.Core.Logic
 
         Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
         Task<Result<int>> GetEnvelopeGroupsCountAsync();
+        Task<Result<EnvelopeGroup>> GetEnvelopeGroupAsync(Guid id);
         Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync();
         Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsForSelectionAsync();
         Task<Result<IReadOnlyList<EnvelopeGroup>>> GetHiddenEnvelopeGroupsAsync();

@@ -596,6 +596,28 @@ namespace BudgetBadger.Logic
             return result;
         }
 
+        public async Task<Result<Envelope>> GetEnvelopeAsync(Guid id)
+        {
+            var result = new Result<Envelope>();
+
+            try
+            {
+                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(id).ConfigureAwait(false);
+
+                var populatedEnvelope = await GetPopulatedEnvelope(envelope).ConfigureAwait(false);
+
+                result.Success = true;
+                result.Data = populatedEnvelope;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
         public async Task<Result<IReadOnlyList<Envelope>>> GetEnvelopesForSelectionAsync()
         {
             var result = new Result<IReadOnlyList<Envelope>>();
@@ -894,6 +916,26 @@ namespace BudgetBadger.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<EnvelopeGroup>> GetEnvelopeGroupAsync(Guid id)
+        {
+                var result = new Result<EnvelopeGroup>();
+
+                try
+                {
+                    var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
+
+                    result.Success = true;
+                    result.Data = envelopeGroup;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                }
+
+                return result;
         }
 
         public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
