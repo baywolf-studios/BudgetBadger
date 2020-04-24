@@ -134,13 +134,6 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteRefreshEnvelopeCommand(Envelope envelope)
-        {
-            var envelopeToRemove = Envelopes.FirstOrDefault(a => a.Id == envelope.Id);
-            Envelopes.Remove(envelopeToRemove);
-            Envelopes.Add(envelope);
-        }
-
         public async Task ExecuteSelectedCommand(Envelope envelope)
         {
             if (envelope == null)
@@ -153,6 +146,30 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.Envelope, envelope }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
+        }
+
+        public void RefreshEnvelope(Envelope envelope)
+        {
+            var envelopes = Envelopes.Where(a => a.Id != envelope.Id).ToList();
+
+            if (envelope != null && envelope.IsHidden && !envelope.IsDeleted)
+            {
+                envelopes.Add(envelope);
+            }
+
+            Envelopes.ReplaceRange(envelopes);
+        }
+
+        public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Payee != null)
+            {
+                var updatedEnvelopeResult = await _envelopeLogic.GetEnvelopeAsync(transaction.Envelope.Id);
+                if (updatedEnvelopeResult.Success)
+                {
+                    RefreshEnvelope(updatedEnvelopeResult.Data);
+                }
+            }
         }
     }
 }
