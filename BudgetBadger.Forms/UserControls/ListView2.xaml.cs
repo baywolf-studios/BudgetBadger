@@ -195,7 +195,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(RefreshCommandProperty, value);
         }
 
-        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(ListView2), defaultBindingMode: BindingMode.OneWay);
+        public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(ListView2), defaultBindingMode: BindingMode.OneWay, propertyChanged: UpdateIsBusy);
         public bool IsBusy
         {
             get => (bool)GetValue(IsBusyProperty);
@@ -350,6 +350,26 @@ namespace BudgetBadger.Forms.UserControls
             if (bindable is ListView2 listView && oldValue != newValue)
             {
                 listView.UpdateHideSearchBar();
+            }
+        }
+
+        private void UpdateIsBusy()
+        {
+            if (!IsBusy)
+            {
+                InternalListView.IsRefreshing = false;
+                activityIndicator.IsVisible = false;
+            }
+            else if (!InternalListView.IsRefreshing)
+            {
+                activityIndicator.IsVisible = true;
+            }
+        }
+        private static void UpdateIsBusy(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                listView.UpdateIsBusy();
             }
         }
 

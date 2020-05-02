@@ -33,11 +33,21 @@
               VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}"
               IsPullToRefreshEnabled="{Binding IsPullToRefreshEnabled}"
               RefreshCommand="{Binding RefreshCommand}"
-              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
               RefreshControlColor="{ext:DynamicResource brand_600}"
               SelectionMode="None"/>
     <ContentView
         x:Name="stickyFooter"
         Grid.Row="3"
-        IsVisible="false"/> 
+        IsVisible="false"/>
+    <StackLayout
+        Grid.Row="0"
+        Grid.RowSpan="4"
+        x:Name="activityIndicator"
+        Orientation="Vertical"
+        Spacing="8"
+        BackgroundColor="Pink"
+        IsVisible="false">
+        <ActivityIndicator VerticalOptions="EndAndExpand" IsRunning="true" Color="{ext:DynamicResource brand_600}" />
+        <Label VerticalOptions="StartAndExpand" HorizontalOptions="Center" Text="{ext:Translate BusyTextLoading}" />
+    </StackLayout>
 </Grid>
