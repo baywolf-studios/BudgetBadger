@@ -288,6 +288,8 @@ namespace BudgetBadger.Forms.Accounts
             }
 
             Accounts.ReplaceRange(accounts);
+
+            RefreshSummary();
         }
 
         public async Task RefreshAccountFromTransaction(Transaction transaction)

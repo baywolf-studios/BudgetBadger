@@ -168,7 +168,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
         {
-            if (transaction != null && transaction.Payee != null)
+            if (transaction != null && transaction.Envelope != null)
             {
                 var updatedGroupResult = await _envelopeLogic.GetEnvelopeGroupAsync(transaction.Envelope.Group.Id);
                 if (updatedGroupResult.Success)
