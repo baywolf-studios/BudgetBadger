@@ -101,10 +101,9 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <Image BackgroundColor="Red" HeightRequest="24" WidthRequest="24" VerticalOptions="Center" HorizontalOptions="Center">
-            <Image.Source>
-                <FontImageSource  x:Name="SearchIcon" Size="24" Glyph="{ext:DynamicResource Key=SearchIcon}" Color="White" FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
-            </Image.Source>
-        </Image>
+        <Label
+            x:Name="SearchIcon"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource SearchIcon}"/>
     </uc:ContentButton>
 </Grid>
