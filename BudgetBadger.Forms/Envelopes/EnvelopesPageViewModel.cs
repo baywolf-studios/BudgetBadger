@@ -117,8 +117,8 @@ namespace BudgetBadger.Forms.Envelopes
             Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            RefreshBudgetCommand = new DelegateCommand<Budget>(async e => await ExecuteRefreshBudgetCommand(e?.Envelope));
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
+            RefreshBudgetCommand = new DelegateCommand<Budget>(async b => await RefreshBudget(b));
             NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
             PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
             SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
@@ -127,6 +127,12 @@ namespace BudgetBadger.Forms.Envelopes
             AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
             TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
             SaveCommand = new DelegateCommand<Budget>(async e => await ExecuteSaveCommand(e));
+
+            _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(async b => await RefreshBudget(b));
+            _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
+            _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
+            _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -136,7 +142,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (_hardRefresh)
             {
-                await ExecuteRefreshCommand();
+                await FullRefresh();
                 _hardRefresh = false;
             }
         }
@@ -164,20 +170,10 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.TryGetValue(PageParameter.Budget, out Budget budget))
-            {
-                await ExecuteRefreshBudgetCommand(budget.Envelope);
-            }
-
-            if (parameters.TryGetValue(PageParameter.Transaction, out Transaction transaction))
-            {
-                await ExecuteRefreshBudgetCommand(transaction.Envelope);
-            }
-
             await RefreshSummary();
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -229,26 +225,13 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteRefreshBudgetCommand(Envelope envelope)
-        {
-            var budgets = Budgets.Where(a => a.Envelope.Id != envelope.Id).ToList();
-
-            var updatedBudget = await _envelopeLogic.Value.GetBudgetAsync(envelope.Id, Schedule);
-            if (updatedBudget.Success && updatedBudget.Data.Envelope.IsActive)
-            {
-                budgets.Add(updatedBudget.Data);
-            }
-
-            Budgets.ReplaceRange(budgets);
-        }
-
         public async Task ExecuteNextCommand()
         {
             var scheduleResult = await _envelopeLogic.Value.GetNextBudgetSchedule(Schedule);
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
-                await ExecuteRefreshCommand();
+                await FullRefresh();
             }
             else
             {
@@ -262,7 +245,7 @@ namespace BudgetBadger.Forms.Envelopes
             if (scheduleResult.Success)
             {
                 Schedule = scheduleResult.Data;
-                await ExecuteRefreshCommand();
+                await FullRefresh();
             }
             else
             {
@@ -381,6 +364,62 @@ namespace BudgetBadger.Forms.Envelopes
             RaisePropertyChanged(nameof(Schedule.Income));
             RaisePropertyChanged(nameof(Schedule.ToBudget));
             RaisePropertyChanged(nameof(Schedule.Overspend));
+        }
+
+        public async Task RefreshBudget(Budget budget)
+        {
+            var budgets = Budgets.Where(a => a.Envelope.Id != budget.Envelope.Id).ToList();
+
+            if (budget != null && budget.Envelope != null && budget.Envelope.IsActive)
+            {
+                budgets.Add(budget);
+            }
+
+            Budgets.ReplaceRange(budgets);
+
+            await RefreshSummary();
+        }
+
+        public async Task RefreshBudgetFromEnvelope(Envelope envelope)
+        {
+            if (envelope != null && envelope.IsActive)
+            {
+                var schedule = Budgets.FirstOrDefault()?.Schedule;
+                if (schedule == null)
+                {
+                    var currentScheduleResult = await _envelopeLogic.Value.GetCurrentBudgetScheduleAsync();
+                    if (currentScheduleResult.Success)
+                    {
+                        schedule = currentScheduleResult.Data;
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), currentScheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                        return;
+                    }
+                }
+                var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(envelope.Id, schedule);
+                if (budgetResult.Success)
+                {
+                    RefreshBudget(budgetResult.Data);
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
+            }
+        }
+
+        public async Task RefreshBudgetFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Payee != null)
+            {
+                var updatedEnvelopeResult = await _envelopeLogic.Value.GetEnvelopeAsync(transaction.Envelope.Id);
+                if (updatedEnvelopeResult.Success)
+                {
+                    await RefreshBudgetFromEnvelope(updatedEnvelopeResult.Data);
+                }
+            }
         }
     }
 }
