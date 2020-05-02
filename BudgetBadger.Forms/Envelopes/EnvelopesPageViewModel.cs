@@ -401,7 +401,7 @@ namespace BudgetBadger.Forms.Envelopes
                 var budgetResult = await _envelopeLogic.Value.GetBudgetAsync(envelope.Id, schedule);
                 if (budgetResult.Success)
                 {
-                    RefreshBudget(budgetResult.Data);
+                    await RefreshBudget(budgetResult.Data);
                 }
                 else
                 {
