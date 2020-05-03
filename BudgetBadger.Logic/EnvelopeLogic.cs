@@ -211,8 +211,6 @@ namespace BudgetBadger.Logic
 
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
 
-                budgetsToReturn.Sort();
-
                 result.Success = true;
                 result.Data = budgetsToReturn;
             }

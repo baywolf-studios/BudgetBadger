@@ -1295,6 +1295,12 @@ namespace BudgetBadger.Language {
             }
         }
         
+        public static string TransactionDeleteInactiveError {
+            get {
+                return ResourceManager.GetString("TransactionDeleteInactiveError", resourceCulture);
+            }
+        }
+        
         public static string TransactionEditPageTitle {
             get {
                 return ResourceManager.GetString("TransactionEditPageTitle", resourceCulture);
@@ -1946,6 +1952,18 @@ namespace BudgetBadger.Language {
         public static string AccountUnhideSystemError {
             get {
                 return ResourceManager.GetString("AccountUnhideSystemError", resourceCulture);
+            }
+        }
+        
+        public static string AssestsLabel {
+            get {
+                return ResourceManager.GetString("AssestsLabel", resourceCulture);
+            }
+        }
+        
+        public static string DebtsLabel {
+            get {
+                return ResourceManager.GetString("DebtsLabel", resourceCulture);
             }
         }
     }

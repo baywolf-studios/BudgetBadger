@@ -68,7 +68,7 @@
                                 Text="{Binding Assests, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
                                 Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                                Text="Assests"/>
+                                Text="{ext:Translate AssestsLabel}"/>
                         </StackLayout>
                         <StackLayout
                             Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
@@ -80,7 +80,7 @@
                                 Text="{Binding Debts, Converter={StaticResource CurrencyConverter}}"/>
                             <Label
                                 Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
-                                Text="Debts"/>
+                                Text="{ext:Translate DebtsLabel}"/>
                         </StackLayout>
                     </FlexLayout>
                     <uc:Accordion
@@ -112,7 +112,7 @@
                                         Text="{Binding Assests, Converter={StaticResource CurrencyConverter}}"/>
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                        Text="Assests"/>
+                                        Text="{ext:Translate AssestsLabel}"/>
                                 </StackLayout>
                                 <StackLayout
                                     Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
@@ -124,7 +124,7 @@
                                         Text="{Binding Debts, Converter={StaticResource CurrencyConverter}}"/>
                                     <Label
                                         Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
-                                        Text="Debts"/>
+                                        Text="{ext:Translate DebtsLabel}"/>
                                 </StackLayout>
                             </FlexLayout>
                             </StackLayout>
