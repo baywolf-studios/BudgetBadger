@@ -118,7 +118,7 @@ namespace BudgetBadger.Forms.UserControls
             {
                 dropdown.PickerControl.SelectedIndex = intNewVal;
 
-                if (intNewVal >= 0)
+                if (intNewVal >= 0 && dropdown.ItemsSource != null)
                 {
                     dropdown.SelectedItem = dropdown.ItemsSource[intNewVal];
                 }
