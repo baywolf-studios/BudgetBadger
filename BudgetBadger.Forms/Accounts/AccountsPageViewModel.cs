@@ -164,7 +164,8 @@ namespace BudgetBadger.Forms.Accounts
         // this gets hit before the OnActivated
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            RefreshSummary();
+            if (!_fullRefresh)
+                RefreshSummary();
         }
 
         public async Task ExecuteSelectedCommand(Account account)
