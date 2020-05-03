@@ -181,7 +181,8 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            await RefreshSummary();
+            if (!_fullRefresh)
+                await RefreshSummary();
         }
 
         public async Task FullRefresh()

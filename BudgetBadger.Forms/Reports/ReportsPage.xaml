@@ -56,9 +56,8 @@
                 SelectedCommand="{Binding ReportCommand}"
                 SelectedItem="{Binding SelectedReport}"
                 SeparatorVisibility="None"
-                IsPullToRefreshEnabled="True"
-                IsBusy="{Binding IsBusy}"
-                RefreshCommand="{Binding RefreshCommand}">
+                IsPullToRefreshEnabled="False"
+                IsBusy="{Binding IsBusy}">
                 <uc:ListView2.Triggers>
                     <DataTrigger
                         Binding="{Binding HasPro}"
