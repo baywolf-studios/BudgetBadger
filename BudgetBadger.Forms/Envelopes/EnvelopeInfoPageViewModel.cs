@@ -148,7 +148,7 @@ namespace BudgetBadger.Forms.Envelopes
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             TransferCommand = new DelegateCommand(async () => await ExecuteTransferCommand());
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
-            RefreshTransactionCommand = new DelegateCommand<Transaction>(ExecuteRefreshTransactionCommand);
+            RefreshTransactionCommand = new DelegateCommand<Transaction>(RefreshTransaction);
 
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(RefreshTransaction);
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await FullRefresh());
@@ -332,17 +332,6 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 IsBusy = false;
             }
-        }
-
-        public void ExecuteRefreshTransactionCommand(Transaction transaction)
-        {
-            var transactions = Transactions.Where(t => t.Id != transaction.Id).ToList();
-            if (transaction != null && transaction.IsActive)
-            {
-                transactions.Add(transaction);
-            }
-
-            Transactions.ReplaceRange(transactions);
         }
 
         public async Task ExecuteTogglePostedTransaction(Transaction transaction)
