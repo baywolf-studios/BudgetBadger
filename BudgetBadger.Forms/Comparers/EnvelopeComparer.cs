@@ -20,7 +20,7 @@ namespace BudgetBadger.Forms.Comparers
 
             if (x is Envelope envelope)
             {
-            return envelope.CompareTo(y);
+                return envelope.CompareTo(y);
             }
 
             return 0;

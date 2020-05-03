@@ -133,6 +133,7 @@ namespace BudgetBadger.Forms.Envelopes
             _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
             _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -333,7 +334,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        async Task RefreshSummary()
+        public async Task RefreshSummary()
         {
             Result<BudgetSchedule> scheduleResult;
             if (Schedule != null)

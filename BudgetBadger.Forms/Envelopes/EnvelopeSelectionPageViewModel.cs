@@ -17,7 +17,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -88,12 +88,6 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-
-            _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(RefreshBudget);
-            _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
-            _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
-            _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -111,14 +105,6 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
             _transferEnvelopeSelection = parameters.GetValue<bool>(PageParameter.TransferEnvelopeSelection);
 
             await FullRefresh();
@@ -192,60 +178,6 @@ namespace BudgetBadger.Forms.Envelopes
 		public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeEditPage);
-        }
-
-        public void RefreshBudget(Budget budget)
-        {
-            var budgets = Budgets.Where(a => a.Envelope.Id != budget.Envelope.Id).ToList();
-
-            if (budget != null && budget.Envelope != null && budget.Envelope.IsActive)
-            {
-                budgets.Add(budget);
-            }
-
-            Budgets.ReplaceRange(budgets);
-        }
-
-        public async Task RefreshBudgetFromEnvelope(Envelope envelope)
-        {
-            if (envelope != null && envelope.IsActive)
-            {
-                var schedule = Budgets.FirstOrDefault()?.Schedule;
-                if (schedule == null)
-                {
-                    var currentScheduleResult = await _envelopeLogic.GetCurrentBudgetScheduleAsync();
-                    if (currentScheduleResult.Success)
-                    {
-                        schedule = currentScheduleResult.Data;
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), currentScheduleResult.Message, _resourceContainer.GetResourceString("AlertOk"));
-                        return;
-                    }
-                }
-                var budgetResult = await _envelopeLogic.GetBudgetAsync(envelope.Id, schedule);
-                if (budgetResult.Success)
-                {
-                    RefreshBudget(budgetResult.Data);
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRefreshUnsuccessful"), budgetResult.Message, _resourceContainer.GetResourceString("AlertOk"));
-                }
-            }
-        }
-
-        public async Task RefreshBudgetFromTransaction(Transaction transaction)
-        {
-            if (transaction != null && transaction.Payee != null)
-            {
-                var updatedEnvelopeResult = await _envelopeLogic.GetEnvelopeAsync(transaction.Envelope.Id);
-                if (updatedEnvelopeResult.Success)
-                {
-                    await RefreshBudgetFromEnvelope(updatedEnvelopeResult.Data);
-                }
-            }
         }
     }
 }

@@ -125,6 +125,7 @@ namespace BudgetBadger.Forms.Accounts
             _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public override async void OnActivated()

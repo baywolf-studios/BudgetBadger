@@ -18,13 +18,12 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class AccountSelectionPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
@@ -84,14 +83,8 @@ namespace BudgetBadger.Forms.Accounts
             SelectedAccount = null;
 
             SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-
-            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(ExecuteRefreshAccountCommand);
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -107,11 +100,8 @@ namespace BudgetBadger.Forms.Accounts
                 await _navigationService.GoBackAsync(parameters);
                 return;
             }
-        }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public async Task ExecuteSelectedCommand(Account account)
@@ -129,7 +119,7 @@ namespace BudgetBadger.Forms.Accounts
             await _navigationService.GoBackAsync(parameters);
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -159,33 +149,9 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void ExecuteRefreshAccountCommand(Account account)
-        {
-            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
-
-            if (account != null && account.IsActive)
-            {
-                accounts.Add(account);
-            }
-
-            Accounts.ReplaceRange(accounts);
-        }
-
         public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.AccountEditPage);
-        }
-
-        async Task RefreshAccountFromTransaction(Transaction transaction)
-        {
-            if (transaction != null && transaction.Account != null)
-            {
-                var updatedAccountResult = await _accountLogic.GetAccountAsync(transaction.Account.Id);
-                if (updatedAccountResult.Success)
-                {
-                    ExecuteRefreshAccountCommand(updatedAccountResult.Data);
-                }
-            }
         }
     }
 }

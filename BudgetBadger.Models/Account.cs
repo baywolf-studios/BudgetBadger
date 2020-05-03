@@ -169,6 +169,7 @@ namespace BudgetBadger.Models
             return Id == p.Id
                 && CreatedDateTime == p.CreatedDateTime
                 && ModifiedDateTime == p.ModifiedDateTime
+                && HiddenDateTime == p.HiddenDateTime
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
