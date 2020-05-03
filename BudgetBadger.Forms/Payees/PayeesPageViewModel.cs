@@ -123,6 +123,7 @@ namespace BudgetBadger.Forms.Payees
             _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
         public override async void OnActivated()

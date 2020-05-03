@@ -44,8 +44,8 @@
         Grid.RowSpan="4"
         x:Name="activityIndicator"
         Orientation="Vertical"
-        Spacing="8"
-        BackgroundColor="Pink"
+        Spacing="{ext:DynamicResource size_75}"
+        BackgroundColor="{ext:DynamicResource gray_50}"
         IsVisible="false">
         <ActivityIndicator VerticalOptions="EndAndExpand" IsRunning="true" Color="{ext:DynamicResource brand_600}" />
         <Label VerticalOptions="StartAndExpand" HorizontalOptions="Center" Text="{ext:Translate BusyTextLoading}" />

@@ -17,7 +17,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class PayeeSelectionPageViewModel : BindableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
@@ -88,12 +88,6 @@ namespace BudgetBadger.Forms.Payees
             RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
             AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-
-            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
-            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);
-            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
-            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -109,10 +103,7 @@ namespace BudgetBadger.Forms.Payees
                 await _navigationService.GoBackAsync(parameters);
                 return;
             }
-        }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
             await FullRefresh();
         }
 
@@ -188,30 +179,6 @@ namespace BudgetBadger.Forms.Payees
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        public void RefreshPayee(Payee payee)
-        {
-            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
-
-            if (payee != null && payee.IsActive)
-            {
-                payees.Add(payee);
-            }
-
-            Payees.ReplaceRange(payees);
-        }
-
-        public async Task RefreshPayeeFromTransaction(Transaction transaction)
-        {
-            if (transaction != null && transaction.Payee != null)
-            {
-                var updatedPayeeResult = await _payeeLogic.GetPayeeAsync(transaction.Payee.Id);
-                if (updatedPayeeResult.Success)
-                {
-                    RefreshPayee(updatedPayeeResult.Data);
-                }
             }
         }
     }

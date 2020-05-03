@@ -95,12 +95,6 @@ namespace BudgetBadger.Forms.Envelopes
             RefreshCommand = new DelegateCommand(async () => await FullRefresh());
             SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
 			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-
-            _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(RefreshEnvelopeGroup);
-            _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(RefreshEnvelopeGroup);
-            _eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Subscribe(RefreshEnvelopeGroup);
-            _eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Subscribe(RefreshEnvelopeGroup);
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshEnvelopeGroupFromTransaction(t));
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -129,10 +123,7 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
+            await FullRefresh();
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -161,8 +152,6 @@ namespace BudgetBadger.Forms.Envelopes
                         _resourceContainer.GetResourceString("AlertOk"));
                 }
             }
-
-            await FullRefresh();
         }
 
         public async Task FullRefresh()
@@ -250,30 +239,6 @@ namespace BudgetBadger.Forms.Envelopes
 		public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage);
-        }
-
-        public void RefreshEnvelopeGroup(EnvelopeGroup envelopeGroup)
-        {
-            var envelopeGroups = EnvelopeGroups.Where(a => a.Id != envelopeGroup.Id).ToList();
-
-            if (envelopeGroup != null && envelopeGroup.IsActive)
-            {
-                envelopeGroups.Add(envelopeGroup);
-            }
-
-            EnvelopeGroups.ReplaceRange(envelopeGroups);
-        }
-
-        public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
-        {
-            if (transaction != null && transaction.Envelope != null)
-            {
-                var updatedGroupResult = await _envelopeLogic.GetEnvelopeGroupAsync(transaction.Envelope.Group.Id);
-                if (updatedGroupResult.Success)
-                {
-                    RefreshEnvelopeGroup(updatedGroupResult.Data);
-                }
-            }
         }
     }
 }

@@ -18,7 +18,6 @@ namespace BudgetBadger.Forms.Comparers
                 return Compare(osourceX, osourceY);
             }
 
-
             if (x is Account account)
             {
                 return account.CompareTo(y);

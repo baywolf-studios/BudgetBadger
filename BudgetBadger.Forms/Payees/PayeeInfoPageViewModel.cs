@@ -155,15 +155,23 @@ namespace BudgetBadger.Forms.Payees
             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(RefreshSplitTransactionStatus);
             _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(RefreshTransaction);
 
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary());
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary());
+
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
 
-            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshSummary());
-            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshSummary());
-
             _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
+
+            _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(b => RefreshEnvelope(b?.Envelope));
+            _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(RefreshEnvelope);
+            _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(RefreshEnvelope);
+            _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(RefreshEnvelope);
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
