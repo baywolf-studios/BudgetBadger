@@ -20,7 +20,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class SplitTransactionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class SplitTransactionPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly INavigationService _navigationService;

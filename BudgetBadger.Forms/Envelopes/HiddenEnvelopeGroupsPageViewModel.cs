@@ -18,7 +18,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class HiddenEnvelopeGroupsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class HiddenEnvelopeGroupsPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
@@ -93,14 +93,6 @@ namespace BudgetBadger.Forms.Envelopes
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
-        {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await FullRefresh();
         }

@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeTrendsReportsPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;

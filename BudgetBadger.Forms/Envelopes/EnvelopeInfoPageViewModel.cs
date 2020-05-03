@@ -22,7 +22,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeInfoPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -112,6 +112,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _fullRefresh = true;
+
         public EnvelopeInfoPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                          INavigationService navigationService,
                                          Lazy<ITransactionLogic> transactionLogic,
@@ -175,8 +177,17 @@ namespace BudgetBadger.Forms.Envelopes
             _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(async e => await RefreshEnvelope(e));
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (_fullRefresh)
+            {
+                await FullRefresh();
+                _fullRefresh = false;
+            }
+            else
+            {
+                await RefreshSummary();
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -211,8 +222,6 @@ namespace BudgetBadger.Forms.Envelopes
 
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
-
-            await FullRefresh();
         }
 
         public async Task ExecuteEditCommand()
@@ -326,7 +335,7 @@ namespace BudgetBadger.Forms.Envelopes
                 }
                 SelectedTransaction = null;
 
-                NoTransactions = (Transactions?.Count ?? 0) == 0;
+                await RefreshSummary();
             }
             finally
             {
@@ -465,6 +474,8 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), scheduleResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+
+            NoTransactions = (Transactions?.Count ?? 0) == 0;
 
             RaisePropertyChanged(nameof(Budget));
             RaisePropertyChanged(nameof(Budget.Schedule));

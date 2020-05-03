@@ -57,7 +57,11 @@ namespace BudgetBadger.Forms.Envelopes
         public BudgetSchedule Schedule
         {
             get => _schedule;
-            set => SetProperty(ref _schedule, value);
+            set
+            {
+                _schedule = value;
+                RaisePropertyChanged(nameof(Schedule));
+            }
         }
 
         ObservableList<Budget> _budgets;
@@ -95,7 +99,7 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _hasPro, value);
         }
 
-        bool _hardRefresh = true;
+        bool _fullRefresh = true;
 
         public EnvelopesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                       INavigationService navigationService,
@@ -132,6 +136,12 @@ namespace BudgetBadger.Forms.Envelopes
             _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
             _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
             _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));
+
+            _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(async b => await FullRefresh());
+            _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(async b => await FullRefresh());
+            _eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Subscribe(async b => await FullRefresh());
+            _eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Subscribe(async b => await FullRefresh());
+
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
             _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshBudgetFromTransaction(t));
         }
@@ -141,10 +151,10 @@ namespace BudgetBadger.Forms.Envelopes
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            if (_hardRefresh)
+            if (_fullRefresh)
             {
                 await FullRefresh();
-                _hardRefresh = false;
+                _fullRefresh = false;
             }
         }
 
@@ -218,7 +228,6 @@ namespace BudgetBadger.Forms.Envelopes
                 }
 
                 await RefreshSummary();
-                NoEnvelopes = (Budgets?.Count ?? 0) == 0;
             }
             finally
             {
@@ -263,7 +272,6 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (budget.Envelope.IsGenericHiddenEnvelope)
             {
-                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenEnvelopesPage);
             }
             else
@@ -359,6 +367,8 @@ namespace BudgetBadger.Forms.Envelopes
             {
                 budget.Schedule = Schedule;
             }
+
+            NoEnvelopes = (Budgets?.Count ?? 0) == 0;
 
             RaisePropertyChanged(nameof(Schedule));
             RaisePropertyChanged(nameof(Schedule.Past));

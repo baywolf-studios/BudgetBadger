@@ -19,7 +19,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;

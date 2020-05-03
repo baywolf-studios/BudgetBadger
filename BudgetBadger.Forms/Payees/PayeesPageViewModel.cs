@@ -88,7 +88,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _hasPro, value);
         }
 
-        bool _hardRefresh = true;
+        bool _fullRefresh = true;
 
         public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                    INavigationService navigationService,
@@ -131,10 +131,10 @@ namespace BudgetBadger.Forms.Payees
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            if (_hardRefresh)
+            if (_fullRefresh)
             {
                 await FullRefresh();
-                _hardRefresh = false;
+                _fullRefresh = false;
             }
         }
 

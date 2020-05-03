@@ -21,7 +21,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class PayeeInfoPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -112,6 +112,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _fullRefresh = true;
+
         public PayeeInfoPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                       INavigationService navigationService,
                                       Lazy<ITransactionLogic> transactionLogic,
@@ -174,8 +176,17 @@ namespace BudgetBadger.Forms.Payees
             _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(RefreshEnvelope);
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (_fullRefresh)
+            {
+                await FullRefresh();
+                _fullRefresh = false;
+            }
+            else
+            {
+                await RefreshSummary();
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -193,11 +204,6 @@ namespace BudgetBadger.Forms.Payees
                     _needToSync = false;
                 }
             }
-
-            if (!parameters.TryGetValue(PageParameter.Payee, out Payee _))
-            {
-                parameters.Add(PageParameter.Payee, Payee);
-            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -210,8 +216,6 @@ namespace BudgetBadger.Forms.Payees
 
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
-
-            await FullRefresh();
         }
 
         public async Task ExecuteEditCommand()
@@ -391,7 +395,7 @@ namespace BudgetBadger.Forms.Payees
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
 
-                    NoTransactions = (Transactions?.Count ?? 0) == 0;
+                    await RefreshSummary();
                 }
             }
             finally
@@ -411,6 +415,10 @@ namespace BudgetBadger.Forms.Payees
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), payeeResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+
+            NoTransactions = (Transactions?.Count ?? 0) == 0;
+
+            RaisePropertyChanged();
         }
 
         public void RefreshTransaction(Transaction transaction)

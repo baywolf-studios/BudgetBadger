@@ -16,7 +16,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class TransactionEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;

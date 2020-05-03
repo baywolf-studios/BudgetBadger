@@ -7,30 +7,26 @@ using System.Threading;
 
 namespace BudgetBadger.Models
 {
-    public class BaseModel : INotifyPropertyChanged, IChangeTracking
+    public class ObservableBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
         {
-            if (EqualityComparer<T>.Default.Equals(property, value))
+            if (Object.ReferenceEquals(property, value))
             {
                 return false;
             }
 
             property = value;
-            OnPropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
 
             return true;
         }
 
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        protected void RaisePropertyChanged([CallerMemberName]string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
-        public bool IsChanged { get; set; }
-
-        public void AcceptChanges() => IsChanged = false;
     }
 }

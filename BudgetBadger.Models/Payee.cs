@@ -5,7 +5,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Payee : BaseModel, IDeepCopy<Payee>, IEquatable<Payee>, IComparable, IComparable<Payee>
+    public class Payee : ObservableBase, IDeepCopy<Payee>, IEquatable<Payee>, IComparable, IComparable<Payee>
     {
         Guid id;
         public Guid Id
@@ -18,8 +18,8 @@ namespace BudgetBadger.Models
         public string Description
         {
             get => description;
-            set { SetProperty(ref description, value); OnPropertyChanged(nameof(Group)); }
-            }
+            set { SetProperty(ref description, value); RaisePropertyChanged(nameof(Group)); }
+        }
 
         string notes;
         public string Notes
@@ -33,14 +33,14 @@ namespace BudgetBadger.Models
         public bool IsAccount
         {
             get => isAccount;
-            set { SetProperty(ref isAccount, value); OnPropertyChanged(nameof(Group)); }
+            set { SetProperty(ref isAccount, value); RaisePropertyChanged(nameof(Group)); }
         }
 
         DateTime? createdDateTime;
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -56,14 +56,14 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref deletedDateTime, value); RaisePropertyChanged(nameof(IsDeleted)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         DateTime? hiddenDateTime;
         public DateTime? HiddenDateTime
         {
             get => hiddenDateTime;
-            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref hiddenDateTime, value); RaisePropertyChanged(nameof(IsHidden)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }
@@ -110,7 +110,7 @@ namespace BudgetBadger.Models
 
         public Payee DeepCopy()
         {
-            
+
             var payee = (Payee)this.MemberwiseClone();
 
             payee.Description = this.Description == null ? null : String.Copy(this.Description);
