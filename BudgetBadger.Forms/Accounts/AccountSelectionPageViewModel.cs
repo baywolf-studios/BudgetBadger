@@ -70,14 +70,12 @@ namespace BudgetBadger.Forms.Accounts
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
-            IAccountLogic accountLogic,
-            IEventAggregator eventAggregator)
+            IAccountLogic accountLogic)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _eventAggregator = eventAggregator;
 
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
