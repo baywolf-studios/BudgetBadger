@@ -18,7 +18,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeGroupSelectionPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;

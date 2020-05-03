@@ -16,7 +16,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeEditPageViewModel : BindableBase, INavigationAware, IInitialize
+    public class PayeeEditPageViewModel : ObservableBase, INavigationAware, IInitialize
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;

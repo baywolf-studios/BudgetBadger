@@ -17,7 +17,7 @@ using SkiaSharp;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopesSpendingReportPageViewModel : BindableBase, INavigationAware
+    public class EnvelopesSpendingReportPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;

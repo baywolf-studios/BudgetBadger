@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Transaction : BaseModel, IDeepCopy<Transaction>, IEquatable<Transaction>, IComparable, IComparable<Transaction>
+    public class Transaction : ObservableBase, IDeepCopy<Transaction>, IEquatable<Transaction>, IComparable, IComparable<Transaction>
     {
         Guid id;
         public Guid Id
@@ -19,23 +19,23 @@ namespace BudgetBadger.Models
         public decimal? Amount
         {
             get => amount;
-            set { SetProperty(ref amount, value); OnPropertyChanged(nameof(Outflow)); OnPropertyChanged(nameof(Inflow)); }
+            set { SetProperty(ref amount, value); RaisePropertyChanged(nameof(Outflow)); RaisePropertyChanged(nameof(Inflow)); }
         }
 
         public decimal? Outflow
         {
-			get
-			{
-				if (Amount.HasValue && Amount <= 0)
-				{
-					return Math.Abs(Amount.Value);               
-				}
-				else
-				{
-					return null;
-				}
-			}
-			set
+            get
+            {
+                if (Amount.HasValue && Amount <= 0)
+                {
+                    return Math.Abs(Amount.Value);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
             {
                 if (value.HasValue || !(Amount.HasValue && Amount > 0))
                 {
@@ -46,23 +46,23 @@ namespace BudgetBadger.Models
 
         public decimal? Inflow
         {
-			get
-			{
-				if (Amount.HasValue && Amount >= 0)
-				{
-					return Amount.Value;
-				}
-				else
-				{
-					return null;
-				}
-			}
-			set
+            get
             {
-				if (value.HasValue || !(Amount.HasValue && Amount < 0))
-				{
-					Amount = value;
-				}
+                if (Amount.HasValue && Amount >= 0)
+                {
+                    return Amount.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (value.HasValue || !(Amount.HasValue && Amount < 0))
+                {
+                    Amount = value;
+                }
             }
         }
 
@@ -73,9 +73,9 @@ namespace BudgetBadger.Models
             set
             {
                 SetProperty(ref posted, value);
-                OnPropertyChanged(nameof(Pending));
-                OnPropertyChanged(nameof(Reconciled));
-                OnPropertyChanged(nameof(TransactionStatus));
+                RaisePropertyChanged(nameof(Pending));
+                RaisePropertyChanged(nameof(Reconciled));
+                RaisePropertyChanged(nameof(TransactionStatus));
             }
         }
 
@@ -88,10 +88,10 @@ namespace BudgetBadger.Models
             set
             {
                 SetProperty(ref reconciledDateTime, value);
-                OnPropertyChanged(nameof(Pending));
-                OnPropertyChanged(nameof(Posted));
-                OnPropertyChanged(nameof(Reconciled));
-                OnPropertyChanged(nameof(TransactionStatus));
+                RaisePropertyChanged(nameof(Pending));
+                RaisePropertyChanged(nameof(Posted));
+                RaisePropertyChanged(nameof(Reconciled));
+                RaisePropertyChanged(nameof(TransactionStatus));
             }
         }
 
@@ -125,7 +125,7 @@ namespace BudgetBadger.Models
         public Payee Payee
         {
             get => payee;
-            set { SetProperty(ref payee, value); OnPropertyChanged(nameof(IsTransfer)); }
+            set { SetProperty(ref payee, value); RaisePropertyChanged(nameof(IsTransfer)); }
         }
 
         Envelope envelope;
@@ -139,7 +139,7 @@ namespace BudgetBadger.Models
         public Guid? SplitId
         {
             get => splitId;
-            set { SetProperty(ref splitId, value); OnPropertyChanged(nameof(IsSplit)); }
+            set { SetProperty(ref splitId, value); RaisePropertyChanged(nameof(IsSplit)); }
         }
 
         public bool IsCombined
@@ -172,7 +172,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -188,7 +188,7 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref deletedDateTime, value); RaisePropertyChanged(nameof(IsDeleted)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }

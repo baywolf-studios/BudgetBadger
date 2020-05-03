@@ -18,7 +18,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountSelectionPageViewModel : BindableBase, INavigationAware
+    public class AccountSelectionPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;

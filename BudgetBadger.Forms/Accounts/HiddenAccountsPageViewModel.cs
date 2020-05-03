@@ -18,7 +18,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Accounts
 {
-	public class HiddenAccountsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+	public class HiddenAccountsPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;
@@ -97,13 +97,9 @@ namespace BudgetBadger.Forms.Accounts
             SelectedAccount = null;
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public async void OnNavigatedTo(INavigationParameters parameters)
         {
             await FullRefresh();
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
-        {
         }
 
         public async Task ExecuteSelectedCommand(Account account)

@@ -15,7 +15,7 @@ using Prism.Services;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeTransferPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeTransferPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;

@@ -90,7 +90,7 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _hasPro, value);
         }
 
-        bool _hardRefresh = true;
+        bool _fullRefresh = true;
 
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
@@ -133,10 +133,10 @@ namespace BudgetBadger.Forms.Accounts
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            if (_hardRefresh)
+            if (_fullRefresh)
             {
                 await FullRefresh();
-                _hardRefresh = false;
+                _fullRefresh = false;
             }
         }
 
@@ -176,7 +176,6 @@ namespace BudgetBadger.Forms.Accounts
 
             if (account.IsGenericHiddenAccount)
             {
-                _hardRefresh = true;
                 await _navigationService.NavigateAsync(PageName.HiddenAccountsPage);
             }
             else
@@ -262,9 +261,8 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
-
+                
                 RefreshSummary();
-                NoAccounts = (Accounts?.Count ?? 0) == 0;
             }
             finally
             {
@@ -274,6 +272,8 @@ namespace BudgetBadger.Forms.Accounts
 
         public void RefreshSummary()
         {
+            NoAccounts = (Accounts?.Count ?? 0) == 0;
+
             RaisePropertyChanged(nameof(NetWorth));
             RaisePropertyChanged(nameof(Assests));
             RaisePropertyChanged(nameof(Debts));

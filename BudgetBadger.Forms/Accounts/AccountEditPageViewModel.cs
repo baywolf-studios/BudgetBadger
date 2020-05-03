@@ -20,7 +20,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class AccountEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;

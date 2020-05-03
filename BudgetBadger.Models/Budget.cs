@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Budget : BaseModel, IDeepCopy<Budget>, IEquatable<Budget>, IComparable, IComparable<Budget>
+    public class Budget : ObservableBase, IDeepCopy<Budget>, IEquatable<Budget>, IComparable, IComparable<Budget>
     {
         Guid id;
         public Guid Id
@@ -66,7 +66,7 @@ namespace BudgetBadger.Models
             {
                 if (SetProperty(ref ignoreOverspend, value))
                 {
-                    OnPropertyChanged(nameof(HandleOverspend));
+                    RaisePropertyChanged(nameof(HandleOverspend));
                 }
                 if (value == false && Envelope != null && Envelope.IgnoreOverspend != false)
                 {
@@ -79,7 +79,7 @@ namespace BudgetBadger.Models
         public decimal? Amount
         {
             get => amount;
-            set { SetProperty(ref amount, value); OnPropertyChanged(nameof(Remaining)); }
+            set { SetProperty(ref amount, value); RaisePropertyChanged(nameof(Remaining)); }
         }
 
         //calculated, not stored
@@ -87,7 +87,7 @@ namespace BudgetBadger.Models
         public decimal PastAmount
         {
             get => pastAmount;
-            set { SetProperty(ref pastAmount, value); OnPropertyChanged(nameof(Remaining)); OnPropertyChanged(nameof(Past)); }
+            set { SetProperty(ref pastAmount, value); RaisePropertyChanged(nameof(Remaining)); RaisePropertyChanged(nameof(Past)); }
         }
 
         //calculated, not stored
@@ -95,7 +95,7 @@ namespace BudgetBadger.Models
         public decimal Activity
         {
             get => activity;
-            set { SetProperty(ref activity, value); OnPropertyChanged(nameof(Remaining)); }
+            set { SetProperty(ref activity, value); RaisePropertyChanged(nameof(Remaining)); }
         }
 
         //calculated, not stored
@@ -103,7 +103,7 @@ namespace BudgetBadger.Models
         public decimal PastActivity
         {
             get => pastActivity;
-            set { SetProperty(ref pastActivity, value); OnPropertyChanged(nameof(Remaining)); OnPropertyChanged(nameof(Past)); }
+            set { SetProperty(ref pastActivity, value); RaisePropertyChanged(nameof(Remaining)); RaisePropertyChanged(nameof(Past)); }
         }
 
         public decimal Past { get => PastAmount + PastActivity; }
@@ -114,7 +114,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }

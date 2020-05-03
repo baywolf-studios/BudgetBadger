@@ -2,7 +2,7 @@
 
 namespace BudgetBadger.Models
 {
-    public class QuickBudget : BaseModel
+    public class QuickBudget : ObservableBase
     {
         string description;
         public string Description

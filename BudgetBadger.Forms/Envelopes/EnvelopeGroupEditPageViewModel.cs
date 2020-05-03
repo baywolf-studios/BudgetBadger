@@ -16,7 +16,7 @@ using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class EnvelopeGroupEditPageViewModel : BindableBase, INavigationAware, IInitialize
+    public class EnvelopeGroupEditPageViewModel : ObservableBase, INavigationAware, IInitialize
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;

@@ -20,7 +20,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountReconcilePageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class AccountReconcilePageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
@@ -150,6 +150,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _fullRefresh = true;
+
         public AccountReconcilePageViewModel(Lazy<IResourceContainer> resourceContainer,
                                              INavigationService navigationService,
                                              Lazy<ITransactionLogic> transactionLogic,
@@ -227,13 +229,19 @@ namespace BudgetBadger.Forms.Accounts
 
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
-
-            await FullRefresh();
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            await RefreshSummary();
+            if (_fullRefresh)
+            {
+                await FullRefresh();
+                _fullRefresh = false;
+            }
+            else
+            {
+                await RefreshSummary();
+            }
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)
@@ -250,11 +258,6 @@ namespace BudgetBadger.Forms.Accounts
                     await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
                     _needToSync = false;
                 }
-            }
-
-            if (!parameters.TryGetValue(PageParameter.Account, out Account _))
-            {
-                parameters.Add(PageParameter.Account, Account);
             }
         }
 
@@ -440,10 +443,10 @@ namespace BudgetBadger.Forms.Accounts
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
 
-                    await RefreshSummary();
+                    
                 }
 
-                await ExecuteUpdateStatementTransactionsCommand();
+                await RefreshSummary();
             }
             finally
             {
@@ -462,6 +465,8 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+
+            await ExecuteUpdateStatementTransactionsCommand();
 
             RaisePropertyChanged(nameof(StatementMode));
             RaisePropertyChanged(nameof(PostedTotal));

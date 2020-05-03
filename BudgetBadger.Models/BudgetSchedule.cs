@@ -5,7 +5,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class BudgetSchedule : BaseModel, IDeepCopy<BudgetSchedule>, IEquatable<BudgetSchedule>
+    public class BudgetSchedule : ObservableBase, IDeepCopy<BudgetSchedule>, IEquatable<BudgetSchedule>
     {
         Guid id;
         public Guid Id
@@ -41,7 +41,7 @@ namespace BudgetBadger.Models
         public decimal Past
         {
             get => past;
-            set { SetProperty(ref past, value); OnPropertyChanged(nameof(Balance)); }
+            set { SetProperty(ref past, value); RaisePropertyChanged(nameof(Balance)); }
         }
 
         //calculated
@@ -49,7 +49,7 @@ namespace BudgetBadger.Models
         public decimal Income
         {
             get => income;
-            set { SetProperty(ref income, value); OnPropertyChanged(nameof(ToBudget)); OnPropertyChanged(nameof(Balance)); }
+            set { SetProperty(ref income, value); RaisePropertyChanged(nameof(ToBudget)); RaisePropertyChanged(nameof(Balance)); }
         }
 
         //calculated 
@@ -57,7 +57,7 @@ namespace BudgetBadger.Models
         public decimal Budgeted
         {
             get => budgeted;
-            set { SetProperty(ref budgeted, value); OnPropertyChanged(nameof(ToBudget)); OnPropertyChanged(nameof(Balance)); }
+            set { SetProperty(ref budgeted, value); RaisePropertyChanged(nameof(ToBudget)); RaisePropertyChanged(nameof(Balance)); }
         }
 
         public decimal ToBudget { get => Income - Budgeted; }
@@ -67,7 +67,7 @@ namespace BudgetBadger.Models
         public decimal Overspend
         {
             get => overspend;
-            set { SetProperty(ref overspend, value); OnPropertyChanged(nameof(Balance)); }
+            set { SetProperty(ref overspend, value); RaisePropertyChanged(nameof(Balance)); }
         }
 
         public decimal Balance { get => Past + ToBudget - Overspend; }
@@ -76,7 +76,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
