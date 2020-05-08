@@ -163,13 +163,17 @@
                         Date="{Binding StatementDate}"
                         Label="{ext:Translate AccountReconcileStatementDateLabel}">
                         <uc:DatePicker.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding UpdateStatementTransactionsCommand}" EventName="DateSelected" />
+                            <b:EventToCommandBehavior Command="{Binding RefreshSummaryCommand}" EventName="DateSelected" />
                         </uc:DatePicker.Behaviors>
                     </uc:DatePicker>
                     <uc:CurrencyCalculatorEntry
                         Grid.Row="1"
                         Label="{ext:Translate AccountReconcileStatementBalanceLabel}"
-                        Number="{Binding StatementAmount}" />
+                        Number="{Binding StatementAmount}">
+                        <uc:CurrencyCalculatorEntry.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding RefreshSummaryCommand}" EventName="Completed"/>
+                        </uc:CurrencyCalculatorEntry.Behaviors>
+                    </uc:CurrencyCalculatorEntry>
                 </Grid>
             </ScrollView>
             <uc:EmptyState
