@@ -35,6 +35,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshSummaryCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
         public ICommand ToggleReconcileModeCommand { get; set; }
         public ICommand TogglePostedTransactionCommand { get; set; }
@@ -42,7 +43,6 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand TransactionSelectedCommand { get; set; }
         public ICommand SaveTransactionCommand { get; set; }
         public ICommand RefreshTransactionCommand { get; set; }
-        public ICommand UpdateStatementTransactionsCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
         bool _needToSync;
@@ -186,13 +186,13 @@ namespace BudgetBadger.Forms.Accounts
 
             ReconcileCommand = new DelegateCommand(async () => await ExecuteReconcileCommand());
             RefreshCommand = new DelegateCommand(async () => await FullRefresh());
+            RefreshSummaryCommand = new DelegateCommand(async () => await RefreshSummary());
             ToggleReconcileModeCommand = new DelegateCommand(async () => await ExecuteToggleReconcileModeCommand());
             TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
             DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
             TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
             SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
             RefreshTransactionCommand = new DelegateCommand<Transaction>(RefreshTransaction);
-            UpdateStatementTransactionsCommand = new DelegateCommand(async () => await ExecuteUpdateStatementTransactionsCommand());
 
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(RefreshTransaction);
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await FullRefresh());
@@ -261,16 +261,6 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteUpdateStatementTransactionsCommand()
-        {
-            var temp = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
-            StatementTransactions.ReplaceRange(temp);
-
-            await RefreshSummary();
-
-            NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
-        }
-
         public async Task ExecuteReconcileCommand()
         {
             var reconcileResult = await _accountLogic.Value.ReconcileAccount(Account.Id, StatementDate, StatementAmount);
@@ -289,6 +279,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteToggleReconcileModeCommand()
         {
+            if (ReconcileMode)
+            {
+                UpdateStatementTransactions();
+            }
             ReconcileMode = !ReconcileMode;
             await RefreshSummary();
         }
@@ -446,6 +440,7 @@ namespace BudgetBadger.Forms.Accounts
                     
                 }
 
+                UpdateStatementTransactions();
                 await RefreshSummary();
             }
             finally
@@ -465,8 +460,6 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
-
-            await ExecuteUpdateStatementTransactionsCommand();
 
             RaisePropertyChanged(nameof(StatementMode));
             RaisePropertyChanged(nameof(PostedTotal));
@@ -544,6 +537,12 @@ namespace BudgetBadger.Forms.Accounts
             {
                 tran.Posted = transaction.Posted;
             }
+        }
+
+        void UpdateStatementTransactions()
+        {
+            var temp = Transactions.Where(t => !t.Reconciled && t.ServiceDate <= StatementDate).ToList();
+            StatementTransactions.ReplaceRange(temp);
         }
     }
 }
