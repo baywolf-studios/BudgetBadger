@@ -10,8 +10,6 @@ namespace BudgetBadger.Forms.Style
         {
             get
             {
-                Console.WriteLine(Key);
-
                 Application.Current.Resources.TryGetValue(Key, out object resource);
 
                 if (resource is OnIdiom<double> onIdiom)
@@ -21,8 +19,7 @@ namespace BudgetBadger.Forms.Style
 
                 if (resource == null)
                 {
-                    Console.WriteLine("Resource {0} not found", Key);
-                    //throw new Exception();
+                    throw new Exception();
                 }
 
                 return resource;

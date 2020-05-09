@@ -279,7 +279,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task ExecuteToggleReconcileModeCommand()
         {
-            if (ReconcileMode)
+            if (!ReconcileMode)
             {
                 UpdateStatementTransactions();
             }
@@ -460,6 +460,8 @@ namespace BudgetBadger.Forms.Accounts
             {
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), accountResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
+
+            NoTransactions = (StatementTransactions?.Count ?? 0) == 0;
 
             RaisePropertyChanged(nameof(StatementMode));
             RaisePropertyChanged(nameof(PostedTotal));
