@@ -46,7 +46,7 @@
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
     <CreatePackage>true</CreatePackage>
-    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
@@ -61,6 +61,7 @@
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
     <HybridAOT>true</HybridAOT>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
+    <CodeSignProvision>Automatic</CodeSignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
