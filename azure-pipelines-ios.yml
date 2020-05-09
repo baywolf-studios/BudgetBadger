@@ -35,7 +35,7 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'distribution.p12'
+    certSecureFile: 'ios_distribution_cert.p12'
     certPwd: '$(distribution_cert_password)'
     keychain: 'temp'
 
