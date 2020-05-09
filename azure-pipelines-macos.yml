@@ -35,7 +35,13 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'distribution.p12'
+    certSecureFile: 'mac_distribution_cert.p12'
+    certPwd: '$(distribution_cert_password)'
+    keychain: 'temp'
+
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'mac_installer_cert.p12'
     certPwd: '$(distribution_cert_password)'
     keychain: 'temp'
 
