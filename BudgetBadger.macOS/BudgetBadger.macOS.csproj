@@ -36,7 +36,6 @@
     </XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <AOTMode>None</AOTMode>
-    <CodeSignProvision>Automatic</CodeSignProvision>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -47,7 +46,7 @@
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
     <CreatePackage>true</CreatePackage>
-    <EnablePackageSigning>true</EnablePackageSigning>
+    <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
