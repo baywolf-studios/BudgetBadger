@@ -15,6 +15,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -25,7 +26,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
 		public ICommand AddCommand { get; set; }
@@ -80,9 +81,9 @@ namespace BudgetBadger.Forms.Accounts
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
-            SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

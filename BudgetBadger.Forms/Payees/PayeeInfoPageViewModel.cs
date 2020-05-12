@@ -34,7 +34,7 @@ namespace BudgetBadger.Forms.Payees
         readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand DeleteTransactionCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -142,14 +142,14 @@ namespace BudgetBadger.Forms.Payees
             Envelopes = new ObservableList<Envelope>();
             SelectedTransaction = null;
 
-            EditCommand = new DelegateCommand(async () => await ExecuteEditCommand());
-            DeleteTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
-            TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
-            SaveTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
-            RefreshTransactionCommand = new DelegateCommand<Transaction>(RefreshTransaction);
+            EditCommand = new Command(async () => await ExecuteEditCommand());
+            DeleteTransactionCommand = new Command<Transaction>(async t => await ExecuteDeleteTransactionCommand(t));
+            TransactionSelectedCommand = new Command<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            TogglePostedTransactionCommand = new Command<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            SaveTransactionCommand = new Command<Transaction>(async t => await ExecuteSaveTransactionCommand(t));
+            RefreshTransactionCommand = new Command<Transaction>(RefreshTransaction);
 
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(RefreshTransaction);
             _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(async () => await FullRefresh());

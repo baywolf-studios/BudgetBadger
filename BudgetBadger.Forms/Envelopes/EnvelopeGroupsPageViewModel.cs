@@ -19,6 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -32,7 +33,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand RefreshEnvelopeGroupCommand { get; set; }
@@ -107,13 +108,13 @@ namespace BudgetBadger.Forms.Envelopes
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
             SelectedEnvelopeGroup = null;
 
-            SelectedCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            RefreshEnvelopeGroupCommand = new DelegateCommand<EnvelopeGroup>(RefreshEnvelopeGroup);
-            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
-            SaveCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
+            SelectedCommand = new Command<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            RefreshEnvelopeGroupCommand = new Command<EnvelopeGroup>(RefreshEnvelopeGroup);
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            SaveCommand = new Command<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
 
             _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(RefreshEnvelopeGroup);
             _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(RefreshEnvelopeGroup);

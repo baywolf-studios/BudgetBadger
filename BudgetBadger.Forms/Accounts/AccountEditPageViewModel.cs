@@ -64,7 +64,7 @@ namespace BudgetBadger.Forms.Accounts
             get => Enum.GetNames(typeof(AccountType)).Select(_resourceContainer.GetResourceString).ToList();
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand HideCommand { get; set; }
         public ICommand UnhideCommand { get; set; }
@@ -86,10 +86,10 @@ namespace BudgetBadger.Forms.Accounts
 
             Account = new Account();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand());
-            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
-            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            HideCommand = new Command(async () => await ExecuteHideCommand());
+            UnhideCommand = new Command(async () => await ExecuteUnhideCommand());
+            SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)

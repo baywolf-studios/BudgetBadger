@@ -14,6 +14,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -25,7 +26,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPageDialogService _dialogService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
@@ -84,10 +85,10 @@ namespace BudgetBadger.Forms.Payees
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
