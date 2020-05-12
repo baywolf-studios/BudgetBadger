@@ -14,6 +14,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using SkiaSharp;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -24,7 +25,7 @@ namespace BudgetBadger.Forms.Reports
         readonly IPageDialogService _dialogService;
         readonly IReportLogic _reportLogic;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
 
@@ -92,8 +93,8 @@ namespace BudgetBadger.Forms.Reports
             _dialogService = dialogService;
             _reportLogic = reportLogic;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new DelegateCommand<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
+            SelectedCommand = new Command<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
 
             Payees = new List<DataPoint<Payee, decimal>>();
 
@@ -130,7 +131,7 @@ namespace BudgetBadger.Forms.Reports
 
             try
             {
-                var payeeEntries = new List<Entry>();
+                var payeeEntries = new List<Microcharts.Entry>();
 
                 await Task.Yield();
                 var payeeReportResult = await _reportLogic.GetPayeesSpendingReport(BeginDate, EndDate);

@@ -19,6 +19,7 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -109,14 +110,14 @@ namespace BudgetBadger.Forms.Payees
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            SaveCommand = new DelegateCommand<Payee>(async p => await ExecuteSaveCommand(p));
-            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            RefreshPayeeCommand = new DelegateCommand<Payee>(RefreshPayee);
+            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SaveCommand = new Command<Payee>(async p => await ExecuteSaveCommand(p));
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<Payee>(async a => await ExecuteEditCommand(a));
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            RefreshPayeeCommand = new Command<Payee>(RefreshPayee);
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);

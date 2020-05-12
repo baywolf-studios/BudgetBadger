@@ -39,8 +39,8 @@ namespace BudgetBadger.Forms.Settings
         public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
         public ICommand SyncCommand { get; set; }
-        public ICommand HelpCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
-        public ICommand EmailCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
+        public ICommand HelpCommand { get => new Command(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
+        public ICommand EmailCommand { get => new Command(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
         public ICommand CurrencySelectedCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
         public ICommand LanguageSelectedCommand { get; set; }
@@ -137,12 +137,12 @@ namespace BudgetBadger.Forms.Settings
             IsBusy = false;
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
-            SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
-            RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
-            PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
-            SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
-            CurrencySelectedCommand = new DelegateCommand(async () => await ExecuteCurrencySelectedCommand());
-            LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
+            SyncToggleCommand = new Command(async () => await ExecuteSyncToggleCommand());
+            RestoreProCommand = new Command(async () => await ExecuteRestoreProCommand());
+            PurchaseProCommand = new Command(async () => await ExecutePurchaseProCommand());
+            SyncCommand = new Command(async () => await ExecuteSyncCommand());
+            CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
+            LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
 
             ResetLocalization();
         }

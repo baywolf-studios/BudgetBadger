@@ -13,6 +13,7 @@ using BudgetBadger.Core.Sync;
 using BudgetBadger.Core.LocalizedResources;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
 {
@@ -55,7 +56,7 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _splitTransactionMode, value);
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
         public ICommand EnvelopeSelectedCommand { get; set; }
@@ -80,13 +81,13 @@ namespace BudgetBadger.Forms.Transactions
 
             Transaction = new Transaction();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
-            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
-            AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
-            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
-            SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
-            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(ExecuteTogglePostedTransaction);
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            PayeeSelectedCommand = new Command(async () => await ExecutePayeeSelectedCommand());
+            EnvelopeSelectedCommand = new Command(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand);
+            AccountSelectedCommand = new Command(async () => await ExecuteAccountSelectedCommand());
+            DeleteCommand = new Command(async () => await ExecuteDeleteCommand());
+            SplitCommand = new Command(async () => await ExecuteSplitCommand());
+            TogglePostedTransactionCommand = new Command<Transaction>(ExecuteTogglePostedTransaction);
         }
 
 		public async Task InitializeAsync(INavigationParameters parameters)
@@ -224,6 +225,10 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteEnvelopeSelectedCommand()
         {
+            if (!Transaction.Envelope.IsSystem)
+            {
+                return;
+            }
             await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage);
         }
 

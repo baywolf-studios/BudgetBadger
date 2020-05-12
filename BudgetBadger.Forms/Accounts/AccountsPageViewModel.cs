@@ -111,14 +111,14 @@ namespace BudgetBadger.Forms.Accounts
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
-            SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
-            ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
-            RefreshAccountCommand = new DelegateCommand<Account>(RefreshAccount);
+            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<Account>(async a => await ExecuteEditCommand(a));
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            SaveCommand = new Command<Account>(async a => await ExecuteSaveCommand(a));
+            ReconcileCommand = new Command<Account>(async a => await ExecuteReconcileCommand(a));
+            RefreshAccountCommand = new Command<Account>(RefreshAccount);
 
             _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);

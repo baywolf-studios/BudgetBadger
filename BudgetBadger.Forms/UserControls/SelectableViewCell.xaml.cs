@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (Parent is Xamarin.Forms.ListView xlistView)
             {
-                if (xlistView.Parent is ListView2 listView)
+                  if (xlistView.Parent is ListView2 listView)
                 {
                     listView.ItemSelected += (sender, e) =>
                     {

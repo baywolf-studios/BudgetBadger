@@ -14,6 +14,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -25,7 +26,7 @@ namespace BudgetBadger.Forms.Payees
         readonly IPageDialogService _dialogService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
@@ -83,8 +84,8 @@ namespace BudgetBadger.Forms.Payees
             Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
+            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);

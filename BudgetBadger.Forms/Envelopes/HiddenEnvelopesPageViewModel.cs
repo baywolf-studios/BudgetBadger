@@ -14,6 +14,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -25,7 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelope((Envelope)env, SearchText); }
@@ -80,8 +81,8 @@ namespace BudgetBadger.Forms.Envelopes
             Envelopes = new ObservableList<Envelope>();
             SelectedEnvelope = null;
 
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            SelectedCommand = new DelegateCommand<Envelope>(async e => await ExecuteSelectedCommand(e));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SelectedCommand = new Command<Envelope>(async e => await ExecuteSelectedCommand(e));
 
             _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(b => RefreshEnvelope(b.Envelope));
             _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(RefreshEnvelope);
