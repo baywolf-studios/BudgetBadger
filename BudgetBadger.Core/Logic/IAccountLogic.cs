@@ -21,5 +21,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount);
 
         bool FilterAccount(Account account, string searchText);
+        bool FilterAccount(Account account, FilterType filterType);
     }
 }

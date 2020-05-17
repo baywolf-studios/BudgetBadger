@@ -152,7 +152,7 @@ namespace BudgetBadger.Forms.Accounts
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            if (account != null && account.IsHidden && !account.IsDeleted)
+            if (account != null && _accountLogic.FilterAccount(account, FilterType.Hidden))
             {
                 accounts.Add(account);
             }

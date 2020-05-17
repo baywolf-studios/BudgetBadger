@@ -1637,7 +1637,7 @@ namespace BudgetBadger.Logic
         Envelope GetGenericDebtEnvelope()
         {
             var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
-            genericDebtEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
+            genericDebtEnvelope.TranslateEnvelope(_resourceContainer);
             genericDebtEnvelope.Group = GetDebtEnvelopeGroup();
             return genericDebtEnvelope;
         }
