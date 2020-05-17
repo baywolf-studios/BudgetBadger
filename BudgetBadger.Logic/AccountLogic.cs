@@ -170,22 +170,19 @@ namespace BudgetBadger.Logic
             try
             {
                 var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
-                var activeAndHiddenAccounts = allAccounts.Where(a => a.IsActive || (a.IsHidden && !a.IsDeleted));
+                var acccounts = allAccounts.Where(a => FilterAccount(a, FilterType.Standard));
 
-                var tasks = activeAndHiddenAccounts.Select(GetPopulatedAccount);
-                var populatedAccounts = (await Task.WhenAll(tasks)).ToList();
+                var tasks = acccounts.Select(GetPopulatedAccount);
+                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
 
-                var accountsToReturn = populatedAccounts.Where(p => p.IsActive).ToList();
-
-                if (populatedAccounts.Any(a => a.IsHidden))
+                if (allAccounts.Any(a => FilterAccount(a, FilterType.Hidden)))
                 {
-                    var hiddenAccounts = populatedAccounts.Where(a => a.IsHidden);
+                    var hiddenAccountTasks = allAccounts.Where(a => FilterAccount(a, FilterType.Hidden)).Select(GetPopulatedAccount);
+                    var hiddenAccounts = await Task.WhenAll(hiddenAccountTasks);
 
                     var genericHiddenAccount = GetGenericHiddenAccount(hiddenAccounts);
                     accountsToReturn.Add(genericHiddenAccount);
                 }
-
-                accountsToReturn.Sort();
 
                 result.Success = true;
                 result.Data = accountsToReturn;
@@ -207,12 +204,11 @@ namespace BudgetBadger.Logic
             {
                 var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
-                var accounts = allAccounts.Where(a => a.IsActive);
+                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Selection));
 
                 var tasks = accounts.Select(GetPopulatedAccount);
 
                 var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-                accountsToReturn.Sort();
 
                 result.Success = true;
                 result.Data = accountsToReturn;
@@ -234,7 +230,7 @@ namespace BudgetBadger.Logic
             { 
                 var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
-                var accounts = allAccounts.Where(a => a.IsHidden && !a.IsDeleted);
+                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Hidden));
 
                 var tasks = accounts.Select(GetPopulatedAccount);
 
@@ -505,6 +501,22 @@ namespace BudgetBadger.Logic
             }
         }
 
+        public bool FilterAccount(Account account, FilterType filterType)
+        {
+            switch (filterType)
+            {
+                case FilterType.Standard:
+                case FilterType.Report:
+                case FilterType.Selection:
+                    return account.IsActive && !account.IsGenericHiddenAccount;
+                case FilterType.Hidden:
+                    return account.IsHidden && !account.IsDeleted && !account.IsGenericHiddenAccount;
+                case FilterType.All:
+                default:
+                    return true;
+            }
+        }
+
         async Task<Account> GetPopulatedAccount(Account account)
         {
             var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
@@ -549,20 +561,7 @@ namespace BudgetBadger.Logic
 
             account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance ?? 0;
 
-            // group
-            if (account.IsHidden)
-            {
-                account.Group = _resourceContainer.GetResourceString("Hidden");
-            }
-            else
-            {
-                account.Group = _resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
-            }
-
-            if (account.IsGenericHiddenAccount)
-            {
-                account.Description = _resourceContainer.GetResourceString(nameof(Constants.GenericHiddenAccount));
-            }
+            account.TranslateAccount(_resourceContainer);
 
             return account;
         }
@@ -592,9 +591,8 @@ namespace BudgetBadger.Logic
         Account GetGenericHiddenAccount(IEnumerable<Account> hiddenAccounts = null)
         {
             var genericHiddenAccount = Constants.GenericHiddenAccount.DeepCopy();
-            
-            genericHiddenAccount.Description = _resourceContainer.GetResourceString("Hidden");
-            genericHiddenAccount.Group = _resourceContainer.GetResourceString("Hidden");
+
+            genericHiddenAccount.TranslateAccount(_resourceContainer);
 
             if (hiddenAccounts != null)
             {

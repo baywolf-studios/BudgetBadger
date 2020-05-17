@@ -20,5 +20,6 @@ namespace BudgetBadger.Core.Logic
         Task<Result<Payee>> UnhidePayeeAsync(Guid id);
 
         bool FilterPayee(Payee payee, string searchText);
+        bool FilterPayee(Payee payee, FilterType filterType);
     }
 }

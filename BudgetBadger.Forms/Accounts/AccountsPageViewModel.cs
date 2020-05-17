@@ -284,7 +284,7 @@ namespace BudgetBadger.Forms.Accounts
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            if (account != null && account.IsActive)
+            if (account != null && _accountLogic.Value.FilterAccount(account, FilterType.Standard))
             {
                 accounts.Add(account);
             }

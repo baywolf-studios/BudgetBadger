@@ -278,7 +278,7 @@ namespace BudgetBadger.Forms.Payees
         {
             var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
-            if (payee != null && payee.IsActive)
+            if (payee != null && _payeeLogic.Value.FilterPayee(payee, FilterType.Standard))
             {
                 payees.Add(payee);
             }
