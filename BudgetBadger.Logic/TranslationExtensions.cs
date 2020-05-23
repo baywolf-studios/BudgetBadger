@@ -79,10 +79,32 @@ namespace BudgetBadger.Logic
 
         public static void TranslateEnvelope(this Envelope envelope, IResourceContainer resourceContainer)
 		{
+            if (envelope.IsGenericHiddenEnvelope)
+            {
+                envelope.Description = resourceContainer.GetResourceString("Hidden");
+            }
+
             if (envelope.IsGenericDebtEnvelope)
             {
                 envelope.Description = resourceContainer.GetResourceString(nameof(Constants.GenericDebtEnvelope));
             }
-		}
+
+            if (envelope.IsIncome)
+            {
+                envelope.Description = resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope));
+            }
+
+            if (envelope.IsBuffer)
+            {
+                envelope.Description = resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope));
+            }
+
+            if (envelope.IsSystem)
+            {
+                envelope.Description = resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope));
+            }
+
+            envelope.Group.TranslateEnvelopeGroup(resourceContainer);
+        }
     }
 }

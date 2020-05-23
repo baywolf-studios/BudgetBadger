@@ -156,7 +156,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var envelopes = Envelopes.Where(a => a.Id != envelope.Id).ToList();
 
-            if (envelope != null && envelope.IsHidden && !envelope.IsDeleted)
+            if (envelope != null && _envelopeLogic.FilterEnvelope(envelope, FilterType.Hidden))
             {
                 envelopes.Add(envelope);
             }
