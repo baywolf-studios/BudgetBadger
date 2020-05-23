@@ -36,8 +36,6 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand ManageGroupsCommand { get => new Command(async () => await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage)); }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroup)env, SearchText); }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -98,21 +96,9 @@ namespace BudgetBadger.Forms.Envelopes
 			AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
             SelectedEnvelopeGroup = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -220,8 +206,6 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();

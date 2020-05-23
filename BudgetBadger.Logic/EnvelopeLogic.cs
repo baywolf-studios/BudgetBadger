@@ -681,7 +681,7 @@ namespace BudgetBadger.Logic
                 var hiddenEnvelopes = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Hidden));
 
                 result.Success = true;
-                result.Data = hiddenEnvelopess;
+                result.Data = hiddenEnvelopes.ToList();
             }
             catch (Exception ex)
             {

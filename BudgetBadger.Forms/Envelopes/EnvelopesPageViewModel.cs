@@ -44,8 +44,6 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SaveCommand { get; set; }
         public Predicate<object> Filter { get => (budget) => _envelopeLogic.Value.FilterBudget((Budget)budget, SearchText); }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -158,21 +156,9 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public override async void OnDeactivated()
+        public override void OnDeactivated()
         {
             SelectedBudget = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -333,7 +319,6 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _needToSync = true;
                 _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(result.Data);
                 await RefreshSummary();
             }

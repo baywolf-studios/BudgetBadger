@@ -43,8 +43,6 @@ namespace BudgetBadger.Forms.Payees
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -139,21 +137,9 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public override async void OnDeactivated()
+        public override void OnDeactivated()
         {
             SelectedPayee = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -193,7 +179,6 @@ namespace BudgetBadger.Forms.Payees
             if (result.Success)
             {
                 _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
-                _needToSync = true;
             }
             else
             {
@@ -213,7 +198,6 @@ namespace BudgetBadger.Forms.Payees
             if (result.Success)
             {
                 _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
-                _needToSync = true;
             }
             else
             {

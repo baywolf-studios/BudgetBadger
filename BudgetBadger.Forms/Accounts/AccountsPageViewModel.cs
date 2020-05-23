@@ -42,8 +42,6 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand ReconcileCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -140,21 +138,9 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public override async void OnDeactivated()
+        public override void OnDeactivated()
         {
             SelectedAccount = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -219,7 +205,6 @@ namespace BudgetBadger.Forms.Accounts
 
             if (result.Success)
             {
-                _needToSync = true;
                 _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
             }
             else

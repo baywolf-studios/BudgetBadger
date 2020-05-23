@@ -26,8 +26,6 @@ namespace BudgetBadger.Forms.Transactions
         readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -153,19 +151,8 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -204,7 +191,6 @@ namespace BudgetBadger.Forms.Transactions
                 {
                     _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
 
-                    _needToSync = true;
                     await _navigationService.GoBackAsync();
                 }
                 else
@@ -258,7 +244,6 @@ namespace BudgetBadger.Forms.Transactions
                 if (result.Success)
                 {
                     _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
-                    _needToSync = true;
 
                     var parameters = new NavigationParameters
                     {

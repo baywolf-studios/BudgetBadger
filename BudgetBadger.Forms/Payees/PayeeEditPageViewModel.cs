@@ -25,8 +25,6 @@ namespace BudgetBadger.Forms.Payees
         readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -85,19 +83,8 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -124,8 +111,6 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
           
                     await _navigationService.GoBackAsync();
@@ -163,8 +148,6 @@ namespace BudgetBadger.Forms.Payees
                     var result = await _payeeLogic.SoftDeletePayeeAsync(Payee.Id);
                     if (result.Success)
                     {
-                        _needToSync = true;
-
                         _eventAggregator.GetEvent<PayeeDeletedEvent>().Publish(result.Data);
 
                         await _navigationService.GoBackAsync();
@@ -196,8 +179,6 @@ namespace BudgetBadger.Forms.Payees
                 var result = await _payeeLogic.HidePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<PayeeHiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
@@ -228,8 +209,6 @@ namespace BudgetBadger.Forms.Payees
                 var result = await _payeeLogic.UnhidePayeeAsync(Payee.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();

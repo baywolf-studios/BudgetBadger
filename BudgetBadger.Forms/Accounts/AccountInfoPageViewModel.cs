@@ -46,8 +46,6 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand RefreshTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (t) => _transactionLogic.Value.FilterTransaction((Transaction)t, SearchText); }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -205,21 +203,9 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
             SelectedTransaction = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async Task ExecuteEditCommand()
@@ -238,8 +224,6 @@ namespace BudgetBadger.Forms.Accounts
             if (result.Success)
             {
                 _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
-
-                _needToSync = true;
             }
             else
             {
@@ -319,7 +303,6 @@ namespace BudgetBadger.Forms.Accounts
                         _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                     else
                         _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
-                    _needToSync = true;
                 }
                 else
                 {
@@ -352,7 +335,6 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     await RefreshSummary();
                     _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
-                    _needToSync = true;
                 }
                 else
                 {
