@@ -508,7 +508,7 @@ namespace BudgetBadger.Logic
                 case FilterType.Standard:
                 case FilterType.Report:
                 case FilterType.Selection:
-                    return account.IsActive && !account.IsGenericHiddenAccount;
+                    return account.IsActive;
                 case FilterType.Hidden:
                     return account.IsHidden && !account.IsDeleted && !account.IsGenericHiddenAccount;
                 case FilterType.All:

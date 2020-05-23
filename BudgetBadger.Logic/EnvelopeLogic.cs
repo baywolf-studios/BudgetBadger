@@ -164,7 +164,7 @@ namespace BudgetBadger.Logic
                     result.Data = budgetToUpsert;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.Success = false;
                 result.Message = ex.Message;
@@ -918,22 +918,22 @@ namespace BudgetBadger.Logic
 
         public async Task<Result<EnvelopeGroup>> GetEnvelopeGroupAsync(Guid id)
         {
-                var result = new Result<EnvelopeGroup>();
+            var result = new Result<EnvelopeGroup>();
 
-                try
-                {
-                    var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
+            try
+            {
+                var envelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
 
-                    result.Success = true;
-                    result.Data = envelopeGroup;
-                }
-                catch (Exception ex)
-                {
-                    result.Success = false;
-                    result.Message = ex.Message;
-                }
+                result.Success = true;
+                result.Data = envelopeGroup;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
 
-                return result;
+            return result;
         }
 
         public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
@@ -943,7 +943,8 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Standard)).ToList();
+                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
 
                 if (envelopeGroups.Any(eg => eg.IsHidden && !eg.IsDeleted && !(eg.IsIncome || eg.IsIncome || eg.IsDebt || eg.IsSystem || eg.IsGenericHiddenEnvelopeGroup)))
                 {
@@ -951,7 +952,6 @@ namespace BudgetBadger.Logic
                     filteredEnvelopeGroups.Add(genericHiddenGroup);
                 }
 
-                filteredEnvelopeGroups.Sort();
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
             }
@@ -971,8 +971,8 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => e.IsActive && !e.IsSystem && !e.IsIncome && !e.IsDebt).ToList();
-                filteredEnvelopeGroups.Sort();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Selection)).ToList();
+                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
             }
@@ -992,13 +992,8 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopeGroups = await _envelopeDataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e =>
-                    e.IsHidden &&
-                    !e.IsDeleted &&
-                    !e.IsSystem &&
-                    !e.IsIncome &&
-                    !e.IsDebt).ToList();
-                filteredEnvelopeGroups.Sort();
+                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Hidden)).ToList();
+                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
                 result.Success = true;
                 result.Data = filteredEnvelopeGroups;
             }
@@ -1133,7 +1128,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideNotHiddenError"));
                 }
 
-                if(envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
+                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideSystemError"));
                 }
@@ -1178,6 +1173,23 @@ namespace BudgetBadger.Logic
             }
         }
 
+        public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, FilterType filterType)
+        {
+            switch (filterType)
+            {
+                case FilterType.Standard:
+                    return envelopeGroup.IsActive && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt;
+                case FilterType.Report:
+                case FilterType.Selection:
+                    return envelopeGroup.IsActive && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt;
+                case FilterType.Hidden:
+                    return envelopeGroup.IsHidden && !envelopeGroup.IsDeleted && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt && !envelopeGroup.IsGenericHiddenEnvelopeGroup;
+                case FilterType.All:
+                default:
+                    return true;
+            }
+        }
+
         public bool FilterEnvelope(Envelope envelope, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -1195,6 +1207,11 @@ namespace BudgetBadger.Logic
             }
         }
 
+        public bool FilterEnvelope(Envelope envelope, FilterType filterType)
+        {
+
+        }
+
         public bool FilterBudget(Budget budget, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -1210,6 +1227,11 @@ namespace BudgetBadger.Logic
             {
                 return false;
             }
+        }
+
+        public bool FilterBudget(Budget budget, FilterType filterType)
+        {
+
         }
 
         protected Budget PopulateBudget(Budget budget,
@@ -1630,7 +1652,7 @@ namespace BudgetBadger.Logic
         EnvelopeGroup GetDebtEnvelopeGroup()
         {
             var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
-            debtEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
+            debtEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
             return debtEnvelopeGroup;
         }
 
@@ -1665,7 +1687,7 @@ namespace BudgetBadger.Logic
         {
             var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
 
-            incomeEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup));
+            incomeEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
 
             return incomeEnvelopeGroup;
         }
@@ -1690,7 +1712,7 @@ namespace BudgetBadger.Logic
         {
             var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
 
-            systemEnvelopeGroup.Description = _resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup));
+            systemEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
 
             return systemEnvelopeGroup;
         }
@@ -1706,7 +1728,7 @@ namespace BudgetBadger.Logic
         EnvelopeGroup GetGenericHiddenEnvelopeGroup()
         {
             var genericHiddenEnvelopeGroup = Constants.GenericHiddenEnvelopeGroup.DeepCopy();
-            genericHiddenEnvelopeGroup.Description = _resourceContainer.GetResourceString("Hidden");
+            genericHiddenEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
             return genericHiddenEnvelopeGroup;
         }
 

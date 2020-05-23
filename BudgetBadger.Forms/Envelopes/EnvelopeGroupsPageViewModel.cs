@@ -261,7 +261,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var envelopeGroups = EnvelopeGroups.Where(a => a.Id != envelopeGroup.Id).ToList();
 
-            if (envelopeGroup != null && envelopeGroup.IsActive)
+            if (envelopeGroup != null && _envelopeGroupLogic.Value.FilterEnvelopeGroup(envelopeGroup, FilterType.Standard))
             {
                 envelopeGroups.Add(envelopeGroup);
             }

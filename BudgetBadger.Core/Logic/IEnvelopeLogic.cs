@@ -42,7 +42,10 @@ namespace BudgetBadger.Core.Logic
         Task<Result<EnvelopeGroup>> UnhideEnvelopeGroupAsync(Guid id);
 
         bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText);
+        bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, FilterType filterType);
         bool FilterEnvelope(Envelope envelope, string searchText);
+        bool FilterEnvelope(Envelope envelope, FilterType filterType);
         bool FilterBudget(Budget budget, string searchText);
+        bool FilterBudget(Budget budget, FilterType filterType);
     }
 }

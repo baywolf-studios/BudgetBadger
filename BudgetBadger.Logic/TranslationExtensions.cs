@@ -54,6 +54,29 @@ namespace BudgetBadger.Logic
             }
         }
 
+        public static void TranslateEnvelopeGroup(this EnvelopeGroup envelopeGroup, IResourceContainer resourceContainer)
+        {
+            if (envelopeGroup.IsGenericHiddenEnvelopeGroup)
+            {
+                envelopeGroup.Description = resourceContainer.GetResourceString("Hidden");
+            }
+
+            if (envelopeGroup.IsSystem)
+            {
+                envelopeGroup.Description = resourceContainer.GetResourceString(nameof(Constants.SystemEnvelopeGroup));
+            }
+
+            if (envelopeGroup.IsIncome)
+            {
+                envelopeGroup.Description = resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelopeGroup));
+            }
+
+            if (envelopeGroup.IsDebt)
+            {
+                envelopeGroup.Description = resourceContainer.GetResourceString(nameof(Constants.DebtEnvelopeGroup));
+            }
+        }
+
         public static void TranslateEnvelope(this Envelope envelope, IResourceContainer resourceContainer)
 		{
             if (envelope.IsGenericDebtEnvelope)
