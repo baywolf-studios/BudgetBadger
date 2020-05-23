@@ -30,7 +30,6 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand ToEnvelopeSelectedCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        bool _needToSync;
         bool _fromEnvelopeRequested;
 
         Envelope _fromEnvelope;
@@ -85,19 +84,8 @@ namespace BudgetBadger.Forms.Envelopes
             ToEnvelopeSelectedCommand = new Command(async () => await ExecuteToEnvelopeSelectedCommand());
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public  void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -166,7 +154,6 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _needToSync = true;
                 foreach (var budget in result.Data)
                 {
                     _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(budget);

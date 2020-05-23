@@ -40,8 +40,6 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand SaveCommand { get; set; }
         public ICommand TransactionSelectedCommand { get; set; }
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -251,21 +249,9 @@ namespace BudgetBadger.Forms.Transactions
             NoTransactions = (Transactions?.Count ?? 0) == 0;
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
             SelectedTransaction = null;
-
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -373,7 +359,6 @@ namespace BudgetBadger.Forms.Transactions
                     }
 
                     _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
-                    _needToSync = true;
                 }
                 finally
                 {
@@ -401,7 +386,6 @@ namespace BudgetBadger.Forms.Transactions
                 if (result.Success)
                 {
                     _eventAggregator.GetEvent<SplitTransactionSavedEvent>().Publish();
-                    _needToSync = true;
 
                     var param = new NavigationParameters
                     {
@@ -468,7 +452,6 @@ namespace BudgetBadger.Forms.Transactions
                             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                         else
                             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
-                        _needToSync = true;
                     }
                     else
                     {

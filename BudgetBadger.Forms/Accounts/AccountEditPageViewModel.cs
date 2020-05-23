@@ -29,8 +29,6 @@ namespace BudgetBadger.Forms.Accounts
         readonly IResourceContainer _resourceContainer;
         readonly IEventAggregator _eventAggregator;
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -92,19 +90,8 @@ namespace BudgetBadger.Forms.Accounts
             SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -146,9 +133,6 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
@@ -187,8 +171,6 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _accountLogic.SoftDeleteAccountAsync(Account.Id);
                     if (result.Success)
                     {
-                        _needToSync = true;
-
                         _eventAggregator.GetEvent<AccountDeletedEvent>().Publish(result.Data);
 
                         await _navigationService.GoBackAsync();
@@ -222,8 +204,6 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await _accountLogic.HideAccountAsync(Account.Id);
 				if (result.Success)
 				{
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<AccountHiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
@@ -255,8 +235,6 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await _accountLogic.UnhideAccountAsync(Account.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<AccountUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();

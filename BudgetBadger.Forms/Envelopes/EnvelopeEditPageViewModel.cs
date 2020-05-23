@@ -28,8 +28,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IResourceContainer _resourceContainer;
         readonly IEventAggregator _eventAggregator;
 
-        bool _needToSync;
-
         bool _isBusy;
         public bool IsBusy
         {
@@ -156,19 +154,8 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -195,9 +182,6 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
@@ -239,8 +223,6 @@ namespace BudgetBadger.Forms.Envelopes
                     var result = await _envelopeLogic.SoftDeleteEnvelopeAsync(Budget.Envelope.Id);
                     if (result.Success)
                     {
-                        _needToSync = true;
-
                         _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Publish(result.Data);
 
                         await _navigationService.GoBackAsync();
@@ -271,8 +253,6 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.HideEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
@@ -303,8 +283,6 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.UnhideEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
-
                     _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
