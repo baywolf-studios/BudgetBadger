@@ -443,7 +443,7 @@ namespace BudgetBadger.Logic
                 transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.GenericDebtEnvelope.Id);
             }
 
-            return new Result<Transaction> { Success = true, Data = transactionToPopulate };
+            return new Result<Transaction> { Success = true, Data = await GetPopulatedTransaction(transactionToPopulate) };
         }
 
 
@@ -467,10 +467,13 @@ namespace BudgetBadger.Logic
             transaction.Payee = await _payeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
             var payeeAccount = await _accountDataAccess.ReadAccountAsync(transaction.Payee.Id).ConfigureAwait(false);
             transaction.Payee.IsAccount = !payeeAccount.IsNew;
+            transaction.Payee.TranslatePayee(_resourceContainer);
 
             transaction.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
+            transaction.Envelope.TranslateEnvelope(_resourceContainer);
 
             transaction.Account = await _accountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
+            transaction.Account.TranslateAccount(_resourceContainer);
 
             return transaction;
         }

@@ -382,7 +382,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var budgets = Budgets.Where(a => a.Envelope.Id != budget.Envelope.Id).ToList();
 
-            if (budget != null && budget.Envelope != null && budget.Envelope.IsActive)
+            if (budget != null && _envelopeLogic.Value.FilterBudget(budget, FilterType.Standard))
             {
                 budgets.Add(budget);
             }

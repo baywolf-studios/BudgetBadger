@@ -180,16 +180,11 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var activeOrHiddenEnvelopes = envelopes.Where(e => (e.IsActive || (e.IsHidden && !e.IsDeleted)) && !e.IsSystem && !e.Group.IsIncome);
+                var budgets = (await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false)).ToList();
 
-                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
-                var activeOrHiddenBudgets = budgets
-                    .Where(b => (b.IsActive || (b.Envelope.IsHidden && !b.Envelope.IsDeleted)) && !b.Envelope.IsSystem && !b.Envelope.Group.IsIncome)
-                    .ToList();
-
-                foreach (var envelope in activeOrHiddenEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+                foreach (var envelope in envelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
-                    activeOrHiddenBudgets.Add(new Budget
+                    budgets.Add(new Budget
                     {
                         Schedule = schedule.DeepCopy(),
                         Envelope = envelope.DeepCopy(),
@@ -198,15 +193,19 @@ namespace BudgetBadger.Logic
                 }
 
                 var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
-                var tasks = activeOrHiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                var budgetsToPopulateTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var budgetsToReturn = budgetsToPopulateTemp.Where(b => b.Envelope.IsActive).ToList();
+                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Standard));
+                var tasks = filteredBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                if (budgetsToPopulateTemp.Any(b => b.Envelope.IsHidden && !(b.Envelope.IsIncome || b.Envelope.IsBuffer || b.Envelope.Group.IsIncome || b.Envelope.IsGenericDebtEnvelope || b.Envelope.Group.IsDebt || b.Envelope.IsSystem || b.Envelope.IsGenericHiddenEnvelope)))
+                var budgetsToReturn = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
+
+                if (budgets.Any(b => FilterBudget(b, FilterType.Hidden)))
                 {
-                    var genericHiddenBudget = GetGenericHiddenBudget(populatedSchedule, budgetsToPopulateTemp.Where(b => b.Envelope.IsHidden));
-                    budgetsToReturn.Add(genericHiddenBudget);
+                    var hiddenBudgets = budgets.Where(b => FilterBudget(b, FilterType.Hidden));
+                    var hiddenTasks = hiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
+                    var populatedHiddenBudgets = (await Task.WhenAll(hiddenTasks).ConfigureAwait(false));
+
+                    budgetsToReturn.Add(GetGenericHiddenBudget(populatedSchedule, populatedHiddenBudgets));
                 }
 
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
@@ -230,14 +229,11 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive);
+                var budgets = (await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false)).ToList();
 
-                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
-                var activeBudgets = budgets.Where(b => !b.Envelope.IsSystem && b.IsActive).ToList();
-
-                foreach (var envelope in activeEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+                foreach (var envelope in envelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
-                    activeBudgets.Add(new Budget
+                    budgets.Add(new Budget
                     {
                         Schedule = schedule.DeepCopy(),
                         Envelope = envelope.DeepCopy(),
@@ -246,17 +242,18 @@ namespace BudgetBadger.Logic
                 }
 
                 var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
-                var tasks = activeBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                var budgetsToReturnTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var budgetsToReturn = budgetsToReturnTemp.ToList();
+                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Selection));
+                var tasks = filteredBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                var debtBudgets = budgetsToReturn.Where(b => b.Envelope.Group.IsDebt).ToList();
-                budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt);
-                var genericDebtBudget = GetGenericDebtBudget(populatedSchedule, debtBudgets);
+                var budgetsToReturn = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
+
+                // debt budget stuff
+                var debtBudgets = budgets.Where(b => b.Envelope.Group.IsDebt);
+                var populatedDebtBudgetTasks = debtBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
+                var populatedDebtBudgets = await Task.WhenAll(populatedDebtBudgetTasks).ConfigureAwait(false);
+                var genericDebtBudget = GetGenericDebtBudget(populatedSchedule, populatedDebtBudgets);
                 budgetsToReturn.Add(genericDebtBudget);
-
-                budgetsToReturn.Sort();
 
                 result.Success = true;
                 result.Data = budgetsToReturn;
@@ -277,14 +274,11 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var hiddenEnvelopes = envelopes.Where(e => !e.Group.IsDebt && !e.Group.IsSystem && !e.Group.IsIncome && e.IsHidden && !e.IsDeleted);
+                var budgets = (await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false)).ToList();
 
-                var budgets = await _envelopeDataAccess.ReadBudgetsFromScheduleAsync(schedule.Id).ConfigureAwait(false);
-                var hiddenBudgets = budgets.Where(b => !b.Envelope.Group.IsIncome && !b.Envelope.Group.IsDebt && !b.Envelope.IsSystem && b.Envelope.IsHidden && !b.Envelope.IsDeleted).ToList();
-
-                foreach (var envelope in hiddenEnvelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
+                foreach (var envelope in envelopes.Where(e => !budgets.Any(b => b.Envelope.Id == e.Id)))
                 {
-                    hiddenBudgets.Add(new Budget
+                    budgets.Add(new Budget
                     {
                         Schedule = schedule.DeepCopy(),
                         Envelope = envelope.DeepCopy(),
@@ -293,12 +287,11 @@ namespace BudgetBadger.Logic
                 }
 
                 var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
-                var tasks = hiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                var budgetsToReturnTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var budgetsToReturn = budgetsToReturnTemp.ToList();
+                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Hidden));
+                var tasks = filteredBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
-                budgetsToReturn.Sort();
+                var budgetsToReturn = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
 
                 result.Success = true;
                 result.Data = budgetsToReturn;
@@ -623,16 +616,13 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var activeEnvelopes = envelopes.Where(e => !e.IsSystem && e.IsActive).ToList();
 
-                activeEnvelopes.RemoveAll(b => b.Group.IsDebt);
-                activeEnvelopes.Add(GetGenericDebtEnvelope());
+                var tasks = envelopes.Select(GetPopulatedEnvelope);
+                var populatedEnvelopes = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var tasks = activeEnvelopes.Select(GetPopulatedEnvelope);
+                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Selection)).ToList();
 
-                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
-                populatedEnvelopes.Sort();
+                envelopesToReturn.Add(GetGenericDebtEnvelope());
 
                 result.Success = true;
                 result.Data = populatedEnvelopes;
@@ -653,27 +643,19 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var envelopesToReturn = envelopes.Where(e => e.IsActive
-                                                      && !e.IsSystem
-                                                      && !e.Group.IsIncome
-                                                      && !e.Group.IsSystem
-                                                      && !e.Group.IsDebt).ToList();
 
-                if (envelopes.Any(envelope => envelope.IsHidden && !envelope.IsDeleted && !(envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)))
+                var tasks = envelopes.Select(GetPopulatedEnvelope);
+                var populatedEnvelopes = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Report)).ToList();
+
+                if (envelopes.Any(p => FilterEnvelope(p, FilterType.Hidden)))
                 {
-                    var genericHiddenENvelope = GetGenericHiddenEnvelope();
-
-                    envelopesToReturn.Add(genericHiddenENvelope);
+                    envelopesToReturn.Add(GetGenericHiddenEnvelope());
                 }
 
-                var tasks = envelopesToReturn.Select(GetPopulatedEnvelope);
-
-                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
-                populatedEnvelopes.Sort();
-
                 result.Success = true;
-                result.Data = populatedEnvelopes;
+                result.Data = envelopesToReturn;
             }
             catch (Exception ex)
             {
@@ -691,21 +673,15 @@ namespace BudgetBadger.Logic
             try
             {
                 var envelopes = await _envelopeDataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var hiddenEnvelopes = envelopes.Where(e =>
-                    !e.Group.IsIncome &&
-                    !e.Group.IsDebt &&
-                    !e.Group.IsSystem &&
-                    e.IsHidden &&
-                    !e.IsDeleted).ToList();
 
-                var tasks = hiddenEnvelopes.Select(GetPopulatedEnvelope);
+                var tasks = envelopes.Select(GetPopulatedEnvelope);
 
-                var populatedEnvelopesTemp = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var populatedEnvelopes = populatedEnvelopesTemp.ToList();
-                populatedEnvelopes.Sort();
+                var populatedEnvelopes= (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
+
+                var hiddenEnvelopes = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Hidden));
 
                 result.Success = true;
-                result.Data = populatedEnvelopes;
+                result.Data = hiddenEnvelopess;
             }
             catch (Exception ex)
             {
@@ -946,10 +922,9 @@ namespace BudgetBadger.Logic
                 var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Standard)).ToList();
                 filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
 
-                if (envelopeGroups.Any(eg => eg.IsHidden && !eg.IsDeleted && !(eg.IsIncome || eg.IsIncome || eg.IsDebt || eg.IsSystem || eg.IsGenericHiddenEnvelopeGroup)))
+                if (envelopeGroups.Any(eg => FilterEnvelopeGroup(eg, FilterType.Hidden)))
                 {
-                    var genericHiddenGroup = GetGenericHiddenEnvelopeGroup();
-                    filteredEnvelopeGroups.Add(genericHiddenGroup);
+                    filteredEnvelopeGroups.Add(GetGenericHiddenEnvelopeGroup());
                 }
 
                 result.Success = true;
@@ -1209,7 +1184,28 @@ namespace BudgetBadger.Logic
 
         public bool FilterEnvelope(Envelope envelope, FilterType filterType)
         {
-
+            switch (filterType)
+            {
+                case FilterType.Standard:
+                    return !envelope.IsSystem && envelope.IsActive;
+                case FilterType.Report:
+                    return envelope.IsActive
+                        && !envelope.IsSystem
+                        && !envelope.Group.IsIncome
+                        && !envelope.Group.IsSystem
+                        && !envelope.Group.IsDebt;
+                case FilterType.Selection:
+                    return !envelope.IsSystem && envelope.IsActive && !envelope.Group.IsDebt;
+                case FilterType.Hidden:
+                    return !envelope.Group.IsIncome &&
+                    !envelope.Group.IsDebt &&
+                    !envelope.Group.IsSystem &&
+                    envelope.IsHidden &&
+                    !envelope.IsDeleted;
+                case FilterType.All:
+                default:
+                    return true;
+            }
         }
 
         public bool FilterBudget(Budget budget, string searchText)
@@ -1220,8 +1216,7 @@ namespace BudgetBadger.Logic
             }
             if (budget != null && budget.Envelope != null)
             {
-                return budget.Envelope.Group.Description.ToLower().Contains(searchText.ToLower())
-                             || budget.Envelope.Description.ToLower().Contains(searchText.ToLower());
+                return FilterEnvelope(budget.Envelope, searchText);
             }
             else
             {
@@ -1231,37 +1226,14 @@ namespace BudgetBadger.Logic
 
         public bool FilterBudget(Budget budget, FilterType filterType)
         {
-
+            return FilterEnvelope(budget.Envelope, filterType);
         }
 
         protected Budget PopulateBudget(Budget budget,
                                         IEnumerable<Transaction> envelopeTransactions,
                                         IEnumerable<Budget> envelopeBudgets)
         {
-            if (budget.Envelope.IsIncome)
-            {
-                budget.Envelope = GetIncomeEnvelope();
-            }
-            else if (budget.Envelope.IsBuffer)
-            {
-                budget.Envelope = GetBufferEnvelope();
-            }
-            else if (budget.Envelope.IsSystem)
-            {
-                budget.Envelope = GetIgnoredEnvelope();
-            }
-            else if (budget.Envelope.IsGenericDebtEnvelope)
-            {
-                budget.Envelope = GetGenericDebtEnvelope();
-            }
-            else if (budget.Envelope.IsGenericHiddenEnvelope)
-            {
-                budget.Envelope = GetGenericHiddenEnvelope();
-            }
-            else if (budget.Envelope.Group.IsDebt)
-            {
-                budget.Envelope.Group = GetDebtEnvelopeGroup();
-            }
+            budget.Envelope = PopulateEnvelope(budget.Envelope);
 
             var activeTransactions = envelopeTransactions.Where(t => t.IsActive);
 
@@ -1283,15 +1255,39 @@ namespace BudgetBadger.Logic
                 budget.IgnoreOverspend = true;
             }
 
+            budget.Envelope.TranslateEnvelope(_resourceContainer);
+
             return budget;
         }
 
         protected Envelope PopulateEnvelope(Envelope envelope)
         {
-            if (envelope.Group.IsDebt)
+            if (envelope.IsIncome)
+            {
+                envelope = GetIncomeEnvelope();
+            }
+            else if (envelope.IsBuffer)
+            {
+                envelope = GetBufferEnvelope();
+            }
+            else if (envelope.IsSystem)
+            {
+                envelope = GetIgnoredEnvelope();
+            }
+            else if (envelope.IsGenericDebtEnvelope)
+            {
+                envelope = GetGenericDebtEnvelope();
+            }
+            else if (envelope.IsGenericHiddenEnvelope)
+            {
+                envelope = GetGenericHiddenEnvelope();
+            }
+            else if (envelope.Group.IsDebt)
             {
                 envelope.Group = GetDebtEnvelopeGroup();
             }
+
+            envelope.TranslateEnvelope(_resourceContainer);
 
             return envelope;
         }
@@ -1659,8 +1655,8 @@ namespace BudgetBadger.Logic
         Envelope GetGenericDebtEnvelope()
         {
             var genericDebtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
-            genericDebtEnvelope.TranslateEnvelope(_resourceContainer);
             genericDebtEnvelope.Group = GetDebtEnvelopeGroup();
+            genericDebtEnvelope.TranslateEnvelope(_resourceContainer);
             return genericDebtEnvelope;
         }
 
@@ -1695,23 +1691,22 @@ namespace BudgetBadger.Logic
         Envelope GetIncomeEnvelope()
         {
             var incomeEnvelope = Constants.IncomeEnvelope.DeepCopy();
-            incomeEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IncomeEnvelope));
             incomeEnvelope.Group = GetIncomeEnvelopeGroup();
+            incomeEnvelope.TranslateEnvelope(_resourceContainer);
             return incomeEnvelope;
         }
 
         Envelope GetBufferEnvelope()
         {
             var bufferEnvelope = Constants.BufferEnvelope.DeepCopy();
-            bufferEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.BufferEnvelope));
             bufferEnvelope.Group = GetIncomeEnvelopeGroup();
+            bufferEnvelope.TranslateEnvelope(_resourceContainer);
             return bufferEnvelope;
         }
 
         EnvelopeGroup GetSystemEnvelopeGroup()
         {
             var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
-
             systemEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
 
             return systemEnvelopeGroup;
@@ -1720,8 +1715,8 @@ namespace BudgetBadger.Logic
         Envelope GetIgnoredEnvelope()
         {
             var ignoredEnvelope = Constants.IgnoredEnvelope.DeepCopy();
-            ignoredEnvelope.Description = _resourceContainer.GetResourceString(nameof(Constants.IgnoredEnvelope));
             ignoredEnvelope.Group = GetSystemEnvelopeGroup();
+            ignoredEnvelope.TranslateEnvelope(_resourceContainer);
             return ignoredEnvelope;
         }
 
@@ -1735,8 +1730,8 @@ namespace BudgetBadger.Logic
         Envelope GetGenericHiddenEnvelope()
         {
             var genericHiddenEnvelope = Constants.GenericHiddenEnvelope.DeepCopy();
-            genericHiddenEnvelope.Description = _resourceContainer.GetResourceString("Hidden");
             genericHiddenEnvelope.Group = GetGenericHiddenEnvelopeGroup();
+            genericHiddenEnvelope.TranslateEnvelope(_resourceContainer);
             return genericHiddenEnvelope;
         }
 
