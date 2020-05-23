@@ -398,7 +398,7 @@ namespace BudgetBadger.Logic
                 case FilterType.Standard:
                 case FilterType.Report:
                 case FilterType.Selection:
-                    return payee.IsActive && !payee.IsGenericHiddenPayee && !payee.IsStartingBalance && !payee.IsAccount;
+                    return payee.IsActive && !payee.IsStartingBalance && !payee.IsAccount;
                 case FilterType.Hidden:
                     return payee.IsHidden && !payee.IsDeleted && !payee.IsGenericHiddenPayee && !payee.IsStartingBalance && !payee.IsAccount;
                 case FilterType.All:
