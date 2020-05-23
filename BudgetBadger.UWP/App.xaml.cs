@@ -1,10 +1,5 @@
 ﻿using Dropbox.Api;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Microsoft.Data.Sqlite;
-using Syncfusion.ListView.XForms.UWP;
-using Syncfusion.SfDataGrid.XForms.UWP;
-using Syncfusion.SfPullToRefresh.XForms.UWP;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,10 +60,6 @@ namespace BudgetBadger.UWP
                 List<Assembly> assembliesToInclude = new List<Assembly>();
 
                 //Now, add all the assemblies your app uses
-                assembliesToInclude.Add(typeof(SfDataGridRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfListViewRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(SfPullToRefreshRenderer).GetTypeInfo().Assembly);
-                assembliesToInclude.Add(typeof(CachedImageRenderer).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(SqliteConnection).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(GZipStream).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(DropboxClient).GetTypeInfo().Assembly);

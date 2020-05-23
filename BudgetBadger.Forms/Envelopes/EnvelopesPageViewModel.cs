@@ -121,16 +121,16 @@ namespace BudgetBadger.Forms.Envelopes
             Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            RefreshBudgetCommand = new DelegateCommand<Budget>(async b => await RefreshBudget(b));
-            NextCommand = new DelegateCommand(async () => await ExecuteNextCommand());
-            PreviousCommand = new DelegateCommand(async () => await ExecutePreviousCommand());
-            SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Budget>(async a => await ExecuteEditCommand(a));
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            TransferCommand = new DelegateCommand<Budget>(async e => await ExecuteTransferCommand(e));
-            SaveCommand = new DelegateCommand<Budget>(async e => await ExecuteSaveCommand(e));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            RefreshBudgetCommand = new Command<Budget>(async b => await RefreshBudget(b));
+            NextCommand = new Command(async () => await ExecuteNextCommand());
+            PreviousCommand = new Command(async () => await ExecutePreviousCommand());
+            SelectedCommand = new Command<Budget>(async b => await ExecuteSelectedCommand(b));
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<Budget>(async a => await ExecuteEditCommand(a));
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            TransferCommand = new Command<Budget>(async e => await ExecuteTransferCommand(e));
+            SaveCommand = new Command<Budget>(async e => await ExecuteSaveCommand(e));
 
             _eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(async b => await RefreshBudget(b));
             _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(async b => await RefreshBudgetFromEnvelope(b));

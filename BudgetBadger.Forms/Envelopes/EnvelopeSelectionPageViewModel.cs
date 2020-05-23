@@ -14,6 +14,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -25,7 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
 		public ICommand AddCommand { get; set; }
@@ -85,9 +86,9 @@ namespace BudgetBadger.Forms.Envelopes
             Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
-			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SelectedCommand = new Command<Budget>(async b => await ExecuteSelectedCommand(b));
+			AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

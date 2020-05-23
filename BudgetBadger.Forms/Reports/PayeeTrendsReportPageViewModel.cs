@@ -24,7 +24,7 @@ namespace BudgetBadger.Forms.Reports
         readonly IReportLogic _reportLogic;
         readonly IPayeeLogic _payeeLogic;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
 
         bool _isBusy;
@@ -111,7 +111,7 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
             _payeeLogic = payeeLogic;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
 
             Payees = new List<Payee>();
 

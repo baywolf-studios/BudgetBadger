@@ -22,7 +22,7 @@ namespace BudgetBadger.Forms.Reports
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
 
         bool _isBusy;
@@ -87,7 +87,7 @@ namespace BudgetBadger.Forms.Reports
             _navigationService = navigationService;
             _reportLogic = reportLogic;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
 
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
