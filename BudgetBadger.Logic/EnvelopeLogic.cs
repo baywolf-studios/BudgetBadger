@@ -1187,11 +1187,6 @@ namespace BudgetBadger.Logic
             switch (filterType)
             {
                 case FilterType.Standard:
-                    return envelope.IsActive
-                        && !envelope.IsSystem
-                        && !envelope.Group.IsIncome
-                        && !envelope.Group.IsSystem
-                        && !envelope.Group.IsDebt;
                 case FilterType.Report:
                     return envelope.IsActive
                         && !envelope.IsSystem
@@ -1199,7 +1194,10 @@ namespace BudgetBadger.Logic
                         && !envelope.Group.IsSystem
                         && !envelope.Group.IsDebt;
                 case FilterType.Selection:
-                    return !envelope.IsSystem && envelope.IsActive && !envelope.Group.IsDebt;
+                    return envelope.IsActive
+                        && !envelope.IsSystem
+                        && envelope.IsActive
+                        && !envelope.Group.IsDebt;
                 case FilterType.Hidden:
                     return !envelope.Group.IsIncome &&
                     !envelope.Group.IsDebt &&
