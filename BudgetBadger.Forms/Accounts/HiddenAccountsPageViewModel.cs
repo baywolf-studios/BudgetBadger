@@ -15,6 +15,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -26,7 +27,7 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
@@ -81,8 +82,8 @@ namespace BudgetBadger.Forms.Accounts
             Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
-            SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
+            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            RefreshCommand = new Command(async () => await FullRefresh());
 
             _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);

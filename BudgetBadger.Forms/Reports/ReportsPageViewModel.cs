@@ -89,9 +89,9 @@ namespace BudgetBadger.Forms.Reports
 
             ResetReports();
 
-            RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
-            PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
-            ReportCommand = new DelegateCommand<object>(async s => await ExecuteReportCommand(s));
+            RestoreProCommand = new Command(async () => await ExecuteRestoreProCommand());
+            PurchaseProCommand = new Command(async () => await ExecutePurchaseProCommand());
+            ReportCommand = new Command<object>(async s => await ExecuteReportCommand(s));
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -220,8 +220,6 @@ namespace BudgetBadger.Forms.Reports
                         await _navigationService.NavigateAsync(PageName.PayeeTrendsReportPage);
                     }
                 }
-
-                ResetReports();
             }
         }
     }

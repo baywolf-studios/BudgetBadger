@@ -48,7 +48,7 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _envelopeGroup, value);
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand SoftDeleteCommand { get; set; }
         public ICommand HideCommand { get; set; }
@@ -70,10 +70,10 @@ namespace BudgetBadger.Forms.Payees
 
 			EnvelopeGroup = new EnvelopeGroup();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand());
-            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand());
-            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
+            HideCommand = new Command(async () => await ExecuteHideCommand());
+            UnhideCommand = new Command(async () => await ExecuteUnhideCommand());
         }
 
         public void Initialize(INavigationParameters parameters)

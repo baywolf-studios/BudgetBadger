@@ -65,7 +65,7 @@ namespace BudgetBadger.Forms.Envelopes
             get => Enum.GetNames(typeof(OverspendingType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand QuickBudgetCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand SoftDeleteCommand { get; set; }
@@ -89,12 +89,12 @@ namespace BudgetBadger.Forms.Envelopes
 
             Budget = new Budget();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
-            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand(), CanExecuteSoftDeleteCommand).ObservesProperty(() => Budget);
-            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand(), CanExecuteHideCommand).ObservesProperty(() => Budget);
-            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
-            QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            GroupSelectedCommand = new Command(async () => await ExecuteGroupSelectedCommand());
+            SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
+            HideCommand = new Command(async () => await ExecuteHideCommand());
+            UnhideCommand = new Command(async () => await ExecuteUnhideCommand());
+            QuickBudgetCommand = new Command(async () => await ExecuteQuickBudgetCommand());
         }
         
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -218,18 +218,6 @@ namespace BudgetBadger.Forms.Envelopes
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupSelectionPage);
         }
 
-        public bool CanExecuteSoftDeleteCommand()
-        {
-            if (Budget != null && Budget.Envelope != null)
-            {
-                return Budget.Envelope.IsHidden;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async Task ExecuteSoftDeleteCommand()
         {
 			if (IsBusy)
@@ -268,19 +256,6 @@ namespace BudgetBadger.Forms.Envelopes
                 }
             }
         }
-
-        public bool CanExecuteHideCommand()
-        {
-            if (Budget != null && Budget.Envelope != null)
-            {
-                return Budget.Envelope.IsActive;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async Task ExecuteHideCommand()
         {
             if (IsBusy)

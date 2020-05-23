@@ -15,6 +15,7 @@ using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -27,12 +28,12 @@ namespace BudgetBadger.Forms.Envelopes
         readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 		public ICommand AddCommand { get; set; }
-        public ICommand ManageGroupsCommand { get => new DelegateCommand(async () => await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage)); }
+        public ICommand ManageGroupsCommand { get => new Command(async () => await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage)); }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroup)env, SearchText); }
 
         bool _needToSync;
@@ -91,10 +92,10 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedEnvelopeGroup = null;
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
 
-            SelectedCommand = new DelegateCommand<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
-            RefreshCommand = new DelegateCommand(async () => await FullRefresh());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SelectedCommand = new Command<EnvelopeGroup>(async eg => await ExecuteSelectedCommand(eg));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+			AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public async void OnNavigatedFrom(INavigationParameters parameters)

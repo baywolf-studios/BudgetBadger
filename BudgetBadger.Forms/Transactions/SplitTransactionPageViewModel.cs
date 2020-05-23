@@ -33,7 +33,7 @@ namespace BudgetBadger.Forms.Transactions
         readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand TogglePostedTransactionCommand { get; set; }
         public ICommand AddNewCommand { get; set; }
         public ICommand DeleteTransactionCommand { get; set; }
@@ -158,11 +158,11 @@ namespace BudgetBadger.Forms.Transactions
             Payees = new ObservableList<Payee>();
             Envelopes = new ObservableList<Envelope>();
 
-            AddNewCommand = new DelegateCommand(async () => await ExecuteAddNewCommand());
-            DeleteTransactionCommand = new DelegateCommand<Transaction>(async a => await ExecuteDeleteTransactionCommand(a));
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            TransactionSelectedCommand = new DelegateCommand<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
-            TogglePostedTransactionCommand = new DelegateCommand<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
+            AddNewCommand = new Command(async () => await ExecuteAddNewCommand());
+            DeleteTransactionCommand = new Command<Transaction>(async a => await ExecuteDeleteTransactionCommand(a));
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            TransactionSelectedCommand = new Command<Transaction>(async t => await ExecuteTransactionSelectedCommand(t));
+            TogglePostedTransactionCommand = new Command<Transaction>(async t => await ExecuteTogglePostedTransaction(t));
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)

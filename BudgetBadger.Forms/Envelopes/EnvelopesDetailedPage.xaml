@@ -225,6 +225,7 @@
                     <uc:DataTable.ItemTemplate>
                         <DataTemplate>
                             <uc:SelectableViewCell
+                                x:Name="selectableViewCell"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
