@@ -211,7 +211,7 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteEnvelopeSelectedCommand()
         {
-            if (!Transaction.Envelope.IsSystem)
+            if (Transaction.Envelope.IsSystem)
             {
                 return;
             }
@@ -276,6 +276,7 @@ namespace BudgetBadger.Forms.Transactions
             if (transaction != null && !transaction.Reconciled)
             {
                 transaction.Posted = !transaction.Posted;
+                Transaction.Posted = transaction.Posted;
             }
         }
     }
