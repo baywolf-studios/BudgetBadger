@@ -138,6 +138,9 @@
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>1.1.12</Version>
     </PackageReference>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>1.68.3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -194,11 +197,4 @@
     <BundleResource Include="Resources\Fonts\SegMDL2.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Target Name="StripX86" AfterTargets="Build">
-  <ItemGroup>
-      <_SkiaSharpNativeDylib Include="@(_NativeLibrary)" Condition=" '%(Filename)%(Extension)' == 'libSkiaSharp.dylib' " />
-  </ItemGroup>
-  <Exec Command="xcrun -sdk macosx lipo -extract x86_64 -output &quot;@(_SkiaSharpNativeDylib)&quot; &quot;@(_SkiaSharpNativeDylib)&quot;"
-        Condition=" '@(_SkiaSharpNativeDylib)' != '' " />
-  </Target>
 </Project>
