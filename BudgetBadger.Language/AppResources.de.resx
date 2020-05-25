@@ -183,9 +183,6 @@
   <data name="AccountTypeReporting" xml:space="preserve">
     <value>Berichterstattung</value>
   </data>
-  <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
-    <value>Konto wird nicht gelöscht</value>
-  </data>
   <data name="AccountValidBalanceError" xml:space="preserve">
     <value>Kontostand ist erforderlich</value>
   </data>
@@ -249,9 +246,6 @@
   <data name="AlertSyncUnsuccessful" xml:space="preserve">
     <value>Synchronisierung fehlgeschlagen</value>
   </data>
-  <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
-    <value>Rückgängig machen Löschen fehlgeschlagen</value>
-  </data>
   <data name="AutomaticLabel" xml:space="preserve">
     <value>Automatik</value>
   </data>
@@ -290,9 +284,6 @@
   </data>
   <data name="BusyTextSyncing" xml:space="preserve">
     <value>Synchronisierung</value>
-  </data>
-  <data name="BusyTextUndoingDelete" xml:space="preserve">
-    <value>Löschen rückgängig machen</value>
   </data>
   <data name="CloudSyncLabel" xml:space="preserve">
     <value>Cloud-Synchronisierung</value>
@@ -825,9 +816,6 @@
   <data name="TransferValidToError" xml:space="preserve">
     <value>Die Übertragung enthält keinen gültigen Umschlag</value>
   </data>
-  <data name="UndoDeleteButton" xml:space="preserve">
-    <value>Undo Löschen</value>
-  </data>
   <data name="InternationalLabel" xml:space="preserve">
     <value>Internationalen</value>
   </data>
@@ -1064,5 +1052,29 @@
   </data>
   <data name="AccountUnhideSystemError" xml:space="preserve">
     <value>Systemkonto kann nicht eingeblendet werden</value>
+  </data>
+  <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
+    <value>Konto wird nicht gelöscht</value>
+  </data>
+  <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
+    <value>Rückgängig machen Löschen fehlgeschlagen</value>
+  </data>
+  <data name="BusyTextUndoingDelete" xml:space="preserve">
+    <value>Löschen rückgängig machen</value>
+  </data>
+  <data name="TransactionPendingLabel" xml:space="preserve">
+    <value>Ausstehende</value>
+  </data>
+  <data name="TransactionDeleteInactiveError" xml:space="preserve">
+    <value>Eine inaktive Transaktion kann nicht gelöscht werden.</value>
+  </data>
+  <data name="UndoDeleteButton" xml:space="preserve">
+    <value>Undo Löschen</value>
+  </data>
+  <data name="AssestsLabel" xml:space="preserve">
+    <value>Assests</value>
+  </data>
+  <data name="DebtsLabel" xml:space="preserve">
+    <value>Schulden</value>
   </data>
 </root>
