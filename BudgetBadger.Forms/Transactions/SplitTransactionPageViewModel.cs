@@ -374,7 +374,8 @@ namespace BudgetBadger.Forms.Transactions
                 }
             }
 
-            var existingTransactions = Transactions.Where(t => t.Id != transaction.Id);
+            var existingTransactions = Transactions.ToList();
+            existingTransactions.Remove(transaction);
             Transactions.ReplaceRange(existingTransactions);
             RefreshSummary();
         }

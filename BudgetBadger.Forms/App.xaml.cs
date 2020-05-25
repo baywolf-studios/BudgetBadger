@@ -99,8 +99,7 @@ namespace BudgetBadger.Forms
                 }
             }
 
-
-            _syncTimer = new Timer(async _ => await Sync());
+            _syncTimer = new Timer(_ => Task.Run(async () => await Sync()).FireAndForget());
 
             var eventAggregator = Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(x => ResetSyncTimer());
