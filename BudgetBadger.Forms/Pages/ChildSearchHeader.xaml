@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     ColumnSpacing="0"
     RowSpacing="0">
@@ -21,12 +21,8 @@
     <Label
         x:Name="LabelControl"
         Grid.Row="0"
-        FontAttributes="Bold"
-        FontSize="17"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center">
+        Style="{ext:DynamicResource PageTitleStyle}">
         <Grid.Column>
             <OnPlatform x:TypeArguments="x:Int32">
                 <On Platform="Android" Value="1" />
@@ -66,14 +62,10 @@
         Grid.Column="0"
         Command="{Binding BackCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="BackButtonImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="back.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="BackIcon"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource ArrowBackIcon}"/>
     </uc:ContentButton>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"
@@ -81,14 +73,10 @@
         Grid.Column="3"
         Command="{Binding ToolbarItemCommand}"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
+        <Label
             x:Name="ToolbarItemImage"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="{Binding ToolbarItemIcon}"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
+            Text="{Binding ToolbarItemIcon}"/>
     </uc:ContentButton>
     <ContentView
         x:Name="SearchBoxFrame"
@@ -103,7 +91,7 @@
             x:Name="EntryFrame"
             Margin="8"
             Padding="0"
-            BackgroundColor="{StaticResource PrimaryActionButtonActiveBackgroundColor}">
+            BackgroundColor="{ext:DynamicResource brand_700}">
             <Entry
                 x:Name="EntryControl"
                 Margin="8,0"
@@ -131,13 +119,9 @@
         Grid.Row="0"
         Grid.Column="4"
         Style="{StaticResource ToolbarButtonStyle}">
-        <svg:SvgCachedImage
-            x:Name="svgSearch"
-            HeightRequest="24"
-            HorizontalOptions="Center"
-            ReplaceStringMap="{Binding ReplaceColor}"
-            Source="search.svg"
-            VerticalOptions="Center"
-            WidthRequest="24" />
+        <Label
+            x:Name="SearchIcon"
+            Style="{ext:DynamicResource Key=ToolbarIconStyle}"
+            Text="{StaticResource SearchIcon}"/>
     </uc:ContentButton>
 </Grid>

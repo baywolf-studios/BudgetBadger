@@ -1,5 +1,4 @@
 ﻿using BudgetBadger.Models;
-using Syncfusion.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,30 +6,21 @@ using System.Text;
 
 namespace BudgetBadger.Forms.Comparers
 {
-    public class TransactionComparer : IComparer<Object>, ISortDirection
+    public class TransactionComparer : IComparer<Object>
     {
-        public ListSortDirection SortDirection { get; set; }
-
         public int Compare(object x, object y)
         {
-            if (x is Group groupX && y is Group groupY)
+            if (x is ObservableGrouping<object, object> ogroupX && y is ObservableGrouping<object, object> ogroupY)
             {
-                var sourceX = groupX.Source.FirstOrDefault();
-                var sourceY = groupY.Source.FirstOrDefault();
+                var osourceX = ogroupX.FirstOrDefault();
+                var osourceY = ogroupY.FirstOrDefault();
 
-                return Compare(sourceX, sourceY);
+                return Compare(osourceX, osourceY);
             }
 
             if (x is Transaction transaction)
             {
-                if (SortDirection == ListSortDirection.Ascending)
-                {
-                    return transaction.CompareTo(y);
-                }
-                else
-                {
-                    return transaction.CompareTo(y) * -1;
-                }
+                return transaction.CompareTo(y);
             }
 
             return 0;

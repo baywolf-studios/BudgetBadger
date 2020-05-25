@@ -23,5 +23,6 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string ReconcileAmount = "reconcileAmount";
         public static readonly string ReconcileCompleted = "reconcileCompleted";
         public static readonly string TransferEnvelopeSelection = "transferEnvelopeSelection";
+        public static readonly string PageName = "pageName";
     }
 }

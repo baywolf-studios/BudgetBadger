@@ -4,8 +4,8 @@ using System.Linq;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Envelopes;
+using BudgetBadger.Forms.Style;
 using BudgetBadger.Forms.UserControls;
-using FFImageLoading.Svg.Forms;
 using Prism.Ioc;
 using Prism.Navigation;
 using Xamarin.Forms;
@@ -14,113 +14,84 @@ namespace BudgetBadger.Forms.Views
 {
     public partial class MainDesktopPage : MasterDetailPage, IInitialize
     {
-        readonly ISettings _settings;
-        readonly INavigationService _navigationService;
-
-        Color _backgroundColor
+        void SetAllInactive(string pageName)
         {
-            get => (Color)Application.Current.Resources["BackgroundColor"];
-        }
-
-        Color _secondaryTextColor
-        {
-            get => (Color)Application.Current.Resources["SecondaryTextColor"];
-        }
-
-        Color _primaryTextColor
-        {
-            get => (Color)Application.Current.Resources["PrimaryTextColor"];
-        }
-
-        string _replaceColorMap;
-
-        void SetAllInactive(Guid excluded)
-        {
-            if (excluded != EnvelopesFrame.Id)
+            if (pageName != "EnvelopesPage")
             {
                 EnvelopesFrame.BackgroundColor = EnvelopesFrame.RestingBackgroundColor;
-                EnvelopesIcon.ReplaceStringMap.Clear();
-                EnvelopesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                EnvelopesIcon.ReloadImage();
-                EnvelopesLabel.TextColor = _secondaryTextColor;
+                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+            }
+            else
+            {
+                EnvelopesFrame.BackgroundColor = EnvelopesFrame.ActiveBackgroundColor;
+                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
-            if (excluded != AccountsFrame.Id)
+            if (pageName != "AccountsPage")
             {
                 AccountsFrame.BackgroundColor = AccountsFrame.RestingBackgroundColor;
-                AccountsIcon.ReplaceStringMap.Clear();
-                AccountsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                AccountsIcon.ReloadImage();
-                AccountsLabel.TextColor = _secondaryTextColor;
+                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+            }
+            else
+            {
+                AccountsFrame.BackgroundColor = AccountsFrame.ActiveBackgroundColor;
+                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
-            if (excluded != PayeesFrame.Id)
+            if (pageName != "PayeesPage")
             {
                 PayeesFrame.BackgroundColor = PayeesFrame.RestingBackgroundColor;
-                PayeesIcon.ReplaceStringMap.Clear();
-                PayeesIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                PayeesIcon.ReloadImage();
-                PayeesLabel.TextColor = _secondaryTextColor;
+                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+            }
+            else
+            {
+                PayeesFrame.BackgroundColor = PayeesFrame.ActiveBackgroundColor;
+                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
-            if (excluded != ReportsFrame.Id)
+            if (pageName != "ReportsPage")
             {
                 ReportsFrame.BackgroundColor = ReportsFrame.RestingBackgroundColor;
-                ReportsIcon.ReplaceStringMap.Clear();
-                ReportsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                ReportsIcon.ReloadImage();
-                ReportsLabel.TextColor = _secondaryTextColor;
+                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+            }
+            else
+            {
+                ReportsFrame.BackgroundColor = ReportsFrame.ActiveBackgroundColor;
+                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
 
-            if (excluded != SettingsFrame.Id)
+            if (pageName != "SettingsPage")
             {
                 SettingsFrame.BackgroundColor = SettingsFrame.RestingBackgroundColor;
-                SettingsIcon.ReplaceStringMap.Clear();
-                SettingsIcon.ReplaceStringMap.Add(_replaceColorMap, _secondaryTextColor.GetHexString());
-                SettingsIcon.ReloadImage();
-                SettingsLabel.TextColor = _secondaryTextColor;
+                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
+                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+            }
+            else
+            {
+                SettingsFrame.BackgroundColor = SettingsFrame.ActiveBackgroundColor;
+                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
+                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
             }
         }
 
-        void Handle_Tapped(object sender, EventArgs e)
-        {
-            var frame = (ContentButton)sender;
-            var test = Detail;
-
-            SetAllInactive(frame.Id);
-
-            frame.BackgroundColor = frame.ActiveBackgroundColor;
-
-            var stackLayout = (StackLayout)frame.Content;
-
-            var currentIcon = (SvgCachedImage)stackLayout.Children.FirstOrDefault(c => c is SvgCachedImage);
-            currentIcon.ReplaceStringMap.Clear();
-            currentIcon.ReplaceStringMap.Add(_replaceColorMap, _primaryTextColor.GetHexString());
-            currentIcon.ReloadImage();
-
-            var currentLabel = (Label)stackLayout.Children.FirstOrDefault(c => c is Label);
-            currentLabel.TextColor = _primaryTextColor;
-
-        }
-
-        public MainDesktopPage(INavigationService navigationService, ISettings settings)
+        public MainDesktopPage()
         {
             InitializeComponent();
-
-            _navigationService = navigationService;
-            _settings = settings;
-
-            _replaceColorMap = EnvelopesIcon.ReplaceStringMap.FirstOrDefault().Key;
         }
 
         public void Initialize(INavigationParameters parameters)
         {
-            int.TryParse(_settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appCount);
-
-            if (appCount == 0)
+            if (parameters.TryGetValue<string>(PageParameter.PageName, out string pageName))
             {
-                AccountsFrame.Command.Execute(AccountsFrame.CommandParameter);
-                Handle_Tapped(AccountsFrame, new EventArgs());
+                SetAllInactive(pageName);
             }
         }
     }

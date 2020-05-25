@@ -84,7 +84,7 @@ namespace BudgetBadger.Forms.UserControls
                         var groupSeparator = nfi.CurrencyGroupSeparator;
                         var decimalSeparator = nfi.CurrencyDecimalSeparator;
                         var text = Text.Replace(symbol, "").Replace(groupSeparator, "").Replace(decimalSeparator, ".").Replace("(", "-").Replace(")", "");
-                        var temp = new DataTable().Compute(text, null);
+                        var temp = new System.Data.DataTable().Compute(text, null);
                         result = Convert.ToDecimal(temp);
                         result = _resourceContainer.GetRoundedDecimal(result);
                     }

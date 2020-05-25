@@ -61,11 +61,11 @@ namespace BudgetBadger.Forms.UserControls
 
             PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == nameof(Width) && Device.RuntimePlatform == Device.macOS && originalWidth < Width)
-                {
-                    WidthRequest = Width + Padding.HorizontalThickness;
-                    originalWidth = WidthRequest;
-                }
+                //if (e.PropertyName == nameof(Width) && Device.RuntimePlatform == Device.macOS && originalWidth < Width)
+                //{
+                //    WidthRequest = Width + Padding.HorizontalThickness;
+                //    originalWidth = WidthRequest;
+                //}
 
                 if (e.PropertyName == nameof(RestingBackgroundColor)
                     || e.PropertyName == nameof(RestingBorderColor)

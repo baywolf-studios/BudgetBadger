@@ -7,7 +7,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
@@ -16,45 +16,55 @@
             PageTitle="{ext:Translate EnvelopeSelectionPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeHelperTitle}"
-            ImagePath="envelope.svg"
+            Icon="{ext:DynamicResource  EnvelopeIcon}"
             ShowHelper="{Binding NoEnvelopes}"
             Subtitle="{ext:Translate EmptyEnvelopeHelperSubtitle}">
-            <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView
-                        Filter="{Binding Filter}"
-                        FilterText="{Binding SearchText}"
-                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                        IsBusy="{Binding IsBusy}"
-                        ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding Budgets}"
-                        SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedBudget}">
-                        <syncfusion:SfListView.DataSource>
-                            <data:DataSource>
-                                <data:DataSource.GroupDescriptors>
-                                    <data:GroupDescriptor PropertyName="Envelope.Group.Description" />
-                                </data:DataSource.GroupDescriptors>
-                            </data:DataSource>
-                        </syncfusion:SfListView.DataSource>
-                        <syncfusion:SfListView.GroupHeaderTemplate>
-                            <DataTemplate>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <uc:ListView2
+                    Grid.ColumnSpan="12"
+                    Items="{Binding Budgets}"
+                    IsGrouped="True"
+                    GroupPropertyDescription="Envelope.Group.Description"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedBudget}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:BudgetComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <uc:ViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}">
                                 <dt:GroupHeaderViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.GroupHeaderTemplate>
-                        <syncfusion:SfListView.ItemTemplate>
-                            <DataTemplate>
-                                <dt:EnvelopeViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.ItemTemplate>
-                    </uc:ListView>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
-        </uc:HelperControl>
+                            </uc:ViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.GroupHeaderTemplate>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:BudgetViewCell/>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                </uc:ListView2>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

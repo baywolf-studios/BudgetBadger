@@ -3,6 +3,7 @@
     x:Class="BudgetBadger.Forms.Pages.RootHeader"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     ColumnSpacing="0"
     RowSpacing="0">
     <Grid.RowDefinitions>
@@ -11,12 +12,8 @@
     <Label
         x:Name="LabelControl"
         Grid.Row="0"
-        FontAttributes="Bold"
-        FontSize="17"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center">
+        Style="{ext:DynamicResource PageTitleStyle}">
         <Label.Margin>
             <OnPlatform x:TypeArguments="Thickness">
                 <On Platform="Android" Value="16,0,0,0" />

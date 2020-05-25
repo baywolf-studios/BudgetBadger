@@ -15,7 +15,7 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(Account account);
         Task<Result<IReadOnlyList<Transaction>>> GetEnvelopeTransactionsAsync(Envelope envelope);
         Task<Result<IReadOnlyList<Transaction>>> GetPayeeTransactionsAsync(Payee payee);
-        Task<Result> SoftDeleteTransactionAsync(Guid transactionId);
+        Task<Result<Transaction>> SoftDeleteTransactionAsync(Guid transactionId);
 
         Task<Result> SaveSplitTransactionAsync(IEnumerable<Transaction> transactions);
         Task<Result<IReadOnlyList<Transaction>>> GetTransactionsFromSplitAsync(Guid splitId);

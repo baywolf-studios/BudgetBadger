@@ -1,14 +1,9 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.UWP.Renderers;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
-using Syncfusion.ListView.XForms.UWP;
-using Syncfusion.SfDataGrid.XForms.UWP;
-using Syncfusion.SfPullToRefresh.XForms.UWP;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,11 +26,6 @@ namespace BudgetBadger.UWP
         public MainPage()
         {
             this.InitializeComponent();
-            SfDataGridRenderer.Init();
-            SfListViewRenderer.Init();
-            SfPullToRefreshRenderer.Init();
-            CachedImageRenderer.Init();
-            var ignore = typeof(SvgCachedImage);
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
             ContentButtonRenderer.Initialize();

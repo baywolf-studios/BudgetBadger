@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    x:Class="BudgetBadger.Forms.UserControls.EmptyState"
+    x:Name="this">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="invertedBool" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
+            <Grid>
+                <ContentPresenter
+                    IsVisible="{Binding Source={x:Reference this}, Path=ShowHelper, Converter={StaticResource invertedBool}}" />
+                <StackLayout
+                    IsVisible="{Binding Source={x:Reference this}, Path=ShowHelper}"
+                    Orientation="Vertical"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Spacing="8"
+                    Margin="16">
+                    <Label
+                        Margin="0,24"
+                        Style="{ext:DynamicResource Key=EmptyStateIconStyle}"
+                        Text="{Binding Source={x:Reference this}, Path=Icon}"/>
+                    <Label
+                        Text="{Binding Source={x:Reference this}, Path=Title}"
+                        Style="{ext:DynamicResource EmptyStateTitleStyle}"/>
+                    <Label
+                        Text="{Binding Source={x:Reference this}, Path=Subtitle}"
+                        Style="{ext:DynamicResource EmptyStateSubtitleStyle}"/>
+                </StackLayout>
+            </Grid>
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
+</ContentView>

@@ -17,10 +17,13 @@ using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeGroupsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeGroupsPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IEnvelopeLogic> _envelopeGroupLogic;
@@ -28,17 +31,17 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IPageDialogService _dialogService;
         readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshEnvelopeGroupCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.Value.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
-
-        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -47,8 +50,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<EnvelopeGroup> _envelopeGroups;
-        public IReadOnlyList<EnvelopeGroup> EnvelopeGroups
+        ObservableList<EnvelopeGroup> _envelopeGroups;
+        public ObservableList<EnvelopeGroup> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
@@ -89,7 +92,8 @@ namespace BudgetBadger.Forms.Envelopes
                                    IPageDialogService dialogService,
                                    Lazy<IEnvelopeLogic> envelopeGroupLogic,
                                    Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService)
+                                   Lazy<IPurchaseService> purchaseService,
+                                   IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeGroupLogic = envelopeGroupLogic;
@@ -97,39 +101,35 @@ namespace BudgetBadger.Forms.Envelopes
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
-            EnvelopeGroups = new List<EnvelopeGroup>();
+            EnvelopeGroups = new ObservableList<EnvelopeGroup>();
             SelectedEnvelopeGroup = null;
 
-            SelectedCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
-            SaveCommand = new DelegateCommand<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
+            SelectedCommand = new Command<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            RefreshEnvelopeGroupCommand = new Command<EnvelopeGroup>(RefreshEnvelopeGroup);
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            SaveCommand = new Command<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
+
+            _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Subscribe(RefreshEnvelopeGroup);
+            _eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Subscribe(RefreshEnvelopeGroup);
+
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshEnvelopeGroupFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshEnvelopeGroupFromTransaction(t));
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
+            SelectedEnvelopeGroup = null;
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
         }
 
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -137,7 +137,7 @@ namespace BudgetBadger.Forms.Envelopes
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
         public async Task ExecuteSelectedCommand(EnvelopeGroup envelopeGroup)
@@ -162,7 +162,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -177,7 +177,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
-                    EnvelopeGroups = result.Data;
+                    EnvelopeGroups.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -203,9 +203,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _needToSync = true;
-
-                await ExecuteRefreshCommand();
+                _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -219,7 +217,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _needToSync = true;
+                _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -231,7 +229,6 @@ namespace BudgetBadger.Forms.Envelopes
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage);
 
-            SelectedEnvelopeGroup = null;
         }
 
         public async Task ExecuteEditCommand(EnvelopeGroup envelopeGroup)
@@ -241,6 +238,30 @@ namespace BudgetBadger.Forms.Envelopes
                 { PageParameter.EnvelopeGroup, envelopeGroup }
             };
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+        }
+
+        public void RefreshEnvelopeGroup(EnvelopeGroup envelopeGroup)
+        {
+            var envelopeGroups = EnvelopeGroups.Where(a => a.Id != envelopeGroup.Id).ToList();
+
+            if (envelopeGroup != null && _envelopeGroupLogic.Value.FilterEnvelopeGroup(envelopeGroup, FilterType.Standard))
+            {
+                envelopeGroups.Add(envelopeGroup);
+            }
+
+            EnvelopeGroups.ReplaceRange(envelopeGroups);
+        }
+
+        public async Task RefreshEnvelopeGroupFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Envelope != null)
+            {
+                var updatedGroupResult = await _envelopeGroupLogic.Value.GetEnvelopeGroupAsync(transaction.Envelope.Group.Id);
+                if (updatedGroupResult.Success)
+                {
+                    RefreshEnvelopeGroup(updatedGroupResult.Data);
+                }
+            }
         }
     }
 }

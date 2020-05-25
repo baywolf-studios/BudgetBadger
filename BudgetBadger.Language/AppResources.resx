@@ -729,6 +729,9 @@
   <data name="TransactionClearedLabel" xml:space="preserve">
     <value>Cleared</value>
   </data>
+    <data name="TransactionPendingLabel" xml:space="preserve">
+    <value>Pending</value>
+  </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
   </data>
@@ -737,6 +740,9 @@
   </data>
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
     <value>Cannot delete transfer transaction with deleted payee</value>
+  </data>
+  <data name="TransactionDeleteInactiveError" xml:space="preserve">
+    <value>Cannot delete an inactive transaction</value> 
   </data>
   <data name="TransactionEditPageTitle" xml:space="preserve">
     <value>Edit Transaction</value>
@@ -1064,5 +1070,11 @@
   </data>
   <data name="AccountUnhideSystemError" xml:space="preserve">
     <value>Cannot unhide system account</value>
+  </data>
+  <data name="AssestsLabel" xml:space="preserve">
+    <value>Assests</value>
+  </data>
+  <data name="DebtsLabel" xml:space="preserve">
+    <value>Debts</value>
   </data>
 </root>

@@ -1,37 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<StackLayout
+<Grid
     x:Class="BudgetBadger.Forms.UserControls.Checkbox"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Orientation="Vertical">
-    <StackLayout.Spacing>
+    InputTransparent="{Binding IsReadOnly}"
+    ColumnSpacing="{ext:DynamicResource size_85}">
+    <Grid.RowSpacing>
         <OnPlatform x:TypeArguments="x:Double">
             <On Platform="UWP, macOS, iOS" Value="4" />
             <On Platform="Android" Value="0" />
         </OnPlatform>
-    </StackLayout.Spacing>
+    </Grid.RowSpacing>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.RowSpan="3"
+        Grid.ColumnSpan="2"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        Clicked="Handle_Clicked"/>
     <Label
         x:Name="LabelControl"
-        FontSize="12"
+        Grid.Row="0"
+        Grid.ColumnSpan="2"
         Text="{Binding Label}"
-        TextColor="{StaticResource SecondaryTextColor}" />
-    <StackLayout Orientation="Horizontal">
-        <StackLayout.Spacing>
-        <OnPlatform x:TypeArguments="x:Double">
-            <On Platform="UWP, macOS, iOS" Value="8" />
-            <On Platform="Android" Value="0" />
-        </OnPlatform>
-    </StackLayout.Spacing>
-    <Switch
+        IsVisible="False"
+        InputTransparent="True"/>
+    <CheckBox
         x:Name="SwitchControl"
+        Grid.Row="1"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
         HorizontalOptions="Start"
-        IsToggled="{Binding IsChecked}"
-        OnColor="{StaticResource PrimaryColor}" />
+        VerticalOptions="CenterAndExpand"
+        IsChecked="{Binding IsChecked}"
+        Color="{ext:DynamicResource brand_600}" />
     <Label
         x:Name="CaptionControl"
-        FontSize="16"
-        Text="{Binding Caption}"
-        TextColor="{StaticResource PrimaryTextColor}"
-        VerticalOptions="Center" />
-    </StackLayout>
-</StackLayout>
+        Grid.Row="1"
+        Grid.Column="1"
+        VerticalOptions="CenterAndExpand"
+        InputTransparent="True"
+        IsVisible="False"
+        Text="{Binding Caption}">
+    </Label>
+    <Label
+        x:Name="HintErrorControl"
+        Grid.Row="2"
+        Grid.ColumnSpan="2"
+        IsVisible="False"
+        InputTransparent="True"/>
+</Grid>

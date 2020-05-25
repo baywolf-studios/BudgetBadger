@@ -6,7 +6,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Envelope : BaseModel, IDeepCopy<Envelope>, IEquatable<Envelope>, IComparable, IComparable<Envelope>
+    public class Envelope : ObservableBase, IDeepCopy<Envelope>, IEquatable<Envelope>, IComparable, IComparable<Envelope>
     {
         Guid id;
         public Guid Id
@@ -47,7 +47,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -63,14 +63,14 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref deletedDateTime, value); RaisePropertyChanged(nameof(IsDeleted)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         DateTime? hiddenDateTime;
         public DateTime? HiddenDateTime
         {
             get => hiddenDateTime;
-            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref hiddenDateTime, value); RaisePropertyChanged(nameof(IsHidden)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }
@@ -164,6 +164,7 @@ namespace BudgetBadger.Models
             return Id == p.Id
                 && CreatedDateTime == p.CreatedDateTime
                 && ModifiedDateTime == p.ModifiedDateTime
+                && HiddenDateTime == p.HiddenDateTime
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
@@ -197,8 +198,12 @@ namespace BudgetBadger.Models
             {
                 if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
                 {
-                    if (Group.Equals(envelope.Group))
+                    if (Group?.Id.Equals(envelope.Group?.Id) ?? false)
                     {
+                        if (Description.Equals(envelope.Description))
+                        {
+                            return -1 * Nullable.Compare(CreatedDateTime, envelope.CreatedDateTime);
+                        }
                         return String.Compare(Description, envelope.Description);
                     }
 

@@ -11,18 +11,20 @@ using BudgetBadger.Models.Extensions;
 using Prism.Mvvm;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
 {
-    public class TransactionEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class TransactionEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
         readonly ISyncFactory _syncFactory;
-
-        bool _needToSync;
+        readonly IEventAggregator _eventAggregator;
 
         bool _isBusy;
         public bool IsBusy
@@ -52,34 +54,38 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _splitTransactionMode, value);
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand PayeeSelectedCommand { get; set; }
         public ICommand EnvelopeSelectedCommand { get; set; }
         public ICommand AccountSelectedCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand SplitCommand { get; set; }
+        public ICommand TogglePostedTransactionCommand { get; set; }
 
         public TransactionEditPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
-                                        ISyncFactory syncFactory)
+                                        ISyncFactory syncFactory,
+                                        IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
             _syncFactory = syncFactory;
+            _eventAggregator = eventAggregator;
 
             Transaction = new Transaction();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            PayeeSelectedCommand = new DelegateCommand(async () => await ExecutePayeeSelectedCommand());
-            EnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand).ObservesProperty(() => Transaction.Envelope);
-            AccountSelectedCommand = new DelegateCommand(async () => await ExecuteAccountSelectedCommand());
-            DeleteCommand = new DelegateCommand(async () => await ExecuteDeleteCommand());
-            SplitCommand = new DelegateCommand(async () => await ExecuteSplitCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            PayeeSelectedCommand = new Command(async () => await ExecutePayeeSelectedCommand());
+            EnvelopeSelectedCommand = new Command(async () => await ExecuteEnvelopeSelectedCommand(), CanExecuteEnvelopeSelectedCommand);
+            AccountSelectedCommand = new Command(async () => await ExecuteAccountSelectedCommand());
+            DeleteCommand = new Command(async () => await ExecuteDeleteCommand());
+            SplitCommand = new Command(async () => await ExecuteSplitCommand());
+            TogglePostedTransactionCommand = new Command<Transaction>(ExecuteTogglePostedTransaction);
         }
 
 		public async Task InitializeAsync(INavigationParameters parameters)
@@ -145,19 +151,8 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -194,13 +189,9 @@ namespace BudgetBadger.Forms.Transactions
 
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<TransactionSavedEvent>().Publish(result.Data);
 
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Transaction, result.Data }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -220,6 +211,10 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task ExecuteEnvelopeSelectedCommand()
         {
+            if (Transaction.Envelope.IsSystem)
+            {
+                return;
+            }
             await _navigationService.NavigateAsync(PageName.EnvelopeSelectionPage);
         }
 
@@ -248,7 +243,7 @@ namespace BudgetBadger.Forms.Transactions
                 var result = await _transLogic.SoftDeleteTransactionAsync(Transaction.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<TransactionDeletedEvent>().Publish(result.Data);
 
                     var parameters = new NavigationParameters
                     {
@@ -274,6 +269,15 @@ namespace BudgetBadger.Forms.Transactions
                 { PageParameter.InitialSplitTransaction, Transaction }
             };
             await _navigationService.NavigateAsync(PageName.SplitTransactionPage, parameters);
+        }
+
+        public void ExecuteTogglePostedTransaction(Transaction transaction)
+        {
+            if (transaction != null && !transaction.Reconciled)
+            {
+                transaction.Posted = !transaction.Posted;
+                Transaction.Posted = transaction.Posted;
+            }
         }
     }
 }

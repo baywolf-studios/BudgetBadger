@@ -22,11 +22,7 @@
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
-    <PackageReference Include="Syncfusion.Xamarin.SfDataGrid" Version="17.1.0.41" />
-    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.41" />
-    <PackageReference Include="Syncfusion.Xamarin.SfPullToRefresh" Version="17.1.0.41" />
-    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.3.840" />
-    <PackageReference Include="Xamarin.Forms" Version="4.2.0.910310" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />
   </ItemGroup>
@@ -48,8 +44,20 @@
   <ItemGroup>
     <Folder Include="Purchase\" />
     <Folder Include="Pages\" />
+    <Folder Include="Style\" />
+    <Folder Include="VisualStates\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />
+    <Compile Remove="Style\IconResources %28copy%29.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\DropdownSelector.xaml.cs">
+      <DependentUpon>Dropdown.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UserControls\Dropdown.xaml.cs">
+      <DependentUpon>Dropdown.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

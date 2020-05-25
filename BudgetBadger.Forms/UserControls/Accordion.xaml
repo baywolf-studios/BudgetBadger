@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.UserControls.Accordion"
+    RowSpacing="0"
+    ColumnSpacing="{ext:DynamicResource size_100}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="{ext:DynamicResource size_450}"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.Row="0"
+        Grid.ColumnSpan="2"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        Clicked="Handle_Tapped"/>
+    <Image
+        x:Name="IconControl"
+        HeightRequest="24"
+        WidthRequest="24"
+        Grid.Column="0"
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        InputTransparent="true">
+        <Image.Source>
+            <FontImageSource
+                Size="24"
+                Glyph="{ext:DynamicResource Key=ArrowDropRightIcon}"
+                Color="{StaticResource IdleColor}"
+                FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
+        </Image.Source>
+    </Image>
+    <ContentView
+        x:Name="HeaderView"
+        Grid.Row="0"
+        Grid.Column="1"
+        InputTransparent="true"/>
+    <ContentView x:Name="BodyView"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"/>
+</Grid>

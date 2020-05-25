@@ -9,7 +9,7 @@ namespace BudgetBadger.Forms.DataTemplates
     public partial class TransactionViewCell : Grid
     {
         public static readonly BindableProperty ToggleCommandProperty =
-            BindableProperty.Create("ToggleCommand", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnToggleCommandPropertyChanged);
+            BindableProperty.Create(nameof(ToggleCommand), typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnToggleCommandPropertyChanged);
 
         public ICommand ToggleCommand
         {
@@ -18,7 +18,7 @@ namespace BudgetBadger.Forms.DataTemplates
         }
 
         public static readonly BindableProperty SelectedCommandProperty =
-            BindableProperty.Create("SelectedCommand", typeof(ICommand), typeof(TransactionViewCell), null, propertyChanged: OnSelectedCommandPropertyChanged);
+            BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(TransactionViewCell), null);
 
         public ICommand SelectedCommand
         {
@@ -33,38 +33,38 @@ namespace BudgetBadger.Forms.DataTemplates
             set
             {
                 transactionViewCellType = value;
-                switch(transactionViewCellType)
+                switch (transactionViewCellType)
                 {
                     case TransactionViewCellType.Envelope:
                         rightSingleLabel.IsVisible = true;
                         rightPrimaryLabel.IsVisible = false;
                         rightSecondaryLabel.IsVisible = false;
-                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
-                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
                         rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Account:
                         rightSingleLabel.IsVisible = true;
                         rightPrimaryLabel.IsVisible = false;
                         rightSecondaryLabel.IsVisible = false;
-                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
-                        secondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Payee:
                         rightSingleLabel.IsVisible = true;
                         rightPrimaryLabel.IsVisible = false;
                         rightSecondaryLabel.IsVisible = false;
-                        primaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
-                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
                         rightSingleLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         break;
                     case TransactionViewCellType.Full:
                         rightSingleLabel.IsVisible = false;
                         rightPrimaryLabel.IsVisible = true;
                         rightSecondaryLabel.IsVisible = true;
-                        primaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
-                        secondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
+                        leftPrimaryLabel.SetBinding(Label.TextProperty, "Payee.Description");
+                        leftSecondaryLabel.SetBinding(Label.TextProperty, "Account.Description");
                         rightPrimaryLabel.SetBinding(Label.TextProperty, "Amount", converter: (IValueConverter)Application.Current.Resources["CurrencyConverter"]);
                         rightSecondaryLabel.SetBinding(Label.TextProperty, "Envelope.Description");
                         break;
@@ -81,15 +81,7 @@ namespace BudgetBadger.Forms.DataTemplates
         {
             if (newValue != oldValue)
             {
-                (bindable as TransactionViewCell).ToggleGestureRecognizer.Command = newValue as ICommand;
-            }
-        }
-
-        static void OnSelectedCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (newValue != oldValue)
-            {
-                (bindable as TransactionViewCell).SelectedGestureRecognizer.Command = newValue as ICommand;
+                (bindable as TransactionViewCell).TransactionStatusButton.ToggleCommand = newValue as ICommand;
             }
         }
     }

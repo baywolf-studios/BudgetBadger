@@ -6,27 +6,31 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class PayeeSelectionPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
-		public ICommand AddCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
+        public ICommand AddCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
 
         bool _isBusy;
@@ -36,8 +40,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -69,24 +73,27 @@ namespace BudgetBadger.Forms.Payees
         public PayeeSelectionPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
             IPageDialogService dialogService,
-            IPayeeLogic payeeLogic)
+            IPayeeLogic payeeLogic,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedPayee = null;
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -98,19 +105,10 @@ namespace BudgetBadger.Forms.Payees
                 return;
             }
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-            
+            await FullRefresh();
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
-            await ExecuteRefreshCommand();
-        }
-
-		public async Task ExecuteAddCommand()
+        public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.PayeeEditPage);
         }
@@ -130,7 +128,32 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.GoBackAsync(parameters);
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task ExecuteSaveSearchCommand()
+        {
+            var newPayee = new Payee
+            {
+                Description = SearchText
+            };
+
+            var result = await _payeeLogic.SavePayeeAsync(newPayee);
+
+            if (result.Success)
+            {
+                _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, result.Data }
+                };
+
+                await _navigationService.GoBackAsync(parameters);
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -145,7 +168,7 @@ namespace BudgetBadger.Forms.Payees
 
                 if (result.Success)
                 {
-                    Payees = result.Data;
+                    Payees.ReplaceRange(result.Data);
                 }
                 else
                 {
@@ -157,30 +180,6 @@ namespace BudgetBadger.Forms.Payees
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        public async Task ExecuteSaveCommand()
-        {
-            var newPayee = new Payee
-            {
-                Description = SearchText
-            };
-
-            var result = await _payeeLogic.SavePayeeAsync(newPayee);
-
-            if (result.Success)
-            {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Payee, result.Data }
-                };
-
-                await _navigationService.GoBackAsync(parameters);
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
             }
         }
     }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Grid
+    x:Class="BudgetBadger.Forms.UserControls.DatePicker"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    InputTransparent="{Binding IsReadOnly}">
+    <Grid.RowSpacing>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="UWP, macOS, iOS" Value="4" />
+            <On Platform="Android" Value="0" />
+        </OnPlatform>
+    </Grid.RowSpacing>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <uc:Button2
+        x:Name="ButtonBackground"
+        Grid.RowSpan="3"
+        Style="{ext:DynamicResource HiddenButtonStyle}"
+        IsVisible="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+        Clicked="Handle_Clicked"/>
+    <Label
+        x:Name="LabelControl"
+        Grid.Row="0"
+        Text="{Binding Label}"
+        IsVisible="False"
+        InputTransparent="True"/>
+    <DatePicker
+        x:Name="DateControl"
+        Grid.Row="1"
+        Format="d"
+        IsEnabled="{Binding IsEnabled}"
+        VerticalOptions="CenterAndExpand">
+        <DatePicker.Triggers>
+            <DataTrigger TargetType="DatePicker" Binding="{Binding UseTextField}" Value="True">
+                <Setter Property="IsVisible" Value="False"/>
+            </DataTrigger>
+            <DataTrigger TargetType="DatePicker" Binding="{Binding IsReadOnly}" Value="True">
+                <Setter Property="IsVisible" Value="False"/>
+            </DataTrigger>
+        </DatePicker.Triggers>
+    </DatePicker>
+    <Entry
+        x:Name="TextControl"
+        Grid.Row="1"
+        IsEnabled="{Binding IsEnabled}"
+        IsVisible="False"
+        VerticalOptions="CenterAndExpand">
+        <Entry.Margin>
+            <OnPlatform x:TypeArguments="Thickness" Default="0,0,0,0">
+                <On Platform="UWP" Value="0,8,0,0" />
+            </OnPlatform>
+        </Entry.Margin>
+        <Entry.Triggers>
+            <MultiTrigger TargetType="Entry">
+                <MultiTrigger.Conditions>
+                    <BindingCondition Binding="{Binding UseTextField}" Value="True" />
+                    <BindingCondition Binding="{Binding IsReadOnly}" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="IsVisible" Value="True" />
+            </MultiTrigger>
+        </Entry.Triggers>
+    </Entry>
+    <Label
+        x:Name="ReadOnlyDatePickerControl"
+        Grid.Row="1"
+        VerticalOptions="CenterAndExpand"
+        IsVisible="{Binding IsReadOnly}">
+    </Label>
+    <Label
+        x:Name="HintErrorControl"
+        Grid.Row="2"
+        IsVisible="false"
+        InputTransparent="True"/>
+</Grid>

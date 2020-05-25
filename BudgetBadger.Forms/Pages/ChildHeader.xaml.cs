@@ -14,10 +14,11 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(PageTitleProperty, value);
         }
 
-        public ImageSource ToolbarItemIcon
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
+        public string ToolbarItemIcon
         {
-            get => ToolbarItemImage.Source;
-            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
+            get => (string)GetValue(ToolbarItemIconProperty);
+            set => SetValue(ToolbarItemIconProperty, value);
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(ChildHeader), defaultBindingMode: BindingMode.TwoWay);
@@ -34,11 +35,6 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(BackCommandProperty, value);
         }
 
-        public Dictionary<string, string> ReplaceColor
-        {
-            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
-        }
-
         public ChildHeader()
         {
             InitializeComponent();
@@ -46,7 +42,7 @@ namespace BudgetBadger.Forms.Pages
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             BackButtonFrame.BindingContext = this;
-            BackButtonImage.BindingContext = this;
+            BackIcon.BindingContext = this;
         }
     }
 }

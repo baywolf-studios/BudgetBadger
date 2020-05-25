@@ -3,23 +3,23 @@
     x:Class="BudgetBadger.Forms.DataTemplates.AccountViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     x:Name="accountCell"
-    ColumnSpacing="16"
-    HeightRequest="{StaticResource Key=ListItemHeight}"
+    ColumnSpacing="{ext:DynamicResource Key=size_100}"
     RowSpacing="0">
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*" />
         <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
     <Label
+        Grid.Row="0"
         Grid.Column="0"
-        Margin="16,0,0,0"
-        Style="{StaticResource Key=ListItemLabelStyle}"
-        Text="{Binding Description}" />
+        Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
+        Text="{Binding Description}"/>
     <Label
+        Grid.Row="0"
         Grid.Column="1"
-        Margin="0,0,16,0"
         HorizontalOptions="End"
-        Style="{StaticResource Key=ListItemLabelStyle}"
+        Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
         Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
 </Grid>

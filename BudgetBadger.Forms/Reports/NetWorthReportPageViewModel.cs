@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
 using Prism.Commands;
@@ -15,13 +16,13 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class NetWorthReportPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class NetWorthReportPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
 
         bool _isBusy;
@@ -86,7 +87,7 @@ namespace BudgetBadger.Forms.Reports
             _navigationService = navigationService;
             _reportLogic = reportLogic;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
 
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
@@ -101,14 +102,6 @@ namespace BudgetBadger.Forms.Reports
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
-        {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
         {
             await ExecuteRefreshCommand();
         }

@@ -17,6 +17,8 @@ using Prism;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using BudgetBadger.Forms.Events;
+using Prism.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -28,17 +30,17 @@ namespace BudgetBadger.Forms.Accounts
         readonly IPageDialogService _dialogService;
 		readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshAccountCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
         public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
-
-        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -47,11 +49,11 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Account> _accounts;
-        public IReadOnlyList<Account> Accounts
+        ObservableList<Account> _accounts;
+        public ObservableList<Account> Accounts
         {
             get => _accounts;
-            set { SetProperty(ref _accounts, value); RaisePropertyChanged(nameof(NetWorth)); }
+            set => SetProperty(ref _accounts, value); 
         }
 
         Account _selectedAccount;
@@ -62,6 +64,8 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         public decimal NetWorth { get => Accounts.Sum(a => a.Balance ?? 0); }
+        public decimal Assests { get => Accounts.Where(a => (a.Balance ?? 0) > 0).Sum(a => a.Balance ?? 0); }
+        public decimal Debts { get => Accounts.Where(a => (a.Balance ?? 0) < 0).Sum(a => a.Balance ?? 0); }
 
         bool _noAccounts;
         public bool NoAccounts
@@ -84,12 +88,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _fullRefresh = true;
+
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
 		                             IPageDialogService dialogService,
                                      Lazy<IAccountLogic> accountLogic,
                                      Lazy<ISyncFactory> syncFactory,
-                                     Lazy<IPurchaseService> purchaseService)
+                                     Lazy<IPurchaseService> purchaseService,
+                                     IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
@@ -97,17 +104,26 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
-            Accounts = new List<Account>();
+            Accounts = new ObservableList<Account>();
             SelectedAccount = null;
 
-            SelectedCommand = new DelegateCommand<Account>(async a => await ExecuteSelectedCommand(a));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Account>(async a => await ExecuteEditCommand(a));
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
-            SaveCommand = new DelegateCommand<Account>(async a => await ExecuteSaveCommand(a));
-            ReconcileCommand = new DelegateCommand<Account>(async a => await ExecuteReconcileCommand(a));
+            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<Account>(async a => await ExecuteEditCommand(a));
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            SaveCommand = new Command<Account>(async a => await ExecuteSaveCommand(a));
+            ReconcileCommand = new Command<Account>(async a => await ExecuteReconcileCommand(a));
+            RefreshAccountCommand = new Command<Account>(RefreshAccount);
+
+            _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(RefreshAccount);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshAccountFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -115,22 +131,16 @@ namespace BudgetBadger.Forms.Accounts
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            if (_fullRefresh)
+            {
+                await FullRefresh();
+                _fullRefresh = false;
+            }
         }
 
-        public override async void OnDeactivated()
+        public override void OnDeactivated()
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
+            SelectedAccount = null;
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -138,19 +148,10 @@ namespace BudgetBadger.Forms.Accounts
         }
 
         // this gets hit before the OnActivated
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(PageParameter.Account);
-            if (account != null)
-            {
-                if (!Accounts.Any(a => a.Balance < 0) && account.Balance < 0)
-                {
-                    // show message about debt envelopes
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertDebtEnvelopes"),
-                            _resourceContainer.Value.GetResourceString("AlertMessageDebtEnvelopes"),
-                            _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
-            }
+            if (!_fullRefresh)
+                RefreshSummary();
         }
 
         public async Task ExecuteSelectedCommand(Account account)
@@ -175,7 +176,57 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task ExecuteAddCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.AccountEditPage);
+            SelectedAccount = null;
+        }
+
+        public async Task ExecuteEditCommand(Account account)
+        {
+            if (!account.IsGenericHiddenAccount)
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, account }
+                };
+                await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
+            }
+        }
+
+        public async Task ExecuteAddTransactionCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+        }
+
+        public async Task ExecuteSaveCommand(Account account)
+        {
+            var result = await _accountLogic.Value.SaveAccountAsync(account);
+
+            if (result.Success)
+            {
+                _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteReconcileCommand(Account account)
+        {
+            if (!account.IsGenericHiddenAccount)
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Account, account }
+                };
+
+                await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+            }
+        }
+
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -190,14 +241,14 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
-                    Accounts = result.Data;
+                    Accounts.ReplaceRange(result.Data);
                 }
                 else
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
-
-                NoAccounts = (Accounts?.Count ?? 0) == 0;
+                
+                RefreshSummary();
             }
             finally
             {
@@ -205,48 +256,39 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteAddCommand()
+        public void RefreshSummary()
         {
-            await _navigationService.NavigateAsync(PageName.AccountEditPage);
-            SelectedAccount = null;
+            NoAccounts = (Accounts?.Count ?? 0) == 0;
+
+            RaisePropertyChanged(nameof(NetWorth));
+            RaisePropertyChanged(nameof(Assests));
+            RaisePropertyChanged(nameof(Debts));
         }
 
-        public async Task ExecuteEditCommand(Account account)
+        public void RefreshAccount(Account account)
         {
-            var parameters = new NavigationParameters
+            var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
+
+            if (account != null && _accountLogic.Value.FilterAccount(account, FilterType.Standard))
             {
-                { PageParameter.Account, account }
-            };
-            await _navigationService.NavigateAsync(PageName.AccountEditPage, parameters);
-        }
-
-        public async Task ExecuteAddTransactionCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.TransactionEditPage);
-        }
-
-        public async Task ExecuteSaveCommand(Account account)
-        {
-            var result = await _accountLogic.Value.SaveAccountAsync(account);
-
-            if (result.Success)
-            {
-                _needToSync = true;
+                accounts.Add(account);
             }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
+
+            Accounts.ReplaceRange(accounts);
+
+            RefreshSummary();
         }
 
-        public async Task ExecuteReconcileCommand(Account account)
+        public async Task RefreshAccountFromTransaction(Transaction transaction)
         {
-            var parameters = new NavigationParameters
+            if (transaction != null && transaction.Account != null)
             {
-                { PageParameter.Account, account }
-            };
-
-            await _navigationService.NavigateAsync(PageName.AccountReconcilePage, parameters);
+                var updatedAccountResult = await _accountLogic.Value.GetAccountAsync(transaction.Account.Id);
+                if (updatedAccountResult.Success)
+                {
+                    RefreshAccount(updatedAccountResult.Data);
+                }
+            }
         }
     }
 }

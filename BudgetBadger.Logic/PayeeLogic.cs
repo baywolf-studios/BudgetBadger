@@ -51,7 +51,7 @@ namespace BudgetBadger.Logic
                 {
                     await _payeeDataAccess.CreatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = payeeToUpsert;
+                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -66,7 +66,7 @@ namespace BudgetBadger.Logic
                 {
                     await _payeeDataAccess.UpdatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = payeeToUpsert;
+                    result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -126,26 +126,18 @@ namespace BudgetBadger.Logic
             {
                 var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
-                // ugly hardcoded to remove the starting balance payee.
-                // may move to a "Payee Group" type setup
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive).ToList();
-
-                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted && !p.IsStartingBalance))
-                {
-                    payees.Add(GetGenericHiddenPayee());
-                }
-
-                var tasks = payees.Select(GetPopulatedPayee);
+                var tasks = allPayees.Select(GetPopulatedPayee);
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var payeesToReturn = populatedPayees.Where(p => FilterPayee(p, FilterType.Standard)).ToList();
 
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
+                if (populatedPayees.Any(p => FilterPayee(p, FilterType.Hidden)))
+                {
+                    payeesToReturn.Add(GetGenericHiddenPayee());
+                }
 
                 result.Success = true;
-                result.Data = filteredPopulatedPayees;
+                result.Data = payeesToReturn;
             }
             catch (Exception ex)
             {
@@ -165,14 +157,10 @@ namespace BudgetBadger.Logic
             {
                 var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive);
+                var tasks = allPayees.Select(GetPopulatedPayee);
 
-                var tasks = payees.Select(GetPopulatedPayee);
-
-                var payeesToReturn = (await Task.WhenAll(tasks)).ToList();
-                payeesToReturn.Sort();
+                var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var payeesToReturn = populatedPayees.Where(p => FilterPayee(p, FilterType.Selection)).ToList();
 
                 result.Success = true;
 				result.Data = payeesToReturn;
@@ -194,24 +182,18 @@ namespace BudgetBadger.Logic
             {
                 var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsActive).ToList();
-
-                if (allPayees.Any(p => p.IsHidden && !p.IsDeleted && !p.IsStartingBalance))
-                {
-                    payees.Add(GetGenericHiddenPayee());
-                }
-
-                var tasks = payees.Select(p => GetPopulatedPayee(p));
+                var tasks = allPayees.Select(GetPopulatedPayee);
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var payeesToReturn = populatedPayees.Where(p => FilterPayee(p, FilterType.Report)).ToList();
 
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
+                if (populatedPayees.Any(p => FilterPayee(p, FilterType.Hidden)))
+                {
+                    payeesToReturn.Add(GetGenericHiddenPayee());
+                }
 
                 result.Success = true;
-                result.Data = filteredPopulatedPayees;
+                result.Data = payeesToReturn;
             }
             catch (Exception ex)
             {
@@ -230,20 +212,13 @@ namespace BudgetBadger.Logic
             {
                 var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
-                var payees = allPayees.Where(p =>
-                                             !p.IsStartingBalance
-                                             && p.IsHidden
-                                             && !p.IsDeleted);
-
-                var tasks = payees.Select(GetPopulatedPayee);
+                var tasks = allPayees.Select(GetPopulatedPayee);
 
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                var filteredPopulatedPayees = populatedPayees.Where(p => !p.IsAccount).ToList();
-                filteredPopulatedPayees.Sort();
+                var payeesToReturn = populatedPayees.Where(p => FilterPayee(p, FilterType.Hidden)).ToList();
 
                 result.Success = true;
-                result.Data = filteredPopulatedPayees;
+                result.Data = payeesToReturn;
             }
             catch (Exception ex)
             {
@@ -254,9 +229,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeletePayeeAsync(Guid id)
+        public async Task<Result<Payee>> SoftDeletePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -295,6 +270,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -305,9 +281,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> HidePayeeAsync(Guid id)
+        public async Task<Result<Payee>> HidePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -341,6 +317,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -351,9 +328,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> UnhidePayeeAsync(Guid id)
+        public async Task<Result<Payee>> UnhidePayeeAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Payee>();
 
             try
             {
@@ -387,6 +364,7 @@ namespace BudgetBadger.Logic
                 await _payeeDataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
+                result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -399,6 +377,10 @@ namespace BudgetBadger.Logic
 
         public bool FilterPayee(Payee payee, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
             if (payee != null)
             {
                 return payee.Description.ToLower().Contains(searchText.ToLower());
@@ -409,6 +391,22 @@ namespace BudgetBadger.Logic
             }
         }
 
+        public bool FilterPayee(Payee payee, FilterType filterType)
+        {
+            switch (filterType)
+            {
+                case FilterType.Standard:
+                case FilterType.Report:
+                    return payee.IsActive && !payee.IsStartingBalance && !payee.IsAccount;
+                case FilterType.Selection:
+                    return payee.IsActive && !payee.IsStartingBalance;
+                case FilterType.Hidden:
+                    return payee.IsHidden && !payee.IsDeleted && !payee.IsGenericHiddenPayee && !payee.IsStartingBalance && !payee.IsAccount;
+                case FilterType.All:
+                default:
+                    return true;
+            }
+        }
 
         async Task<Result> ValidatePayeeAsync(Payee payee)
         {
@@ -446,22 +444,7 @@ namespace BudgetBadger.Logic
 
             payeeToPopulate.IsAccount = !payeeAccount.IsNew;
 
-            if (string.IsNullOrEmpty(payeeToPopulate.Description))
-            {
-                payeeToPopulate.Group = String.Empty;
-            }
-            else if (payeeToPopulate.IsAccount)
-            {
-                payeeToPopulate.Group = _resourceContainer.GetResourceString("PayeeTransferGroup");
-            }
-            else if (payeeToPopulate.IsHidden)
-            {
-                payeeToPopulate.Group = _resourceContainer.GetResourceString("Hidden");
-            }
-            else
-            {
-                payeeToPopulate.Group = payeeToPopulate.Description[0].ToString().ToUpper();
-            }
+            payeeToPopulate.TranslatePayee(_resourceContainer);
 
             return payeeToPopulate;
         }
@@ -470,8 +453,7 @@ namespace BudgetBadger.Logic
         {
             var startingBalancePayee = Constants.StartingBalancePayee.DeepCopy();
 
-            startingBalancePayee.Description = _resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
-            startingBalancePayee.Group = String.Empty;
+            startingBalancePayee.TranslatePayee(_resourceContainer);
 
             return startingBalancePayee;
         }
@@ -480,8 +462,7 @@ namespace BudgetBadger.Logic
         {
             var hiddenPayee = Constants.GenericHiddenPayee.DeepCopy();
 
-            hiddenPayee.Description = _resourceContainer.GetResourceString("Hidden");
-            hiddenPayee.Group = _resourceContainer.GetResourceString("Hidden");
+            hiddenPayee.TranslatePayee(_resourceContainer);
 
             return hiddenPayee;
         }

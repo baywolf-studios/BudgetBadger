@@ -14,12 +14,13 @@ namespace BudgetBadger.Core.Logic
         Task<Result<IReadOnlyList<Account>>> GetAccountsAsync();
         Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync();
         Task<Result<IReadOnlyList<Account>>> GetHiddenAccountsAsync();
-        Task<Result> SoftDeleteAccountAsync(Guid id);
-        Task<Result> HideAccountAsync(Guid id);
-        Task<Result> UnhideAccountAsync(Guid id);
+        Task<Result<Account>> SoftDeleteAccountAsync(Guid id);
+        Task<Result<Account>> HideAccountAsync(Guid id);
+        Task<Result<Account>> UnhideAccountAsync(Guid id);
 
         Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount);
 
         bool FilterAccount(Account account, string searchText);
+        bool FilterAccount(Account account, FilterType filterType);
     }
 }

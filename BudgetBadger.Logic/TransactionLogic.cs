@@ -99,7 +99,7 @@ namespace BudgetBadger.Logic
                 {
                     await _transactionDataAccess.CreateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = transactionToUpsert;
+                    result.Data = await GetPopulatedTransaction(transactionToUpsert);
                 }
                 catch (Exception ex)
                 {
@@ -115,7 +115,7 @@ namespace BudgetBadger.Logic
                 {
                     await _transactionDataAccess.UpdateTransactionAsync(transactionToUpsert).ConfigureAwait(false);
                     result.Success = true;
-                    result.Data = transactionToUpsert;
+                    result.Data = await GetPopulatedTransaction(transactionToUpsert);
                 }
                 catch (Exception ex)
                 {
@@ -234,9 +234,9 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        public async Task<Result> SoftDeleteTransactionAsync(Guid id)
+        public async Task<Result<Transaction>> SoftDeleteTransactionAsync(Guid id)
         {
-            var result = new Result();
+            var result = new Result<Transaction>();
 
             try
             {
@@ -274,6 +274,7 @@ namespace BudgetBadger.Logic
                 transactionToDelete.SplitId = null;
                 await _transactionDataAccess.UpdateTransactionAsync(transactionToDelete).ConfigureAwait(false);
                 result.Success = true;
+                result.Data = await GetPopulatedTransaction(transactionToDelete).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -381,6 +382,11 @@ namespace BudgetBadger.Logic
 
         public bool FilterTransaction(Transaction transaction, string searchText)
         {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
+
             if (transaction != null)
             {
                 return transaction.Envelope.Description.ToLower().Contains(searchText.ToLower())
@@ -437,7 +443,7 @@ namespace BudgetBadger.Logic
                 transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.GenericDebtEnvelope.Id);
             }
 
-            return new Result<Transaction> { Success = true, Data = transactionToPopulate };
+            return new Result<Transaction> { Success = true, Data = await GetPopulatedTransaction(transactionToPopulate) };
         }
 
 
@@ -461,10 +467,13 @@ namespace BudgetBadger.Logic
             transaction.Payee = await _payeeDataAccess.ReadPayeeAsync(transaction.Payee.Id).ConfigureAwait(false);
             var payeeAccount = await _accountDataAccess.ReadAccountAsync(transaction.Payee.Id).ConfigureAwait(false);
             transaction.Payee.IsAccount = !payeeAccount.IsNew;
+            transaction.Payee.TranslatePayee(_resourceContainer);
 
             transaction.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(transaction.Envelope.Id).ConfigureAwait(false);
+            transaction.Envelope.TranslateEnvelope(_resourceContainer);
 
             transaction.Account = await _accountDataAccess.ReadAccountAsync(transaction.Account.Id).ConfigureAwait(false);
+            transaction.Account.TranslateAccount(_resourceContainer);
 
             return transaction;
         }
@@ -477,7 +486,7 @@ namespace BudgetBadger.Logic
 
             foreach (var transactionGroup in transactionGroups)
             {
-                var combinedTransaction = transactionGroup.FirstOrDefault();
+                var combinedTransaction = transactionGroup.OrderBy(t => t.CreatedDateTime).FirstOrDefault();
                 if (transactionGroup.Count() > 1)
                 {
                     combinedTransaction.Id = combinedTransaction.SplitId.Value;

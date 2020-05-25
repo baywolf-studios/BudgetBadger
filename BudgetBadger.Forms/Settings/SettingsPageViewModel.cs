@@ -9,6 +9,7 @@ using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Style;
 using Prism;
 using Prism.AppModel;
 using Prism.Commands;
@@ -38,8 +39,8 @@ namespace BudgetBadger.Forms.Settings
         public ICommand RestoreProCommand { get; set; }
         public ICommand PurchaseProCommand { get; set; }
         public ICommand SyncCommand { get; set; }
-        public ICommand HelpCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
-        public ICommand EmailCommand { get => new DelegateCommand(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
+        public ICommand HelpCommand { get => new Command(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
+        public ICommand EmailCommand { get => new Command(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
         public ICommand CurrencySelectedCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
         public ICommand LanguageSelectedCommand { get; set; }
@@ -93,11 +94,11 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _languageList, value);
         }
 
-        int _selectedLanguageIndex;
-        public int SelectedLanguageIndex
+        KeyValuePair<string, CultureInfo> _selectedLanguage;
+        public KeyValuePair<string, CultureInfo> SelectedLanguage
         {
-            get => _selectedLanguageIndex;
-            set => SetProperty(ref _selectedLanguageIndex, value);
+            get => _selectedLanguage;
+            set => SetProperty(ref _selectedLanguage, value);
         }
 
         List<KeyValuePair<string, CultureInfo>> _currencyFormatList;
@@ -107,11 +108,11 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _currencyFormatList, value);
         }
 
-        int _selectedCurrencyFormatIndex;
-        public int SelectedCurrencyFormatIndex
+        KeyValuePair<string, CultureInfo> _selectedCurrencyFormat;
+        public KeyValuePair<string, CultureInfo> SelectedCurrencyFormat
         {
-            get => _selectedCurrencyFormatIndex;
-            set => SetProperty(ref _selectedCurrencyFormatIndex, value);
+            get => _selectedCurrencyFormat;
+            set => SetProperty(ref _selectedCurrencyFormat, value);
         }
 
         public SettingsPageViewModel(IResourceContainer resourceContainer,
@@ -134,16 +135,14 @@ namespace BudgetBadger.Forms.Settings
 
             HasPro = false;
             IsBusy = false;
-            CurrencyFormatList = new List<KeyValuePair<string, CultureInfo>>();
-            LanguageList = new List<KeyValuePair<string, CultureInfo>>();
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
-            SyncToggleCommand = new DelegateCommand(async () => await ExecuteSyncToggleCommand());
-            RestoreProCommand = new DelegateCommand(async () => await ExecuteRestoreProCommand());
-            PurchaseProCommand = new DelegateCommand(async () => await ExecutePurchaseProCommand());
-            SyncCommand = new DelegateCommand(async () => await ExecuteSyncCommand());
-            CurrencySelectedCommand = new DelegateCommand(async () => await ExecuteCurrencySelectedCommand());
-            LanguageSelectedCommand = new DelegateCommand(async () => await ExecuteLanguageSelectedCommand());
+            SyncToggleCommand = new Command(async () => await ExecuteSyncToggleCommand());
+            RestoreProCommand = new Command(async () => await ExecuteRestoreProCommand());
+            PurchaseProCommand = new Command(async () => await ExecutePurchaseProCommand());
+            SyncCommand = new Command(async () => await ExecuteSyncCommand());
+            CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
+            LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
 
             ResetLocalization();
         }
@@ -154,13 +153,10 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            ResetLocalization();
         }
 
         public override async void OnActivated()
         {
-            ResetLocalization();
-
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
@@ -405,52 +401,44 @@ namespace BudgetBadger.Forms.Settings
 
         public async Task ExecuteLanguageSelectedCommand()
         {
-            if (SelectedLanguageIndex > -1)
+            var current = (CultureInfo)_localize.GetLocale().Clone();
+
+            if (SelectedLanguage.Value == CultureInfo.InvariantCulture) // set to device
             {
-                var current = (CultureInfo)_localize.GetLocale().Clone();
-
-            
-                var selectedLanguage = LanguageList.ElementAtOrDefault(SelectedLanguageIndex);
-
-                if (selectedLanguage.Value == CultureInfo.InvariantCulture) // set to device
-                {
-                    var device = _localize.GetDeviceCultureInfo();
-                    current = device;
-                    await _settings.AddOrUpdateValueAsync(AppSettings.Language, string.Empty);
-                }
-                else // user choice
-                {
-                    current = selectedLanguage.Value;
-                    await _settings.AddOrUpdateValueAsync(AppSettings.Language, selectedLanguage.Value.Name);
-                }
-
-                _localize.SetLocale(current);
+                var device = _localize.GetDeviceCultureInfo();
+                current = device;
+                await _settings.AddOrUpdateValueAsync(AppSettings.Language, string.Empty);
             }
-            
+            else // user choice
+            {
+                current = SelectedLanguage.Value;
+                await _settings.AddOrUpdateValueAsync(AppSettings.Language, SelectedLanguage.Value.Name);
+            }
+
+            _localize.SetLocale(current);
+
+            TranslationProvider.Instance.Invalidate();
         }
 
         public async Task ExecuteCurrencySelectedCommand()
         {
-            if (SelectedCurrencyFormatIndex > -1)
+            var current = (CultureInfo)_localize.GetLocale().Clone();
+
+            if (SelectedCurrencyFormat.Value == CultureInfo.InvariantCulture)
             {
-                var current = (CultureInfo)_localize.GetLocale().Clone();
-
-                var selectedCurrencyFormat = CurrencyFormatList.ElementAtOrDefault(SelectedCurrencyFormatIndex);
-
-                if (selectedCurrencyFormat.Value == CultureInfo.InvariantCulture)
-                {
-                    var device = _localize.GetDeviceCultureInfo();
-                    current.NumberFormat = device.NumberFormat;
-                    await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, string.Empty);
-                }
-                else
-                {
-                    current.NumberFormat = selectedCurrencyFormat.Value.NumberFormat;
-                    await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, selectedCurrencyFormat.Value.Name);
-                }
-
-                _localize.SetLocale(current);
+                var device = _localize.GetDeviceCultureInfo();
+                current.NumberFormat = device.NumberFormat;
+                await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, string.Empty);
             }
+            else
+            {
+                current.NumberFormat = SelectedCurrencyFormat.Value.NumberFormat;
+                await _settings.AddOrUpdateValueAsync(AppSettings.CurrencyFormat, SelectedCurrencyFormat.Value.Name);
+            }
+
+            _localize.SetLocale(current);
+
+            TranslationProvider.Instance.Invalidate();
         }
 
         void ResetLocalization()
@@ -462,11 +450,11 @@ namespace BudgetBadger.Forms.Settings
             var currentLanguage = _settings.GetValueOrDefault(AppSettings.Language);
             if (LanguageList.Any(d => d.Value.Name == currentLanguage))
             {
-                SelectedLanguageIndex = LanguageList.IndexOf(LanguageList.FirstOrDefault(d => d.Value.Name == currentLanguage));
+                SelectedLanguage = LanguageList.FirstOrDefault(d => d.Value.Name == currentLanguage);
             }
             else
             {
-                SelectedLanguageIndex = LanguageList.IndexOf(LanguageList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture));
+                SelectedLanguage = LanguageList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
 
             CurrencyFormatList = GetCurrencies();
@@ -474,11 +462,11 @@ namespace BudgetBadger.Forms.Settings
             var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
             if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
             {
-                SelectedCurrencyFormatIndex = CurrencyFormatList.IndexOf(CurrencyFormatList.FirstOrDefault(c => c.Value.Name == currentCurrencyFormat));
+                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value.Name == currentCurrencyFormat);
             }
             else
             {
-                SelectedCurrencyFormatIndex = CurrencyFormatList.IndexOf(CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture));
+                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
         }
     }

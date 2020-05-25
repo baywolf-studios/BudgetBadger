@@ -6,8 +6,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
@@ -16,78 +15,81 @@
             SearchText="{Binding SearchText}"
             BackCommand="{Binding BackCommand}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeGroupHelperTitle}"
-            ImagePath="envelopegroup.svg"
+            Icon="{ext:DynamicResource EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
-                <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:ListView
-                            AllowSwiping="true"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            HeaderSize="0"
-                            IsBusy="{Binding IsBusy}"
-                            ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding EnvelopeGroups}"
-                            SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedEnvelopeGroup}">
-                            <syncfusion:SfListView.Triggers>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <uc:ListView2
+                    Grid.ColumnSpan="12"
+                    Items="{Binding EnvelopeGroups}"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedEnvelopeGroup}"
+                    SeparatorVisibility="None"
+                    IsHeaderSticky="True"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:EnvelopeGroupComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.Header>
+                        <ContentView HeightRequest="{ext:DynamicResource size_0}">
+                            <ContentView.Triggers>
                                 <DataTrigger
                                     Binding="{Binding HasSearchText}"
-                                    TargetType="syncfusion:SfListView"
-                                    Value="true">
-                                    <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
+                                    TargetType="ContentView"
+                                    Value="True">
+                                    <Setter Property="HeightRequest" Value="{ext:DynamicResource size_600}" />
                                 </DataTrigger>
-                            </syncfusion:SfListView.Triggers>
-                            <syncfusion:SfListView.HeaderTemplate>
-                                <DataTemplate>
-                                    <uc:Button2
-                                        Margin="16,8"
-                                        Command="{Binding SaveSearchCommand}"
-                                        IsVisible="{Binding HasSearchText}"
-                                        Style="{StaticResource SecondaryActionButtonStyle}"
-                                        Text="{Binding SearchText, StringFormat='+ {0}'}" />
-                                </DataTemplate>
-                            </syncfusion:SfListView.HeaderTemplate>
-                            <syncfusion:SfListView.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:EnvelopeGroupViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
-            </Grid>
-        </uc:HelperControl>
+                            </ContentView.Triggers>
+                            <uc:Button2
+                                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                Command="{Binding SaveSearchCommand}"
+                                IsVisible="False"
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Text="{Binding SearchText, StringFormat='+ {0}'}"
+                                VerticalOptions="Center">
+                                <uc:Button2.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding HasSearchText}"
+                                        TargetType="uc:Button2"
+                                        Value="True">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </uc:Button2.Triggers>
+                            </uc:Button2>
+                        </ContentView>
+                    </uc:ListView2.Header>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:EnvelopeGroupViewCell/>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                </uc:ListView2>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>
