@@ -183,9 +183,6 @@
   <data name="AccountTypeReporting" xml:space="preserve">
     <value>Reporting</value>
   </data>
-  <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
-    <value>Account is not deleted</value>
-  </data>
   <data name="AccountValidBalanceError" xml:space="preserve">
     <value>Account balance is required</value>
   </data>
@@ -249,9 +246,6 @@
   <data name="AlertSyncUnsuccessful" xml:space="preserve">
     <value>Sync Unsuccessful</value>
   </data>
-  <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
-    <value>Undo Delete Unsuccessful</value>
-  </data>
   <data name="AutomaticLabel" xml:space="preserve">
     <value>Automatic</value>
   </data>
@@ -290,9 +284,6 @@
   </data>
   <data name="BusyTextSyncing" xml:space="preserve">
     <value>Syncing</value>
-  </data>
-  <data name="BusyTextUndoingDelete" xml:space="preserve">
-    <value>Undoing Delete</value>
   </data>
   <data name="CloudSyncLabel" xml:space="preserve">
     <value>Cloud Sync</value>
@@ -729,9 +720,6 @@
   <data name="TransactionClearedLabel" xml:space="preserve">
     <value>Cleared</value>
   </data>
-    <data name="TransactionPendingLabel" xml:space="preserve">
-    <value>Pending</value>
-  </data>
   <data name="TransactionDeleteAccountDeletedError" xml:space="preserve">
     <value>Cannot delete transaction with deleted account</value>
   </data>
@@ -740,9 +728,6 @@
   </data>
   <data name="TransactionDeleteTransferDeletedPayeeError" xml:space="preserve">
     <value>Cannot delete transfer transaction with deleted payee</value>
-  </data>
-  <data name="TransactionDeleteInactiveError" xml:space="preserve">
-    <value>Cannot delete an inactive transaction</value> 
   </data>
   <data name="TransactionEditPageTitle" xml:space="preserve">
     <value>Edit Transaction</value>
@@ -830,9 +815,6 @@
   </data>
   <data name="TransferValidToError" xml:space="preserve">
     <value>Transfer does not contain a valid To Envelope</value>
-  </data>
-  <data name="UndoDeleteButton" xml:space="preserve">
-    <value>Undo Delete</value>
   </data>
   <data name="InternationalLabel" xml:space="preserve">
     <value>International</value>
@@ -1070,6 +1052,24 @@
   </data>
   <data name="AccountUnhideSystemError" xml:space="preserve">
     <value>Cannot unhide system account</value>
+  </data>
+  <data name="AccountUndoDeleteNotDeletedError" xml:space="preserve">
+    <value>Account is not deleted</value>
+  </data>
+  <data name="AlertUndoDeleteUnsuccessful" xml:space="preserve">
+    <value>Undo Delete Unsuccessful</value>
+  </data>
+  <data name="BusyTextUndoingDelete" xml:space="preserve">
+    <value>Undoing Delete</value>
+  </data>
+  <data name="TransactionPendingLabel" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="TransactionDeleteInactiveError" xml:space="preserve">
+    <value>Cannot delete an inactive transaction</value>
+  </data>
+  <data name="UndoDeleteButton" xml:space="preserve">
+    <value>Undo Delete</value>
   </data>
   <data name="AssestsLabel" xml:space="preserve">
     <value>Assests</value>
