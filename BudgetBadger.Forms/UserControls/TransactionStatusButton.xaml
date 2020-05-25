@@ -76,7 +76,8 @@
                                 x:Name="ClearedImageSource"
                                 Size="{ext:DynamicResource size_175}"
                                 Color="{ext:DynamicResource Key=brand_600}"
-                                Glyph="C"/>
+                                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                Glyph="{ext:DynamicResource Key=CIcon}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
@@ -90,7 +91,8 @@
                                 x:Name="PendingImageSource"
                                 Size="{ext:DynamicResource size_175}"
                                 Color="{ext:DynamicResource Key=gray_600}"
-                                Glyph="P"/>
+                                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                Glyph="{ext:DynamicResource Key=PIcon}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
