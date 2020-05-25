@@ -14,18 +14,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
-
-        bool _needToSync;
+        readonly IEventAggregator _eventAggregator;
 
         bool _isBusy;
         public bool IsBusy
@@ -62,7 +63,7 @@ namespace BudgetBadger.Forms.Envelopes
             get => Enum.GetNames(typeof(OverspendingType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand QuickBudgetCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand SoftDeleteCommand { get; set; }
@@ -74,22 +75,24 @@ namespace BudgetBadger.Forms.Envelopes
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
                                          ISyncFactory syncFactory,
-                                         IResourceContainer resourceContainer)
+                                         IResourceContainer resourceContainer,
+                                         IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
             _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
+            _eventAggregator = eventAggregator;
 
             Budget = new Budget();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            GroupSelectedCommand = new DelegateCommand(async () => await ExecuteGroupSelectedCommand());
-            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand(), CanExecuteSoftDeleteCommand).ObservesProperty(() => Budget);
-            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand(), CanExecuteHideCommand).ObservesProperty(() => Budget);
-            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
-            QuickBudgetCommand = new DelegateCommand(async () => await ExecuteQuickBudgetCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            GroupSelectedCommand = new Command(async () => await ExecuteGroupSelectedCommand());
+            SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
+            HideCommand = new Command(async () => await ExecuteHideCommand());
+            UnhideCommand = new Command(async () => await ExecuteUnhideCommand());
+            QuickBudgetCommand = new Command(async () => await ExecuteQuickBudgetCommand());
         }
         
         public async Task InitializeAsync(INavigationParameters parameters)
@@ -151,19 +154,8 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -190,15 +182,9 @@ namespace BudgetBadger.Forms.Envelopes
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(result.Data);
 
-                    _needToSync = true;
-
-					var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Budget, result.Data },
-                        { PageParameter.Envelope, result.Data.Envelope }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -214,18 +200,6 @@ namespace BudgetBadger.Forms.Envelopes
         public async Task ExecuteGroupSelectedCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupSelectionPage);
-        }
-
-        public bool CanExecuteSoftDeleteCommand()
-        {
-            if (Budget != null && Budget.Envelope != null)
-            {
-                return Budget.Envelope.IsHidden;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public async Task ExecuteSoftDeleteCommand()
@@ -249,16 +223,9 @@ namespace BudgetBadger.Forms.Envelopes
                     var result = await _envelopeLogic.SoftDeleteEnvelopeAsync(Budget.Envelope.Id);
                     if (result.Success)
                     {
-                        _needToSync = true;
+                        _eventAggregator.GetEvent<EnvelopeDeletedEvent>().Publish(result.Data);
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -271,19 +238,6 @@ namespace BudgetBadger.Forms.Envelopes
                 }
             }
         }
-
-        public bool CanExecuteHideCommand()
-        {
-            if (Budget != null && Budget.Envelope != null)
-            {
-                return Budget.Envelope.IsActive;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async Task ExecuteHideCommand()
         {
             if (IsBusy)
@@ -299,16 +253,9 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.HideEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<EnvelopeHiddenEvent>().Publish(result.Data);
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -336,7 +283,7 @@ namespace BudgetBadger.Forms.Envelopes
                 var result = await _envelopeLogic.UnhideEnvelopeAsync(Budget.Envelope.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }

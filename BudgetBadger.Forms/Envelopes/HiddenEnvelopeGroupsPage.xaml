@@ -6,7 +6,7 @@
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
         <p:ChildSearchHeader
@@ -15,37 +15,50 @@
             SearchText="{Binding SearchText}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyHiddenEnvelopeGroupsHelperTitle}"
-            ImagePath="envelopegroup.svg"
+            Icon="{ext:DynamicResource EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <uc:PullToRefresh
-                Grid.Row="2"
-                IsBusy="{Binding IsBusy}"
-                RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView
-                        Filter="{Binding Filter}"
-                        FilterText="{Binding SearchText}"
-                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                        IsBusy="{Binding IsBusy}"
-                        ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}">
-                        <syncfusion:SfListView.GroupHeaderTemplate>
-                            <DataTemplate>
-                                <dt:GroupHeaderViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.GroupHeaderTemplate>
-                        <syncfusion:SfListView.ItemTemplate>
-                            <DataTemplate>
-                                <dt:EnvelopeGroupViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.ItemTemplate>
-                    </uc:ListView>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
-        </uc:HelperControl>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <uc:ListView2
+                    Grid.ColumnSpan="12"
+                    Items="{Binding EnvelopeGroups}"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedEnvelopeGroup}"
+                    SeparatorVisibility="None"
+                    IsHeaderSticky="True"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:EnvelopeGroupComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:EnvelopeGroupViewCell/>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                </uc:ListView2>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

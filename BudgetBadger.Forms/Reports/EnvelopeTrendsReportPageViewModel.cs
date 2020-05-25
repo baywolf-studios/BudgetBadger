@@ -17,14 +17,14 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Reports
 {
-    public class EnvelopeTrendsReportsPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeTrendsReportsPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly INavigationService _navigationService;
         readonly IReportLogic _reportLogic;
         readonly IEnvelopeLogic _envelopeLogic;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
 
         bool _isBusy;
@@ -111,7 +111,7 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
             _envelopeLogic = envelopeLogic;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
 
             Envelopes = new List<Envelope>();
 
@@ -129,10 +129,7 @@ namespace BudgetBadger.Forms.Reports
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
+            await ExecuteRefreshCommand();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -168,8 +165,6 @@ namespace BudgetBadger.Forms.Reports
             {
                 EndDate = endDate.GetValueOrDefault();
             }
-
-            await ExecuteRefreshCommand();
         }
 
         public async Task ExecuteRefreshCommand()

@@ -39,6 +39,10 @@ using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using BudgetBadger.Core.Utilities;
 using Prism.Logging;
+using Prism.Navigation;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
+using System.Threading;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -54,30 +58,75 @@ namespace BudgetBadger.Forms
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+        private Timer _syncTimer;
+
         protected override async void OnInitialized()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSecrets.SyncFusionLicenseKey);
             InitializeComponent();
 
             SQLitePCL.Batteries_V2.Init();
 
-            if (Device.Idiom == TargetIdiom.Desktop)
+            var settings = Container.Resolve<ISettings>();
+            int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+            if (appOpenedCount > 0)
             {
-                await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage");
+                if (Device.Idiom == TargetIdiom.Desktop)
+                {
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.PageName, "EnvelopesPage" }
+                    };
+                    await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage", parameters);
+                }
+                else
+                {
+                    await NavigationService.NavigateAsync("MainPage");
+                }
             }
             else
             {
-                var settings = Container.Resolve<ISettings>();
-                int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
-                if (appOpenedCount > 0)
+                if (Device.Idiom == TargetIdiom.Desktop)
                 {
-                    await NavigationService.NavigateAsync("MainPage");
+                    var parameters = new NavigationParameters
+                    {
+                        { PageParameter.PageName, "AccountsPage" }
+                    };
+                    await NavigationService.NavigateAsync("/MainPage/NavigationPage/AccountsPage", parameters);
                 }
                 else
                 {
                     await NavigationService.NavigateAsync("MainPage?selectedTab=AccountsPage");
                 }
             }
+
+            _syncTimer = new Timer(_ => Task.Run(async () => await Sync()).FireAndForget());
+
+            var eventAggregator = Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<AccountUnhiddenEvent>().Subscribe(x => ResetSyncTimer());
+
+            eventAggregator.GetEvent<BudgetSavedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeDeletedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeHiddenEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(x => ResetSyncTimer());
+
+            eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeGroupHiddenEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<EnvelopeGroupUnhiddenEvent>().Subscribe(x => ResetSyncTimer());
+
+            eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(x => ResetSyncTimer());
+
+            eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(ResetSyncTimer);
+            eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(x => ResetSyncTimer());
+            eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(x => ResetSyncTimer());
         }
 
         protected async override void OnStart()
@@ -91,14 +140,12 @@ namespace BudgetBadger.Forms
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
             await VerifyPurchases();
-            await SyncOnStartOrResume();
+            ResetSyncTimerAtStartOrResume();
         }
 
-        protected async override void OnResume()
+        protected override void OnResume()
         {
-            SetLocale();
-            //await VerifyPurchases();
-            await SyncOnStartOrResume();
+            ResetSyncTimerAtStartOrResume();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -302,50 +349,25 @@ namespace BudgetBadger.Forms
             }
         }
 
-        async Task SyncOnStartOrResume()
+        private void ResetSyncTimerAtStartOrResume()
         {
-            var refreshResult = await RefreshSyncCredentials();
-
-            if (refreshResult.Success)
-            {
-                var syncFactory = Container.Resolve<ISyncFactory>();
-                var syncService = syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-                if (syncResult.Success)
-                {
-                    await syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
-            }
-            else
-            {
-                var dialogService = Container.Resolve<IPageDialogService>();
-                await dialogService.DisplayAlertAsync("Sync Setup Invalid", refreshResult.Message, "OK");
-            }
+            _syncTimer.Change(TimeSpan.FromMilliseconds(1), TimeSpan.FromMilliseconds(-1));
         }
 
-        async Task<Result> RefreshSyncCredentials()
+        private void ResetSyncTimer()
         {
-            //works on device, not on simulator right now
-            return new Result { Success = true };
+            _syncTimer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(-1));
+        }
 
-            //checking current filesyncprovider is valid
-            var settings = Container.Resolve<ISettings>();
-            var currentSyncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
-
-            if (currentSyncMode == SyncMode.DropboxSync)
+        async Task Sync()
+        {
+            var syncFactory = Container.Resolve<ISyncFactory>();
+            var syncService = syncFactory.GetSyncService();
+            var syncResult = await syncService.FullSync();
+            if (syncResult.Success)
             {
-                var dropboxApi = Container.Resolve<DropBoxApi>();
-                var account = await dropboxApi.Authenticate() as SimpleAuth.OAuthAccount;
-                if (account.IsValid())
-                {
-                    await settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
-                    return new Result { Success = true };
-                }
-
-                return new Result { Success = false, Message = "Could not validate sync credentials. Please try again." };
+                await syncFactory.SetLastSyncDateTime(DateTime.Now);
             }
-
-            return new Result { Success = true };
         }
     }
 }

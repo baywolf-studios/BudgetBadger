@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates
 {
-    public partial class GroupHeaderViewCell : ContentView
+    public partial class GroupHeaderViewCell : Grid
     {
         public GroupHeaderViewCell()
         {

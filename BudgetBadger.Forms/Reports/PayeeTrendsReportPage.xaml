@@ -11,126 +11,113 @@
         <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{Binding SelectedPayee.Description}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
-        <Grid
-            Margin="0"
-            ColumnSpacing="16"
-            RowSpacing="0">
+        <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="1" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <uc:Expander Grid.Row="0" IsExpanded="true">
-                <uc:Expander.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>true</OnIdiom.Phone>
-                        <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                    </OnIdiom>
-                </uc:Expander.IsVisible>
-                <uc:Expander.HeaderContent>
-                    <Grid ColumnSpacing="8">
+            <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="12"
+                VerticalOptions="Start">
+                <FlexLayout
+                    IsVisible="{OnIdiom Default=True, Phone=False}"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="SpaceEvenly"
+                    AlignContent="Center"
+                    AlignItems="Center"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                    <ContentView
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}">
                         <Label
-                            HorizontalOptions="Start"
-                            Style="{StaticResource PageHeaderLabelStyle}"
-                            Text="{ext:Translate FilterLabel}"
-                            VerticalOptions="Center" />
-                    </Grid>
-                </uc:Expander.HeaderContent>
-                <uc:Expander.BodyContent>
-                    <Grid ColumnSpacing="16" RowSpacing="8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <uc:DropdownSelector
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            ItemDisplayBinding="{Binding Description}"
-                            ItemsSource="{Binding Payees}"
-                            Label="{ext:Translate PayeeLabel}"
-                            SelectedItem="{Binding SelectedPayee}" />
-                        <uc:DateSelector
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Date="{Binding BeginDate, Mode=TwoWay}"
-                            Label="{ext:Translate BeginDateLabel}" />
-                        <uc:DateSelector
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Date="{Binding EndDate, Mode=TwoWay}"
-                            Label="{ext:Translate EndDateLabel}" />
-                    </Grid>
-                </uc:Expander.BodyContent>
-            </uc:Expander>
+                            VerticalOptions="Center"
+                            Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                            Text="{ext:Translate FilterLabel}"/>
+                    </ContentView>
+                    <uc:DatePicker
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        VerticalOptions="Center"
+                        Date="{Binding BeginDate}"
+                        Label="{ext:Translate BeginDateLabel}" />
+                    <uc:DatePicker
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        VerticalOptions="Center"
+                        Date="{Binding EndDate}"
+                        Label="{ext:Translate EndDateLabel}" />
+                    <uc:Dropdown
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        VerticalOptions="Center"
+                        ItemPropertyDescription="Description"
+                        ItemsSource="{Binding Payees}"
+                        Label="{ext:Translate PayeeLabel}"
+                        SelectedItem="{Binding SelectedPayee}" />
+                </FlexLayout>
+                <uc:Accordion
+                    IsVisible="{OnIdiom Default=False, Phone=True}"
+                    IsExpanded="True"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                    <uc:Accordion.HeaderContent>
+                        <ContentView HeightRequest="{ext:DynamicResource size_600}">
+                            <Label
+                                Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                Text="{ext:Translate FilterLabel}"
+                                VerticalOptions="Center"/>
+                        </ContentView>
+                    </uc:Accordion.HeaderContent>
+                    <uc:Accordion.BodyContent>
+                        <FlexLayout AlignContent="Center" AlignItems="Center" VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                            <uc:DatePicker
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                VerticalOptions="Center"
+                                Date="{Binding BeginDate}"
+                                Label="{ext:Translate BeginDateLabel}" />
+                            <uc:DatePicker
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                VerticalOptions="Center"
+                                Date="{Binding EndDate}"
+                                Label="{ext:Translate EndDateLabel}" />
+                            <uc:Dropdown
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                VerticalOptions="Center"
+                                ItemPropertyDescription="Description"
+                                ItemsSource="{Binding Payees}"
+                                Label="{ext:Translate PayeeLabel}"
+                                SelectedItem="{Binding SelectedPayee}" />
+                        </FlexLayout>
+                    </uc:Accordion.BodyContent>
+                </uc:Accordion>
+            </StackLayout>
             <BoxView
                 Grid.Row="1"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
+                Grid.ColumnSpan="12"
+                Style="{ext:DynamicResource MediumDividerStyle}"
+                HeightRequest="{ext:DynamicResource size_25}"
+                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
             <uc:BusyIndicator
                 Grid.Row="2"
+                Grid.ColumnSpan="12"
                 BusyText="{Binding BusyText}"
-                IsBusy="{Binding IsBusy, Mode=OneWay}">
-                <uc:HelperControl
+                IsBusy="{Binding IsBusy, Mode=OneWay}"
+                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}">
+                <uc:EmptyState
                     Title="{ext:Translate EmptyReportsHelperTitle}"
-                    ImagePath="report.svg"
+                    Icon="{ext:DynamicResource  ReportIcon}"
                     ShowHelper="{Binding NoResults}">
                     <microcharts:ChartView Chart="{Binding PayeeChart}" />
-                </uc:HelperControl>
+                </uc:EmptyState>
             </uc:BusyIndicator>
-            <BoxView
-                Grid.Row="3"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
-            <Grid
-                Grid.Row="4"
-                Margin="16"
-                ColumnSpacing="16"
-                RowSpacing="8">
-                <Grid.IsVisible>
-                    <OnIdiom x:TypeArguments="x:Boolean">
-                        <OnIdiom.Phone>false</OnIdiom.Phone>
-                        <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                        <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                    </OnIdiom>
-                </Grid.IsVisible>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="0" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    HorizontalOptions="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{ext:Translate FilterLabel}"
-                    VerticalOptions="Center" />
-                <uc:DropdownSelector
-                    Grid.Column="2"
-                    ItemDisplayBinding="{Binding Description}"
-                    ItemsSource="{Binding Payees}"
-                    Label="{ext:Translate PayeeLabel}"
-                    SelectedItem="{Binding SelectedPayee}" />
-                <uc:DateSelector
-                    Grid.Column="3"
-                    Date="{Binding BeginDate, Mode=TwoWay}"
-                    Label="{ext:Translate BeginDateLabel}" />
-                <uc:DateSelector
-                    Grid.Column="4"
-                    Date="{Binding EndDate, Mode=TwoWay}"
-                    Label="{ext:Translate EndDateLabel}" />
-            </Grid>
-        </Grid>
+        </uc:ResponsiveGrid>
     </p:BaseDetailedPage.Body>
 </p:BaseDetailedPage>

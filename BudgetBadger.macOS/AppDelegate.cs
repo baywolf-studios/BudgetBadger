@@ -2,8 +2,6 @@
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
 using BudgetBadger.macOS.Renderers;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Foundation;
 using Plugin.InAppBilling.Abstractions;
 using Prism;
@@ -37,10 +35,6 @@ namespace BudgetBadger.macOS
         {
             Xamarin.Forms.Forms.Init();
             SimpleAuth.NativeSafariAuthenticator.Activate();
-            Syncfusion.SfDataGrid.XForms.MacOS.SfDataGridRenderer.Init();
-            Syncfusion.ListView.XForms.MacOS.SfListViewRenderer.Init();
-            CachedImageRenderer.Init();
-            var ignore = typeof(SvgCachedImage);
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
 

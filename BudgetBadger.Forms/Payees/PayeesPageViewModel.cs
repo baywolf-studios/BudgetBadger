@@ -17,10 +17,13 @@ using System.Collections.ObjectModel;
 using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeesPageViewModel : BaseViewModel
+    public class PayeesPageViewModel : BaseViewModel, INavigatedAware
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<IPayeeLogic> _payeeLogic;
@@ -28,17 +31,17 @@ namespace BudgetBadger.Forms.Payees
         readonly IPageDialogService _dialogService;
         readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IPurchaseService> _purchaseService;
+        readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshPayeeCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
         public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
-
-        bool _needToSync;
 
         bool _isBusy;
         public bool IsBusy
@@ -47,8 +50,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        ObservableList<Payee> _payees;
+        public ObservableList<Payee> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -84,12 +87,15 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _hasPro, value);
         }
 
+        bool _fullRefresh = true;
+
         public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                    INavigationService navigationService,
                                    IPageDialogService dialogService,
                                    Lazy<IPayeeLogic> payeeLogic,
                                    Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService)
+                                   Lazy<IPurchaseService> purchaseService,
+                                   IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
@@ -97,17 +103,26 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _purchaseService = purchaseService;
+            _eventAggregator = eventAggregator;
 
-            Payees = new List<Payee>();
+            Payees = new ObservableList<Payee>();
             SelectedPayee = null;
 
-            SelectedCommand = new DelegateCommand<Payee>(async p => await ExecuteSelectedCommand(p));
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SaveCommand = new DelegateCommand<Payee>(async p => await ExecuteSaveCommand(p));
-            SaveSearchCommand = new DelegateCommand(async () => await ExecuteSaveSearchCommand());
-            AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
-            EditCommand = new DelegateCommand<Payee>(async a => await ExecuteEditCommand(a));
-            AddTransactionCommand = new DelegateCommand(async () => await ExecuteAddTransactionCommand());
+            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SaveCommand = new Command<Payee>(async p => await ExecuteSaveCommand(p));
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
+            AddCommand = new Command(async () => await ExecuteAddCommand());
+            EditCommand = new Command<Payee>(async a => await ExecuteEditCommand(a));
+            AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
+            RefreshPayeeCommand = new Command<Payee>(RefreshPayee);
+
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
+            _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
 
         public override async void OnActivated()
@@ -115,22 +130,24 @@ namespace BudgetBadger.Forms.Payees
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            if (_fullRefresh)
+            {
+                await FullRefresh();
+                _fullRefresh = false;
+            }
         }
 
-        public override async void OnDeactivated()
+        public override void OnDeactivated()
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.Value.GetSyncService();
-                var syncResult = await syncService.FullSync();
+            SelectedPayee = null;
+        }
 
-                if (syncResult.Success)
-                {
-                    await _syncFactory.Value.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
         }
 
         public async Task ExecuteSelectedCommand(Payee payee)
@@ -155,43 +172,13 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task ExecuteRefreshCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                var result = await _payeeLogic.Value.GetPayeesAsync();
-
-                if (result.Success)
-                {
-                    Payees = result.Data;
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-                }
-
-                NoPayees = (Payees?.Count ?? 0) == 0;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
         public async Task ExecuteSaveCommand(Payee payee)
         {
             var result = await _payeeLogic.Value.SavePayeeAsync(payee);
 
             if (result.Success)
             {
-                _needToSync = true;
+                _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -210,8 +197,7 @@ namespace BudgetBadger.Forms.Payees
 
             if (result.Success)
             {
-                _needToSync = true;
-                await ExecuteRefreshCommand();
+                _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
             }
             else
             {
@@ -228,16 +214,73 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteEditCommand(Payee payee)
         {
-            var parameters = new NavigationParameters
+            if (!payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
-            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
+                await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()
         {
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
+        }
+
+        public async Task FullRefresh()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                var result = await _payeeLogic.Value.GetPayeesAsync();
+
+                if (result.Success)
+                {
+                    Payees.ReplaceRange(result.Data);
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+                }
+
+                NoPayees = (Payees?.Count ?? 0) == 0;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public void RefreshPayee(Payee payee)
+        {
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+
+            if (payee != null && _payeeLogic.Value.FilterPayee(payee, FilterType.Standard))
+            {
+                payees.Add(payee);
+            }
+
+            Payees.ReplaceRange(payees);
+        }
+
+        public async Task RefreshPayeeFromTransaction(Transaction transaction)
+        {
+            if (transaction != null && transaction.Payee != null)
+            {
+                var updatedPayeeResult = await _payeeLogic.Value.GetPayeeAsync(transaction.Payee.Id);
+                if (updatedPayeeResult.Success)
+                {
+                    RefreshPayee(updatedPayeeResult.Data);
+                }
+            }
         }
     }
 }

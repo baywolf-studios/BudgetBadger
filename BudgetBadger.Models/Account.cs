@@ -8,7 +8,7 @@ using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models
 {
-    public class Account : BaseModel, IDeepCopy<Account>, IEquatable<Account>, IComparable, IComparable<Account>
+    public class Account : ObservableBase, IDeepCopy<Account>, IEquatable<Account>, IComparable, IComparable<Account>
     {
         Guid id;
         public Guid Id
@@ -52,7 +52,7 @@ namespace BudgetBadger.Models
         public bool OnBudget
         {
             get => onBudget;
-            set { SetProperty(ref onBudget, value); OnPropertyChanged(nameof(OffBudget)); OnPropertyChanged(nameof(Type)); }
+            set { SetProperty(ref onBudget, value); RaisePropertyChanged(nameof(OffBudget)); RaisePropertyChanged(nameof(Type)); }
         }
 
         public bool OffBudget { get => !OnBudget; }
@@ -85,7 +85,7 @@ namespace BudgetBadger.Models
         public decimal Payment
         {
             get => payment;
-            set { SetProperty(ref payment, value); OnPropertyChanged(nameof(PaymentRequired)); }
+            set { SetProperty(ref payment, value); RaisePropertyChanged(nameof(PaymentRequired)); }
         }
 
         public bool PaymentRequired { get => Payment > 0; }
@@ -94,7 +94,7 @@ namespace BudgetBadger.Models
         public DateTime? CreatedDateTime
         {
             get => createdDateTime;
-            set { SetProperty(ref createdDateTime, value); OnPropertyChanged(nameof(IsNew)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref createdDateTime, value); RaisePropertyChanged(nameof(IsNew)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsNew { get => CreatedDateTime == null; }
@@ -110,14 +110,14 @@ namespace BudgetBadger.Models
         public DateTime? DeletedDateTime
         {
             get => deletedDateTime;
-            set { SetProperty(ref deletedDateTime, value); OnPropertyChanged(nameof(IsDeleted)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref deletedDateTime, value); RaisePropertyChanged(nameof(IsDeleted)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         DateTime? hiddenDateTime;
         public DateTime? HiddenDateTime
         {
             get => hiddenDateTime;
-            set { SetProperty(ref hiddenDateTime, value); OnPropertyChanged(nameof(IsHidden)); OnPropertyChanged(nameof(IsActive)); }
+            set { SetProperty(ref hiddenDateTime, value); RaisePropertyChanged(nameof(IsHidden)); RaisePropertyChanged(nameof(IsActive)); }
         }
 
         public bool IsDeleted { get => DeletedDateTime != null; }
@@ -169,6 +169,7 @@ namespace BudgetBadger.Models
             return Id == p.Id
                 && CreatedDateTime == p.CreatedDateTime
                 && ModifiedDateTime == p.ModifiedDateTime
+                && HiddenDateTime == p.HiddenDateTime
                 && DeletedDateTime == p.DeletedDateTime
                 && Description == p.Description
                 && Notes == p.Notes
@@ -196,6 +197,10 @@ namespace BudgetBadger.Models
             {
                 if (Type.Equals(account.Type))
                 {
+                    if (Description.Equals(account.Description))
+                    {
+                        return -1 * Nullable.Compare(CreatedDateTime, account.CreatedDateTime);
+                    }
                     return String.Compare(Description, account.Description);
                 }
 

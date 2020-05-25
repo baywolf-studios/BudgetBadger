@@ -4,7 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
     NavigationPage.HasNavigationBar="false">
@@ -13,159 +12,171 @@
             Title="Default"
             BackgroundColor="{StaticResource BackgroundColor}"
             NavigationPage.HasNavigationBar="false">
-            <Grid Margin="0" RowSpacing="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1" />
-                </Grid.ColumnDefinitions>
+            <uc:ResponsiveGrid Style="{ext:DynamicResource Key=SideNavigationGridStyle}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{StaticResource AppBarGridSize}" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="48" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600, Converter={StaticResource DoubleToGridLengthConverter}}" />
                 </Grid.RowDefinitions>
                 <Label
+                    Grid.ColumnSpan="12"
                     Grid.Row="0"
-                    Margin="16,0"
-                    Style="{StaticResource MasterDetailTitleLabelStyle}"
-                    Text="{ext:Translate BudgetBadger}"
-                    VerticalOptions="Center" />
+                    Style="{ext:DynamicResource SideNavigationTitleStyle}"
+                    Text="{ext:Translate BudgetBadger}"/>
                 <uc:ContentButton
                     x:Name="EnvelopesFrame"
+                    Grid.ColumnSpan="12"
                     Grid.Row="1"
-                    Margin="8,0"
-                    BackgroundColor="{StaticResource SelectedItemColor}"
-                    Command="{prism:NavigateTo 'NavigationPage/EnvelopesPage'}"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                    Style="{ext:DynamicResource SideNavigationItemButtonStyle}"
+                    Padding="{ext:Thickness LeftKey=size_150, TopKey=size_0, RightKey=size_150, BottomKey=size_0}"
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/EnvelopesPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="EnvelopesPage"/>
+                    </uc:ContentButton.CommandParameter>
+                    <StackLayout Orientation="Horizontal" Spacing="{ext:DynamicResource Key=size_100}">
+                        <Image
                             x:Name="EnvelopesIcon"
-                            Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="envelope.svg"
-                            WidthRequest="24" />
+                            Style="{ext:DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="EnvelopesIconFont"
+                                    Size="{ext:DynamicResource Key=size_225}"
+                                    Color="{ext:DynamicResource Key=gray_600}"
+                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                    Glyph="{ext:DynamicResource Key=EnvelopeIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="EnvelopesLabel"
-                            Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
-                            Text="{ext:Translate EnvelopesPageTitle}"
-                            TextColor="{StaticResource PrimaryTextColor}"
-                            VerticalOptions="Center" />
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Text="{ext:Translate EnvelopesPageTitle}">
+                        </Label>
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="AccountsFrame"
+                    Grid.ColumnSpan="12"
                     Grid.Row="2"
-                    Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/AccountsPage"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                    Style="{ext:DynamicResource SideNavigationItemButtonStyle}"
+                    Padding="{ext:Thickness LeftKey=size_150, TopKey=size_0, RightKey=size_150, BottomKey=size_0}"
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/AccountsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="AccountsPage"/>
+                    </uc:ContentButton.CommandParameter>
+                    <StackLayout Orientation="Horizontal" Spacing="{ext:DynamicResource Key=size_100}">
+                        <Image
                             x:Name="AccountsIcon"
-                            Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="account.svg"
-                            WidthRequest="24" />
+                            Style="{ext:DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="AccountsIconFont"
+                                    Size="{ext:DynamicResource Key=size_225}"
+                                    Color="{ext:DynamicResource Key=gray_600}"
+                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                    Glyph="{ext:DynamicResource Key=AccountIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="AccountsLabel"
-                            Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate AccountsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="PayeesFrame"
+                    Grid.ColumnSpan="12"
                     Grid.Row="3"
-                    Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/PayeesPage"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                    Style="{ext:DynamicResource SideNavigationItemButtonStyle}"
+                    Padding="{ext:Thickness LeftKey=size_150, TopKey=size_0, RightKey=size_150, BottomKey=size_0}"
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/PayeesPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="PayeesPage"/>
+                    </uc:ContentButton.CommandParameter>
+                    <StackLayout Orientation="Horizontal" Spacing="{ext:DynamicResource Key=size_100}">
+                        <Image
                             x:Name="PayeesIcon"
-                            Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="payees.svg"
-                            WidthRequest="24" />
+                            Style="{ext:DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="PayeesIconFont"
+                                    Size="{ext:DynamicResource Key=size_225}"
+                                    Color="{ext:DynamicResource Key=gray_600}"
+                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                    Glyph="{ext:DynamicResource Key=PayeeIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="PayeesLabel"
-                            Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate PayeesPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="ReportsFrame"
+                    Grid.ColumnSpan="12"
                     Grid.Row="4"
-                    Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/ReportsPage"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                    Style="{ext:DynamicResource SideNavigationItemButtonStyle}"
+                    Padding="{ext:Thickness LeftKey=size_150, TopKey=size_0, RightKey=size_150, BottomKey=size_0}"
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/ReportsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="ReportsPage"/>
+                    </uc:ContentButton.CommandParameter>
+                    <StackLayout Orientation="Horizontal" Spacing="{ext:DynamicResource Key=size_100}">
+                        <Image
                             x:Name="ReportsIcon"
-                            Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="report.svg"
-                            WidthRequest="24" />
+                            Style="{ext:DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="ReportsIconFont"
+                                    Size="{ext:DynamicResource Key=size_225}"
+                                    Color="{ext:DynamicResource Key=gray_600}"
+                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                    Glyph="{ext:DynamicResource Key=ReportIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="ReportsLabel"
-                            Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate ReportsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
                 <uc:ContentButton
                     x:Name="SettingsFrame"
-                    Grid.Row="6"
-                    Margin="8,0"
-                    Command="{Binding NavigateCommand}"
-                    CommandParameter="NavigationPage/SettingsPage"
-                    ForceActiveBackground="true"
-                    Style="{StaticResource SidebarButtonStyle}"
-                    Tapped="Handle_Tapped">
-                    <StackLayout Orientation="Horizontal" Spacing="0">
-                        <svg:SvgCachedImage
+                    Grid.ColumnSpan="12"
+                    Grid.Row="5"
+                    Style="{ext:DynamicResource SideNavigationItemButtonStyle}"
+                    Padding="{ext:Thickness LeftKey=size_150, TopKey=size_0, RightKey=size_150, BottomKey=size_0}"
+                    Command="{prism:NavigateTo '/MainPage/NavigationPage/SettingsPage'}">
+                    <uc:ContentButton.CommandParameter>
+                        <prism:NavigationParameter Key="pageName" Value="SettingsPage"/>
+                    </uc:ContentButton.CommandParameter>
+                    <StackLayout Orientation="Horizontal" Spacing="{ext:DynamicResource Key=size_100}">
+                        <Image
                             x:Name="SettingsIcon"
-                            Margin="8,12"
-                            HeightRequest="24"
-                            ReplaceStringMap="{Binding Source={StaticResource SecondaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                            Source="settings.svg"
-                            WidthRequest="24" />
+                            Style="{ext:DynamicResource SideNavigationItemIconStyle}">
+                            <Image.Source>
+                                <FontImageSource
+                                    x:Name="SettingsIconFont"
+                                    Size="{ext:DynamicResource Key=size_225}"
+                                    Color="{ext:DynamicResource Key=gray_600}"
+                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                                    Glyph="{ext:DynamicResource Key=SettingIcon}" />
+                            </Image.Source>
+                        </Image>
                         <Label
                             x:Name="SettingsLabel"
-                            Margin="8,0"
-                            Style="{StaticResource MasterDetailItemLabelStyle}"
+                            Style="{StaticResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate SettingsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
                 </uc:ContentButton>
-                <BoxView
-                    Grid.RowSpan="7"
-                    Grid.Column="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    WidthRequest="1" />
-            </Grid>
+            </uc:ResponsiveGrid>
         </ContentPage>
     </MasterDetailPage.Master>
 </MasterDetailPage>

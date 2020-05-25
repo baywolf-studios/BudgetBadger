@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid
+    x:Name="transactionDetailedViewCell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:Class="BudgetBadger.Forms.DataTemplates.TransactionDetailedViewCell"
+    ColumnSpacing="{ext:DynamicResource size_175}"
+    RowSpacing="{ext:DynamicResource size_0}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition x:Name="serviceDateColumn" Width="*"/>
+        <ColumnDefinition x:Name="accountColumn" Width="2*"/>
+        <ColumnDefinition x:Name="envelopeColumn" Width="3*"/>
+        <ColumnDefinition x:Name="payeeColumn" Width="2*"/>
+        <ColumnDefinition x:Name="outflowColumn" Width="*"/>
+        <ColumnDefinition x:Name="inflowColumn" Width="*"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450, Converter={StaticResource DoubleToGridLengthConverter}}"/>
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_900, Converter={StaticResource DoubleToGridLengthConverter}}"/>
+    </Grid.ColumnDefinitions>
+    <uc:DatePickerCompact
+        x:Name="serviceDateControl"
+        Grid.Row="0"
+        Grid.Column="0"
+        UseTextField="{OnPlatform Default=False, macOS=True, UWP=True}"
+        IsReadOnly="True"
+        VerticalOptions="Center"
+        Date="{Binding ServiceDate}">
+    </uc:DatePickerCompact>
+    <uc:DropdownCompact
+        x:Name="accountControl"
+        Grid.Row="0"
+        Grid.Column="1"
+        VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding Accounts, Source={x:Reference Name=transactionDetailedViewCell}}"
+        ItemPropertyDescription="Description"
+        SelectedItem="{Binding Account}">
+    </uc:DropdownCompact>
+    <uc:DropdownCompact
+        x:Name="envelopeControl"
+        Grid.Row="0"
+        Grid.Column="2"
+        VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding Envelopes, Source={x:Reference Name=transactionDetailedViewCell}}"
+        ItemPropertyDescription="ExtendedDescription"
+        SelectedItem="{Binding Envelope}">
+    </uc:DropdownCompact>
+    <uc:DropdownCompact
+        x:Name="payeeControl"
+        Grid.Row="0"
+        Grid.Column="3"
+        VerticalOptions="Center"
+        IsReadOnly="True"
+        ItemsSource="{Binding Payees, Source={x:Reference Name=transactionDetailedViewCell}}"
+        ItemPropertyDescription="Description"
+        SelectedItem="{Binding Payee}">
+    </uc:DropdownCompact>
+    <uc:CurrencyCalculatorEntryCompact
+        x:Name="outflowControl"
+        Grid.Row="0"
+        Grid.Column="4"
+        VerticalOptions="Center"
+        IsReadOnly="True"
+        HorizontalTextAlignment="End"
+        Number="{Binding Outflow}">
+    </uc:CurrencyCalculatorEntryCompact>
+    <uc:CurrencyCalculatorEntryCompact
+        x:Name="inflowControl"
+        Grid.Row="0"
+        Grid.Column="5"
+        VerticalOptions="Center"
+        IsReadOnly="True"
+        HorizontalTextAlignment="End"
+        Number="{Binding Inflow}">
+    </uc:CurrencyCalculatorEntryCompact>
+    <uc:TransactionStatusButton
+        x:Name="TransactionStatusButton"
+        Grid.Column="6"
+        Transaction="{Binding .}"/>
+    <uc:Button2
+        x:Name="EditButton"
+        Grid.Column="7"
+        Style="{ext:DynamicResource ActionButtonStyle}"
+        Clicked="Handle_EditClicked"
+        IsVisible="{Binding IsReadOnly, Source={x:Reference Name=transactionDetailedViewCell}, Converter={StaticResource InverseBooleanConverter}}">
+        <uc:Button2.ImageSource>
+            <FontImageSource
+                Size="{ext:DynamicResource size_225}"
+                Color="{ext:DynamicResource brand_600}"
+                FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                Glyph="{ext:DynamicResource Key=EditIcon}" />
+            </uc:Button2.ImageSource>
+    </uc:Button2>
+    <StackLayout
+        x:Name="SaveCancelContainer"
+        Grid.Column="7"
+        Spacing="{ext:DynamicResource size_100}"
+        Margin="0"
+        Padding="0"
+        Orientation="Horizontal"
+        HorizontalOptions="Center"
+        IsVisible="False">
+        <uc:Button2
+            x:Name="SaveButton"
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_SaveClicked">
+            <uc:Button2.ImageSource>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_225}"
+                    Color="{ext:DynamicResource brand_600}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=SaveIcon}" />
+                </uc:Button2.ImageSource>
+        </uc:Button2>
+        <uc:Button2
+            x:Name="CancelButton"
+            Style="{ext:DynamicResource ActionButtonStyle}"
+            Clicked="Handle_CancelClicked">
+            <uc:Button2.ImageSource>
+                <FontImageSource
+                    Size="{ext:DynamicResource size_225}"
+                    Color="{ext:DynamicResource brand_600}"
+                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"
+                    Glyph="{ext:DynamicResource Key=CloseIcon}" />
+                </uc:Button2.ImageSource>
+        </uc:Button2>
+    </StackLayout>
+    <BoxView
+        x:Name="divider"
+        Grid.Row="1"
+        Grid.ColumnSpan="8"
+        Style="{ext:DynamicResource DividerStyle}"/>
+</Grid>

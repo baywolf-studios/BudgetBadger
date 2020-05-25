@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Forms.Style;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Pages
@@ -31,10 +32,10 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(ImageSource), typeof(RootSearchHeader), defaultBindingMode: BindingMode.TwoWay);
-        public ImageSource ToolbarItemIcon
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
+        public string ToolbarItemIcon
         {
-            get => (ImageSource)GetValue(ToolbarItemIconProperty);
+            get => (string)GetValue(ToolbarItemIconProperty);
             set => SetValue(ToolbarItemIconProperty, value);
         }
 
@@ -45,11 +46,6 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(ToolbarItemCommandProperty, value);
         }
 
-        public Dictionary<string, string> ReplaceColor
-        {
-            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
-        }
-
         public RootSearchHeader()
         {
             InitializeComponent();
@@ -57,7 +53,7 @@ namespace BudgetBadger.Forms.Pages
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             EntryControl.BindingContext = this;
-            svgSearch.BindingContext = this;
+            SearchIcon.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
@@ -84,8 +80,7 @@ namespace BudgetBadger.Forms.Pages
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                svgSearch.ReplaceStringMap = ReplaceColor;
-                svgSearch.Source = "cancel.svg";
+                SearchIcon.Text = Icons.Close;
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
@@ -101,8 +96,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 SearchText = string.Empty;
 
-                svgSearch.ReplaceStringMap = ReplaceColor;
-                svgSearch.Source = "search.svg";
+                SearchIcon.Text = Icons.Search;
 
                 //hide it
                 var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);

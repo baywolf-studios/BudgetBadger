@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BudgetBadger.Models
 {
-    public class DataPoint<X, Y> : BaseModel
+    public class DataPoint<X, Y> : ObservableBase
     {
         string xLabel;
         public string XLabel

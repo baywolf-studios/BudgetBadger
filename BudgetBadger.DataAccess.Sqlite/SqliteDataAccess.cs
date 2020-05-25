@@ -253,6 +253,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 	                                SELECT RAISE(ABORT, ‘Error’);
                                 END;
 
+                                PRAGMA user_version=1;
+
                                 COMMIT;";
 
             command.Parameters.AddWithValue("@Now", DateTime.Now);

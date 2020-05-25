@@ -3,12 +3,10 @@
     x:Class="BudgetBadger.Forms.Payees.PayeesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BasePage.Header>
@@ -16,98 +14,108 @@
             PageTitle="{ext:Translate PayeesPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyPayeeHelperTitle}"
-            ImagePath="payees.svg"
+            Icon="{ext:DynamicResource PayeeIcon}"
             ShowHelper="{Binding NoPayees}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
-                <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:ListView
-                            AllowSwiping="true"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            FooterSize="{StaticResource Key=FooterHiddenButtonHeight}"
-                            GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                            HeaderSize="0"
-                            IsBusy="{Binding IsBusy}"
-                            ItemSize="{StaticResource ListItemHeight}"
-                            ItemsSource="{Binding Payees}"
-                            SelectedCommand="{Binding SelectedCommand}"
-                            SelectedItem="{Binding SelectedPayee}">
-                            <syncfusion:SfListView.Triggers>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                </Grid.RowDefinitions>
+                <uc:ListView2
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="12"
+                    Items="{Binding Payees}"
+                    IsGrouped="True"
+                    GroupPropertyDescription="Group"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedPayee}"
+                    SeparatorVisibility="None"
+                    IsHeaderSticky="True"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:PayeeComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.Header>
+                        <ContentView HeightRequest="{ext:DynamicResource size_0}">
+                            <ContentView.Triggers>
                                 <DataTrigger
                                     Binding="{Binding HasSearchText}"
-                                    TargetType="syncfusion:SfListView"
-                                    Value="true">
-                                    <Setter Property="HeaderSize" Value="{StaticResource HeaderHiddenButtonHeight}" />
+                                    TargetType="ContentView"
+                                    Value="True">
+                                    <Setter Property="HeightRequest" Value="{ext:DynamicResource size_600}" />
                                 </DataTrigger>
-                            </syncfusion:SfListView.Triggers>
-                            <syncfusion:SfListView.HeaderTemplate>
-                                <DataTemplate>
-                                    <uc:Button2
-                                        Margin="16,8"
-                                        Command="{Binding SaveSearchCommand}"
-                                        IsVisible="{Binding HasSearchText}"
-                                        Style="{StaticResource SecondaryActionButtonStyle}"
-                                        Text="{Binding SearchText, StringFormat='+ {0}'}" />
-                                </DataTemplate>
-                            </syncfusion:SfListView.HeaderTemplate>
-                            <syncfusion:SfListView.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfListView.RightSwipeTemplate>
-                            <syncfusion:SfListView.DataSource>
-                                <data:DataSource>
-                                    <data:DataSource.GroupDescriptors>
-                                        <data:GroupDescriptor PropertyName="Group" />
-                                    </data:DataSource.GroupDescriptors>
-                                </data:DataSource>
-                            </syncfusion:SfListView.DataSource>
-                            <syncfusion:SfListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <dt:GroupHeaderViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.GroupHeaderTemplate>
-                            <syncfusion:SfListView.ItemTemplate>
-                                <DataTemplate>
-                                    <dt:PayeeViewCell />
-                                </DataTemplate>
-                            </syncfusion:SfListView.ItemTemplate>
-                            <syncfusion:SfListView.FooterTemplate>
-                                <DataTemplate>
-                                    <BoxView />
-                                </DataTemplate>
-                            </syncfusion:SfListView.FooterTemplate>
-                        </uc:ListView>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
+                            </ContentView.Triggers>
+                            <uc:Button2
+                                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                Command="{Binding SaveSearchCommand}"
+                                IsVisible="False"
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Text="{Binding SearchText, StringFormat='+ {0}'}"
+                                VerticalOptions="Center">
+                                <uc:Button2.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding HasSearchText}"
+                                        TargetType="uc:Button2"
+                                        Value="True">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </uc:Button2.Triggers>
+                            </uc:Button2>
+                        </ContentView>
+                    </uc:ListView2.Header>
+                    <uc:ListView2.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <uc:ViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}">
+                                <dt:GroupHeaderViewCell />
+                            </uc:ViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.GroupHeaderTemplate>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:PayeeViewCell/>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                    <uc:ListView2.Footer>
+                        <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                    </uc:ListView2.Footer>
+                </uc:ListView2>
                 <uc:Button2
                     x:Name="NewTransactionButton"
-                    Margin="16,0,16,16"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="12"
                     Command="{Binding AddTransactionCommand}"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="End" />
-            </Grid>
-        </uc:HelperControl>
+                    VerticalOptions="Center"
+                    HorizontalOptions="{OnIdiom Default=End, Phone=Fill}"/>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>

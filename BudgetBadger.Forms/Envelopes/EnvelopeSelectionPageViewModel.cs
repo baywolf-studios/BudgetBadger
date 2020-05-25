@@ -6,23 +6,27 @@ using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeSelectionPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeSelectionPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
+        readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
 		public ICommand AddCommand { get; set; }
@@ -38,8 +42,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        IReadOnlyList<Budget> _budgets;
-        public IReadOnlyList<Budget> Budgets
+        ObservableList<Budget> _budgets;
+        public ObservableList<Budget> Budgets
         {
             get => _budgets;
             set => SetProperty(ref _budgets, value);
@@ -70,23 +74,26 @@ namespace BudgetBadger.Forms.Envelopes
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IEnvelopeLogic envelopeLogic,
-            IPageDialogService dialogService)
+            IPageDialogService dialogService,
+            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
 
-            Budgets = new List<Budget>();
+            Budgets = new ObservableList<Budget>();
             SelectedBudget = null;
 
-            RefreshCommand = new DelegateCommand(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new DelegateCommand<Budget>(async b => await ExecuteSelectedCommand(b));
-			AddCommand = new DelegateCommand(async () => await ExecuteAddCommand());
+            RefreshCommand = new Command(async () => await FullRefresh());
+            SelectedCommand = new Command<Budget>(async b => await ExecuteSelectedCommand(b));
+			AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+            SelectedBudget = null;
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -99,20 +106,12 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (parameters.GetNavigationMode() == NavigationMode.Back)
-            {
-                await InitializeAsync(parameters);
-            }
-        }
-
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {
             _transferEnvelopeSelection = parameters.GetValue<bool>(PageParameter.TransferEnvelopeSelection);
 
-            await ExecuteRefreshCommand();
+            await FullRefresh();
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -142,7 +141,7 @@ namespace BudgetBadger.Forms.Envelopes
 
                     if (budgetResult.Success)
                     {
-                        Budgets = budgetResult.Data;
+                        Budgets.ReplaceRange(budgetResult.Data);
                     }
                     else
                     {

@@ -11,7 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate TransactionEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg">
+            ToolbarItemIcon="{StaticResource SaveIcon}">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Transaction.IsNew}"
@@ -22,285 +22,133 @@
             </p:ChildHeader.Triggers>
         </p:ChildHeader>
     </p:BasePage.Header>
-
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <ScrollView
-                    Grid.Row="2"
-                    Margin="0"
-                    Padding="0"
-                    Orientation="Vertical">
-                    <Grid ColumnSpacing="16" RowSpacing="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="0" />
-                        </Grid.RowDefinitions>
-                        <uc:CurrencyCalculatorEntry
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="16,0,0,0"
-                            Label="{ext:Translate TransactactionOutflowLabel}"
-                            Number="{Binding Transaction.Outflow}" />
-                        <uc:CurrencyCalculatorEntry
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="0,0,16,0"
-                            Label="{ext:Translate TransactactionInflowLabel}"
-                            Number="{Binding Transaction.Inflow}" />
-                        <uc:ButtonSelector
-                            Grid.Row="2"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding AccountSelectedCommand}"
-                            Label="{ext:Translate TransactionAccountLabel}"
-                            Text="{Binding Transaction.Account.Description}" />
-                        <uc:ButtonSelector
-                            Grid.Row="3"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding PayeeSelectedCommand}"
-                            Label="{ext:Translate TransactionPayeeLabel}"
-                            Text="{Binding Transaction.Payee.Description}" />
-                        <uc:ButtonSelector
-                            Grid.Row="4"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Command="{Binding EnvelopeSelectedCommand}"
-                            Label="{ext:Translate TransactionEnvelopeLabel}"
-                            Text="{Binding Transaction.Envelope.Description}">
-                            <uc:ButtonSelector.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Transaction.Envelope.IsSystem}"
-                                    TargetType="uc:ButtonSelector"
-                                    Value="True">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </uc:ButtonSelector.Triggers>
-                        </uc:ButtonSelector>
-                        <uc:DateSelector
-                            Grid.Row="5"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Date="{Binding Transaction.ServiceDate}"
-                            Label="{ext:Translate TransactionServiceDateLabel}" />
-                        <uc:Checkbox
-                            Grid.Row="6"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Caption="{ext:Translate TransactionClearedLabel}"
-                            IsChecked="{Binding Transaction.Posted}"
-                            Label="{ext:Translate TransactionStatusLabel}">
-                            <uc:Checkbox.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Transaction.Reconciled}"
-                                    TargetType="uc:Checkbox"
-                                    Value="true">
-                                    <Setter Property="IsEnabled" Value="false" />
-                                    <Setter Property="Caption" Value="{ext:Translate TransactionReconciledLabel}" />
-                                </DataTrigger>
-                            </uc:Checkbox.Triggers>
-                        </uc:Checkbox>
-                        <uc:MultilineTextEntry
-                            Grid.Row="7"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
-                            Label="{ext:Translate TransactionNotesLabel}"
-                            Text="{Binding Transaction.Notes}" />
-                        <Grid
-                            Grid.Row="8"
-                            Grid.ColumnSpan="2"
-                            Margin="0"
-                            ColumnSpacing="16"
-                            RowSpacing="16">
-                            <Grid.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </Grid.IsVisible>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <uc:Button2
-                                Grid.Row="0"
-                                Grid.ColumnSpan="2"
-                                Margin="16,0"
-                                Command="{Binding DeleteCommand}"
-                                IsVisible="false"
-                                Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                Text="{ext:Translate DeleteButton}">
-                                <uc:Button2.Triggers>
-                                    <MultiTrigger TargetType="Button">
-                                        <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="true" />
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true" />
-                                    </MultiTrigger>
-                                </uc:Button2.Triggers>
-                            </uc:Button2>
-                            <uc:Button2
-                                Grid.Row="0"
-                                Grid.ColumnSpan="2"
-                                Margin="16,0"
-                                Command="{Binding SplitCommand}"
-                                IsVisible="false"
-                                Style="{StaticResource PrimaryActionButtonStyle}"
-                                Text="{ext:Translate SplitTransactionButton}">
-                                <uc:Button2.Triggers>
-                                    <MultiTrigger TargetType="Button">
-                                        <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
-                                            <BindingCondition Binding="{Binding Transaction.IsNew}" Value="true" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="True" />
-                                    </MultiTrigger>
-                                </uc:Button2.Triggers>
-                            </uc:Button2>
-                            <uc:Button2
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="16,0,0,0"
-                                Command="{Binding DeleteCommand}"
-                                IsVisible="false"
-                                Style="{StaticResource SecondaryDestructionButtonStyle}"
-                                Text="{ext:Translate DeleteButton}">
-                                <uc:Button2.Triggers>
-                                    <MultiTrigger TargetType="Button">
-                                        <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true" />
-                                    </MultiTrigger>
-                                </uc:Button2.Triggers>
-                            </uc:Button2>
-                            <uc:Button2
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,0,16,0"
-                                Command="{Binding SplitCommand}"
-                                IsVisible="false"
-                                Style="{StaticResource PrimaryActionButtonStyle}"
-                                Text="{ext:Translate SplitTransactionButton}">
-                                <uc:Button2.Triggers>
-                                    <MultiTrigger TargetType="Button">
-                                        <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding SplitTransactionMode}" Value="false" />
-                                            <BindingCondition Binding="{Binding Transaction.IsActive}" Value="true" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="IsVisible" Value="true" />
-                                    </MultiTrigger>
-                                </uc:Button2.Triggers>
-                            </uc:Button2>
-                        </Grid>
-                    </Grid>
-                </ScrollView>
-                <BoxView
-                    Grid.Row="3"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <Grid
-                    Grid.Row="4"
-                    Margin="16"
-                    ColumnSpacing="16">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
+            <ScrollView
+                Orientation="Vertical">
+                <uc:ResponsiveGrid
+                    x:Name="responsiveGrid"
+                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_160, RightKey=size_0, BottomKey=size_0}"
+                    RowSpacing="{Binding Gutter, Source={x:Reference responsiveGrid}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Label
+                    <uc:CurrencyCalculatorEntry
                         Grid.Row="0"
                         Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="hidden"
-                        TextColor="Transparent"
-                        VerticalOptions="Center" />
-                    <Label
+                        Grid.ColumnSpan="6"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                        Label="{ext:Translate TransactactionOutflowLabel}"
+                        Number="{Binding Transaction.Outflow}" />
+                    <uc:CurrencyCalculatorEntry
+                        Grid.Row="0"
+                        Grid.Column="6"
+                        Grid.ColumnSpan="6"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
+                        Label="{ext:Translate TransactactionInflowLabel}"
+                        Number="{Binding Transaction.Inflow}"  />
+                    <uc:ButtonTextField
                         Grid.Row="1"
                         Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="hidden"
-                        TextColor="Transparent"
-                        VerticalOptions="Center" />
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Command="{Binding DeleteCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate DeleteButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding AccountSelectedCommand}"
+                        Label="{ext:Translate TransactionAccountLabel}"
+                        Text="{Binding Transaction.Account.Description}" />
+                    <uc:ButtonTextField
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding PayeeSelectedCommand}"
+                        Label="{ext:Translate TransactionPayeeLabel}"
+                        Text="{Binding Transaction.Payee.Description}" />
+                    <uc:ButtonTextField
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding EnvelopeSelectedCommand}"
+                        Label="{ext:Translate TransactionEnvelopeLabel}"
+                        Text="{Binding Transaction.Envelope.Description}">
+                        <uc:ButtonTextField.Triggers>
                             <DataTrigger
-                                Binding="{Binding Transaction.IsNew}"
-                                TargetType="Button"
-                                Value="true">
-                                <Setter Property="IsVisible" Value="false" />
+                                Binding="{Binding Transaction.Envelope.IsSystem}"
+                                TargetType="uc:ButtonTextField"
+                                Value="True">
+                                <Setter Property="IsReadOnly" Value="True" />
                             </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="3"
-                        Command="{Binding SplitCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="{ext:Translate SplitTransactionButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding SplitTransactionMode}"
-                                TargetType="Button"
-                                Value="true">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                </Grid>
-            </Grid>
+                        </uc:ButtonTextField.Triggers>
+                    </uc:ButtonTextField>
+                    <uc:DatePicker
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Date="{Binding Transaction.ServiceDate}"
+                        Label="{ext:Translate TransactionServiceDateLabel}" />
+                    <uc:TransactionStatusButton
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Transaction="{Binding Transaction}"
+                        ToggleCommand="{Binding TogglePostedTransactionCommand}"
+                        Label="{ext:Translate TransactionStatusLabel}"
+                        HasCaption="True">
+                    </uc:TransactionStatusButton>
+                    <uc:MultilineTextField
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate TransactionNotesLabel}"
+                        Text="{Binding Transaction.Notes}" />
+                    <FlexLayout
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Direction="Row"
+                        AlignItems="Center"
+                        JustifyContent="End"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Button2
+                            x:Name="deleteButton"
+                            Command="{Binding DeleteCommand}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate DeleteButton}"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding Transaction.IsNew, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                        <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}" IsVisible="False" >
+                            <BoxView.Triggers>
+                                <MultiTrigger TargetType="BoxView">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference deleteButton}}" Value="True" />
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference splitButton}}" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True" />
+                                </MultiTrigger>
+                            </BoxView.Triggers>
+                        </BoxView>
+                        <uc:Button2
+                            x:Name="splitButton"
+                            Command="{Binding SplitCommand}"
+                            Style="{StaticResource PrimaryActionButtonStyle}"
+                            Text="{ext:Translate SplitTransactionButton}"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding SplitTransactionMode, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                    </FlexLayout>
+                </uc:ResponsiveGrid>
+            </ScrollView>
         </uc:BusyIndicator>
     </p:BasePage.Body>
 </p:BasePage>

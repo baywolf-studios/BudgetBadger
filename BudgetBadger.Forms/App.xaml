@@ -7,16 +7,37 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:local="clr-namespace:BudgetBadger.Forms"
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
-    xmlns:sfdatagrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:style="clr-namespace:BudgetBadger.Forms.Style">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <style:IconResources />
+                <style:LightThemeResources />
+                <style:MediumDimensionResources />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
         <ResourceDictionary>
             <converters:IntEnumConverter x:Key="IntEnumConverter" />
             <converters:ReplaceColorConverter x:Key="ReplaceColorMap" />
             <converters:CurrencyConverter x:Key="CurrencyConverter" />
             <converters:ShortDateConverter x:Key="ShortDateConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-            <local:SfDataGridStyle x:Key="sfDataGridStyle" />
+            <converters:DoubleToGridLengthConverter x:Key="DoubleToGridLengthConverter"/>
+            <converters:InverseThicknessConverter x:Key="InverseThicknessConverter"/>
+            <converters:DoubleToLeftRightThicknessConverter x:Key="DoubleToLeftRightThicknessConverter"/>
+            <converters:DoubleToLeftThicknessConverter x:Key="DoubleToLeftThicknessConverter"/>
+            <converters:DoubleToRightThicknessConverter x:Key="DoubleToRightThicknessConverter"/>
+
+            <!--will remove-->
+            <x:Double x:Key="HeaderHiddenButtonHeight">56</x:Double>
+            <x:Double x:Key="FooterHiddenButtonHeight">56</x:Double>
+            <x:Double x:Key="MinimumButtonWidth">64</x:Double>
+
+            <!--static colors-->
+            <Color x:Key="static_white">#ffffff</Color>
+            <Color x:Key="static_black">#1d1f24</Color>
 
             <OnPlatform x:Key="ControlCornerRadiusSingle" x:TypeArguments="x:Single">
                 <On Platform="iOS">5</On>
@@ -62,6 +83,479 @@
 
             <x:Double x:Key="MaxWidth">720</x:Double>
 
+            <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="RestingBorderColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource brand_500}" />
+                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource brand_500}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_700}" />
+                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource brand_700}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
+            </Style>
+
+            <Style x:Key="PrimaryDestructionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource red_600}" />
+                <Setter Property="RestingBorderColor" Value="{ext:DynamicResource red_600}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource red_500}" />
+                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource red_500}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource red_700}" />
+                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource red_700}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
+            </Style>
+
+            <Style x:Key="SecondaryActionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource brand_700}" />
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="RestingBorderColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_75}" />
+                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource brand_500}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_100}" />
+                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource brand_700}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
+            </Style>
+            
+            <Style x:Key="SettingsButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="ForceActiveBackground" Value="True"/>
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_100}" />
+            </Style>
+            
+            <Style x:Key="SecondaryDestructionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource red_700}" />
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="RestingBorderColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_75}" />
+                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource red_500}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource red_100}" />
+                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource red_700}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="MinimumWidthRequest" Value="{ext:DynamicResource size_1000}" />
+                <Setter Property="Padding" Value="{ext:Thickness LeftKey=size_160, TopKey=size_0, RightKey=size_160,BottomKey=size_0}"/>
+            </Style>
+
+            <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource brand_500}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_700}" />
+            </Style>
+
+            <Style x:Key="AccountPaymentButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+            </Style>
+
+            <Style x:Key="ActionButtonStyle" TargetType="uc:Button2">
+                <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="RestingBorderColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_100}" />
+                <Setter Property="HoverBorderColor" Value="{ext:DynamicResource gray_600}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_100}" />
+                <Setter Property="ActiveBorderColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="WidthRequest" Value="{ext:DynamicResource size_450}" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_10}" />
+                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="PageSubheaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageSubheaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageHeaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+            <Style x:Key="PageHeaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_200}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+            </Style>
+
+            <Style x:Key="MobilePageSubheaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+            <Style x:Key="MobilePageSubheaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+            </Style>
+
+            <Style x:Key="MobilePageHeaderPrimaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MobilePageHeaderSecondaryLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_200}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_300}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}" />
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}" />
+            </Style>
+
+            <Style x:Key="ListDoubleLineGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ListDoubleLinePrimaryItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ListDoubleLineSecondaryItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ListSingleLineItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ThickDividerStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_800}"/>
+                <Setter Property="CornerRadius" Value="{ext:DynamicResource size_25}"/>
+            </Style>
+
+            <Style x:Key="MediumDividerStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_300}"/>
+                <Setter Property="CornerRadius" Value="{ext:DynamicResource size_25}"/>
+            </Style>
+
+            <Style x:Key="DividerStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_300}"/>
+                <Setter Property="CornerRadius" Value="{ext:DynamicResource size_25}"/>
+            </Style>
+
+            <Style x:Key="ControlDatePickerStyle" TargetType="Picker">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+            </Style>
+
+            <Style x:Key="ControlDatePickerCompactStyle" TargetType="Picker">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlPickerStyle" TargetType="Picker">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+            </Style>
+
+            <Style x:Key="ControlPickerCompactStyle" TargetType="Picker">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ControlLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ControlEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}"/>
+            </Style>
+
+            <Style x:Key="ControlEntryCompactStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_900}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_75}"/>
+            </Style>
+
+            <Style x:Key="ControlDescriptionLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+            </Style>
+
+            <Style x:Key="ControlDescriptionLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+            </Style>
+
+            <Style x:Key="ControlHintLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ControlHintLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource gray_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ControlErrorLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ControlErrorLabelCompactStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{ext:DynamicResource red_700}"/>
+                <Setter Property="FontSize" Value="{ext:DynamicResource font_size_50}"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="HiddenButtonStyle" TargetType="uc:Button2">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="Transparent" />
+                <Setter Property="ActiveBackgroundColor" Value="Transparent" />
+                <Setter Property="BorderWidth" Value="{ext:DynamicResource size_0}" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="EmptyStateIconStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=size_900}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}"/>
+            </Style>
+
+            <Style x:Key="EmptyStateTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_400}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="EmptyStateSubtitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="PageTitleStyle" TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_100}" Desktop="{DynamicResource Key=font_size_200}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_50}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="ToolbarIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_50}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="SideNavigationGridStyle" TargetType="uc:ResponsiveGrid">
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ColumnSpacing" Value="16"/>
+                <Setter Property="Padding" Value="16,0,16,0"/>
+            </Style>
+
+            <Style x:Key="SideNavigationTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_300}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_900}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HeightRequest" Value="{ext:DynamicResource Key=size_400}"/>
+                <Setter Property="Margin" Value="{ext:Thickness LeftKey=size_150, TopKey=size_200, RightKey=size_150, BottomKey=size_50}"/>
+            </Style>
+
+            <Style x:Key="SideNavigationItemButtonStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_100}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+            </Style>
+
+            <Style x:Key="SideNavigationItemLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}" />
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_600}" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+
+            <Style x:Key="SideNavigationItemIconStyle" TargetType="Image">
+                <Setter Property="WidthRequest" Value="{DynamicResource size_225}"/>
+                <Setter Property="HeightRequest" Value="{DynamicResource size_225}"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="DataTableColumnStyle" TargetType="uc:ContentButton">
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="{DynamicResource Key=gray_75}" />
+                <Setter Property="ActiveBackgroundColor" Value="{DynamicResource Key=brand_100}" />
+            </Style>
+
+            <Style x:Key="DataTableColumnIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{DynamicResource Key=IconFontFamily}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom Default="{DynamicResource Key=font_size_400}" Desktop="{DynamicResource Key=font_size_500}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="DataTableColumnHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableColumnHeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_50}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_800}" />
+            </Style>
+
+            <Style x:Key="DataTableLabelColumnCellStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableLabelColumnCellStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableTextColumnCellStyle" TargetType="Entry">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableTextColumnCellStyle" TargetType="Entry">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableComboBoxColumnCellStyle" TargetType="Picker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableComboBoxColumnCellStyle" TargetType="Picker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableDatePickerColumnCellStyle" TargetType="DatePicker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableDatePickerColumnCellStyle" TargetType="DatePicker">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DataTableMultilineTextColumnCellStyle" TargetType="Editor">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_100}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Style x:Key="DenseDataTableMultilineTextColumnCellStyle" TargetType="Editor">
+                <Setter Property="FontSize" Value="{DynamicResource Key=font_size_75}"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=gray_1000}" />
+            </Style>
+
+            <Color x:Key="DataGridContextActionTextColor">white</Color>
+            <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
+            <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
+
             <Color x:Key="BackgroundColor">White</Color>
             <Color x:Key="AppBarColor">#0c7bb3</Color>
             <Color x:Key="PrimaryTextColor">#1d1f24</Color>
@@ -97,12 +591,12 @@
             <x:Double x:Key="ListGroupHeaderFontSize">14</x:Double>
             <x:Double x:Key="ListGroupHeaderHeight">32</x:Double>
             <Color x:Key="ListGroupHeaderTextColor">#064d70</Color>
-            <Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
+            <!--<Style x:Key="ListGroupHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource Key=ListGroupHeaderFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=ListGroupHeaderTextColor}" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
+            </Style>-->
 
             <x:Double x:Key="ListItemFontSize">16</x:Double>
             <x:Double x:Key="ListItemHeight">48</x:Double>
@@ -133,186 +627,6 @@
                 <Setter Property="FontSize" Value="{StaticResource Key=ListDoubleSubItemFontSize}" />
                 <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
             </Style>
-            
-            <x:Double x:Key="HeaderHiddenButtonHeight">56</x:Double>
-            <x:Double x:Key="FooterHiddenButtonHeight">56</x:Double>
-            <x:Double x:Key="MinimumButtonWidth">64</x:Double>
-
-            <x:Double x:Key="PrimaryActionButtonFontSize">14</x:Double>
-            <x:Double x:Key="PrimaryActionButtonHeight">40</x:Double>
-            <Color x:Key="PrimaryActionButtonTextColor">white</Color>
-            <x:Double x:Key="PrimaryActionButtonBorderWidth">1</x:Double>
-            <Color x:Key="PrimaryActionButtonBackgroundColor">#0c7bb3</Color>
-            <Color x:Key="PrimaryActionButtonHoverBackgroundColor">#229ad6</Color>
-            <Color x:Key="PrimaryActionButtonActiveBackgroundColor">#066391</Color>
-            <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
-                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryActionButtonFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryActionButtonTextColor}" />
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
-                <Setter Property="RestingBorderColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="HoverBorderColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
-                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryActionButtonHeight}" />
-                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryActionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
-                <Setter Property="Padding" Value="16,0" />
-            </Style>
-
-            <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryActionButtonActiveBackgroundColor}" />
-            </Style>
-
-            <x:Double x:Key="PrimaryDestructionButtonFontSize">14</x:Double>
-            <x:Double x:Key="PrimaryDestructionButtonHeight">40</x:Double>
-            <Color x:Key="PrimaryDestructionButtonTextColor">white</Color>
-            <x:Double x:Key="PrimaryDestructionButtonBorderWidth">1</x:Double>
-            <Color x:Key="PrimaryDestructionButtonBackgroundColor">#de1b1b</Color>
-            <Color x:Key="PrimaryDestructionButtonHoverBackgroundColor">#f55353</Color>
-            <Color x:Key="PrimaryDestructionButtonActiveBackgroundColor">#b80d0d</Color>
-            <Style x:Key="PrimaryDestructionButtonStyle" TargetType="uc:Button2">
-                <Setter Property="FontSize" Value="{StaticResource Key=PrimaryDestructionButtonFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryDestructionButtonTextColor}" />
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
-                <Setter Property="RestingBorderColor" Value="{StaticResource Key=PrimaryDestructionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonHoverBackgroundColor}" />
-                <Setter Property="HoverBorderColor" Value="{StaticResource Key=PrimaryDestructionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=PrimaryDestructionButtonActiveBackgroundColor}" />
-                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=PrimaryDestructionButtonActiveBackgroundColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HeightRequest" Value="{StaticResource Key=PrimaryDestructionButtonHeight}" />
-                <Setter Property="BorderWidth" Value="{StaticResource Key=PrimaryDestructionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
-                <Setter Property="Padding" Value="16,0" />
-            </Style>
-
-            <x:Double x:Key="SecondaryActionButtonFontSize">14</x:Double>
-            <x:Double x:Key="SecondaryActionButtonHeight">40</x:Double>
-            <x:Double x:Key="SecondaryActionButtonBorderWidth">1</x:Double>
-            <Color x:Key="SecondaryActionButtonTextColor">#0c7bb3</Color>
-            <Color x:Key="SecondaryActionButtonBackgroundColor">white</Color>
-            <Color x:Key="SecondaryActionButtonBorderColor">#c8d1e0</Color>
-            <Color x:Key="SecondaryActionButtonHoverBackgroundColor">#f5f7fa</Color>
-            <Color x:Key="SecondaryActionButtonHoverBorderColor">#0c7bb3</Color>
-            <Color x:Key="SecondaryActionButtonActiveBackgroundColor">#e8f4fa</Color>
-            <Color x:Key="SecondaryActionButtonActiveBorderColor">#0c7bb3</Color>
-            <Style x:Key="SecondaryActionButtonStyle" TargetType="uc:Button2">
-                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryActionButtonFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryActionButtonTextColor}" />
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
-                <Setter Property="RestingBorderColor" Value="{StaticResource Key=SecondaryActionButtonBorderColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="HoverBorderColor" Value="{StaticResource Key=SecondaryActionButtonHoverBorderColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=SecondaryActionButtonActiveBorderColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryActionButtonHeight}" />
-                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryActionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
-                <Setter Property="Padding" Value="16,0" />
-            </Style>
-
-            <Style x:Key="SidebarButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-            </Style>
-            
-            <Style x:Key="SettingsButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonBackgroundColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-            </Style>
-            
-            <x:Double x:Key="SecondaryDestructionButtonFontSize">14</x:Double>
-            <x:Double x:Key="SecondaryDestructionButtonHeight">40</x:Double>
-            <Color x:Key="SecondaryDestructionButtonTextColor">#de1b1b</Color>
-            <x:Double x:Key="SecondaryDestructionButtonBorderWidth">1</x:Double>
-            <Color x:Key="SecondaryDestructionButtonBackgroundColor">white</Color>
-            <Color x:Key="SecondaryDestructionButtonBorderColor">#c8d1e0</Color>
-            <Color x:Key="SecondaryDestructionButtonHoverBackgroundColor">#faf0f0</Color>
-            <Color x:Key="SecondaryDestructionButtonHoverBorderColor">#de1b1b</Color>
-            <Color x:Key="SecondaryDestructionButtonActiveBackgroundColor">#fad4d4</Color>
-            <Color x:Key="SecondaryDestructionButtonActiveBorderColor">#de1b1b</Color>
-            <Style x:Key="SecondaryDestructionButtonStyle" TargetType="uc:Button2">
-                <Setter Property="FontSize" Value="{StaticResource Key=SecondaryDestructionButtonFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryDestructionButtonTextColor}" />
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonBackgroundColor}" />
-                <Setter Property="RestingBorderColor" Value="{StaticResource Key=SecondaryDestructionButtonBorderColor}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonHoverBackgroundColor}" />
-                <Setter Property="HoverBorderColor" Value="{StaticResource Key=SecondaryDestructionButtonHoverBorderColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryDestructionButtonActiveBackgroundColor}" />
-                <Setter Property="ActiveBorderColor" Value="{StaticResource Key=SecondaryDestructionButtonActiveBorderColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HeightRequest" Value="{StaticResource Key=SecondaryDestructionButtonHeight}" />
-                <Setter Property="BorderWidth" Value="{StaticResource Key=SecondaryDestructionButtonBorderWidth}" />
-                <Setter Property="CornerRadius" Value="{StaticResource Key=ControlCornerRadius}" />
-                <Setter Property="MinimumWidthRequest" Value="{StaticResource Key=MinimumButtonWidth}" />
-                <Setter Property="Padding" Value="16,0" />
-            </Style>
-            
-            <x:Double x:Key="DataGridHeaderFontSize">12</x:Double>
-            <x:Double x:Key="DataGridItemFontSize">14</x:Double>
-            <x:Double x:Key="DataGridHeaderDenseFontSize">11</x:Double>
-            <x:Double x:Key="DataGridItemDenseFontSize">13</x:Double>
-            <x:Double x:Key="DataGridItemHeight">48</x:Double>
-
-            <x:Double x:Key="DataGridContextActionSize">48</x:Double>
-            <Color x:Key="DataGridContextActionTextColor">white</Color>
-            <Color x:Key="DataGridContextActionBackgroundColor">#0c7bb3</Color>
-            <Color x:Key="DataGridContextActionDestructionBackgroundColor">red</Color>
-            <Color x:Key="DataGridColumnBackground">transparent</Color>
-
-            <Style x:Key="DataGridColumnStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{StaticResource Key=DataGridColumnBackground}" />
-                <Setter Property="HoverBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonHoverBackgroundColor}" />
-                <Setter Property="ActiveBackgroundColor" Value="{StaticResource Key=SecondaryActionButtonActiveBackgroundColor}" />
-            </Style>
-            
-            <x:Double x:Key="PageHeaderFontSize">20</x:Double>
-            <Style x:Key="PageHeaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageHeaderFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-
-            <x:Double x:Key="PageSubheaderFontSize">13</x:Double>
-            <Style x:Key="PageSubheaderLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=PageSubheaderFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
-            </Style>
-
-            <x:Double x:Key="MasterDetailTitleFontSize">17</x:Double>
-            <Style x:Key="MasterDetailTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailTitleFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=PrimaryTextColor}" />
-                <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-
-            <x:Double x:Key="MasterDetailItemFontSize">14</x:Double>
-            <Style x:Key="MasterDetailItemLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=MasterDetailItemFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
-            </Style>
-
-            <x:Double x:Key="HelperControlFontSize">16</x:Double>
-            <Style x:Key="HelperControlLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource Key=HelperControlFontSize}" />
-                <Setter Property="TextColor" Value="{StaticResource Key=SecondaryTextColor}" />
-            </Style>
-
-            <FileImageSource x:Key="SettingsTabIcon" File="settingswhitetabicon.png" />
-            <FileImageSource x:Key="AccountsTabIcon" File="accountswhitetabicon.png" />
-            <FileImageSource x:Key="EnvelopesTabIcon" File="envelopeswhitetabicon.png" />
-            <FileImageSource x:Key="PayeesTabIcon" File="payeeswhitetabicon.png" />
-            <FileImageSource x:Key="ReportsTabIcon" File="reportswhitetabicon.png" />
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

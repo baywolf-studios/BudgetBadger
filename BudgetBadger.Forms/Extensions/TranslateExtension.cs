@@ -1,4 +1,5 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Forms.Style;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,15 +9,24 @@ using Xamarin.Forms.Xaml;
 namespace BudgetBadger.Forms.Extensions
 {
     [ContentProperty("Text")]
-    public class TranslateExtension : IMarkupExtension
+    public class TranslateExtension : IMarkupExtension<BindingBase>
     {
-        static readonly Lazy<IResourceContainer> _resourceContainer = new Lazy<IResourceContainer>(() => StaticResourceContainer.Current);
-
         public string Text { get; set; }
 
-        public object ProvideValue(IServiceProvider serviceProvider)
+        object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
         {
-            return _resourceContainer.Value.GetResourceString(Text);
+            return ProvideValue(serviceProvider);
+        }
+
+        public BindingBase ProvideValue(IServiceProvider serviceProvider)
+        {
+            var binding = new Binding
+            {
+                Mode = BindingMode.OneWay,
+                Path = $"[{Text}]",
+                Source = TranslationProvider.Instance,
+            };
+            return binding;
         }
     }
 }

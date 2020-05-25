@@ -8,8 +8,6 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Droid;
 using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms;
-using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using Prism;
@@ -33,8 +31,6 @@ namespace BudgetBadger.Droid
 
             Xamarin.Forms.Forms.Init(this, bundle);
             SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
-            CachedImageRenderer.Init(true);
-            var ignore = typeof(SvgCachedImage);
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
             LoadApplication(new App(new AndroidInitializer()));

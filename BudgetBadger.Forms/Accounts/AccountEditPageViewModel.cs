@@ -15,18 +15,19 @@ using System.Collections.Generic;
 using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
 using BudgetBadger.Core.LocalizedResources;
+using Prism.Events;
+using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountEditPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class AccountEditPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
-
-        bool _needToSync;
+        readonly IEventAggregator _eventAggregator;
 
         bool _isBusy;
         public bool IsBusy
@@ -58,10 +59,10 @@ namespace BudgetBadger.Forms.Accounts
 
         public IList<string> AccountTypes
         {
-            get => Enum.GetNames(typeof(AccountType)).Select(b => _resourceContainer.GetResourceString(b)).ToList();
+            get => Enum.GetNames(typeof(AccountType)).Select(_resourceContainer.GetResourceString).ToList();
         }
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SaveCommand { get; set; }
         public ICommand HideCommand { get; set; }
         public ICommand UnhideCommand { get; set; }
@@ -71,35 +72,26 @@ namespace BudgetBadger.Forms.Accounts
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
                                         ISyncFactory syncFactory,
-                                        IResourceContainer resourceContainer)
+                                        IResourceContainer resourceContainer,
+                                        IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
+            _eventAggregator = eventAggregator;
 
             Account = new Account();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            HideCommand = new DelegateCommand(async () => await ExecuteHideCommand());
-            UnhideCommand = new DelegateCommand(async () => await ExecuteUnhideCommand());
-            SoftDeleteCommand = new DelegateCommand(async () => await ExecuteSoftDeleteCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            HideCommand = new Command(async () => await ExecuteHideCommand());
+            UnhideCommand = new Command(async () => await ExecuteUnhideCommand());
+            SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -141,14 +133,9 @@ namespace BudgetBadger.Forms.Accounts
 
                 if (result.Success)
                 {
+                    _eventAggregator.GetEvent<AccountSavedEvent>().Publish(result.Data);
 
-                    _needToSync = true;
-
-					var parameters = new NavigationParameters
-                    {
-                        { PageParameter.Account, result.Data }
-                    };
-                    await _navigationService.GoBackAsync(parameters);
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
@@ -184,16 +171,9 @@ namespace BudgetBadger.Forms.Accounts
                     var result = await _accountLogic.SoftDeleteAccountAsync(Account.Id);
                     if (result.Success)
                     {
-                        _needToSync = true;
+                        _eventAggregator.GetEvent<AccountDeletedEvent>().Publish(result.Data);
 
-                        if (Device.RuntimePlatform == Device.macOS)
-                        {
-                            await _navigationService.GoBackAsync();
-                        }
-                        else
-                        {
-                            await _navigationService.GoBackToRootAsync();
-                        }
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -224,16 +204,9 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await _accountLogic.HideAccountAsync(Account.Id);
 				if (result.Success)
 				{
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<AccountHiddenEvent>().Publish(result.Data);
 
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        await _navigationService.GoBackToRootAsync();
-                    }
+                    await _navigationService.GoBackAsync();
                 }
 				else
 				{
@@ -262,7 +235,7 @@ namespace BudgetBadger.Forms.Accounts
                 var result = await _accountLogic.UnhideAccountAsync(Account.Id);
                 if (result.Success)
                 {
-                    _needToSync = true;
+                    _eventAggregator.GetEvent<AccountUnhiddenEvent>().Publish(result.Data);
 
                     await _navigationService.GoBackAsync();
                 }

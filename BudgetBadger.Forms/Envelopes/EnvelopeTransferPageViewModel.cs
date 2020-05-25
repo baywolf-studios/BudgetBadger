@@ -5,28 +5,31 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeTransferPageViewModel : BindableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeTransferPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
     {
         readonly IResourceContainer _resourceContainer;
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISyncFactory _syncFactory;
+        readonly IEventAggregator _eventAggregator;
 
-        public ICommand BackCommand { get => new DelegateCommand(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand FromEnvelopeSelectedCommand { get; set; }
         public ICommand ToEnvelopeSelectedCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        bool _needToSync;
         bool _fromEnvelopeRequested;
 
         Envelope _fromEnvelope;
@@ -61,37 +64,28 @@ namespace BudgetBadger.Forms.Envelopes
             INavigationService navigationService,
                                       IEnvelopeLogic envelopeLogic,
                                       IPageDialogService dialogService,
-                                      ISyncFactory syncFactory)
+                                      ISyncFactory syncFactory,
+                                      IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _syncFactory = syncFactory;
-
+            _eventAggregator = eventAggregator;
+            
             _fromEnvelopeRequested = false;
             FromEnvelope = new Envelope();
             ToEnvelope = new Envelope();
             Schedule = new BudgetSchedule();
 
-            SaveCommand = new DelegateCommand(async () => await ExecuteSaveCommand());
-            FromEnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteFromEnvelopeSelectedCommand());
-            ToEnvelopeSelectedCommand = new DelegateCommand(async () => await ExecuteToEnvelopeSelectedCommand());
+            SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            FromEnvelopeSelectedCommand = new Command(async () => await ExecuteFromEnvelopeSelectedCommand());
+            ToEnvelopeSelectedCommand = new Command(async () => await ExecuteToEnvelopeSelectedCommand());
         }
 
-        public async void OnNavigatedFrom(INavigationParameters parameters)
+        public  void OnNavigatedFrom(INavigationParameters parameters)
         {
-            if (_needToSync)
-            {
-                var syncService = _syncFactory.GetSyncService();
-                var syncResult = await syncService.FullSync();
-
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                    _needToSync = false;
-                }
-            }
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)
@@ -160,7 +154,11 @@ namespace BudgetBadger.Forms.Envelopes
 
             if (result.Success)
             {
-                _needToSync = true;
+                foreach (var budget in result.Data)
+                {
+                    _eventAggregator.GetEvent<BudgetSavedEvent>().Publish(budget);
+                }
+
                 await _navigationService.GoBackAsync();
             }
             else

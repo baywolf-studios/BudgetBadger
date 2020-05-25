@@ -4,12 +4,9 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
-    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BaseDetailedPage.Header>
@@ -18,151 +15,75 @@
             PageTitle="{ext:Translate EnvelopeGroupsPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyEnvelopeGroupHelperTitle}"
-            ImagePath="envelopegroup.svg"
+            Icon="{ext:DynamicResource  EnvelopeGroupIcon}"
             ShowHelper="{Binding NoEnvelopeGroups}">
-            <uc:PullToRefresh
-                Grid.Row="0"
-                Margin="16,0"
-                IsBusy="{Binding IsBusy}"
-                RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:DataGrid
-                        AllowSwiping="True"
-                        ColumnSizer="Star"
-                        Filter="{Binding Filter}"
-                        FilterText="{Binding SearchText}"
-                        IsBusy="{Binding IsBusy}"
-                        ItemsSource="{Binding EnvelopeGroups}"
-                        SelectedItem="{Binding SelectedEnvelopeGroup}">
-                        <syncfusion:SfDataGrid.RightSwipeTemplate>
-                            <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <Label
-                                            FontSize="{StaticResource ListItemFontSize}"
-                                            HorizontalOptions="Center"
-                                            Text="{ext:Translate EditButton}"
-                                            TextColor="{StaticResource DataGridContextActionTextColor}"
-                                            VerticalOptions="Center"
-                                            LineBreakMode="NoWrap"/>
-                                    </ContentView>
-                                </DataTemplate>
-                        </syncfusion:SfDataGrid.RightSwipeTemplate>
-                        <syncfusion:SfDataGrid.SortComparers>
-                            <data:SortComparer PropertyName="Description">
-                                <data:SortComparer.Comparer>
-                                    <comparers:EnvelopeGroupComparer />
-                                </data:SortComparer.Comparer>
-                            </data:SortComparer>
-                        </syncfusion:SfDataGrid.SortComparers>
-                        <syncfusion:SfDataGrid.SortColumnDescriptions>
-                            <syncfusion:SortColumnDescription ColumnName="Description" SortDirection="Ascending" />
-                        </syncfusion:SfDataGrid.SortColumnDescriptions>
-                        <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                            <syncfusion:GridTemplateColumn
-                                    MappingName="Description">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeGroupNameLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:TextColumn
-                                                Text="{Binding Description}"
-                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:TextColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:TextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding IsGenericHiddenEnvelopeGroup}"
-                                                        Value="true"
-                                                        TargetType="dt:TextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:TextColumn.Triggers>
-                                            </dt:TextColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Notes">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderColumn Text="{ext:Translate EnvelopeGroupNotesLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:MultilineTextColumn
-                                                Text="{Binding Notes}"
-                                                SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:MultilineTextColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:MultilineTextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding IsGenericHiddenEnvelopeGroup}"
-                                                        Value="true"
-                                                        TargetType="dt:MultilineTextColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:MultilineTextColumn.Triggers>
-                                            </dt:MultilineTextColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="56"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText=""
-                                    HeaderTextAlignment="Center"
-                                    MappingName=".">
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <uc:ContentButton
-                                                HeightRequest="{StaticResource ListItemHeight}"
-                                                WidthRequest="{StaticResource ListItemHeight}"
-                                                Style="{StaticResource SidebarButtonStyle}"
-                                                Command="{Binding BindingContext.SelectedCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
-                                            </uc:ContentButton>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                        </syncfusion:SfDataGrid.Columns>
-                    </uc:DataGrid>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
-        </uc:HelperControl>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <uc:DataTable
+                    Grid.ColumnSpan="12"
+                    Items="{Binding EnvelopeGroups}"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    IsHeaderSticky="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedEnvelopeGroup}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:DataTable.SortComparer>
+                        <comparers:EnvelopeGroupComparer/>
+                    </uc:DataTable.SortComparer>
+                    <uc:DataTable.Header>
+                            <dt:EnvelopeGroupDetailedHeader
+                                HeightRequest="{ext:DynamicResource size_500}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+                    </uc:DataTable.Header>
+                    <uc:DataTable.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <dt:EnvelopeGroupDetailedViewCell
+                                    SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
+                                    CancelCommand="{Binding BindingContext.RefreshEnvelopeGroupCommand, Source={x:Reference Name=this}}">
+                                    <dt:EnvelopeGroupDetailedViewCell.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                            Value="false"
+                                            TargetType="dt:EnvelopeGroupDetailedViewCell">
+                                            <Setter Property="IsReadOnly" Value="true"/>
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsGenericHiddenEnvelopeGroup}"
+                                            Value="true"
+                                            TargetType="dt:EnvelopeGroupDetailedViewCell">
+                                            <Setter Property="IsReadOnly" Value="true"/>
+                                        </DataTrigger>
+                                    </dt:EnvelopeGroupDetailedViewCell.Triggers>
+                                </dt:EnvelopeGroupDetailedViewCell>
+                                <uc:SelectableViewCell.ContextActions>
+                                    <MenuItem
+                                        Text="{ext:Translate EditButton}"
+                                        Command="{Binding BindingContext.EditCommand, Source={x:Reference Name=this}}"
+                                        CommandParameter="{Binding .}"/>
+                                </uc:SelectableViewCell.ContextActions>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:DataTable.ItemTemplate>
+                </uc:DataTable>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BaseDetailedPage.Body>
 </p:BaseDetailedPage>

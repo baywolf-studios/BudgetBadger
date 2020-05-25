@@ -3,111 +3,70 @@
     x:Class="BudgetBadger.Forms.DataTemplates.TransactionViewCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    ColumnSpacing="16"
-    HeightRequest="{StaticResource Key=ListDoubleItemHeight}"
-    RowSpacing="4">
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    ColumnSpacing="{ext:DynamicResource Key=size_100}"
+    RowSpacing="{ext:DynamicResource Key=size_40}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="40" />
+        <ColumnDefinition Width="{ext:DynamicResource Key=size_450, Converter={StaticResource DoubleToGridLengthConverter}}" />
         <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
-    <ContentView Grid.Row="0" Grid.Column="0">
-        <ContentView.GestureRecognizers>
-            <TapGestureRecognizer x:Name="ToggleGestureRecognizer" CommandParameter="{Binding .}" />
-        </ContentView.GestureRecognizers>
-        <svg:SvgCachedImage
-            HeightRequest="24"
-            HorizontalOptions="End"
-            ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-            VerticalOptions="Center"
-            WidthRequest="24">
-            <svg:SvgCachedImage.Triggers>
-                <MultiTrigger TargetType="svg:SvgCachedImage">
-                    <MultiTrigger.Conditions>
-                        <BindingCondition Binding="{Binding Posted}" Value="true" />
-                        <BindingCondition Binding="{Binding Reconciled}" Value="false" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Source" Value="posted.svg" />
-                </MultiTrigger>
-                <DataTrigger
-                    Binding="{Binding Reconciled}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="reconciled.svg" />
-                </DataTrigger>
-                <DataTrigger
-                    Binding="{Binding Pending}"
-                    TargetType="svg:SvgCachedImage"
-                    Value="true">
-                    <Setter Property="Source" Value="pending.svg" />
-                </DataTrigger>
-            </svg:SvgCachedImage.Triggers>
-        </svg:SvgCachedImage>
-
-    </ContentView>
-    <ContentView Grid.Column="1">
-        <ContentView.InputTransparent>
-            <OnPlatform x:TypeArguments="x:Boolean">
-                <On Platform="Android, macOS" Value="False" />
-                <On Platform="iOS, UWP" Value="True" />
-            </OnPlatform>
-        </ContentView.InputTransparent>
-        <ContentView.GestureRecognizers>
-            <TapGestureRecognizer x:Name="SelectedGestureRecognizer" CommandParameter="{Binding .}" />
-        </ContentView.GestureRecognizers>
-        <Grid ColumnSpacing="16" RowSpacing="4">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label
-                x:Name="primaryLabel"
-                Grid.Row="0"
-                Grid.Column="0"
-                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                Text="{Binding Payee.Description}"
-                VerticalOptions="End" />
-            <Label
-                x:Name="secondaryLabel"
-                Grid.Row="1"
-                Grid.Column="0"
-                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Account.Description}"
-                VerticalOptions="Start" />
-            <Label
-                x:Name="rightSingleLabel"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                Style="{StaticResource Key=ListItemLabelStyle}"
-                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="Center" />
-            <Label
-                x:Name="rightPrimaryLabel"
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                IsVisible="false"
-                Style="{StaticResource Key=ListDoubleItemLabelStyle}"
-                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                VerticalOptions="End" />
-            <Label
-                x:Name="rightSecondaryLabel"
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,16,0"
-                HorizontalOptions="End"
-                IsVisible="false"
-                Style="{StaticResource Key=ListDoubleSubItemLabelStyle}"
-                Text="{Binding Envelope.Description}"
-                VerticalOptions="Start" />
-        </Grid>
-    </ContentView>
+    <uc:TransactionStatusButton
+        x:Name="TransactionStatusButton"
+        Grid.Column="0"
+        Grid.RowSpan="2"
+        Transaction="{Binding .}"/>
+    <Label
+        x:Name="leftPrimaryLabel"
+        Grid.Column="1"
+        Grid.Row="0"
+        VerticalOptions="End"
+        HorizontalTextAlignment="Start"
+        Style="{ext:DynamicResource ListDoubleLinePrimaryItemLabelStyle}"
+        Text="{Binding Payee.Description}">
+    </Label>
+    <Label
+        x:Name="leftSecondaryLabel"
+        Grid.Column="1"
+        Grid.Row="1"
+        VerticalOptions="Start"
+        HorizontalTextAlignment="Start"
+        Style="{ext:DynamicResource ListDoubleLineSecondaryItemLabelStyle}"
+        Text="{Binding Account.Description}">
+    </Label>
+    <Label
+        x:Name="rightSingleLabel"
+        Grid.Column="2"
+        Grid.Row="0"
+        Grid.RowSpan="2"
+        VerticalOptions="Center"
+        HorizontalTextAlignment="End"
+        Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
+        Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}">
+    </Label>
+    <Label
+        x:Name="rightPrimaryLabel"
+        Grid.Column="2"
+        Grid.Row="0"
+        VerticalOptions="End"
+        HorizontalTextAlignment="End"
+        Style="{ext:DynamicResource ListDoubleLinePrimaryItemLabelStyle}"
+        Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
+        IsVisible="False">
+    </Label>
+    <Label
+        x:Name="rightSecondaryLabel"
+        Grid.Column="2"
+        Grid.Row="1"
+        VerticalOptions="Start"
+        HorizontalTextAlignment="End"
+        Style="{ext:DynamicResource ListDoubleLineSecondaryItemLabelStyle}"
+        Text="{Binding Envelope.Description}"
+        IsVisible="False">
+    </Label>
 </Grid>

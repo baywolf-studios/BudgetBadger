@@ -3,14 +3,10 @@
     x:Class="BudgetBadger.Forms.Accounts.AccountInfoDetailedPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.Portable"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     x:Name="this">
     <p:BaseDetailedPage.Header>
@@ -20,437 +16,294 @@
             SearchCommand="{Binding SearchCommand}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding EditCommand}"
-            ToolbarItemIcon="edit.svg" />
+            ToolbarItemIcon="{ext:DynamicResource EditIcon}" />
     </p:BaseDetailedPage.Header>
     <p:BaseDetailedPage.Body>
-        <Grid Margin="0" RowSpacing="0">
+        <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
             </Grid.RowDefinitions>
-            <uc:HelperControl
-                Title="{ext:Translate EmptyTransactionsHelperTitle}"
+            <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
                 Grid.Row="0"
-                ImagePath="transaction.svg"
-                ShowHelper="{Binding NoTransactions}">
-                <uc:HelperControl.Triggers>
-                    <DataTrigger
-                        Binding="{Binding NoTransactions}"
-                        TargetType="uc:HelperControl"
-                        Value="true">
-                        <Setter Property="Margin" Value="0,0,0,56" />
-                    </DataTrigger>
-                </uc:HelperControl.Triggers>
-                <uc:PullToRefresh
-                    Margin="16,0"
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
-                    <uc:PullToRefresh.PullableContent>
-                        <uc:DataGrid
-                            AllowSwiping="True"
-                            ColumnSizer="Star"
-                            Filter="{Binding Filter}"
-                            FilterText="{Binding SearchText}"
-                            IsBusy="{Binding IsBusy}"
-                            ItemsSource="{Binding Transactions}"
-                            SelectedItem="{Binding SelectedTransaction}">
-                            <syncfusion:SfDataGrid.RightSwipeTemplate>
-                                <DataTemplate>
-                                    <ContentView BackgroundColor="{StaticResource DataGridContextActionDestructionBackgroundColor}">
-                                        <ContentView.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}" CommandParameter="{Binding .}" />
-                                        </ContentView.GestureRecognizers>
-                                        <svg:SvgCachedImage
-                                            HeightRequest="24"
-                                            HorizontalOptions="Center"
-                                            ReplaceStringMap="{Binding Source={StaticResource DataGridContextActionTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                            Source="delete.svg"
-                                            VerticalOptions="Center"
-                                            WidthRequest="24" />
-                                    </ContentView>
-                                </DataTemplate>
-                            </syncfusion:SfDataGrid.RightSwipeTemplate>
-                            <syncfusion:SfDataGrid.SortComparers>
-                                <data:SortComparer PropertyName="ServiceDate">
-                                    <data:SortComparer.Comparer>
-                                        <comparers:TransactionComparer />
-                                    </data:SortComparer.Comparer>
-                                </data:SortComparer>
-                            </syncfusion:SfDataGrid.SortComparers>
-                            <syncfusion:SfDataGrid.SortColumnDescriptions>
-                                <syncfusion:SortColumnDescription ColumnName="ServiceDate" SortDirection="Ascending" />
-                            </syncfusion:SfDataGrid.SortColumnDescriptions>
-                            <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="ServiceDate"
-                                    Width="96">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactionServiceDateLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:DatePickerDenseColumn
-                                                IsReadOnly="{Binding IsCombined}"
-                                                Date="{Binding ServiceDate}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:DatePickerDenseColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:DatePickerDenseColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:DatePickerDenseColumn.Triggers>
-                                            </dt:DatePickerDenseColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Envelope.ExtendedDescription"
-                                    uc:StarSizerRatioHelpers.ColumnRatio="1.5">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactionEnvelopeLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:PickerDenseColumn
-                                                IsReadOnly="{Binding IsCombined}"
-                                                ItemsSource="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
-                                                SelectedItem="{Binding Envelope}"
-                                                ItemDisplayBinding="{Binding ExtendedDescription}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:PickerDenseColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:PickerDenseColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding Envelope.IsSystem}"
-                                                        TargetType="dt:PickerDenseColumn"
-                                                        Value="True">
-                                                        <Setter Property="IsReadOnly" Value="true" />
-                                                    </DataTrigger>
-                                                </dt:PickerDenseColumn.Triggers>
-                                            </dt:PickerDenseColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    MappingName="Payee.ExtendedDescription">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactionPayeeLabel}"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:PickerDenseColumn
-                                                IsReadOnly="{Binding IsCombined}"
-                                                ItemsSource="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
-                                                SelectedItem="{Binding Payee}"
-                                                ItemDisplayBinding="{Binding ExtendedDescription}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:PickerDenseColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:PickerDenseColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:PickerDenseColumn.Triggers>
-                                            </dt:PickerDenseColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="96"
-                                    MappingName="Outflow">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactactionOutflowLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:CurrencyCalculatorDenseColumn
-                                                IsReadOnly="{Binding IsCombined}"
-                                                Number="{Binding Outflow}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
-                                            </dt:CurrencyCalculatorDenseColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="96"
-                                    MappingName="Inflow">
-                                    <syncfusion:GridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <dt:HeaderDenseColumn
-                                                Text="{ext:Translate TransactactionInflowLabel}"
-                                                HorizontalTextAlignment="End"/>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.HeaderTemplate> 
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dt:CurrencyCalculatorDenseColumn
-                                                IsReadOnly="{Binding IsCombined}"
-                                                Number="{Binding Inflow}"
-                                                SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
-                                                SaveCommandParameter="{Binding .}"
-                                                SelectedCommand="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                SelectedCommandParameter="{Binding .}">
-                                                <dt:CurrencyCalculatorDenseColumn.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                                        Value="false"
-                                                        TargetType="dt:CurrencyCalculatorDenseColumn">
-                                                        <Setter Property="IsReadOnly" Value="true"/>
-                                                    </DataTrigger>
-                                                </dt:CurrencyCalculatorDenseColumn.Triggers>
-                                            </dt:CurrencyCalculatorDenseColumn>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="48"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText=""
-                                    HeaderTextAlignment="Center"
-                                    MappingName=".">
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <uc:ContentButton
-                                                Command="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}"
-                                                Style="{StaticResource DataGridColumnStyle}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24">
-                                                    <svg:SvgCachedImage.Triggers>
-                                                        <MultiTrigger TargetType="svg:SvgCachedImage">
-                                                            <MultiTrigger.Conditions>
-                                                                <BindingCondition Binding="{Binding Posted}" Value="true" />
-                                                                <BindingCondition Binding="{Binding Reconciled}" Value="false" />
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter Property="Source" Value="posted.svg" />
-                                                        </MultiTrigger>
-                                                        <DataTrigger
-                                                            Binding="{Binding Reconciled}"
-                                                            TargetType="svg:SvgCachedImage"
-                                                            Value="true">
-                                                            <Setter Property="Source" Value="reconciled.svg" />
-                                                        </DataTrigger>
-                                                        <DataTrigger
-                                                            Binding="{Binding Pending}"
-                                                            TargetType="svg:SvgCachedImage"
-                                                            Value="true">
-                                                            <Setter Property="Source" Value="pending.svg" />
-                                                        </DataTrigger>
-                                                    </svg:SvgCachedImage.Triggers>
-                                                </svg:SvgCachedImage>
-                                            </uc:ContentButton>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                                <syncfusion:GridTemplateColumn
-                                    Width="48"
-                                    HeaderCellTextSize="{StaticResource ListHeaderFontSize}"
-                                    HeaderText=""
-                                    HeaderTextAlignment="Center"
-                                    MappingName=".">
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <uc:ContentButton
-                                                Style="{StaticResource DataGridColumnStyle}"
-                                                Command="{Binding BindingContext.TransactionSelectedCommand, Source={x:Reference Name=this}}"
-                                                CommandParameter="{Binding .}">
-                                                <svg:SvgCachedImage
-                                                    Margin="16"
-                                                    HeightRequest="24"
-                                                    HorizontalOptions="Center"
-                                                    ReplaceStringMap="{Binding Source={StaticResource PrimaryTextColor}, Converter={StaticResource ReplaceColorMap}}"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="24"
-                                                    Source="next.svg">
-                                                </svg:SvgCachedImage>
-                                            </uc:ContentButton>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-                            </syncfusion:SfDataGrid.Columns>
-                        </uc:DataGrid>
-                    </uc:PullToRefresh.PullableContent>
-                </uc:PullToRefresh>
-            </uc:HelperControl>
+                Grid.ColumnSpan="12"
+                VerticalOptions="Start">
+                <FlexLayout
+                    IsVisible="{OnIdiom Default=True, Phone=False}"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="SpaceEvenly"
+                    AlignContent="Center"
+                    AlignItems="Center"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        Orientation="Vertical">
+                        <Label
+                            Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                            Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                        <Label
+                            Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountBalanceLabel}"/>
+                    </StackLayout>
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Orientation="Vertical">
+                        <Label
+                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                            Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
+                        <Label
+                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountPendingLabel}"/>
+                    </StackLayout>
+                    <StackLayout
+                        Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                        Spacing="{ext:DynamicResource size_40}"
+                        HeightRequest="{ext:DynamicResource size_800}"
+                        Orientation="Vertical">
+                        <Label
+                            Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                            Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
+                        <Label
+                            Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                            Text="{ext:Translate AccountPostedLabel}"/>
+                    </StackLayout>
+                    <uc:ContentButton
+                                Command="{Binding PaymentCommand}"
+                                Style="{ext:DynamicResource AccountPaymentButtonStyle}"
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                Padding="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}">
+                        <StackLayout
+                            Spacing="{ext:DynamicResource size_40}"
+                            InputTransparent="True"
+                            Orientation="Vertical">
+                            <Label
+                                Style="{StaticResource PageSubheaderPrimaryLabelStyle}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="false">
+                                        <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
+                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label
+                                Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountPaymentLabel}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Account.PaymentRequired}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </uc:ContentButton>
+                </FlexLayout>
+                <uc:Accordion
+                    IsVisible="{OnIdiom Default=False, Phone=True}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                    <uc:Accordion.HeaderContent>
+                        <StackLayout
+                            HeightRequest="{ext:DynamicResource size_600}"
+                            Spacing="{ext:DynamicResource size_100}"
+                            Orientation="Horizontal">
+                            <Label
+                                Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                            <Label
+                                Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                Text="{ext:Translate AccountBalanceLabel}"/>
+                        </StackLayout>
+                    </uc:Accordion.HeaderContent>
+                    <uc:Accordion.BodyContent>
+                        <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                        <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                            <StackLayout
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                Spacing="{ext:DynamicResource size_40}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Orientation="Vertical">
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                    Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountPendingLabel}"/>
+                            </StackLayout>
+                            <StackLayout
+                                Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                Spacing="{ext:DynamicResource size_40}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Orientation="Vertical">
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                    Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"/>
+                                <Label
+                                    Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                    Text="{ext:Translate AccountPostedLabel}"/>
+                            </StackLayout>
+                            <uc:ContentButton
+                                Command="{Binding PaymentCommand}"
+                                Style="{ext:DynamicResource AccountPaymentButtonStyle}"
+                                HeightRequest="{ext:DynamicResource size_600}"
+                                Padding="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}">
+                                <StackLayout
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    Orientation="Vertical"
+                                    InputTransparent="True">
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}">
+                                        <Label.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding Account.PaymentRequired}"
+                                                TargetType="Label"
+                                                Value="false">
+                                                <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding Account.PaymentRequired}"
+                                                TargetType="Label"
+                                                Value="true">
+                                                <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
+                                                <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label
+                                        Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate AccountPaymentLabel}">
+                                        <Label.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding Account.PaymentRequired}"
+                                                TargetType="Label"
+                                                Value="true">
+                                                <Setter Property="TextColor" Value="{ext:DynamicResource brand_600}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </StackLayout>
+                            </uc:ContentButton>
+                        </FlexLayout>
+                        </StackLayout>
+                    </uc:Accordion.BodyContent>
+                </uc:Accordion>
+            </StackLayout>
             <BoxView
                 Grid.Row="1"
-                Margin="0"
-                BackgroundColor="{StaticResource DividerColor}"
-                HeightRequest="1" />
-            <Grid
+                Grid.ColumnSpan="12"
+                Style="{ext:DynamicResource MediumDividerStyle}"
+                HeightRequest="{ext:DynamicResource size_25}"
+                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+            <uc:EmptyState
+                Title="{ext:Translate EmptyTransactionsHelperTitle}"
                 Grid.Row="2"
-                Margin="16"
-                ColumnSpacing="16"
-                RowSpacing="8">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="0" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalOptions="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{ext:Translate AccountBalanceLabel}"
-                    VerticalOptions="Center" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    HorizontalOptions="Start"
-                    Style="{StaticResource PageHeaderLabelStyle}"
-                    Text="{Binding Account.Balance, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Center" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    HorizontalOptions="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{ext:Translate AccountPendingLabel}"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    HorizontalOptions="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PendingTotal, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Start" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    HorizontalOptions="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{ext:Translate AccountPostedLabel}"
-                    VerticalOptions="End" />
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    HorizontalOptions="Center"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{Binding PostedTotal, Converter={StaticResource CurrencyConverter}}"
-                    VerticalOptions="Start" />
-                <ContentView
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="4">
-                    <ContentView.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PaymentCommand}" />
-                    </ContentView.GestureRecognizers>
-                </ContentView>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    HorizontalOptions="Center"
-                    InputTransparent="true"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    Text="{ext:Translate AccountPaymentLabel}"
-                    VerticalOptions="End">
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="4"
-                    HorizontalOptions="Center"
-                    InputTransparent="true"
-                    Style="{StaticResource PageSubheaderLabelStyle}"
-                    VerticalOptions="Start">
-                    <Label.Triggers>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="false">
-                            <Setter Property="Text" Value="{ext:Translate AccountPaymentNotNeededLabel}" />
-                        </DataTrigger>
-                        <DataTrigger
-                            Binding="{Binding Account.PaymentRequired}"
-                            TargetType="Label"
-                            Value="true">
-                            <Setter Property="Text" Value="{Binding Account.Payment, Converter={StaticResource CurrencyConverter}}" />
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="12"
+                Icon="{ext:DynamicResource TransactionIcon}"
+                ShowHelper="{Binding NoTransactions}">
+                        <uc:DataTable
+                            Items="{Binding Transactions}"
+                            IsSorted="True"
+                            RowHeight="{ext:DynamicResource size_500}"
+                            IsHeaderSticky="True"
+                            SearchFilter="{Binding Filter}"
+                            SearchText="{Binding SearchText}"
+                            SelectedCommand="{Binding TransactionSelectedCommand}"
+                            SelectedItem="{Binding SelectedTransaction}"
+                            SeparatorVisibility="None"
+                            IsPullToRefreshEnabled="True"
+                            IsBusy="{Binding IsBusy}"
+                            RefreshCommand="{Binding RefreshCommand}">
+                            <uc:DataTable.SortComparer>
+                                <comparers:TransactionComparer />
+                            </uc:DataTable.SortComparer>
+                            <uc:DataTable.Header>
+                                    <dt:TransactionDetailedHeader
+                                        TransactionViewCellType="Account"
+                                        HeightRequest="{ext:DynamicResource size_500}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
+                            </uc:DataTable.Header>
+                            <uc:DataTable.ItemTemplate>
+                                <DataTemplate>
+                                    <uc:SelectableViewCell
+                                        HeightRequest="{ext:DynamicResource size_675}"
+                                        BackgroundColor="{ext:DynamicResource gray_50}"
+                                        SelectedBackgroundColor="{ext:DynamicResource brand_100}"
+                                        Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                        <dt:TransactionDetailedViewCell
+                                            TransactionViewCellType="Account"
+                                            Payees="{Binding BindingContext.Payees, Source={x:Reference Name=this}}"
+                                            Envelopes="{Binding BindingContext.Envelopes, Source={x:Reference Name=this}}"
+                                            ToggleCommand="{Binding BindingContext.TogglePostedTransactionCommand, Source={x:Reference Name=this}}"
+                                            SaveCommand="{Binding BindingContext.SaveTransactionCommand, Source={x:Reference Name=this}}"
+                                            CancelCommand="{Binding BindingContext.RefreshTransactionCommand, Source={x:Reference Name=this}}"
+                                            HeightRequest="{ext:DynamicResource size_675}"
+                                            IsReadOnly="{Binding IsCombined}">
+                                            <dt:TransactionDetailedViewCell.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
+                                                    Value="false"
+                                                    TargetType="dt:TransactionDetailedViewCell">
+                                                    <Setter Property="IsReadOnly" Value="true"/>
+                                                </DataTrigger>
+                                            </dt:TransactionDetailedViewCell.Triggers>
+                                        </dt:TransactionDetailedViewCell>
+                                        <uc:SelectableViewCell.ContextActions>
+                                            <MenuItem
+                                                Text="{ext:Translate DeleteButton}"
+                                                IsDestructive="True"
+                                                Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Name=this}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </uc:SelectableViewCell.ContextActions>
+                                    </uc:SelectableViewCell>
+                                </DataTemplate>
+                            </uc:DataTable.ItemTemplate>
+                            <uc:DataTable.Footer>
+                                <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                            </uc:DataTable.Footer>
+                        </uc:DataTable>
+            </uc:EmptyState>
+            <FlexLayout
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="12"
+                Direction="Row"
+                AlignItems="Center"
+                JustifyContent="End"
+                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                 <uc:Button2
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="6"
                     Command="{Binding ReconcileCommand}"
-                    HorizontalOptions="EndAndExpand"
                     Style="{StaticResource SecondaryActionButtonStyle}"
                     Text="{ext:Translate ReconcileAccountButton}"
-                    VerticalOptions="Center" />
+                    FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
                 <uc:Button2
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="7"
                     Command="{Binding AddTransactionCommand}"
-                    HorizontalOptions="EndAndExpand"
                     Style="{StaticResource PrimaryActionButtonStyle}"
                     Text="{ext:Translate AddTransactionButton}"
-                    VerticalOptions="Center" />
-            </Grid>
-        </Grid>
+                    FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+            </FlexLayout>
+        </uc:ResponsiveGrid>
     </p:BaseDetailedPage.Body>
 </p:BaseDetailedPage>

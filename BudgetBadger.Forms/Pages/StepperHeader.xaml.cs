@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Forms.Animation;
+using BudgetBadger.Forms.Style;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Pages
@@ -32,10 +33,11 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(SearchCommandProperty, value);
         }
 
-        public ImageSource ToolbarItemIcon
+        public static BindableProperty ToolbarItemIconProperty = BindableProperty.Create(nameof(ToolbarItemIcon), typeof(string), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
+        public string ToolbarItemIcon
         {
-            get => ToolbarItemImage.Source;
-            set { ToolbarItemImage.ReplaceStringMap = ReplaceColor; ToolbarItemImage.Source = value; }
+            get => (string)GetValue(ToolbarItemIconProperty);
+            set => SetValue(ToolbarItemIconProperty, value);
         }
 
         public static BindableProperty ToolbarItemCommandProperty = BindableProperty.Create(nameof(ToolbarItemCommand), typeof(ICommand), typeof(StepperHeader), defaultBindingMode: BindingMode.TwoWay);
@@ -59,12 +61,6 @@ namespace BudgetBadger.Forms.Pages
             set => SetValue(PreviousCommandProperty, value);
         }
 
-        public Dictionary<string, string> ReplaceColor
-        {
-            get => new Dictionary<string, string> { { "#ffffff", "#FFFFFF" } };
-        }
-
-
         public StepperHeader()
         {
             InitializeComponent();
@@ -72,11 +68,8 @@ namespace BudgetBadger.Forms.Pages
             ToolbarItemFrame.BindingContext = this;
             ToolbarItemImage.BindingContext = this;
             PreviousFrame.BindingContext = this;
-            PreviousImage.BindingContext = this;
             NextFrame.BindingContext = this;
-            NextImage.BindingContext = this;
             EntryControl.BindingContext = this;
-            SearchImage.BindingContext = this;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += SearchTapped;
@@ -99,26 +92,11 @@ namespace BudgetBadger.Forms.Pages
             };
         }
 
-        async void Handle_Tapped(object sender, System.EventArgs e)
-        {
-            var originalColor = ToolbarItemFrame.BackgroundColor;
-
-            ToolbarItemFrame.BackgroundColor = Color.Red;
-
-            var colorTask2 = ToolbarItemFrame.ColorTo(Color.Red, originalColor, (Color obj2) => ToolbarItemFrame.BackgroundColor = obj2, _animationLength, Easing.CubicInOut);
-            if (await Task.WhenAny(colorTask2, Task.Delay((int)_animationLength + 50)) != colorTask2)
-            {
-                ViewExtensions.CancelAnimations(ToolbarItemFrame);
-                ToolbarItemFrame.BackgroundColor = originalColor;
-            }
-        }
-
         async void SearchTapped(object sender, EventArgs e)
         {
             if (!SearchBoxFrame.IsVisible) //currently hidden
             {
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "cancel.svg";
+                SearchIcon.Text = Icons.Close;
 
                 //show it
                 SearchBoxFrame.IsVisible = true;
@@ -135,8 +113,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 SearchText = string.Empty;
 
-                SearchImage.ReplaceStringMap = ReplaceColor;
-                SearchImage.Source = "search.svg";
+                SearchIcon.Text = Icons.Search;
 
                 //hide it
                 var translationTask = SearchBoxFrame.FadeTo(0, _animationLength, Easing.CubicOut);

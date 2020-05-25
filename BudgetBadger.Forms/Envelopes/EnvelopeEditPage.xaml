@@ -11,7 +11,7 @@
             BackCommand="{Binding BackCommand}"
             PageTitle="{ext:Translate EnvelopeEditPageTitle}"
             ToolbarItemCommand="{Binding SaveCommand}"
-            ToolbarItemIcon="save.svg">
+            ToolbarItemIcon="{StaticResource SaveIcon}">
             <p:ChildHeader.Triggers>
                 <DataTrigger
                     Binding="{Binding Budget.Envelope.IsNew}"
@@ -24,409 +24,242 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
-            <Grid
-                Margin="0"
-                ColumnSpacing="16"
-                RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <uc:Expander Grid.Row="0" IsExpanded="true">
-                    <uc:Expander.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>true</OnIdiom.Phone>
-                            <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </uc:Expander.IsVisible>
-                    <uc:Expander.HeaderContent>
-                        <Grid ColumnSpacing="8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Label
-                                Grid.Column="0"
-                                HorizontalOptions="Start"
-                                Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="{ext:Translate ScheduleToBudgetLabel}"
-                                VerticalOptions="Center" />
-                            <Label
-                                Grid.Column="1"
-                                HorizontalOptions="End"
-                                Style="{StaticResource PageHeaderLabelStyle}"
-                                Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
-                                VerticalOptions="Center" />
-                        </Grid>
-                    </uc:Expander.HeaderContent>
-                    <uc:Expander.BodyContent>
-                        <Grid ColumnSpacing="16" RowSpacing="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Label
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate EnvelopePastLabel}" />
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}" />
-                            <Label
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate EnvelopeActivityLabel}" />
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}" />
-                            <Label
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{ext:Translate EnvelopeRemainingLabel}" />
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                HorizontalOptions="Center"
-                                Style="{StaticResource PageSubheaderLabelStyle}"
-                                Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}" />
-                        </Grid>
-                    </uc:Expander.BodyContent>
-                </uc:Expander>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <ScrollView
-                    Grid.Row="2"
-                    Margin="0"
-                    Padding="0"
-                    Orientation="Vertical">
-                    <Grid
-                        Margin="0"
-                        ColumnSpacing="16"
-                        RowSpacing="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0" />
+            <ScrollView
+                Orientation="Vertical">
+                    <uc:ResponsiveGrid
+                        x:Name="responsiveGrid"
+                        RowSpacing="0">
+                        <uc:ResponsiveGrid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{ext:DynamicResource Key=size_25,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                            <RowDefinition Height="{ext:DynamicResource Key=size_160,Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="0" />
-                        </Grid.RowDefinitions>
-                        <uc:TextEntry
+                            <RowDefinition Height="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                            <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        </uc:ResponsiveGrid.RowDefinitions>
+                        <StackLayout
+                            Margin="0"
+                            Padding="0"
+                            Spacing="0"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="12"
+                            VerticalOptions="Start">
+                            <FlexLayout
+                                IsVisible="{OnIdiom Default=True, Phone=False}"
+                                HeightRequest="{ext:DynamicResource size_800}"
+                                Direction="Row"
+                                Wrap="Wrap"
+                                JustifyContent="SpaceEvenly"
+                                AlignContent="Center"
+                                AlignItems="Center"
+                                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    HeightRequest="{ext:DynamicResource size_800}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource PageHeaderPrimaryLabelStyle}"
+                                        Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource PageHeaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_800}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate EnvelopePastLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_800}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate EnvelopeActivityLabel}"/>
+                                </StackLayout>
+                                <StackLayout
+                                    Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                    Spacing="{ext:DynamicResource size_40}"
+                                    HeightRequest="{ext:DynamicResource size_800}"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Style="{StaticResource PageSubheaderPrimaryLabelStyle}"
+                                        Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}"/>
+                                    <Label
+                                        Style="{StaticResource PageSubheaderSecondaryLabelStyle}"
+                                        Text="{ext:Translate EnvelopeRemainingLabel}"/>
+                                </StackLayout>
+                            </FlexLayout>
+                            <uc:Accordion
+                                IsVisible="{OnIdiom Default=False, Phone=True}"
+                                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                                <uc:Accordion.HeaderContent>
+                                    <StackLayout
+                                        HeightRequest="{ext:DynamicResource size_600}"
+                                        VerticalOptions="Center"
+                                        Spacing="{ext:DynamicResource size_100}"
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
+                                            Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"/>
+                                        <Label
+                                            Style="{StaticResource MobilePageHeaderSecondaryLabelStyle}"
+                                            Text="{ext:Translate ScheduleToBudgetLabel}"/>
+                                    </StackLayout>
+                                </uc:Accordion.HeaderContent>
+                                <uc:Accordion.BodyContent>
+                                    <StackLayout VerticalOptions="Center" Margin="0" Padding="0" Spacing="0">
+                                    <FlexLayout VerticalOptions="Center" Direction="Row" Wrap="Wrap" JustifyContent="SpaceEvenly">
+                                        <StackLayout
+                                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                            Spacing="{ext:DynamicResource size_40}"
+                                            HeightRequest="{ext:DynamicResource size_600}"
+                                            Orientation="Vertical">
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                                Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}"/>
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                                Text="{ext:Translate EnvelopePastLabel}"/>
+                                        </StackLayout>
+                                        <StackLayout
+                                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                            Spacing="{ext:DynamicResource size_40}"
+                                            HeightRequest="{ext:DynamicResource size_600}"
+                                            Orientation="Vertical">
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                                Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}"/>
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                                Text="{ext:Translate EnvelopeActivityLabel}"/>
+                                        </StackLayout>
+                                        <StackLayout
+                                            Margin="{ext:Thickness LeftKey=size_100, TopKey=size_0, RightKey=size_100,BottomKey=size_0}"
+                                            Spacing="{ext:DynamicResource size_40}"
+                                            HeightRequest="{ext:DynamicResource size_600}"
+                                            Orientation="Vertical">
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderPrimaryLabelStyle}"
+                                                Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}"/>
+                                            <Label
+                                                Style="{StaticResource MobilePageSubheaderSecondaryLabelStyle}"
+                                                Text="{ext:Translate EnvelopeRemainingLabel}"/>
+                                        </StackLayout>
+                                    </FlexLayout>
+                                    </StackLayout>
+                                </uc:Accordion.BodyContent>
+                            </uc:Accordion>
+                        </StackLayout>
+                        <BoxView
                             Grid.Row="1"
+                            Grid.ColumnSpan="12"
+                            Style="{ext:DynamicResource MediumDividerStyle}"
+                            HeightRequest="{ext:DynamicResource size_25}"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
+                        <uc:TextField
+                            Grid.Row="3"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
+                            Grid.ColumnSpan="12"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeNameLabel}"
                             Text="{Binding Budget.Envelope.Description}" />
-                        <uc:ButtonSelector
-                            Grid.Row="2"
+                        <uc:ButtonTextField
+                            Grid.Row="5"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
+                            Grid.ColumnSpan="12"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Command="{Binding GroupSelectedCommand}"
                             Label="{ext:Translate EnvelopeGroupLabel}"
                             Text="{Binding Budget.Envelope.Group.Description}" />
                         <uc:CurrencyCalculatorEntry
-                            Grid.Row="3"
+                            Grid.Row="7"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
+                            Grid.ColumnSpan="12"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeAmountLabel}"
                             Number="{Binding Budget.Amount}" />
-                        <uc:DropdownSelector
-                            Grid.Row="4"
+                        <uc:Dropdown
+                            Grid.Row="9"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
+                            Grid.ColumnSpan="12"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             IsEnabled="{Binding IsNotDebt}"
                             ItemsSource="{Binding OverspendingTypes}"
                             Label="{ext:Translate EnvelopeOverspendingLabel}"
                             SelectedIndex="{Binding Budget.HandleOverspend, Converter={StaticResource IntEnumConverter}}" />
-                        <uc:MultilineTextEntry
-                            Grid.Row="5"
+                        <uc:MultilineTextField
+                            Grid.Row="11"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="16,0"
+                            Grid.ColumnSpan="12"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Label="{ext:Translate EnvelopeNotesLabel}"
                             Text="{Binding Budget.Envelope.Notes}" />
-                        <uc:Button2
-                            Grid.Row="6"
+                        <FlexLayout
+                            Grid.Row="13"
                             Grid.Column="0"
-                            Margin="16,0,0,0"
-                            Command="{Binding HideCommand}"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate HideButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Budget.Envelope.IsActive}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <uc:Button2
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Margin="16,0,0,0"
-                            Command="{Binding SoftDeleteCommand}"
-                            Style="{StaticResource SecondaryDestructionButtonStyle}"
-                            Text="{ext:Translate DeleteButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Budget.Envelope.IsHidden}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <uc:Button2
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Margin="0,0,16,0"
-                            Command="{Binding UnhideCommand}"
-                            Style="{StaticResource SecondaryActionButtonStyle}"
-                            Text="{ext:Translate UnhideButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Budget.Envelope.IsHidden}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                        <uc:Button2
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Margin="0,0,16,0"
-                            Command="{Binding QuickBudgetCommand}"
-                            IsVisible="{Binding Budget.IsActive}"
-                            Style="{StaticResource PrimaryActionButtonStyle}"
-                            Text="{ext:Translate QuickBudgetButton}">
-                            <uc:Button2.IsVisible>
-                                <OnIdiom x:TypeArguments="x:Boolean">
-                                    <OnIdiom.Phone>true</OnIdiom.Phone>
-                                    <OnIdiom.Tablet>false</OnIdiom.Tablet>
-                                    <OnIdiom.Desktop>false</OnIdiom.Desktop>
-                                </OnIdiom>
-                            </uc:Button2.IsVisible>
-                            <uc:Button2.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Budget.Envelope.IsActive}"
-                                    TargetType="Button"
-                                    Value="false">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </uc:Button2.Triggers>
-                        </uc:Button2>
-                    </Grid>
-                </ScrollView>
-                <BoxView
-                    Grid.Row="3"
-                    Margin="0"
-                    BackgroundColor="{StaticResource DividerColor}"
-                    HeightRequest="1" />
-                <Grid
-                    Grid.Row="4"
-                    Margin="16"
-                    ColumnSpacing="16">
-                    <Grid.IsVisible>
-                        <OnIdiom x:TypeArguments="x:Boolean">
-                            <OnIdiom.Phone>false</OnIdiom.Phone>
-                            <OnIdiom.Tablet>true</OnIdiom.Tablet>
-                            <OnIdiom.Desktop>true</OnIdiom.Desktop>
-                        </OnIdiom>
-                    </Grid.IsVisible>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="0" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{ext:Translate ScheduleToBudgetLabel}"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource PageHeaderLabelStyle}"
-                        Text="{Binding Budget.Schedule.Balance, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate EnvelopePastLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Budget.Past, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="3"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate EnvelopeActivityLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Budget.Activity, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="4"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{ext:Translate EnvelopeRemainingLabel}"
-                        VerticalOptions="End" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource PageSubheaderLabelStyle}"
-                        Text="{Binding Budget.Remaining, Converter={StaticResource CurrencyConverter}}"
-                        VerticalOptions="Start" />
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="6"
-                        Command="{Binding HideCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate HideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsActive}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="7"
-                        Command="{Binding UnhideCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryActionButtonStyle}"
-                        Text="{ext:Translate UnhideButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="7"
-                        Margin="16,0"
-                        Command="{Binding QuickBudgetCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        IsVisible="{Binding Budget.IsActive}"
-                        Style="{StaticResource PrimaryActionButtonStyle}"
-                        Text="{ext:Translate QuickBudgetButton}"
-                        VerticalOptions="Center" />
-                    <uc:Button2
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="6"
-                        Command="{Binding SoftDeleteCommand}"
-                        HorizontalOptions="EndAndExpand"
-                        Style="{StaticResource SecondaryDestructionButtonStyle}"
-                        Text="{ext:Translate DeleteButton}"
-                        VerticalOptions="Center">
-                        <uc:Button2.Triggers>
-                            <DataTrigger
-                                Binding="{Binding Budget.Envelope.IsHidden}"
-                                TargetType="Button"
-                                Value="false">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:Button2.Triggers>
-                    </uc:Button2>
-                </Grid>
-            </Grid>
+                            Grid.ColumnSpan="12"
+                            Direction="Row"
+                            AlignItems="Center"
+                            JustifyContent="End"
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                            <uc:Button2
+                                Command="{Binding HideCommand}"
+                                FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                                Style="{StaticResource SecondaryDestructionButtonStyle}"
+                                Text="{ext:Translate HideButton}"
+                                IsVisible="{Binding Budget.Envelope.IsActive}"
+                                VerticalOptions="Center"/>
+                            <BoxView
+                                IsVisible="{Binding Budget.Envelope.IsActive}"
+                                WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
+                            <uc:Button2
+                                Command="{Binding QuickBudgetCommand}"
+                                FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                                IsVisible="{Binding Budget.Envelope.IsActive}"
+                                Style="{StaticResource PrimaryActionButtonStyle}"
+                                Text="{ext:Translate QuickBudgetButton}"
+                                VerticalOptions="Center" />
+                            <uc:Button2
+                                Command="{Binding UnhideCommand}"
+                                FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Text="{ext:Translate UnhideButton}"
+                                IsVisible="{Binding Budget.Envelope.IsHidden}"
+                                VerticalOptions="Center"/>
+                            <BoxView
+                                IsVisible="{Binding Budget.Envelope.IsHidden}"
+                                WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
+                            <uc:Button2
+                                Command="{Binding SoftDeleteCommand}"
+                                FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"
+                                Style="{StaticResource SecondaryDestructionButtonStyle}"
+                                Text="{ext:Translate DeleteButton}"
+                                IsVisible="{Binding Budget.Envelope.IsHidden}"
+                                VerticalOptions="Center"/>
+                        </FlexLayout>
+                    </uc:ResponsiveGrid>
+            </ScrollView>
         </uc:BusyIndicator>
     </p:BasePage.Body>
 </p:BasePage>

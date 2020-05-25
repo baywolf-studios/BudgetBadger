@@ -1,10 +1,11 @@
 ﻿using System;
+using BudgetBadger.Models;
 using Prism;
 using Prism.Mvvm;
 
 namespace BudgetBadger.Forms
 {
-    public class BaseViewModel : BindableBase, IActiveAware
+    public class BaseViewModel : ObservableBase, IActiveAware
     {
         private bool _isActive;
         public bool IsActive

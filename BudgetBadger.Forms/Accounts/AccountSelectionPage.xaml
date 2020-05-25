@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
+    xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
@@ -16,45 +16,55 @@
             PageTitle="{ext:Translate AccountSelectionPageTitle}"
             SearchText="{Binding SearchText}"
             ToolbarItemCommand="{Binding AddCommand}"
-            ToolbarItemIcon="newicon.svg" />
+            ToolbarItemIcon="{StaticResource AddIcon}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
-        <uc:HelperControl
+        <uc:EmptyState
             Title="{ext:Translate EmptyAccountHelperTitle}"
-            ImagePath="account.svg"
+            Icon="{ext:DynamicResource AccountIcon}"
             ShowHelper="{Binding NoAccounts}"
             Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
-            <uc:PullToRefresh IsBusy="{Binding IsBusy}" RefreshCommand="{Binding RefreshCommand}">
-                <uc:PullToRefresh.PullableContent>
-                    <uc:ListView
-                        Filter="{Binding Filter}"
-                        FilterText="{Binding SearchText}"
-                        GroupHeaderSize="{StaticResource ListGroupHeaderHeight}"
-                        IsBusy="{Binding IsBusy}"
-                        ItemSize="{StaticResource ListItemHeight}"
-                        ItemsSource="{Binding Accounts}"
-                        SelectedCommand="{Binding SelectedCommand}"
-                        SelectedItem="{Binding SelectedAccount}">
-                        <syncfusion:SfListView.DataSource>
-                            <data:DataSource>
-                                <data:DataSource.GroupDescriptors>
-                                    <data:GroupDescriptor PropertyName="Group" />
-                                </data:DataSource.GroupDescriptors>
-                            </data:DataSource>
-                        </syncfusion:SfListView.DataSource>
-                        <syncfusion:SfListView.GroupHeaderTemplate>
-                            <DataTemplate>
+            <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+                <uc:ListView2
+                    Grid.ColumnSpan="12"
+                    Items="{Binding Accounts}"
+                    IsGrouped="True"
+                    GroupPropertyDescription="Group"
+                    RowHeight="{ext:DynamicResource size_500}"
+                    IsSorted="True"
+                    SearchFilter="{Binding Filter}"
+                    SearchText="{Binding SearchText}"
+                    HideSearchBar="True"
+                    SelectedCommand="{Binding SelectedCommand}"
+                    SelectedItem="{Binding SelectedAccount}"
+                    SeparatorVisibility="None"
+                    IsPullToRefreshEnabled="True"
+                    IsBusy="{Binding IsBusy}"
+                    RefreshCommand="{Binding RefreshCommand}">
+                    <uc:ListView2.SortComparer>
+                        <comparers:AccountComparer/>
+                    </uc:ListView2.SortComparer>
+                    <uc:ListView2.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <uc:ViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}">
                                 <dt:GroupHeaderViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.GroupHeaderTemplate>
-                        <syncfusion:SfListView.ItemTemplate>
-                            <DataTemplate>
-                                <dt:AccountViewCell />
-                            </DataTemplate>
-                        </syncfusion:SfListView.ItemTemplate>
-                    </uc:ListView>
-                </uc:PullToRefresh.PullableContent>
-            </uc:PullToRefresh>
-        </uc:HelperControl>
+                            </uc:ViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.GroupHeaderTemplate>
+                    <uc:ListView2.ItemTemplate>
+                        <DataTemplate>
+                            <uc:SelectableViewCell
+                                Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                BackgroundColor="{ext:DynamicResource gray_50}"
+                                SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                                <dt:AccountViewCell/>
+                            </uc:SelectableViewCell>
+                        </DataTemplate>
+                    </uc:ListView2.ItemTemplate>
+                </uc:ListView2>
+            </uc:ResponsiveGrid>
+        </uc:EmptyState>
     </p:BasePage.Body>
 </p:BasePage>
