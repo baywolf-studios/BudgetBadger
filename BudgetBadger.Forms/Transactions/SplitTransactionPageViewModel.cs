@@ -168,7 +168,7 @@ namespace BudgetBadger.Forms.Transactions
             var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
             HasPro = purchasedPro.Success;
 
-            await ExecuteRefreshCommand();
+            await FullRefresh();
 
             if (SplitId == null)
             {
@@ -180,7 +180,7 @@ namespace BudgetBadger.Forms.Transactions
                     {
                         Transactions.ReplaceRange(result.Data);
                         Total = RunningTotal;
-                        NoTransactions = (Transactions?.Count ?? 0) == 0;
+                        RefreshSummary();
                         return;
                     }
                 }
@@ -197,7 +197,7 @@ namespace BudgetBadger.Forms.Transactions
                 tempTransactions.Add(transaction);
                 tempTransactions.Sort();
                 Transactions.ReplaceRange(tempTransactions);
-                NoTransactions = (Transactions?.Count ?? 0) == 0;
+                RefreshSummary();
                 return;
             }
 
@@ -226,14 +226,12 @@ namespace BudgetBadger.Forms.Transactions
                         var split2 = split1.DeepCopy();
                         split2.Id = Guid.NewGuid();
 
-                        Transactions = new ObservableList<Transaction>
-                        {
-                            split1,
-                            split2
-                        };
+                        var splits = new List<Transaction> { split1, split2 };
+                        splits.Sort();
+                        Transactions.ReplaceRange(splits);
                     }
                 }
-                NoTransactions = (Transactions?.Count ?? 0) == 0;
+                RefreshSummary();
                 return;
             }
 
@@ -242,11 +240,11 @@ namespace BudgetBadger.Forms.Transactions
             {
                 var tempTran5 = Transactions.Where(t => t.Id != deletedTransaction.Id);
                 Transactions.ReplaceRange(tempTran5);
-                NoTransactions = (Transactions?.Count ?? 0) == 0;
+                RefreshSummary();
                 return;
             }
 
-            NoTransactions = (Transactions?.Count ?? 0) == 0;
+            RefreshSummary();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -262,7 +260,7 @@ namespace BudgetBadger.Forms.Transactions
             }
         }
 
-        public async Task ExecuteRefreshCommand()
+        public async Task FullRefresh()
         {
             if (IsBusy)
             {
@@ -307,12 +305,22 @@ namespace BudgetBadger.Forms.Transactions
                     {
                         await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), envelopesResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                     }
+
+                    RefreshSummary();
                 }
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        public void RefreshSummary()
+        {
+            NoTransactions = (Transactions?.Count ?? 0) == 0;
+
+            RaisePropertyChanged(nameof(RunningTotal));
+            RaisePropertyChanged(nameof(Remaining));
         }
 
         public async Task ExecuteAddNewCommand()
@@ -368,7 +376,7 @@ namespace BudgetBadger.Forms.Transactions
 
             var existingTransactions = Transactions.Where(t => t.Id != transaction.Id);
             Transactions.ReplaceRange(existingTransactions);
-            NoTransactions = (Transactions?.Count ?? 0) == 0;
+            RefreshSummary();
         }
 
         public async Task ExecuteSaveCommand()
@@ -452,6 +460,8 @@ namespace BudgetBadger.Forms.Transactions
                             _eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Publish(tranResult.Data);
                         else
                             _eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Publish(transaction);
+
+                        RefreshSummary();
                     }
                     else
                     {
