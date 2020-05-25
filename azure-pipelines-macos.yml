@@ -52,7 +52,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'xcode-select --install'
+    script: 'xcode-select -s /Library/Developer/CommandLineTools'
 
 - task: MSBuild@1
   inputs:
