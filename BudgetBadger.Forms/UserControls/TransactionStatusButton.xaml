@@ -58,44 +58,28 @@
                 <Setter Property="BorderColor" Value="{ext:DynamicResource brand_600}"/>
             </DataTrigger>
         </Frame.Triggers>
-        <Image
+        <Label
             x:Name="ImageControl"
             HeightRequest="{ext:DynamicResource size_175}"
             WidthRequest="{ext:DynamicResource size_175}"
+            FontSize="{ext:DynamicResource size_150}"
+            TextColor="{ext:DynamicResource Key=gray_600}"
+            Text="{ext:DynamicResource Key=PIcon}"
             HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
             VerticalOptions="Center"
+            VerticalTextAlignment="Center"
             InputTransparent="True">
-            <Image.Triggers>
+            <Label.Triggers>
                 <DataTrigger
                     Binding="{Binding Transaction.TransactionStatus}"
-                    TargetType="Image"
+                    TargetType="Label"
                     Value="{x:Static model:TransactionStatus.Posted}">
-                    <Setter Property="Source">
-                        <Setter.Value>
-                            <FontImageSource
-                                x:Name="ClearedImageSource"
-                                Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=brand_600}"
-                                Glyph="{ext:DynamicResource Key=CIcon}"/>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="TextColor" Value="{ext:DynamicResource Key=brand_600}"/>
+                    <Setter Property="Text" Value="{ext:DynamicResource Key=CIcon}"/>
                 </DataTrigger>
-                <DataTrigger
-                    Binding="{Binding Transaction.TransactionStatus}"
-                    TargetType="Image"
-                    Value="{x:Static model:TransactionStatus.Pending}">
-                    <Setter Property="Source">
-                        <Setter.Value>
-                            <FontImageSource
-                                x:Name="PendingImageSource"
-                                Size="{ext:DynamicResource size_175}"
-                                Color="{ext:DynamicResource Key=gray_600}"
-                                Glyph="{ext:DynamicResource Key=PIcon}"/>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Image.Triggers>
-        </Image>
+            </Label.Triggers>
+        </Label>
     </Frame>
     <Image
         x:Name="ReconciledImageControl"

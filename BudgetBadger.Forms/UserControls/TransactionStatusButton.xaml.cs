@@ -93,8 +93,7 @@ namespace BudgetBadger.Forms.UserControls
                 ReconciledImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
                 ImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_85"];
                 ImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_85"];
-                PendingImageSource.Size = (double)DynamicResourceProvider.Instance["size_85"];
-                ClearedImageSource.Size = (double)DynamicResourceProvider.Instance["size_85"];
+                ImageControl.FontSize = (double)DynamicResourceProvider.Instance["size_65"];
                 CaptionControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelCompactStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelCompactStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelCompactStyle"];
@@ -108,8 +107,7 @@ namespace BudgetBadger.Forms.UserControls
                 ReconciledImageSource.Size = (double)DynamicResourceProvider.Instance["size_225"];
                 ImageControl.HeightRequest = (double)DynamicResourceProvider.Instance["size_175"];
                 ImageControl.WidthRequest = (double)DynamicResourceProvider.Instance["size_175"];
-                PendingImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
-                ClearedImageSource.Size = (double)DynamicResourceProvider.Instance["size_175"];
+                ImageControl.FontSize = (double)DynamicResourceProvider.Instance["size_150"];
                 CaptionControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlLabelStyle"];
                 LabelControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlDescriptionLabelStyle"];
                 HintErrorControl.Style = (Xamarin.Forms.Style)DynamicResourceProvider.Instance["ControlHintLabelStyle"];
