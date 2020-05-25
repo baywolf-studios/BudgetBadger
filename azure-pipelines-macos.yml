@@ -50,6 +50,9 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'Budget_Badger_Mac_AppStore.provisionprofile'
 
+- task: CmdLine@2
+  inputs:
+    script: 'xcode-select --install'
 
 - task: MSBuild@1
   inputs:
