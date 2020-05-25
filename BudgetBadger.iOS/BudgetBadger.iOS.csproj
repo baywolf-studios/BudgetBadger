@@ -213,17 +213,7 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Default-568h@2x.png" />
-    <BundleResource Include="Resources\Default-Portrait.png" />
-    <BundleResource Include="Resources\Default-Portrait@2x.png" />
-    <BundleResource Include="Resources\Default.png" />
-    <BundleResource Include="Resources\Default@2x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <BundleResource Include="Resources\helperenvelopegroup.svg" />
-    <BundleResource Include="Resources\payees.svg" />
-    <BundleResource Include="Resources\expander.svg" />
-    <BundleResource Include="Resources\transaction.svg" />
-    <BundleResource Include="Resources\lock.svg" />
     <BundleResource Include="Resources\ionicons.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -256,75 +246,6 @@
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>1.1.12</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\delete.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\dropbox.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\edit.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\envelope.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\envelopegroup.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\helperaccount.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\helperenvelope.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\helperpayee.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\helpertransaction.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\info.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\newicon.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\next.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\pending.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\posted.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\previous.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\reconciled.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\report.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\save.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\search.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\settings.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\account.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\back.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\cancel.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">

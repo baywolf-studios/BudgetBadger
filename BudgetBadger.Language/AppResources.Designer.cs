@@ -179,12 +179,6 @@ namespace BudgetBadger.Language {
             }
         }
         
-        public static string AccountUndoDeleteNotDeletedError {
-            get {
-                return ResourceManager.GetString("AccountUndoDeleteNotDeletedError", resourceCulture);
-            }
-        }
-        
         public static string AccountValidBalanceError {
             get {
                 return ResourceManager.GetString("AccountValidBalanceError", resourceCulture);
@@ -311,12 +305,6 @@ namespace BudgetBadger.Language {
             }
         }
         
-        public static string AlertUndoDeleteUnsuccessful {
-            get {
-                return ResourceManager.GetString("AlertUndoDeleteUnsuccessful", resourceCulture);
-            }
-        }
-        
         public static string AutomaticLabel {
             get {
                 return ResourceManager.GetString("AutomaticLabel", resourceCulture);
@@ -392,12 +380,6 @@ namespace BudgetBadger.Language {
         public static string BusyTextSyncing {
             get {
                 return ResourceManager.GetString("BusyTextSyncing", resourceCulture);
-            }
-        }
-        
-        public static string BusyTextUndoingDelete {
-            get {
-                return ResourceManager.GetString("BusyTextUndoingDelete", resourceCulture);
             }
         }
         
@@ -1271,12 +1253,6 @@ namespace BudgetBadger.Language {
             }
         }
         
-        public static string TransactionPendingLabel {
-            get {
-                return ResourceManager.GetString("TransactionPendingLabel", resourceCulture);
-            }
-        }
-        
         public static string TransactionDeleteAccountDeletedError {
             get {
                 return ResourceManager.GetString("TransactionDeleteAccountDeletedError", resourceCulture);
@@ -1292,12 +1268,6 @@ namespace BudgetBadger.Language {
         public static string TransactionDeleteTransferDeletedPayeeError {
             get {
                 return ResourceManager.GetString("TransactionDeleteTransferDeletedPayeeError", resourceCulture);
-            }
-        }
-        
-        public static string TransactionDeleteInactiveError {
-            get {
-                return ResourceManager.GetString("TransactionDeleteInactiveError", resourceCulture);
             }
         }
         
@@ -1472,12 +1442,6 @@ namespace BudgetBadger.Language {
         public static string TransferValidToError {
             get {
                 return ResourceManager.GetString("TransferValidToError", resourceCulture);
-            }
-        }
-        
-        public static string UndoDeleteButton {
-            get {
-                return ResourceManager.GetString("UndoDeleteButton", resourceCulture);
             }
         }
         
@@ -1952,6 +1916,42 @@ namespace BudgetBadger.Language {
         public static string AccountUnhideSystemError {
             get {
                 return ResourceManager.GetString("AccountUnhideSystemError", resourceCulture);
+            }
+        }
+        
+        public static string AccountUndoDeleteNotDeletedError {
+            get {
+                return ResourceManager.GetString("AccountUndoDeleteNotDeletedError", resourceCulture);
+            }
+        }
+        
+        public static string AlertUndoDeleteUnsuccessful {
+            get {
+                return ResourceManager.GetString("AlertUndoDeleteUnsuccessful", resourceCulture);
+            }
+        }
+        
+        public static string BusyTextUndoingDelete {
+            get {
+                return ResourceManager.GetString("BusyTextUndoingDelete", resourceCulture);
+            }
+        }
+        
+        public static string TransactionPendingLabel {
+            get {
+                return ResourceManager.GetString("TransactionPendingLabel", resourceCulture);
+            }
+        }
+        
+        public static string TransactionDeleteInactiveError {
+            get {
+                return ResourceManager.GetString("TransactionDeleteInactiveError", resourceCulture);
+            }
+        }
+        
+        public static string UndoDeleteButton {
+            get {
+                return ResourceManager.GetString("UndoDeleteButton", resourceCulture);
             }
         }
         

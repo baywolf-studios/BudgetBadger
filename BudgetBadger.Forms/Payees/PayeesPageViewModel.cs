@@ -251,12 +251,17 @@ namespace BudgetBadger.Forms.Payees
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
-                NoPayees = (Payees?.Count ?? 0) == 0;
+                RefreshSummary();
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        public void RefreshSummary()
+        {
+            NoPayees = (Payees?.Count ?? 0) == 0;
         }
 
         public void RefreshPayee(Payee payee)
@@ -269,6 +274,7 @@ namespace BudgetBadger.Forms.Payees
             }
 
             Payees.ReplaceRange(payees);
+            RefreshSummary();
         }
 
         public async Task RefreshPayeeFromTransaction(Transaction transaction)

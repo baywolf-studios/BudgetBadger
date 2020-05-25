@@ -12,7 +12,7 @@
     <OnPlatform x:Key="SearchIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf4a5;" />
         <On Platform="Android" Value="&#xf375;" />
-        <On Platform="UWP" Value="&#xe721;" />
+        <On Platform="UWP" Value="&#xE721;" />
     </OnPlatform>
 
     <OnPlatform x:Key="CloseIcon" x:TypeArguments="x:String">
@@ -24,86 +24,96 @@
     <OnPlatform x:Key="AddIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf102;" />
         <On Platform="Android" Value="&#xf273;" />
-        <On Platform="UWP" Value="&#xE711;" />
+        <On Platform="UWP" Value="&#xE710;" />
     </OnPlatform>
 
     <OnPlatform x:Key="EditIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf165;" />
         <On Platform="Android" Value="&#xf2db;" />
+        <On Platform="UWP" Value="&#xE70F;" />
     </OnPlatform>
 
     <OnPlatform x:Key="SaveIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1a6;" />
         <On Platform="Android" Value="&#xf1a9;" />
+        <On Platform="UWP" Value="&#xE74E;" />
     </OnPlatform>
 
     <OnPlatform x:Key="DeleteIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf4c5;" />
         <On Platform="Android" Value="&#xf398;" />
+        <On Platform="UWP" Value="&#xE74D;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ArrowBackIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf3cf;" />
         <On Platform="Android" Value="&#xf27d;" />
+        <On Platform="UWP" Value="&#xE72B;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ArrowDropRightIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf114;" />
         <On Platform="Android" Value="&#xf284;" />
+        <On Platform="UWP" Value="&#xE76C;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ArrowForwardIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf3d1;" />
         <On Platform="Android" Value="&#xf287;" />
+        <On Platform="UWP" Value="&#xE72A;" />
     </OnPlatform>
 
     <OnPlatform x:Key="LockIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1b0;" />
         <On Platform="Android" Value="&#xf31d;" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="RadioOffIcon" x:TypeArguments="x:String">
-        <On Platform="iOS, macOS" Value="&#xf1f6;" />
-        <On Platform="Android" Value="&#xf31d;" />
+        <On Platform="UWP" Value="&#xE72E;" />
     </OnPlatform>
 
     <OnPlatform x:Key="EnvelopeIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf1b8;" />
         <On Platform="Android" Value="&#xf322;" />
+        <On Platform="UWP" Value="&#xE715;" />
     </OnPlatform>
 
     <OnPlatform x:Key="AccountIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf142;" />
         <On Platform="Android" Value="&#xf2b3;" />
+        <On Platform="UWP" Value="&#xE8C7;" />
     </OnPlatform>
 
     <OnPlatform x:Key="PayeeIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf47c;" />
         <On Platform="Android" Value="&#xf343;" />
+        <On Platform="UWP" Value="&#xE716;" />
     </OnPlatform>
 
     <OnPlatform x:Key="ReportIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf21c;" />
         <On Platform="Android" Value="&#xf385;" />
+        <On Platform="UWP" Value="&#xE9D2;" />
     </OnPlatform>
 
     <OnPlatform x:Key="SettingIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf4a7;" />
         <On Platform="Android" Value="&#xf377;" />
+        <On Platform="UWP" Value="&#xE713;" />
     </OnPlatform>
 
     <OnPlatform x:Key="TransactionIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf170;" />
         <On Platform="Android" Value="&#xf2e1;" />
+        <On Platform="UWP" Value="&#xE8A5;" />
     </OnPlatform>
 
     <OnPlatform x:Key="EnvelopeGroupIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf435;" />
         <On Platform="Android" Value="&#xf2f5;" />
+        <On Platform="UWP" Value="&#xE8B7;" />
     </OnPlatform>
 
     <OnPlatform x:Key="DropBoxIcon" x:TypeArguments="x:String">
         <On Platform="iOS, macOS" Value="&#xf234;" />
         <On Platform="Android" Value="&#xf234;" />
+        <On Platform="UWP" Value="&#xE753;" />
     </OnPlatform>
 </ResourceDictionary>

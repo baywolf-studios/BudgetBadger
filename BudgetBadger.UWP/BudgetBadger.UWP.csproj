@@ -124,7 +124,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="account.svg" />
     <Content Include="Assets\AppList\AppList.scale-100.png" />
     <Content Include="Assets\AppList\AppList.scale-125.png" />
     <Content Include="Assets\AppList\AppList.scale-150.png" />
@@ -174,31 +173,8 @@
     <Content Include="Assets\Wide\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide\Wide310x150Logo.scale-400.png" />
-    <Content Include="back.svg" />
-    <Content Include="cancel.svg" />
-    <Content Include="delete.svg" />
-    <Content Include="dropbox.svg" />
-    <Content Include="edit.svg" />
-    <Content Include="envelope.svg" />
-    <Content Include="envelopegroup.svg" />
-    <Content Include="helperaccount.svg" />
-    <Content Include="helperenvelope.svg" />
-    <Content Include="helperpayee.svg" />
-    <Content Include="helpertransaction.svg" />
-    <Content Include="info.svg" />
-    <Content Include="newicon.svg" />
-    <Content Include="next.svg" />
     <None Include="BudgetBadger.UWP_StoreKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
-    <Content Include="payees.svg" />
-    <Content Include="pending.svg" />
-    <Content Include="posted.svg" />
-    <Content Include="previous.svg" />
-    <Content Include="reconciled.svg" />
-    <Content Include="report.svg" />
-    <Content Include="save.svg" />
-    <Content Include="search.svg" />
-    <Content Include="settings.svg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -207,7 +183,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="lock.svg" />
     <Content Include="Assets\Fonts\SegMDL2.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -262,9 +237,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BudgetBadger.UWP_TemporaryKey.pfx" />
-    <None Include="helperenvelopegroup.svg" />
-    <None Include="expander.svg" />
-    <Content Include="transaction.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
