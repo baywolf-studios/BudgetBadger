@@ -116,4 +116,7 @@
         <On Platform="Android" Value="&#xf234;" />
         <On Platform="UWP" Value="&#xE753;" />
     </OnPlatform>
+
+    <x:String x:Key="CIcon">&#x43;</x:String>
+    <x:String x:Key="PIcon">&#x50;</x:String>
 </ResourceDictionary>
