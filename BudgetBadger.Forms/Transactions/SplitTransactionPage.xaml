@@ -158,9 +158,7 @@
                     SelectedCommand="{Binding TransactionSelectedCommand}"
                     SelectedItem="{Binding SelectedTransaction}"
                     SeparatorVisibility="None"
-                    IsPullToRefreshEnabled="True"
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
+                    IsBusy="{Binding IsBusy}">
                     <uc:ListView2.SortComparer>
                         <comparers:TransactionComparer/>
                     </uc:ListView2.SortComparer>

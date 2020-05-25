@@ -156,9 +156,7 @@
                     SelectedCommand="{Binding TransactionSelectedCommand}"
                     SelectedItem="{Binding SelectedTransaction}"
                     SeparatorVisibility="None"
-                    IsPullToRefreshEnabled="True"
-                    IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
+                    IsBusy="{Binding IsBusy}">
                     <uc:DataTable.SortComparer>
                         <comparers:TransactionComparer />
                     </uc:DataTable.SortComparer>

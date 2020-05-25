@@ -100,7 +100,7 @@ namespace BudgetBadger.Forms
             }
 
 
-            _syncTimer = new Timer(async _ => await SyncOnStartOrResume());
+            _syncTimer = new Timer(async _ => await Sync());
 
             var eventAggregator = Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(x => ResetSyncTimer());
@@ -141,12 +141,12 @@ namespace BudgetBadger.Forms
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
             await VerifyPurchases();
-            ResetSyncTimer();
+            ResetSyncTimerAtStartOrResume();
         }
 
         protected override void OnResume()
         {
-            SetLocale();
+            ResetSyncTimerAtStartOrResume();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -350,12 +350,17 @@ namespace BudgetBadger.Forms
             }
         }
 
+        private void ResetSyncTimerAtStartOrResume()
+        {
+            _syncTimer.Change(TimeSpan.FromMilliseconds(1), TimeSpan.FromMilliseconds(-1));
+        }
+
         private void ResetSyncTimer()
         {
             _syncTimer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(-1));
         }
 
-        async Task SyncOnStartOrResume()
+        async Task Sync()
         {
             var syncFactory = Container.Resolve<ISyncFactory>();
             var syncService = syncFactory.GetSyncService();
