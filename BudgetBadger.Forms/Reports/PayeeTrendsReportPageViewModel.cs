@@ -144,7 +144,9 @@ namespace BudgetBadger.Forms.Reports
             var payeesResult = await _payeeLogic.GetPayeesForReportAsync();
             if (payeesResult.Success)
             {
-                Payees = payeesResult.Data.ToList();
+                var payees = payeesResult.Data.ToList();
+                payees.Sort();
+                Payees = payees;
             }
 
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
