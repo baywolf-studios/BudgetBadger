@@ -141,7 +141,9 @@ namespace BudgetBadger.Forms.Reports
             var envelopesResult = await _envelopeLogic.GetEnvelopesForReportAsync();
             if (envelopesResult.Success)
             {
-                Envelopes = envelopesResult.Data.ToList();
+                var envelopes = envelopesResult.Data.ToList();
+                envelopes.Sort();
+                Envelopes = envelopes;
             }
 
             var envelope = parameters.GetValue<Envelope>(PageParameter.Envelope);

@@ -139,7 +139,7 @@
       <Version>1.1.12</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp.Views.Forms">
-      <Version>1.68.3</Version>
+      <Version>1.68.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -1190,9 +1190,9 @@ namespace BudgetBadger.Logic
                 case FilterType.Report:
                     return envelope.IsActive
                         && !envelope.IsSystem
+                        && !envelope.IsGenericDebtEnvelope
                         && !envelope.Group.IsIncome
-                        && !envelope.Group.IsSystem
-                        && !envelope.Group.IsDebt;
+                        && !envelope.Group.IsSystem;
                 case FilterType.Selection:
                     return envelope.IsActive
                         && !envelope.IsSystem

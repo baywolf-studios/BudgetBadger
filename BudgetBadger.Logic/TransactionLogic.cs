@@ -443,7 +443,7 @@ namespace BudgetBadger.Logic
                 transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.GenericDebtEnvelope.Id);
             }
 
-            return new Result<Transaction> { Success = true, Data = await GetPopulatedTransaction(transactionToPopulate) };
+            return new Result<Transaction> { Success = true, Data = transactionToPopulate };
         }
 
 
