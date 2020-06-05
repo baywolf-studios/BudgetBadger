@@ -15,10 +15,13 @@ namespace BudgetBadger.macOS.Renderers
             if (e.NewElement != null && Control != null && Control is NSScrollView scroller)
             {
                 NSScrollView.Notifications.ObserveDidLiveScroll(scroller, (sender, args) => {
-                    if (args.Notification.Object is NSScrollView nsScrollView)
+                    if (e.NewElement != null && args.Notification.Object is NSScrollView nsScrollView)
                     {
-                        var scrolledArgs = new ScrolledEventArgs(nsScrollView.DocumentVisibleRect.X, nsScrollView.DocumentVisibleRect.Y);
-                        Element.SendScrolled(scrolledArgs);
+                        if (nsScrollView.DocumentVisibleRect != null)
+                        {
+                            var scrolledArgs = new ScrolledEventArgs(nsScrollView.DocumentVisibleRect.X, nsScrollView.DocumentVisibleRect.Y);
+                            e.NewElement.SendScrolled(scrolledArgs);
+                        }
                     }
                 });
             }
