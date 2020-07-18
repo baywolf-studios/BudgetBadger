@@ -32,13 +32,6 @@ namespace BudgetBadger.Forms.UserControls
 
             Focused += (sender, e) =>
             {
-                if (Text != null)
-                {
-                    var locale = _localize.GetLocale() ?? CultureInfo.CurrentUICulture;
-                    var nfi = locale.NumberFormat;
-                    Text = Text.Replace(nfi.CurrencySymbol, "");
-                }
-
                 if (!Number.HasValue)
                 {
                     CursorPosition = 0;
@@ -60,7 +53,11 @@ namespace BudgetBadger.Forms.UserControls
             {
                 if (e.PropertyName == nameof(Number))
                 {
-                    Text = Number.HasValue ? _resourceContainer.GetFormattedString("{0:C}", Number.Value) : string.Empty;
+                    var tempText = Number.HasValue ? _resourceContainer.GetFormattedString("{0:C}", Number.Value) : string.Empty;
+                    if (tempText != Text)
+                    {
+                        Text = tempText;
+                    }
                 }
             };
         }
@@ -93,7 +90,11 @@ namespace BudgetBadger.Forms.UserControls
                         result = 0;
                     }
                 }
-                Number = result;
+
+                if (Number != result)
+                {
+                    Number = result;
+                }
             }
 
             OnPropertyChanged(nameof(Number));
