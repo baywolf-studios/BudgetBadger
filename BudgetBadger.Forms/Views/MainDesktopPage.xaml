@@ -4,13 +4,14 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
     NavigationPage.HasNavigationBar="false">
     <MasterDetailPage.Master>
         <ContentPage
             Title="Default"
-            BackgroundColor="{StaticResource BackgroundColor}"
+            BackgroundColor="{ext:DynamicResource gray_50}"
             NavigationPage.HasNavigationBar="false">
             <uc:ResponsiveGrid Style="{ext:DynamicResource Key=SideNavigationGridStyle}">
                 <Grid.RowDefinitions>
@@ -51,7 +52,7 @@
                         </Image>
                         <Label
                             x:Name="EnvelopesLabel"
-                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Style="{ext:DynamicResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate EnvelopesPageTitle}">
                         </Label>
                     </StackLayout>
@@ -81,7 +82,7 @@
                         </Image>
                         <Label
                             x:Name="AccountsLabel"
-                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Style="{ext:DynamicResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate AccountsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -111,7 +112,7 @@
                         </Image>
                         <Label
                             x:Name="PayeesLabel"
-                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Style="{ext:DynamicResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate PayeesPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -141,7 +142,7 @@
                         </Image>
                         <Label
                             x:Name="ReportsLabel"
-                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Style="{ext:DynamicResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate ReportsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>
@@ -171,7 +172,7 @@
                         </Image>
                         <Label
                             x:Name="SettingsLabel"
-                            Style="{StaticResource SideNavigationItemLabelStyle}"
+                            Style="{ext:DynamicResource SideNavigationItemLabelStyle}"
                             Text="{ext:Translate SettingsPageTitle}"
                             VerticalOptions="Center" />
                     </StackLayout>

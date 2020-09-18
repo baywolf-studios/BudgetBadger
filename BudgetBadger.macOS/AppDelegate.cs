@@ -37,6 +37,7 @@ namespace BudgetBadger.macOS
             SimpleAuth.NativeSafariAuthenticator.Activate();
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
+            MasterDetailRenderer.Initialize();
 
             LoadApplication(new App(new macOSInitializer()));
             base.DidFinishLaunching(notification);

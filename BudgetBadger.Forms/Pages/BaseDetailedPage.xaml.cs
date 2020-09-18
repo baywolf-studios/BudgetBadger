@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using BudgetBadger.Forms.Style;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Pages
@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 if (value != null)
                 {
-                    value.BackgroundColor = (Color)Application.Current.Resources["BackgroundColor"];
+                    value.BackgroundColor = (Color)DynamicResourceProvider.Instance["gray_50"];
                 }
                 BodyView.Body = value;
             }

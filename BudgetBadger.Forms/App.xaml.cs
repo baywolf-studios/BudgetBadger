@@ -43,6 +43,9 @@ using Prism.Navigation;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
 using System.Threading;
+using BudgetBadger.Forms.UserControls;
+using System.Linq;
+using BudgetBadger.Forms.Style;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -131,6 +134,7 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
+            SetAppearance();
             SetLocale();
 
             // tracking number of times app opened
@@ -291,6 +295,47 @@ namespace BudgetBadger.Forms
 
             timer.Stop();
         }
+
+        void SetAppearance()
+        {
+            var settings = Container.Resolve<ISettings>();
+
+            var currentDimension = settings.GetValueOrDefault(AppSettings.AppearanceDimensionSize);
+
+            if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
+            {
+                ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+                if (mergedDictionaries != null)
+                {
+                    var otherDicts = mergedDictionaries.Where(m => !(m is LargeDimensionResources)
+                                                                && !(m is MediumDimensionResources)
+                                                                && !(m is SmallDimensionResources)).ToList();
+
+                    mergedDictionaries.Clear();
+                    foreach (var dict in otherDicts)
+                    {
+                        mergedDictionaries.Add(dict);
+                    }
+
+                    switch (selectedDimensionSize)
+                    {
+                        case DimensionSize.DimensionSizeLarge:
+                            mergedDictionaries.Add(new LargeDimensionResources());
+                            break;
+                        case DimensionSize.DimensionSizeSmall:
+                            mergedDictionaries.Add(new SmallDimensionResources());
+                            break;
+                        case DimensionSize.DimensionSizeMedium:
+                        default:
+                            mergedDictionaries.Add(new MediumDimensionResources());
+                            break;
+                    }
+                }
+
+                DynamicResourceProvider.Instance.Invalidate();
+            }
+        }
+
 
         void SetLocale()
         {

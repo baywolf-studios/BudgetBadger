@@ -254,13 +254,13 @@ namespace BudgetBadger.Forms.UserControls
                 InternalListView.ItemsSource = new ObservableList<object>();
                 InternalListView.ItemTapped += InternalListView_ItemTapped;
                 InternalListView.Scrolled += InternalListView_Scrolled;
-                InternalListView.SetBinding(SelectedItemProperty, nameof(SelectedItem));
-                InternalListView.SetBinding(HasUnevenRowsProperty, nameof(HasUnevenRows));
-                InternalListView.SetBinding(RowHeightProperty, nameof(RowHeight));
-                InternalListView.SetBinding(SeparatorVisibilityProperty, nameof(SeparatorVisibility));
-                InternalListView.SetBinding(SeparatorColorProperty, nameof(SeparatorColor));
-                InternalListView.SetBinding(HorizontalScrollBarVisibilityProperty, nameof(HorizontalScrollBarVisibility));
-                InternalListView.SetBinding(VerticalScrollBarVisibilityProperty, nameof(VerticalScrollBarVisibility));
+                InternalListView.SetBinding(ListView.SelectedItemProperty, new Binding(nameof(SelectedItem)));
+                InternalListView.SetBinding(ListView.HasUnevenRowsProperty, new Binding(nameof(HasUnevenRows)));
+                InternalListView.SetBinding(ListView.RowHeightProperty, new Binding(nameof(RowHeight)));
+                InternalListView.SetBinding(ListView.SeparatorVisibilityProperty, new Binding(nameof(SeparatorVisibility)));
+                InternalListView.SetBinding(ListView.SeparatorColorProperty, new Binding(nameof(SeparatorColor)));
+                InternalListView.SetBinding(ListView.HorizontalScrollBarVisibilityProperty, new Binding(nameof(HorizontalScrollBarVisibility)));
+                InternalListView.SetBinding(ListView.VerticalScrollBarVisibilityProperty, new Binding(nameof(VerticalScrollBarVisibility)));
 
                 UpdateHeader();
                 UpdateFooter();

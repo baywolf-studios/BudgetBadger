@@ -4,8 +4,9 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackgroundColor="#dde3ed"
+    BackgroundColor="{ext:DynamicResource gray_200}"
     NavigationPage.HasBackButton="false"
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Effects>
@@ -21,7 +22,7 @@
                 x:Name="BodyView"
                 Grid.Row="1"
                 Padding="0"
-                BackgroundColor="{StaticResource BackgroundColor}"
+                BackgroundColor="{ext:DynamicResource gray_50}"
                 CornerRadius="0">
                 <Frame.Triggers>
                     <Trigger TargetType="uc:Card" Property="Elevation" Value="1">

@@ -31,9 +31,9 @@
         InputTransparent="true">
         <Image.Source>
             <FontImageSource
-                Size="24"
+                Size="{ext:DynamicResource size_225}"
                 Glyph="{ext:DynamicResource Key=ArrowDropRightIcon}"
-                Color="{StaticResource IdleColor}"
+                Color="{ext:DynamicResource gray_300}"
                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
         </Image.Source>
     </Image>

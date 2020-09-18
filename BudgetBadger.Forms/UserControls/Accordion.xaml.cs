@@ -9,11 +9,6 @@ namespace BudgetBadger.Forms.UserControls
     {
         uint _animationLength = 150;
 
-        Color _idleColor
-        {
-            get => (Color)Application.Current.Resources["IdleColor"];
-        }
-
         public static BindableProperty IsExpandedProperty =
             BindableProperty.Create(nameof(IsExpanded),
                                     typeof(bool),
@@ -46,14 +41,6 @@ namespace BudgetBadger.Forms.UserControls
         {
             get => BodyView.Content;
             set => BodyView.Content = value;
-        }
-
-        public Dictionary<string, string> ReplaceColor
-        {
-            get
-            {
-                return new Dictionary<string, string> { { "#ffffff", _idleColor.GetHexString() } };
-            }
         }
 
         public Accordion()
