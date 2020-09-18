@@ -38,5 +38,16 @@
     <Color x:Key="red_800">#8f0e0e</Color>
     <Color x:Key="red_900">#661414</Color>
     <Color x:Key="red_1000">#451717</Color>
+
+    <Color x:Key="green_100">#e1faeb</Color>
+    <Color x:Key="green_200">#abedc5</Color>
+    <Color x:Key="green_300">#7ddba3</Color>
+    <Color x:Key="green_400">#57c282</Color>
+    <Color x:Key="green_500">#3ba164</Color>
+    <Color x:Key="green_600">#2a854e</Color>
+    <Color x:Key="green_700">#20693d</Color>
+    <Color x:Key="green_800">#1a5230</Color>
+    <Color x:Key="green_900">#153d25</Color>
+    <Color x:Key="green_1000">#112b1b</Color>
     
 </ResourceDictionary>

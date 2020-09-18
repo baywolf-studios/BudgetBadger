@@ -218,7 +218,7 @@
                             <uc:ViewCell
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                <dt:GroupHeaderViewCell />
+                                <dt:GroupHeaderViewCell HeightRequest="{ext:DynamicResource size_500}" />
                             </uc:ViewCell>
                         </DataTemplate>
                     </uc:DataTable.GroupHeaderTemplate>
@@ -230,6 +230,7 @@
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                 <dt:EnvelopeDetailedViewCell
+                                    HeightRequest="{ext:DynamicResource size_500}"
                                     SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
                                     CancelCommand="{Binding BindingContext.RefreshBudgetCommand, Source={x:Reference Name=this}}">
                                     <dt:EnvelopeDetailedViewCell.Triggers>

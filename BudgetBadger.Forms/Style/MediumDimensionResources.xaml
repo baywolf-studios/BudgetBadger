@@ -5,63 +5,63 @@
     x:Class="BudgetBadger.Forms.Style.MediumDimensionResources">
 
     <!-- Fonts -->
-    <OnIdiom x:Key="font_size_50" x:TypeArguments="x:Double" Default="13" Desktop="11"/>
-    <OnIdiom x:Key="font_size_75" x:TypeArguments="x:Double" Default="15" Desktop="12"/>
-    <OnIdiom x:Key="font_size_100" x:TypeArguments="x:Double" Default="17" Desktop="14"/>
-    <OnIdiom x:Key="font_size_200"  x:TypeArguments="x:Double" Default="19" Desktop="16"/>
-    <OnIdiom x:Key="font_size_300" x:TypeArguments="x:Double" Default="22" Desktop="18"/>
-    <OnIdiom x:Key="font_size_400" x:TypeArguments="x:Double" Default="24" Desktop="20"/>
-    <OnIdiom x:Key="font_size_500" x:TypeArguments="x:Double" Default="27" Desktop="22"/>
-    <OnIdiom x:Key="font_size_600" x:TypeArguments="x:Double" Default="31" Desktop="25"/>
-    <OnIdiom x:Key="font_size_700" x:TypeArguments="x:Double" Default="34" Desktop="28"/>
-    <OnIdiom x:Key="font_size_800" x:TypeArguments="x:Double" Default="39" Desktop="32"/>
-    <OnIdiom x:Key="font_size_900" x:TypeArguments="x:Double" Default="44" Desktop="36"/>
-    <OnIdiom x:Key="font_size_1000" x:TypeArguments="x:Double" Default="49" Desktop="40"/>
-    <OnIdiom x:Key="font_size_1100" x:TypeArguments="x:Double" Default="55" Desktop="45"/>
-    <OnIdiom x:Key="font_size_1200" x:TypeArguments="x:Double" Default="62" Desktop="50"/>
-    <OnIdiom x:Key="font_size_1300" x:TypeArguments="x:Double" Default="70" Desktop="60"/>
+    <x:Double x:Key="font_size_50">13</x:Double>
+    <x:Double x:Key="font_size_75">15</x:Double>
+    <x:Double x:Key="font_size_100">17</x:Double>
+    <x:Double x:Key="font_size_200" >19</x:Double>
+    <x:Double x:Key="font_size_300">22</x:Double>
+    <x:Double x:Key="font_size_400">24</x:Double>
+    <x:Double x:Key="font_size_500">27</x:Double>
+    <x:Double x:Key="font_size_600">31</x:Double>
+    <x:Double x:Key="font_size_700">34</x:Double>
+    <x:Double x:Key="font_size_800">39</x:Double>
+    <x:Double x:Key="font_size_900">44</x:Double>
+    <x:Double x:Key="font_size_1000">49</x:Double>
+    <x:Double x:Key="font_size_1100">55</x:Double>
+    <x:Double x:Key="font_size_1200">62</x:Double>
+    <x:Double x:Key="font_size_1300">70</x:Double>
 
     <!-- Sizes -->
-    <OnIdiom x:Key="size_0" x:TypeArguments="x:Double" Default="0" Desktop="0"/>
-    <OnIdiom x:Key="size_10" x:TypeArguments="x:Double" Default="1" Desktop="1"/>
-    <OnIdiom x:Key="size_25" x:TypeArguments="x:Double" Default="2" Desktop="2"/>
-    <OnIdiom x:Key="size_40" x:TypeArguments="x:Double" Default="4" Desktop="3"/>
-    <OnIdiom x:Key="size_50" x:TypeArguments="x:Double" Default="5" Desktop="4"/>
-    <OnIdiom x:Key="size_65" x:TypeArguments="x:Double" Default="6" Desktop="5"/>
-    <OnIdiom x:Key="size_75" x:TypeArguments="x:Double" Default="8" Desktop="6"/>
-    <OnIdiom x:Key="size_85" x:TypeArguments="x:Double" Default="9" Desktop="7"/>
-    <OnIdiom x:Key="size_100" x:TypeArguments="x:Double" Default="10" Desktop="8"/>
-    <OnIdiom x:Key="size_115" x:TypeArguments="x:Double" Default="11" Desktop="9"/>
-    <OnIdiom x:Key="size_125" x:TypeArguments="x:Double" Default="13" Desktop="10"/>
-    <OnIdiom x:Key="size_130" x:TypeArguments="x:Double" Default="14" Desktop="11"/>
-    <OnIdiom x:Key="size_150" x:TypeArguments="x:Double" Default="15" Desktop="12"/>
-    <OnIdiom x:Key="size_160" x:TypeArguments="x:Double" Default="16" Desktop="13"/>
-    <OnIdiom x:Key="size_175" x:TypeArguments="x:Double" Default="18" Desktop="14"/>
-    <OnIdiom x:Key="size_200" x:TypeArguments="x:Double" Default="20" Desktop="16"/>
-    <OnIdiom x:Key="size_225" x:TypeArguments="x:Double" Default="22" Desktop="18"/>
-    <OnIdiom x:Key="size_250" x:TypeArguments="x:Double" Default="25" Desktop="20"/>
-    <OnIdiom x:Key="size_300" x:TypeArguments="x:Double" Default="30" Desktop="24"/>
-    <OnIdiom x:Key="size_350" x:TypeArguments="x:Double" Default="35" Desktop="28"/>
-    <OnIdiom x:Key="size_400" x:TypeArguments="x:Double" Default="40" Desktop="32"/>
-    <OnIdiom x:Key="size_450" x:TypeArguments="x:Double" Default="45" Desktop="36"/>
-    <OnIdiom x:Key="size_500" x:TypeArguments="x:Double" Default="50" Desktop="40"/>
-    <OnIdiom x:Key="size_550" x:TypeArguments="x:Double" Default="56" Desktop="44"/>
-    <OnIdiom x:Key="size_600" x:TypeArguments="x:Double" Default="60" Desktop="48"/>
-    <OnIdiom x:Key="size_675" x:TypeArguments="x:Double" Default="68" Desktop="54"/>
-    <OnIdiom x:Key="size_700" x:TypeArguments="x:Double" Default="70" Desktop="56"/>
-    <OnIdiom x:Key="size_800" x:TypeArguments="x:Double" Default="80" Desktop="64"/>
-    <OnIdiom x:Key="size_900" x:TypeArguments="x:Double" Default="90" Desktop="72"/>
-    <OnIdiom x:Key="size_1000" x:TypeArguments="x:Double" Default="100" Desktop="80"/>
-    <OnIdiom x:Key="size_1200" x:TypeArguments="x:Double" Default="120" Desktop="96"/>
-    <OnIdiom x:Key="size_1250" x:TypeArguments="x:Double" Default="125" Desktop="100"/>
-    <OnIdiom x:Key="size_1600" x:TypeArguments="x:Double" Default="160" Desktop="128"/>
-    <OnIdiom x:Key="size_1700" x:TypeArguments="x:Double" Default="170" Desktop="136"/>
-    <OnIdiom x:Key="size_2000" x:TypeArguments="x:Double" Default="200" Desktop="160"/>
-    <OnIdiom x:Key="size_2400" x:TypeArguments="x:Double" Default="240" Desktop="192"/>
-    <OnIdiom x:Key="size_3000" x:TypeArguments="x:Double" Default="300" Desktop="240"/>
-    <OnIdiom x:Key="size_3400" x:TypeArguments="x:Double" Default="340" Desktop="272"/>
-    <OnIdiom x:Key="size_3600" x:TypeArguments="x:Double" Default="360" Desktop="288"/>
-    <OnIdiom x:Key="size_4600" x:TypeArguments="x:Double" Default="460" Desktop="368"/>
-    <OnIdiom x:Key="size_5000" x:TypeArguments="x:Double" Default="500" Desktop="400"/>
-    <OnIdiom x:Key="size_6000" x:TypeArguments="x:Double" Default="600" Desktop="480"/>
+    <x:Double x:Key="size_0">0</x:Double>
+    <x:Double x:Key="size_10">1</x:Double>
+    <x:Double x:Key="size_25">2</x:Double>
+    <x:Double x:Key="size_40">4</x:Double>
+    <x:Double x:Key="size_50">5</x:Double>
+    <x:Double x:Key="size_65">6</x:Double>
+    <x:Double x:Key="size_75">8</x:Double>
+    <x:Double x:Key="size_85">9</x:Double>
+    <x:Double x:Key="size_100">10</x:Double>
+    <x:Double x:Key="size_115">11</x:Double>
+    <x:Double x:Key="size_125">13</x:Double>
+    <x:Double x:Key="size_130">14</x:Double>
+    <x:Double x:Key="size_150">15</x:Double>
+    <x:Double x:Key="size_160">16</x:Double>
+    <x:Double x:Key="size_175">18</x:Double>
+    <x:Double x:Key="size_200">20</x:Double>
+    <x:Double x:Key="size_225">22</x:Double>
+    <x:Double x:Key="size_250">25</x:Double>
+    <x:Double x:Key="size_300">30</x:Double>
+    <x:Double x:Key="size_350">35</x:Double>
+    <x:Double x:Key="size_400">40</x:Double>
+    <x:Double x:Key="size_450">45</x:Double>
+    <x:Double x:Key="size_500">50</x:Double>
+    <x:Double x:Key="size_550">56</x:Double>
+    <x:Double x:Key="size_600">60</x:Double>
+    <x:Double x:Key="size_675">68</x:Double>
+    <x:Double x:Key="size_700">70</x:Double>
+    <x:Double x:Key="size_800">80</x:Double>
+    <x:Double x:Key="size_900">90</x:Double>
+    <x:Double x:Key="size_1000">100</x:Double>
+    <x:Double x:Key="size_1200">120</x:Double>
+    <x:Double x:Key="size_1250">125</x:Double>
+    <x:Double x:Key="size_1600">160</x:Double>
+    <x:Double x:Key="size_1700">170</x:Double>
+    <x:Double x:Key="size_2000">200</x:Double>
+    <x:Double x:Key="size_2400">240</x:Double>
+    <x:Double x:Key="size_3000">300</x:Double>
+    <x:Double x:Key="size_3400">340</x:Double>
+    <x:Double x:Key="size_3600">360</x:Double>
+    <x:Double x:Key="size_4600">460</x:Double>
+    <x:Double x:Key="size_5000">500</x:Double>
+    <x:Double x:Key="size_6000">600</x:Double>
 </ResourceDictionary>

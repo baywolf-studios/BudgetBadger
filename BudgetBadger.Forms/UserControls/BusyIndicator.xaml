@@ -21,7 +21,7 @@
                     Orientation="Vertical"
                     VerticalOptions="CenterAndExpand"
                     Spacing="{ext:DynamicResource size_75}">
-                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" Color="{StaticResource BusyIndicatorBackgroundColor}"/>
+                    <ActivityIndicator IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" Color="{ext:DynamicResource brand_600}"/>
                     <Label HorizontalOptions="Center" Text="{Binding Source={x:Reference this}, Path=BusyText}" />
                 </StackLayout>
             </Grid>

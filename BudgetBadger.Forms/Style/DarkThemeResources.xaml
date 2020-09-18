@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:style="clr-namespace:BudgetBadger.Forms.Style"
+                    x:Class="BudgetBadger.Forms.Style.DarkThemeResources">
+
+    <Color x:Key="gray_1000">#ffffff</Color>
+    <Color x:Key="gray_900">#f5f7fa</Color>
+    <Color x:Key="gray_800">#ebeff5</Color>
+    <Color x:Key="gray_700">#dde3ed</Color>
+    <Color x:Key="gray_600">#c8d1e0</Color>
+    <Color x:Key="gray_500">#afbacc</Color>
+    <Color x:Key="gray_400">#8e99ab</Color>
+    <Color x:Key="gray_300">#707a8a</Color>
+    <Color x:Key="gray_200">#58606e</Color>
+    <Color x:Key="gray_100">#434a54</Color>
+    <Color x:Key="gray_75">#333840</Color>
+    <Color x:Key="gray_50">#1d1f24</Color>
+
+    <Color x:Key="brand_1000">#e8f4fa</Color>
+    <Color x:Key="brand_900">#bbe5fa</Color>
+    <Color x:Key="brand_800">#8dd4f7</Color>
+    <Color x:Key="brand_700">#53baed</Color>
+    <Color x:Key="brand_600">#229ad6</Color>
+    <Color x:Key="brand_500">#0c7bb3</Color>
+    <Color x:Key="brand_400">#066391</Color>
+    <Color x:Key="brand_300">#064d70</Color>
+    <Color x:Key="brand_200">#093952</Color>
+    <Color x:Key="brand_100">#0c2938</Color>
+
+    <Color x:Key="red_1000">#faf0f0</Color>
+    <Color x:Key="red_900">#fad4d4</Color>
+    <Color x:Key="red_800">#fab6b6</Color>
+    <Color x:Key="red_700">#fa8e8e</Color>
+    <Color x:Key="red_600">#f55353</Color>
+    <Color x:Key="red_500">#de1b1b</Color>
+    <Color x:Key="red_400">#b80d0d</Color>
+    <Color x:Key="red_300">#8f0e0e</Color>
+    <Color x:Key="red_200">#661414</Color>
+    <Color x:Key="red_100">#451717</Color>
+
+    <Color x:Key="green_1000">#e1faeb</Color>
+    <Color x:Key="green_900">#abedc5</Color>
+    <Color x:Key="green_800">#7ddba3</Color>
+    <Color x:Key="green_700">#57c282</Color>
+    <Color x:Key="green_600">#3ba164</Color>
+    <Color x:Key="green_500">#2a854e</Color>
+    <Color x:Key="green_400">#20693d</Color>
+    <Color x:Key="green_300">#1a5230</Color>
+    <Color x:Key="green_200">#153d25</Color>
+    <Color x:Key="green_100">#112b1b</Color>
+    
+</ResourceDictionary>

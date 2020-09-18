@@ -10,6 +10,7 @@ namespace BudgetBadger.Forms.Style
         {
             get
             {
+                Console.WriteLine(Key);
                 Application.Current.Resources.TryGetValue(Key, out object resource);
 
                 if (resource is OnIdiom<double> onIdiom)

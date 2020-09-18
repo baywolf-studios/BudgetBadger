@@ -44,6 +44,7 @@ namespace BudgetBadger.Forms.Settings
         public ICommand CurrencySelectedCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
         public ICommand LanguageSelectedCommand { get; set; }
+        public ICommand DimensionSelectedCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -115,6 +116,18 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _selectedCurrencyFormat, value);
         }
 
+        public IList<string> DimensionList
+        {
+            get => Enum.GetNames(typeof(DimensionSize)).ToList();
+        }
+
+        DimensionSize _selectedDimensionSize;
+        public DimensionSize SelectedDimensionSize
+        {
+            get => _selectedDimensionSize;
+            set => SetProperty(ref _selectedDimensionSize, value);
+        }
+
         public SettingsPageViewModel(IResourceContainer resourceContainer,
             INavigationService navigationService,
                                       IPageDialogService dialogService,
@@ -143,6 +156,18 @@ namespace BudgetBadger.Forms.Settings
             SyncCommand = new Command(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
+            DimensionSelectedCommand = new Command(async () => await ExecuteDimensionSelectedCommand());
+
+            var currentDimension = settings.GetValueOrDefault(AppSettings.AppearanceDimensionSize);
+
+            if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
+            {
+                SelectedDimensionSize = selectedDimensionSize;
+            }
+            else
+            {
+                SelectedDimensionSize = DimensionSize.DimensionSizeMedium;
+            }
 
             ResetLocalization();
         }
@@ -439,6 +464,44 @@ namespace BudgetBadger.Forms.Settings
             _localize.SetLocale(current);
 
             TranslationProvider.Instance.Invalidate();
+        }
+
+        public async Task ExecuteDimensionSelectedCommand()
+        {
+            if ((int)SelectedDimensionSize > -1)
+            {
+                await _settings.AddOrUpdateValueAsync(AppSettings.AppearanceDimensionSize, Enum.GetName(typeof(DimensionSize), SelectedDimensionSize));
+
+                ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+                if (mergedDictionaries != null)
+                {
+                    var otherDicts = mergedDictionaries.Where(m => !(m is LargeDimensionResources)
+                                                                && !(m is MediumDimensionResources)
+                                                                && !(m is SmallDimensionResources)).ToList();
+
+                    mergedDictionaries.Clear();
+                    foreach (var dict in otherDicts)
+                    {
+                        mergedDictionaries.Add(dict);
+                    }
+
+                    switch (SelectedDimensionSize)
+                    {
+                        case DimensionSize.DimensionSizeLarge:
+                            mergedDictionaries.Add(new LargeDimensionResources());
+                            break;
+                        case DimensionSize.DimensionSizeSmall:
+                            mergedDictionaries.Add(new SmallDimensionResources());
+                            break;
+                        case DimensionSize.DimensionSizeMedium:
+                        default:
+                            mergedDictionaries.Add(new MediumDimensionResources());
+                            break;
+                    }
+                }
+
+                DynamicResourceProvider.Instance.Invalidate();
+            }
         }
 
         void ResetLocalization()

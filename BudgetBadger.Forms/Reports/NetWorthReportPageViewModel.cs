@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Style;
 using BudgetBadger.Models;
 using Microcharts;
 using Prism.AppModel;
@@ -129,10 +130,10 @@ namespace BudgetBadger.Forms.Reports
                 {
                     foreach (var dataPoint in netWorthReportResult.Data)
                     {
-                        var color = SKColor.Parse(((Color)Application.Current.Resources["SuccessColor"]).GetHexString());
+                        var color = SKColor.Parse(((Color)DynamicResourceProvider.Instance["green_600"]).GetHexString());
                         if (dataPoint.YValue < 0)
                         {
-                            color = SKColor.Parse(((Color)Application.Current.Resources["FailureColor"]).GetHexString());
+                            color = SKColor.Parse(((Color)DynamicResourceProvider.Instance["red_600"]).GetHexString());
                         }
 
                         entries.Add(new Microcharts.Entry((float)dataPoint.YValue)
