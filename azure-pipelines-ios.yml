@@ -2,7 +2,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'macos-10.14'
+  vmImage: 'macos-latest'
 
 variables:
 - group: budgetbadger_variables
