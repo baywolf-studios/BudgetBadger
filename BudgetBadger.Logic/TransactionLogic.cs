@@ -429,6 +429,7 @@ namespace BudgetBadger.Logic
             if (envelopeNotNeeded && !transactionToPopulate.Envelope.IsSystem)
             {
                 transactionToPopulate.Envelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
+                transactionToPopulate.Envelope.TranslateEnvelope(_resourceContainer);
             }
             else if (!envelopeNotNeeded && transactionToPopulate.Envelope.IsSystem)
             {
