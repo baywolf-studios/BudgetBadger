@@ -118,7 +118,7 @@ namespace BudgetBadger.Forms.Settings
 
         public IList<string> DimensionList
         {
-            get => Enum.GetNames(typeof(DimensionSize)).ToList();
+            get => Enum.GetNames(typeof(DimensionSize)).Select(_resourceContainer.GetResourceString).ToList();
         }
 
         DimensionSize _selectedDimensionSize;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="BayWolfStudiosLLC.BudgetBadger" Publisher="CN=2C7DBB1A-4A39-467C-896C-4D3A7A61A339" Version="1.7.8.0" />
+  <Identity Name="BayWolfStudiosLLC.BudgetBadger" Publisher="CN=2C7DBB1A-4A39-467C-896C-4D3A7A61A339" Version="1.7.9.0" />
   <mp:PhoneIdentity PhoneProductId="b2f401ff-d0aa-4081-8546-2f02a40d0368" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Budget Badger</DisplayName>

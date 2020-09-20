@@ -31,8 +31,6 @@
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
@@ -241,7 +239,7 @@
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
-                        Text="Appearance" />
+                        Text="{ext:Translate AppearanceLabel}" />
                     <BoxView
                         Grid.Row="9"
                         Grid.ColumnSpan="12"
@@ -259,19 +257,8 @@
                             <b:EventToCommandBehavior Command="{Binding DimensionSelectedCommand}" EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
-                    <Label
-                        Grid.Row="11"
-                        Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
-                        Text="{ext:Translate InternationalLabel}" />
-                    <BoxView
-                        Grid.Row="12"
-                        Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource DividerStyle}"/>
                     <uc:Dropdown
-                        Grid.Row="13"
+                        Grid.Row="11"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -284,7 +271,7 @@
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <uc:Dropdown
-                        Grid.Row="14"
+                        Grid.Row="12"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -297,18 +284,18 @@
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <Label
-                        Grid.Row="15"
+                        Grid.Row="13"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate HelpLabel}" />
                     <BoxView
-                        Grid.Row="16"
+                        Grid.Row="14"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource DividerStyle}"/>
                     <uc:ContentButton
-                        Grid.Row="17"
+                        Grid.Row="15"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding HelpCommand}">
@@ -319,7 +306,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="18"
+                        Grid.Row="16"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding EmailCommand}">
