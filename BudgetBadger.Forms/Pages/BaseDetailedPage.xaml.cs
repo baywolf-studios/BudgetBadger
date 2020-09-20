@@ -64,33 +64,20 @@ namespace BudgetBadger.Forms.Pages
 
         public View Body
         {
-            get => BodyView.Body;
+            get => BodyView.Content;
             set
             {
                 if (value != null)
                 {
                     value.BackgroundColor = (Color)DynamicResourceProvider.Instance["gray_50"];
                 }
-                BodyView.Body = value;
+                BodyView.Content = value;
             }
         }
 
         public BaseDetailedPage()
         {
             InitializeComponent();
-
-            if (Device.Idiom == TargetIdiom.Phone)
-            {
-                HeaderView.Elevation = 0;
-                BodyView.Elevation = 0;
-                BodyView.Margin = new Thickness(0);
-            }
-            else
-            {
-                HeaderView.Elevation = 4;
-                BodyView.Elevation = 1;
-                BodyView.Margin = new Thickness(32);
-            }
         }
         
         protected override void OnSizeAllocated(double width, double height)
@@ -106,24 +93,6 @@ namespace BudgetBadger.Forms.Pages
             {
                 // landscape
                 HeaderView.HeightRequest = _appBarLandscapeHeight;
-            }
-
-            if (width > 0
-                && Device.RuntimePlatform != Device.macOS
-                && Device.Idiom != TargetIdiom.Phone)
-            {
-                if (width > (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top < 32)
-                {
-                    BodyView.Margin = new Thickness(32);
-                    HeaderView.Elevation = 4;
-                    BodyView.Elevation = 1;
-                }
-                else if (width <= (double)Application.Current.Resources["MaxWidth"] && BodyView.Margin.Top > 0)
-                {
-                    BodyView.Margin = new Thickness(0);
-                    HeaderView.Elevation = 0;
-                    BodyView.Elevation = 0;
-                }
             }
         }
     }

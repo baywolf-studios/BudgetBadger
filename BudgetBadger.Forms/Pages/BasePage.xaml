@@ -6,7 +6,7 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackgroundColor="{ext:DynamicResource gray_200}"
+    BackgroundColor="{ext:DynamicResource gray_50}"
     NavigationPage.HasBackButton="false"
     NavigationPage.HasNavigationBar="false">
     <ContentPage.Effects>
@@ -18,25 +18,23 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <uc:Card
-                x:Name="BodyView"
-                Grid.Row="1"
-                Padding="0"
-                BackgroundColor="{ext:DynamicResource gray_50}"
-                CornerRadius="0">
-                <Frame.Triggers>
-                    <Trigger TargetType="uc:Card" Property="Elevation" Value="1">
-                        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadiusSingle}" />
-                    </Trigger>
-                </Frame.Triggers>
-            </uc:Card>
-            <uc:Card
+            <Frame
                 x:Name="HeaderView"
                 Grid.Row="0"
                 BackgroundColor="{StaticResource AppBarColor}"
+                HeightRequest="{StaticResource AppBarPortraitHeight}"
+                Padding="0"
+                Margin="0"
                 CornerRadius="0"
-                Elevation="4"
-                HeightRequest="{StaticResource AppBarPortraitHeight}" />
+                HasShadow="False"/>
+            <Frame
+                x:Name="BodyView"
+                Grid.Row="1"
+                BackgroundColor="{ext:DynamicResource gray_50}"
+                Padding="0"
+                Margin="0"
+                CornerRadius="0"
+                HasShadow="False"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
