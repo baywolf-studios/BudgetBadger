@@ -75,7 +75,7 @@
                 <On Platform="macOS">48</On>
             </OnPlatform>
 
-            <x:Double x:Key="MaxWidth">720</x:Double>
+            <x:Double x:Key="MaxWidth">980</x:Double>
 
             <Style x:Key="PrimaryActionButtonStyle" TargetType="uc:Button2">
                 <Setter Property="FontSize" Value="{ext:DynamicResource font_size_100}" />

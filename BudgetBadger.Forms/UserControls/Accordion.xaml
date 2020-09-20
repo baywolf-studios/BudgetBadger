@@ -33,7 +33,7 @@
             <FontImageSource
                 Size="{ext:DynamicResource size_225}"
                 Glyph="{ext:DynamicResource Key=ArrowDropRightIcon}"
-                Color="{ext:DynamicResource gray_300}"
+                Color="{ext:DynamicResource gray_700}"
                 FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
         </Image.Source>
     </Image>
