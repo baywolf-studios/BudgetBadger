@@ -1077,4 +1077,16 @@
   <data name="DebtsLabel" xml:space="preserve">
     <value>Debts</value>
   </data>
+  <data name="AppearanceLabel" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="DimensionSizeSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="DimensionSizeMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="DimensionSizeLarge" xml:space="preserve">
+    <value>Large</value>
+  </data>
 </root>
