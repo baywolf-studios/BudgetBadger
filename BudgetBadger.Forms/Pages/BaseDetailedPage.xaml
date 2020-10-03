@@ -21,7 +21,7 @@
             <Frame
                 x:Name="HeaderView"
                 Grid.Row="0"
-                BackgroundColor="{StaticResource AppBarColor}"
+                BackgroundColor="{ext:DynamicResource app_bar_color}"
                 HeightRequest="{StaticResource AppBarPortraitHeight}"
                 Padding="0"
                 Margin="0"

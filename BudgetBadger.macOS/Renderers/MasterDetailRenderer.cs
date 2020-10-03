@@ -8,8 +8,6 @@ namespace BudgetBadger.macOS.Renderers
 {
     public class MasterDetailRenderer : MasterDetailPageRenderer
     {
-        private MasterDetailPage masterDetail2;
-
         public static void Initialize()
         {
             // empty, but used for beating the linker

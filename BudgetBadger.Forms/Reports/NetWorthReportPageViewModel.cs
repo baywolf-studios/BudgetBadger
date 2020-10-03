@@ -144,7 +144,7 @@ namespace BudgetBadger.Forms.Reports
                         });
                     }
                 }
-                NetWorthChart = new LineChart() { Entries = entries };
+                NetWorthChart = new LineChart() { LabelTextSize = 24, BackgroundColor = SKColors.Transparent, Entries = entries };
                 NoResults = !entries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally

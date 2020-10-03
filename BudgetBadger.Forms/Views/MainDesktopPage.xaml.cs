@@ -18,67 +18,67 @@ namespace BudgetBadger.Forms.Views
         {
             if (pageName != "EnvelopesPage")
             {
-                EnvelopesFrame.BackgroundColor = EnvelopesFrame.RestingBackgroundColor;
-                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
-                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+                EnvelopesFrame.UpdateResting();
+                EnvelopesLabel.SetBinding(Label.TextColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
+                EnvelopesIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
             }
             else
             {
-                EnvelopesFrame.BackgroundColor = EnvelopesFrame.ActiveBackgroundColor;
-                EnvelopesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
-                EnvelopesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
+                EnvelopesFrame.UpdateActive();
+                EnvelopesLabel.SetBinding(Label.TextColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
+                EnvelopesIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
             }
 
             if (pageName != "AccountsPage")
             {
-                AccountsFrame.BackgroundColor = AccountsFrame.RestingBackgroundColor;
-                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
-                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+                AccountsFrame.UpdateResting();
+                AccountsLabel.SetBinding(Label.TextColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
+                AccountsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
             }
             else
             {
-                AccountsFrame.BackgroundColor = AccountsFrame.ActiveBackgroundColor;
-                AccountsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
-                AccountsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
+                AccountsFrame.UpdateActive();
+                AccountsLabel.SetBinding(Label.TextColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
+                AccountsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
             }
 
             if (pageName != "PayeesPage")
             {
-                PayeesFrame.BackgroundColor = PayeesFrame.RestingBackgroundColor;
-                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
-                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+                PayeesFrame.UpdateResting();
+                PayeesLabel.SetBinding(Label.TextColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
+                PayeesIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
             }
             else
             {
-                PayeesFrame.BackgroundColor = PayeesFrame.ActiveBackgroundColor;
-                PayeesLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
-                PayeesIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
+                PayeesFrame.UpdateActive();
+                PayeesLabel.SetBinding(Label.TextColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
+                PayeesIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
             }
 
             if (pageName != "ReportsPage")
             {
-                ReportsFrame.BackgroundColor = ReportsFrame.RestingBackgroundColor;
-                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
-                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+                ReportsFrame.UpdateResting();
+                ReportsLabel.SetBinding(Label.TextColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
+                ReportsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
             }
             else
             {
-                ReportsFrame.BackgroundColor = ReportsFrame.ActiveBackgroundColor;
-                ReportsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
-                ReportsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
+                ReportsFrame.UpdateActive();
+                ReportsLabel.SetBinding(Label.TextColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
+                ReportsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
             }
 
             if (pageName != "SettingsPage")
             {
-                SettingsFrame.BackgroundColor = SettingsFrame.RestingBackgroundColor;
-                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["gray_600"];
-                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["gray_600"];
+                SettingsFrame.UpdateResting();
+                SettingsLabel.SetBinding(Label.TextColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
+                SettingsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[gray_600]", source: DynamicResourceProvider.Instance));
             }
             else
             {
-                SettingsFrame.BackgroundColor = SettingsFrame.ActiveBackgroundColor;
-                SettingsLabel.TextColor = (Color)DynamicResourceProvider.Instance["brand_600"];
-                SettingsIconFont.Color = (Color)DynamicResourceProvider.Instance["brand_600"];
+                SettingsFrame.UpdateActive();
+                SettingsLabel.SetBinding(Label.TextColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
+                SettingsIconFont.SetBinding(FontImageSource.ColorProperty, new Binding("[brand_600]", source: DynamicResourceProvider.Instance));
             }
         }
 

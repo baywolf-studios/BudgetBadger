@@ -9,7 +9,7 @@ using Foundation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
-[assembly: ExportImageSourceHandler(typeof(FontImageSource), typeof(FontImageSourceHandler))]
+[assembly: ExportImageSourceHandler(typeof(FontImageSource), typeof(BudgetBadger.macOS.Renderers.FontImageSourceHandler))]
 namespace BudgetBadger.macOS.Renderers
 {
     public class FontImageSourceHandler : IImageSourceHandler

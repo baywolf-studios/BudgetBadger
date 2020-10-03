@@ -61,7 +61,7 @@
         Grid.Row="0"
         Grid.Column="0"
         Command="{Binding BackCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="BackIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -72,7 +72,7 @@
         Grid.Row="0"
         Grid.Column="3"
         Command="{Binding ToolbarItemCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -84,7 +84,7 @@
         Grid.Column="0"
         Grid.ColumnSpan="4"
         Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}"
+        BackgroundColor="{ext:DynamicResource app_bar_color}"
         IsVisible="false"
         Opacity="0">
         <ContentView
@@ -118,7 +118,7 @@
         x:Name="SearchButtonFrame"
         Grid.Row="0"
         Grid.Column="4"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="SearchIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"

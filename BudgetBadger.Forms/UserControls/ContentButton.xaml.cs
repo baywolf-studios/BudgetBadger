@@ -95,7 +95,7 @@ namespace BudgetBadger.Forms.UserControls
                 if (await Task.WhenAny(colorTask, Task.Delay((int)animationLength + 50)) != colorTask)
                 {
                     ViewExtensions.CancelAnimations(this);
-                    BackgroundColor = RestingBackgroundColor;
+                    SetBinding(BackgroundColorProperty, new Binding(nameof(RestingBackgroundColor), source: this));
                 }
             }
         }
@@ -104,13 +104,13 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (BackgroundColor != ActiveBackgroundColor)
             {
-                BackgroundColor = HoverBackgroundColor;
+                SetBinding(BackgroundColorProperty, new Binding(nameof(HoverBackgroundColor), source: this));
             }
         }
 
         public void UpdateActive()
         {
-            BackgroundColor = ActiveBackgroundColor;
+            SetBinding(BackgroundColorProperty, new Binding(nameof(ActiveBackgroundColor), source: this));
         }
     }
 }

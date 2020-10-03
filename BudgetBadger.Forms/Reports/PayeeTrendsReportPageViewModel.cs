@@ -216,7 +216,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
 
-                PayeeChart = new PointChart { Entries = payeeEntries };
+                PayeeChart = new PointChart { LabelTextSize = 16, BackgroundColor = SKColors.Transparent, Entries = payeeEntries };
                 NoResults = !payeeEntries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally

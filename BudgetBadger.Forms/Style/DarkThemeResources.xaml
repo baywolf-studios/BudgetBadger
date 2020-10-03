@@ -4,6 +4,8 @@
                     xmlns:style="clr-namespace:BudgetBadger.Forms.Style"
                     x:Class="BudgetBadger.Forms.Style.DarkThemeResources">
 
+    <Color x:Key="app_bar_color">#333840</Color>
+
     <Color x:Key="gray_1000">#ffffff</Color>
     <Color x:Key="gray_900">#f5f7fa</Color>
     <Color x:Key="gray_800">#ebeff5</Color>

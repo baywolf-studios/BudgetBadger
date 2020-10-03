@@ -43,7 +43,7 @@
         Grid.Row="0"
         Grid.Column="0"
         Command="{Binding BackCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="BackIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -54,7 +54,7 @@
         Grid.Row="0"
         Grid.Column="2"
         Command="{Binding ToolbarItemCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
