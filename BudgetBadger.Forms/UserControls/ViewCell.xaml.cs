@@ -35,8 +35,8 @@ namespace BudgetBadger.Forms.UserControls
             {
                 if (e.PropertyName == nameof(View))
                 {
-                    View.BackgroundColor = BackgroundColor;
-                    View.HeightRequest = HeightRequest;
+                    View.SetBinding(VisualElement.BackgroundColorProperty, new Binding(nameof(BackgroundColor), source: this));
+                    View.SetBinding(VisualElement.HeightRequestProperty, new Binding(nameof(HeightRequest), source: this));
 
                     if (View is Layout layout)
                     {

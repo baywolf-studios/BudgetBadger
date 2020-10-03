@@ -51,7 +51,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 if (value != null)
                 {
-                    value.BackgroundColor = (Color)Application.Current.Resources["AppBarColor"];
+                    value.SetBinding(View.BackgroundColorProperty, new Binding("[app_bar_color]", source: DynamicResourceProvider.Instance));
                 }
                 HeaderView.Content = value;
             }
@@ -69,7 +69,7 @@ namespace BudgetBadger.Forms.Pages
             {
                 if (value != null)
                 {
-                    value.BackgroundColor = (Color)DynamicResourceProvider.Instance["gray_50"];
+                    value.SetBinding(View.BackgroundColorProperty, new Binding("[gray_50]", source: DynamicResourceProvider.Instance));
                 }
                 BodyView.Content = value;
             }

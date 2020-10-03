@@ -20,7 +20,7 @@ namespace BudgetBadger.macOS.Renderers
 
             if (Control != null && Control is NSDatePicker datePicker)
             {
-                datePicker.Appearance = NSAppearance.GetAppearance(NSAppearance.NameAqua);
+                //datePicker.Appearance = NSAppearance.GetAppearance(NSAppearance.NameAqua);
             }
         }
     }

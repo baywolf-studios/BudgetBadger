@@ -20,12 +20,8 @@
         x:Name="LabelControl"
         Grid.Row="0"
         Grid.Column="1"
-        FontAttributes="Bold"
-        FontSize="17"
-        LineBreakMode="TailTruncation"
         Text="{Binding PageTitle}"
-        TextColor="White"
-        VerticalOptions="Center">
+        Style="{ext:DynamicResource PageTitleStyle}">
         <Label.Margin>
             <OnPlatform x:TypeArguments="Thickness">
                 <On Platform="Android" Value="16,0,0,0" />
@@ -48,7 +44,7 @@
         Grid.Row="0"
         Grid.Column="0"
         Command="{Binding ToolbarItemCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -60,7 +56,7 @@
         Grid.Column="0"
         Grid.ColumnSpan="2"
         Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}"
+        BackgroundColor="{ext:DynamicResource app_bar_color}"
         IsVisible="false"
         Opacity="0">
         <ContentView
@@ -94,7 +90,7 @@
         x:Name="SearchButtonFrame"
         Grid.Row="0"
         Grid.Column="2"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="SearchIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"

@@ -22,17 +22,19 @@ namespace BudgetBadger.Forms.UserControls
         {
             if (Parent is Xamarin.Forms.ListView xlistView)
             {
-                  if (xlistView.Parent is ListView2 listView)
+                if (xlistView.Parent is ListView2 listView)
                 {
                     listView.ItemSelected += (sender, e) =>
                     {
                         if (BindingContext == e.SelectedItem)
                         {
-                            View.BackgroundColor = SelectedBackgroundColor;
+                            View.SetBinding(VisualElement.BackgroundColorProperty, new Binding(nameof(SelectedBackgroundColor), source: this));
+                            //View.BackgroundColor = SelectedBackgroundColor;
                         }
                         else
                         {
-                            View.BackgroundColor = BackgroundColor;
+                            View.SetBinding(VisualElement.BackgroundColorProperty, new Binding(nameof(BackgroundColor), source: this));
+                            //View.BackgroundColor = BackgroundColor;
                         }
                     };
                 }

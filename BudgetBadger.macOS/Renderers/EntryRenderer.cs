@@ -20,7 +20,7 @@ namespace BudgetBadger.macOS.Renderers
 
             if (Control != null && Control is NSTextField textField)
             {
-                textField.Appearance = NSAppearance.GetAppearance(NSAppearance.NameAqua);
+                //textField.Appearance = NSAppearance.GetAppearance(NSAppearance.NameDarkAqua);
             }
         }
     }

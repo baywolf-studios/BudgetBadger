@@ -22,8 +22,9 @@
         Grid.Row="1"
         Text="{Binding SearchText}"/>
     <ListView x:Name="InternalListView"
-              Grid.Row="2" 
+              Grid.Row="2"
               CachingStrategy="RecycleElement"
+              BackgroundColor="{ext:DynamicResource gray_50}"
               SelectedItem="{Binding SelectedItem}"
               HasUnevenRows="{Binding HasUnevenRows}"
               RowHeight="{Binding RowHeight}"

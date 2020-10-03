@@ -6,7 +6,7 @@
     xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    BackgroundColor="{StaticResource AppBarColor}"
+    BackgroundColor="{ext:DynamicResource app_bar_color}"
     ColumnSpacing="0"
     RowSpacing="0">
     <Grid.RowDefinitions>
@@ -25,14 +25,14 @@
         Grid.Column="2"
         Margin="0"
         Text="{Binding PageTitle}"
-        HorizontalOptions="Center"
-        Style="{ext:DynamicResource PageTitleStyle}"/>
+        Style="{ext:DynamicResource PageTitleStyle}"
+        HorizontalOptions="Center"/>
     <uc:ContentButton
         x:Name="ToolbarItemFrame"
         Grid.Row="0"
         Grid.Column="0"
         Command="{Binding ToolbarItemCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="ToolbarItemImage"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -43,7 +43,7 @@
         Grid.Row="0"
         Grid.Column="1"
         Command="{Binding PreviousCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="PreviousIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -54,7 +54,7 @@
         Grid.Row="0"
         Grid.Column="3"
         Command="{Binding NextCommand}"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="NextIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"
@@ -66,7 +66,7 @@
         Grid.Column="0"
         Grid.ColumnSpan="4"
         Padding="0"
-        BackgroundColor="{StaticResource AppBarColor}"
+        BackgroundColor="{ext:DynamicResource app_bar_color}"
         IsVisible="false"
         Opacity="0">
         <ContentView
@@ -100,7 +100,7 @@
         x:Name="SearchButtonFrame"
         Grid.Row="0"
         Grid.Column="4"
-        Style="{StaticResource ToolbarButtonStyle}">
+        Style="{ext:DynamicResource ToolbarButtonStyle}">
         <Label
             x:Name="SearchIcon"
             Style="{ext:DynamicResource Key=ToolbarIconStyle}"

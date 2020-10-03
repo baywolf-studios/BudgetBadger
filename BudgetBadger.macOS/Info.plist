@@ -46,8 +46,6 @@
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.finance</string>
-	<key>NSRequiresAquaSystemAppearance</key>
-	<true/>
 	<key>ATSApplicationFontsPath</key>
 	<string>Fonts</string>
 	<key>CFBundleDisplayName</key>

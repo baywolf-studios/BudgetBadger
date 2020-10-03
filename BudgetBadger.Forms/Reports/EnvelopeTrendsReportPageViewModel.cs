@@ -211,7 +211,7 @@ namespace BudgetBadger.Forms.Reports
                     }
                 }
 
-                EnvelopeChart = new PointChart { Entries = envelopeEntries };
+                EnvelopeChart = new PointChart { LabelTextSize = 16, BackgroundColor = SKColors.Transparent, Entries = envelopeEntries };
                 NoResults = !envelopeEntries.Any(e => Math.Abs(e.Value) > 0);
             }
             finally

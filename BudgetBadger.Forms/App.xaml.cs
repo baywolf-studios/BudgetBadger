@@ -104,6 +104,15 @@ namespace BudgetBadger.Forms
 
             _syncTimer = new Timer(_ => Task.Run(async () => await Sync()).FireAndForget());
 
+            SetAppTheme(Application.Current.RequestedTheme);
+            SetAppearanceSize();
+            SetLocale();
+
+            Application.Current.RequestedThemeChanged += (s, a) => 
+            {
+                SetAppTheme(a.RequestedTheme);
+            };
+
             var eventAggregator = Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(x => ResetSyncTimer());
             eventAggregator.GetEvent<AccountHiddenEvent>().Subscribe(x => ResetSyncTimer());
@@ -134,9 +143,6 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
-            SetAppearance();
-            SetLocale();
-
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
             int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
@@ -296,7 +302,35 @@ namespace BudgetBadger.Forms
             timer.Stop();
         }
 
-        void SetAppearance()
+        void SetAppTheme(OSAppTheme oSAppTheme)
+        {
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                var dictsToRemove = mergedDictionaries.Where(m => (m is LightThemeResources)
+                                                               || (m is DarkThemeResources)).ToList();
+
+                foreach (var dict in dictsToRemove)
+                {
+                    mergedDictionaries.Remove(dict);
+                }
+
+                switch (oSAppTheme)
+                {
+                    case OSAppTheme.Dark:
+                        mergedDictionaries.Add(new DarkThemeResources());
+                        break;
+                    case OSAppTheme.Light:
+                    default:
+                        mergedDictionaries.Add(new LightThemeResources());
+                        break;
+                }
+            }
+
+            DynamicResourceProvider.Instance.Invalidate();
+        }
+
+        void SetAppearanceSize()
         {
             var settings = Container.Resolve<ISettings>();
 
@@ -307,14 +341,13 @@ namespace BudgetBadger.Forms
                 ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
                 if (mergedDictionaries != null)
                 {
-                    var otherDicts = mergedDictionaries.Where(m => !(m is LargeDimensionResources)
-                                                                && !(m is MediumDimensionResources)
-                                                                && !(m is SmallDimensionResources)).ToList();
+                    var dictsToRemove = mergedDictionaries.Where(m => (m is LargeDimensionResources)
+                                                                   || (m is MediumDimensionResources)
+                                                                   || (m is SmallDimensionResources)).ToList();
 
-                    mergedDictionaries.Clear();
-                    foreach (var dict in otherDicts)
+                    foreach (var dict in dictsToRemove)
                     {
-                        mergedDictionaries.Add(dict);
+                        mergedDictionaries.Remove(dict);
                     }
 
                     switch (selectedDimensionSize)

@@ -14,7 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <style:IconResources />
-                <style:LightThemeResources />
+                <style:DarkThemeResources />
                 <style:MediumDimensionResources />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -153,7 +153,7 @@
             </Style>
 
             <Style x:Key="ToolbarButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource brand_600}" />
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
                 <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource brand_500}" />
                 <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_700}" />
             </Style>
@@ -415,7 +415,7 @@
                         <OnIdiom Default="{DynamicResource  Key=font_size_100}" Desktop="{DynamicResource  Key=font_size_200}"/>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="TextColor" Value="{ext:DynamicResource  Key=gray_50}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=static_white}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="LineBreakMode" Value="TailTruncation"/>
             </Style>
@@ -427,7 +427,7 @@
                         <OnIdiom Default="{DynamicResource  Key=font_size_400}" Desktop="{DynamicResource  Key=font_size_500}"/>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="TextColor" Value="{ext:DynamicResource Key=gray_50}" />
+                <Setter Property="TextColor" Value="{StaticResource Key=static_white}" />
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
@@ -468,10 +468,8 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
-            <Color x:Key="AppBarColor">#0c7bb3</Color>
-
             <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource AppBarColor}" />
+                <Setter Property="BarBackgroundColor" Value="{ext:DynamicResource app_bar_color}" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
         </ResourceDictionary>

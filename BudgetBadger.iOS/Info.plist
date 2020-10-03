@@ -57,8 +57,6 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_us</string>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>fontawesome-webfont.ttf</string>
