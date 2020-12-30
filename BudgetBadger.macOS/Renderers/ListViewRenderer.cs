@@ -1,5 +1,6 @@
 ﻿using System;
 using AppKit;
+using Foundation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
@@ -14,6 +15,13 @@ namespace BudgetBadger.macOS.Renderers
 
             if (e.NewElement != null && Control != null && Control is NSScrollView scroller)
             {
+                if (NSProcessInfo.ProcessInfo.IsOperatingSystemAtLeastVersion(new NSOperatingSystemVersion(11, 0, 0)))
+                {
+                    NativeTableView.Style = NSTableViewStyle.Plain;
+                }
+                NativeTableView.IntercellSpacing = new CoreGraphics.CGSize(0, 0);
+                NativeTableView.BackgroundColor = e.NewElement.BackgroundColor.ToNSColor();
+
                 NSScrollView.Notifications.ObserveDidLiveScroll(scroller, (sender, args) => {
                     if (e.NewElement != null && args.Notification.Object is NSScrollView nsScrollView)
                     {
