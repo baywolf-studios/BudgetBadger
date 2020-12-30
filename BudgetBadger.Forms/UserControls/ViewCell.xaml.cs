@@ -42,11 +42,6 @@ namespace BudgetBadger.Forms.UserControls
                     {
                         layout.Padding = Padding;
                     }
-
-                    if (Device.RuntimePlatform == Device.macOS)
-                    {
-                        View.Margin = new Thickness(-1);
-                    }
                 }
             };
         }
