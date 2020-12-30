@@ -174,61 +174,61 @@
       "idiom": "watch-marketing"
     },
     {
-      "filename": "01a-mac-App-16.png",
+      "filename": "macOSBigSur16-1.png",
       "size": "16x16",
       "scale": "1x",
       "idiom": "mac"
     },
     {
-      "filename": "01b-mac-App-16@2x.png",
+      "filename": "macOSBigSur32-1.png",
       "size": "16x16",
       "scale": "2x",
       "idiom": "mac"
     },
     {
-      "filename": "02a-mac-App-32.png",
+      "filename": "macOSBigSur32-2.png",
       "size": "32x32",
       "scale": "1x",
       "idiom": "mac"
     },
     {
-      "filename": "02b-mac-App-32@2x.png",
+      "filename": "macOSBigSur64-1.png",
       "size": "32x32",
       "scale": "2x",
       "idiom": "mac"
     },
     {
-      "filename": "03a-mac-App-128.png",
+      "filename": "macOSBigSur128-1.png",
       "size": "128x128",
       "scale": "1x",
       "idiom": "mac"
     },
     {
-      "filename": "03b-mac-App-128@2x.png",
+      "filename": "macOSBigSur256-1.png",
       "size": "128x128",
       "scale": "2x",
       "idiom": "mac"
     },
     {
-      "filename": "04a-mac-App-256.png",
+      "filename": "macOSBigSur256-2.png",
       "size": "256x256",
       "scale": "1x",
       "idiom": "mac"
     },
     {
-      "filename": "04b-mac-App-256@2x.png",
+      "filename": "macOSBigSur512-1.png",
       "size": "256x256",
       "scale": "2x",
       "idiom": "mac"
     },
     {
-      "filename": "05a-mac-App-512.png",
+      "filename": "macOSBigSur512-2.png",
       "size": "512x512",
       "scale": "1x",
       "idiom": "mac"
     },
     {
-      "filename": "05b-mac-App-512@2x.png",
+      "filename": "macOSBigSur1024-1.png",
       "size": "512x512",
       "scale": "2x",
       "idiom": "mac"
