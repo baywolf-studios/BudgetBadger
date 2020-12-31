@@ -1,8 +1,7 @@
 ﻿using System;
-using Android.Support.Design.BottomNavigation;
-using Android.Support.Design.Widget;
 using Android.Views;
 using BudgetBadger.Droid.Effects;
+using Google.Android.Material.BottomNavigation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
