@@ -134,7 +134,7 @@
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>5.0.0.1487-pre1</Version>
+      <Version>5.0.0.1829-pre6</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>1.1.12</Version>
@@ -191,9 +191,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BundleResource Include="Resources\Fonts\ionicons.ttf" />
     <BundleResource Include="Resources\Fonts\SegMDL2.ttf" />
