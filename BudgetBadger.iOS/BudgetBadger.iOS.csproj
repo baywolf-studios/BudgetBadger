@@ -212,6 +212,7 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\13a-iOS-Marketing-1024.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\EditorBorderColor.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -264,6 +265,7 @@
     <Folder Include="Assets.xcassets\payeeswhitetabicon.png.imageset\" />
     <Folder Include="Assets.xcassets\reportswhitetabicon.png.imageset\" />
     <Folder Include="Assets.xcassets\settingswhitetabicon.png.imageset\" />
+    <Folder Include="Assets.xcassets\EditorBorderColor.colorset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
