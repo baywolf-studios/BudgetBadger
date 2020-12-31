@@ -22,7 +22,7 @@
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1487-pre1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1829-pre6" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />
   </ItemGroup>
