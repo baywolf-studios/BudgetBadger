@@ -63,7 +63,7 @@
             x:Name="EntryFrame"
             Margin="8"
             Padding="0"
-            BackgroundColor="{ext:DynamicResource brand_700}">
+            BackgroundColor="{ext:DynamicResource app_bar_search_color}">
             <Entry
                 x:Name="EntryControl"
                 Margin="8,0"

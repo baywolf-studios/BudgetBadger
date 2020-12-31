@@ -5,6 +5,7 @@
                     x:Class="BudgetBadger.Forms.Style.LightThemeResources">
 
     <Color x:Key="app_bar_color">#0c7bb3</Color>
+    <Color x:Key="app_bar_search_color">#066391</Color>
 
     <Color x:Key="gray_50">#ffffff</Color>
     <Color x:Key="gray_75">#f5f7fa</Color>
