@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using BudgetBadger.iOS.Renderers;
 using UIKit;
 using Xamarin.Forms;
@@ -14,15 +15,23 @@ namespace BudgetBadger.iOS.Renderers
             // empty, but used for beating the linker
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            base.OnElementChanged(e);
+            base.OnElementPropertyChanged(sender, e);
 
             if (Control != null && Control is UITextView textView)
             {
-                var lightGray = Color.FromRgb(205, 205, 205);
+                if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
+                {
+                    var gray = UIColor.FromName("EditorBorderColor");
+                    textView.Layer.BorderColor = gray.CGColor;
+                }
+                else
+                {
+                    var lightGray = Color.FromRgb(205, 205, 205);
+                    textView.Layer.BorderColor = lightGray.ToCGColor();
+                }
 
-                textView.Layer.BorderColor = lightGray.ToCGColor();
                 textView.Layer.BorderWidth = 0.5f;
                 textView.Layer.CornerRadius = 5f;
             }
