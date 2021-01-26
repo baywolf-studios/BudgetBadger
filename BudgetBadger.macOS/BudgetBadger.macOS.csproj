@@ -54,13 +54,12 @@
     <LinkMode>SdkOnly</LinkMode>
     <HttpClientHandler>
     </HttpClientHandler>
-    <XamMacArch>
-    </XamMacArch>
-    <AOTMode>All</AOTMode>
+    <XamMacArch>x86_64</XamMacArch>
+    <AOTMode>SDK</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
     <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
-    <HybridAOT>true</HybridAOT>
+    <CodeSignProvision>Automatic</CodeSignProvision>
     <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
   </PropertyGroup>
   <ItemGroup>
