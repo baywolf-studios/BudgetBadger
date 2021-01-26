@@ -23,7 +23,6 @@ using BudgetBadger.Core.Settings;
 using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
-using SimpleAuth.Providers;
 using Prism.Services;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
@@ -46,6 +45,7 @@ using System.Threading;
 using BudgetBadger.Forms.UserControls;
 using System.Linq;
 using BudgetBadger.Forms.Style;
+using BudgetBadger.Forms.Authentication;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -222,16 +222,7 @@ namespace BudgetBadger.Forms
 
             container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
 
-            container.Register(made: Made.Of(() => new DropBoxApi(
-                Arg.Index<string>(0),
-                Arg.Index<string>(1),
-                Arg.Index<string>(2),
-                Arg.Index<string>(3),
-                null),
-                _ => SyncMode.DropboxSync,
-                _ => AppSecrets.DropBoxAppKey,
-                _ => "",
-                _ => "budgetbadger://authorize"));
+
 
             container.Register<ISyncFactory>(made: Made.Of(() => new SyncFactory(Arg.Of<IResourceContainer>(),
                                                                           Arg.Of<ISettings>(),

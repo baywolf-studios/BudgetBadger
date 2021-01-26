@@ -1,5 +1,8 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Forms;
+using BudgetBadger.Forms.Authentication;
 using BudgetBadger.UWP.Renderers;
+using DryIoc;
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using Prism;
@@ -38,6 +41,7 @@ namespace BudgetBadger.UWP
         public void RegisterTypes(IContainerRegistry container)
         {
             container.Register<ILocalize, Localize>();
+            container.Register<IWebAuthentication, UwpDropboxWebAuthentication>();
         }
     }
 }
