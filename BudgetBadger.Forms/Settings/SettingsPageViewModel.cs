@@ -8,6 +8,7 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;
 using Prism;
@@ -16,8 +17,6 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
-using SimpleAuth;
-using SimpleAuth.Providers;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
@@ -28,7 +27,7 @@ namespace BudgetBadger.Forms.Settings
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
-        readonly DropBoxApi _dropboxApi;
+        readonly IWebAuthentication _webAuthentication;
         readonly IPurchaseService _purchaseService;
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
@@ -132,7 +131,7 @@ namespace BudgetBadger.Forms.Settings
             INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       ISettings settings,
-                                      DropBoxApi dropboxApi,
+                                      IWebAuthentication webAuthentication,
                                       IPurchaseService purchaseService,
                                       ISyncFactory syncFactory,
                                       ILocalize localize)
@@ -141,7 +140,7 @@ namespace BudgetBadger.Forms.Settings
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
-            _dropboxApi = dropboxApi;
+            _webAuthentication = webAuthentication;
             _purchaseService = purchaseService;
             _syncFactory = syncFactory;
             _localize = localize;
@@ -285,14 +284,12 @@ namespace BudgetBadger.Forms.Settings
                 {
                     try
                     {
-                        _dropboxApi.ForceRefresh = true;
+                        var dropboxResult = await _webAuthentication.AuthenticateAsync();
 
-                        var account = await _dropboxApi.Authenticate() as OAuthAccount;
-
-                        if (account.IsValid())
+                        if (!string.IsNullOrEmpty(dropboxResult.AccessToken))
                         {
                             await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, account.Token);
+                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.AccessToken);
                             await ExecuteSyncCommand();
                             ShowSync = true;
                         }
