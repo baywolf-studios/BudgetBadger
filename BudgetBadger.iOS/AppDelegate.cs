@@ -28,7 +28,6 @@ namespace BudgetBadger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            SimpleAuth.NativeSafariAuthenticator.Activate();
             BorderedEditorRenderer.Initialize();
             CardRenderer.Initialize();
             Button2Renderer.Initialize();
@@ -37,30 +36,22 @@ namespace BudgetBadger.iOS
 
             LoadApplication(new App(new iOSInitializer()));
 
-            //var statusBarColor = ((Color)Xamarin.Forms.Application.Current.Resources["AppBarColor"]).ToUIColor();
-
-            //UITabBar.Appearance.SelectedImageTintColor = statusBarColor;
-
-            //var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
-            //if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
-            //{
-            //    statusBar.BackgroundColor = statusBarColor;
-            //}
-
             return base.FinishedLaunching(app, options);
         }
 
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
-            if (SimpleAuth.NativeSafariAuthenticator.ResumeAuth(url.AbsoluteString))
-            {
+            if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
                 return true;
-            }
-            if (SimpleAuth.Native.OpenUrl(app, url, options))
-            {
-                return true;
-            }
+
             return base.OpenUrl(app, url, options);
+        }
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            if (Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler))
+                return true;
+            return base.ContinueUserActivity(application, userActivity, completionHandler);
         }
     }
 
