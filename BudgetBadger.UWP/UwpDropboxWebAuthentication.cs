@@ -13,7 +13,7 @@ using WebAuthenticationResult = BudgetBadger.Forms.Authentication.WebAuthenticat
 
 namespace BudgetBadger.UWP
 {
-    public class UwpDropboxWebAuthentication : IWebAuthentication
+    public class UwpDropboxWebAuthentication : IWebAuthenticator
     {
         private readonly string _appKey;
         private readonly string _redirectUrl;

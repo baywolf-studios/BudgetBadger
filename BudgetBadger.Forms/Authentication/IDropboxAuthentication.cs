@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using BudgetBadger.Models;
 
 namespace BudgetBadger.Forms.Authentication
 {
-    public interface IWebAuthentication
+    public interface IDropboxAuthentication
     {
-         Task<WebAuthenticationResult> AuthenticateAsync();
+         Task<Result<string>> AuthenticateAsync();
     }
 }

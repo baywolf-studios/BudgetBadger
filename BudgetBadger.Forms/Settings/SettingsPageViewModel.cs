@@ -27,7 +27,7 @@ namespace BudgetBadger.Forms.Settings
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
-        readonly IWebAuthentication _webAuthentication;
+        readonly IDropboxAuthentication _dropboxAuthentication;
         readonly IPurchaseService _purchaseService;
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
@@ -131,7 +131,7 @@ namespace BudgetBadger.Forms.Settings
             INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       ISettings settings,
-                                      IWebAuthentication webAuthentication,
+                                      IDropboxAuthentication dropboxAuthentication,
                                       IPurchaseService purchaseService,
                                       ISyncFactory syncFactory,
                                       ILocalize localize)
@@ -140,7 +140,7 @@ namespace BudgetBadger.Forms.Settings
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
-            _webAuthentication = webAuthentication;
+            _dropboxAuthentication = dropboxAuthentication;
             _purchaseService = purchaseService;
             _syncFactory = syncFactory;
             _localize = localize;
@@ -284,12 +284,12 @@ namespace BudgetBadger.Forms.Settings
                 {
                     try
                     {
-                        var dropboxResult = await _webAuthentication.AuthenticateAsync();
+                        var dropboxResult = await _dropboxAuthentication.AuthenticateAsync();
 
-                        if (!string.IsNullOrEmpty(dropboxResult.AccessToken))
+                        if (dropboxResult.Success)
                         {
                             await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.AccessToken);
+                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.Data);
                             await ExecuteSyncCommand();
                             ShowSync = true;
                         }
