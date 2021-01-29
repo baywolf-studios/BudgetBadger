@@ -102,12 +102,10 @@
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
     <Compile Include="Effects\BorderlessEditorEffect.cs" />
     <Compile Include="Effects\BorderlessPickerEffect.cs" />
-    <Compile Include="SimpleAuthActivity.cs" />
+    <Compile Include="WebAuthenticationCallbackActivity.cs" />
     <Compile Include="Effects\BottomBarNoShiftEffect.cs" />
     <Compile Include="Localize.cs" />
     <Compile Include="Renderers\CardRenderer.cs" />
-    <Compile Include="Renderers\Helper.cs" />
-    <Compile Include="Renderers\Button2Renderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

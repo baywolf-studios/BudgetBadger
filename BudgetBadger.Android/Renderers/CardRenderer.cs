@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Android.Content;
-using Android.Support.V4.View;
+using AndroidX.Core.View;
 using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms.UserControls;
 using Xamarin.Forms;

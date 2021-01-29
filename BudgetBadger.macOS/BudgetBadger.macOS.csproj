@@ -32,8 +32,7 @@
     <HttpClientHandler>
     </HttpClientHandler>
     <LinkMode>SdkOnly</LinkMode>
-    <XamMacArch>
-    </XamMacArch>
+    <XamMacArch>x86_64</XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <AOTMode>None</AOTMode>
     <CodeSignProvision>Automatic</CodeSignProvision>
@@ -55,7 +54,7 @@
     <HttpClientHandler>
     </HttpClientHandler>
     <XamMacArch>x86_64</XamMacArch>
-    <AOTMode>SDK</AOTMode>
+    <AOTMode>Core</AOTMode>
     <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
     <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
