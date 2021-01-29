@@ -1,7 +1,10 @@
-﻿using Dropbox.Api;
+﻿using BudgetBadger.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Windows.Security.Authentication.Web;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -11,19 +14,16 @@ namespace BudgetBadger.UWP
 {
     public static class CustomWebAuthentication
     {
-        private static TaskCompletionSource<CustomWebAuthenticationResult> tcs1;
+        private static Uri _redirectUri;
+        private static TaskCompletionSource<Result<IDictionary<string, string>>> _tcsResponse;
 
-        public static Task<CustomWebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri)
+        public static async Task<Result<IDictionary<string, string>>> AuthenticateAsync(Uri requestUri, Uri redirectUri)
         {
-            return AuthenticateAsync(options, requestUri, Windows.Security.Authentication.Web.WebAuthenticationBroker.GetCurrentApplicationCallbackUri());
-        }
+            if (_tcsResponse?.Task != null && !_tcsResponse.Task.IsCompleted)
+                _tcsResponse.TrySetCanceled();
 
-        public static async Task<CustomWebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri, Uri callbackUri)
-        {
-            if (options != WebAuthenticationOptions.None)
-                throw new ArgumentException("WebAuthenticationBroker currently only supports WebAuthenticationOptions.None", "options");
-
-            tcs1 = new TaskCompletionSource<CustomWebAuthenticationResult>();
+            _redirectUri = redirectUri;
+            _tcsResponse = new TaskCompletionSource<Result<IDictionary<string, string>>>();
 
             try
             {
@@ -31,46 +31,56 @@ namespace BudgetBadger.UWP
             }
             catch (Exception ex)
             {
-                tcs1.SetException(ex);
+                _tcsResponse.TrySetException(ex);
             }
 
-            return await tcs1.Task;
+            return await _tcsResponse.Task;
         }
 
-        public static void HandleAuthRedirect(Uri url)
+        internal static bool OpenUrl(Uri uri)
         {
-            if (url == null || url.Fragment == null || url.Fragment.Length < 1)
-            {
-                tcs1.SetResult(new CustomWebAuthenticationResult("", 0, WebAuthenticationStatus.UserCancel));
-                return;
-            }
+            // If we aren't waiting on a task, don't handle the url
+            if (_tcsResponse?.Task?.IsCompleted ?? true)
+                return false;
 
             try
             {
-                var code = DropboxOAuth2Helper.ParseTokenFragment(url);
-                tcs1.SetResult(new CustomWebAuthenticationResult(code.AccessToken, 0, string.IsNullOrEmpty(code.AccessToken) ? WebAuthenticationStatus.UserCancel : WebAuthenticationStatus.Success));
+                // If we can't handle the url, don't
+                if (!CanHandleCallback(_redirectUri, uri))
+                    return false;
+
+                var result = new Result<IDictionary<string, string>>
+                {
+                    Success = true,
+                    Data = ParseQueryString(uri.Fragment)
+                };
+                _tcsResponse.TrySetResult(result);
+                return true;
             }
             catch (Exception ex)
             {
-                tcs1.SetResult(new CustomWebAuthenticationResult("", 0, WebAuthenticationStatus.UserCancel));
+                Console.WriteLine(ex);
             }
-            
+            return false;
         }
-    }
 
-    public sealed class CustomWebAuthenticationResult
-    {
-        internal CustomWebAuthenticationResult(string response, uint errorDetail, WebAuthenticationStatus responseStatus)
+        private static bool CanHandleCallback(Uri expectedUrl, Uri callbackUrl)
         {
-            ResponseData = response;
-            ResponseErrorDetail = errorDetail;
-            ResponseStatus = responseStatus;
+            if (!callbackUrl.Scheme.Equals(expectedUrl.Scheme, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            if (!string.IsNullOrEmpty(expectedUrl.Host))
+            {
+                if (!callbackUrl.Host.Equals(expectedUrl.Host, StringComparison.OrdinalIgnoreCase))
+                    return false;
+            }
+
+            return true;
         }
-
-        public string ResponseData { get; private set; }
-
-        public uint ResponseErrorDetail { get; private set; }
-
-        public WebAuthenticationStatus ResponseStatus { get; private set; }
+        private static Dictionary<string, string> ParseQueryString(string queryString)
+        {
+            var nvc = HttpUtility.ParseQueryString(queryString);
+            return nvc.AllKeys.ToDictionary(k => k, k => nvc[k]);
+        }
     }
 }

@@ -117,7 +117,10 @@ namespace BudgetBadger.UWP
             if (args.Kind == ActivationKind.Protocol)
             {
                 ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
-                CustomWebAuthentication.HandleAuthRedirect(eventArgs.Uri);
+                if (!CustomWebAuthentication.OpenUrl(eventArgs.Uri))
+                {
+                    base.OnActivated(args);
+                }
             }
             else
             {
