@@ -245,16 +245,21 @@ namespace BudgetBadger.Forms
 #if DEBUG
             container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
 #else
-            if (Device.RuntimePlatform == Device.macOS)
-            {
-                container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
-            }
-            else
+            if (Device.RuntimePlatform != Device.macOS)
             {
                 container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
-                container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
             }
+            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
 #endif
+
+            if (Device.RuntimePlatform != Device.UWP)
+            {
+                container.Register<IWebAuthenticator, WebAuthenticator>();
+            }
+            container.UseInstance(AppSecrets.DropBoxAppKey, serviceKey: "dropBoxAppKey");
+            container.Register<IDropboxAuthentication>(made: Made.Of(() => new DropboxAuthentication(
+                Arg.Of<IWebAuthenticator>(),
+                Arg.Of<string>("dropBoxAppKey"))));
 
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
 

@@ -34,7 +34,6 @@ namespace BudgetBadger.macOS
         public override void DidFinishLaunching(NSNotification notification)
         {
             Xamarin.Forms.Forms.Init();
-            SimpleAuth.NativeSafariAuthenticator.Activate();
             Button2Renderer.Initialize();
             CardRenderer.Initialize();
             MasterDetailRenderer.Initialize();
