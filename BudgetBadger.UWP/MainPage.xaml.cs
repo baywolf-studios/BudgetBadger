@@ -41,7 +41,7 @@ namespace BudgetBadger.UWP
         public void RegisterTypes(IContainerRegistry container)
         {
             container.Register<ILocalize, Localize>();
-            container.Register<IWebAuthentication, UwpDropboxWebAuthentication>();
+            container.Register<IWebAuthenticator, UwpWebAuthenticator>();
         }
     }
 }
