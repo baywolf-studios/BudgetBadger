@@ -5,11 +5,9 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Droid;
 using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms;
 using Plugin.InAppBilling;
-using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
 
@@ -27,11 +25,10 @@ namespace BudgetBadger.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            Xamarin.Essentials.Platform.Init(this, bundle);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);
-            SimpleAuth.NativeCustomTabsAuthenticator.Activate(this.Application);
-            Button2Renderer.Initialize();
             CardRenderer.Initialize();
             LoadApplication(new App(new AndroidInitializer()));
         }
@@ -40,7 +37,13 @@ namespace BudgetBadger.Droid
         {
             base.OnActivityResult(requestCode, resultCode, data);
             InAppBillingImplementation.HandleActivityResult(requestCode, resultCode, data);
-            SimpleAuth.Native.OnActivityResult(requestCode, resultCode, data);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
