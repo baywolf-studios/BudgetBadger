@@ -30,11 +30,6 @@ namespace BudgetBadger.Forms.Authentication
                 result.Success = true;
                 result.Data = accessToken;
             }
-            else if (authResult.Success && authResult.Data.TryGetValue("#access_token", out string accessToken2))
-            {
-                result.Success = true;
-                result.Data = accessToken2;
-            }
             else
             {
                 result.Success = false;
