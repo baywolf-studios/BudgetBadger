@@ -47,6 +47,7 @@
     <Folder Include="Style\" />
     <Folder Include="VisualStates\" />
     <Folder Include="Events\" />
+    <Folder Include="ScheduledTransactions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="UserControls\ChildPage.xaml.cs" />

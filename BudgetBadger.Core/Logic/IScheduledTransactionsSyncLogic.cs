@@ -4,7 +4,7 @@ using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Logic
 {
-    public interface IEnvelopeSyncLogic : ISyncLogic
+    public interface IScheduledTransactionsSyncLogic : ISyncLogic
     {
     }
 }

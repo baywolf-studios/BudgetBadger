@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<p:BasePage
+    x:Class="BudgetBadger.Forms.ScheduledTransactions.ScheduledTransactionEditPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    <p:BasePage.Header>
+        <p:ChildHeader
+            BackCommand="{Binding BackCommand}"
+            PageTitle="{ext:Translate TransactionEditPageTitle}"
+            ToolbarItemCommand="{Binding SaveCommand}"
+            ToolbarItemIcon="{StaticResource SaveIcon}">
+            <p:ChildHeader.Triggers>
+                <DataTrigger
+                    Binding="{Binding Transaction.IsNew}"
+                    TargetType="p:ChildHeader"
+                    Value="True">
+                    <Setter Property="PageTitle" Value="{ext:Translate TransactionNewPageTitle}" />
+                </DataTrigger>
+            </p:ChildHeader.Triggers>
+        </p:ChildHeader>
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
+            <ScrollView
+                Orientation="Vertical">
+                <uc:ResponsiveGrid
+                    x:Name="responsiveGrid"
+                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_160, RightKey=size_0, BottomKey=size_0}"
+                    RowSpacing="{Binding Gutter, Source={x:Reference responsiveGrid}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                    </Grid.RowDefinitions>
+                    <uc:CurrencyCalculatorEntry
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="6"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                        Label="{ext:Translate TransactactionOutflowLabel}"
+                        Number="{Binding Transaction.Outflow}" />
+                    <uc:CurrencyCalculatorEntry
+                        Grid.Row="0"
+                        Grid.Column="6"
+                        Grid.ColumnSpan="6"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
+                        Label="{ext:Translate TransactactionInflowLabel}"
+                        Number="{Binding Transaction.Inflow}"  />
+                    <uc:ButtonTextField
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding AccountSelectedCommand}"
+                        Label="{ext:Translate TransactionAccountLabel}"
+                        Text="{Binding Transaction.Account.Description}" />
+                    <uc:ButtonTextField
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding PayeeSelectedCommand}"
+                        Label="{ext:Translate TransactionPayeeLabel}"
+                        Text="{Binding Transaction.Payee.Description}" />
+                    <uc:ButtonTextField
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Command="{Binding EnvelopeSelectedCommand}"
+                        Label="{ext:Translate TransactionEnvelopeLabel}"
+                        Text="{Binding Transaction.Envelope.Description}">
+                        <uc:ButtonTextField.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Transaction.Envelope.IsSystem}"
+                                TargetType="uc:ButtonTextField"
+                                Value="True">
+                                <Setter Property="IsReadOnly" Value="True" />
+                            </DataTrigger>
+                        </uc:ButtonTextField.Triggers>
+                    </uc:ButtonTextField>
+                    <uc:DatePicker
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Date="{Binding Transaction.ServiceDate}"
+                        Label="{ext:Translate TransactionServiceDateLabel}" />
+                    <uc:TransactionStatusButton
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Transaction="{Binding Transaction}"
+                        ToggleCommand="{Binding TogglePostedTransactionCommand}"
+                        Label="{ext:Translate TransactionStatusLabel}"
+                        HasCaption="True">
+                    </uc:TransactionStatusButton>
+                    <uc:MultilineTextField
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate TransactionNotesLabel}"
+                        Text="{Binding Transaction.Notes}" />
+                    <FlexLayout
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Direction="Row"
+                        AlignItems="Center"
+                        JustifyContent="End"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                        <uc:Button2
+                            x:Name="deleteButton"
+                            Command="{Binding DeleteCommand}"
+                            Style="{StaticResource SecondaryDestructionButtonStyle}"
+                            Text="{ext:Translate DeleteButton}"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding Transaction.IsNew, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                        <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}" IsVisible="False" >
+                            <BoxView.Triggers>
+                                <MultiTrigger TargetType="BoxView">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference deleteButton}}" Value="True" />
+                                        <BindingCondition Binding="{Binding IsVisible, Source={x:Reference splitButton}}" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True" />
+                                </MultiTrigger>
+                            </BoxView.Triggers>
+                        </BoxView>
+                        <uc:Button2
+                            x:Name="splitButton"
+                            Command="{Binding SplitCommand}"
+                            Style="{StaticResource PrimaryActionButtonStyle}"
+                            Text="{ext:Translate SplitTransactionButton}"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding SplitTransactionMode, Converter={StaticResource InverseBooleanConverter}}"
+                            FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+                    </FlexLayout>
+                </uc:ResponsiveGrid>
+            </ScrollView>
+        </uc:BusyIndicator>
+    </p:BasePage.Body>
+</p:BasePage>

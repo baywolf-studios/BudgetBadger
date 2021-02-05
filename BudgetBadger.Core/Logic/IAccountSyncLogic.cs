@@ -4,10 +4,7 @@ using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.Logic
 {
-    public interface IAccountSyncLogic
+    public interface IAccountSyncLogic : ISyncLogic
     {
-        Task<Result> SyncAsync();
-        Task<Result> PullAsync();
-        Task<Result> PushAsync();
     }
 }

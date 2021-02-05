@@ -18,8 +18,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateTransactionAsync(Transaction transaction)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
