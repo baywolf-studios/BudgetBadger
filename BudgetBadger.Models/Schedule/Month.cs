@@ -3,17 +3,18 @@ namespace BudgetBadger.Models.Schedule
 {
     public enum Month
     {
-        January = 1,
-        February = 2,
-        March = 3,
-        April = 4,
-        May = 5,
-        June = 6,
-        July = 7,
-        August = 8,
-        September = 9,
-        October = 10,
-        November = 11,
-        December = 12
+        None = 0,
+        January = 1 << 0,
+        February = 1 << 1,
+        March = 1 << 2,
+        April = 1 << 3,
+        May = 1 << 4,
+        June = 1 << 5,
+        July = 1 << 6,
+        August = 1 << 7,
+        September = 1 << 8,
+        October = 1 << 9,
+        November = 1 << 10,
+        December = 1 << 11
     }
 }

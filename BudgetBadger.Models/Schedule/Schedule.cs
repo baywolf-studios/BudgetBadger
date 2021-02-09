@@ -5,17 +5,17 @@ namespace BudgetBadger.Models.Schedule
     {
         public Frequency Frequency { get; set; }
 
-        public int RepeatEvery { get; set; }
+        public int Interval { get; set; }
 
-        public Month MonthsOfYear { get; set; }
+        public Month Months { get; set; }
 
-        public Quarter QuartersOfYear { get; set; }
+        public Week Weeks { get; set; }
 
-        public Month MonthsOfQuarter { get; set; }
+        public Day Days { get; set; }
 
-        public Week WeeksOfMonth { get; set; }
+        public int? Count { get; set; }
 
-        public Day DaysOfWeek { get; set; }
+        public DateTime? Until { get; set; }
 
         public Schedule()
         {
