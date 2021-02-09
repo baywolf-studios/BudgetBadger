@@ -8,6 +8,6 @@ namespace BudgetBadger.Core.Logic
 {
     public interface IScheduleLogic
     {
-        IReadOnlyList<DateTime> GetOccurrences(DateTime startDate, Schedule schedule);
+        IEnumerable<DateTime> GetOccurrences(DateTime startDate, Schedule schedule);
     }
 }

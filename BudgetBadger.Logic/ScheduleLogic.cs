@@ -1,44 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Schedule;
 
 namespace BudgetBadger.Logic
 {
     public class ScheduleLogic : IScheduleLogic
     {
-
-        public IReadOnlyList<DateTime> GetOccurrences(DateTime startDate, Schedule schedule)
+        public IEnumerable<DateTime> GetOccurrences(DateTime startDate, Schedule schedule)
         {
-            var result = new List<DateTime>();
-
             switch (schedule.Frequency)
             {
                 case Frequency.Daily:
-                    result.AddRange(GetDailyOccurrences(schedule.Interval, startDate, schedule.Until, schedule.Count));
+                    return GetDailyOccurrences(schedule.Interval, startDate, schedule.Until).Take(schedule?.Count ?? int.MaxValue);
+                case Frequency.Weekly:
+                    break;
+                case Frequency.Monthly:
+                    break;
+                case Frequency.Quarterly:
+                    break;
+                case Frequency.Yearly:
+                    break;
+                case Frequency.None:
+                default:
                     break;
             }
 
-            return result;
+            return Enumerable.Empty<DateTime>();
         }
 
-        protected IReadOnlyList<DateTime> GetDailyOccurrences(int interval, DateTime startDate, DateTime? endDate, int? count)
+        public IEnumerable<DateTime> GetDatesFromDateRange(DateTime? startDate = null, DateTime? endDate = null)
         {
-            var result = new List<DateTime>();
+            var sDate = startDate ?? DateTime.MinValue;
+            var eDate = endDate ?? DateTime.MaxValue;
 
-            for (var day = startDate.Date; day.Date <= (endDate?.Date ?? DateTime.MaxValue); day = day.AddDays(1))
+            for (var day = sDate.Date;
+                day.Date < eDate.Date;
+                day = day.AddDays(1))
             {
-                if (day > startDate)
-                {
-                    if ((day - startDate).Days % interval == 0)
-                    {
-                        result.Add(day);
-                    }
-                }
-                
+                yield return day;
             }
+        }
 
-            return result;
+        public IEnumerable<DateTime> GetDailyOccurrences(int interval = 1,
+            DateTime? startDate = null,
+            DateTime? endDate = null)
+        {
+            if (interval < 1)
+                yield break;
+
+
+            var sDate = startDate ?? DateTime.MinValue;
+
+            foreach(var day in GetDatesFromDateRange(startDate, endDate))
+            {
+                if ((day.Date - sDate.Date).TotalDays % interval == 0)
+                {
+                    yield return day;
+                }
+            }
+        }
+
+        public IEnumerable<DateTime> GetWeeklyOccurrences(int interval = 1,
+            Day daysOfWeek = Day.All,
+            DateTime? startDate = null,
+            DateTime? endDate = null)
+        {
+            if (interval < 1)
+                yield break;
+
+            var sDate = startDate ?? DateTime.MinValue;
+
+            foreach (var day in GetDatesFromDateRange(startDate, endDate))
+            {
+                if ((day.Date - sDate.Date).TotalWeeks() % interval == 0)
+                {
+                    yield return day;
+                }
+            }
         }
     }
 }

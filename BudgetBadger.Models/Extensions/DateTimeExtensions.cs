@@ -15,5 +15,15 @@ namespace BudgetBadger.Models.Extensions
                 return new Guid(hashedBytes);
             }
         }
+
+        public static double TotalWeeks(this TimeSpan timeSpan)
+        {
+            return timeSpan.TotalDays / 7;
+        }
+
+        public static DateTime AddWeeks(this DateTime dateTime, int weeks)
+        {
+            return dateTime.AddDays(weeks * 7);
+        }
     }
 }
