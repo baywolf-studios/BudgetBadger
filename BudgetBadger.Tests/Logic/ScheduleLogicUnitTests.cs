@@ -20,7 +20,8 @@ namespace BudgetBadger.Tests.Logic
             scheduleLogic = new ScheduleLogic();
         }
 
-        public void GetDatesFromDateRange_StartDateNotNull_ReturnsOnlyDatesGreaterOrEqualToStartDate()
+        [Test]
+        public void GetDatesFromDateRange_StartDateNotNull_ReturnsOnlyDatesGreaterThanOrEqualToStartDate()
         {
             // arrange
             var startDate = DateTime.Now;
@@ -29,9 +30,10 @@ namespace BudgetBadger.Tests.Logic
             var result = scheduleLogic.GetDatesFromDateRange(startDate: startDate);
 
             // assert
-            Assert.That(result.All(r => r >= startDate));
+            Assert.That(result.All(r => r >= startDate.Date));
         }
 
+        [Test]
         public void GetDatesFromDateRange_EndDateNotNull_ReturnsOnlyDateLessThanOrEqualToEndDate()
         {
             // arrange
@@ -41,9 +43,10 @@ namespace BudgetBadger.Tests.Logic
             var result = scheduleLogic.GetDatesFromDateRange(endDate: endDate);
 
             // assert
-            Assert.That(result.All(r => r <= endDate));
+            Assert.That(result.All(r => r <= endDate.Date));
         }
 
+        [Test]
         public void GetDatesFromDateRange_EndDateBeforeStartDate_Returns0()
         {
             // arrange
@@ -57,6 +60,7 @@ namespace BudgetBadger.Tests.Logic
             Assert.Zero(result.Count());
         }
 
+        [Test]
         public void GetDailyOccurrences_ZeroInterval_ReturnsZero()
         {
             // arrange
@@ -119,6 +123,7 @@ namespace BudgetBadger.Tests.Logic
             Assert.AreEqual(expectedResult, result.Count());
         }
 
+        [Test]
         public void GetWeeklyOccurrences_ZeroInterval_ReturnsZero()
         {
             // arrange
@@ -178,6 +183,18 @@ namespace BudgetBadger.Tests.Logic
                 expectedResult = 1;
             }
             Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [Test]
+        public void GetWeeklyOccurrences_NoneDayOfWeek_ReturnsZero()
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: Day.None);
+
+            // assert
+            Assert.Zero(result.Count());
         }
     }
 }
