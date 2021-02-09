@@ -145,6 +145,19 @@ namespace BudgetBadger.Tests.Logic
             Assert.AreEqual(0, result.Count());
         }
 
+        [TestCase(1)]
+        [TestCase(101)]
+        public void GetWeeklyOccurrences_PositiveInterval_ReturnsNotZero(int interval)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(interval);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
         [TestCase(1, 5)]
         [TestCase(101, 5)]
         [TestCase(1, 98)]
