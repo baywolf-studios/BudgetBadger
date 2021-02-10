@@ -12,7 +12,7 @@ namespace BudgetBadger.Tests.Logic
 {
     public class ScheduleLogicUnitTests
     {
-        ScheduleLogic scheduleLogic { get; set; }
+        private ScheduleLogic scheduleLogic { get; set; }
 
         [SetUp]
         public void Setup()
@@ -37,10 +37,11 @@ namespace BudgetBadger.Tests.Logic
         public void GetDatesFromDateRange_EndDateNotNull_ReturnsOnlyDateLessThanOrEqualToEndDate()
         {
             // arrange
-            var endDate = DateTime.Now.AddDays(5);
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddDays(5);
 
             // act
-            var result = scheduleLogic.GetDatesFromDateRange(endDate: endDate);
+            var result = scheduleLogic.GetDatesFromDateRange(startDate, endDate);
 
             // assert
             Assert.That(result.All(r => r <= endDate.Date));
@@ -189,12 +190,49 @@ namespace BudgetBadger.Tests.Logic
         public void GetWeeklyOccurrences_NoneDayOfWeek_ReturnsZero()
         {
             // arrange
+            var daysOfWeek = Day.None;
 
             // act
-            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: Day.None);
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: daysOfWeek);
 
             // assert
             Assert.Zero(result.Count());
+        }
+
+        [TestCase(Day.Monday)]
+        [TestCase(Day.Tuesday)]
+        [TestCase(Day.Wednesday)]
+        [TestCase(Day.Thursday)]
+        [TestCase(Day.Friday)]
+        [TestCase(Day.Saturday)]
+        [TestCase(Day.Sunday)]
+        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsDates(Day day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: day);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
+        [TestCase(Day.Monday)]
+        [TestCase(Day.Tuesday)]
+        [TestCase(Day.Wednesday)]
+        [TestCase(Day.Thursday)]
+        [TestCase(Day.Friday)]
+        [TestCase(Day.Saturday)]
+        [TestCase(Day.Sunday)]
+        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsOnlyDatesOnTheDayOfWeek(Day day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: day);
+
+            // assert
+            Assert.That(result.All(r => r.DayOfWeek.ToDay() == day));
         }
     }
 }

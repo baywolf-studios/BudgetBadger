@@ -11,11 +11,15 @@ namespace BudgetBadger.Logic
     {
         public IEnumerable<DateTime> GetOccurrences(DateTime startDate, Schedule schedule)
         {
+            IEnumerable<DateTime> occurrences = Enumerable.Empty<DateTime>();
+
             switch (schedule.Frequency)
             {
                 case Frequency.Daily:
-                    return GetDailyOccurrences(schedule.Interval, startDate, schedule.Until).Take(schedule?.Count ?? int.MaxValue);
+                    occurrences = GetDailyOccurrences(schedule.Interval, startDate, schedule.Until);
+                    break;
                 case Frequency.Weekly:
+                    occurrences = GetWeeklyOccurrences(schedule.Interval, schedule.Days, startDate, schedule.Until);
                     break;
                 case Frequency.Monthly:
                     break;
@@ -28,15 +32,14 @@ namespace BudgetBadger.Logic
                     break;
             }
 
-            return Enumerable.Empty<DateTime>();
+            return occurrences.Take(schedule?.Count ?? int.MaxValue);
         }
 
-        public IEnumerable<DateTime> GetDatesFromDateRange(DateTime? startDate = null, DateTime? endDate = null)
+        public IEnumerable<DateTime> GetDatesFromDateRange(DateTime startDate, DateTime? endDate = null)
         {
-            var sDate = startDate ?? DateTime.MinValue;
             var eDate = endDate ?? DateTime.MaxValue;
 
-            for (var day = sDate.Date;
+            for (var day = startDate.Date;
                 day.Date < eDate.Date;
                 day = day.AddDays(1))
             {
@@ -54,7 +57,7 @@ namespace BudgetBadger.Logic
 
             var sDate = startDate ?? DateTime.MinValue;
 
-            foreach(var day in GetDatesFromDateRange(startDate, endDate))
+            foreach(var day in GetDatesFromDateRange(sDate, endDate))
             {
                 if ((day.Date - sDate.Date).TotalDays % interval == 0)
                 {
@@ -68,16 +71,23 @@ namespace BudgetBadger.Logic
             DateTime? startDate = null,
             DateTime? endDate = null)
         {
-            if (interval < 1)
+            if (interval < 1 || daysOfWeek == Day.None)
                 yield break;
 
             var sDate = startDate ?? DateTime.MinValue;
+            DateTime? firstDateTime = null;
 
-            foreach (var day in GetDatesFromDateRange(startDate, endDate))
+            foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
-                if ((day.Date - sDate.Date).TotalWeeks() % interval == 0)
+                if (daysOfWeek.HasFlag(day.DayOfWeek.ToDay()))
                 {
-                    yield return day;
+                    if (!firstDateTime.HasValue)
+                        firstDateTime = day;
+
+                    if ((day.Date - firstDateTime?.Date)?.TotalWeeks() % interval == 0)
+                    {
+                        yield return day;
+                    }
                 }
             }
         }
