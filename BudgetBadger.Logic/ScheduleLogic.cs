@@ -19,7 +19,7 @@ namespace BudgetBadger.Logic
                     occurrences = GetDailyOccurrences(schedule.Interval, startDate, schedule.Until);
                     break;
                 case Frequency.Weekly:
-                    occurrences = GetWeeklyOccurrences(schedule.Interval, schedule.Days, startDate, schedule.Until);
+                    occurrences = GetWeeklyOccurrences(schedule.Days, schedule.Interval, startDate, schedule.Until);
                     break;
                 case Frequency.Monthly:
                     break;
@@ -66,8 +66,8 @@ namespace BudgetBadger.Logic
             }
         }
 
-        public IEnumerable<DateTime> GetWeeklyOccurrences(int interval = 1,
-            Day daysOfWeek = Day.All,
+        public IEnumerable<DateTime> GetWeeklyOccurrences(Day daysOfWeek = Day.All,
+            int interval = 1,
             DateTime? startDate = null,
             DateTime? endDate = null)
         {

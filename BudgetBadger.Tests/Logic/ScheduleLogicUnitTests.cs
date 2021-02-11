@@ -125,68 +125,6 @@ namespace BudgetBadger.Tests.Logic
         }
 
         [Test]
-        public void GetWeeklyOccurrences_ZeroInterval_ReturnsZero()
-        {
-            // arrange
-            var startDate = DateTime.Now;
-            var interval = 0;
-
-            // act
-            var result = scheduleLogic.GetWeeklyOccurrences(interval,startDate: startDate);
-
-            // assert
-            Assert.Zero(result.Count());
-        }
-
-        [TestCase(-1)]
-        [TestCase(-101)]
-        public void GetWeeklyOccurrences_NegativeInterval_ReturnsZero(int interval)
-        {
-            // arrange
-
-            // act
-            var result = scheduleLogic.GetWeeklyOccurrences(interval);
-
-            // assert
-            Assert.AreEqual(0, result.Count());
-        }
-
-        [TestCase(1)]
-        [TestCase(101)]
-        public void GetWeeklyOccurrences_PositiveInterval_ReturnsNotZero(int interval)
-        {
-            // arrange
-
-            // act
-            var result = scheduleLogic.GetWeeklyOccurrences(interval);
-
-            // assert
-            Assert.NotZero(result.Count());
-        }
-
-        [TestCase(1, 5)]
-        [TestCase(101, 5)]
-        [TestCase(1, 98)]
-        [TestCase(101, 98)]
-        public void GetWeeklyOccurrences_PositiveInterval_ReturnsWeeksBetweenDividedByInterval(int interval, int weeksBetween)
-        {
-            // arrange
-            var startDate = DateTime.Now;
-            var endDate = startDate.AddWeeks(weeksBetween);
-
-            // act
-            var result = scheduleLogic.GetWeeklyOccurrences(interval, startDate: startDate, endDate: endDate);
-
-            // assert
-            var expectedResult = weeksBetween / interval;
-            if (expectedResult == 0)
-            {
-                expectedResult = 1;
-            }
-            Assert.AreEqual(expectedResult, result.Count());
-        }
-
-        [Test]
         public void GetWeeklyOccurrences_NoneDayOfWeek_ReturnsZero()
         {
             // arrange
@@ -233,6 +171,68 @@ namespace BudgetBadger.Tests.Logic
 
             // assert
             Assert.That(result.All(r => r.DayOfWeek.ToDay() == day));
+        }
+
+        [Test]
+        public void GetWeeklyOccurrences_ZeroInterval_ReturnsZero()
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var interval = 0;
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(interval: interval, startDate: startDate);
+
+            // assert
+            Assert.Zero(result.Count());
+        }
+
+        [TestCase(-1)]
+        [TestCase(-101)]
+        public void GetWeeklyOccurrences_NegativeInterval_ReturnsZero(int interval)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(interval: interval);
+
+            // assert
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestCase(1)]
+        [TestCase(101)]
+        public void GetWeeklyOccurrences_SingleDayOfWeekAndPositiveInterval_ReturnsNotZero(int interval)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(Day.Monday, interval: interval);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
+        [TestCase(1, 5)]
+        [TestCase(101, 5)]
+        [TestCase(1, 98)]
+        [TestCase(101, 98)]
+        public void GetWeeklyOccurrences_SingleDayOfWeekAndPositiveInterval_ReturnsWeeksBetweenDividedByInterval(int interval, int weeksBetween)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddWeeks(weeksBetween);
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(Day.Monday, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            var expectedResult = weeksBetween / interval;
+            if (expectedResult == 0)
+            {
+                expectedResult = 1;
+            }
+            Assert.AreEqual(expectedResult, result.Count());
         }
     }
 }
