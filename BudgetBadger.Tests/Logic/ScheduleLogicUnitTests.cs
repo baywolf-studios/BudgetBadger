@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Logic;
-using BudgetBadger.Models.Schedule;
 using BudgetBadger.Models.Extensions;
+using BudgetBadger.Models.Schedule;
 using NUnit.Framework;
 
 namespace BudgetBadger.Tests.Logic
@@ -173,6 +170,29 @@ namespace BudgetBadger.Tests.Logic
             Assert.That(result.All(r => r.DayOfWeek.ToDay() == day));
         }
 
+        [TestCase(Day.Monday | Day.Thursday)]
+        [TestCase(Day.Tuesday | Day.Sunday | Day.Sunday)]
+        [TestCase(Day.Wednesday | Day.Thursday | Day.Tuesday | Day.Monday)]
+        [TestCase(Day.Thursday | Day.Friday | Day.Sunday | Day.Saturday | Day.Monday)]
+        [TestCase(Day.Friday | Day.Saturday | Day.Sunday | Day.Monday | Day.Tuesday | Day.Wednesday)]
+        [TestCase(Day.All)]
+        public void GetWeeklyOccurrences_MultipleDayOfWeek_ReturnsAllDatesOnTheDaysOfWeekPassedIn(Day day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: day);
+
+            // assert
+            var returnedDays = Day.None;
+            foreach (var date in result)
+            {
+                returnedDays |= date.DayOfWeek.ToDay();
+            }
+            Assert.AreEqual(day, returnedDays);
+            Assert.That(result.All(r => day.HasFlag(r.DayOfWeek.ToDay())));
+        }
+
         [Test]
         public void GetWeeklyOccurrences_ZeroInterval_ReturnsZero()
         {
@@ -232,6 +252,36 @@ namespace BudgetBadger.Tests.Logic
             {
                 expectedResult = 1;
             }
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, Day.Monday | Day.Friday)]
+        [TestCase(101, Day.All)]
+        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNotZero(int interval, Day dayOfWeek)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: dayOfWeek, interval: interval);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
+        [TestCase(1, 5, Day.Monday | Day.Tuesday, 10)]
+        [TestCase(101, 5, Day.All, 7)]
+        [TestCase(1, 98, Day.Friday | Day.Tuesday, 196)]
+        [TestCase(101, 98, Day.All, 7)]
+        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNumberOfDaysTimesWeeksBetweenDividedByInterval(int interval, int weeksBetween, Day dayOfWeek, int expectedResult)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddWeeks(weeksBetween);
+
+            // act
+            var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: dayOfWeek, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
             Assert.AreEqual(expectedResult, result.Count());
         }
     }

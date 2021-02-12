@@ -75,16 +75,18 @@ namespace BudgetBadger.Logic
                 yield break;
 
             var sDate = startDate ?? DateTime.MinValue;
-            DateTime? firstDateTime = null;
+            List<DateTime> firstDateTimes = new List<DateTime>();
 
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
                 if (daysOfWeek.HasFlag(day.DayOfWeek.ToDay()))
                 {
-                    if (!firstDateTime.HasValue)
-                        firstDateTime = day;
+                    if (!firstDateTimes.Any(d => d.DayOfWeek == day.DayOfWeek))
+                        firstDateTimes.Add(day);
 
-                    if ((day.Date - firstDateTime?.Date)?.TotalWeeks() % interval == 0)
+                    var firstDateTime = firstDateTimes.First(d => d.DayOfWeek == day.DayOfWeek);
+
+                    if ((day.Date - firstDateTime.Date).TotalWeeks() % interval == 0)
                     {
                         yield return day;
                     }
