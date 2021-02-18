@@ -19,7 +19,7 @@ namespace BudgetBadger.Logic
                     occurrences = GetDailyOccurrences(schedule.Interval, startDate, schedule.Until);
                     break;
                 case Frequency.Weekly:
-                    occurrences = GetWeeklyOccurrences(schedule.Days, schedule.Interval, startDate, schedule.Until);
+                    occurrences = GetWeeklyOccurrences(schedule.DaysOfWeek, schedule.Interval, startDate, schedule.Until);
                     break;
                 case Frequency.Monthly:
                     break;
@@ -66,12 +66,12 @@ namespace BudgetBadger.Logic
             }
         }
 
-        public IEnumerable<DateTime> GetWeeklyOccurrences(Day daysOfWeek = Day.All,
+        public IEnumerable<DateTime> GetWeeklyOccurrences(DaysOfWeek daysOfWeek = DaysOfWeek.All,
             int interval = 1,
             DateTime? startDate = null,
             DateTime? endDate = null)
         {
-            if (interval < 1 || daysOfWeek == Day.None)
+            if (interval < 1 || daysOfWeek == DaysOfWeek.None)
                 yield break;
 
             var sDate = startDate ?? DateTime.MinValue;
@@ -92,6 +92,23 @@ namespace BudgetBadger.Logic
                     }
                 }
             }
+        }
+
+        public IEnumerable<DateTime> GetMonthlyOccurrences(DaysOfMonth daysOfMonth = DaysOfMonth.All,
+            DaysOfWeek daysOfWeek = DaysOfWeek.All,
+            WeeksOfMonth weeksOfMonth = WeeksOfMonth.All,
+            int interval = 1,
+            DateTime? startDate = null,
+            DateTime? endDate = null)
+        {
+            if (interval < 1
+                || (daysOfWeek == DaysOfWeek.None && weeksOfMonth == WeeksOfMonth.None)
+                || daysOfMonth == DaysOfMonth.None)
+            {
+                yield break;
+            }
+
+
         }
     }
 }

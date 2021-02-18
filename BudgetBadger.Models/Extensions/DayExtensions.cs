@@ -5,29 +5,29 @@ namespace BudgetBadger.Models.Extensions
 {
     public static class DayExtensions
     {
-        public static Day ToDay(this DayOfWeek dayOfWeek)
+        public static DaysOfWeek ToDay(this DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
             {
                 case DayOfWeek.Friday:
-                    return Day.Friday;
+                    return DaysOfWeek.Friday;
                 case DayOfWeek.Monday:
-                    return Day.Monday;
+                    return DaysOfWeek.Monday;
                 case DayOfWeek.Saturday:
-                    return Day.Saturday;
+                    return DaysOfWeek.Saturday;
                 case DayOfWeek.Sunday:
-                    return Day.Sunday;
+                    return DaysOfWeek.Sunday;
                 case DayOfWeek.Thursday:
-                    return Day.Thursday;
+                    return DaysOfWeek.Thursday;
                 case DayOfWeek.Tuesday:
-                    return Day.Tuesday;
+                    return DaysOfWeek.Tuesday;
                 case DayOfWeek.Wednesday:
-                    return Day.Wednesday;
+                    return DaysOfWeek.Wednesday;
                 default:
                     break;
             }
 
-            return Day.None;
+            return DaysOfWeek.None;
         }
     }
 }

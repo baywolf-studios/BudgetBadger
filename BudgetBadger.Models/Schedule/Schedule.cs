@@ -7,11 +7,13 @@ namespace BudgetBadger.Models.Schedule
 
         public int Interval { get; set; }
 
-        public Month Months { get; set; }
+        public DaysOfWeek DaysOfWeek { get; set; }
 
-        public Week Weeks { get; set; }
+        public WeeksOfMonth WeeksOfMonth { get; set; }
 
-        public Day Days { get; set; }
+        public DaysOfMonth DaysOfMonth { get; set; }
+
+        public MonthsOfYear MonthsOfYear { get; set; }
 
         public int? Count { get; set; }
 

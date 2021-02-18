@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BudgetBadger.Models.Schedule
 {
-    public enum Month
+    public enum MonthsOfYear
     {
         None = 0,
         January = 1 << 0,

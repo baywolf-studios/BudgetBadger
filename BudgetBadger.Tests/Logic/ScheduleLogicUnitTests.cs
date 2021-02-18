@@ -125,7 +125,7 @@ namespace BudgetBadger.Tests.Logic
         public void GetWeeklyOccurrences_NoneDayOfWeek_ReturnsZero()
         {
             // arrange
-            var daysOfWeek = Day.None;
+            var daysOfWeek = DaysOfWeek.None;
 
             // act
             var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: daysOfWeek);
@@ -134,14 +134,14 @@ namespace BudgetBadger.Tests.Logic
             Assert.Zero(result.Count());
         }
 
-        [TestCase(Day.Monday)]
-        [TestCase(Day.Tuesday)]
-        [TestCase(Day.Wednesday)]
-        [TestCase(Day.Thursday)]
-        [TestCase(Day.Friday)]
-        [TestCase(Day.Saturday)]
-        [TestCase(Day.Sunday)]
-        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsDates(Day day)
+        [TestCase(DaysOfWeek.Monday)]
+        [TestCase(DaysOfWeek.Tuesday)]
+        [TestCase(DaysOfWeek.Wednesday)]
+        [TestCase(DaysOfWeek.Thursday)]
+        [TestCase(DaysOfWeek.Friday)]
+        [TestCase(DaysOfWeek.Saturday)]
+        [TestCase(DaysOfWeek.Sunday)]
+        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsDates(DaysOfWeek day)
         {
             // arrange
 
@@ -152,14 +152,14 @@ namespace BudgetBadger.Tests.Logic
             Assert.NotZero(result.Count());
         }
 
-        [TestCase(Day.Monday)]
-        [TestCase(Day.Tuesday)]
-        [TestCase(Day.Wednesday)]
-        [TestCase(Day.Thursday)]
-        [TestCase(Day.Friday)]
-        [TestCase(Day.Saturday)]
-        [TestCase(Day.Sunday)]
-        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsOnlyDatesOnTheDayOfWeek(Day day)
+        [TestCase(DaysOfWeek.Monday)]
+        [TestCase(DaysOfWeek.Tuesday)]
+        [TestCase(DaysOfWeek.Wednesday)]
+        [TestCase(DaysOfWeek.Thursday)]
+        [TestCase(DaysOfWeek.Friday)]
+        [TestCase(DaysOfWeek.Saturday)]
+        [TestCase(DaysOfWeek.Sunday)]
+        public void GetWeeklyOccurrences_SingleDayOfWeek_ReturnsOnlyDatesOnTheDayOfWeek(DaysOfWeek day)
         {
             // arrange
 
@@ -170,13 +170,13 @@ namespace BudgetBadger.Tests.Logic
             Assert.That(result.All(r => r.DayOfWeek.ToDay() == day));
         }
 
-        [TestCase(Day.Monday | Day.Thursday)]
-        [TestCase(Day.Tuesday | Day.Sunday | Day.Sunday)]
-        [TestCase(Day.Wednesday | Day.Thursday | Day.Tuesday | Day.Monday)]
-        [TestCase(Day.Thursday | Day.Friday | Day.Sunday | Day.Saturday | Day.Monday)]
-        [TestCase(Day.Friday | Day.Saturday | Day.Sunday | Day.Monday | Day.Tuesday | Day.Wednesday)]
-        [TestCase(Day.All)]
-        public void GetWeeklyOccurrences_MultipleDayOfWeek_ReturnsAllDatesOnTheDaysOfWeekPassedIn(Day day)
+        [TestCase(DaysOfWeek.Monday | DaysOfWeek.Thursday)]
+        [TestCase(DaysOfWeek.Tuesday | DaysOfWeek.Sunday | DaysOfWeek.Sunday)]
+        [TestCase(DaysOfWeek.Wednesday | DaysOfWeek.Thursday | DaysOfWeek.Tuesday | DaysOfWeek.Monday)]
+        [TestCase(DaysOfWeek.Thursday | DaysOfWeek.Friday | DaysOfWeek.Sunday | DaysOfWeek.Saturday | DaysOfWeek.Monday)]
+        [TestCase(DaysOfWeek.Friday | DaysOfWeek.Saturday | DaysOfWeek.Sunday | DaysOfWeek.Monday | DaysOfWeek.Tuesday | DaysOfWeek.Wednesday)]
+        [TestCase(DaysOfWeek.All)]
+        public void GetWeeklyOccurrences_MultipleDayOfWeek_ReturnsAllDatesOnTheDaysOfWeekPassedIn(DaysOfWeek day)
         {
             // arrange
 
@@ -184,7 +184,7 @@ namespace BudgetBadger.Tests.Logic
             var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: day);
 
             // assert
-            var returnedDays = Day.None;
+            var returnedDays = DaysOfWeek.None;
             foreach (var date in result)
             {
                 returnedDays |= date.DayOfWeek.ToDay();
@@ -227,7 +227,7 @@ namespace BudgetBadger.Tests.Logic
             // arrange
 
             // act
-            var result = scheduleLogic.GetWeeklyOccurrences(Day.Monday, interval: interval);
+            var result = scheduleLogic.GetWeeklyOccurrences(DaysOfWeek.Monday, interval: interval);
 
             // assert
             Assert.NotZero(result.Count());
@@ -244,7 +244,7 @@ namespace BudgetBadger.Tests.Logic
             var endDate = startDate.AddWeeks(weeksBetween);
 
             // act
-            var result = scheduleLogic.GetWeeklyOccurrences(Day.Monday, interval: interval, startDate: startDate, endDate: endDate);
+            var result = scheduleLogic.GetWeeklyOccurrences(DaysOfWeek.Monday, interval: interval, startDate: startDate, endDate: endDate);
 
             // assert
             var expectedResult = weeksBetween / interval;
@@ -255,9 +255,9 @@ namespace BudgetBadger.Tests.Logic
             Assert.AreEqual(expectedResult, result.Count());
         }
 
-        [TestCase(1, Day.Monday | Day.Friday)]
-        [TestCase(101, Day.All)]
-        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNotZero(int interval, Day dayOfWeek)
+        [TestCase(1, DaysOfWeek.Monday | DaysOfWeek.Friday)]
+        [TestCase(101, DaysOfWeek.All)]
+        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNotZero(int interval, DaysOfWeek dayOfWeek)
         {
             // arrange
 
@@ -268,11 +268,11 @@ namespace BudgetBadger.Tests.Logic
             Assert.NotZero(result.Count());
         }
 
-        [TestCase(1, 5, Day.Monday | Day.Tuesday, 10)]
-        [TestCase(101, 5, Day.All, 7)]
-        [TestCase(1, 98, Day.Friday | Day.Tuesday, 196)]
-        [TestCase(101, 98, Day.All, 7)]
-        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNumberOfDaysTimesWeeksBetweenDividedByInterval(int interval, int weeksBetween, Day dayOfWeek, int expectedResult)
+        [TestCase(1, 5, DaysOfWeek.Monday | DaysOfWeek.Tuesday, 10)]
+        [TestCase(101, 5, DaysOfWeek.All, 7)]
+        [TestCase(1, 98, DaysOfWeek.Friday | DaysOfWeek.Tuesday, 196)]
+        [TestCase(101, 98, DaysOfWeek.All, 7)]
+        public void GetWeeklyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNumberOfDaysTimesWeeksBetweenDividedByInterval(int interval, int weeksBetween, DaysOfWeek dayOfWeek, int expectedResult)
         {
             // arrange
             var startDate = DateTime.Now;
@@ -284,5 +284,33 @@ namespace BudgetBadger.Tests.Logic
             // assert
             Assert.AreEqual(expectedResult, result.Count());
         }
+
+        [Test]
+        public void GetMonthlyOccurrences_ZeroInterval_ReturnsZero()
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var interval = 0;
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(interval: interval, startDate: startDate);
+
+            // assert
+            Assert.Zero(result.Count());
+        }
+
+        [TestCase(-1)]
+        [TestCase(-101)]
+        public void GetMonthlyOccurrences_NegativeInterval_ReturnsZero(int interval)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(interval: interval);
+
+            // assert
+            Assert.AreEqual(0, result.Count());
+        }
+
     }
 }
