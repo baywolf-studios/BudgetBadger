@@ -79,7 +79,7 @@ namespace BudgetBadger.Logic
 
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
-                if (daysOfWeek.HasFlag(day.DayOfWeek.ToDay()))
+                if (daysOfWeek.HasFlag(day.ToDaysOfWeek()))
                 {
                     if (!firstDateTimes.Any(d => d.DayOfWeek == day.DayOfWeek))
                         firstDateTimes.Add(day);
@@ -102,13 +102,21 @@ namespace BudgetBadger.Logic
             DateTime? endDate = null)
         {
             if (interval < 1
-                || (daysOfWeek == DaysOfWeek.None && weeksOfMonth == WeeksOfMonth.None)
-                || daysOfMonth == DaysOfMonth.None)
+                || (daysOfWeek == DaysOfWeek.None && weeksOfMonth == WeeksOfMonth.None && daysOfMonth == DaysOfMonth.None))
             {
                 yield break;
             }
 
+            var sDate = startDate ?? DateTime.MinValue;
+            List<DateTime> firstDateTimes = new List<DateTime>();
 
+            foreach (var day in GetDatesFromDateRange(sDate, endDate))
+            {
+                if (daysOfMonth.HasFlag(day.ToDaysOfMonth()))
+                {
+                    yield return day;
+                }
+            }
         }
     }
 }

@@ -167,7 +167,7 @@ namespace BudgetBadger.Tests.Logic
             var result = scheduleLogic.GetWeeklyOccurrences(daysOfWeek: day);
 
             // assert
-            Assert.That(result.All(r => r.DayOfWeek.ToDay() == day));
+            Assert.That(result.All(r => r.ToDaysOfWeek() == day));
         }
 
         [TestCase(DaysOfWeek.Monday | DaysOfWeek.Thursday)]
@@ -187,10 +187,10 @@ namespace BudgetBadger.Tests.Logic
             var returnedDays = DaysOfWeek.None;
             foreach (var date in result)
             {
-                returnedDays |= date.DayOfWeek.ToDay();
+                returnedDays |= date.ToDaysOfWeek();
             }
             Assert.AreEqual(day, returnedDays);
-            Assert.That(result.All(r => day.HasFlag(r.DayOfWeek.ToDay())));
+            Assert.That(result.All(r => day.HasFlag(r.ToDaysOfWeek())));
         }
 
         [Test]
@@ -283,6 +283,125 @@ namespace BudgetBadger.Tests.Logic
 
             // assert
             Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [Test]
+        public void GetMonthlyOccurrences_NoneDaysOfMonthAndNoneDaysOfWeeksAndNoneWeeksOfMonth_ReturnsZero()
+        {
+            // arrange
+            var daysOfWeek = DaysOfWeek.None;
+            var weeksOfMonth = WeeksOfMonth.None;
+            var daysOfMonth = DaysOfMonth.None;
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: daysOfMonth, daysOfWeek: daysOfWeek, weeksOfMonth: weeksOfMonth);
+
+            // assert
+            Assert.Zero(result.Count());
+        }
+
+        [Test]
+        public void GetMonthlyOccurrences_NoneDaysOfMonth_ReturnsZero()
+        {
+            // arrange
+            var daysOfMonth = DaysOfMonth.None;
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: daysOfMonth);
+
+            // assert
+            Assert.Zero(result.Count());
+        }
+
+        [TestCase(DaysOfMonth.Day01)]
+        [TestCase(DaysOfMonth.Day04)]
+        [TestCase(DaysOfMonth.Day08)]
+        [TestCase(DaysOfMonth.Day10)]
+        [TestCase(DaysOfMonth.Day15)]
+        [TestCase(DaysOfMonth.Day17)]
+        [TestCase(DaysOfMonth.Day29)]
+        public void GetMonthlyOccurrences_SingleDayOfMonth_ReturnsDates(DaysOfMonth day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: day);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
+        [TestCase(DaysOfMonth.Day01)]
+        [TestCase(DaysOfMonth.Day04)]
+        [TestCase(DaysOfMonth.Day08)]
+        [TestCase(DaysOfMonth.Day10)]
+        [TestCase(DaysOfMonth.Day15)]
+        [TestCase(DaysOfMonth.Day17)]
+        [TestCase(DaysOfMonth.Day29)]
+        public void GetMonthlyOccurrences_SingleDayOfMonth_ReturnsOnlyDatesOnTheDayOfMonth(DaysOfMonth day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: day);
+
+            // assert
+            Assert.That(result.All(r => r.ToDaysOfMonth() == day));
+        }
+
+        [TestCase(DaysOfMonth.Day01 | DaysOfMonth.Day02)]
+        [TestCase(DaysOfMonth.Day02 | DaysOfMonth.Day03 | DaysOfMonth.Day17)]
+        [TestCase(DaysOfMonth.Day03 | DaysOfMonth.Day02 | DaysOfMonth.Day17 | DaysOfMonth.Day22)]
+        [TestCase(DaysOfMonth.Day02 | DaysOfMonth.Day10 | DaysOfMonth.Day17 | DaysOfMonth.Day22 | DaysOfMonth.Day27)]
+        [TestCase(DaysOfMonth.Day10 | DaysOfMonth.Day17 | DaysOfMonth.Day18 | DaysOfMonth.Day22 | DaysOfMonth.Day27 | DaysOfMonth.Day03)]
+        [TestCase(DaysOfMonth.All)]
+        public void GetMonthlyOccurrences_MultipleDaysOfMonth_ReturnsAllDatesOnTheDaysOfMonthPassedIn(DaysOfMonth day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: day);
+
+            // assert
+            var returnedDays = DaysOfMonth.None;
+            foreach (var date in result)
+            {
+                returnedDays |= date.ToDaysOfMonth();
+            }
+            Assert.AreEqual(day, returnedDays);
+            Assert.That(result.All(r => day.HasFlag(r.ToDaysOfMonth())));
+        }
+
+        [TestCase(WeeksOfMonth.First)]
+        [TestCase(WeeksOfMonth.Second)]
+        [TestCase(WeeksOfMonth.Third)]
+        [TestCase(WeeksOfMonth.Fourth)]
+        [TestCase(WeeksOfMonth.Last)]
+        public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsDates(WeeksOfMonth day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: day);
+
+            // assert
+            Assert.NotZero(result.Count());
+        }
+
+        [TestCase(WeeksOfMonth.First)]
+        [TestCase(WeeksOfMonth.Second)]
+        [TestCase(WeeksOfMonth.Third)]
+        [TestCase(WeeksOfMonth.Fourth)]
+        [TestCase(WeeksOfMonth.Last)]
+        public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsDates(WeeksOfMonth day)
+        {
+            // arrange
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: day);
+
+            // assert
+            Assert.NotZero(result.Count());
         }
 
         [Test]
