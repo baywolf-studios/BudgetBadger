@@ -376,7 +376,8 @@ namespace BudgetBadger.Tests.Logic
         [TestCase(WeeksOfMonth.Second)]
         [TestCase(WeeksOfMonth.Third)]
         [TestCase(WeeksOfMonth.Fourth)]
-        [TestCase(WeeksOfMonth.Last)]
+        [TestCase(WeeksOfMonth.Fifth)]
+        [TestCase(WeeksOfMonth.Sixth)]
         public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsDates(WeeksOfMonth day)
         {
             // arrange
@@ -392,8 +393,9 @@ namespace BudgetBadger.Tests.Logic
         [TestCase(WeeksOfMonth.Second)]
         [TestCase(WeeksOfMonth.Third)]
         [TestCase(WeeksOfMonth.Fourth)]
-        [TestCase(WeeksOfMonth.Last)]
-        public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsDates(WeeksOfMonth day)
+        [TestCase(WeeksOfMonth.Fifth)]
+        [TestCase(WeeksOfMonth.Sixth)]
+        public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsOnlyDatesOnTheWeekOfMonth(WeeksOfMonth day)
         {
             // arrange
 
@@ -401,7 +403,7 @@ namespace BudgetBadger.Tests.Logic
             var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: day);
 
             // assert
-            Assert.NotZero(result.Count());
+            Assert.That(result.All(r => r.ToWeeksOfMonth() == day));
         }
 
         [Test]

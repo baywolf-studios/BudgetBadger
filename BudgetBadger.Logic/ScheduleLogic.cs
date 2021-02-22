@@ -114,7 +114,10 @@ namespace BudgetBadger.Logic
             {
                 if (daysOfMonth.HasFlag(day.ToDaysOfMonth()))
                 {
-                    yield return day;
+                    if (weeksOfMonth.HasFlag(day.ToWeeksOfMonth()))
+                    {
+                        yield return day;
+                    }
                 }
             }
         }

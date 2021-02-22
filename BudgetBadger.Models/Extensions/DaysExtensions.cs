@@ -115,5 +115,39 @@ namespace BudgetBadger.Models.Extensions
 
             return DaysOfMonth.None;
         }
+
+        public static WeeksOfMonth ToWeeksOfMonth(this DateTime dateTime)
+        {
+            var week = dateTime.WeekOfMonth();
+            var lastWeekInMonth = dateTime.WeeksInMonth();
+
+            switch (week)
+            {
+                case 1:
+                    return WeeksOfMonth.First;
+                case 2:
+                    return WeeksOfMonth.Second;
+                case 3:
+                    if (lastWeekInMonth == 3)
+                        return WeeksOfMonth.Third | WeeksOfMonth.Last;
+                    return WeeksOfMonth.Third;
+                case 4:
+                    if (lastWeekInMonth == 4)
+                        return WeeksOfMonth.Fourth | WeeksOfMonth.Last;
+                    return WeeksOfMonth.Fourth;
+                case 5:
+                    if (lastWeekInMonth == 5)
+                        return WeeksOfMonth.Fifth | WeeksOfMonth.Last;
+                    return WeeksOfMonth.Fifth;
+                case 6:
+                    if (lastWeekInMonth == 6)
+                        return WeeksOfMonth.Sixth | WeeksOfMonth.Last;
+                    return WeeksOfMonth.Sixth;
+                default:
+                    break;
+            }
+
+            return WeeksOfMonth.None;
+        }
     }
 }
