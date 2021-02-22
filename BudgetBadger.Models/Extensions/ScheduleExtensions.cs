@@ -3,7 +3,7 @@ using BudgetBadger.Models.Schedule;
 
 namespace BudgetBadger.Models.Extensions
 {
-    public static class DaysExtensions
+    public static class ScheduleExtensions
     {
         public static DaysOfWeek ToDaysOfWeek(this DateTime date)
         {
