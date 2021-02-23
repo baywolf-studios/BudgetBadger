@@ -377,13 +377,14 @@ namespace BudgetBadger.Tests.Logic
         [TestCase(WeeksOfMonth.Third)]
         [TestCase(WeeksOfMonth.Fourth)]
         [TestCase(WeeksOfMonth.Fifth)]
-        [TestCase(WeeksOfMonth.Sixth)]
         public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsDates(WeeksOfMonth day)
         {
             // arrange
 
+            var test = (new DateTime(2020, 1, 30)).WeekOfMonth();
+
             // act
-            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: day);
+            var result = scheduleLogic.GetMonthlyOccurrences(startDate: new DateTime(2020, 1, 28), endDate: new DateTime(2020, 1, 30), weeksOfMonth: day);
 
             // assert
             Assert.NotZero(result.Count());
@@ -394,7 +395,6 @@ namespace BudgetBadger.Tests.Logic
         [TestCase(WeeksOfMonth.Third)]
         [TestCase(WeeksOfMonth.Fourth)]
         [TestCase(WeeksOfMonth.Fifth)]
-        [TestCase(WeeksOfMonth.Sixth)]
         public void GetMonthlyOccurrences_SingleWeekOfMonth_ReturnsOnlyDatesOnTheWeekOfMonth(WeeksOfMonth day)
         {
             // arrange

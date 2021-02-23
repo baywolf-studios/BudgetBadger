@@ -34,28 +34,21 @@ namespace BudgetBadger.Models.Extensions
 
         public static DateTime LastDayOfMonth(this DateTime dateTime)
         {
-            var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            var daysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
             return new DateTime(dateTime.Year, dateTime.Month, daysInMonth);
-        }
-
-        public static int GetWeekOfYear(this DateTime date)
-        {
-            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date.Date,
-                CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
-                CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
         }
 
         public static int WeekOfMonth(this DateTime date)
         {
-            var firstDayOfMonth = date.FirstDayOfMonth();
-            return (date.GetWeekOfYear() - firstDayOfMonth.GetWeekOfYear()) + 1;
+            var test = (int)Math.Ceiling(date.Day / 7f);
+            return test;
         }
 
         public static int WeeksInMonth(this DateTime date)
         {
-            var firstDayOfMonth = date.FirstDayOfMonth();
-            var lastDayOfMonth = date.LastDayOfMonth();
-            return (lastDayOfMonth.GetWeekOfYear() - firstDayOfMonth.GetWeekOfYear()) + 1;
+            var lastDayInMonth = date.LastDayOfMonth();
+            var daysInMonth = lastDayInMonth.Day;
+            return (int)Math.Ceiling(daysInMonth / 7f);
         }
     }
 }

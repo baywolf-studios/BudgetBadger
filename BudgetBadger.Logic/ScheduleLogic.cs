@@ -40,7 +40,7 @@ namespace BudgetBadger.Logic
             var eDate = endDate ?? DateTime.MaxValue;
 
             for (var day = startDate.Date;
-                day.Date < eDate.Date;
+                day.Date <= eDate.Date;
                 day = day.AddDays(1))
             {
                 yield return day;
@@ -112,11 +112,17 @@ namespace BudgetBadger.Logic
 
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
-                if (daysOfMonth.HasFlag(day.ToDaysOfMonth()))
+                foreach (DaysOfMonth dayOfMonth in daysOfMonth.GetComponents())
                 {
-                    if (weeksOfMonth.HasFlag(day.ToWeeksOfMonth()))
+                    if (day.ToDaysOfMonth().HasFlag(dayOfMonth))
                     {
-                        yield return day;
+                        foreach (WeeksOfMonth weekOfMonth in weeksOfMonth.GetComponents())
+                        {
+                            if (day.ToWeeksOfMonth().HasFlag(weekOfMonth))
+                            {
+                                yield return day;
+                            }
+                        }
                     }
                 }
             }

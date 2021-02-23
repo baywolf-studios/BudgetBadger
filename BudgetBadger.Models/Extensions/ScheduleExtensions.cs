@@ -118,36 +118,35 @@ namespace BudgetBadger.Models.Extensions
 
         public static WeeksOfMonth ToWeeksOfMonth(this DateTime dateTime)
         {
+            var result = WeeksOfMonth.None;
             var week = dateTime.WeekOfMonth();
-            var lastWeekInMonth = dateTime.WeeksInMonth();
+            var lastDayOfMonth = dateTime.LastDayOfMonth().Day;
+            var startOfLast7DaysOfMonth = lastDayOfMonth - 7;
+            if (dateTime.Day >= startOfLast7DaysOfMonth)
+                result |= WeeksOfMonth.Last;
 
             switch (week)
             {
                 case 1:
-                    return WeeksOfMonth.First;
+                    result |= WeeksOfMonth.First;
+                    break;
                 case 2:
-                    return WeeksOfMonth.Second;
+                    result |= WeeksOfMonth.Second;
+                    break;
                 case 3:
-                    if (lastWeekInMonth == 3)
-                        return WeeksOfMonth.Third | WeeksOfMonth.Last;
-                    return WeeksOfMonth.Third;
+                    result |= WeeksOfMonth.Third;
+                    break;
                 case 4:
-                    if (lastWeekInMonth == 4)
-                        return WeeksOfMonth.Fourth | WeeksOfMonth.Last;
-                    return WeeksOfMonth.Fourth;
+                    result |= WeeksOfMonth.Fourth;
+                    break;
                 case 5:
-                    if (lastWeekInMonth == 5)
-                        return WeeksOfMonth.Fifth | WeeksOfMonth.Last;
-                    return WeeksOfMonth.Fifth;
-                case 6:
-                    if (lastWeekInMonth == 6)
-                        return WeeksOfMonth.Sixth | WeeksOfMonth.Last;
-                    return WeeksOfMonth.Sixth;
+                    result |= WeeksOfMonth.Fifth;
+                    break;
                 default:
                     break;
             }
 
-            return WeeksOfMonth.None;
+            return result;
         }
     }
 }
