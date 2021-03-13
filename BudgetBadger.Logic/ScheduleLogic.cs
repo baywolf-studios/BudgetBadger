@@ -40,7 +40,7 @@ namespace BudgetBadger.Logic
             var eDate = endDate ?? DateTime.MaxValue;
 
             for (var day = startDate.Date;
-                day.Date <= eDate.Date;
+                day.Date < eDate.Date;
                 day = day.AddDays(1))
             {
                 yield return day;
@@ -79,7 +79,7 @@ namespace BudgetBadger.Logic
 
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
-                if (daysOfWeek.HasFlag(day.ToDaysOfWeek()))
+                if (daysOfWeek.HasAnyFlag(day.ToDaysOfWeek()))
                 {
                     if (!firstDateTimes.Any(d => d.DayOfWeek == day.DayOfWeek))
                         firstDateTimes.Add(day);
@@ -102,7 +102,9 @@ namespace BudgetBadger.Logic
             DateTime? endDate = null)
         {
             if (interval < 1
-                || (daysOfWeek == DaysOfWeek.None && weeksOfMonth == WeeksOfMonth.None && daysOfMonth == DaysOfMonth.None))
+                || daysOfWeek == DaysOfWeek.None
+                || weeksOfMonth == WeeksOfMonth.None
+                || daysOfMonth == DaysOfMonth.None)
             {
                 yield break;
             }
@@ -112,18 +114,10 @@ namespace BudgetBadger.Logic
 
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
-                foreach (DaysOfMonth dayOfMonth in daysOfMonth.GetComponents())
+                if (daysOfMonth.HasAnyFlag(day.ToDaysOfMonth())
+                    && weeksOfMonth.HasAnyFlag(day.ToWeeksOfMonth()))
                 {
-                    if (day.ToDaysOfMonth().HasFlag(dayOfMonth))
-                    {
-                        foreach (WeeksOfMonth weekOfMonth in weeksOfMonth.GetComponents())
-                        {
-                            if (day.ToWeeksOfMonth().HasFlag(weekOfMonth))
-                            {
-                                yield return day;
-                            }
-                        }
-                    }
+                    yield return day;
                 }
             }
         }
