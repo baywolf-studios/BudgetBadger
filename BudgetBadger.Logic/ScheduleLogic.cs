@@ -115,7 +115,8 @@ namespace BudgetBadger.Logic
             foreach (var day in GetDatesFromDateRange(sDate, endDate))
             {
                 if (daysOfMonth.HasAnyFlag(day.ToDaysOfMonth())
-                    && weeksOfMonth.HasAnyFlag(day.ToWeeksOfMonth()))
+                    && weeksOfMonth.HasAnyFlag(day.ToWeeksOfMonth())
+                    && daysOfWeek.HasAnyFlag(day.ToDaysOfWeek()))
                 {
                     yield return day;
                 }
