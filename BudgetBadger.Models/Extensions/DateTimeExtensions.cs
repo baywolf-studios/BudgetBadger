@@ -41,8 +41,7 @@ namespace BudgetBadger.Models.Extensions
 
         public static int WeekOfMonth(this DateTime date)
         {
-            var test = (int)Math.Ceiling(date.Day / 7f);
-            return test;
+            return (int)Math.Ceiling(date.Day / 7f);
         }
 
         public static int WeeksInMonth(this DateTime date)

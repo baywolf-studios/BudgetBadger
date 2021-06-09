@@ -337,6 +337,54 @@ namespace BudgetBadger.Tests.Logic
             Assert.Zero(result.Count());
         }
 
+        [Test]
+        public void GetMonthlyOccurrences_AllDaysOfWeek_ReturnsAllDatesOnTheDaysOfMonthPassedIn()
+        {
+            // arrange
+            var day = DaysOfWeek.All;
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddDays(300);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfWeek: day, startDate: startDate, endDate: endDate);
+
+            // assert
+            var allDates = scheduleLogic.GetDatesFromDateRange(startDate, endDate);
+            Assert.That(result.All(allDates.Contains) && result.Count() == allDates.Count());
+        }
+
+        [Test]
+        public void GetMonthlyOccurrences_AllDaysOfMonth_ReturnsAllDatesOnTheDaysOfMonthPassedIn()
+        {
+            // arrange
+            var day = DaysOfMonth.All;
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddDays(300);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: day, startDate: startDate, endDate: endDate);
+
+            // assert
+            var allDates = scheduleLogic.GetDatesFromDateRange(startDate, endDate);
+            Assert.That(result.All(allDates.Contains) && result.Count() == allDates.Count());
+        }
+
+        [Test]
+        public void GetMonthlyOccurrences_AllWeeksOfMonth_ReturnsAllDatesOnTheDaysOfMonthPassedIn()
+        {
+            // arrange
+            var day = WeeksOfMonth.All;
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddDays(300);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: day, startDate: startDate, endDate: endDate);
+
+            // assert
+            var allDates = scheduleLogic.GetDatesFromDateRange(startDate, endDate);
+            Assert.That(result.All(allDates.Contains) && result.Count() == allDates.Count());
+        }
+
         [TestCase(DaysOfMonth.Day01)]
         [TestCase(DaysOfMonth.Day04)]
         [TestCase(DaysOfMonth.Day08)]
@@ -393,19 +441,6 @@ namespace BudgetBadger.Tests.Logic
                                      || r.Day == 17
                                      || r.Day == 22
                                      || r.Day == 27));
-        }
-
-        public void GetMonthlyOccurrences_AllDaysOfMonth_ReturnsAllDatesOnTheDaysOfMonthPassedIn()
-        {
-            // arrange
-            var day = DaysOfMonth.All;
-
-            // act
-            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: day);
-
-            // assert
-            var allDates = scheduleLogic.GetDatesFromDateRange(DateTime.MinValue, DateTime.MaxValue);
-            Assert.That(result.All(allDates.Contains) && result.Count() == allDates.Count());
         }
 
         [TestCase(WeeksOfMonth.First)]
@@ -527,6 +562,123 @@ namespace BudgetBadger.Tests.Logic
 
             // assert
             Assert.AreEqual(0, result.Count());
+        }
+
+        [TestCase(1, 5)]
+        [TestCase(101, 5)]
+        [TestCase(1, 98)]
+        [TestCase(101, 98)]
+        public void GetMonthlyOccurrences_SingleDayOfWeekAndPositiveInterval_ReturnsMonthsBetweenDividedByInterval(int interval, int monthsBetween)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfWeek: DaysOfWeek.Monday, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            var expectedResult = monthsBetween / interval;
+            if (expectedResult == 0)
+            {
+                expectedResult = 1;
+            }
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, 5, DaysOfWeek.Monday | DaysOfWeek.Tuesday, 10)]
+        [TestCase(101, 5, DaysOfWeek.All, 7)]
+        [TestCase(1, 98, DaysOfWeek.Friday | DaysOfWeek.Tuesday, 196)]
+        [TestCase(101, 98, DaysOfWeek.All, 7)]
+        public void GetMonthlyOccurrences_MultipleDaysOfWeekAndPositiveInterval_ReturnsNumberOfDaysTimesMonthsBetweenDividedByInterval(int interval, int monthsBetween, DaysOfWeek dayOfWeek, int expectedResult)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfWeek: dayOfWeek, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, 5)]
+        [TestCase(101, 5)]
+        [TestCase(1, 98)]
+        [TestCase(101, 98)]
+        public void GetMonthlyOccurrences_SingleWeeksOfMonthAndPositiveInterval_ReturnsMonthsBetweenDividedByInterval(int interval, int monthsBetween)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: WeeksOfMonth.Second, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            var expectedResult = monthsBetween / interval;
+            if (expectedResult == 0)
+            {
+                expectedResult = 1;
+            }
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, 5, WeeksOfMonth.First | WeeksOfMonth.Third, 10)]
+        [TestCase(101, 5, WeeksOfMonth.All, 7)]
+        [TestCase(1, 98, WeeksOfMonth.Last | WeeksOfMonth.Second, 196)]
+        [TestCase(101, 98, WeeksOfMonth.All, 7)]
+        public void GetMonthlyOccurrences_MultipleWeeksOfMonthAndPositiveInterval_ReturnsNumberOfWeeksTimesMonthsBetweenDividedByInterval(int interval, int monthsBetween, WeeksOfMonth weeksOfMonth, int expectedResult)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(weeksOfMonth: weeksOfMonth, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, 5)]
+        [TestCase(101, 5)]
+        [TestCase(1, 98)]
+        [TestCase(101, 98)]
+        public void GetMonthlyOccurrences_SingleDaysOfMonthAndPositiveInterval_ReturnsMonthsBetweenDividedByInterval(int interval, int monthsBetween)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: DaysOfMonth.Day05, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            var expectedResult = monthsBetween / interval;
+            if (expectedResult == 0)
+            {
+                expectedResult = 1;
+            }
+            Assert.AreEqual(expectedResult, result.Count());
+        }
+
+        [TestCase(1, 5, DaysOfMonth.Day02 | DaysOfMonth.Day07, 10)]
+        [TestCase(101, 5, DaysOfMonth.All, 7)]
+        [TestCase(1, 98, DaysOfMonth.Day08 | DaysOfMonth.Day30, 196)]
+        [TestCase(101, 98, DaysOfMonth.All, 7)]
+        public void GetMonthlyOccurrences_MultipleDaysOfMonthAndPositiveInterval_ReturnsNumberOfDaysTimesMonthsBetweenDividedByInterval(int interval, int monthsBetween, DaysOfMonth daysOfMonth, int expectedResult)
+        {
+            // arrange
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMonths(monthsBetween);
+
+            // act
+            var result = scheduleLogic.GetMonthlyOccurrences(daysOfMonth: daysOfMonth, interval: interval, startDate: startDate, endDate: endDate);
+
+            // assert
+            Assert.AreEqual(expectedResult, result.Count());
         }
 
     }

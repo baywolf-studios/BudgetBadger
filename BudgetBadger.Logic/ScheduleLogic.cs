@@ -81,7 +81,7 @@ namespace BudgetBadger.Logic
             {
                 if (daysOfWeek.HasAnyFlag(day.ToDaysOfWeek()))
                 {
-                    if (!firstDateTimes.Any(d => d.DayOfWeek == day.DayOfWeek))
+                    if (!firstDateTimes.Any(d => d.ToDaysOfWeek().HasAnyFlag(day.ToDaysOfWeek())))
                         firstDateTimes.Add(day);
 
                     var firstDateTime = firstDateTimes.First(d => d.DayOfWeek == day.DayOfWeek);
@@ -118,6 +118,22 @@ namespace BudgetBadger.Logic
                     && weeksOfMonth.HasAnyFlag(day.ToWeeksOfMonth())
                     && daysOfWeek.HasAnyFlag(day.ToDaysOfWeek()))
                 {
+                    if (!firstDateTimes.Any(d => d.ToDaysOfWeek().HasAnyFlag(day.ToDaysOfWeek())
+                                              && d.ToWeeksOfMonth().HasAnyFlag(day.ToWeeksOfMonth())
+                                              && d.ToDaysOfMonth().HasAnyFlag(day.ToDaysOfMonth())))
+                    {
+                        firstDateTimes.Add(day);
+                    }
+
+                    var firstDateTime = firstDateTimes.First(d => d.ToDaysOfWeek().HasAnyFlag(day.ToDaysOfWeek())
+                                                               && d.ToWeeksOfMonth().HasAnyFlag(day.ToWeeksOfMonth())
+                                                               && d.ToDaysOfMonth().HasAnyFlag(day.ToDaysOfMonth()));
+
+                    if (Math.Abs(day.Month - firstDateTime.Month) % interval == 0)
+                    {
+                        yield return day;
+                    }
+
                     yield return day;
                 }
             }
