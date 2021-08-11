@@ -20,15 +20,21 @@ namespace BudgetBadger.Forms.Authentication
             _requestUrl = new Uri("https://www.dropbox.com/1/oauth2/authorize?response_type=token&redirect_uri=" + _redirectUrl + "&client_id=" + appKey);
         }
 
-        public async Task<Result<string>> AuthenticateAsync()
+        public async Task<Result<DropboxAuthenticationResult>> AuthenticateAsync()
         {
-            var result = new Result<string>();
+            var result = new Result<DropboxAuthenticationResult>();
             var authResult = await _webAuthenticator.AuthenticateAsync(_requestUrl, _redirectUrl);
 
-            if (authResult.Success && authResult.Data.TryGetValue("access_token", out string accessToken))
+            if (authResult.Success
+                && authResult.Data.TryGetValue("access_token", out string accessToken)
+                && authResult.Data.TryGetValue("refresh_token", out string refreshToken))
             {
                 result.Success = true;
-                result.Data = accessToken;
+                result.Data = new DropboxAuthenticationResult()
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken
+                };
             }
             else
             {

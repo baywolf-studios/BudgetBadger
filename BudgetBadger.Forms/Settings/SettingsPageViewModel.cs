@@ -289,7 +289,8 @@ namespace BudgetBadger.Forms.Settings
                         if (dropboxResult.Success)
                         {
                             await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.Data);
+                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.Data.AccessToken);
+                            await _settings.AddOrUpdateValueAsync(DropboxSettings.RefreshToken, dropboxResult.Data.RefreshToken);
                             await ExecuteSyncCommand();
                             ShowSync = true;
                         }
