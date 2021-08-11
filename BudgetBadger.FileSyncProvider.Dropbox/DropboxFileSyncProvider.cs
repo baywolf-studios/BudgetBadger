@@ -16,6 +16,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
     {
         readonly ISettings _settings;
         string _accessToken { get => _settings.GetValueOrDefault(DropboxSettings.AccessToken); }
+        string _refreshToken { get => _settings.GetValueOrDefault(DropboxSettings.RefreshToken); }
 
         public DropboxFileSyncProvider(ISettings settings)
         {
@@ -52,7 +53,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
-                using (var dbx = new DropboxClient(_accessToken))
+                using (var dbx = new DropboxClient(_refreshToken, "appKey"))
                 {
                     var folderArgs = new ListFolderArg("", recursive: true);
 
