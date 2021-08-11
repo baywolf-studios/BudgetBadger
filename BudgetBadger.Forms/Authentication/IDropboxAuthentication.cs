@@ -8,6 +8,6 @@ namespace BudgetBadger.Forms.Authentication
 {
     public interface IDropboxAuthentication
     {
-         Task<Result<string>> AuthenticateAsync();
+         Task<Result<DropboxAuthenticationResult>> AuthenticateAsync();
     }
 }
