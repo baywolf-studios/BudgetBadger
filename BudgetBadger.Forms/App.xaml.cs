@@ -46,6 +46,8 @@ using BudgetBadger.Forms.UserControls;
 using System.Linq;
 using BudgetBadger.Forms.Style;
 using BudgetBadger.Forms.Authentication;
+using BudgetBadger.Core.Authentication;
+using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -220,7 +222,8 @@ namespace BudgetBadger.Forms
             container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
                                                                                                    Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
 
-            container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
+            container.Register<IFileSyncProvider>(made: Made.Of(() => new DropboxFileSyncProvider(Arg.Of<ISettings>(),
+                                                                                                  Arg.Of<string>("dropBoxAppKey"))), serviceKey: SyncMode.DropboxSync);
 
 
 

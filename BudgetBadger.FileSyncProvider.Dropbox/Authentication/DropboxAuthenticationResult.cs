@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BudgetBadger.Forms.Authentication
+namespace BudgetBadger.FileSyncProvider.Dropbox.Authentication
 {
     public class DropboxAuthenticationResult
     {

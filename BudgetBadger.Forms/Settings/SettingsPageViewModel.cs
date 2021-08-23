@@ -4,10 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;
@@ -289,7 +291,6 @@ namespace BudgetBadger.Forms.Settings
                         if (dropboxResult.Success)
                         {
                             await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.Data.AccessToken);
                             await _settings.AddOrUpdateValueAsync(DropboxSettings.RefreshToken, dropboxResult.Data.RefreshToken);
                             await ExecuteSyncCommand();
                             ShowSync = true;
