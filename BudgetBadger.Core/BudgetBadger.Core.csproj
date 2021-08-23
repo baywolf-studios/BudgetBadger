@@ -14,5 +14,9 @@
   <ItemGroup>
     <Folder Include="Purchase\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Authentication\" />
   </ItemGroup>
 </Project>

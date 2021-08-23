@@ -15,4 +15,10 @@
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
 </Project>

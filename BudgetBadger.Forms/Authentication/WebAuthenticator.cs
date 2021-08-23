@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Forms.Authentication
