@@ -153,6 +153,8 @@ namespace BudgetBadger.Forms
 
             await VerifyPurchases();
             ResetSyncTimerAtStartOrResume();
+
+            await UpgradeApp();
         }
 
         protected override void OnResume()
@@ -234,7 +236,9 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<IPayeeSyncLogic>(),
                                                                           Arg.Of<IEnvelopeSyncLogic>(),
                                                                           Arg.Of<ITransactionSyncLogic>(),
-                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
+                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>(),
+                                                                          Arg.Of<IDropboxAuthentication>(),
+                                                                          Arg.Of<IPageDialogService>())));
 
             container.Register(made: Made.Of(() => StaticSyncFactory.CreateSync(Arg.Of<ISettings>(),
                                                                           Arg.Of<IDirectoryInfo>(),
@@ -445,6 +449,49 @@ namespace BudgetBadger.Forms
             {
                 await syncFactory.SetLastSyncDateTime(DateTime.Now);
             }
+        }
+
+        async Task UpgradeApp()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var currentVersionString = settings.GetValueOrDefault(AppSettings.CurrentAppVersion);
+
+            if (currentVersionString != null)
+            {
+                var currentVersion = Convert.ToInt32(currentVersionString);
+
+                switch (currentVersion)
+                {
+                    case 0:
+                        await UpgradeAppFromV0ToV1();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        async Task UpgradeAppFromV0ToV1()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var syncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+
+            if (syncMode == SyncMode.DropboxSync)
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                var syncFactory = Container.Resolve<ISyncFactory>();
+                var loginDropbox = await dialogService.DisplayAlertAsync("Dropbox Cloud Sync", "Due to changes in Dropbox API, you will need to re-authorize Budget Badger to enable Cloud Sync. Would you like to do that now?", "Yes!", "No");
+                if (loginDropbox)
+                {
+                    await syncFactory.EnableDropboxCloudSync();
+                }
+                else
+                {
+                    await syncFactory.DisableDropboxCloudSync();
+                }
+            }
+
+            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "1");
         }
     }
 }

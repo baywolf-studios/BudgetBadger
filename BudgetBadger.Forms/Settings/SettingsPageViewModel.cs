@@ -284,32 +284,16 @@ namespace BudgetBadger.Forms.Settings
 
                 if (HasPro)
                 {
-                    try
-                    {
-                        var dropboxResult = await _dropboxAuthentication.AuthenticateAsync();
+                    var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
 
-                        if (dropboxResult.Success)
-                        {
-                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.RefreshToken, dropboxResult.Data.RefreshToken);
-                            await ExecuteSyncCommand();
-                            ShowSync = true;
-                        }
-                        else
-                        {
-                            DropboxEnabled = false;
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
-                                _resourceContainer.GetResourceString("AlertMessageDropboxError"),
-                                _resourceContainer.GetResourceString("AlertOk"));
-                        }
+                    if (enableDropboxResult.Success)
+                    {
+                        await ExecuteSyncCommand();
                     }
-                    catch (Exception ex)
+                    else
                     {
                         DropboxEnabled = false;
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
-                            ex.Message,
-                            _resourceContainer.GetResourceString("AlertOk"));
-                    }
+                    }    
                 }
                 else
                 {
@@ -319,7 +303,7 @@ namespace BudgetBadger.Forms.Settings
 
             if (!DropboxEnabled)
             {
-                await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                await _syncFactory.DisableDropboxCloudSync();
             }
 
             ShowSync = DropboxEnabled;
