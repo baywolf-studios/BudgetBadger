@@ -8,6 +8,6 @@ namespace BudgetBadger.FileSyncProvider.Dropbox.Authentication
 {
     public interface IDropboxAuthentication
     {
-         Task<Result<DropboxAuthenticationResult>> AuthenticateAsync();
+         Task<Result<string>> GetRefreshTokenAsync();
     }
 }

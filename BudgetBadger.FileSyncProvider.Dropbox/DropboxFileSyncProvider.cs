@@ -15,7 +15,6 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
     public class DropboxFileSyncProvider : IFileSyncProvider
     {
         readonly ISettings _settings;
-        string _accessToken { get => _settings.GetValueOrDefault(DropboxSettings.AccessToken); }
         string _refreshToken { get => _settings.GetValueOrDefault(DropboxSettings.RefreshToken); }
         readonly string _appKey;
 

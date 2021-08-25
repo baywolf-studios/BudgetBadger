@@ -7,7 +7,11 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Sync;
+using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 using BudgetBadger.Forms.Enums;
+using BudgetBadger.Models;
+using Prism.Services;
 
 namespace BudgetBadger.Forms
 {
@@ -21,6 +25,8 @@ namespace BudgetBadger.Forms
         readonly IEnvelopeSyncLogic _envelopeSyncLogic;
         readonly ITransactionSyncLogic _transactionSyncLogic;
         readonly KeyValuePair<string, IFileSyncProvider>[] _fileSyncProviders;
+        readonly IDropboxAuthentication _dropboxAuthentication;
+        readonly IPageDialogService _dialogService;
 
         public SyncFactory(IResourceContainer resourceContainer,
             ISettings settings,
@@ -29,7 +35,9 @@ namespace BudgetBadger.Forms
             IPayeeSyncLogic payeeSyncLogic,
             IEnvelopeSyncLogic envelopeSyncLogic,
             ITransactionSyncLogic transactionSyncLogic,
-            KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders)
+            KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders,
+            IDropboxAuthentication dropboxAuthentication,
+            IPageDialogService pageDialogService)
         {
             _resourceContainer = resourceContainer;
             _settings = settings;
@@ -39,6 +47,7 @@ namespace BudgetBadger.Forms
             _envelopeSyncLogic = envelopeSyncLogic;
             _transactionSyncLogic = transactionSyncLogic;
             _fileSyncProviders = fileSyncProviders;
+            _dropboxAuthentication = dropboxAuthentication;
         }
 
         public ISync GetSyncService()
@@ -67,6 +76,48 @@ namespace BudgetBadger.Forms
             {
                 return _resourceContainer.GetResourceString("SyncDateTimeNever");
             }
+        }
+
+        public async Task<Result> EnableDropboxCloudSync()
+        {
+            var result = new Result();
+
+            try
+            {
+                var dropboxResult = await _dropboxAuthentication.GetRefreshTokenAsync();
+
+                if (dropboxResult.Success)
+                {
+                    await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
+                    await _settings.AddOrUpdateValueAsync(DropboxSettings.RefreshToken, dropboxResult.Data);
+                    result.Success = true;
+                }
+                else
+                {
+                    await DisableDropboxCloudSync();
+                    result.Success = false;
+                    result.Message = _resourceContainer.GetResourceString("AlertMessageDropboxError");
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
+                                _resourceContainer.GetResourceString("AlertMessageDropboxError"),
+                                _resourceContainer.GetResourceString("AlertOk"));
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisableDropboxCloudSync();
+                result.Success = false;
+                result.Message = ex.Message;
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
+                            ex.Message,
+                            _resourceContainer.GetResourceString("AlertOk"));
+            }
+
+            return result;
+        }
+
+        public async Task DisableDropboxCloudSync()
+        {
+            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
         }
     }
 }

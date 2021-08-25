@@ -19,17 +19,14 @@ namespace BudgetBadger.FileSyncProvider.Dropbox.Authentication
         {
             _webAuthenticator = webAuthenticator;
             _appKey = appKey;
-            
-            //_requestUrl = new Uri("https://www.dropbox.com/1/oauth2/authorize?response_type=code&code_challenge=lSEB3zK2TM-X38Baht80CvC4E_a5DnpCG52y5a7dQyk&code_challenge_method=S256&redirect_uri=" + _redirectUrl + "&client_id=" + appKey);
         }
 
-        public async Task<Result<DropboxAuthenticationResult>> AuthenticateAsync()
+        public async Task<Result<string>> GetRefreshTokenAsync()
         {
-            var result = new Result<DropboxAuthenticationResult>();
+            var result = new Result<string>();
 
             var codeVerifier = DropboxOAuth2Helper.GeneratePKCECodeVerifier();
             var codeChallenge = DropboxOAuth2Helper.GeneratePKCECodeChallenge(codeVerifier);
-            //var requestUrl = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Code, _appKey, _redirectUrl.AbsoluteUri, codeChallenge: codeChallenge, tokenAccessType: TokenAccessType.Offline);
 
             var requestUrl = new Uri("https://www.dropbox.com/oauth2/authorize?response_type=code&client_id=" + _appKey + "&redirect_uri=" + _redirectUrl + "&token_access_type=offline&code_challenge_method=S256&code_challenge=" + codeChallenge);
 
@@ -45,10 +42,7 @@ namespace BudgetBadger.FileSyncProvider.Dropbox.Authentication
                     if (!string.IsNullOrEmpty(tokenRespone.RefreshToken))
                     {
                         result.Success = true;
-                        result.Data = new DropboxAuthenticationResult()
-                        {
-                            RefreshToken = tokenRespone.RefreshToken
-                        };
+                        result.Data = tokenRespone.RefreshToken;
                     }
                     else
                     {
