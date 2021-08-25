@@ -454,20 +454,18 @@ namespace BudgetBadger.Forms
         async Task UpgradeApp()
         {
             var settings = Container.Resolve<ISettings>();
+            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "");
             var currentVersionString = settings.GetValueOrDefault(AppSettings.CurrentAppVersion);
 
-            if (currentVersionString != null)
-            {
-                var currentVersion = Convert.ToInt32(currentVersionString);
+            int.TryParse(currentVersionString, out int currentVersion);
 
-                switch (currentVersion)
-                {
-                    case 0:
-                        await UpgradeAppFromV0ToV1();
-                        break;
-                    default:
-                        break;
-                }
+            switch (currentVersion)
+            {
+                case 0:
+                    await UpgradeAppFromV0ToV1();
+                    break;
+                default:
+                    break;
             }
         }
 
