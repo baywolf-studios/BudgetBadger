@@ -1,6 +1,6 @@
 ﻿using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
-using BudgetBadger.Forms.Authentication;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.UWP.Renderers;
 using DryIoc;
 using Plugin.InAppBilling;
