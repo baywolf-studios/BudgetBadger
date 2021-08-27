@@ -1093,6 +1093,6 @@
     <value>Handlungsbedarf</value>
   </data>
   <data name="AlertDropboxUpgrade" xml:space="preserve">
-    <value>Aufgrund von Dropbox-Änderungen müssen Sie Cloud Sync über die Einstellungsseite erneut aktivieren. Möchten Sie das jetzt tun?</value>
+    <value>Aufgrund der jüngsten Dropbox-Änderungen müssen Sie Cloud Sync über die Einstellungsseite erneut aktivieren. Möchten Sie das jetzt tun?</value>
   </data>
 </root>
