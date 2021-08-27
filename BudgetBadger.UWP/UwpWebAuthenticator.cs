@@ -1,5 +1,5 @@
 ﻿using BudgetBadger.Forms;
-using BudgetBadger.Forms.Authentication;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.Models;
 using System;
 using System.Collections.Generic;
