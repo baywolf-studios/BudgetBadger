@@ -145,6 +145,8 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
+            await UpgradeApp();
+
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
             int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
@@ -153,8 +155,6 @@ namespace BudgetBadger.Forms
 
             await VerifyPurchases();
             ResetSyncTimerAtStartOrResume();
-
-            await UpgradeApp();
         }
 
         protected override void OnResume()
@@ -454,7 +454,6 @@ namespace BudgetBadger.Forms
         async Task UpgradeApp()
         {
             var settings = Container.Resolve<ISettings>();
-            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "");
             var currentVersionString = settings.GetValueOrDefault(AppSettings.CurrentAppVersion);
 
             int.TryParse(currentVersionString, out int currentVersion);
@@ -478,7 +477,11 @@ namespace BudgetBadger.Forms
             {
                 var dialogService = Container.Resolve<IPageDialogService>();
                 var syncFactory = Container.Resolve<ISyncFactory>();
-                var loginDropbox = await dialogService.DisplayAlertAsync("Dropbox Cloud Sync", "Due to changes in Dropbox API, you will need to re-authorize Budget Badger to enable Cloud Sync. Would you like to do that now?", "Yes!", "No");
+                var resourceContainer = Container.Resolve<IResourceContainer>();
+                var loginDropbox = await dialogService.DisplayAlertAsync(resourceContainer.GetResourceString("AlertActionNeeded"),
+                    resourceContainer.GetResourceString("AlertDropboxUpgrade"),
+                    resourceContainer.GetResourceString("AlertYes"),
+                    resourceContainer.GetResourceString("AlertNoThanks"));
                 if (loginDropbox)
                 {
                     await syncFactory.EnableDropboxCloudSync();

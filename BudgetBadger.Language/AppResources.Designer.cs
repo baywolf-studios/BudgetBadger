@@ -1966,5 +1966,41 @@ namespace BudgetBadger.Language {
                 return ResourceManager.GetString("DebtsLabel", resourceCulture);
             }
         }
+        
+        public static string AppearanceLabel {
+            get {
+                return ResourceManager.GetString("AppearanceLabel", resourceCulture);
+            }
+        }
+        
+        public static string DimensionSizeSmall {
+            get {
+                return ResourceManager.GetString("DimensionSizeSmall", resourceCulture);
+            }
+        }
+        
+        public static string DimensionSizeMedium {
+            get {
+                return ResourceManager.GetString("DimensionSizeMedium", resourceCulture);
+            }
+        }
+        
+        public static string DimensionSizeLarge {
+            get {
+                return ResourceManager.GetString("DimensionSizeLarge", resourceCulture);
+            }
+        }
+        
+        public static string AlertActionNeeded {
+            get {
+                return ResourceManager.GetString("AlertActionNeeded", resourceCulture);
+            }
+        }
+        
+        public static string AlertDropboxUpgrade {
+            get {
+                return ResourceManager.GetString("AlertDropboxUpgrade", resourceCulture);
+            }
+        }
     }
 }
