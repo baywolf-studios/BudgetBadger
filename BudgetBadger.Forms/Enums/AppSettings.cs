@@ -12,5 +12,6 @@ namespace BudgetBadger.Forms.Enums
         public static readonly string CleanedUpAccountDebtEnvelopes = "CleanedUpAccountDebtEnvelopes";
         public static readonly string CleanedUpBudgets = "CleanedUpBudgets";
         public static readonly string AppearanceDimensionSize = "AppearanceDimensionSize";
+        public static readonly string CurrentAppVersion = "CurrentAppVersion";
     }
 }

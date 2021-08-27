@@ -51,11 +51,10 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer: Matthew Pritchett (4ZF68XBVNY)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
-    <CodesignProvision>VS: WildCard Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -69,6 +68,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
@@ -228,7 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dropbox.Api">
-      <Version>6.0.1</Version>
+      <Version>6.11.1</Version>
     </PackageReference>
     <PackageReference Include="Microcharts">
       <Version>0.7.1</Version>

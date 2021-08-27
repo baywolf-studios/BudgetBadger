@@ -46,6 +46,8 @@ using BudgetBadger.Forms.UserControls;
 using System.Linq;
 using BudgetBadger.Forms.Style;
 using BudgetBadger.Forms.Authentication;
+using BudgetBadger.Core.Authentication;
+using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -143,6 +145,8 @@ namespace BudgetBadger.Forms
 
         protected async override void OnStart()
         {
+            await UpgradeApp();
+
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
             int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
@@ -220,7 +224,8 @@ namespace BudgetBadger.Forms
             container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
                                                                                                    Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
 
-            container.Register<IFileSyncProvider, DropboxFileSyncProvider>(serviceKey: SyncMode.DropboxSync);
+            container.Register<IFileSyncProvider>(made: Made.Of(() => new DropboxFileSyncProvider(Arg.Of<ISettings>(),
+                                                                                                  Arg.Of<string>("dropBoxAppKey"))), serviceKey: SyncMode.DropboxSync);
 
 
 
@@ -231,7 +236,9 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<IPayeeSyncLogic>(),
                                                                           Arg.Of<IEnvelopeSyncLogic>(),
                                                                           Arg.Of<ITransactionSyncLogic>(),
-                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
+                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>(),
+                                                                          Arg.Of<IDropboxAuthentication>(),
+                                                                          Arg.Of<IPageDialogService>())));
 
             container.Register(made: Made.Of(() => StaticSyncFactory.CreateSync(Arg.Of<ISettings>(),
                                                                           Arg.Of<IDirectoryInfo>(),
@@ -442,6 +449,50 @@ namespace BudgetBadger.Forms
             {
                 await syncFactory.SetLastSyncDateTime(DateTime.Now);
             }
+        }
+
+        async Task UpgradeApp()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var currentVersionString = settings.GetValueOrDefault(AppSettings.CurrentAppVersion);
+
+            int.TryParse(currentVersionString, out int currentVersion);
+
+            switch (currentVersion)
+            {
+                case 0:
+                    await UpgradeAppFromV0ToV1();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        async Task UpgradeAppFromV0ToV1()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var syncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+
+            if (syncMode == SyncMode.DropboxSync)
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                var syncFactory = Container.Resolve<ISyncFactory>();
+                var resourceContainer = Container.Resolve<IResourceContainer>();
+                var loginDropbox = await dialogService.DisplayAlertAsync(resourceContainer.GetResourceString("AlertActionNeeded"),
+                    resourceContainer.GetResourceString("AlertDropboxUpgrade"),
+                    resourceContainer.GetResourceString("AlertYes"),
+                    resourceContainer.GetResourceString("AlertNoThanks"));
+                if (loginDropbox)
+                {
+                    await syncFactory.EnableDropboxCloudSync();
+                }
+                else
+                {
+                    await syncFactory.DisableDropboxCloudSync();
+                }
+            }
+
+            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "1");
         }
     }
 }

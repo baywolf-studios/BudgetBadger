@@ -4,10 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;
@@ -282,32 +284,16 @@ namespace BudgetBadger.Forms.Settings
 
                 if (HasPro)
                 {
-                    try
-                    {
-                        var dropboxResult = await _dropboxAuthentication.AuthenticateAsync();
+                    var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
 
-                        if (dropboxResult.Success)
-                        {
-                            await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.DropboxSync);
-                            await _settings.AddOrUpdateValueAsync(DropboxSettings.AccessToken, dropboxResult.Data);
-                            await ExecuteSyncCommand();
-                            ShowSync = true;
-                        }
-                        else
-                        {
-                            DropboxEnabled = false;
-                            await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
-                                _resourceContainer.GetResourceString("AlertMessageDropboxError"),
-                                _resourceContainer.GetResourceString("AlertOk"));
-                        }
+                    if (enableDropboxResult.Success)
+                    {
+                        await ExecuteSyncCommand();
                     }
-                    catch (Exception ex)
+                    else
                     {
                         DropboxEnabled = false;
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful"),
-                            ex.Message,
-                            _resourceContainer.GetResourceString("AlertOk"));
-                    }
+                    }    
                 }
                 else
                 {
@@ -317,7 +303,7 @@ namespace BudgetBadger.Forms.Settings
 
             if (!DropboxEnabled)
             {
-                await _settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
+                await _syncFactory.DisableDropboxCloudSync();
             }
 
             ShowSync = DropboxEnabled;

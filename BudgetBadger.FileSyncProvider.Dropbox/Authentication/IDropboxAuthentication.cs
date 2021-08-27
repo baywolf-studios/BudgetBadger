@@ -4,10 +4,10 @@ using System.Text;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
 
-namespace BudgetBadger.Forms.Authentication
+namespace BudgetBadger.FileSyncProvider.Dropbox.Authentication
 {
     public interface IDropboxAuthentication
     {
-         Task<Result<string>> AuthenticateAsync();
+         Task<Result<string>> GetRefreshTokenAsync();
     }
 }
