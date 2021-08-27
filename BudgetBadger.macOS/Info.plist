@@ -7,9 +7,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.BayWolfStudios.BudgetBadgerMac</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7.13</string>
+	<string>1.7.14</string>
 	<key>CFBundleVersion</key>
-	<string>1.7.13</string>
+	<string>1.7.14</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.12.6</string>
 	<key>CFBundleDevelopmentRegion</key>
