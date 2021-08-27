@@ -48,6 +48,7 @@ namespace BudgetBadger.Forms
             _transactionSyncLogic = transactionSyncLogic;
             _fileSyncProviders = fileSyncProviders;
             _dropboxAuthentication = dropboxAuthentication;
+            _dialogService = pageDialogService;
         }
 
         public ISync GetSyncService()

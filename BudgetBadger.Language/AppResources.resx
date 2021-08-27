@@ -1089,4 +1089,10 @@
   <data name="DimensionSizeLarge" xml:space="preserve">
     <value>Large</value>
   </data>
+  <data name="AlertActionNeeded" xml:space="preserve">
+    <value>Action Needed</value>
+  </data>
+  <data name="AlertDropboxUpgrade" xml:space="preserve">
+    <value>Due to Dropbox changes, you need to re-enable Cloud Sync via the Settings Page. Would you like to do that now?</value>
+  </data>
 </root>
