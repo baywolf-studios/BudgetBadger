@@ -463,6 +463,9 @@ namespace BudgetBadger.Forms
                 case 0:
                     await UpgradeAppFromV0ToV1();
                     break;
+                case 1:
+                    await UpgradeAppFromV1ToV2();
+                    break;
                 default:
                     break;
             }
@@ -493,6 +496,34 @@ namespace BudgetBadger.Forms
             }
 
             await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "1");
+        }
+
+        async Task UpgradeAppFromV1ToV2()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var syncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+            var refreshToken = settings.GetValueOrDefault(DropboxSettings.RefreshToken);
+
+            if (syncMode == SyncMode.DropboxSync && string.IsNullOrEmpty(refreshToken))
+            {
+                var dialogService = Container.Resolve<IPageDialogService>();
+                var syncFactory = Container.Resolve<ISyncFactory>();
+                var resourceContainer = Container.Resolve<IResourceContainer>();
+                var loginDropbox = await dialogService.DisplayAlertAsync(resourceContainer.GetResourceString("AlertActionNeeded"),
+                    resourceContainer.GetResourceString("AlertDropboxUpgrade"),
+                    resourceContainer.GetResourceString("AlertYes"),
+                    resourceContainer.GetResourceString("AlertNoThanks"));
+                if (loginDropbox)
+                {
+                    await syncFactory.EnableDropboxCloudSync();
+                }
+                else
+                {
+                    await syncFactory.DisableDropboxCloudSync();
+                }
+            }
+
+            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "2");
         }
     }
 }
