@@ -52,7 +52,7 @@ namespace BudgetBadger.UWP
                 var result = new Result<IDictionary<string, string>>
                 {
                     Success = true,
-                    Data = ParseQueryString(uri.Fragment)
+                    Data = ParseQueryString(uri.ToString())
                 };
                 _tcsResponse.TrySetResult(result);
                 return true;
@@ -77,12 +77,38 @@ namespace BudgetBadger.UWP
 
             return true;
         }
-        private static Dictionary<string, string> ParseQueryString(string queryString)
+        private static Dictionary<string, string> ParseQueryString(string url)
         {
-            var nvc = HttpUtility.ParseQueryString(queryString);
-            return nvc
-                .AllKeys
-                .ToDictionary(k => (k.StartsWith("#") || k.StartsWith("?")) ? k.Substring(1) : k, k => nvc[k]);
+            var d = new Dictionary<string, string>();
+
+            if (string.IsNullOrWhiteSpace(url) || (!url.Contains("?") && !url.Contains("#")))
+                return d;
+
+            var qsStartIndex = url.IndexOf('?');
+            if (qsStartIndex < 0)
+                qsStartIndex = url.IndexOf('#');
+
+            if (url.Length - 1 < qsStartIndex + 1)
+                return d;
+
+            var qs = url.Substring(qsStartIndex + 1);
+
+            var kvps = qs.Split('&');
+
+            if (kvps == null || !kvps.Any())
+                return d;
+
+            foreach (var kvp in kvps)
+            {
+                var pair = kvp.Split(new char[] { '=' }, 2);
+
+                if (pair == null || pair.Length != 2)
+                    continue;
+
+                d[pair[0]] = pair[1];
+            }
+
+            return d;
         }
     }
 }
