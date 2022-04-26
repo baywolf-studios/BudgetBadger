@@ -30,4 +30,5 @@ jobs:
       run: echo $APPSECRETSCS | base64 --decode > ./BudgetBadger.Forms/AppSecrets.cs
 
     - name: Build
-    run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
+      run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
+  
