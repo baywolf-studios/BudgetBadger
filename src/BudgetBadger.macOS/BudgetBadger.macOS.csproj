@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{64193ED8-32BA-4391-8C1A-1C33E31B70AB}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BudgetBadger.macOS</RootNamespace>
+    <AssemblyName>Budget Badger</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>SdkOnly</LinkMode>
+    <XamMacArch>x86_64</XamMacArch>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <AOTMode>None</AOTMode>
+    <CodeSignProvision>Automatic</CodeSignProvision>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>__UNIFIED__;__MACOS__;RELEASE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>true</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>SdkOnly</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <XamMacArch>x86_64</XamMacArch>
+    <AOTMode>Core</AOTMode>
+    <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
+    <CodeSignProvision>Automatic</CodeSignProvision>
+    <MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\TestBadger-5.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur1024-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur512-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur512-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur256-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur128-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur256-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur64-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur32-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur32-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\macOSBigSur16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dropbox.Api">
+      <Version>6.11.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microcharts">
+      <Version>0.7.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microcharts.Forms">
+      <Version>0.7.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite">
+      <Version>2.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="NETStandard.Library">
+      <Version>2.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.InAppBilling">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.DryIoc.Forms">
+      <Version>8.1.97</Version>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.TypeConverter">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Numerics.Vectors">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Serialization.Formatters">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Serialization.Primitives">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.XmlDocument">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugins.Settings">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>1.7.2</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>5.0.0.2401</Version>
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_green">
+      <Version>1.1.12</Version>
+    </PackageReference>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>1.68.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Effects\BorderlessDatePickerEffect.cs" />
+    <Compile Include="Effects\BorderlessEditorEffect.cs" />
+    <Compile Include="Effects\BorderlessEntryEffect.cs" />
+    <Compile Include="Effects\BorderlessPickerEffect.cs" />
+    <Compile Include="Renderers\Extensions.cs" />
+    <Compile Include="Localize.cs" />
+    <Compile Include="Renderers\CardRenderer.cs" />
+    <Compile Include="Renderers\Helper.cs" />
+    <Compile Include="Renderers\Button2Renderer.cs" />
+    <Compile Include="InAppBilling.cs" />
+    <Compile Include="Renderers\PickerRenderer.cs" />
+    <Compile Include="Renderers\FormsNSPopUpButton.cs" />
+    <Compile Include="Renderers\FontImageSourceHandler.cs" />
+    <Compile Include="Renderers\FrameRenderer.cs" />
+    <Compile Include="Renderers\MasterDetailRenderer.cs" />
+    <Compile Include="Renderers\ListViewRenderer.cs" />
+    <Compile Include="Renderers\EntryRenderer.cs" />
+    <Compile Include="Renderers\EditorRenderer.cs" />
+    <Compile Include="Renderers\DatePickerRenderer.cs" />
+    <Compile Include="Renderers\LabelRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Main.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.Forms\BudgetBadger.Forms.csproj">
+      <Project>{87CD48D8-EAA2-4112-95F1-02FA96A318E5}</Project>
+      <Name>BudgetBadger.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj">
+      <Project>{B5D703CB-7B7C-4F76-AA15-A11BD78B04F6}</Project>
+      <Name>BudgetBadger.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="Resources\Fonts\ionicons.ttf" />
+    <BundleResource Include="Resources\Fonts\SegMDL2.ttf" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+</Project>

@@ -1,0 +1,52 @@
+﻿name: test
+
+on: [push]
+
+jobs:
+  verify_android:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'AppSecrets.cs'
+          fileDir: './src/BudgetBadger.Forms/'
+          encodedString: ${{ secrets.APPSECRETSCS }}
+
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Remove UWP project for Restore
+        run: dotnet sln ./BudgetBadger.sln remove ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore
+        run: dotnet restore ./tests/BudgetBadger.UnitTests/BudgetBadger.UnitTests.csproj
+
+      - name: Build
+        run: dotnet build ./tests/BudgetBadger.UnitTests/BudgetBadger.UnitTests.csproj
+
+      - name: Test
+        run: dotnet test ./tests/BudgetBadger.UnitTests/BudgetBadger.UnitTests.csproj --verbosity normal
+      
