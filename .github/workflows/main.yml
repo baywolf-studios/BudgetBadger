@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Test
-      run: dotnet test --no-build --configuration Release
+      run: dotnet test ./BudgetBadger.Tests/BudgetBadger.Tests.csproj
       
   Android:
     runs-on: macos-latest
