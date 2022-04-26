@@ -5,27 +5,29 @@ on: [push]
 jobs:
   UnitTests:
     runs-on: macos-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        run: dotnet test --no-build --configuration Release
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Test
+      run: dotnet test --no-build --configuration Release
       
   Android:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: debug
-        working-directory: "."
-        run: "ls -la"
+    - name: debug
+      working-directory: "."
+      run: "ls -la"
 
-      - name: Insert AppSecrets.cs
-        env:
-          APPSECRETSCS: ${{ secrets.APPSECRETSCS }}
-        run: echo $APPSECRETSCS | base64 --decode > ./BudgetBadger.Forms/AppSecrets.cs
+    - name: Insert AppSecrets.cs
+      env:
+        APPSECRETSCS: ${{ secrets.APPSECRETSCS }}
+      run: echo $APPSECRETSCS | base64 --decode > ./BudgetBadger.Forms/AppSecrets.cs
 
-      - name: Build
-      run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
+    - name: Build
+    run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
