@@ -15,7 +15,7 @@ jobs:
       run: "ls -la"
 
     - name: Insert AppSecrets.cs
-      run: (echo ${{ secrets.APPSECRETSCS }} | base64 — decode) > ./BudgetBadger.Forms/AppSecrets.cs
+      run: (echo ${{ secrets.APPSECRETSCS }} | base64 —-decode) > ./BudgetBadger.Forms/AppSecrets.cs
 
     - name: Build
       run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
