@@ -7,10 +7,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - uses: actions/checkout@v3
 
     - name: Setup Android signing 
       run: (echo ${{ secrets.APPSECRETSCS }} | base64 — decode) > ./BudgetBadger.Forms/AppSecrets.cs
 
-    - uses: actions/checkout@v3
     - name: Build
       run: msbuild ./BudgetBadger.Android/BudgetBadger.Android.csproj /t:restore /t:PackageForAndroid /p:Configuration=Debug
