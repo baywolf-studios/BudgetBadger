@@ -7,9 +7,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-    - name: Setup Android signing 
+    - name: Insert AppSecrets.cs
       run: (echo ${{ secrets.APPSECRETSCS }} | base64 — decode) > ./BudgetBadger.Forms/AppSecrets.cs
 
     - name: Build
