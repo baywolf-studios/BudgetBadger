@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<p:BasePage
+    x:Class="BudgetBadger.Forms.Settings.ThirdPartyNoticesPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    <p:BasePage.Header>
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="Third Party Notices" />
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
+            </Grid.RowDefinitions>
+            <uc:ListView2
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="12"
+                Items="{Binding ThirdPartyNotices}"
+                RowHeight="{ext:DynamicResource size_500}"
+                HideSearchBar="True"
+                SelectedCommand="{Binding LicenseCommand}"
+                SelectedItem="{Binding SelectedThirdPartyNotice}"
+                SeparatorVisibility="None"
+                IsPullToRefreshEnabled="False"
+                IsBusy="{Binding IsBusy}">
+                <uc:ListView2.ItemTemplate>
+                    <DataTemplate>
+                        <uc:SelectableViewCell
+                            Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                            BackgroundColor="{ext:DynamicResource gray_50}"
+                            SelectedBackgroundColor="{ext:DynamicResource brand_100}">
+                            <StackLayout
+                                Orientation="Horizontal"
+                                Spacing="{ext:DynamicResource size_100}"
+                                HeightRequest="{ext:DynamicResource size_500}">
+                                <Label Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}" Text="{Binding Key}" />
+                            </StackLayout>
+                        </uc:SelectableViewCell>
+                    </DataTemplate>
+                </uc:ListView2.ItemTemplate>
+                <uc:ListView2.Footer>
+                    <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                </uc:ListView2.Footer>
+            </uc:ListView2>
+            <FlexLayout
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="12"
+                Direction="Row"
+                AlignItems="Center"
+                JustifyContent="End"
+                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
+                <uc:Button2
+                    Command="{Binding EmailCommand}"
+                    Style="{StaticResource SecondaryActionButtonStyle}"
+                    Text="support@BudgetBadger.io"
+                    FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
+            </FlexLayout>
+        </uc:ResponsiveGrid>
+    </p:BasePage.Body>
+</p:BasePage>

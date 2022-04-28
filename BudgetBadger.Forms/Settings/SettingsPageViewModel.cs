@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Authentication;
@@ -46,6 +48,8 @@ namespace BudgetBadger.Forms.Settings
         public ICommand DateSelectedCommand { get; set; }
         public ICommand LanguageSelectedCommand { get; set; }
         public ICommand DimensionSelectedCommand { get; set; }
+        public ICommand LicenseCommand { get; set; }
+        public ICommand ThirdPartyNoticesCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -130,13 +134,13 @@ namespace BudgetBadger.Forms.Settings
         }
 
         public SettingsPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
-                                      IPageDialogService dialogService,
-                                      ISettings settings,
-                                      IDropboxAuthentication dropboxAuthentication,
-                                      IPurchaseService purchaseService,
-                                      ISyncFactory syncFactory,
-                                      ILocalize localize)
+                                     INavigationService navigationService,
+                                     IPageDialogService dialogService,
+                                     ISettings settings,
+                                     IDropboxAuthentication dropboxAuthentication,
+                                     IPurchaseService purchaseService,
+                                     ISyncFactory syncFactory,
+                                     ILocalize localize)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
@@ -158,6 +162,8 @@ namespace BudgetBadger.Forms.Settings
             CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
             DimensionSelectedCommand = new Command(async () => await ExecuteDimensionSelectedCommand());
+            LicenseCommand = new Command(async () => await ExecuteLicenseCommand());
+            ThirdPartyNoticesCommand = new Command(async () => await ExecuteThirdPartyNoticesCommand());
 
             var currentDimension = settings.GetValueOrDefault(AppSettings.AppearanceDimensionSize);
 
@@ -485,6 +491,31 @@ namespace BudgetBadger.Forms.Settings
 
                 DynamicResourceProvider.Instance.Invalidate();
             }
+        }
+
+        public async Task ExecuteLicenseCommand()
+        {
+            var assembly = typeof(ThirdPartyNoticesPageViewModel).Assembly;
+            var assemblyName = assembly.GetName().Name;
+            Stream stream = assembly.GetManifestResourceStream($"{assemblyName}.LICENSE");
+            string text = "";
+            using (var reader = new StreamReader(stream))
+            {
+                text = reader.ReadToEnd();
+            }
+
+            var parameters = new NavigationParameters
+                {
+                    { PageParameter.LicenseName, _resourceContainer.GetResourceString("BudgetBadger") },
+                    { PageParameter.LicenseText, text }
+                };
+
+            await _navigationService.NavigateAsync(PageName.LicensePage, parameters);
+        }
+
+        public async Task ExecuteThirdPartyNoticesCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.ThirdPartyNoticesPage);
         }
 
         void ResetLocalization()

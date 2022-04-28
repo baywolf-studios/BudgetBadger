@@ -60,4 +60,12 @@
       <DependentUpon>Dropdown.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\THIRD-PARTY-NOTICES">
+      <Link>THIRD-PARTY-NOTICES</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\LICENSE">
+      <Link>LICENSE</Link>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
