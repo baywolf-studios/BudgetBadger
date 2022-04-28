@@ -1,10 +1,10 @@
-# Pull Request Template
-
 ## Description
 
 Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
 
-Fixes # (issue)
+## Related Issue(s)
+
+Please link to the issue(s) here
 
 ## Type of change
 
@@ -22,12 +22,9 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Test A
 - [ ] Test B
 
-**Test Configuration(s)**:
-
-* Firmware version:
-* Hardware:
-* Toolchain:
-* SDK:
+**Test Configuration**:
+* Platform:
+* OS:
 
 ## Checklist:
 
@@ -40,3 +37,5 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Any dependent changes have been merged and published in downstream modules
 - [ ] I have checked my code and corrected any misspellings
+
+## Screenshots (if appropriate):
