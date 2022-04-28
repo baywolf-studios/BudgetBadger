@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<p:BasePage
+    x:Class="BudgetBadger.Forms.Settings.LicensePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+    xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    <p:BasePage.Header>
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{Binding LicenseName}" />
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollView
+                Grid.Row="0"
+                Grid.ColumnSpan="12">
+                <Label
+                    Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}"
+                    Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                    Text="{Binding LicenseText}"
+                    LineBreakMode="WordWrap">
+                </Label>
+            </ScrollView>
+        </uc:ResponsiveGrid>
+    </p:BasePage.Body>
+</p:BasePage>

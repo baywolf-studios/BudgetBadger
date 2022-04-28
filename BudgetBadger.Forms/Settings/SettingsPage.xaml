@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Settings.SettingsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -35,6 +35,8 @@
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
+                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     </Grid.RowDefinitions>
@@ -288,7 +290,7 @@
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
-                        Text="{ext:Translate HelpLabel}" />
+                        Text="{ext:Translate AboutLabel}" />
                     <BoxView
                         Grid.Row="14"
                         Grid.ColumnSpan="12"
@@ -314,6 +316,28 @@
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
                             Text="Support@BudgetBadger.io">
+                        </Label>
+                    </uc:ContentButton>
+                    <uc:ContentButton
+                        Grid.Row="17"
+                        Grid.ColumnSpan="12"
+                        Style="{ext:DynamicResource SettingsButtonStyle}"
+                        Command="{Binding LicenseCommand}">
+                        <Label
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                            Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
+                            Text="{ext:Translate LicenseLabel}">
+                        </Label>
+                    </uc:ContentButton>
+                    <uc:ContentButton
+                        Grid.Row="18"
+                        Grid.ColumnSpan="12"
+                        Style="{ext:DynamicResource SettingsButtonStyle}"
+                        Command="{Binding ThirdPartyNoticesCommand}">
+                        <Label
+                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                            Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
+                            Text="{ext:Translate ThirdPartyNoticesLabel}">
                         </Label>
                     </uc:ContentButton>
                 </uc:ResponsiveGrid>

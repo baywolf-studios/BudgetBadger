@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -495,8 +495,8 @@
   <data name="GenericDebtEnvelope" xml:space="preserve">
     <value>Schuld</value>
   </data>
-  <data name="HelpLabel" xml:space="preserve">
-    <value>Hilfe</value>
+  <data name="AboutLabel" xml:space="preserve">
+    <value>Über</value>
   </data>
   <data name="IgnoredEnvelope" xml:space="preserve">
     <value>Nicht benötigt</value>
@@ -1094,5 +1094,11 @@
   </data>
   <data name="AlertDropboxUpgrade" xml:space="preserve">
     <value>Aufgrund der jüngsten Dropbox-Änderungen müssen Sie Cloud Sync über die Einstellungsseite erneut aktivieren. Möchten Sie das jetzt tun?</value>
+  </data>
+  <data name="LicenseLabel" xml:space="preserve">
+      <value>Lizenz</value>
+  </data>
+  <data name="ThirdPartyNoticesLabel" xml:space="preserve">
+      <value>Hinweise Dritter</value>
   </data>
 </root>

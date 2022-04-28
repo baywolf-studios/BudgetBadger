@@ -27,6 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Tests", "Budge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.Forms", "BudgetBadger.Forms\BudgetBadger.Forms.csproj", "{8EDA47B3-B46F-4DE3-A4FF-D8352C691293}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFAA2D4F-906C-4041-A49E-5C6ABCEC8D60}"
+	ProjectSection(SolutionItems) = preProject
+		THIRD-PARTY-NOTICES = THIRD-PARTY-NOTICES
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
