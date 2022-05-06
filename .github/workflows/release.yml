@@ -34,8 +34,6 @@ jobs:
 
     env:
       VERSION: ${{ needs.create_version_tag.outputs.version }}
-      TAG: ${{ needs.create_version_tag.outputs.tag }}
-      CHANGELOG: ${{ needs.create_version_tag.outputs.changelog }}
       BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
       ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
 
@@ -71,10 +69,7 @@ jobs:
       - name: Restore
         run: nuget restore
 
-      - name: Build
-        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release
-
-      - name: Sign for Play Store aab
+      - name: Build and Sign for Play Store aab
         run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
 
       - name: Upload aab
@@ -84,7 +79,7 @@ jobs:
           path: ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.aab
           if-no-files-found: error
 
-      - name: Sign for Play Store apk
+      - name: Build and Sign for Play Store apk
         run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
 
       - name: Upload apk
@@ -116,7 +111,7 @@ jobs:
           DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
         run:  |
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
-              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./distribution.p12 ./.github/secrets/ios/distribution.p12.gpg 
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./ios_distribution.p12 ./.github/secrets/ios/ios_distribution.p12.gpg 
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./Budget_Badger_AppStore.mobileprovision ./.github/secrets/ios/Budget_Badger_AppStore.mobileprovision.gpg
 
       - name: Set up Keychain
@@ -126,10 +121,11 @@ jobs:
         run: |
              security create-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
              security set-keychain-settings -lut 21600 "app-signing.keychain-db"
+             security default-keychain -s "app-signing.keychain-db"
              security unlock-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
-             security import "./ios_distribution.p12" -P "DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security import "./ios_distribution.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
              security list-keychain -d user -s "app-signing.keychain-db"
-             security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
 
       - name: Set up provisioning profiles
         run: |
@@ -184,8 +180,7 @@ jobs:
         run:  |
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_app.p12 ./.github/secrets/macos/mac_app.p12.gpg
-              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_installer.p12 ./.github/secrets/macos/mac_installer.p12.gpg 
-              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./Budget_Badger_Mac_AppStore.provisionprofile ./.github/secrets/macos/Budget_Badger_Mac_AppStore.provisionprofile.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_installer.p12 ./.github/secrets/macos/mac_installer.p12.gpg
 
       - name: Set up Keychain
         env:
@@ -194,16 +189,12 @@ jobs:
         run: |
              security create-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
              security set-keychain-settings -lut 21600 "app-signing.keychain-db"
+             security default-keychain -s "app-signing.keychain-db"
              security unlock-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
-             security import "./mac_app.p12" -P "DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
-             security import "./mac_installer.p12" -P "DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security import "./mac_app.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security import "./mac_installer.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
              security list-keychain -d user -s "app-signing.keychain-db"
-             security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
-
-      - name: Set up provisioning profiles
-        run: |
-             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-             cp ./Budget_Badger_Mac_AppStore.provisionprofile ~/Library/MobileDevice/Provisioning\ Profiles
+             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
 
       - name: Update Version Info
         env:
@@ -230,20 +221,63 @@ jobs:
           path: "./src/BudgetBadger.macOS/bin/Release/Budget Badger*.pkg"
           if-no-files-found: error
 
-  create_release:
-    needs: [create_version_tag, build_sign_android, build_sign_ios, build_sign_macos]
-    runs-on: ubuntu-latest
+  build_sign_uwp:
+    needs: create_version_tag
+    runs-on: windows-latest
 
     env:
       VERSION: ${{ needs.create_version_tag.outputs.version }}
-      TAG: ${{ needs.create_version_tag.outputs.tag }}
-      CHANGELOG: ${{ needs.create_version_tag.outputs.changelog }}
+      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
 
     steps:
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
 
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Decrypt Secrets
+        env:
+          DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
+        run:  |
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
+        shell: bash
+
+      - name: Update Version Info
+        run: |
+             [xml]$manifest = get-content "./src/BudgetBadger.UWP/Package.appxmanifest"
+             $manifest.Package.Identity.Version = "$VERSION.$BUILDNUMBER" 
+             $manifest.save("./src/BudgetBadger.UWP/Package.appxmanifest")
+        shell: pwsh
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        env:
+          UWP_CERT_PASSWORD: ${{ secrets.UWP_CERT_PASSWORD }}
+        run: |
+             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$UWP_CERT_PASSWORD" /restore
+        shell: pwsh
+
+      - name: Upload appxupload
+        uses: actions/upload-artifact@v3
+        with:
+          name: BudgetBadger.appxupload
+          path: './src/BudgetBadger.UWP/AppPackages/BudgetBadger.UWP*.appxupload'
+          if-no-files-found: error
+
+  create_release:
+    needs: [create_version_tag, build_sign_android, build_sign_ios, build_sign_macos, build_sign_uwp]
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
 
@@ -254,11 +288,12 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           draft: true
-          tag: $TAG
-          name: Release $TAG
-          body: $CHANGELOG
-          artifacts: "./com.BayWolfStudios.BudgetBadger.aab/com.BayWolfStudios.BudgetBadger.aab,
-                      ./com.BayWolfStudios.BudgetBadger.apk/com.BayWolfStudios.BudgetBadger.apk,
-                      ./BudgetBadger.iOS.ipa
-                      ./BudgetBadger.pkg"
+          tag: ${{ needs.create_version_tag.outputs.tag }}
+          name: Release ${{ needs.create_version_tag.outputs.tag }}
+          body: ${{ needs.create_version_tag.outputs.changelog }}
+          artifacts: "./com.BayWolfStudios.BudgetBadger.aab/com.BayWolfStudios.BudgetBadger*.aab,
+                      ./com.BayWolfStudios.BudgetBadger.apk/com.BayWolfStudios.BudgetBadger*.apk,
+                      ./BudgetBadger.iOS.ipa/BudgetBadger.iOS.ipa,
+                      ./BudgetBadger.pkg/BudgetBadger*.pkg,
+                      ./BudgetBadger.appxupload/BudgetBadger*.appxupload"
 
