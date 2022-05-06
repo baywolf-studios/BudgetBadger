@@ -17,14 +17,13 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dropbox.Api" Version="6.11.1" />
-    <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />
+    <PackageReference Include="Microcharts" Version="0.7.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +34,10 @@
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Microcharts" />
+    <None Remove="NETStandard.Library" />
+  </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>

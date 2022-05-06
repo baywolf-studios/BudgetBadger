@@ -15,6 +15,7 @@
     <Compile Remove="Comparers\**" />
     <EmbeddedResource Remove="Comparers\**" />
     <None Remove="Comparers\**" />
+    <None Remove="NETStandard.Library" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Language\BudgetBadger.Language.csproj" />

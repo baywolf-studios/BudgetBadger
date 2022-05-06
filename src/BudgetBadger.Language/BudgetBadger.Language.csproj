@@ -23,4 +23,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="NETStandard.Library" />
+  </ItemGroup>
 </Project>

@@ -29,7 +29,6 @@ namespace BudgetBadger.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             BorderedEditorRenderer.Initialize();
-            CardRenderer.Initialize();
             Button2Renderer.Initialize();
             CurrencyCalculatorRenderer.Initialize();
             SwipBackPageRenderer.Initialize();

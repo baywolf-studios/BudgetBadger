@@ -11,4 +11,7 @@
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="NETStandard.Library" />
+  </ItemGroup>
 </Project>

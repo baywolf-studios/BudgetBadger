@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Remove="Authentication\" />
+    <None Remove="NETStandard.Library" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authentication\" />

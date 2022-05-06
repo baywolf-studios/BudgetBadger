@@ -30,7 +30,6 @@ namespace BudgetBadger.UWP
         {
             this.InitializeComponent();
             Button2Renderer.Initialize();
-            CardRenderer.Initialize();
             ContentButtonRenderer.Initialize();
             LoadApplication(new BudgetBadger.Forms.App(new UwpInitializer()));
         }

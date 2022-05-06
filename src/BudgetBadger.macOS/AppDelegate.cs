@@ -35,7 +35,6 @@ namespace BudgetBadger.macOS
         {
             Xamarin.Forms.Forms.Init();
             Button2Renderer.Initialize();
-            CardRenderer.Initialize();
             MasterDetailRenderer.Initialize();
 
             LoadApplication(new App(new macOSInitializer()));

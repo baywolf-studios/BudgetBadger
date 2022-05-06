@@ -5,7 +5,6 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Droid.Renderers;
 using BudgetBadger.Forms;
 using Plugin.InAppBilling;
 using Prism;
@@ -29,7 +28,6 @@ namespace BudgetBadger.Droid
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);
-            CardRenderer.Initialize();
             LoadApplication(new App(new AndroidInitializer()));
         }
 

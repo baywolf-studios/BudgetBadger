@@ -8,7 +8,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,4 +15,7 @@
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="NETStandard.Library" />
+  </ItemGroup>
 </Project>
