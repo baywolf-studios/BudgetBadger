@@ -1,6 +1,9 @@
 ﻿name: release
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   create_version_tag:
@@ -16,7 +19,6 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: .*
       - name: Set Build Number
         run: echo "BUILDNUMBER=$((500000 + $GITHUB_RUN_NUMBER))" >> $GITHUB_ENV
       - uses: actions/github-script@v5
@@ -31,11 +33,6 @@ jobs:
   build_sign_android:
     needs: create_version_tag
     runs-on: macos-latest
-
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
 
     steps:
       - name: Setup .NET 6.0.x
@@ -65,6 +62,8 @@ jobs:
       - name: Update Version Info
         env:
           ANDROID_MANIFEST_FILE: ./src/BudgetBadger.Android/Properties/AndroidManifest.xml
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
         run:  |
               sed -i '' 's/versionName="[0-9.]*"/versionName="'$VERSION'"/' $ANDROID_MANIFEST_FILE
               sed -i '' 's/versionCode="[0-9]*"/versionCode="'$BUILDNUMBER'"/' $ANDROID_MANIFEST_FILE
@@ -77,33 +76,25 @@ jobs:
       - name: Restore
         run: nuget restore
 
-      - name: Build and Sign for Play Store aab
-        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
+      - name: Build
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
 
-      - name: Upload aab
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: com.BayWolfStudios.BudgetBadger.aab
-          path: ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.aab
-          if-no-files-found: error
-
-      - name: Build and Sign for Play Store apk
-        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
-
-      - name: Upload apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: com.BayWolfStudios.BudgetBadger.apk
-          path: ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.apk
+          name: BudgetBadger.Android
+          path: |
+                ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.aab
+                ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.apk
           if-no-files-found: error
 
   build_sign_ios:
     needs: create_version_tag
     runs-on: macos-latest
-
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
 
     steps:
       - name: Setup .NET 6.0.x
@@ -151,6 +142,8 @@ jobs:
       - name: Update Version Info
         env:
           IOS_INFOPLIST_FILE: ./src/BudgetBadger.iOS/Info.plist
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
         run:  |
               plutil -replace CFBundleShortVersionString -string "$VERSION" "$IOS_INFOPLIST_FILE"
               plutil -replace CFBundleVersion -string "$BUILDNUMBER" "$IOS_INFOPLIST_FILE"
@@ -166,20 +159,16 @@ jobs:
       - name: Build
         run: msbuild ./src/BudgetBadger.iOS/BudgetBadger.iOS.csproj /t:Build /p:Platform=iPhone /p:Configuration=Release /p:BuildIpa=true
 
-      - name: Upload ipa
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: BudgetBadger.iOS.ipa
+          name: BudgetBadger.iOS
           path: ./src/BudgetBadger.iOS/bin/iPhone/Release/BudgetBadger.iOS.ipa
           if-no-files-found: error
 
   build_sign_macos:
     needs: create_version_tag
     runs-on: macos-latest
-
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
 
     steps:
       - name: Setup .NET 6.0.x
@@ -223,6 +212,8 @@ jobs:
       - name: Update Version Info
         env:
           MACOS_INFOPLIST_FILE: ./src/BudgetBadger.macOS/Info.plist
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
         run:  |
               plutil -replace CFBundleShortVersionString -string "$VERSION" "$MACOS_INFOPLIST_FILE"
               plutil -replace CFBundleVersion -string "$BUILDNUMBER" "$MACOS_INFOPLIST_FILE"
@@ -238,20 +229,16 @@ jobs:
       - name: Build
         run: msbuild ./src/BudgetBadger.macOS/BudgetBadger.macOS.csproj /p:Configuration=Release /p:Platform=AnyCPU
 
-      - name: Upload pkg
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: BudgetBadger.pkg
-          path: "./src/BudgetBadger.macOS/bin/Release/Budget Badger*.pkg"
+          name: BudgetBadger.macOS
+          path: "./src/BudgetBadger.macOS/bin/Release/*"
           if-no-files-found: error
 
   build_sign_uwp:
     needs: create_version_tag
     runs-on: windows-latest
-
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
 
     steps:
       - name: Setup MSBuild
@@ -278,13 +265,15 @@ jobs:
           DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
         run:  |
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
-              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.UWP/BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
         shell: bash
 
       - name: Update Version Info
+        env:
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
         run: |
              [xml]$manifest = get-content "./src/BudgetBadger.UWP/Package.appxmanifest"
-             $manifest.Package.Identity.Version = "$VERSION" + "." + "$BUILDNUMBER"
+             $manifest.Package.Identity.Version = "$env:VERSION" + ".0"
              $manifest.save("./src/BudgetBadger.UWP/Package.appxmanifest")
              type "./src/BudgetBadger.UWP/Package.appxmanifest"
         shell: pwsh
@@ -296,13 +285,13 @@ jobs:
         env:
           UWP_CERT_PASSWORD: ${{ secrets.UWP_CERT_PASSWORD }}
         run: |
-             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$UWP_CERT_PASSWORD" /restore
+             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$env:UWP_CERT_PASSWORD"
         shell: pwsh
 
-      - name: Upload appxupload
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: BudgetBadger.appxupload
+          name: BudgetBadger.UWP
           path: './src/BudgetBadger.UWP/AppPackages/*'
           if-no-files-found: error
 
@@ -324,9 +313,9 @@ jobs:
           tag: ${{ needs.create_version_tag.outputs.tag }}
           name: Release ${{ needs.create_version_tag.outputs.tag }}
           body: ${{ needs.create_version_tag.outputs.changelog }}
-          artifacts: "./com.BayWolfStudios.BudgetBadger.aab/com.BayWolfStudios.BudgetBadger*.aab,
-                      ./com.BayWolfStudios.BudgetBadger.apk/com.BayWolfStudios.BudgetBadger*.apk,
-                      ./BudgetBadger.iOS.ipa/BudgetBadger.iOS.ipa,
-                      ./BudgetBadger.pkg/BudgetBadger*.pkg,
-                      ./BudgetBadger.appxupload/BudgetBadger*.appxupload"
+          artifacts: "./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.aab,
+                      ./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.apk,
+                      ./BudgetBadger.iOS/BudgetBadger.iOS.ipa,
+                      ./BudgetBadger.macOS/Budget Badger*.pkg,
+                      ./BudgetBadger.UWP/BudgetBadger*.appxupload"
 

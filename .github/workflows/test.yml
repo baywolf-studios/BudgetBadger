@@ -1,13 +1,10 @@
 ﻿name: test
 
-on: [push]
+on: [pull_request]
 
 jobs:
   verify_android:
     runs-on: macos-latest
-
-    env:
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
 
     steps:
       - name: Setup .NET 6.0.x
@@ -40,11 +37,13 @@ jobs:
       - name: Restore
         run: nuget restore
 
-      - name: Build and Sign for Play Store aab
-        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
+      - name: Build
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
 
-      - name: Build and Sign for Play Store apk
-        run: msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
         
   verify_ios:
     runs-on: macos-latest
@@ -104,10 +103,6 @@ jobs:
   verify_macos:
     runs-on: macos-latest
 
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
-
     steps:
       - name: Setup .NET 6.0.x
         uses: actions/setup-dotnet@v2
@@ -159,10 +154,6 @@ jobs:
   verify_uwp:
     runs-on: windows-latest
 
-    env:
-      VERSION: ${{ needs.create_version_tag.outputs.version }}
-      BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
-
     steps:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
@@ -188,15 +179,8 @@ jobs:
           DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
         run:  |
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
-              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.UWP/BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
         shell: bash
-
-      - name: Update Version Info
-        run: |
-             [xml]$manifest = get-content "./src/BudgetBadger.UWP/Package.appxmanifest"
-             $manifest.Package.Identity.Version = "$VERSION" + "." + "$BUILDNUMBER" 
-             $manifest.save("./src/BudgetBadger.UWP/Package.appxmanifest")
-        shell: pwsh
 
       - name: Restore
         run: nuget restore
@@ -205,7 +189,7 @@ jobs:
         env:
           UWP_CERT_PASSWORD: ${{ secrets.UWP_CERT_PASSWORD }}
         run: |
-             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$UWP_CERT_PASSWORD" /restore
+             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$env:UWP_CERT_PASSWORD" /restore
         shell: pwsh
 
  
