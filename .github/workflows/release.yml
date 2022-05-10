@@ -43,6 +43,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -102,6 +110,14 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.0.x'
+
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -171,6 +187,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -238,6 +262,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -252,8 +284,9 @@ jobs:
       - name: Update Version Info
         run: |
              [xml]$manifest = get-content "./src/BudgetBadger.UWP/Package.appxmanifest"
-             $manifest.Package.Identity.Version = "$VERSION.$BUILDNUMBER" 
+             $manifest.Package.Identity.Version = "$VERSION" + "." + "$BUILDNUMBER"
              $manifest.save("./src/BudgetBadger.UWP/Package.appxmanifest")
+             type "./src/BudgetBadger.UWP/Package.appxmanifest"
         shell: pwsh
 
       - name: Restore
@@ -270,7 +303,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: BudgetBadger.appxupload
-          path: './src/BudgetBadger.UWP/AppPackages/BudgetBadger.UWP*.appxupload'
+          path: './src/BudgetBadger.UWP/AppPackages/*'
           if-no-files-found: error
 
   create_release:
