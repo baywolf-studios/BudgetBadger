@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Purchase\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Authentication\" />
+    <None Remove="NETStandard.Library" />
+  </ItemGroup>
+</Project>

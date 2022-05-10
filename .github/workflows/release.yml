@@ -1,0 +1,321 @@
+﻿name: release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_version_tag:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_output.outputs.version }}
+      tag: ${{ steps.set_output.outputs.tag }}
+      changelog: ${{ steps.set_output.outputs.changelog }}
+      buildnumber: ${{ steps.set_output.outputs.buildnumber }}
+    steps:
+      - name: Tag Version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set Build Number
+        run: echo "BUILDNUMBER=$((500000 + $GITHUB_RUN_NUMBER))" >> $GITHUB_ENV
+      - uses: actions/github-script@v5
+        id: set_output
+        with:
+          script: |
+            core.setOutput("version", `${{ steps.tag_version.outputs.new_version }}`);
+            core.setOutput("tag", `${{ steps.tag_version.outputs.new_tag }}`);
+            core.setOutput("changelog", `${{ steps.tag_version.outputs.changelog }}`);
+            core.setOutput("buildnumber", `${{ env.BUILDNUMBER }}`);  
+
+  build_sign_android:
+    needs: create_version_tag
+    runs-on: macos-latest
+
+    steps:
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Decrypt Secrets
+        env:
+          DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
+        run:  |
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./upload_certificate.pem ./.github/secrets/android-play/upload_certificate.pem.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Android/upload_keystore.jks ./.github/secrets/android-play/upload_keystore.jks.gpg 
+
+      - name: Update Version Info
+        env:
+          ANDROID_MANIFEST_FILE: ./src/BudgetBadger.Android/Properties/AndroidManifest.xml
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
+        run:  |
+              sed -i '' 's/versionName="[0-9.]*"/versionName="'$VERSION'"/' $ANDROID_MANIFEST_FILE
+              sed -i '' 's/versionCode="[0-9]*"/versionCode="'$BUILDNUMBER'"/' $ANDROID_MANIFEST_FILE
+              echo "File content:"
+              cat $ANDROID_MANIFEST_FILE
+
+      - name: Remove UWP project for Restore
+        run: dotnet sln ./BudgetBadger.sln remove ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="aab"
+             msbuild ./src/BudgetBadger.Android/BudgetBadger.Android.csproj /p:Configuration=Release /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="upload" /p:AndroidSigningKeyPass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidSigningKeyStore="upload_keystore.jks" /p:AndroidSigningStorePass="$ANDROID_KEYSTORE_PASSWORD" /p:AndroidPackageFormat="apk"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BudgetBadger.Android
+          path: |
+                ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.aab
+                ./src/BudgetBadger.Android/bin/Release/com.BayWolfStudios.BudgetBadger-Signed.apk
+          if-no-files-found: error
+
+  build_sign_ios:
+    needs: create_version_tag
+    runs-on: macos-latest
+
+    steps:
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Decrypt Secrets
+        env:
+          DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
+        run:  |
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./ios_distribution.p12 ./.github/secrets/ios/ios_distribution.p12.gpg 
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./Budget_Badger_AppStore.mobileprovision ./.github/secrets/ios/Budget_Badger_AppStore.mobileprovision.gpg
+
+      - name: Set up Keychain
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.BUILD_KEYCHAIN_PASSWORD }}
+          DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+        run: |
+             security create-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+             security set-keychain-settings -lut 21600 "app-signing.keychain-db"
+             security default-keychain -s "app-signing.keychain-db"
+             security unlock-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+             security import "./ios_distribution.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security list-keychain -d user -s "app-signing.keychain-db"
+             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+
+      - name: Set up provisioning profiles
+        run: |
+             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+             cp ./Budget_Badger_AppStore.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Update Version Info
+        env:
+          IOS_INFOPLIST_FILE: ./src/BudgetBadger.iOS/Info.plist
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
+        run:  |
+              plutil -replace CFBundleShortVersionString -string "$VERSION" "$IOS_INFOPLIST_FILE"
+              plutil -replace CFBundleVersion -string "$BUILDNUMBER" "$IOS_INFOPLIST_FILE"
+              echo "File content:"
+              cat $IOS_INFOPLIST_FILE
+
+      - name: Remove UWP project for Restore
+        run: dotnet sln ./BudgetBadger.sln remove ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        run: msbuild ./src/BudgetBadger.iOS/BudgetBadger.iOS.csproj /t:Build /p:Platform=iPhone /p:Configuration=Release /p:BuildIpa=true
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BudgetBadger.iOS
+          path: ./src/BudgetBadger.iOS/bin/iPhone/Release/BudgetBadger.iOS.ipa
+          if-no-files-found: error
+
+  build_sign_macos:
+    needs: create_version_tag
+    runs-on: macos-latest
+
+    steps:
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Decrypt Secrets
+        env:
+          DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
+        run:  |
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_app.p12 ./.github/secrets/macos/mac_app.p12.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_installer.p12 ./.github/secrets/macos/mac_installer.p12.gpg
+
+      - name: Set up Keychain
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.BUILD_KEYCHAIN_PASSWORD }}
+          DIST_CERT_PASSWORD: ${{ secrets.MACOS_DIST_CERT_PASSWORD }}
+        run: |
+             security create-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+             security set-keychain-settings -lut 21600 "app-signing.keychain-db"
+             security default-keychain -s "app-signing.keychain-db"
+             security unlock-keychain -p "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+             security import "./mac_app.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security import "./mac_installer.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
+             security list-keychain -d user -s "app-signing.keychain-db"
+             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+
+      - name: Update Version Info
+        env:
+          MACOS_INFOPLIST_FILE: ./src/BudgetBadger.macOS/Info.plist
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+          BUILDNUMBER: ${{ needs.create_version_tag.outputs.buildnumber }}
+        run:  |
+              plutil -replace CFBundleShortVersionString -string "$VERSION" "$MACOS_INFOPLIST_FILE"
+              plutil -replace CFBundleVersion -string "$BUILDNUMBER" "$MACOS_INFOPLIST_FILE"
+              echo "File content:"
+              cat $MACOS_INFOPLIST_FILE
+
+      - name: Remove UWP project for Restore
+        run: dotnet sln ./BudgetBadger.sln remove ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        run: msbuild ./src/BudgetBadger.macOS/BudgetBadger.macOS.csproj /p:Configuration=Release /p:Platform=AnyCPU
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BudgetBadger.macOS
+          path: "./src/BudgetBadger.macOS/bin/Release/*"
+          if-no-files-found: error
+
+  build_sign_uwp:
+    needs: create_version_tag
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Setup .NET 6.0.x
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Print environment
+        run: |
+             nuget help | grep Version
+             msbuild -version
+             dotnet --info
+             echo "GitHub ref: $GITHUB_REF"
+             echo "GitHub event: $GITHUB_EVENT"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Decrypt Secrets
+        env:
+          DECRYPT_FILE_PASSWORD: ${{ secrets.DECRYPT_FILE_PASSWORD }}
+        run:  |
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.UWP/BudgetBadger.UWP_StoreKey.pfx ./.github/secrets/uwp/BudgetBadger.UWP_StoreKey.pfx.gpg
+        shell: bash
+
+      - name: Update Version Info
+        env:
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+        run: |
+             [xml]$manifest = get-content "./src/BudgetBadger.UWP/Package.appxmanifest"
+             $manifest.Package.Identity.Version = "$env:VERSION" + ".0"
+             $manifest.save("./src/BudgetBadger.UWP/Package.appxmanifest")
+             type "./src/BudgetBadger.UWP/Package.appxmanifest"
+        shell: pwsh
+
+      - name: Restore
+        run: nuget restore
+
+      - name: Build
+        env:
+          UWP_CERT_PASSWORD: ${{ secrets.UWP_CERT_PASSWORD }}
+        run: |
+             msbuild ./src/BudgetBadger.UWP/BudgetBadger.UWP.csproj /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="./BudgetBadger.UWP_StoreKey.pfx" /p:PackageCertificatePassword="$env:UWP_CERT_PASSWORD"
+        shell: pwsh
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BudgetBadger.UWP
+          path: './src/BudgetBadger.UWP/AppPackages/*'
+          if-no-files-found: error
+
+  create_release:
+    needs: [create_version_tag, build_sign_android, build_sign_ios, build_sign_macos, build_sign_uwp]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          draft: true
+          tag: ${{ needs.create_version_tag.outputs.tag }}
+          name: Release ${{ needs.create_version_tag.outputs.tag }}
+          body: ${{ needs.create_version_tag.outputs.changelog }}
+          artifacts: "./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.aab,
+                      ./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.apk,
+                      ./BudgetBadger.iOS/BudgetBadger.iOS.ipa,
+                      ./BudgetBadger.macOS/Budget Badger*.pkg,
+                      ./BudgetBadger.UWP/BudgetBadger*.appxupload"
+
