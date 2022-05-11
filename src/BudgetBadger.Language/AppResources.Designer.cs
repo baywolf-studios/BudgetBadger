@@ -409,15 +409,6 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Budget Badger Pro.
-        /// </summary>
-        public static string AlertBudgetBadgerPro {
-            get {
-                return ResourceManager.GetString("AlertBudgetBadgerPro", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string AlertCancel {
@@ -499,15 +490,6 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You currently do not have access to these features. Would you like to purchase Budget Badger Pro?.
-        /// </summary>
-        public static string AlertMessageBudgetBadgerPro {
-            get {
-                return ResourceManager.GetString("AlertMessageBudgetBadgerPro", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Since this account has a negative balance, a debt envelope has been created..
         /// </summary>
         public static string AlertMessageDebtEnvelopes {
@@ -571,15 +553,6 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not Purchased.
-        /// </summary>
-        public static string AlertNotPurchased {
-            get {
-                return ResourceManager.GetString("AlertNotPurchased", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Not really.
         /// </summary>
         public static string AlertNotReally {
@@ -603,24 +576,6 @@ namespace BudgetBadger.Language {
         public static string AlertOkSure {
             get {
                 return ResourceManager.GetString("AlertOkSure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purchase.
-        /// </summary>
-        public static string AlertPurchase {
-            get {
-                return ResourceManager.GetString("AlertPurchase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purchase Unsuccessful.
-        /// </summary>
-        public static string AlertPurchaseUnsuccessful {
-            get {
-                return ResourceManager.GetString("AlertPurchaseUnsuccessful", resourceCulture);
             }
         }
         
@@ -657,15 +612,6 @@ namespace BudgetBadger.Language {
         public static string AlertRefreshUnsuccessful {
             get {
                 return ResourceManager.GetString("AlertRefreshUnsuccessful", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore Purchase Unsuccessful.
-        /// </summary>
-        public static string AlertRestorePurchaseUnsuccessful {
-            get {
-                return ResourceManager.GetString("AlertRestorePurchaseUnsuccessful", resourceCulture);
             }
         }
         
@@ -783,42 +729,6 @@ namespace BudgetBadger.Language {
         public static string BudgetBadger {
             get {
                 return ResourceManager.GetString("BudgetBadger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Budget Badger Pro.
-        /// </summary>
-        public static string BudgetBadgerProLabel {
-            get {
-                return ResourceManager.GetString("BudgetBadgerProLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upgrade your budget - Go Pro!.
-        /// </summary>
-        public static string BudgetBadgerProPurchaseLabel {
-            get {
-                return ResourceManager.GetString("BudgetBadgerProPurchaseLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore Purchase.
-        /// </summary>
-        public static string BudgetBadgerProRestoreLabel {
-            get {
-                return ResourceManager.GetString("BudgetBadgerProRestoreLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Thanks for purchasing Budget Badger Pro!.
-        /// </summary>
-        public static string BudgetBadgerProThanksLabel {
-            get {
-                return ResourceManager.GetString("BudgetBadgerProThanksLabel", resourceCulture);
             }
         }
         
@@ -2200,150 +2110,6 @@ namespace BudgetBadger.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currently the app store seems to be unavailble, please try again later..
-        /// </summary>
-        public static string PurchaseErrorAppStoreUnavailable {
-            get {
-                return ResourceManager.GetString("PurchaseErrorAppStoreUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Billing seems to be unavailable, please try again later..
-        /// </summary>
-        public static string PurchaseErrorBillingUnavailable {
-            get {
-                return ResourceManager.GetString("PurchaseErrorBillingUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to connect to billing service.
-        /// </summary>
-        public static string PurchaseErrorConnection {
-            get {
-                return ResourceManager.GetString("PurchaseErrorConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There was an issue purchasing, please try again later..
-        /// </summary>
-        public static string PurchaseErrorGeneralError {
-            get {
-                return ResourceManager.GetString("PurchaseErrorGeneralError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
-        /// </summary>
-        public static string PurchaseErrorInvalidProduct {
-            get {
-                return ResourceManager.GetString("PurchaseErrorInvalidProduct", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
-        /// </summary>
-        public static string PurchaseErrorItemUnavailable {
-            get {
-                return ResourceManager.GetString("PurchaseErrorItemUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The product was not purchased.
-        /// </summary>
-        public static string PurchaseErrorNotPurchased {
-            get {
-                return ResourceManager.GetString("PurchaseErrorNotPurchased", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Payment seems to be invalid, please try again..
-        /// </summary>
-        public static string PurchaseErrorPaymentInvalid {
-            get {
-                return ResourceManager.GetString("PurchaseErrorPaymentInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Payment does not seem to be enabled or allowed, please try again..
-        /// </summary>
-        public static string PurchaseErrorPaymentNotAllowed {
-            get {
-                return ResourceManager.GetString("PurchaseErrorPaymentNotAllowed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The product you are purchasing seems to be unavailble, please try again later..
-        /// </summary>
-        public static string PurchaseErrorProductRequestFailed {
-            get {
-                return ResourceManager.GetString("PurchaseErrorProductRequestFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The purchase was unable to be restored, please try again later..
-        /// </summary>
-        public static string PurchaseErrorRestoreFailed {
-            get {
-                return ResourceManager.GetString("PurchaseErrorRestoreFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The network connection seems to be unavailble, please try again later..
-        /// </summary>
-        public static string PurchaseErrorServiceUnavailable {
-            get {
-                return ResourceManager.GetString("PurchaseErrorServiceUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown Error.
-        /// </summary>
-        public static string PurchaseErrorUnknown {
-            get {
-                return ResourceManager.GetString("PurchaseErrorUnknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purchase Cancelled.
-        /// </summary>
-        public static string PurchaseErrorUserCancelled {
-            get {
-                return ResourceManager.GetString("PurchaseErrorUserCancelled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The purchase was unable to be verified, please try again later..
-        /// </summary>
-        public static string PurchaseErrorVerifyFailed {
-            get {
-                return ResourceManager.GetString("PurchaseErrorVerifyFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purchase.
-        /// </summary>
-        public static string PurchaseProButton {
-            get {
-                return ResourceManager.GetString("PurchaseProButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Past 3 Months Activity.
         /// </summary>
         public static string QuickBudgetAvgPast3MonthsActivity {
@@ -2439,15 +2205,6 @@ namespace BudgetBadger.Language {
         public static string ReportsPageTitle {
             get {
                 return ResourceManager.GetString("ReportsPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore.
-        /// </summary>
-        public static string RestoreProButton {
-            get {
-                return ResourceManager.GetString("RestoreProButton", resourceCulture);
             }
         }
         
@@ -2988,24 +2745,6 @@ namespace BudgetBadger.Language {
         public static string UnhideButton {
             get {
                 return ResourceManager.GetString("UnhideButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unlock Cloud Sync with Budget Badger Pro.
-        /// </summary>
-        public static string UnlockCloudSyncLabel {
-            get {
-                return ResourceManager.GetString("UnlockCloudSyncLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unlock Reports with Budget Badger Pro.
-        /// </summary>
-        public static string UnlockReportsLabel {
-            get {
-                return ResourceManager.GetString("UnlockReportsLabel", resourceCulture);
             }
         }
     }

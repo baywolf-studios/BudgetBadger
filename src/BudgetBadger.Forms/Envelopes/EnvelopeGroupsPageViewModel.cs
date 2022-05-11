@@ -1,24 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using System.Linq;
-using Prism.Mvvm;
-using Prism.AppModel;
-using BudgetBadger.Core.Sync;
-using Prism;
-using System.Collections.ObjectModel;
-using BudgetBadger.Models.Extensions;
-using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Purchase;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
@@ -29,8 +20,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly Lazy<IEnvelopeLogic> _envelopeGroupLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly Lazy<ISyncFactory> _syncFactory;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -80,27 +69,16 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noEnvelopeGroups, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         public EnvelopeGroupsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                    INavigationService navigationService,
                                    IPageDialogService dialogService,
                                    Lazy<IEnvelopeLogic> envelopeGroupLogic,
-                                   Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService,
                                    IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _envelopeGroupLogic = envelopeGroupLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             EnvelopeGroups = new ObservableList<EnvelopeGroup>();
@@ -134,9 +112,6 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
-
             await FullRefresh();
         }
 

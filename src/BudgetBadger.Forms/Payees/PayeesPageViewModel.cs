@@ -1,24 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using System.Linq;
-using Prism.Mvvm;
-using Prism.AppModel;
-using BudgetBadger.Core.Sync;
-using Prism;
-using System.Collections.ObjectModel;
-using BudgetBadger.Models.Extensions;
-using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Purchase;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
@@ -29,8 +20,6 @@ namespace BudgetBadger.Forms.Payees
         readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly Lazy<ISyncFactory> _syncFactory;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
@@ -80,29 +69,18 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noPayees, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         bool _fullRefresh = true;
 
         public PayeesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                    INavigationService navigationService,
                                    IPageDialogService dialogService,
                                    Lazy<IPayeeLogic> payeeLogic,
-                                   Lazy<ISyncFactory> syncFactory,
-                                   Lazy<IPurchaseService> purchaseService,
                                    IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _payeeLogic = payeeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Payees = new ObservableList<Payee>();
@@ -127,9 +105,6 @@ namespace BudgetBadger.Forms.Payees
 
         public override async void OnActivated()
         {
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
-
             if (_fullRefresh)
             {
                 await FullRefresh();

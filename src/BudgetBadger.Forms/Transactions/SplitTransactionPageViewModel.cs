@@ -5,15 +5,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Core.Purchase;
-using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
-using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
@@ -26,11 +21,9 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly Lazy<ITransactionLogic> _transLogic;
-        readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -122,33 +115,22 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _noTransactions, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         public SplitTransactionPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                              INavigationService navigationService,
                                              IPageDialogService dialogService,
                                              Lazy<ITransactionLogic> transLogic,
-                                             Lazy<ISyncFactory> syncFactory,
                                              Lazy<IAccountLogic> accountLogic,
                                              Lazy<IEnvelopeLogic> envelopeLogic,
                                              Lazy<IPayeeLogic> payeeLogic,
-                                             Lazy<IPurchaseService> purchaseService,
                                              IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
-            _syncFactory = syncFactory;
             _accountLogic = accountLogic;
             _envelopeLogic = envelopeLogic;
             _payeeLogic = payeeLogic;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Transactions = new ObservableList<Transaction>();
@@ -165,9 +147,6 @@ namespace BudgetBadger.Forms.Transactions
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
-
             await FullRefresh();
 
             if (SplitId == null)

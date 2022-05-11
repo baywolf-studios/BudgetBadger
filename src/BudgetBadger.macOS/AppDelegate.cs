@@ -3,10 +3,8 @@ using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
 using BudgetBadger.macOS.Renderers;
 using Foundation;
-using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
-using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
 namespace BudgetBadger.macOS
@@ -59,8 +57,6 @@ namespace BudgetBadger.macOS
         public void RegisterTypes(IContainerRegistry container)
         {
             container.Register<ILocalize, Localize>();
-            var test = new InAppBillingImplementation();
-            container.RegisterInstance<IInAppBilling>(test);
         }
     }
 }

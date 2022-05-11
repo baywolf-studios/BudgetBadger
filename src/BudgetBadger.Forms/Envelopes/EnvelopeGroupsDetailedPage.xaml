@@ -60,12 +60,6 @@
                                     CancelCommand="{Binding BindingContext.RefreshEnvelopeGroupCommand, Source={x:Reference Name=this}}">
                                     <dt:EnvelopeGroupDetailedViewCell.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                            Value="false"
-                                            TargetType="dt:EnvelopeGroupDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                        <DataTrigger
                                             Binding="{Binding IsGenericHiddenEnvelopeGroup}"
                                             Value="true"
                                             TargetType="dt:EnvelopeGroupDetailedViewCell">

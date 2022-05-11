@@ -235,12 +235,6 @@
                                     CancelCommand="{Binding BindingContext.RefreshBudgetCommand, Source={x:Reference Name=this}}">
                                     <dt:EnvelopeDetailedViewCell.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                            Value="false"
-                                            TargetType="dt:EnvelopeDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                        <DataTrigger
                                             Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
                                             Value="true"
                                             TargetType="dt:EnvelopeDetailedViewCell">

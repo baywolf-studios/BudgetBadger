@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
-using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
@@ -24,7 +18,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand RefreshCommand { get; set; }
@@ -74,14 +67,12 @@ namespace BudgetBadger.Forms.Envelopes
             IResourceContainer resourceContainer,
             INavigationService navigationService,
             IEnvelopeLogic envelopeLogic,
-            IPageDialogService dialogService,
-            IEventAggregator eventAggregator)
+            IPageDialogService dialogService)
         {
             _resourceContainer = resourceContainer;
             _envelopeLogic = envelopeLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _eventAggregator = eventAggregator;
 
             Budgets = new ObservableList<Budget>();
             SelectedBudget = null;

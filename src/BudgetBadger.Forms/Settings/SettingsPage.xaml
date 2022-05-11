@@ -22,10 +22,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
                         <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
@@ -45,73 +41,14 @@
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
-                        Text="{ext:Translate BudgetBadgerProLabel}" />
+                        Text="{ext:Translate CloudSyncLabel}" />
                     <BoxView
                         Grid.Row="1"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource DividerStyle}"/>
-                    <Label
-                        Grid.Row="2"
-                        Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        IsVisible="{Binding HasPro}"
-                        Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                        Text="{ext:Translate BudgetBadgerProThanksLabel}" />
-                    <uc:ContentButton
-                        Grid.Row="2"
-                        Grid.ColumnSpan="12"
-                        HeightRequest="{ext:DynamicResource size_500}"
-                        Style="{ext:DynamicResource SettingsButtonStyle}"
-                        Command="{Binding PurchaseProCommand}">
-                        <uc:ContentButton.Triggers>
-                            <DataTrigger
-                                Binding="{Binding HasPro}"
-                                TargetType="uc:ContentButton"
-                                Value="true">
-                                <Setter Property="IsVisible" Value="false" />
-                            </DataTrigger>
-                        </uc:ContentButton.Triggers>
-                        <Label
-                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                            Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="{ext:Translate BudgetBadgerProPurchaseLabel}">
-                        </Label>
-                    </uc:ContentButton>
-                    <uc:ContentButton
-                        Grid.Row="3"
-                        Grid.ColumnSpan="12"
-                        Command="{Binding RestoreProCommand}"
-                        HeightRequest="{ext:DynamicResource size_500}"
-                        Style="{ext:DynamicResource SettingsButtonStyle}">
-                        <uc:ContentButton.Triggers>
-                            <DataTrigger
-                                Binding="{Binding HasPro}"
-                                TargetType="uc:ContentButton"
-                                Value="true">
-                                <Setter Property="IsVisible" Value="false" />
-                                <Setter Property="HeightRequest" Value="0" />
-                            </DataTrigger>
-                        </uc:ContentButton.Triggers>
-                        <Label
-                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                            Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="{ext:Translate BudgetBadgerProRestoreLabel}">
-                        </Label>
-                    </uc:ContentButton>
-                    <Label
-                        Grid.Row="4"
-                        Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
-                        Text="{ext:Translate CloudSyncLabel}" />
-                    <BoxView
-                        Grid.Row="5"
-                        Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource DividerStyle}"/>
                     <Grid
-                        Grid.Row="6"
+                        Grid.Row="2"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         RowSpacing="4">
@@ -127,6 +64,7 @@
                         <Image
                             HeightRequest="{ext:DynamicResource size_225}"
                             WidthRequest="{ext:DynamicResource size_225}"
+                            Grid.Row="0"
                             Grid.RowSpan="2"
                             Grid.Column="0"
                             VerticalOptions="Center"
@@ -149,23 +87,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Style="{ext:DynamicResource Key=ListDoubleLineSecondaryItemLabelStyle}"
-                            VerticalOptions="Start"
-                            Text="{ext:Translate UnlockCloudSyncLabel}">
-                            <Label.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasPro}"
-                                    TargetType="Label"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Style="{ext:DynamicResource Key=ListDoubleLineSecondaryItemLabelStyle}"
-                            VerticalOptions="Start"
-                            IsVisible="false">
+                            VerticalOptions="Start">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{ext:Translate LastSyncedLabel}" />
@@ -173,61 +95,21 @@
                                     <Span Text="{Binding LastSynced}" />
                                 </FormattedString>
                             </Label.FormattedText>
-                            <Label.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasPro}"
-                                    TargetType="Label"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="true"/>
-                                </DataTrigger>
-                            </Label.Triggers>
                         </Label>
-                        <Image
-                            HeightRequest="{ext:DynamicResource size_225}"
-                            WidthRequest="{ext:DynamicResource size_225}"
-                            Grid.RowSpan="2"
-                            Grid.Column="2"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource
-                                    Size="{ext:DynamicResource size_225}"
-                                    Glyph="{ext:DynamicResource Key=LockIcon}"
-                                    Color="{ext:DynamicResource gray_900}"
-                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
-                            </Image.Source>
-                            <Image.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasPro}"
-                                    TargetType="Image"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="false" />
-                                </DataTrigger>
-                            </Image.Triggers>
-                        </Image>
                         <Switch
                             Grid.RowSpan="2"
                             Grid.Column="2"
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             IsToggled="{Binding DropboxEnabled}"
                             OnColor="{ext:DynamicResource brand_600}"
-                            VerticalOptions="CenterAndExpand"
-                            IsVisible="false">
-                            <Switch.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasPro}"
-                                    TargetType="Switch"
-                                    Value="true">
-                                    <Setter Property="IsVisible" Value="true" />
-                                </DataTrigger>
-                            </Switch.Triggers>
+                            VerticalOptions="CenterAndExpand">
                             <Switch.Behaviors>
                                 <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
                             </Switch.Behaviors>
                         </Switch>
                     </Grid>
                     <uc:Button2
-                        Grid.Row="7"
+                        Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
@@ -237,18 +119,18 @@
                         Style="{ext:DynamicResource SecondaryActionButtonStyle}"
                         Text="{ext:Translate SyncButton}" />
                     <Label
-                        Grid.Row="8"
+                        Grid.Row="4"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate AppearanceLabel}" />
                     <BoxView
-                        Grid.Row="9"
+                        Grid.Row="5"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource DividerStyle}"/>
                     <uc:Dropdown
-                        Grid.Row="10"
+                        Grid.Row="6"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemsSource="{Binding DimensionList}"
@@ -260,7 +142,7 @@
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <uc:Dropdown
-                        Grid.Row="11"
+                        Grid.Row="7"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -273,7 +155,7 @@
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <uc:Dropdown
-                        Grid.Row="12"
+                        Grid.Row="8"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -286,18 +168,18 @@
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <Label
-                        Grid.Row="13"
+                        Grid.Row="9"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate AboutLabel}" />
                     <BoxView
-                        Grid.Row="14"
+                        Grid.Row="10"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource DividerStyle}"/>
                     <uc:ContentButton
-                        Grid.Row="15"
+                        Grid.Row="11"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding HelpCommand}">
@@ -308,7 +190,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="16"
+                        Grid.Row="12"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding EmailCommand}">
@@ -319,7 +201,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="17"
+                        Grid.Row="13"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding LicenseCommand}">
@@ -330,7 +212,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="18"
+                        Grid.Row="14"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding ThirdPartyNoticesCommand}">

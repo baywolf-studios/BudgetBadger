@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
-using BudgetBadger.Forms.Enums;
-using Prism.Commands;
-using Prism.Navigation;
-using Prism.Services;
-using Prism.Mvvm;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Models.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using Xamarin.Forms;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
+using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
+using Prism.Navigation;
+using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -24,7 +20,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
         readonly IEventAggregator _eventAggregator;
 
@@ -74,14 +69,12 @@ namespace BudgetBadger.Forms.Envelopes
         public EnvelopeEditPageViewModel(INavigationService navigationService,
                                          IPageDialogService dialogService,
                                          IEnvelopeLogic envelopeLogic,
-                                         ISyncFactory syncFactory,
                                          IResourceContainer resourceContainer,
                                          IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
-            _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
             _eventAggregator = eventAggregator;
 

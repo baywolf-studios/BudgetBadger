@@ -1,36 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Core.Purchase;
-using BudgetBadger.Core.Sync;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
-using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-    public class AccountReconcilePageViewModel : ObservableBase, INavigationAware, IInitializeAsync
+    public class AccountReconcilePageViewModel : ObservableBase, INavigationAware, IInitialize
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
         readonly INavigationService _navigationService;
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly IPageDialogService _dialogService;
-        readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -141,13 +133,6 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         bool _fullRefresh = true;
 
         public AccountReconcilePageViewModel(Lazy<IResourceContainer> resourceContainer,
@@ -155,10 +140,8 @@ namespace BudgetBadger.Forms.Accounts
                                              Lazy<ITransactionLogic> transactionLogic,
                                              Lazy<IAccountLogic> accountLogic, 
                                              IPageDialogService dialogService,
-                                             Lazy<ISyncFactory> syncFactory,
                                              Lazy<IEnvelopeLogic> envelopeLogic,
                                              Lazy<IPayeeLogic> payeeLogic,
-                                             Lazy<IPurchaseService> purchaseService,
                                              IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
@@ -166,10 +149,8 @@ namespace BudgetBadger.Forms.Accounts
             _transactionLogic = transactionLogic;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
             _envelopeLogic = envelopeLogic;
             _payeeLogic = payeeLogic;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Account = new Account();
@@ -217,16 +198,13 @@ namespace BudgetBadger.Forms.Accounts
             _eventAggregator.GetEvent<EnvelopeUnhiddenEvent>().Subscribe(RefreshEnvelope);
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             var account = parameters.GetValue<Account>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
             }
-
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
         }
 
         public async void OnNavigatedTo(INavigationParameters parameters)

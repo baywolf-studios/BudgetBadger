@@ -1,38 +1,28 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
-using BudgetBadger.Forms.Enums;
-using Prism.Commands;
-using Prism.Navigation;
-using System.Collections.Generic;
-using Prism.Mvvm;
-using Prism.Services;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Core.Settings;
-using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Purchase;
-using Xamarin.Forms;
-using Prism.Events;
+using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
+using Prism.Navigation;
+using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
 {
-    public class EnvelopeInfoPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
+    public class EnvelopeInfoPageViewModel : ObservableBase, INavigationAware, IInitialize
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
         readonly INavigationService _navigationService;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
         readonly IPageDialogService _dialogService;
-        readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IPayeeLogic> _payeeLogic;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -103,13 +93,6 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _noTransactions, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         bool _fullRefresh = true;
 
         public EnvelopeInfoPageViewModel(Lazy<IResourceContainer> resourceContainer,
@@ -120,7 +103,6 @@ namespace BudgetBadger.Forms.Envelopes
                                          Lazy<ISyncFactory> syncFactory,
                                          Lazy<IAccountLogic> accountLogic,
                                          Lazy<IPayeeLogic> payeeLogic,
-                                         Lazy<IPurchaseService> purchaseService,
                                          IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
@@ -128,10 +110,8 @@ namespace BudgetBadger.Forms.Envelopes
             _navigationService = navigationService;
             _envelopeLogic = envelopeLogic;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
             _accountLogic = accountLogic;
             _payeeLogic = payeeLogic;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Budget = new Budget();
@@ -193,16 +173,13 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedTransaction = null;
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             var budget = parameters.GetValue<Budget>(PageParameter.Budget);
             if (budget != null)
             {
                 Budget = budget.DeepCopy();
             }
-
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
         }
 
         public async Task ExecuteEditCommand()

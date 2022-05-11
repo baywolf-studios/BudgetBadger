@@ -1,12 +1,10 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms;
-using Plugin.InAppBilling;
 using Prism;
 using Prism.Ioc;
 
@@ -25,16 +23,9 @@ namespace BudgetBadger.Droid
 
             base.OnCreate(bundle);
             Xamarin.Essentials.Platform.Init(this, bundle);
-            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App(new AndroidInitializer()));
-        }
-
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            InAppBillingImplementation.HandleActivityResult(requestCode, resultCode, data);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)

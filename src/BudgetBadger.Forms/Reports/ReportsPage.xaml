@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Reports.ReportsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -13,39 +13,10 @@
     <p:BasePage.Body>
         <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="{ext:DynamicResource Key=size_600,Converter={StaticResource DoubleToGridLengthConverter}}" />
             </Grid.RowDefinitions>
-            <StackLayout
-                Grid.Row="0"
-                Grid.ColumnSpan="12"
-                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
-                HeightRequest="{ext:DynamicResource size_600}"
-                Spacing="{ext:DynamicResource size_100}"
-                Orientation="Horizontal">
-                <Label
-                    Style="{StaticResource MobilePageHeaderPrimaryLabelStyle}"
-                    Text="{ext:Translate UnlockReportsLabel}"/>
-                <StackLayout.Triggers>
-                    <DataTrigger
-                        Binding="{Binding HasPro}"
-                        TargetType="StackLayout"
-                        Value="true">
-                        <Setter Property="IsVisible" Value="false" />
-                    </DataTrigger>
-                </StackLayout.Triggers>
-            </StackLayout>
-            <BoxView
-                Grid.Row="1"
-                Grid.ColumnSpan="12"
-                Style="{ext:DynamicResource MediumDividerStyle}"
-                HeightRequest="{ext:DynamicResource size_25}"
-                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"/>
             <uc:ListView2
-                Grid.Row="2"
-                Grid.RowSpan="2"
+                Grid.Row="0"
                 Grid.ColumnSpan="12"
                 Items="{Binding Reports}"
                 RowHeight="{ext:DynamicResource size_500}"
@@ -57,14 +28,6 @@
                 SeparatorVisibility="None"
                 IsPullToRefreshEnabled="False"
                 IsBusy="{Binding IsBusy}">
-                <uc:ListView2.Triggers>
-                    <DataTrigger
-                        Binding="{Binding HasPro}"
-                        TargetType="uc:ListView2"
-                        Value="false">
-                        <Setter Property="SelectionMode" Value="None" />
-                    </DataTrigger>
-                </uc:ListView2.Triggers>
                 <uc:ListView2.ItemTemplate>
                     <DataTemplate>
                         <uc:SelectableViewCell
@@ -75,64 +38,12 @@
                                 Orientation="Horizontal"
                                 Spacing="{ext:DynamicResource size_100}"
                                 HeightRequest="{ext:DynamicResource size_500}">
-                                <Image
-                                    HeightRequest="{ext:DynamicResource Key=size_225}"
-                                    WidthRequest="{ext:DynamicResource Key=size_225}"
-                                    VerticalOptions="Center"
-                                    HorizontalOptions="End">
-                                    <Image.Source>
-                                        <FontImageSource
-                                            Size="{ext:DynamicResource Key=size_225}"
-                                            Glyph="{ext:DynamicResource Key=LockIcon}"
-                                            Color="{ext:DynamicResource gray_900}"
-                                            FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
-                                    </Image.Source>
-                                    <Image.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding Value}"
-                                            TargetType="Image"
-                                            Value="true">
-                                            <Setter Property="IsVisible" Value="false" />
-                                        </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
-                                <Label Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}" Text="{Binding Key}" />
+                                <Label Style="{ext:DynamicResource Key=ListSingleLineItemLabelStyle}" Text="{Binding .}" />
                             </StackLayout>
                         </uc:SelectableViewCell>
                     </DataTemplate>
                 </uc:ListView2.ItemTemplate>
-                <uc:ListView2.Footer>
-                    <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
-                </uc:ListView2.Footer>
             </uc:ListView2>
-            <FlexLayout
-                Grid.Row="3"
-                Grid.Column="0"
-                Grid.ColumnSpan="12"
-                Direction="Row"
-                AlignItems="Center"
-                JustifyContent="End"
-                Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                <FlexLayout.Triggers>
-                    <DataTrigger
-                        Binding="{Binding HasPro}"
-                        TargetType="FlexLayout"
-                        Value="true">
-                        <Setter Property="IsVisible" Value="false" />
-                    </DataTrigger>
-                </FlexLayout.Triggers>
-                <uc:Button2
-                    Command="{Binding RestoreProCommand}"
-                    Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="{ext:Translate RestoreProButton}"
-                    FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-                <BoxView WidthRequest="{Binding Gutter, Source={x:Reference responsiveGrid}}"/>
-                <uc:Button2
-                    Command="{Binding PurchaseProCommand}"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    Text="{ext:Translate PurchaseProButton}"
-                    FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
-            </FlexLayout>
         </uc:ResponsiveGrid>
     </p:BasePage.Body>
 </p:BasePage>

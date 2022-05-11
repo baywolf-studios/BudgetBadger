@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Purchase\" />
     <Folder Include="Utilities\" />
     <Folder Include="Authentication\" />
   </ItemGroup>
