@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
-using Prism.Commands;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Forms.Enums;
-using Prism.Mvvm;
-using System.Collections.Generic;
-using BudgetBadger.Models.Extensions;
 using Xamarin.Forms;
-using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -25,7 +20,6 @@ namespace BudgetBadger.Forms.Accounts
         readonly IAccountLogic _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
         readonly IResourceContainer _resourceContainer;
         readonly IEventAggregator _eventAggregator;
 
@@ -71,14 +65,12 @@ namespace BudgetBadger.Forms.Accounts
         public AccountEditPageViewModel(INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         IAccountLogic accountLogic,
-                                        ISyncFactory syncFactory,
                                         IResourceContainer resourceContainer,
                                         IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _accountLogic = accountLogic;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
             _resourceContainer = resourceContainer;
             _eventAggregator = eventAggregator;
 

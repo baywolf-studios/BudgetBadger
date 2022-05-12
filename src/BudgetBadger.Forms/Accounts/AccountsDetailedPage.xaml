@@ -184,12 +184,6 @@
                                     CancelCommand="{Binding BindingContext.RefreshAccountCommand, Source={x:Reference Name=this}}">
                                     <dt:AccountDetailedViewCell.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                            Value="false"
-                                            TargetType="dt:AccountDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                        <DataTrigger
                                             Binding="{Binding IsGenericHiddenAccount}"
                                             Value="true"
                                             TargetType="dt:AccountDetailedViewCell">

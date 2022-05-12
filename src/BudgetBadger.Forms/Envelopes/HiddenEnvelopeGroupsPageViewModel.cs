@@ -2,19 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using Prism.Mvvm;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Models.Extensions;
-using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes

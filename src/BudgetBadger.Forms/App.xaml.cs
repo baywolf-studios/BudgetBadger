@@ -29,10 +29,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
 using BudgetBadger.Models;
-using BudgetBadger.Core.Purchase;
-using BudgetBadger.Forms.Purchase;
-using Plugin.InAppBilling.Abstractions;
-using Plugin.InAppBilling;
 using Microsoft.Data.Sqlite;
 using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
@@ -152,7 +148,6 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            await VerifyPurchases();
             ResetSyncTimerAtStartOrResume();
         }
 
@@ -169,7 +164,6 @@ namespace BudgetBadger.Forms
 
             container.Register<IApplicationStore, ApplicationStore>();
             container.Register<ISettings, AppStoreSettings>();
-            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
             container.Register<IResourceContainer, ResourceContainer>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
@@ -243,17 +237,6 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<IEnvelopeSyncLogic>(),
                                                                           Arg.Of<ITransactionSyncLogic>(),
                                                                           Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
-
-
-#if DEBUG
-            container.Register<IPurchaseService, TrueInAppBillingPurchaseService>();
-#else
-            if (Device.RuntimePlatform != Device.macOS)
-            {
-                container.UseInstance<IInAppBilling>(CrossInAppBilling.Current);
-            }
-            container.Register<IPurchaseService, CachedInAppBillingPurchaseService>();
-#endif
 
             if (Device.RuntimePlatform != Device.UWP)
             {
@@ -413,19 +396,6 @@ namespace BudgetBadger.Forms
             }
 
             localize.SetLocale(currentCulture);
-        }
-
-        async Task VerifyPurchases()
-        {
-            var purchaseService = Container.Resolve<IPurchaseService>();
-
-            var proResult = await purchaseService.VerifyPurchaseAsync(Purchases.Pro);
-
-            if (!proResult.Success)
-            {
-                var settings = Container.Resolve<ISettings>();
-                await settings.AddOrUpdateValueAsync(AppSettings.SyncMode, SyncMode.NoSync);
-            }
         }
 
         private void ResetSyncTimerAtStartOrResume()

@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Purchase;
 using BudgetBadger.Core.Settings;
-using BudgetBadger.FileSyncProvider.Dropbox;
 using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
-using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;
-using Prism;
-using Prism.AppModel;
-using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
@@ -32,15 +23,12 @@ namespace BudgetBadger.Forms.Settings
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
         readonly IDropboxAuthentication _dropboxAuthentication;
-        readonly IPurchaseService _purchaseService;
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
 
         string _detect;
 
         public ICommand SyncToggleCommand { get; set; }
-        public ICommand RestoreProCommand { get; set; }
-        public ICommand PurchaseProCommand { get; set; }
         public ICommand SyncCommand { get; set; }
         public ICommand HelpCommand { get => new Command(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
         public ICommand EmailCommand { get => new Command(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
@@ -70,13 +58,6 @@ namespace BudgetBadger.Forms.Settings
         {
             get => _dropboxEnabled;
             set => SetProperty(ref _dropboxEnabled, value);
-        }
-
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
         }
 
         bool _showSyncButton;
@@ -138,7 +119,6 @@ namespace BudgetBadger.Forms.Settings
                                      IPageDialogService dialogService,
                                      ISettings settings,
                                      IDropboxAuthentication dropboxAuthentication,
-                                     IPurchaseService purchaseService,
                                      ISyncFactory syncFactory,
                                      ILocalize localize)
         {
@@ -147,17 +127,13 @@ namespace BudgetBadger.Forms.Settings
             _settings = settings;
             _dialogService = dialogService;
             _dropboxAuthentication = dropboxAuthentication;
-            _purchaseService = purchaseService;
             _syncFactory = syncFactory;
             _localize = localize;
 
-            HasPro = false;
             IsBusy = false;
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             SyncToggleCommand = new Command(async () => await ExecuteSyncToggleCommand());
-            RestoreProCommand = new Command(async () => await ExecuteRestoreProCommand());
-            PurchaseProCommand = new Command(async () => await ExecutePurchaseProCommand());
             SyncCommand = new Command(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
@@ -190,10 +166,6 @@ namespace BudgetBadger.Forms.Settings
         public override async void OnActivated()
         {
             _detect = _resourceContainer.GetResourceString("DetectLabel");
-
-            var purchasedPro = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
-
-            HasPro = purchasedPro.Success;
 
             var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
             DropboxEnabled = (syncMode == SyncMode.DropboxSync);
@@ -273,38 +245,16 @@ namespace BudgetBadger.Forms.Settings
 
             if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
-                var verifyPurchase = await _purchaseService.VerifyPurchaseAsync(Purchases.Pro);
-                HasPro = verifyPurchase.Success;
+                var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
 
-                if (!HasPro)
+                if (enableDropboxResult.Success)
                 {
-                    var wantToPurchase = await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertBudgetBadgerPro"),
-                    _resourceContainer.GetResourceString("AlertMessageBudgetBadgerPro"),
-                    _resourceContainer.GetResourceString("AlertPurchase"),
-                    _resourceContainer.GetResourceString("AlertCancel"));
-                    if (wantToPurchase)
-                    {
-                        await ExecutePurchaseProCommand();
-                    }
-                }
-
-                if (HasPro)
-                {
-                    var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
-
-                    if (enableDropboxResult.Success)
-                    {
-                        await ExecuteSyncCommand();
-                    }
-                    else
-                    {
-                        DropboxEnabled = false;
-                    }    
+                    await ExecuteSyncCommand();
                 }
                 else
                 {
                     DropboxEnabled = false;
-                }
+                }  
             }
 
             if (!DropboxEnabled)
@@ -314,69 +264,6 @@ namespace BudgetBadger.Forms.Settings
 
             ShowSync = DropboxEnabled;
             LastSynced = _syncFactory.GetLastSyncDateTime();
-        }
-
-        public async Task ExecuteRestoreProCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
-
-            try
-            {
-                var result = await _purchaseService.RestorePurchaseAsync(Purchases.Pro);
-
-                HasPro = result.Success;
-
-                if (!HasPro)
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertRestorePurchaseUnsuccessful"),
-                        result.Message,
-                        _resourceContainer.GetResourceString("AlertOk"));
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public async Task ExecutePurchaseProCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-            BusyText = _resourceContainer.GetResourceString("BusyTextLoading");
-
-            try
-            {
-                if (!HasPro)
-                {
-                    var purchaseResult = await _purchaseService.PurchaseAsync(Purchases.Pro);
-
-                    if (purchaseResult.Success)
-                    {
-                        HasPro = true;
-                    }
-                    else
-                    {
-                        await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertPurchaseUnsuccessful"),
-                            purchaseResult.Message,
-                            _resourceContainer.GetResourceString("AlertOk"));
-                    }
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
         }
 
         public async Task ExecuteSyncCommand()

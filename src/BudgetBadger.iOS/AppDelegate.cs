@@ -2,13 +2,9 @@
 using BudgetBadger.Forms;
 using BudgetBadger.iOS.Renderers;
 using Foundation;
-using Plugin.InAppBilling;
-using Plugin.InAppBilling.Abstractions;
 using Prism;
 using Prism.Ioc;
 using UIKit;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
 
 namespace BudgetBadger.iOS
 {

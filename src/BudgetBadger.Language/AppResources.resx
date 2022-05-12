@@ -195,9 +195,6 @@
   <data name="AlertAuthenticationUnsuccessful" xml:space="preserve">
     <value>Authentication Unsuccessful</value>
   </data>
-  <data name="AlertBudgetBadgerPro" xml:space="preserve">
-    <value>Budget Badger Pro</value>
-  </data>
   <data name="AlertCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -207,23 +204,11 @@
   <data name="AlertGeneralError" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="AlertMessageBudgetBadgerPro" xml:space="preserve">
-    <value>You currently do not have access to these features. Would you like to purchase Budget Badger Pro?</value>
-  </data>
   <data name="AlertMessageDropboxError" xml:space="preserve">
     <value>Did not authenticate with Dropbox. Sync disabled.</value>
   </data>
-  <data name="AlertNotPurchased" xml:space="preserve">
-    <value>Not Purchased</value>
-  </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
-  </data>
-  <data name="AlertPurchase" xml:space="preserve">
-    <value>Purchase</value>
-  </data>
-  <data name="AlertPurchaseUnsuccessful" xml:space="preserve">
-    <value>Purchase Unsuccessful</value>
   </data>
   <data name="AlertQuickBudget" xml:space="preserve">
     <value>Quick Budget</value>
@@ -236,9 +221,6 @@
   </data>
   <data name="AlertRefreshUnsuccessful" xml:space="preserve">
     <value>Refresh Unsuccessful</value>
-  </data>
-  <data name="AlertRestorePurchaseUnsuccessful" xml:space="preserve">
-    <value>Restore Purchase Unsuccessful</value>
   </data>
   <data name="AlertSaveUnsuccessful" xml:space="preserve">
     <value>Save Unsuccessful</value>
@@ -257,18 +239,6 @@
   </data>
   <data name="BudgetBadger" xml:space="preserve">
     <value>Budget Badger</value>
-  </data>
-  <data name="BudgetBadgerProLabel" xml:space="preserve">
-    <value>Budget Badger Pro</value>
-  </data>
-  <data name="BudgetBadgerProPurchaseLabel" xml:space="preserve">
-    <value>Upgrade your budget - Go Pro!</value>
-  </data>
-  <data name="BudgetBadgerProRestoreLabel" xml:space="preserve">
-    <value>Restore Purchase</value>
-  </data>
-  <data name="BudgetBadgerProThanksLabel" xml:space="preserve">
-    <value>Thanks for purchasing Budget Badger Pro!</value>
   </data>
   <data name="BufferEnvelope" xml:space="preserve">
     <value>Buffer</value>
@@ -573,51 +543,6 @@
   <data name="PayeeValidDescriptionError" xml:space="preserve">
     <value>Payee name is required</value>
   </data>
-  <data name="PurchaseErrorAppStoreUnavailable" xml:space="preserve">
-    <value>Currently the app store seems to be unavailble, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorBillingUnavailable" xml:space="preserve">
-    <value>Billing seems to be unavailable, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorConnection" xml:space="preserve">
-    <value>Unable to connect to billing service</value>
-  </data>
-  <data name="PurchaseErrorGeneralError" xml:space="preserve">
-    <value>There was an issue purchasing, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorInvalidProduct" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorItemUnavailable" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorNotPurchased" xml:space="preserve">
-    <value>The product was not purchased</value>
-  </data>
-  <data name="PurchaseErrorPaymentInvalid" xml:space="preserve">
-    <value>Payment seems to be invalid, please try again.</value>
-  </data>
-  <data name="PurchaseErrorPaymentNotAllowed" xml:space="preserve">
-    <value>Payment does not seem to be enabled or allowed, please try again.</value>
-  </data>
-  <data name="PurchaseErrorProductRequestFailed" xml:space="preserve">
-    <value>The product you are purchasing seems to be unavailble, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorRestoreFailed" xml:space="preserve">
-    <value>The purchase was unable to be restored, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorServiceUnavailable" xml:space="preserve">
-    <value>The network connection seems to be unavailble, please try again later.</value>
-  </data>
-  <data name="PurchaseErrorUnknown" xml:space="preserve">
-    <value>Unknown Error</value>
-  </data>
-  <data name="PurchaseErrorUserCancelled" xml:space="preserve">
-    <value>Purchase Cancelled</value>
-  </data>
-  <data name="PurchaseErrorVerifyFailed" xml:space="preserve">
-    <value>The purchase was unable to be verified, please try again later.</value>
-  </data>
   <data name="QuickBudgetAvgPast3MonthsActivity" xml:space="preserve">
     <value>Past 3 Months Activity</value>
   </data>
@@ -881,18 +806,6 @@
   </data>
   <data name="AlertMessageFeedback" xml:space="preserve">
     <value>Would you mind giving us some feedback?</value>
-  </data>
-  <data name="PurchaseProButton" xml:space="preserve">
-    <value>Purchase</value>
-  </data>
-  <data name="RestoreProButton" xml:space="preserve">
-    <value>Restore</value>
-  </data>
-  <data name="UnlockCloudSyncLabel" xml:space="preserve">
-    <value>Unlock Cloud Sync with Budget Badger Pro</value>
-  </data>
-  <data name="UnlockReportsLabel" xml:space="preserve">
-    <value>Unlock Reports with Budget Badger Pro</value>
   </data>
   <data name="BudgetValidAlreadyExists" xml:space="preserve">
     <value>Budget already exists</value>

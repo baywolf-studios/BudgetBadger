@@ -73,12 +73,6 @@
                                     CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
                                     <dt:PayeeDetailedViewCell.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding BindingContext.HasPro, Source={x:Reference Name=this}}"
-                                            Value="false"
-                                            TargetType="dt:PayeeDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                        <DataTrigger
                                             Binding="{Binding IsGenericHiddenPayee}"
                                             Value="true"
                                             TargetType="dt:PayeeDetailedViewCell">

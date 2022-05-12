@@ -2,23 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using Prism.Mvvm;
-using Prism.AppModel;
-using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
-using Prism;
-using BudgetBadger.Models.Extensions;
-using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Purchase;
-using BudgetBadger.Forms.Events;
-using Prism.Events;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -28,8 +20,6 @@ namespace BudgetBadger.Forms.Accounts
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-		readonly Lazy<ISyncFactory> _syncFactory;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
@@ -81,29 +71,18 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _searchText, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         bool _fullRefresh = true;
 
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
 		                             IPageDialogService dialogService,
                                      Lazy<IAccountLogic> accountLogic,
-                                     Lazy<ISyncFactory> syncFactory,
-                                     Lazy<IPurchaseService> purchaseService,
                                      IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _accountLogic = accountLogic;
             _navigationService = navigationService;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Accounts = new ObservableList<Account>();
@@ -128,9 +107,6 @@ namespace BudgetBadger.Forms.Accounts
 
         public override async void OnActivated()
         {
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
-
             if (_fullRefresh)
             {
                 await FullRefresh();

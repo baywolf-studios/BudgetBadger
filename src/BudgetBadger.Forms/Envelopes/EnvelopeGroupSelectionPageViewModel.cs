@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using System.Collections.Generic;
-using Prism.Mvvm;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Models.Extensions;
-using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Envelopes
@@ -25,7 +19,6 @@ namespace BudgetBadger.Forms.Envelopes
         readonly IEnvelopeLogic _envelopeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -77,14 +70,12 @@ namespace BudgetBadger.Forms.Envelopes
                                            INavigationService navigationService,
                                            IPageDialogService dialogService,
                                            IEnvelopeLogic envelopeLogic,
-                                           ISyncFactory syncFactory,
                                            IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _envelopeLogic = envelopeLogic;
-            _syncFactory = syncFactory;
             _eventAggregator = eventAggregator;
 
             SelectedEnvelopeGroup = null;

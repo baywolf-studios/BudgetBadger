@@ -38,7 +38,7 @@ jobs:
       - name: Setup .NET 6.0.x
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.202'
 
       - name: Print environment
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Setup .NET 6.0.x
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.202'
 
       - name: Print environment
         run: |
@@ -174,7 +174,7 @@ jobs:
       - name: Setup .NET 6.0.x
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.202'
 
       - name: Print environment
         run: |
@@ -247,7 +247,7 @@ jobs:
       - name: Setup .NET 6.0.x
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.202'
 
       - name: Print environment
         run: |

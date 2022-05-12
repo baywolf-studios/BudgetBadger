@@ -1,18 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using Prism.Mvvm;
-using BudgetBadger.Core.Sync;
 using Xamarin.Forms;
-using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -22,7 +18,6 @@ namespace BudgetBadger.Forms.Payees
         readonly IPayeeLogic _payeeLogic;
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
-        readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
         bool _isBusy;
@@ -56,14 +51,12 @@ namespace BudgetBadger.Forms.Payees
             INavigationService navigationService,
                                       IPageDialogService dialogService,
                                       IPayeeLogic payeeLogic,
-                                      ISyncFactory syncFactory,
                                       IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _payeeLogic = payeeLogic;
-            _syncFactory = syncFactory;
             _eventAggregator = eventAggregator;
 
             Payee = new Payee();

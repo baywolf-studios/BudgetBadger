@@ -1,37 +1,28 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
-using BudgetBadger.Forms.Enums;
-using Prism.Commands;
-using Prism.Navigation;
-using System.Collections.Generic;
-using Prism.Mvvm;
-using Prism.Services;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Models.Extensions;
 using BudgetBadger.Core.LocalizedResources;
-using Xamarin.Forms;
-using BudgetBadger.Core.Purchase;
-using Prism.Events;
+using BudgetBadger.Core.Logic;
+using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
+using Prism.Navigation;
+using Prism.Services;
+using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Payees
 {
-    public class PayeeInfoPageViewModel : ObservableBase, INavigationAware, IInitializeAsync
+    public class PayeeInfoPageViewModel : ObservableBase, INavigationAware, IInitialize
     {
         readonly Lazy<IResourceContainer> _resourceContainer;
         readonly Lazy<ITransactionLogic> _transactionLogic;
         readonly INavigationService _navigationService;
         readonly Lazy<IPayeeLogic> _payeeLogic;
         readonly IPageDialogService _dialogService;
-        readonly Lazy<ISyncFactory> _syncFactory;
         readonly Lazy<IAccountLogic> _accountLogic;
         readonly Lazy<IEnvelopeLogic> _envelopeLogic;
-        readonly Lazy<IPurchaseService> _purchaseService;
         readonly IEventAggregator _eventAggregator;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -103,13 +94,6 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _noTransactions, value);
         }
 
-        bool _hasPro;
-        public bool HasPro
-        {
-            get => _hasPro;
-            set => SetProperty(ref _hasPro, value);
-        }
-
         bool _fullRefresh = true;
 
         public PayeeInfoPageViewModel(Lazy<IResourceContainer> resourceContainer,
@@ -117,10 +101,8 @@ namespace BudgetBadger.Forms.Payees
                                       Lazy<ITransactionLogic> transactionLogic,
                                       Lazy<IPayeeLogic> payeeLogic,
                                       IPageDialogService dialogService,
-                                      Lazy<ISyncFactory> syncFactory,
                                       Lazy<IAccountLogic> accountLogic,
                                       Lazy<IEnvelopeLogic> envelopeLogic,
-                                      Lazy<IPurchaseService> purchaseService,
                                       IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
@@ -128,10 +110,8 @@ namespace BudgetBadger.Forms.Payees
             _navigationService = navigationService;
             _payeeLogic = payeeLogic;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
             _accountLogic = accountLogic;
             _envelopeLogic = envelopeLogic;
-            _purchaseService = purchaseService;
             _eventAggregator = eventAggregator;
 
             Payee = new Payee();
@@ -192,16 +172,13 @@ namespace BudgetBadger.Forms.Payees
             SelectedTransaction = null;
         }
 
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             var payee = parameters.GetValue<Payee>(PageParameter.Payee);
             if (payee != null)
             {
                 Payee = payee.DeepCopy();
             }
-
-            var purchasedPro = await _purchaseService.Value.VerifyPurchaseAsync(Purchases.Pro);
-            HasPro = purchasedPro.Success;
         }
 
         public async Task ExecuteEditCommand()

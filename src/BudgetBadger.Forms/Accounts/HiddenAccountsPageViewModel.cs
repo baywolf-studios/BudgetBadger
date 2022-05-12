@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -8,18 +7,14 @@ using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
-using Prism.AppModel;
-using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Accounts
 {
-	public class HiddenAccountsPageViewModel : ObservableBase, INavigationAware
+    public class HiddenAccountsPageViewModel : ObservableBase, INavigationAware
     {
         readonly IResourceContainer _resourceContainer;
         readonly IAccountLogic _accountLogic;

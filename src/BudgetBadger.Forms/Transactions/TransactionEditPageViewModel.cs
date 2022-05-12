@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Models;
 using BudgetBadger.Forms.Enums;
-using Prism.Commands;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Models;
+using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
-using BudgetBadger.Models.Extensions;
-using Prism.Mvvm;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Core.LocalizedResources;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Transactions
@@ -23,7 +19,6 @@ namespace BudgetBadger.Forms.Transactions
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ITransactionLogic _transLogic;
-        readonly ISyncFactory _syncFactory;
         readonly IEventAggregator _eventAggregator;
 
         bool _isBusy;
@@ -64,17 +59,15 @@ namespace BudgetBadger.Forms.Transactions
         public ICommand TogglePostedTransactionCommand { get; set; }
 
         public TransactionEditPageViewModel(IResourceContainer resourceContainer,
-            INavigationService navigationService,
+                                        INavigationService navigationService,
                                         IPageDialogService dialogService,
                                         ITransactionLogic transLogic,
-                                        ISyncFactory syncFactory,
                                         IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _transLogic = transLogic;
-            _syncFactory = syncFactory;
             _eventAggregator = eventAggregator;
 
             Transaction = new Transaction();
