@@ -26,7 +26,7 @@
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-    <PackageCertificateThumbprint>3C267CCAA4BA71B4EAE1C7366D8C411944CAC91D</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0AE52D0DF0BF8A994BCB9046642F491A9F439BD1</PackageCertificateThumbprint>
     <DisableWin2DPlatformCheck>true</DisableWin2DPlatformCheck>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
