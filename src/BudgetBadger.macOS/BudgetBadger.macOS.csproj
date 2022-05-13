@@ -104,6 +104,9 @@
     <PackageReference Include="Microcharts">
       <Version>0.7.1</Version>
     </PackageReference>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>1.68.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
