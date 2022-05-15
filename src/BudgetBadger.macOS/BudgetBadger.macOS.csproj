@@ -138,6 +138,7 @@
     <Compile Include="Renderers\EditorRenderer.cs" />
     <Compile Include="Renderers\DatePickerRenderer.cs" />
     <Compile Include="Renderers\LabelRenderer.cs" />
+    <Compile Include="Renderers\SwitchRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
