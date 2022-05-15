@@ -194,6 +194,7 @@ jobs:
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./src/BudgetBadger.Forms/AppSecrets.cs ./.github/secrets/AppSecrets.cs.gpg
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_app.p12 ./.github/secrets/macos/mac_app.p12.gpg
               gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./mac_installer.p12 ./.github/secrets/macos/mac_installer.p12.gpg
+              gpg --batch --yes --decrypt --passphrase="$DECRYPT_FILE_PASSWORD" --output ./Budget_Badger_Mac_AppStore.provisionprofile ./.github/secrets/macos/Budget_Badger_Mac_AppStore.provisionprofile.gpg
 
       - name: Set up Keychain
         env:
@@ -208,6 +209,11 @@ jobs:
              security import "./mac_installer.p12" -P "$DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "app-signing.keychain-db"
              security list-keychain -d user -s "app-signing.keychain-db"
              security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "app-signing.keychain-db"
+
+      - name: Set up provisioning profiles
+        run: |
+             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+             cp ./Budget_Badger_Mac_AppStore.provisionprofile ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Update Version Info
         env:

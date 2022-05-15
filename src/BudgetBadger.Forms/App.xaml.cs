@@ -156,6 +156,11 @@ namespace BudgetBadger.Forms
             ResetSyncTimerAtStartOrResume();
         }
 
+        protected override Rules CreateContainerRules()
+        {
+            return base.CreateContainerRules().WithDefaultIfAlreadyRegistered(IfAlreadyRegistered.Replace);
+        }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             var timer = Stopwatch.StartNew();
