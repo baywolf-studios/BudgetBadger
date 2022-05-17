@@ -7,15 +7,16 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="NETStandard.Library" />
+    <None Remove="Microsoft.Data.Sqlite.Core" />
+    <None Remove="SQLitePCLRaw.bundle_sqlite3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.5" />
   </ItemGroup>
 </Project>

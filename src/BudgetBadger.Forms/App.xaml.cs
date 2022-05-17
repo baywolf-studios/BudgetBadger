@@ -64,8 +64,6 @@ namespace BudgetBadger.Forms
         {
             InitializeComponent();
 
-            SQLitePCL.Batteries_V2.Init();
-
             var settings = Container.Resolve<ISettings>();
             int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
             if (appOpenedCount > 0)
