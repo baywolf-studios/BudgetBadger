@@ -7,10 +7,10 @@ namespace BudgetBadger.Forms
 {
     public interface ISyncFactory
     {
-        ISync GetSyncService();
+        Task<ISync> GetSyncServiceAsync();
 
         Task SetLastSyncDateTime(DateTime dateTime);
-        string GetLastSyncDateTime();
+        Task<string> GetLastSyncDateTimeAsync();
 
         Task<Result> EnableDropboxCloudSync();
         Task DisableDropboxCloudSync();
