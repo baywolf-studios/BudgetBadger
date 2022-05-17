@@ -18,7 +18,6 @@
   <ItemGroup>
     <PackageReference Include="Dropbox.Api" Version="6.11.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
@@ -36,6 +35,8 @@
   <ItemGroup>
     <None Remove="Microcharts" />
     <None Remove="NETStandard.Library" />
+    <None Remove="Microsoft.Data.Sqlite.Core" />
+    <None Remove="SQLitePCLRaw.bundle_sqlite3" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">

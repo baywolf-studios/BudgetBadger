@@ -28,6 +28,7 @@ namespace BudgetBadger.iOS
             Button2Renderer.Initialize();
             CurrencyCalculatorRenderer.Initialize();
             SwipBackPageRenderer.Initialize();
+            SQLitePCL.Batteries_V2.Init();
 
             LoadApplication(new App(new iOSInitializer()));
 
