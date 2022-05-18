@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Core", "src\Bu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.DataAccess.Sqlite", "src\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj", "{B370BC59-AB53-4E3B-BAE2-D01A7B8EC176}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.FileSyncProvider.Dropbox", "src\BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj", "{9B8CBEC2-8213-4CB0-B62E-E61537DB46C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.FileSystem.Dropbox", "src\BudgetBadger.FileSystem.Dropbox\BudgetBadger.FileSystem.Dropbox.csproj", "{9B8CBEC2-8213-4CB0-B62E-E61537DB46C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetBadger.Forms", "src\BudgetBadger.Forms\BudgetBadger.Forms.csproj", "{87CD48D8-EAA2-4112-95F1-02FA96A318E5}"
 EndProject
@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.UWP", "src\BudgetBadger.UWP\BudgetBadger.UWP.csproj", "{F2F217F0-C451-40E9-8E21-643CBAE736B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBadger.IntegrationTests", "tests\BudgetBadger.IntegrationTests\BudgetBadger.IntegrationTests.csproj", "{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -414,6 +416,34 @@ Global
 		{F2F217F0-C451-40E9-8E21-643CBAE736B6}.Release|x86.ActiveCfg = Release|x86
 		{F2F217F0-C451-40E9-8E21-643CBAE736B6}.Release|x86.Build.0 = Release|x86
 		{F2F217F0-C451-40E9-8E21-643CBAE736B6}.Release|x86.Deploy.0 = Release|x86
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|ARM.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|ARM64.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|iPhone.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|x64.Build.0 = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -432,6 +462,7 @@ Global
 		{6F6B402D-616F-4247-B4C2-B43DB1964B4A} = {F6529E8D-407D-437A-8521-DEE78B7DE45F}
 		{74B50665-D36B-4DA8-BE18-F151020CEE96} = {2D1BDF2A-C8EA-4CB1-AF9F-1850B5DA14D8}
 		{F2F217F0-C451-40E9-8E21-643CBAE736B6} = {C43221E6-4877-4ABE-A859-BFAA92D535A3}
+		{6F82A8CE-9B52-4A1E-A235-5E52EDD6698B} = {F6529E8D-407D-437A-8521-DEE78B7DE45F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB814D8-53B9-4825-B858-FF2DC47A031B}

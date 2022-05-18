@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Utilities;
@@ -10,7 +11,8 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public partial class SqliteDataAccess : IDataAccess
     {
-        protected readonly string _connectionString;
+        private readonly string _connectionString;
+        private static readonly SemaphoreSlim MultiThreadLock = new SemaphoreSlim(1, 1);
 
         public SqliteDataAccess(string connectionString)
         {

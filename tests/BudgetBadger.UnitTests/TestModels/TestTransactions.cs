@@ -12,7 +12,10 @@ namespace BudgetBadger.UnitTests.TestModels
         {
             Id = Guid.NewGuid(),
             CreatedDateTime = DateTime.Now,
-            ModifiedDateTime = DateTime.Now
+            ModifiedDateTime = DateTime.Now,
+            Envelope = TestEnvelopes.ActiveEnvelope,
+            Account = TestAccounts.ActiveAccount,
+            Payee = TestPayees.ActivePayee
         };
 
         public static readonly Transaction DeletedTransaction = new Transaction
@@ -20,7 +23,10 @@ namespace BudgetBadger.UnitTests.TestModels
             Id = Guid.NewGuid(),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
-            DeletedDateTime = DateTime.Now
+            DeletedDateTime = DateTime.Now,
+            Envelope = TestEnvelopes.ActiveEnvelope,
+            Account = TestAccounts.ActiveAccount,
+            Payee = TestPayees.ActivePayee
         };
 
         public static List<Transaction> GetSplitTransactions(int numberOfTransactions)

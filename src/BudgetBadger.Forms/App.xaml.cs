@@ -15,21 +15,16 @@ using Prism.Ioc;
 using BudgetBadger.Forms.Accounts;
 using BudgetBadger.Forms.Envelopes;
 using BudgetBadger.Forms.Transactions;
-using BudgetBadger.Core.Sync;
-using BudgetBadger.Core.Files;
-using BudgetBadger.FileSyncProvider.Dropbox;
+using BudgetBadger.FileSystem.Dropbox;
 using BudgetBadger.Forms.Settings;
 using BudgetBadger.Core.Settings;
 using Prism.AppModel;
 using BudgetBadger.Forms.Enums;
 using System.IO;
-using Prism.Services;
 using BudgetBadger.Forms.Reports;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
-using BudgetBadger.Models;
-using Microsoft.Data.Sqlite;
 using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
 using BudgetBadger.Core.Utilities;
@@ -37,12 +32,12 @@ using Prism.Navigation;
 using Prism.Events;
 using BudgetBadger.Forms.Events;
 using System.Threading;
-using BudgetBadger.Forms.UserControls;
 using System.Linq;
 using BudgetBadger.Forms.Style;
 using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Core.Authentication;
-using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
+using BudgetBadger.Core.CloudSync;
+using BudgetBadger.Forms.CloudSync;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BudgetBadger.Forms
@@ -137,8 +132,9 @@ namespace BudgetBadger.Forms
             eventAggregator.GetEvent<TransactionStatusUpdatedEvent>().Subscribe(x => ResetSyncTimer());
         }
 
-        protected async override void OnStart()
+        protected override async void OnStart()
         {
+            await CleanupTempDirectory();
             await UpgradeApp();
 
             // tracking number of times app opened
@@ -175,15 +171,10 @@ namespace BudgetBadger.Forms
 
             var dataDirectory = Path.Combine(appDataDirectory, "data");
             Directory.CreateDirectory(dataDirectory);
-            var syncDirectory = Path.Combine(appDataDirectory, "sync");
-            if (Directory.Exists(syncDirectory))
-            {
-                Directory.Delete(syncDirectory, true);
-            }
-            Directory.CreateDirectory(syncDirectory);
 
-            //default dataaccess
-            var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
+            //default data access
+            var defaultConnectionString =
+                SqliteConnectionStringBuilder.Get(Path.Combine(dataDirectory, "default.bb"));
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
             container.Register<IDataAccess>(made: Made.Of(() => new SqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
@@ -194,57 +185,18 @@ namespace BudgetBadger.Forms
             container.Register<IEnvelopeLogic, EnvelopeLogic>();
             container.Register<IReportLogic, ReportLogic>();
 
-            //sync dataaccess
-            var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
-            container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
-            container.Register<IDataAccess>(made: Made.Of(() => new SqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncDataAccess");
-
-            //sync directory for filesyncproviders
-            container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
-
-            //sync logics
-            container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IDataAccess>(),
-                                                                                           Arg.Of<IDataAccess>("syncDataAccess"))));
-            container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IDataAccess>(),
-                                                                                       Arg.Of<IDataAccess>("syncDataAccess"))));
-            container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IDataAccess>(),
-                                                                                             Arg.Of<IDataAccess>("syncDataAccess"))));
-            container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<IDataAccess>(),
-                                                                                                   Arg.Of<IDataAccess>("syncDataAccess"))));
-
-            container.Register<IFileSyncProvider>(made: Made.Of(() => new DropboxFileSyncProvider(Arg.Of<ISettings>(),
-                                                                                                  Arg.Of<string>("dropBoxAppKey"))), serviceKey: SyncMode.DropboxSync);
-
-
-
-            container.Register<ISyncFactory>(made: Made.Of(() => new SyncFactory(Arg.Of<IResourceContainer>(),
-                                                                          Arg.Of<ISettings>(),
-                                                                          Arg.Of<IDirectoryInfo>(),
-                                                                          Arg.Of<IAccountSyncLogic>(),
-                                                                          Arg.Of<IPayeeSyncLogic>(),
-                                                                          Arg.Of<IEnvelopeSyncLogic>(),
-                                                                          Arg.Of<ITransactionSyncLogic>(),
-                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>(),
-                                                                          Arg.Of<IDropboxAuthentication>(),
-                                                                          Arg.Of<IPageDialogService>())));
-
-            container.Register(made: Made.Of(() => StaticSyncFactory.CreateSyncAsync(Arg.Of<ISettings>(),
-                                                                          Arg.Of<IDirectoryInfo>(),
-                                                                          Arg.Of<IAccountSyncLogic>(),
-                                                                          Arg.Of<IPayeeSyncLogic>(),
-                                                                          Arg.Of<IEnvelopeSyncLogic>(),
-                                                                          Arg.Of<ITransactionSyncLogic>(),
-                                                                          Arg.Of<KeyValuePair<string, IFileSyncProvider>[]>())));
-
             if (Device.RuntimePlatform != Device.UWP)
             {
                 container.Register<IWebAuthenticator, WebAuthenticator>();
             }
-            container.UseInstance(AppSecrets.DropBoxAppKey, serviceKey: "dropBoxAppKey");
-            container.Register<IDropboxAuthentication>(made: Made.Of(() => new DropboxAuthentication(
-                Arg.Of<IWebAuthenticator>(),
-                Arg.Of<string>("dropBoxAppKey"))));
 
+            container.Register<ITempSqliteDataAccessFactory, TempSqliteDataAccessFactory>();
+            container.Register<IFileSystem, LocalFileSystem>(serviceKey: Enums.FileSystem.Local);
+            container.Register<IFileSystem, DropboxFileSystem>(serviceKey: Enums.FileSystem.Dropbox);
+            container.Register<IFileSystemAuthentication, DropboxFileSystemAuthentication>(serviceKey: Enums.FileSystem.Dropbox);
+            container.Register<ISyncEngine, SyncEngine>();
+            container.Register<ICloudSync, FileCloudSync>();
+            
             containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
 
             containerRegistry.RegisterForNavigation<MyPage>("NavigationPage");
@@ -406,29 +358,24 @@ namespace BudgetBadger.Forms
             _syncTimer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(-1));
         }
 
-        async Task Sync()
+        private async Task Sync()
         {
-            var syncFactory = Container.Resolve<ISyncFactory>();
-            var syncService = await syncFactory.GetSyncServiceAsync();
-            var syncResult = await syncService.FullSync();
-            if (syncResult.Success)
-            {
-                await syncFactory.SetLastSyncDateTime(DateTime.Now);
-            }
+            var syncService = Container.Resolve<ICloudSync>();
+            await syncService.Sync();
         }
 
-        async Task UpgradeApp()
+        private async Task UpgradeApp()
         {
             await MigrateFromApplicationStoreToSecureStorageSettings();
             var settings = Container.Resolve<ISettings>();
             var appMigrationVersionString = await settings.GetValueOrDefaultAsync(AppSettings.AppMigrationVersion);
 
-            int.TryParse(appMigrationVersionString, out int appMigrationVersion);
+            int.TryParse(appMigrationVersionString, out var appMigrationVersion);
             
             switch (appMigrationVersion)
             {
                 case 0:
-                    await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "3");
+                    await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "4");
                     break;
                 case 1:
                     await UpgradeAppFromV1ToV2();
@@ -436,12 +383,13 @@ namespace BudgetBadger.Forms
                 case 2:
                     await UpgradeAppFromV2ToV3();
                     break;
-                default:
+                case 3:
+                    await UpgradeAppFromV3ToV4();
                     break;
             }
         }
 
-        async Task MigrateFromApplicationStoreToSecureStorageSettings()
+        private async Task MigrateFromApplicationStoreToSecureStorageSettings()
         {
             var appStore = new ApplicationStore();
 
@@ -466,59 +414,71 @@ namespace BudgetBadger.Forms
             }
         }
 
-        async Task UpgradeAppFromV1ToV2()
+        private async Task UpgradeAppFromV1ToV2()
         {
             var settings = Container.Resolve<ISettings>();
-            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
-
-            if (syncMode == SyncMode.DropboxSync)
-            {
-                var dialogService = Container.Resolve<IPageDialogService>();
-                var syncFactory = Container.Resolve<ISyncFactory>();
-                var resourceContainer = Container.Resolve<IResourceContainer>();
-                var loginDropbox = await dialogService.DisplayAlertAsync(resourceContainer.GetResourceString("AlertActionNeeded"),
-                    resourceContainer.GetResourceString("AlertDropboxUpgrade"),
-                    resourceContainer.GetResourceString("AlertYes"),
-                    resourceContainer.GetResourceString("AlertNoThanks"));
-                if (loginDropbox)
-                {
-                    await syncFactory.EnableDropboxCloudSync();
-                }
-                else
-                {
-                    await syncFactory.DisableDropboxCloudSync();
-                }
-            }
-
-            await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "1");
-        }
-
-        async Task UpgradeAppFromV2ToV3()
-        {
-            var settings = Container.Resolve<ISettings>();
-            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
-            var refreshToken = await settings.GetValueOrDefaultAsync(DropboxSettings.RefreshToken);
-
-            if (syncMode == SyncMode.DropboxSync && string.IsNullOrEmpty(refreshToken))
-            {
-                var dialogService = Container.Resolve<IPageDialogService>();
-                var syncFactory = Container.Resolve<ISyncFactory>();
-                var resourceContainer = Container.Resolve<IResourceContainer>();
-                var loginDropbox = await dialogService.DisplayAlertAsync(resourceContainer.GetResourceString("AlertActionNeeded"),
-                    resourceContainer.GetResourceString("AlertDropboxUpgrade"),
-                    resourceContainer.GetResourceString("AlertYes"),
-                    resourceContainer.GetResourceString("AlertNoThanks"));
-                if (loginDropbox)
-                {
-                    await syncFactory.EnableDropboxCloudSync();
-                }
-                else
-                {
-                    await syncFactory.DisableDropboxCloudSync();
-                }
-            }
+            var syncService = Container.Resolve<ICloudSync>();
+            await syncService.DisableCloudSync();
 
             await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "2");
+        }
+
+        private async Task UpgradeAppFromV2ToV3()
+        {
+            var settings = Container.Resolve<ISettings>();
+            var syncService = Container.Resolve<ICloudSync>();
+            await syncService.DisableCloudSync();
+
+            await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "3");
+        }
+
+        private async Task UpgradeAppFromV3ToV4()
+        {
+            var settings = Container.Resolve<ISettings>();
+            
+            // Migrate from refresh token to dropbox settings refresh token
+            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
+            if (syncMode == SyncMode.Dropbox)
+            {
+                var dropBoxRefreshToken = await settings.GetValueOrDefaultAsync("RefreshToken");
+                if (!string.IsNullOrEmpty(dropBoxRefreshToken))
+                {
+                    await settings.AddOrUpdateValueAsync(DropboxSettings.RefreshToken, dropBoxRefreshToken);
+                    await settings.RemoveAsync("RefreshToken");
+                }
+            }
+
+            try
+            {
+                // Cleanup old sync directory
+                var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
+                var syncDirectory = Path.Combine(appDataDirectory, "sync");
+                if (Directory.Exists(syncDirectory))
+                {
+                    Directory.Delete(syncDirectory, true);
+                }
+            }
+            catch (Exception)
+            {
+                // Don't care if we can't cleanup the old directory
+            }
+            
+            await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "4");
+        }
+
+        private static async Task CleanupTempDirectory()
+        {
+            var localFileSystem = new LocalFileSystem();
+            var tempPath = Path.GetTempPath();
+            foreach (var file in await localFileSystem.Directory.GetFilesAsync(tempPath))
+            {
+                await localFileSystem.File.DeleteAsync(file);
+            }
+
+            foreach (var directory in await localFileSystem.Directory.GetDirectoriesAsync(tempPath))
+            {
+                await localFileSystem.Directory.DeleteAsync(directory, true);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.CloudSync;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
@@ -22,7 +23,7 @@ namespace BudgetBadger.Forms.Settings
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
-        readonly ISyncFactory _syncFactory;
+        readonly ICloudSync _cloudSync;
         readonly ILocalize _localize;
 
         string _detect;
@@ -116,14 +117,14 @@ namespace BudgetBadger.Forms.Settings
                                      INavigationService navigationService,
                                      IPageDialogService dialogService,
                                      ISettings settings,
-                                     ISyncFactory syncFactory,
+                                     ICloudSync cloudSync,
                                      ILocalize localize)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
+            _cloudSync = cloudSync;
             _localize = localize;
 
             IsBusy = false;
@@ -154,10 +155,10 @@ namespace BudgetBadger.Forms.Settings
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
-            DropboxEnabled = (syncMode == SyncMode.DropboxSync);
-            ShowSync = (syncMode == SyncMode.DropboxSync);
+            DropboxEnabled = (syncMode == SyncMode.Dropbox);
+            ShowSync = (syncMode == SyncMode.Dropbox);
 
-            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+            LastSynced = (await _cloudSync.GetLastSyncDateTimeAsync()).ToString();
         }
 
         List<KeyValuePair<string, CultureInfo>> GetLanguages()
@@ -229,9 +230,9 @@ namespace BudgetBadger.Forms.Settings
         {
             var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
 
-            if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
+            if (syncMode != SyncMode.Dropbox && DropboxEnabled)
             {
-                var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
+                var enableDropboxResult = await _cloudSync.EnableCloudSync(SyncMode.Dropbox);
 
                 if (enableDropboxResult.Success)
                 {
@@ -240,16 +241,22 @@ namespace BudgetBadger.Forms.Settings
                 else
                 {
                     DropboxEnabled = false;
+                    var message = string.IsNullOrEmpty(enableDropboxResult.Message)
+                        ? _resourceContainer.GetResourceString("AlertAuthenticationUnsuccessful")
+                        : enableDropboxResult.Message;
+                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("CloudSyncLabel"),
+                        message,
+                        _resourceContainer.GetResourceString("AlertOk"));
                 }  
             }
 
             if (!DropboxEnabled)
             {
-                await _syncFactory.DisableDropboxCloudSync();
+                await _cloudSync.DisableCloudSync();
             }
 
             ShowSync = DropboxEnabled;
-            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+            LastSynced = (await _cloudSync.GetLastSyncDateTimeAsync()).ToString();
         }
 
         public async Task ExecuteSyncCommand()
@@ -264,21 +271,16 @@ namespace BudgetBadger.Forms.Settings
 
             try
             {
-                var syncService = await _syncFactory.GetSyncServiceAsync();
-                var syncResult = await syncService.FullSync();
+                var syncResult = await _cloudSync.Sync();
 
-                if (syncResult.Success)
-                {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
-                else
+                if (syncResult.Failure)
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSyncUnsuccessful"),
                         syncResult.Message,
                         _resourceContainer.GetResourceString("AlertOk"));
                 }
 
-                LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+                LastSynced = (await _cloudSync.GetLastSyncDateTimeAsync()).ToString();
             }
             finally
             {
