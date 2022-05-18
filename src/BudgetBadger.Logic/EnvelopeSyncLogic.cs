@@ -9,14 +9,14 @@ namespace BudgetBadger.Logic
 {
     public class EnvelopeSyncLogic : IEnvelopeSyncLogic
     {
-        readonly IEnvelopeDataAccess _localEnvelopeDataAccess;
-        readonly IEnvelopeDataAccess _remoteEnvelopeDataAccess;
+        readonly IDataAccess _localDataAccess;
+        readonly IDataAccess _remoteDataAccess;
 
-        public EnvelopeSyncLogic(IEnvelopeDataAccess localEnvelopeDataAccess,
-                                 IEnvelopeDataAccess remoteEnvelopeDataAccess)
+        public EnvelopeSyncLogic(IDataAccess localDataAccess,
+                                 IDataAccess remoteDataAccess)
         {
-            _localEnvelopeDataAccess = localEnvelopeDataAccess;
-            _remoteEnvelopeDataAccess = remoteEnvelopeDataAccess;
+            _localDataAccess = localDataAccess;
+            _remoteDataAccess = remoteDataAccess;
         }
 
         public async Task<Result> PullAsync()
@@ -25,7 +25,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncEnvelopeGroups(_remoteEnvelopeDataAccess, _localEnvelopeDataAccess);
+                await SyncEnvelopeGroups(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -36,7 +36,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncEnvelopes(_remoteEnvelopeDataAccess, _localEnvelopeDataAccess);
+                await SyncEnvelopes(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncBudgetSchedules(_remoteEnvelopeDataAccess, _localEnvelopeDataAccess);
+                await SyncBudgetSchedules(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncBudgets(_remoteEnvelopeDataAccess, _localEnvelopeDataAccess);
+                await SyncBudgets(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncEnvelopeGroups(_localEnvelopeDataAccess, _remoteEnvelopeDataAccess);
+                await SyncEnvelopeGroups(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncEnvelopes(_localEnvelopeDataAccess, _remoteEnvelopeDataAccess);
+                await SyncEnvelopes(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncBudgetSchedules(_localEnvelopeDataAccess, _remoteEnvelopeDataAccess);
+                await SyncBudgetSchedules(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncBudgets(_localEnvelopeDataAccess, _remoteEnvelopeDataAccess);
+                await SyncBudgets(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -137,13 +137,13 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        async Task SyncEnvelopeGroups(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
+        async Task SyncEnvelopeGroups(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceEnvelopeDataAccess.Init();
-            await targetEnvelopeDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceEnvelopeGroups = await sourceEnvelopeDataAccess.ReadEnvelopeGroupsAsync();
-            var targetEnvelopeGroups = await targetEnvelopeDataAccess.ReadEnvelopeGroupsAsync();
+            var sourceEnvelopeGroups = await sourceDataAccess.ReadEnvelopeGroupsAsync();
+            var targetEnvelopeGroups = await targetDataAccess.ReadEnvelopeGroupsAsync();
 
             var sourceEnvelopeGroupsDictionary = sourceEnvelopeGroups.ToDictionary(a => a.Id, a2 => a2);
             var targetEnvelopeGroupsDictionary = targetEnvelopeGroups.ToDictionary(a => a.Id, a2 => a2);
@@ -152,7 +152,7 @@ namespace BudgetBadger.Logic
             foreach (var envelopeGroupId in envelopeGroupsToAdd)
             {
                 var envelopeGroupToAdd = sourceEnvelopeGroupsDictionary[envelopeGroupId];
-                await targetEnvelopeDataAccess.CreateEnvelopeGroupAsync(envelopeGroupToAdd);
+                await targetDataAccess.CreateEnvelopeGroupAsync(envelopeGroupToAdd);
             }
 
             var envelopeGroupsToUpdate = sourceEnvelopeGroupsDictionary.Keys.Intersect(targetEnvelopeGroupsDictionary.Keys);
@@ -163,18 +163,18 @@ namespace BudgetBadger.Logic
 
                 if (sourceEnvelopeGroup.ModifiedDateTime > targetEnvelopeGroup.ModifiedDateTime)
                 {
-                    await targetEnvelopeDataAccess.UpdateEnvelopeGroupAsync(sourceEnvelopeGroup);
+                    await targetDataAccess.UpdateEnvelopeGroupAsync(sourceEnvelopeGroup);
                 }
             }
         }
 
-        async Task SyncEnvelopes(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
+        async Task SyncEnvelopes(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceEnvelopeDataAccess.Init();
-            await targetEnvelopeDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceEnvelopes = await sourceEnvelopeDataAccess.ReadEnvelopesAsync();
-            var targetEnvelopes = await targetEnvelopeDataAccess.ReadEnvelopesAsync();
+            var sourceEnvelopes = await sourceDataAccess.ReadEnvelopesAsync();
+            var targetEnvelopes = await targetDataAccess.ReadEnvelopesAsync();
 
             var sourceEnvelopesDictionary = sourceEnvelopes.ToDictionary(a => a.Id, a2 => a2);
             var targetEnvelopesDictionary = targetEnvelopes.ToDictionary(a => a.Id, a2 => a2);
@@ -183,7 +183,7 @@ namespace BudgetBadger.Logic
             foreach (var envelopeId in envelopesToAdd)
             {
                 var envelopeToAdd = sourceEnvelopesDictionary[envelopeId];
-                await targetEnvelopeDataAccess.CreateEnvelopeAsync(envelopeToAdd);
+                await targetDataAccess.CreateEnvelopeAsync(envelopeToAdd);
             }
 
             var envelopesToUpdate = sourceEnvelopesDictionary.Keys.Intersect(targetEnvelopesDictionary.Keys);
@@ -194,18 +194,18 @@ namespace BudgetBadger.Logic
 
                 if (sourceEnvelope.ModifiedDateTime > targetEnvelope.ModifiedDateTime)
                 {
-                    await targetEnvelopeDataAccess.UpdateEnvelopeAsync(sourceEnvelope);
+                    await targetDataAccess.UpdateEnvelopeAsync(sourceEnvelope);
                 }
             }
         }
 
-        async Task SyncBudgetSchedules(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
+        async Task SyncBudgetSchedules(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceEnvelopeDataAccess.Init();
-            await targetEnvelopeDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceBudgetSchedules = await sourceEnvelopeDataAccess.ReadBudgetSchedulesAsync();
-            var targetBudgetSchedules = await targetEnvelopeDataAccess.ReadBudgetSchedulesAsync();
+            var sourceBudgetSchedules = await sourceDataAccess.ReadBudgetSchedulesAsync();
+            var targetBudgetSchedules = await targetDataAccess.ReadBudgetSchedulesAsync();
 
             var sourceBudgetSchedulesDictionary = sourceBudgetSchedules.ToDictionary(a => a.Id, a2 => a2);
             var targetBudgetSchedulesDictionary = targetBudgetSchedules.ToDictionary(a => a.Id, a2 => a2);
@@ -214,7 +214,7 @@ namespace BudgetBadger.Logic
             foreach (var budgetScheduleId in budgetSchedulesToAdd)
             {
                 var budgetScheduleToAdd = sourceBudgetSchedulesDictionary[budgetScheduleId];
-                await targetEnvelopeDataAccess.CreateBudgetScheduleAsync(budgetScheduleToAdd);
+                await targetDataAccess.CreateBudgetScheduleAsync(budgetScheduleToAdd);
             }
 
             var budgetSchedulesToUpdate = sourceBudgetSchedulesDictionary.Keys.Intersect(targetBudgetSchedulesDictionary.Keys);
@@ -225,18 +225,18 @@ namespace BudgetBadger.Logic
 
                 if (sourceBudgetSchedule.ModifiedDateTime > targetBudgetSchedule.ModifiedDateTime)
                 {
-                    await targetEnvelopeDataAccess.UpdateBudgetScheduleAsync(sourceBudgetSchedule);
+                    await targetDataAccess.UpdateBudgetScheduleAsync(sourceBudgetSchedule);
                 }
             }
         }
 
-        async Task SyncBudgets(IEnvelopeDataAccess sourceEnvelopeDataAccess, IEnvelopeDataAccess targetEnvelopeDataAccess)
+        async Task SyncBudgets(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceEnvelopeDataAccess.Init();
-            await targetEnvelopeDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceBudgets = await sourceEnvelopeDataAccess.ReadBudgetsAsync();
-            var targetBudgets = await targetEnvelopeDataAccess.ReadBudgetsAsync();
+            var sourceBudgets = await sourceDataAccess.ReadBudgetsAsync();
+            var targetBudgets = await targetDataAccess.ReadBudgetsAsync();
 
             var sourceBudgetsDictionary = sourceBudgets.ToDictionary(a => a.Envelope.Id.ToString() + a.Schedule.Id.ToString(), a2 => a2);
             var targetBudgetsDictionary = targetBudgets.ToDictionary(a => a.Envelope.Id.ToString() + a.Schedule.Id.ToString(), a2 => a2);
@@ -245,7 +245,7 @@ namespace BudgetBadger.Logic
             foreach (var budgetId in budgetsToAdd)
             {
                 var budgetToAdd = sourceBudgetsDictionary[budgetId];
-                await targetEnvelopeDataAccess.CreateBudgetAsync(budgetToAdd);
+                await targetDataAccess.CreateBudgetAsync(budgetToAdd);
             }
 
             var budgetsToUpdate = sourceBudgetsDictionary.Keys.Intersect(targetBudgetsDictionary.Keys);
@@ -256,7 +256,7 @@ namespace BudgetBadger.Logic
 
                 if (sourceBudget.ModifiedDateTime > targetBudget.ModifiedDateTime)
                 {
-                    await targetEnvelopeDataAccess.UpdateBudgetAsync(sourceBudget);
+                    await targetDataAccess.UpdateBudgetAsync(sourceBudget);
                 }
             }
         }

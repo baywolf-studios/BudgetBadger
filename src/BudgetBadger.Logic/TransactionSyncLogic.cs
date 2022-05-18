@@ -9,14 +9,14 @@ namespace BudgetBadger.Logic
 {
     public class TransactionSyncLogic : ITransactionSyncLogic
     {
-        readonly ITransactionDataAccess _localTransactionDataAccess;
-        readonly ITransactionDataAccess _remoteTransactionDataAccess;
+        readonly IDataAccess _localDataAccess;
+        readonly IDataAccess _remoteDataAccess;
 
-        public TransactionSyncLogic(ITransactionDataAccess localTransactionDataAccess,
-                                   ITransactionDataAccess remoteTransactionDataAcces)
+        public TransactionSyncLogic(IDataAccess localDataAccess,
+                                   IDataAccess remoteDataAccess)
         {
-            _localTransactionDataAccess = localTransactionDataAccess;
-            _remoteTransactionDataAccess = remoteTransactionDataAcces;
+            _localDataAccess = localDataAccess;
+            _remoteDataAccess = remoteDataAccess;
         }
 
         public async Task<Result> PullAsync()
@@ -25,7 +25,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncTransactions(_remoteTransactionDataAccess, _localTransactionDataAccess);
+                await SyncTransactions(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncTransactions(_localTransactionDataAccess, _remoteTransactionDataAccess);
+                await SyncTransactions(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -71,13 +71,13 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        async Task SyncTransactions(ITransactionDataAccess sourceTransactionDataAccess, ITransactionDataAccess targetTransactionDataAccess)
+        async Task SyncTransactions(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceTransactionDataAccess.Init();
-            await targetTransactionDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceTransactions = await sourceTransactionDataAccess.ReadTransactionsAsync();
-            var targetTransactions = await targetTransactionDataAccess.ReadTransactionsAsync();
+            var sourceTransactions = await sourceDataAccess.ReadTransactionsAsync();
+            var targetTransactions = await targetDataAccess.ReadTransactionsAsync();
 
             var sourceTransactionsDictionary = sourceTransactions.ToDictionary(a => a.Id, a2 => a2);
             var targetTransactionsDictionary = targetTransactions.ToDictionary(a => a.Id, a2 => a2);
@@ -86,7 +86,7 @@ namespace BudgetBadger.Logic
             foreach (var transactionId in transactionsToAdd)
             {
                 var transactionToAdd = sourceTransactionsDictionary[transactionId];
-                await targetTransactionDataAccess.CreateTransactionAsync(transactionToAdd);
+                await targetDataAccess.CreateTransactionAsync(transactionToAdd);
             }
 
             var transactionsToUpdate = sourceTransactionsDictionary.Keys.Intersect(targetTransactionsDictionary.Keys);
@@ -97,7 +97,7 @@ namespace BudgetBadger.Logic
 
                 if (sourceTransaction.ModifiedDateTime > targetTransaction.ModifiedDateTime)
                 {
-                    await targetTransactionDataAccess.UpdateTransactionAsync(sourceTransaction);
+                    await targetDataAccess.UpdateTransactionAsync(sourceTransaction);
                 }
             }
         }

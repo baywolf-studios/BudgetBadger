@@ -10,16 +10,10 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class PayeeSqliteDataAccess : SqliteDataAccess, IPayeeDataAccess
+    public partial class SqliteDataAccess
     {
-        public PayeeSqliteDataAccess(string connectionString) : base(connectionString)
-        {
-        }
-
         public async Task CreatePayeeAsync(Payee payee)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>

@@ -9,12 +9,8 @@ using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class AccountSqliteDataAccess : SqliteDataAccess, IAccountDataAccess
+    public partial class SqliteDataAccess
     {
-        public AccountSqliteDataAccess(string connectionString) : base(connectionString)
-        {
-        }
-
         public async Task CreateAccountAsync(Account account)
         {
             using (await MultiThreadLock.UseWaitAsync())

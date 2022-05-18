@@ -15,19 +15,15 @@ namespace BudgetBadger.UnitTests.Logic
     public class EnvelopeLogicUnitTests
     {
         IResourceContainer resourceContainer { get; set; }
-        IEnvelopeDataAccess envelopeDataAccess { get; set; }
-        ITransactionDataAccess transactionDataAccess { get; set; }
-        IAccountDataAccess accountDataAccess { get; set; }
+        IDataAccess dataAccess { get; set; }
         EnvelopeLogic EnvelopeLogic { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            accountDataAccess = A.Fake<IAccountDataAccess>();
-            transactionDataAccess = A.Fake<ITransactionDataAccess>();
-            envelopeDataAccess = A.Fake<IEnvelopeDataAccess>();
+            dataAccess = A.Fake<IDataAccess>();
             resourceContainer = A.Fake<IResourceContainer>();
-            EnvelopeLogic = new EnvelopeLogic(envelopeDataAccess, transactionDataAccess, accountDataAccess, resourceContainer);
+            EnvelopeLogic = new EnvelopeLogic(dataAccess, resourceContainer);
         }
 
         [Test]
@@ -36,7 +32,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(hiddenEnvelope.Id);
@@ -51,13 +47,13 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(hiddenEnvelope.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -66,7 +62,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var newEnvelope = TestEnvelopes.NewEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(newEnvelope.Id);
@@ -81,7 +77,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(deletedEnvelope.Id);
@@ -96,7 +92,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(activeEnvelope.Id);
@@ -112,8 +108,8 @@ namespace BudgetBadger.UnitTests.Logic
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
-            A.CallTo(() => transactionDataAccess.ReadEnvelopeTransactionsAsync(hiddenEnvelope.Id)).Returns(new List<Transaction>() { activeTransaction });
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeTransactionsAsync(hiddenEnvelope.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(hiddenEnvelope.Id);
@@ -129,8 +125,8 @@ namespace BudgetBadger.UnitTests.Logic
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
-            A.CallTo(() => transactionDataAccess.ReadEnvelopeTransactionsAsync(hiddenEnvelope.Id)).Returns(new List<Transaction>() { inactiveTransaction });
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeTransactionsAsync(hiddenEnvelope.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(hiddenEnvelope.Id);
@@ -145,7 +141,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(debtEnvelope.Id);
@@ -161,7 +157,7 @@ namespace BudgetBadger.UnitTests.Logic
             var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
             debtEnvelope.Id = Guid.NewGuid();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(debtEnvelope.Id);
@@ -176,7 +172,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var incomeEnvelope = Constants.IncomeEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(incomeEnvelope.Id)).Returns(incomeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(incomeEnvelope.Id)).Returns(incomeEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(incomeEnvelope.Id);
@@ -191,7 +187,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var bufferEnvelope = Constants.BufferEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(bufferEnvelope.Id)).Returns(bufferEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(bufferEnvelope.Id)).Returns(bufferEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(bufferEnvelope.Id);
@@ -206,7 +202,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var ignoredEnvelope = Constants.IgnoredEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(ignoredEnvelope.Id)).Returns(ignoredEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(ignoredEnvelope.Id)).Returns(ignoredEnvelope);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(ignoredEnvelope.Id);
@@ -221,8 +217,8 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
-            A.CallTo(() => envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(activeEnvelope.Id)).Returns(new List<Budget> { new Budget() { Amount = 100 } });
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => dataAccess.ReadBudgetsFromEnvelopeAsync(activeEnvelope.Id)).Returns(new List<Budget> { new Budget() { Amount = 100 } });
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeAsync(activeEnvelope.Id);
@@ -236,7 +232,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(activeEnvelope.Id);
@@ -250,13 +246,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(activeEnvelope.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -264,7 +260,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newEnvelope = TestEnvelopes.NewEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(newEnvelope.Id);
@@ -278,7 +274,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(deletedEnvelope.Id);
@@ -292,7 +288,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(hiddenEnvelope.Id);
@@ -307,7 +303,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(debtEnvelope.Id);
@@ -323,7 +319,7 @@ namespace BudgetBadger.UnitTests.Logic
             var debtEnvelope = Constants.GenericDebtEnvelope.DeepCopy();
             debtEnvelope.Id = Guid.NewGuid();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(debtEnvelope.Id)).Returns(debtEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(debtEnvelope.Id);
@@ -338,7 +334,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var incomeEnvelope = Constants.IncomeEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(incomeEnvelope.Id)).Returns(incomeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(incomeEnvelope.Id)).Returns(incomeEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(incomeEnvelope.Id);
@@ -353,7 +349,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var bufferEnvelope = Constants.BufferEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(bufferEnvelope.Id)).Returns(bufferEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(bufferEnvelope.Id)).Returns(bufferEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(bufferEnvelope.Id);
@@ -368,7 +364,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var ignoredEnvelope = Constants.IgnoredEnvelope.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(ignoredEnvelope.Id)).Returns(ignoredEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(ignoredEnvelope.Id)).Returns(ignoredEnvelope);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeAsync(ignoredEnvelope.Id);
@@ -382,7 +378,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(hiddenEnvelope.Id);
@@ -396,13 +392,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(hiddenEnvelope.Id)).Returns(hiddenEnvelope);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(hiddenEnvelope.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeAsync(A<Envelope>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -410,7 +406,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(deletedEnvelope.Id)).Returns(deletedEnvelope);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(deletedEnvelope.Id);
@@ -424,7 +420,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newEnvelope = TestEnvelopes.NewEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(newEnvelope.Id)).Returns(newEnvelope);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(newEnvelope.Id);
@@ -438,7 +434,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
+            A.CallTo(() => dataAccess.ReadEnvelopeAsync(activeEnvelope.Id)).Returns(activeEnvelope);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeAsync(activeEnvelope.Id);
@@ -453,7 +449,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
@@ -468,13 +464,13 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -483,7 +479,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(newEnvelopeGroup.Id);
@@ -498,7 +494,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
@@ -513,7 +509,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(activeEnvelopeGroup.Id);
@@ -530,8 +526,8 @@ namespace BudgetBadger.UnitTests.Logic
             var activeEnvelopes = TestEnvelopes.ActiveEnvelope.DeepCopy();
             activeEnvelopes.Group = hiddenEnvelopeGroup;
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { activeEnvelopes });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { activeEnvelopes });
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
@@ -548,8 +544,8 @@ namespace BudgetBadger.UnitTests.Logic
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
             deletedEnvelope.Group = hiddenEnvelopeGroup;
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { deletedEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope>() { deletedEnvelope });
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
@@ -564,7 +560,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(incomeEnvelopeGroup.Id);
@@ -579,7 +575,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(debtEnvelopeGroup.Id);
@@ -594,7 +590,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.SoftDeleteEnvelopeGroupAsync(systemEnvelopeGroup.Id);
@@ -608,7 +604,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
@@ -622,13 +618,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -636,7 +632,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(newEnvelopeGroup.Id);
@@ -650,7 +646,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
@@ -664,7 +660,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
@@ -679,7 +675,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(incomeEnvelopeGroup.Id)).Returns(incomeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(incomeEnvelopeGroup.Id);
@@ -694,7 +690,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(debtEnvelopeGroup.Id)).Returns(debtEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(debtEnvelopeGroup.Id);
@@ -709,7 +705,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
 
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(systemEnvelopeGroup.Id)).Returns(systemEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.HideEnvelopeGroupAsync(systemEnvelopeGroup.Id);
@@ -723,7 +719,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
@@ -737,13 +733,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(hiddenEnvelopeGroup.Id)).Returns(hiddenEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(hiddenEnvelopeGroup.Id);
 
             // assert
-            A.CallTo(() => envelopeDataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdateEnvelopeGroupAsync(A<EnvelopeGroup>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -751,7 +747,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(deletedEnvelopeGroup.Id)).Returns(deletedEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(deletedEnvelopeGroup.Id);
@@ -765,7 +761,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newEnvelopeGroup = TestEnvelopeGroups.NewEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(newEnvelopeGroup.Id)).Returns(newEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(newEnvelopeGroup.Id);
@@ -779,7 +775,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupAsync(activeEnvelopeGroup.Id)).Returns(activeEnvelopeGroup);
 
             // act
             var result = await EnvelopeLogic.UnhideEnvelopeGroupAsync(activeEnvelopeGroup.Id);
@@ -794,7 +790,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopeGroupsAsync();
@@ -810,7 +806,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopeGroupsAsync();
@@ -826,7 +822,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopeGroupsForSelectionAsync();
@@ -842,7 +838,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var activeEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, activeEnvelopeGroup });
 
             // act
             var result = await EnvelopeLogic.GetHiddenEnvelopeGroupsAsync();
@@ -858,7 +854,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelopeGroup = TestEnvelopeGroups.HiddenEnvelopeGroup.DeepCopy();
             var deletedEnvelopeGroup = TestEnvelopeGroups.SoftDeletedEnvelopeGroup.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, deletedEnvelopeGroup });
+            A.CallTo(() => dataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { hiddenEnvelopeGroup, deletedEnvelopeGroup });
 
             // act
             var result = await EnvelopeLogic.GetHiddenEnvelopeGroupsAsync();
@@ -874,7 +870,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
@@ -889,7 +885,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
@@ -905,7 +901,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopesForSelectionAsync();
@@ -921,7 +917,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetBudgetsForSelectionAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
@@ -937,7 +933,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopesForReportAsync();
@@ -952,7 +948,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetEnvelopesForReportAsync();
@@ -968,7 +964,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetHiddenBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
@@ -984,7 +980,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, deletedEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, deletedEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetHiddenBudgetsAsync(TestBudgetSchedules.GetBudgetScheduleFromDate(DateTime.Now));
@@ -1000,7 +996,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var activeEnvelope = TestEnvelopes.ActiveEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, activeEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetHiddenEnvelopesAsync();
@@ -1016,7 +1012,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var deletedEnvelope = TestEnvelopes.SoftDeletedEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, deletedEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, deletedEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetHiddenEnvelopesAsync();
@@ -1032,7 +1028,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenEnvelope = TestEnvelopes.HiddenEnvelope.DeepCopy();
             var systemEnvelope = Constants.IgnoredEnvelope.DeepCopy();
-            A.CallTo(() => envelopeDataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, systemEnvelope });
+            A.CallTo(() => dataAccess.ReadEnvelopesAsync()).Returns(new List<Envelope> { hiddenEnvelope, systemEnvelope });
 
             // act
             var result = await EnvelopeLogic.GetHiddenEnvelopesAsync();

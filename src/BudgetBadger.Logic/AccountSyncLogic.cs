@@ -9,14 +9,14 @@ namespace BudgetBadger.Logic
 {
     public class AccountSyncLogic : IAccountSyncLogic
     {
-        readonly IAccountDataAccess _localAccountDataAcces;
-        readonly IAccountDataAccess _remoteAccountDataAccess;
+        readonly IDataAccess _localDataAcces;
+        readonly IDataAccess _remoteDataAccess;
 
-        public AccountSyncLogic(IAccountDataAccess localAccountDataAccess,
-                                IAccountDataAccess remoteAccountDataAccess)
+        public AccountSyncLogic(IDataAccess localDataAccess,
+                                IDataAccess remoteDataAccess)
         {
-            _localAccountDataAcces = localAccountDataAccess;
-            _remoteAccountDataAccess = remoteAccountDataAccess;
+            _localDataAcces = localDataAccess;
+            _remoteDataAccess = remoteDataAccess;
         }
 
         public async Task<Result> PullAsync()
@@ -25,7 +25,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncAccounts(_remoteAccountDataAccess, _localAccountDataAcces);
+                await SyncAccounts(_remoteDataAccess, _localDataAcces);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncAccounts(_localAccountDataAcces, _remoteAccountDataAccess);
+                await SyncAccounts(_localDataAcces, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -71,13 +71,13 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        async Task SyncAccounts(IAccountDataAccess sourceAccountDataAccess, IAccountDataAccess targetAccountDataAccess)
+        async Task SyncAccounts(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourceAccountDataAccess.Init();
-            await targetAccountDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourceAccounts = await sourceAccountDataAccess.ReadAccountsAsync();
-            var targetAccounts = await targetAccountDataAccess.ReadAccountsAsync();
+            var sourceAccounts = await sourceDataAccess.ReadAccountsAsync();
+            var targetAccounts = await targetDataAccess.ReadAccountsAsync();
 
             var sourceAccountsDictionary = sourceAccounts.ToDictionary(a => a.Id, a2 => a2);
             var targetAccountsDictionary = targetAccounts.ToDictionary(a => a.Id, a2 => a2);
@@ -86,7 +86,7 @@ namespace BudgetBadger.Logic
             foreach (var accountId in accountsToAdd)
             {
                 var accountToAdd = sourceAccountsDictionary[accountId];
-                await targetAccountDataAccess.CreateAccountAsync(accountToAdd);
+                await targetDataAccess.CreateAccountAsync(accountToAdd);
             }
 
             var accountsToUpdate = sourceAccountsDictionary.Keys.Intersect(targetAccountsDictionary.Keys);
@@ -97,7 +97,7 @@ namespace BudgetBadger.Logic
 
                 if (sourceAccount.ModifiedDateTime > targetAccount.ModifiedDateTime)
                 {
-                    await targetAccountDataAccess.UpdateAccountAsync(sourceAccount);
+                    await targetDataAccess.UpdateAccountAsync(sourceAccount);
                 }
             }
         }

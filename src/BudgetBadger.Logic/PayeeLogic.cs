@@ -12,23 +12,15 @@ namespace BudgetBadger.Logic
 {
     public class PayeeLogic : IPayeeLogic
     {
-        readonly IPayeeDataAccess _payeeDataAccess;
-        readonly IAccountDataAccess _accountDataAccess;
-        readonly ITransactionDataAccess _transactionDataAccess;
+        readonly IDataAccess _dataAccess;
         readonly IResourceContainer _resourceContainer;
 
-        public PayeeLogic(IPayeeDataAccess payeeDataAccess,
-            IAccountDataAccess accountDataAccess, 
-            ITransactionDataAccess transactionDataAccess,
+        public PayeeLogic(IDataAccess dataAccess, 
             IResourceContainer resourceContainer)
         {
-            _payeeDataAccess = payeeDataAccess;
-            _accountDataAccess = accountDataAccess;
-            _transactionDataAccess = transactionDataAccess;
+            _dataAccess = dataAccess;
             _resourceContainer = resourceContainer;
         }
-
-        
 
         public async Task<Result<Payee>> SavePayeeAsync(Payee payee)
         {
@@ -49,7 +41,7 @@ namespace BudgetBadger.Logic
                 payeeToUpsert.ModifiedDateTime = dateTimeNow;
                 try
                 {
-                    await _payeeDataAccess.CreatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
+                    await _dataAccess.CreatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
                     result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
@@ -64,7 +56,7 @@ namespace BudgetBadger.Logic
                 payeeToUpsert.ModifiedDateTime = dateTimeNow;
                 try
                 {
-                    await _payeeDataAccess.UpdatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
+                    await _dataAccess.UpdatePayeeAsync(payeeToUpsert).ConfigureAwait(false);
                     result.Success = true;
                     result.Data = await GetPopulatedPayee(payeeToUpsert).ConfigureAwait(false);
                 }
@@ -85,7 +77,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var count = await _payeeDataAccess.GetPayeesCountAsync();
+                var count = await _dataAccess.GetPayeesCountAsync();
                 result.Success = true;
                 result.Data = count;
             }
@@ -104,7 +96,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
                 var populatedPayee = await GetPopulatedPayee(payee).ConfigureAwait(false);
                 result.Success = true;
                 result.Data = populatedPayee;
@@ -124,7 +116,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+                var allPayees = await _dataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
                 var tasks = allPayees.Select(GetPopulatedPayee);
 
@@ -155,7 +147,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+                var allPayees = await _dataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
                 var tasks = allPayees.Select(GetPopulatedPayee);
 
@@ -180,7 +172,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+                var allPayees = await _dataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
                 var tasks = allPayees.Select(GetPopulatedPayee);
 
@@ -210,7 +202,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allPayees = await _payeeDataAccess.ReadPayeesAsync().ConfigureAwait(false);
+                var allPayees = await _dataAccess.ReadPayeesAsync().ConfigureAwait(false);
 
                 var tasks = allPayees.Select(GetPopulatedPayee);
 
@@ -235,7 +227,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
 
                 // check for validation to delete
                 var errors = new List<string>();
@@ -245,13 +237,13 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("PayeeDeleteNotHiddenError"));
                 }
 
-                var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
+                var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
                 if (payeeTransactions.Any(t => t.IsActive))
                 {
                     errors.Add(_resourceContainer.GetResourceString("PayeeDeleteActiveTransactionsError"));
                 }
 
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
                 if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
                 {
                     errors.Add(_resourceContainer.GetResourceString("PayeeDeleteSystemError"));
@@ -267,7 +259,7 @@ namespace BudgetBadger.Logic
                 payee.DeletedDateTime = DateTime.Now;
                 payee.ModifiedDateTime = DateTime.Now;
 
-                await _payeeDataAccess.UpdatePayeeAsync(payee);
+                await _dataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
                 result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
@@ -287,7 +279,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
 
                 // check for validation to Hide
                 var errors = new List<string>();
@@ -297,7 +289,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("PayeeHideInactiveError"));
                 }
 
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
                 if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
                 {
@@ -314,7 +306,7 @@ namespace BudgetBadger.Logic
                 payee.HiddenDateTime = DateTime.Now;
                 payee.ModifiedDateTime = DateTime.Now;
 
-                await _payeeDataAccess.UpdatePayeeAsync(payee);
+                await _dataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
                 result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
@@ -334,7 +326,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var payee = await _payeeDataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(id).ConfigureAwait(false);
 
                 // check for validation to delete
                 var errors = new List<string>();
@@ -344,7 +336,7 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("PayeeUnhideNotHiddenError"));
                 }
 
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
                 if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
                 {
@@ -361,7 +353,7 @@ namespace BudgetBadger.Logic
                 payee.HiddenDateTime = null;
                 payee.ModifiedDateTime = DateTime.Now;
 
-                await _payeeDataAccess.UpdatePayeeAsync(payee);
+                await _dataAccess.UpdatePayeeAsync(payee);
 
                 result.Success = true;
                 result.Data = await GetPopulatedPayee(payee).ConfigureAwait(false);
@@ -412,7 +404,7 @@ namespace BudgetBadger.Logic
         {
             var errors = new List<string>();
 
-            var account = await _accountDataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
+            var account = await _dataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
             if (payee.IsStartingBalance || account.IsActive || payee.IsGenericHiddenPayee)
             {
                 errors.Add(_resourceContainer.GetResourceString("PayeeSaveSystemError"));
@@ -440,7 +432,7 @@ namespace BudgetBadger.Logic
 
             var payeeToPopulate = payee.DeepCopy();
 
-            var payeeAccount = await _accountDataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
+            var payeeAccount = await _dataAccess.ReadAccountAsync(payee.Id).ConfigureAwait(false);
 
             payeeToPopulate.IsAccount = !payeeAccount.IsNew;
 

@@ -185,10 +185,7 @@ namespace BudgetBadger.Forms
             //default dataaccess
             var defaultConnectionString = "Data Source=" + Path.Combine(dataDirectory, "default.bb");
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
-            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IDataAccess>(made: Made.Of(() => new SqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -200,23 +197,20 @@ namespace BudgetBadger.Forms
             //sync dataaccess
             var syncConnectionString = "Data Source=" + Path.Combine(syncDirectory, "default.bb");
             container.UseInstance(syncConnectionString, serviceKey: "syncConnectionString");
-            container.Register<IAccountDataAccess>(made: Made.Of(() => new AccountSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncAccountDataAccess");
-            container.Register<IPayeeDataAccess>(made: Made.Of(() => new PayeeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncPayeeDataAccess");
-            container.Register<IEnvelopeDataAccess>(made: Made.Of(() => new EnvelopeSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncEnvelopeDataAccess");
-            container.Register<ITransactionDataAccess>(made: Made.Of(() => new TransactionSqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncTransactionDataAccess");
+            container.Register<IDataAccess>(made: Made.Of(() => new SqliteDataAccess(Arg.Of<string>("syncConnectionString"))), serviceKey: "syncDataAccess");
 
             //sync directory for filesyncproviders
             container.Register<IDirectoryInfo>(made: Made.Of(() => new LocalDirectoryInfo(syncDirectory)));
 
             //sync logics
-            container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IAccountDataAccess>(),
-                                                                                           Arg.Of<IAccountDataAccess>("syncAccountDataAccess"))));
-            container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IPayeeDataAccess>(),
-                                                                                       Arg.Of<IPayeeDataAccess>("syncPayeeDataAccess"))));
-            container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IEnvelopeDataAccess>(),
-                                                                                             Arg.Of<IEnvelopeDataAccess>("syncEnvelopeDataAccess"))));
-            container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<ITransactionDataAccess>(),
-                                                                                                   Arg.Of<ITransactionDataAccess>("syncTransactionDataAccess"))));
+            container.Register<IAccountSyncLogic>(made: Made.Of(() => new AccountSyncLogic(Arg.Of<IDataAccess>(),
+                                                                                           Arg.Of<IDataAccess>("syncDataAccess"))));
+            container.Register<IPayeeSyncLogic>(made: Made.Of(() => new PayeeSyncLogic(Arg.Of<IDataAccess>(),
+                                                                                       Arg.Of<IDataAccess>("syncDataAccess"))));
+            container.Register<IEnvelopeSyncLogic>(made: Made.Of(() => new EnvelopeSyncLogic(Arg.Of<IDataAccess>(),
+                                                                                             Arg.Of<IDataAccess>("syncDataAccess"))));
+            container.Register<ITransactionSyncLogic>(made: Made.Of(() => new TransactionSyncLogic(Arg.Of<IDataAccess>(),
+                                                                                                   Arg.Of<IDataAccess>("syncDataAccess"))));
 
             container.Register<IFileSyncProvider>(made: Made.Of(() => new DropboxFileSyncProvider(Arg.Of<ISettings>(),
                                                                                                   Arg.Of<string>("dropBoxAppKey"))), serviceKey: SyncMode.DropboxSync);

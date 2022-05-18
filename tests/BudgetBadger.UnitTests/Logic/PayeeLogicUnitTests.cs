@@ -15,19 +15,15 @@ namespace BudgetBadger.UnitTests.Logic
     public class PayeeLogicUnitTests
     {
         IResourceContainer resourceContainer { get; set; }
-        IPayeeDataAccess PayeeDataAccess { get; set; }
-        ITransactionDataAccess transactionDataAccess { get; set; }
-        IAccountDataAccess accountDataAccess { get; set; }
+        IDataAccess dataAccess { get; set; }
         PayeeLogic PayeeLogic { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            accountDataAccess = A.Fake<IAccountDataAccess>();
-            transactionDataAccess = A.Fake<ITransactionDataAccess>();
-            PayeeDataAccess = A.Fake<IPayeeDataAccess>();
+            dataAccess = A.Fake<IDataAccess>();
             resourceContainer = A.Fake<IResourceContainer>();
-            PayeeLogic = new PayeeLogic(PayeeDataAccess, accountDataAccess, transactionDataAccess, resourceContainer);
+            PayeeLogic = new PayeeLogic(dataAccess, resourceContainer);
         }
 
         [Test]
@@ -36,7 +32,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
@@ -51,13 +47,13 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
             // assert
-            A.CallTo(() => PayeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -66,7 +62,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var newPayee = TestPayees.NewPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(newPayee.Id);
@@ -81,7 +77,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var deletedPayee = TestPayees.SoftDeletedPayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(deletedPayee.Id);
@@ -96,7 +92,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var activePayee = TestPayees.ActivePayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(activePayee.Id);
@@ -112,8 +108,8 @@ namespace BudgetBadger.UnitTests.Logic
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activeTransaction = TestTransactions.ActiveTransaction.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { activeTransaction });
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { activeTransaction });
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
@@ -129,8 +125,8 @@ namespace BudgetBadger.UnitTests.Logic
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var inactiveTransaction = TestTransactions.DeletedTransaction.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
-            A.CallTo(() => transactionDataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { inactiveTransaction });
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeTransactionsAsync(hiddenPayee.Id)).Returns(new List<Transaction>() { inactiveTransaction });
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
@@ -145,7 +141,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var startingPayee = Constants.StartingBalancePayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(startingPayee.Id);
@@ -162,8 +158,8 @@ namespace BudgetBadger.UnitTests.Logic
             var account = TestAccounts.ActiveAccount.DeepCopy();
             account.Id = accountPayee.Id;
 
-            A.CallTo(() => accountDataAccess.ReadAccountAsync(account.Id)).Returns(account);
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(accountPayee.Id)).Returns(accountPayee);
+            A.CallTo(() => dataAccess.ReadAccountAsync(account.Id)).Returns(account);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(accountPayee.Id)).Returns(accountPayee);
 
             // act
             var result = await PayeeLogic.SoftDeletePayeeAsync(accountPayee.Id);
@@ -177,7 +173,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(activePayee.Id);
@@ -191,13 +187,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(activePayee.Id);
 
             // assert
-            A.CallTo(() => PayeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -205,7 +201,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newPayee = TestPayees.NewPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(newPayee.Id);
@@ -219,7 +215,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedPayee = TestPayees.SoftDeletedPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(deletedPayee.Id);
@@ -233,7 +229,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(hiddenPayee.Id);
@@ -248,7 +244,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var startingPayee = Constants.StartingBalancePayee.DeepCopy();
 
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(startingPayee.Id)).Returns(startingPayee);
 
             // act
             var result = await PayeeLogic.HidePayeeAsync(startingPayee.Id);
@@ -262,7 +258,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
             var result = await PayeeLogic.UnhidePayeeAsync(hiddenPayee.Id);
@@ -276,13 +272,13 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
             // act
             var result = await PayeeLogic.UnhidePayeeAsync(hiddenPayee.Id);
 
             // assert
-            A.CallTo(() => PayeeDataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
+            A.CallTo(() => dataAccess.UpdatePayeeAsync(A<Payee>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -290,7 +286,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var deletedPayee = TestPayees.SoftDeletedPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(deletedPayee.Id)).Returns(deletedPayee);
 
             // act
             var result = await PayeeLogic.UnhidePayeeAsync(deletedPayee.Id);
@@ -304,7 +300,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var newPayee = TestPayees.NewPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(newPayee.Id)).Returns(newPayee);
 
             // act
             var result = await PayeeLogic.UnhidePayeeAsync(newPayee.Id);
@@ -318,7 +314,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
+            A.CallTo(() => dataAccess.ReadPayeeAsync(activePayee.Id)).Returns(activePayee);
 
             // act
             var result = await PayeeLogic.UnhidePayeeAsync(activePayee.Id);
@@ -333,7 +329,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
 
             // act
             var result = await PayeeLogic.GetPayeesAsync();
@@ -348,7 +344,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
 
             // act
             var result = await PayeeLogic.GetPayeesAsync();
@@ -364,7 +360,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
 
             // act
             var result = await PayeeLogic.GetPayeesForSelectionAsync();
@@ -380,7 +376,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
 
             // act
             var result = await PayeeLogic.GetPayeesForReportAsync();
@@ -395,7 +391,7 @@ namespace BudgetBadger.UnitTests.Logic
         {
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee });
 
             // act
             var result = await PayeeLogic.GetPayeesForReportAsync();
@@ -411,7 +407,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var activePayee = TestPayees.ActivePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, activePayee });
 
             // act
             var result = await PayeeLogic.GetHiddenPayeesAsync();
@@ -427,7 +423,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var deletedPayee = TestPayees.SoftDeletedPayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, deletedPayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, deletedPayee });
 
             // act
             var result = await PayeeLogic.GetHiddenPayeesAsync();
@@ -443,7 +439,7 @@ namespace BudgetBadger.UnitTests.Logic
             // arrange
             var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
             var startingBalancePayee = Constants.StartingBalancePayee.DeepCopy();
-            A.CallTo(() => PayeeDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, startingBalancePayee });
+            A.CallTo(() => dataAccess.ReadPayeesAsync()).Returns(new List<Payee> { hiddenPayee, startingBalancePayee });
 
             // act
             var result = await PayeeLogic.GetHiddenPayeesAsync();

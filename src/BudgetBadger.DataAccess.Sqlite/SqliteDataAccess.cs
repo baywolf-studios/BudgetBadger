@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class SqliteDataAccess
+    public partial class SqliteDataAccess : IDataAccess
     {
         protected readonly string _connectionString;
 

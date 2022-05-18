@@ -9,14 +9,14 @@ namespace BudgetBadger.Logic
 {
     public class PayeeSyncLogic : IPayeeSyncLogic
     {
-        readonly IPayeeDataAccess _localPayeeDataAccess;
-        readonly IPayeeDataAccess _remotePayeeDataAccess;
+        readonly IDataAccess _localDataAccess;
+        readonly IDataAccess _remoteDataAccess;
 
-        public PayeeSyncLogic(IPayeeDataAccess localPayeeDataAcces,
-                             IPayeeDataAccess remotePayeeDataAccess)
+        public PayeeSyncLogic(IDataAccess localDataAccess,
+                             IDataAccess remoteDataAccess)
         {
-            _localPayeeDataAccess = localPayeeDataAcces;
-            _remotePayeeDataAccess = remotePayeeDataAccess;
+            _localDataAccess = localDataAccess;
+            _remoteDataAccess = remoteDataAccess;
         }
 
         public async Task<Result> PullAsync()
@@ -25,7 +25,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncPayees(_remotePayeeDataAccess, _localPayeeDataAccess);
+                await SyncPayees(_remoteDataAccess, _localDataAccess);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                await SyncPayees(_localPayeeDataAccess, _remotePayeeDataAccess);
+                await SyncPayees(_localDataAccess, _remoteDataAccess);
             }
             catch (Exception ex)
             {
@@ -71,13 +71,13 @@ namespace BudgetBadger.Logic
             return result;
         }
 
-        async Task SyncPayees(IPayeeDataAccess sourcePayeeDataAccess, IPayeeDataAccess targetPayeeDataAccess)
+        async Task SyncPayees(IDataAccess sourceDataAccess, IDataAccess targetDataAccess)
         {
-            await sourcePayeeDataAccess.Init();
-            await targetPayeeDataAccess.Init();
+            await sourceDataAccess.Init();
+            await targetDataAccess.Init();
 
-            var sourcePayees = await sourcePayeeDataAccess.ReadPayeesAsync();
-            var targetPayees = await targetPayeeDataAccess.ReadPayeesAsync();
+            var sourcePayees = await sourceDataAccess.ReadPayeesAsync();
+            var targetPayees = await targetDataAccess.ReadPayeesAsync();
 
             var sourcePayeesDictionary = sourcePayees.ToDictionary(a => a.Id, a2 => a2);
             var targetPayeesDictionary = targetPayees.ToDictionary(a => a.Id, a2 => a2);
@@ -86,7 +86,7 @@ namespace BudgetBadger.Logic
             foreach (var payeeId in payeesToAdd)
             {
                 var payeeToAdd = sourcePayeesDictionary[payeeId];
-                await targetPayeeDataAccess.CreatePayeeAsync(payeeToAdd);
+                await targetDataAccess.CreatePayeeAsync(payeeToAdd);
             }
 
             var payeesToUpdate = sourcePayeesDictionary.Keys.Intersect(targetPayeesDictionary.Keys);
@@ -97,7 +97,7 @@ namespace BudgetBadger.Logic
 
                 if (sourcePayee.ModifiedDateTime > targetPayee.ModifiedDateTime)
                 {
-                    await targetPayeeDataAccess.UpdatePayeeAsync(sourcePayee);
+                    await targetDataAccess.UpdatePayeeAsync(sourcePayee);
                 }
             }
         }

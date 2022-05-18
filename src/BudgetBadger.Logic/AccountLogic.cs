@@ -12,22 +12,13 @@ namespace BudgetBadger.Logic
 {
     public class AccountLogic : IAccountLogic
     {
-        readonly IAccountDataAccess _accountDataAccess;
-        readonly ITransactionDataAccess _transactionDataAccess;
-        readonly IPayeeDataAccess _payeeDataAccess;
-        readonly IEnvelopeDataAccess _envelopeDataAccess;
-        readonly IResourceContainer _resourceContainer;
+        private readonly IDataAccess _dataAccess;
+        private readonly IResourceContainer _resourceContainer;
 
-        public AccountLogic(IAccountDataAccess accountDataAccess,
-                            ITransactionDataAccess transactionDataAccess,
-                            IPayeeDataAccess payeeDataAccess,
-                            IEnvelopeDataAccess envelopeDataAccess,
+        public AccountLogic(IDataAccess dataAccess,
                             IResourceContainer resourceContainer)
         {
-            _accountDataAccess = accountDataAccess;
-            _transactionDataAccess = transactionDataAccess;
-            _payeeDataAccess = payeeDataAccess;
-            _envelopeDataAccess = envelopeDataAccess;
+            _dataAccess = dataAccess;
             _resourceContainer = resourceContainer;
         }
 
@@ -49,7 +40,7 @@ namespace BudgetBadger.Logic
                 accountToUpsert.Id = Guid.NewGuid();
                 accountToUpsert.CreatedDateTime = dateTimeNow;
                 accountToUpsert.ModifiedDateTime = dateTimeNow;
-                await _accountDataAccess.CreateAccountAsync(accountToUpsert).ConfigureAwait(false);
+                await _dataAccess.CreateAccountAsync(accountToUpsert).ConfigureAwait(false);
 
                 var accountPayee = new Payee
                 {
@@ -58,10 +49,10 @@ namespace BudgetBadger.Logic
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow
                 };
-                await _payeeDataAccess.CreatePayeeAsync(accountPayee).ConfigureAwait(false);
+                await _dataAccess.CreatePayeeAsync(accountPayee).ConfigureAwait(false);
 
                 //create a debt envelope for new accounts
-                var debtEnvelopeGroup = await _envelopeDataAccess.ReadEnvelopeGroupAsync(Constants.DebtEnvelopeGroup.Id);
+                var debtEnvelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(Constants.DebtEnvelopeGroup.Id);
                 var debtEnvelope = new Envelope
                 {
                     Id = accountToUpsert.Id,
@@ -71,13 +62,13 @@ namespace BudgetBadger.Logic
                     CreatedDateTime = dateTimeNow,
                     ModifiedDateTime = dateTimeNow
                 };
-                await _envelopeDataAccess.CreateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
+                await _dataAccess.CreateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
 
                 // determine which envelope should be used
                 Envelope startingBalanceEnvelope;
                 if (accountToUpsert.OffBudget)
                 {
-                    startingBalanceEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
+                    startingBalanceEnvelope = await _dataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
                 }
                 else if (accountToUpsert.Balance < 0) // on budget and negative
                 {
@@ -85,7 +76,7 @@ namespace BudgetBadger.Logic
                 }
                 else // on budget and positive
                 {
-                    startingBalanceEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(Constants.IncomeEnvelope.Id);
+                    startingBalanceEnvelope = await _dataAccess.ReadEnvelopeAsync(Constants.IncomeEnvelope.Id);
                 }
 
                 var startingBalance = new Transaction
@@ -97,28 +88,28 @@ namespace BudgetBadger.Logic
                     ServiceDate = dateTimeNow,
                     Posted = true,
                     Account = accountToUpsert,
-                    Payee = await _payeeDataAccess.ReadPayeeAsync(Constants.StartingBalancePayee.Id),
+                    Payee = await _dataAccess.ReadPayeeAsync(Constants.StartingBalancePayee.Id),
                     Envelope = startingBalanceEnvelope
                 };
 
-                await _transactionDataAccess.CreateTransactionAsync(startingBalance).ConfigureAwait(false);
+                await _dataAccess.CreateTransactionAsync(startingBalance).ConfigureAwait(false);
             }
             else
             {
                 // update linked payee
-                var accountPayee = await _payeeDataAccess.ReadPayeeAsync(accountToUpsert.Id).ConfigureAwait(false);
+                var accountPayee = await _dataAccess.ReadPayeeAsync(accountToUpsert.Id).ConfigureAwait(false);
                 accountPayee.ModifiedDateTime = dateTimeNow;
                 accountPayee.Description = accountToUpsert.Description;
-                await _payeeDataAccess.UpdatePayeeAsync(accountPayee);
+                await _dataAccess.UpdatePayeeAsync(accountPayee);
 
                 // update the debt envelope name
-                var debtEnvelope = await _envelopeDataAccess.ReadEnvelopeAsync(accountToUpsert.Id).ConfigureAwait(false);
+                var debtEnvelope = await _dataAccess.ReadEnvelopeAsync(accountToUpsert.Id).ConfigureAwait(false);
                 debtEnvelope.ModifiedDateTime = dateTimeNow;
                 debtEnvelope.Description = accountToUpsert.Description;
-                await _envelopeDataAccess.UpdateEnvelopeAsync(debtEnvelope);
+                await _dataAccess.UpdateEnvelopeAsync(debtEnvelope);
 
                 accountToUpsert.ModifiedDateTime = dateTimeNow;
-                await _accountDataAccess.UpdateAccountAsync(accountToUpsert).ConfigureAwait(false);
+                await _dataAccess.UpdateAccountAsync(accountToUpsert).ConfigureAwait(false);
             }
 
             return new Result<Account> { Success = true, Data = await GetPopulatedAccount(accountToUpsert).ConfigureAwait(false) };
@@ -130,7 +121,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var count = await _accountDataAccess.GetAccountsCountAsync();
+                var count = await _dataAccess.GetAccountsCountAsync();
                 result.Success = true;
                 result.Data = count;
             }
@@ -149,7 +140,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
                 var populatedAccount = await GetPopulatedAccount(account).ConfigureAwait(false);
                 result.Success = true;
                 result.Data = populatedAccount;
@@ -169,10 +160,10 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
-                var acccounts = allAccounts.Where(a => FilterAccount(a, FilterType.Standard));
+                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
+                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Standard));
 
-                var tasks = acccounts.Select(GetPopulatedAccount);
+                var tasks = accounts.Select(GetPopulatedAccount);
                 var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
 
                 if (allAccounts.Any(a => FilterAccount(a, FilterType.Hidden)))
@@ -202,7 +193,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
                 var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Selection));
 
@@ -228,7 +219,7 @@ namespace BudgetBadger.Logic
 
             try
             { 
-                var allAccounts = await _accountDataAccess.ReadAccountsAsync().ConfigureAwait(false);
+                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
 
                 var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Hidden));
 
@@ -255,7 +246,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
                 // check for validation to delete
                 var errors = new List<string>();
@@ -270,8 +261,8 @@ namespace BudgetBadger.Logic
                     errors.Add(_resourceContainer.GetResourceString("AccountDeleteSystemError"));
                 }
 
-                var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);
-                var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
+                var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);
+                var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
 
                 if (accountTransactions.Any(t => t.IsActive) || payeeTransactions.Any(t => t.IsActive))
                 {
@@ -287,19 +278,19 @@ namespace BudgetBadger.Logic
 
                 var now = DateTime.Now;
 
-                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
                 payee.DeletedDateTime = now;
                 payee.ModifiedDateTime = now;
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
 
-                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
                 envelope.DeletedDateTime = now;
                 envelope.ModifiedDateTime = now;
-                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
 
                 account.DeletedDateTime = now;
                 account.ModifiedDateTime = now;
-                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
+                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
                 result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
@@ -319,7 +310,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
                 // check for validation to delete
                 var errors = new List<string>();
@@ -343,19 +334,19 @@ namespace BudgetBadger.Logic
 
                 var now = DateTime.Now;
 
-                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
                 payee.HiddenDateTime = now;
                 payee.ModifiedDateTime = now;
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
 
-                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
                 envelope.HiddenDateTime = now;
                 envelope.ModifiedDateTime = now;
-                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
 
                 account.HiddenDateTime = now;
                 account.ModifiedDateTime = now;
-                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
+                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
                 result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
@@ -375,7 +366,7 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var account = await _accountDataAccess.ReadAccountAsync(id).ConfigureAwait(false);
+                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
 
                 // check for validation to delete
                 var errors = new List<string>();
@@ -399,19 +390,19 @@ namespace BudgetBadger.Logic
 
                 var now = DateTime.Now;
 
-                var payee = await _payeeDataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
+                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
                 payee.HiddenDateTime = null;
                 payee.ModifiedDateTime = now;
-                await _payeeDataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
+                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
 
-                var envelope = await _envelopeDataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
+                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
                 envelope.HiddenDateTime = null;
                 envelope.ModifiedDateTime = now;
-                await _envelopeDataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
+                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
 
                 account.HiddenDateTime = null;
                 account.ModifiedDateTime = now;
-                await _accountDataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
+                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
 
                 result.Success = true;
                 result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
@@ -432,8 +423,8 @@ namespace BudgetBadger.Logic
 
             try
             {
-                var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(accountId).ConfigureAwait(false);
-                var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(accountId).ConfigureAwait(false);
+                var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(accountId).ConfigureAwait(false);
+                var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(accountId).ConfigureAwait(false);
                 var accountTransactionsToReconcile = accountTransactions.Where(t => t.IsActive
                                                                        && t.ServiceDate <= dateTime
                                                                        && t.Posted);
@@ -453,7 +444,7 @@ namespace BudgetBadger.Logic
                         transaction.Posted = true;
                         transaction.ModifiedDateTime = now;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
-                        tasks.Add(_transactionDataAccess.UpdateTransactionAsync(transaction));
+                        tasks.Add(_dataAccess.UpdateTransactionAsync(transaction));
                     }
 
                     foreach (var transaction in payeeTransactionsToReconcile)
@@ -461,7 +452,7 @@ namespace BudgetBadger.Logic
                         transaction.Posted = true;
                         transaction.ModifiedDateTime = now;
                         transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
-                        tasks.Add(_transactionDataAccess.UpdateTransactionAsync(transaction));
+                        tasks.Add(_dataAccess.UpdateTransactionAsync(transaction));
                     }
 
                     await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -519,10 +510,10 @@ namespace BudgetBadger.Logic
 
         async Task<Account> GetPopulatedAccount(Account account)
         {
-            var accountTransactions = await _transactionDataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
-            var payeeTransactions = await _transactionDataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
-            var accountDebtBudgets = await _envelopeDataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
-            var debtTransactions = await _transactionDataAccess.ReadEnvelopeTransactionsAsync(account.Id).ConfigureAwait(false);
+            var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
+            var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
+            var accountDebtBudgets = await _dataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
+            var debtTransactions = await _dataAccess.ReadEnvelopeTransactionsAsync(account.Id).ConfigureAwait(false);
 
             return await Task.Run(() => PopulateAccount(account, accountTransactions, payeeTransactions, accountDebtBudgets, debtTransactions));
         }

@@ -11,16 +11,13 @@ namespace BudgetBadger.UnitTests.Logic
     public class ReportLogicUnitTests
     {
         IResourceContainer resourceContainer { get; set; }
-        IPayeeDataAccess payeeDataAccess { get; set; }
-        ITransactionDataAccess transactionDataAccess { get; set; }
-        IAccountDataAccess accountDataAccess { get; set; }
+        IDataAccess dataAccess { get; set; }
         ReportLogic reportLogic { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            accountDataAccess = A.Fake<IAccountDataAccess>();
-            transactionDataAccess = A.Fake<ITransactionDataAccess>();
+            dataAccess = A.Fake<IDataAccess>();
             resourceContainer = A.Fake<IResourceContainer>();
         }
 
