@@ -57,7 +57,7 @@
                 <uc:Button2
                     Command="{Binding EmailCommand}"
                     Style="{StaticResource SecondaryActionButtonStyle}"
-                    Text="support@BudgetBadger.io"
+                    Text="Support@BudgetBadger.io"
                     FlexLayout.Grow="{OnIdiom Default=0, Phone=1}"/>
             </FlexLayout>
         </uc:ResponsiveGrid>

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Forms.Enums;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -15,10 +17,12 @@ namespace BudgetBadger.Forms.Settings
 	public class ThirdPartyNoticesPageViewModel : BaseViewModel, INavigatedAware
 	{
         readonly INavigationService _navigationService;
+        readonly IPageDialogService _dialogService;
+        readonly IResourceContainer _resourceContainer;
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand LicenseCommand { get; set; }
-        public ICommand EmailCommand { get => new Command(() => Browser.OpenAsync(new Uri("mailto:support@BudgetBadger.io"))); }
+        public ICommand EmailCommand { get; set; }
 
         bool _isBusy;
         public bool IsBusy
@@ -41,11 +45,16 @@ namespace BudgetBadger.Forms.Settings
             set => SetProperty(ref _selectedThirdPartyNotice, value);
         }
 
-        public ThirdPartyNoticesPageViewModel(INavigationService navigationService)
+        public ThirdPartyNoticesPageViewModel(INavigationService navigationService,
+                                              IPageDialogService dialogService,
+                                              IResourceContainer resourceContainer)
 		{
             _navigationService = navigationService;
+            _dialogService = dialogService;
+            _resourceContainer = resourceContainer;
 
             LicenseCommand = new Command(async () => await ExecuteLicenseCommand());
+            EmailCommand = new Command(async () => await ExecuteEmailCommand());
 
             ThirdPartyNotices = GetThirdPartyLicenses();
         }
@@ -57,6 +66,26 @@ namespace BudgetBadger.Forms.Settings
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
+        }
+
+        public async Task ExecuteEmailCommand()
+        {
+            try
+            {
+                var message = new EmailMessage
+                {
+                    Subject = "Third Party Notices",
+                    To = new List<string>() { "Support@BudgetBadger.io" }
+                };
+                await Email.ComposeAsync(message);
+            }
+            catch (Exception ex)
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertGeneralError"),
+                        ex.Message,
+                        _resourceContainer.GetResourceString("AlertOk"));
+                
+            }
         }
 
         public async Task ExecuteLicenseCommand()
