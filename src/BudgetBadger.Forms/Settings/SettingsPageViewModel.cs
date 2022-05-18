@@ -141,17 +141,7 @@ namespace BudgetBadger.Forms.Settings
             LicenseCommand = new Command(async () => await ExecuteLicenseCommand());
             ThirdPartyNoticesCommand = new Command(async () => await ExecuteThirdPartyNoticesCommand());
 
-            var currentDimension = settings.GetValueOrDefault(AppSettings.AppearanceDimensionSize);
-
-            if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
-            {
-                SelectedDimensionSize = selectedDimensionSize;
-            }
-            else
-            {
-                SelectedDimensionSize = DimensionSize.DimensionSizeMedium;
-            }
-
+            ResetAppearance();
             ResetLocalization();
         }
 
@@ -167,11 +157,11 @@ namespace BudgetBadger.Forms.Settings
         {
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
-            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+            var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
             DropboxEnabled = (syncMode == SyncMode.DropboxSync);
             ShowSync = (syncMode == SyncMode.DropboxSync);
 
-            LastSynced = _syncFactory.GetLastSyncDateTime();
+            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
         }
 
         List<KeyValuePair<string, CultureInfo>> GetLanguages()
@@ -230,7 +220,7 @@ namespace BudgetBadger.Forms.Settings
                     var numberFormat = String.Join(" ", region.ISOCurrencySymbol, (-1234567.89).ToString("C", culture.NumberFormat));
                     result[numberFormat] = culture;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -241,7 +231,7 @@ namespace BudgetBadger.Forms.Settings
 
         public async Task ExecuteSyncToggleCommand()
         {
-            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+            var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
 
             if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
             {
@@ -263,7 +253,7 @@ namespace BudgetBadger.Forms.Settings
             }
 
             ShowSync = DropboxEnabled;
-            LastSynced = _syncFactory.GetLastSyncDateTime();
+            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
         }
 
         public async Task ExecuteSyncCommand()
@@ -278,7 +268,7 @@ namespace BudgetBadger.Forms.Settings
 
             try
             {
-                var syncService = _syncFactory.GetSyncService();
+                var syncService = await _syncFactory.GetSyncServiceAsync();
                 var syncResult = await syncService.FullSync();
 
                 if (syncResult.Success)
@@ -292,7 +282,7 @@ namespace BudgetBadger.Forms.Settings
                         _resourceContainer.GetResourceString("AlertOk"));
                 }
 
-                LastSynced = _syncFactory.GetLastSyncDateTime();
+                LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
             }
             finally
             {
@@ -405,13 +395,27 @@ namespace BudgetBadger.Forms.Settings
             await _navigationService.NavigateAsync(PageName.ThirdPartyNoticesPage);
         }
 
-        void ResetLocalization()
+        async void ResetAppearance()
+        {
+            var currentDimension = await _settings.GetValueOrDefaultAsync(AppSettings.AppearanceDimensionSize);
+
+            if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
+            {
+                SelectedDimensionSize = selectedDimensionSize;
+            }
+            else
+            {
+                SelectedDimensionSize = DimensionSize.DimensionSizeMedium;
+            }
+        }
+
+        async void ResetLocalization()
         {
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             LanguageList = GetLanguages();
 
-            var currentLanguage = _settings.GetValueOrDefault(AppSettings.Language);
+            var currentLanguage = await _settings.GetValueOrDefaultAsync(AppSettings.Language);
             if (LanguageList.Any(d => d.Value.Name == currentLanguage))
             {
                 SelectedLanguage = LanguageList.FirstOrDefault(d => d.Value.Name == currentLanguage);
@@ -423,7 +427,7 @@ namespace BudgetBadger.Forms.Settings
 
             CurrencyFormatList = GetCurrencies();
 
-            var currentCurrencyFormat = _settings.GetValueOrDefault(AppSettings.CurrencyFormat);
+            var currentCurrencyFormat = await _settings.GetValueOrDefaultAsync(AppSettings.CurrencyFormat);
             if (CurrencyFormatList.Any(c => c.Value.Name == currentCurrencyFormat))
             {
                 SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value.Name == currentCurrencyFormat);

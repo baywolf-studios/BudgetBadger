@@ -15,7 +15,6 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
     public class DropboxFileSyncProvider : IFileSyncProvider
     {
         readonly ISettings _settings;
-        string _refreshToken { get => _settings.GetValueOrDefault(DropboxSettings.RefreshToken); }
         readonly string _appKey;
 
         public DropboxFileSyncProvider(ISettings settings, string appKey)
@@ -54,7 +53,8 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
-                using (var dbx = new DropboxClient(_refreshToken, _appKey))
+                var refreshToken =  await _settings.GetValueOrDefaultAsync(DropboxSettings.RefreshToken);
+                using (var dbx = new DropboxClient(refreshToken, _appKey))
                 {
                     var folderArgs = new ListFolderArg("", recursive: true);
 
@@ -107,13 +107,14 @@ namespace BudgetBadger.FileSyncProvider.Dropbox
 
             try
             {
+                var refreshToken = await _settings.GetValueOrDefaultAsync(DropboxSettings.RefreshToken);
                 var files = sourceDirectory.GetFiles();
 
                 foreach (var file in files)
                 {
                     using (var fileStream = file.Open())
                     using (var compressedFileStream = Compress(fileStream))    
-                    using (var dbx = new DropboxClient(_refreshToken, _appKey))
+                    using (var dbx = new DropboxClient(refreshToken, _appKey))
                     {
                         if (file.Name.EndsWith(".gz"))
                         {

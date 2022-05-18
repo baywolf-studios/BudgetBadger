@@ -65,7 +65,8 @@ namespace BudgetBadger.Forms
             InitializeComponent();
 
             var settings = Container.Resolve<ISettings>();
-            int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+            var appOCount = await settings.GetValueOrDefaultAsync(AppSettings.AppOpenedCount);
+            int.TryParse(appOCount, out int appOpenedCount);
             if (appOpenedCount > 0)
             {
                 if (Device.Idiom == TargetIdiom.Desktop)
@@ -100,8 +101,8 @@ namespace BudgetBadger.Forms
             _syncTimer = new Timer(_ => Task.Run(async () => await Sync()).FireAndForget());
 
             SetAppTheme(Application.Current.RequestedTheme);
-            SetAppearanceSize();
-            SetLocale();
+            await SetAppearanceSize();
+            await SetLocale();
 
             Application.Current.RequestedThemeChanged += (s, a) => 
             {
@@ -142,7 +143,8 @@ namespace BudgetBadger.Forms
 
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
-            int.TryParse(settings.GetValueOrDefault(AppSettings.AppOpenedCount), out int appOpenedCount);
+            var appOCount = await settings.GetValueOrDefaultAsync(AppSettings.AppOpenedCount);
+            int.TryParse(appOCount, out int appOpenedCount);
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
@@ -165,8 +167,7 @@ namespace BudgetBadger.Forms
 
             var container = containerRegistry.GetContainer();
 
-            container.Register<IApplicationStore, ApplicationStore>();
-            container.Register<ISettings, AppStoreSettings>();
+            container.Register<ISettings, SecureStorageSettings>();
             container.Register<IResourceContainer, ResourceContainer>();
 
             var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
@@ -233,7 +234,7 @@ namespace BudgetBadger.Forms
                                                                           Arg.Of<IDropboxAuthentication>(),
                                                                           Arg.Of<IPageDialogService>())));
 
-            container.Register(made: Made.Of(() => StaticSyncFactory.CreateSync(Arg.Of<ISettings>(),
+            container.Register(made: Made.Of(() => StaticSyncFactory.CreateSyncAsync(Arg.Of<ISettings>(),
                                                                           Arg.Of<IDirectoryInfo>(),
                                                                           Arg.Of<IAccountSyncLogic>(),
                                                                           Arg.Of<IPayeeSyncLogic>(),
@@ -317,11 +318,11 @@ namespace BudgetBadger.Forms
             DynamicResourceProvider.Instance.Invalidate();
         }
 
-        void SetAppearanceSize()
+        async Task SetAppearanceSize()
         {
             var settings = Container.Resolve<ISettings>();
 
-            var currentDimension = settings.GetValueOrDefault(AppSettings.AppearanceDimensionSize);
+            var currentDimension = await settings.GetValueOrDefaultAsync(AppSettings.AppearanceDimensionSize);
 
             if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
             {
@@ -357,12 +358,12 @@ namespace BudgetBadger.Forms
         }
 
 
-        void SetLocale()
+        async Task SetLocale()
         {
             var localize = Container.Resolve<ILocalize>();
             var settings = Container.Resolve<ISettings>();
 
-            var currentLanguage = settings.GetValueOrDefault(AppSettings.Language);
+            var currentLanguage = await settings.GetValueOrDefaultAsync(AppSettings.Language);
             CultureInfo currentCulture = null;
 
             if (!String.IsNullOrEmpty(currentLanguage))
@@ -372,7 +373,7 @@ namespace BudgetBadger.Forms
 
                     currentCulture = new CultureInfo(currentLanguage);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // culture doesn't exist
                 }
@@ -384,7 +385,7 @@ namespace BudgetBadger.Forms
             }
             
             
-            var currentCurrencyFormat = settings.GetValueOrDefault(AppSettings.CurrencyFormat);
+            var currentCurrencyFormat = await settings.GetValueOrDefaultAsync(AppSettings.CurrencyFormat);
             if (!String.IsNullOrEmpty(currentCurrencyFormat))
             {
                 try
@@ -392,7 +393,7 @@ namespace BudgetBadger.Forms
                     var currencyCulture = new CultureInfo(currentCurrencyFormat);
                     currentCulture.NumberFormat = currencyCulture.NumberFormat;
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     // culture doesn't exist
                 }
@@ -414,7 +415,7 @@ namespace BudgetBadger.Forms
         async Task Sync()
         {
             var syncFactory = Container.Resolve<ISyncFactory>();
-            var syncService = syncFactory.GetSyncService();
+            var syncService = await syncFactory.GetSyncServiceAsync();
             var syncResult = await syncService.FullSync();
             if (syncResult.Success)
             {
@@ -424,28 +425,57 @@ namespace BudgetBadger.Forms
 
         async Task UpgradeApp()
         {
+            await MigrateFromApplicationStoreToSecureStorageSettings();
             var settings = Container.Resolve<ISettings>();
-            var currentVersionString = settings.GetValueOrDefault(AppSettings.CurrentAppVersion);
+            var appMigrationVersionString = await settings.GetValueOrDefaultAsync(AppSettings.AppMigrationVersion);
 
-            int.TryParse(currentVersionString, out int currentVersion);
-
-            switch (currentVersion)
+            int.TryParse(appMigrationVersionString, out int appMigrationVersion);
+            
+            switch (appMigrationVersion)
             {
                 case 0:
-                    await UpgradeAppFromV0ToV1();
+                    await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "3");
                     break;
                 case 1:
                     await UpgradeAppFromV1ToV2();
+                    break;
+                case 2:
+                    await UpgradeAppFromV2ToV3();
                     break;
                 default:
                     break;
             }
         }
 
-        async Task UpgradeAppFromV0ToV1()
+        async Task MigrateFromApplicationStoreToSecureStorageSettings()
+        {
+            var appStore = new ApplicationStore();
+
+            if (appStore.Properties.Any())
+            {
+                var settings = Container.Resolve<ISettings>();
+                foreach (var setting in appStore.Properties)
+                {
+                    if (setting.Key == "CurrentAppVersion")
+                    {
+                        int.TryParse(setting.Value.ToString(), out int currentAppVersion);
+                        var appMigrationVersion = currentAppVersion + 1;
+                        await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, appMigrationVersion.ToString());
+                    }
+                    else
+                    {
+                        await settings.AddOrUpdateValueAsync(setting.Key, setting.Value.ToString());
+                    }
+                }
+                appStore.Properties.Clear();
+                await appStore.SavePropertiesAsync();
+            }
+        }
+
+        async Task UpgradeAppFromV1ToV2()
         {
             var settings = Container.Resolve<ISettings>();
-            var syncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
+            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
 
             if (syncMode == SyncMode.DropboxSync)
             {
@@ -466,14 +496,14 @@ namespace BudgetBadger.Forms
                 }
             }
 
-            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "1");
+            await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "1");
         }
 
-        async Task UpgradeAppFromV1ToV2()
+        async Task UpgradeAppFromV2ToV3()
         {
             var settings = Container.Resolve<ISettings>();
-            var syncMode = settings.GetValueOrDefault(AppSettings.SyncMode);
-            var refreshToken = settings.GetValueOrDefault(DropboxSettings.RefreshToken);
+            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
+            var refreshToken = await settings.GetValueOrDefaultAsync(DropboxSettings.RefreshToken);
 
             if (syncMode == SyncMode.DropboxSync && string.IsNullOrEmpty(refreshToken))
             {
@@ -494,7 +524,8 @@ namespace BudgetBadger.Forms
                 }
             }
 
-            await settings.AddOrUpdateValueAsync(AppSettings.CurrentAppVersion, "2");
+            await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "2");
         }
     }
 }
+ 

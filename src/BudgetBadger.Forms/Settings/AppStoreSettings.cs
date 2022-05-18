@@ -30,13 +30,30 @@ namespace BudgetBadger.Forms.Settings
             await AppStore.SavePropertiesAsync();
         }
 
-        public string GetValueOrDefault(string key)
+        public Task<string> GetValueOrDefaultAsync(string key)
         {
             if (AppStore.Properties.ContainsKey(key))
             {
-                return AppStore.Properties[key].ToString();
+                return Task.FromResult(AppStore.Properties[key].ToString());
             }
-            return string.Empty;
+            return Task.FromResult(string.Empty);
+        }
+
+        public async Task RemoveAllAsync()
+        {
+            AppStore.Properties.Clear();
+
+            await AppStore.SavePropertiesAsync();
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            if (AppStore.Properties.ContainsKey(key))
+            {
+                AppStore.Properties.Remove(key);
+
+                await AppStore.SavePropertiesAsync();
+            }
         }
     }
 }

@@ -13,15 +13,16 @@ namespace BudgetBadger.Forms
 {
     public static class StaticSyncFactory
     {
-        public static ISync CreateSync(ISettings settings,
-                                       IDirectoryInfo syncDirectory,
-                                       IAccountSyncLogic accountSyncLogic,
-                                       IPayeeSyncLogic payeeSyncLogic,
-                                       IEnvelopeSyncLogic envelopeSyncLogic,
-                                       ITransactionSyncLogic transactionSyncLogic,
-                                       KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders)
+        public static async Task<ISync> CreateSyncAsync(ISettings settings,
+                                                        IDirectoryInfo syncDirectory,
+                                                        IAccountSyncLogic accountSyncLogic,
+                                                        IPayeeSyncLogic payeeSyncLogic,
+                                                        IEnvelopeSyncLogic envelopeSyncLogic,
+                                                        ITransactionSyncLogic transactionSyncLogic,
+                                                        KeyValuePair<string, IFileSyncProvider>[] fileSyncProviders)
         {
-            if (settings.GetValueOrDefault(AppSettings.SyncMode) == SyncMode.DropboxSync)
+            var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
+            if (syncMode == SyncMode.DropboxSync)
             {
                 var dropboxFileSyncProvider = fileSyncProviders.FirstOrDefault(f => f.Key == SyncMode.DropboxSync).Value;
 

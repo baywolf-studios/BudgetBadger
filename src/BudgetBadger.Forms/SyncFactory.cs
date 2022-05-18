@@ -51,9 +51,9 @@ namespace BudgetBadger.Forms
             _dialogService = pageDialogService;
         }
 
-        public ISync GetSyncService()
+        public async Task<ISync> GetSyncServiceAsync()
         {
-            return StaticSyncFactory.CreateSync(_settings, _syncDirectory, _accountSyncLogic, _payeeSyncLogic, _envelopeSyncLogic, _transactionSyncLogic, _fileSyncProviders);
+            return await StaticSyncFactory.CreateSyncAsync(_settings, _syncDirectory, _accountSyncLogic, _payeeSyncLogic, _envelopeSyncLogic, _transactionSyncLogic, _fileSyncProviders);
         }
 
         public async Task SetLastSyncDateTime(DateTime dateTime)
@@ -61,15 +61,16 @@ namespace BudgetBadger.Forms
             await _settings.AddOrUpdateValueAsync(AppSettings.LastSyncDateTime, dateTime.ToString());
         }
 
-        public string GetLastSyncDateTime()
+        public async Task<string> GetLastSyncDateTimeAsync()
         {
-            var syncMode = _settings.GetValueOrDefault(AppSettings.SyncMode);
+            var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
             if (String.IsNullOrEmpty(syncMode) || syncMode == SyncMode.NoSync)
             {
                 return _resourceContainer.GetResourceString("SyncDateTimeNever");
             }
 
-            if (DateTime.TryParse(_settings.GetValueOrDefault(AppSettings.LastSyncDateTime), out DateTime dateTime))
+            var lastSyncString = await _settings.GetValueOrDefaultAsync(AppSettings.LastSyncDateTime);
+            if (DateTime.TryParse(lastSyncString, out DateTime dateTime))
             {
                 return _resourceContainer.GetFormattedString("{0:g}", dateTime);
             }
