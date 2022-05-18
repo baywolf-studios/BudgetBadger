@@ -22,6 +22,7 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.266" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,7 @@
     <None Remove="NETStandard.Library" />
     <None Remove="Microsoft.Data.Sqlite.Core" />
     <None Remove="SQLitePCLRaw.bundle_sqlite3" />
+    <None Remove="SkiaSharp" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">

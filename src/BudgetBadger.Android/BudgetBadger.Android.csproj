@@ -63,17 +63,11 @@
     <PackageReference Include="Dropbox.Api">
       <Version>6.11.1</Version>
     </PackageReference>
-    <PackageReference Include="Microcharts.Forms">
-      <Version>0.7.1</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.7.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
-    <PackageReference Include="Microcharts">
-      <Version>0.7.1</Version>
-    </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3">
       <Version>2.0.7</Version>
     </PackageReference>

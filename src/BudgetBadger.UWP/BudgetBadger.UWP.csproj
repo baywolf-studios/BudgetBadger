@@ -228,12 +228,6 @@
     <PackageReference Include="Dropbox.Api">
       <Version>6.11.1</Version>
     </PackageReference>
-    <PackageReference Include="Microcharts">
-      <Version>0.7.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microcharts.Forms">
-      <Version>0.7.1</Version>
-    </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3">
       <Version>2.0.7</Version>
     </PackageReference>
