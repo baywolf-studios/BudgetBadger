@@ -301,6 +301,69 @@ jobs:
           path: './src/BudgetBadger.UWP/AppPackages/*'
           if-no-files-found: error
 
+  upload_ios_testflight:
+    needs: [create_version_tag, build_sign_ios]
+    runs-on: macos-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Deploy to App Store
+        env:
+          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+        run: |
+             xcrun altool --upload-app --type ios --file "./BudgetBadger.iOS/BudgetBadger.iOS.ipa" --username "$APPLE_ID_USERNAME" --password "$APPLE_ID_PASSWORD"
+
+  upload_macos_testflight:
+    needs: [create_version_tag, build_sign_macos]
+    runs-on: macos-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Deploy to App Store
+        env:
+          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          VERSION: ${{ needs.create_version_tag.outputs.version }}
+        run: |
+             xcrun altool --upload-app --type macos --file "./BudgetBadger.macOS/Budget Badger-$VERSION.pkg" --username "$APPLE_ID_USERNAME" --password "$APPLE_ID_PASSWORD"
+
+  upload_android_google_play:
+    needs: [create_version_tag, build_sign_android]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Changelog
+        run: |
+             mkdir ./whatsnew
+             echo "${{ needs.create_version_tag.outputs.changelog }}" >> ./whatsnew/whatsnew-en-US
+
+      - name: Deploy to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.BayWolfStudios.BudgetBadger
+          releaseFiles: ./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.aab
+          track: internal
+          whatsNewDirectory: ./whatsnew
+          status: completed
+
   create_release:
     needs: [create_version_tag, build_sign_android, build_sign_ios, build_sign_macos, build_sign_uwp]
     runs-on: ubuntu-latest
@@ -324,4 +387,3 @@ jobs:
                       ./BudgetBadger.iOS/BudgetBadger.iOS.ipa,
                       ./BudgetBadger.macOS/Budget Badger*.pkg,
                       ./BudgetBadger.UWP/BudgetBadger*.appxupload"
-
