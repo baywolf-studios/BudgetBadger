@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Settings;
-using BudgetBadger.FileSyncProvider.Dropbox.Authentication;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
@@ -22,7 +22,6 @@ namespace BudgetBadger.Forms.Settings
         readonly INavigationService _navigationService;
         readonly IPageDialogService _dialogService;
         readonly ISettings _settings;
-        readonly IDropboxAuthentication _dropboxAuthentication;
         readonly ISyncFactory _syncFactory;
         readonly ILocalize _localize;
 
@@ -30,8 +29,7 @@ namespace BudgetBadger.Forms.Settings
 
         public ICommand SyncToggleCommand { get; set; }
         public ICommand SyncCommand { get; set; }
-        public ICommand HelpCommand { get => new Command(() => Device.OpenUri(new Uri("http://BudgetBadger.io"))); }
-        public ICommand EmailCommand { get => new Command(() => Device.OpenUri(new Uri("mailto:support@BudgetBadger.io"))); }
+        public ICommand HelpCommand { get => new Command(async () => await Browser.OpenAsync(new Uri("https://BudgetBadger.io"))); }
         public ICommand CurrencySelectedCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
         public ICommand LanguageSelectedCommand { get; set; }
@@ -118,7 +116,6 @@ namespace BudgetBadger.Forms.Settings
                                      INavigationService navigationService,
                                      IPageDialogService dialogService,
                                      ISettings settings,
-                                     IDropboxAuthentication dropboxAuthentication,
                                      ISyncFactory syncFactory,
                                      ILocalize localize)
         {
@@ -126,7 +123,6 @@ namespace BudgetBadger.Forms.Settings
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
-            _dropboxAuthentication = dropboxAuthentication;
             _syncFactory = syncFactory;
             _localize = localize;
 

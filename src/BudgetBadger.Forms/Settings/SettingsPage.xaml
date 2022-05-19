@@ -34,7 +34,6 @@
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
@@ -193,17 +192,6 @@
                         Grid.Row="12"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
-                        Command="{Binding EmailCommand}">
-                        <Label
-                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                            Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="Support@BudgetBadger.io">
-                        </Label>
-                    </uc:ContentButton>
-                    <uc:ContentButton
-                        Grid.Row="13"
-                        Grid.ColumnSpan="12"
-                        Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding LicenseCommand}">
                         <Label
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
@@ -212,7 +200,7 @@
                         </Label>
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="14"
+                        Grid.Row="13"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding ThirdPartyNoticesCommand}">
