@@ -349,11 +349,6 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
 
-      - name: Changelog
-        run: |
-             mkdir ./whatsnew
-             echo "${{ needs.create_version_tag.outputs.changelog }}" >> ./whatsnew/whatsnew-en-US
-
       - name: Deploy to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
@@ -361,7 +356,6 @@ jobs:
           packageName: com.BayWolfStudios.BudgetBadger
           releaseFiles: ./BudgetBadger.Android/com.BayWolfStudios.BudgetBadger-Signed.aab
           track: internal
-          whatsNewDirectory: ./whatsnew
           status: completed
 
   create_release:
