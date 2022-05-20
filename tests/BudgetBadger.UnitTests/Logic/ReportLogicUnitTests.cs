@@ -6,34 +6,33 @@ using BudgetBadger.Logic;
 using FakeItEasy;
 using NUnit.Framework;
 
-namespace BudgetBadger.UnitTests.Logic
+namespace BudgetBadger.UnitTests.Logic;
+
+public class ReportLogicUnitTests
 {
-    public class ReportLogicUnitTests
+    IResourceContainer resourceContainer { get; set; }
+    IDataAccess dataAccess { get; set; }
+    ReportLogic reportLogic { get; set; }
+
+    [SetUp]
+    public void Setup()
     {
-        IResourceContainer resourceContainer { get; set; }
-        IDataAccess dataAccess { get; set; }
-        ReportLogic reportLogic { get; set; }
+        dataAccess = A.Fake<IDataAccess>();
+        resourceContainer = A.Fake<IResourceContainer>();
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            dataAccess = A.Fake<IDataAccess>();
-            resourceContainer = A.Fake<IResourceContainer>();
-        }
+    [Test]
+    public async Task SoftDeletePayee_HiddenPayee_Successful()
+    {
+        // arrange
+        //var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
 
-        [Test]
-        public async Task SoftDeletePayee_HiddenPayee_Successful()
-        {
-            // arrange
-            //var hiddenPayee = TestPayees.HiddenPayee.DeepCopy();
+        //A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
 
-            //A.CallTo(() => PayeeDataAccess.ReadPayeeAsync(hiddenPayee.Id)).Returns(hiddenPayee);
+        // act
+        //var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
 
-            // act
-            //var result = await PayeeLogic.SoftDeletePayeeAsync(hiddenPayee.Id);
-
-            // assert
-            Assert.IsTrue(true);
-        }
+        // assert
+        Assert.IsTrue(true);
     }
 }
