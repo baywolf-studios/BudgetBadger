@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
 using BudgetBadger.Models.Extensions;
 
-namespace BudgetBadger.Logic
+namespace BudgetBadger.Core.Logic
 {
     public class EnvelopeLogic : IEnvelopeLogic
     {

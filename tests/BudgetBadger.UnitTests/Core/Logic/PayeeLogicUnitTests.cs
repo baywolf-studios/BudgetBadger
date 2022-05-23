@@ -1,16 +1,15 @@
-﻿using BudgetBadger.Core.DataAccess;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Logic;
+using BudgetBadger.Core.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.UnitTests.TestModels;
 using FakeItEasy;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BudgetBadger.UnitTests.Logic;
+namespace BudgetBadger.UnitTests.Core.Logic;
 
 public class PayeeLogicUnitTests
 {

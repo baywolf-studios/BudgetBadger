@@ -2,7 +2,7 @@
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Models;
 
-namespace BudgetBadger.Logic
+namespace BudgetBadger.Core.Utilities
 {
     public static class TranslationExtensions
     {

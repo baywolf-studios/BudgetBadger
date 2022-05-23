@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
-using BudgetBadger.Logic;
 using BudgetBadger.Models;
 using BudgetBadger.UnitTests.TestModels;
 using FakeItEasy;

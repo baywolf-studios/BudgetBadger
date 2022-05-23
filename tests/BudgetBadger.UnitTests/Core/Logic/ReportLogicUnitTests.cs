@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Logic;
+using BudgetBadger.Core.Logic;
 using FakeItEasy;
 using NUnit.Framework;
 
-namespace BudgetBadger.UnitTests.Logic;
+namespace BudgetBadger.UnitTests.Core.Logic;
 
 public class ReportLogicUnitTests
 {

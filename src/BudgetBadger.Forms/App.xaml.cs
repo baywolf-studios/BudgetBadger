@@ -4,7 +4,6 @@ using System.Diagnostics;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.DataAccess.Sqlite;
-using BudgetBadger.Logic;
 using BudgetBadger.Forms.Payees;
 using BudgetBadger.Forms.Views;
 using BudgetBadger.Forms.ViewModels;

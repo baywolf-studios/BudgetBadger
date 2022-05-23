@@ -27,7 +27,6 @@
     <None Remove="FakeItEasy" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Logic\" />
     <Folder Include="TestModels\" />
   </ItemGroup>
 </Project>
