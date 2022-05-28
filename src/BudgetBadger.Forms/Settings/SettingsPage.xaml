@@ -18,11 +18,12 @@
                 Orientation="Vertical">
                 <uc:ResponsiveGrid
                     x:Name="responsiveGrid"
+                    CompressedLayout.IsHeadless="true"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
@@ -46,74 +47,53 @@
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource DividerStyle}"/>
-                    <Grid
+                    <Label
                         Grid.Row="2"
                         Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        RowSpacing="4">
-                        <Grid.ColumnDefinitions >
-                            <ColumnDefinition Width="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Image
-                            HeightRequest="{ext:DynamicResource size_225}"
-                            WidthRequest="{ext:DynamicResource size_225}"
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="0"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource
-                                    Size="{ext:DynamicResource size_225}"
-                                    Glyph="{ext:DynamicResource Key=DropBoxIcon}"
-                                    Color="{ext:DynamicResource gray_900}"
-                                    FontFamily="{ext:DynamicResource Key=IconFontFamily}"/>
-                            </Image.Source>
-                        </Image>
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                        Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
+                        Text="{ext:Translate DropboxLabel}" />
+                    <Switch
+                        Grid.Row="2"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
+                        IsToggled="{Binding DropboxEnabled}"
+                        OnColor="{ext:DynamicResource brand_600}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End">
+                        <Switch.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
+                        </Switch.Behaviors>
+                    </Switch>
+                    <StackLayout
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                        HeightRequest="{ext:DynamicResource size_675}"
+                        Orientation="Vertical"
+                        Spacing="{ext:DynamicResource Key=size_40}"
+                        IsVisible="{Binding ShowSync}">
                         <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Style="{ext:DynamicResource Key=ListDoubleLinePrimaryItemLabelStyle}"
-                            Text="{ext:Translate DropboxLabel}"
-                            VerticalOptions="End" />
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Style="{ext:DynamicResource Key=ListDoubleLineSecondaryItemLabelStyle}"
-                            VerticalOptions="Start">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{ext:Translate LastSyncedLabel}" />
-                                    <Span Text=" - " />
-                                    <Span Text="{Binding LastSynced}" />
-                                </FormattedString>
-                            </Label.FormattedText>
+                            VerticalOptions="EndAndExpand"
+                            Style="{ext:DynamicResource ListDoubleLinePrimaryItemLabelStyle}"
+                            Text="{Binding LastSynced}">
                         </Label>
-                        <Switch
-                            Grid.RowSpan="2"
-                            Grid.Column="2"
-                            Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                            IsToggled="{Binding DropboxEnabled}"
-                            OnColor="{ext:DynamicResource brand_600}"
-                            VerticalOptions="CenterAndExpand">
-                            <Switch.Behaviors>
-                                <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
-                            </Switch.Behaviors>
-                        </Switch>
-                    </Grid>
+                        <Label
+                            VerticalOptions="StartAndExpand"
+                            HorizontalTextAlignment="Start"
+                            Style="{ext:DynamicResource ListDoubleLineSecondaryItemLabelStyle}"
+                            Text="{ext:Translate LastSyncedLabel}">
+                        </Label>
+                    </StackLayout>
                     <uc:Button2
                         Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="12"
-                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
                         Command="{Binding SyncCommand}"
-                        HorizontalOptions="Start"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
                         IsVisible="{Binding ShowSync}"
                         Style="{ext:DynamicResource SecondaryActionButtonStyle}"
                         Text="{ext:Translate SyncButton}" />

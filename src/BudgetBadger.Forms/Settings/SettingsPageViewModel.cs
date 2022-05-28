@@ -280,7 +280,9 @@ namespace BudgetBadger.Forms.Settings
                         _resourceContainer.GetResourceString("AlertOk"));
                 }
 
-                LastSynced = (await _cloudSync.GetLastSyncDateTimeAsync()).ToString();
+                var lastSyncedDateTime = await _cloudSync.GetLastSyncDateTimeAsync();
+                
+                LastSynced = _resourceContainer.GetFormattedString("{0:g}", lastSyncedDateTime);;
             }
             finally
             {
