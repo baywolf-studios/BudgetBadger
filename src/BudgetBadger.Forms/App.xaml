@@ -129,7 +129,6 @@
             </Style>
             
             <Style x:Key="SettingsButtonStyle" TargetType="uc:ContentButton">
-                <Setter Property="ForceActiveBackground" Value="True"/>
                 <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
                 <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_75}" />
                 <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource brand_100}" />
