@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.CloudSync;
-using BudgetBadger.Core.Utilities;
+using BudgetBadger.Core.FileSystem;
 using Dropbox.Api;
 
 namespace BudgetBadger.FileSystem.Dropbox

@@ -49,7 +49,7 @@ public static class TestDropboxDirectoryBuilder
 
     public static async Task<string> GetInvalidDirectory()
     {
-        return "#$%$%@(#@)#@$*#@##$";
+        return new string(Path.GetInvalidPathChars());
     }
     
     public static async Task Cleanup(string rootDirectory)

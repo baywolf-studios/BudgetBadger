@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using BudgetBadger.FileSystem.Dropbox;
-using BudgetBadger.IntegrationTests;
 using NUnit.Framework;
 
 namespace BudgetBadger.IntegrationTests.FileSystem.Dropbox;

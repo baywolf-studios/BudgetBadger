@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.FileSystem;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
@@ -10,9 +11,9 @@ namespace BudgetBadger.Core.CloudSync
 {
     public class SyncEngine : ISyncEngine
     {
-        private readonly IMergeLogic _mergeLogic;
         private const string _compressExt = ".gz";
         private static readonly SemaphoreSlim FileBasedSyncLock = new SemaphoreSlim(1, 1);
+        private readonly IMergeLogic _mergeLogic;
 
         public SyncEngine(IMergeLogic mergeLogic)
         {
@@ -240,7 +241,6 @@ namespace BudgetBadger.Core.CloudSync
                 }
                 else
                 {
-                    
                     result = Result.Ok();
                 }
 

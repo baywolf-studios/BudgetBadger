@@ -74,6 +74,7 @@
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
     <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Effects\BorderlessDatePickerEffect.cs" />

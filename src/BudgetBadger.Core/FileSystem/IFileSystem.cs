@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BudgetBadger.Core.CloudSync
+namespace BudgetBadger.Core.FileSystem
 {
     public interface IFileSystem
     {

@@ -16,14 +16,7 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     if (bindable is Checkbox checkBox && oldVal != newVal)
                     {
-                        if (string.IsNullOrEmpty((string)newVal))
-                        {
-                            checkBox.LabelControl.IsVisible = false;
-                        }
-                        else
-                        {
-                            checkBox.LabelControl.IsVisible = true;
-                        }
+                        checkBox.LabelControl.IsVisible = !string.IsNullOrEmpty((string)newVal);
                     }
                 });
         public string Label
@@ -40,16 +33,7 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     if (bindable is Checkbox checkBox && oldVal != newVal)
                     {
-                        if (string.IsNullOrEmpty((string)newVal))
-                        {
-                            checkBox.CaptionControl.IsVisible = false;
-                            Grid.SetColumnSpan(checkBox.SwitchControl, 1);
-                        }
-                        else
-                        {
-                            checkBox.CaptionControl.IsVisible = true;
-                            Grid.SetColumnSpan(checkBox.SwitchControl, 2);
-                        }
+                        checkBox.CaptionControl.IsVisible = !string.IsNullOrEmpty((string)newVal);
                     }
                 });
         public string Caption

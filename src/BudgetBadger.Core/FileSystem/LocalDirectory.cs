@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BudgetBadger.Core.CloudSync
+namespace BudgetBadger.Core.FileSystem
 {
     public class LocalDirectory : IDirectory
     {
         public void SetAuthentication(IReadOnlyDictionary<string, string> keys)
         {
         }
-        
+
         public async Task CreateDirectoryAsync(string path)
         {
             Directory.CreateDirectory(path);

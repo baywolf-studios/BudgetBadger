@@ -51,7 +51,7 @@ public static class TestDropboxFileBuilder
 
     public static async Task<(string Path, byte[] Data)> GetInvalidFile()
     {
-        return (Path: "#$%$%@(#@)#@$*#@##$", Data: Array.Empty<byte>());
+        return (Path: new string(Path.GetInvalidPathChars()), Data: Array.Empty<byte>());
     }
     
     public static async Task Cleanup(string rootDirectory)

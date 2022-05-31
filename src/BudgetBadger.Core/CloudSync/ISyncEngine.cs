@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.FileSystem;
 using BudgetBadger.Models;
 
 namespace BudgetBadger.Core.CloudSync
@@ -8,6 +9,7 @@ namespace BudgetBadger.Core.CloudSync
     {
         Task<Result> ImportAsync(IDataAccess importDataAccess, IDataAccess appDataAccess);
         Task<Result> ExportAsync(IDataAccess appDataAccess, IDataAccess exportDataAccess);
+
         Task<Result> FileBasedImportAsync(IFileSystem importFileSystem,
             string importFile,
             bool compression,

@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.FileSystem.Dropbox;
-using BudgetBadger.IntegrationTests;
-using BudgetBadger.IntegrationTests.FileSystem.Dropbox;
 using NUnit.Framework;
 
 namespace BudgetBadger.IntegrationTests.FileSystem.Dropbox;

@@ -39,7 +39,6 @@
         x:Name="SwitchControl"
         Grid.Row="1"
         Grid.Column="0"
-        Grid.ColumnSpan="2"
         HorizontalOptions="Start"
         VerticalOptions="CenterAndExpand"
         IsChecked="{Binding IsChecked}"

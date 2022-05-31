@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BudgetBadger.Core.CloudSync
+namespace BudgetBadger.Core.FileSystem
 {
     public interface IDirectory
     {

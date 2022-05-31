@@ -35,5 +35,7 @@ namespace BudgetBadger.Forms.Enums
         public const string LicensePage = "LicensePage";
         public const string TransactionEditPage = "TransactionEditPage";
         public const string SplitTransactionPage = "SplitTransactionPage";
+        public const string DropboxSetupPage = nameof(DropboxSetupPage);
+        public const string WebDavSetupPage = nameof(CloudSync.WebDavSetupPage);
     }
 }

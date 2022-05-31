@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using BudgetBadger.Core.FileSystem;
 
-namespace BudgetBadger.FileSystem.Dropbox
+namespace BudgetBadger.FileSystem.WebDav
 {
-    public class DropboxFileSystem : IFileSystem
+    public class WebDavFileSystem : IFileSystem
     {
-        public DropboxFileSystem()
+        public WebDavFileSystem()
         {
-            File = new DropboxFile();
-            Directory = new DropboxDirectory();
+            File = new WebDavFile();
+            Directory = new WebDavDirectory();
         }
 
         public void SetAuthentication(IReadOnlyDictionary<string, string> keys)

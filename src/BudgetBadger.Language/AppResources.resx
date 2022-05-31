@@ -204,8 +204,8 @@
   <data name="AlertGeneralError" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="AlertMessageDropboxError" xml:space="preserve">
-    <value>Did not authenticate with Dropbox. Sync disabled.</value>
+  <data name="AlertMessageCloudSyncAuthenticationError" xml:space="preserve">
+    <value>Unable to authenticate. Cloud Sync disabled.</value>
   </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
@@ -1005,13 +1005,52 @@
   <data name="AlertActionNeeded" xml:space="preserve">
     <value>Action Needed</value>
   </data>
-  <data name="AlertDropboxUpgrade" xml:space="preserve">
-    <value>Due to recent Dropbox changes, you need to re-enable Cloud Sync via the Settings Page. Would you like to do that now?</value>
-  </data>
-  <data name="LicenseLabel" xml:space="preserve">
+  <data name="LicensePageTitle" xml:space="preserve">
       <value>License</value>
   </data>
   <data name="ThirdPartyNoticesLabel" xml:space="preserve">
       <value>Third Party Notices</value>
+  </data>
+  <data name="ThirdPartyNoticesPageTitle" xml:space="preserve">
+    <value>Third Party Notices</value>
+  </data>
+  <data name="DropboxSetupPageTitle" xml:space="preserve">
+    <value>Dropbox Setup</value>
+  </data>
+  <data name="LicenseLabel" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="WebDavSetupPageTitle" xml:space="preserve">
+    <value>WebDAV Setup</value>
+  </data>
+  <data name="WebDavLabel" xml:space="preserve">
+    <value>WebDAV</value>
+  </data>
+  <data name="WebDavServerHint" xml:space="preserve">
+    <value>https://example.com/remote.php/dav/files/User</value>
+  </data>
+  <data name="WebDavDirectoryHint" xml:space="preserve">
+    <value>/BudgetBadger</value>
+  </data>
+  <data name="WebDavServerLabel" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="WebDavDirectoryLabel" xml:space="preserve">
+    <value>Directory</value>
+  </data>
+  <data name="WebDavUsernameLabel" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="WebDavPasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RequiredError" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="AcceptInvalidCertificateLabel" xml:space="preserve">
+    <value>Accept Invalid Certificate</value>
+  </data>
+  <data name="SslLabel" xml:space="preserve">
+    <value>SSL</value>
   </data>
 </root>

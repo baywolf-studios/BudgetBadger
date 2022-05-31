@@ -1,58 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.Logic;
-using BudgetBadger.DataAccess.Sqlite;
-using BudgetBadger.Forms.Payees;
-using BudgetBadger.Forms.Views;
-using BudgetBadger.Forms.ViewModels;
-using DryIoc;
-using Prism;
-using Prism.DryIoc;
-using Prism.Ioc;
-using BudgetBadger.Forms.Accounts;
-using BudgetBadger.Forms.Envelopes;
-using BudgetBadger.Forms.Transactions;
-using BudgetBadger.FileSystem.Dropbox;
-using BudgetBadger.Forms.Settings;
-using BudgetBadger.Core.Settings;
-using Prism.AppModel;
-using BudgetBadger.Forms.Enums;
-using System.IO;
-using BudgetBadger.Forms.Reports;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using System.Threading.Tasks;
-using BudgetBadger.Core.LocalizedResources;
 using System.Globalization;
-using BudgetBadger.Core.Utilities;
-using Prism.Navigation;
-using Prism.Events;
-using BudgetBadger.Forms.Events;
-using System.Threading;
+using System.IO;
 using System.Linq;
-using BudgetBadger.Forms.Style;
-using BudgetBadger.Forms.Authentication;
+using System.Threading;
+using System.Threading.Tasks;
 using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.CloudSync;
+using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.FileSystem;
+using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Settings;
+using BudgetBadger.Core.Utilities;
+using BudgetBadger.DataAccess.Sqlite;
+using BudgetBadger.FileSystem.Dropbox;
+using BudgetBadger.FileSystem.WebDav;
+using BudgetBadger.Forms.Accounts;
+using BudgetBadger.Forms.Authentication;
 using BudgetBadger.Forms.CloudSync;
+using BudgetBadger.Forms.Enums;
+using BudgetBadger.Forms.Envelopes;
+using BudgetBadger.Forms.Events;
+using BudgetBadger.Forms.Payees;
+using BudgetBadger.Forms.Reports;
+using BudgetBadger.Forms.Settings;
+using BudgetBadger.Forms.Style;
+using BudgetBadger.Forms.Transactions;
+using BudgetBadger.Forms.ViewModels;
+using BudgetBadger.Forms.Views;
+using DryIoc;
+using Prism;
+using Prism.AppModel;
+using Prism.DryIoc;
+using Prism.Events;
+using Prism.Ioc;
+using Prism.Navigation;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+
 namespace BudgetBadger.Forms
 {
     public partial class App : PrismApplication
     {
+        private Timer _syncTimer;
+
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
          * This imposes a limitation in which the App class must have a default constructor. 
          * App(IPlatformInitializer initializer = null) cannot be handled by the Activator.
          */
-        public App() : this(null) { }
+        public App() : this(null)
+        {
+        }
 
-        public App(IPlatformInitializer initializer) : base(initializer) { }
-
-        private Timer _syncTimer;
+        public App(IPlatformInitializer initializer) : base(initializer)
+        {
+        }
 
         protected override async void OnInitialized()
         {
@@ -60,15 +66,12 @@ namespace BudgetBadger.Forms
 
             var settings = Container.Resolve<ISettings>();
             var appOCount = await settings.GetValueOrDefaultAsync(AppSettings.AppOpenedCount);
-            int.TryParse(appOCount, out int appOpenedCount);
+            int.TryParse(appOCount, out var appOpenedCount);
             if (appOpenedCount > 0)
             {
                 if (Device.Idiom == TargetIdiom.Desktop)
                 {
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.PageName, "EnvelopesPage" }
-                    };
+                    var parameters = new NavigationParameters { { PageParameter.PageName, "EnvelopesPage" } };
                     await NavigationService.NavigateAsync("/MainPage/NavigationPage/EnvelopesPage", parameters);
                 }
                 else
@@ -80,10 +83,7 @@ namespace BudgetBadger.Forms
             {
                 if (Device.Idiom == TargetIdiom.Desktop)
                 {
-                    var parameters = new NavigationParameters
-                    {
-                        { PageParameter.PageName, "AccountsPage" }
-                    };
+                    var parameters = new NavigationParameters { { PageParameter.PageName, "AccountsPage" } };
                     await NavigationService.NavigateAsync("/MainPage/NavigationPage/AccountsPage", parameters);
                 }
                 else
@@ -98,10 +98,7 @@ namespace BudgetBadger.Forms
             await SetAppearanceSize();
             await SetLocale();
 
-            Application.Current.RequestedThemeChanged += (s, a) => 
-            {
-                SetAppTheme(a.RequestedTheme);
-            };
+            Application.Current.RequestedThemeChanged += (s, a) => { SetAppTheme(a.RequestedTheme); };
 
             var eventAggregator = Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(x => ResetSyncTimer());
@@ -139,7 +136,7 @@ namespace BudgetBadger.Forms
             // tracking number of times app opened
             var settings = Container.Resolve<ISettings>();
             var appOCount = await settings.GetValueOrDefaultAsync(AppSettings.AppOpenedCount);
-            int.TryParse(appOCount, out int appOpenedCount);
+            int.TryParse(appOCount, out var appOpenedCount);
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
@@ -165,17 +162,18 @@ namespace BudgetBadger.Forms
             container.Register<ISettings, SecureStorageSettings>();
             container.Register<IResourceContainer, ResourceContainer>();
 
-            var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
+            var appDataDirectory =
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
             Directory.CreateDirectory(appDataDirectory);
 
             var dataDirectory = Path.Combine(appDataDirectory, "data");
             Directory.CreateDirectory(dataDirectory);
 
             //default data access
-            var defaultConnectionString =
-                SqliteConnectionStringBuilder.Get(Path.Combine(dataDirectory, "default.bb"));
+            var defaultConnectionString = SqliteConnectionStringBuilder.Get(Path.Combine(dataDirectory, "default.bb"));
             container.UseInstance(defaultConnectionString, serviceKey: "defaultConnectionString");
-            container.Register<IDataAccess>(made: Made.Of(() => new SqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
+            container.Register<IDataAccess>(made: Made.Of(() =>
+                new SqliteDataAccess(Arg.Of<string>("defaultConnectionString"))));
 
             //default logic
             container.Register<ITransactionLogic, TransactionLogic>();
@@ -192,42 +190,66 @@ namespace BudgetBadger.Forms
             container.Register<ITempSqliteDataAccessFactory, TempSqliteDataAccessFactory>();
             container.Register<IFileSystem, LocalFileSystem>(serviceKey: Enums.FileSystem.Local);
             container.Register<IFileSystem, DropboxFileSystem>(serviceKey: Enums.FileSystem.Dropbox);
-            container.Register<IFileSystemAuthentication, DropboxFileSystemAuthentication>(serviceKey: Enums.FileSystem.Dropbox);
+            container.Register<IFileSystem, WebDavFileSystem>(serviceKey: Enums.FileSystem.WebDav);
+            container.Register<IDropboxAuthentication, DropboxAuthentication>();
             container.Register<ISyncEngine, SyncEngine>();
             container.Register<ICloudSync, FileCloudSync>();
-            
-            containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(desktopView: typeof(MainDesktopPage), tabletView: typeof(MainTabletPage));
+
+            containerRegistry.RegisterForNavigationOnIdiom<MainPage, MainPageViewModel>(
+                desktopView: typeof(MainDesktopPage),
+                tabletView: typeof(MainTabletPage));
 
             containerRegistry.RegisterForNavigation<MyPage>("NavigationPage");
-            containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(desktopView: typeof(AccountsDetailedPage), tabletView: typeof(AccountsDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<AccountsPage, AccountsPageViewModel>(
+                desktopView: typeof(AccountsDetailedPage),
+                tabletView: typeof(AccountsDetailedPage));
             containerRegistry.RegisterForNavigation<AccountSelectionPage, AccountSelectionPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(desktopView: typeof(AccountInfoDetailedPage), tabletView: typeof(AccountInfoDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<AccountInfoPage, AccountInfoPageViewModel>(
+                desktopView: typeof(AccountInfoDetailedPage),
+                tabletView: typeof(AccountInfoDetailedPage));
             containerRegistry.RegisterForNavigation<AccountEditPage, AccountEditPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(desktopView: typeof(AccountReconcileDetailedPage), tabletView: typeof(AccountReconcileDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<AccountReconcilePage, AccountReconcilePageViewModel>(
+                desktopView: typeof(AccountReconcileDetailedPage),
+                tabletView: typeof(AccountReconcileDetailedPage));
             containerRegistry.RegisterForNavigation<HiddenAccountsPage, HiddenAccountsPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(desktopView: typeof(PayeesDetailedPage), tabletView: typeof(PayeesDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<PayeesPage, PayeesPageViewModel>(
+                desktopView: typeof(PayeesDetailedPage),
+                tabletView: typeof(PayeesDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeSelectionPage, PayeeSelectionPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(desktopView: typeof(PayeeInfoDetailedPage), tabletView: typeof(PayeeInfoDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<PayeeInfoPage, PayeeInfoPageViewModel>(
+                desktopView: typeof(PayeeInfoDetailedPage),
+                tabletView: typeof(PayeeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<PayeeEditPage, PayeeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<HiddenPayeesPage, HiddenPayeesPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(desktopView: typeof(EnvelopesDetailedPage), tabletView: typeof(EnvelopesDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopesPage, EnvelopesPageViewModel>(
+                desktopView: typeof(EnvelopesDetailedPage),
+                tabletView: typeof(EnvelopesDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeSelectionPage, EnvelopeSelectionPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(desktopView: typeof(EnvelopeInfoDetailedPage), tabletView: typeof(EnvelopeInfoDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeInfoPage, EnvelopeInfoPageViewModel>(
+                desktopView: typeof(EnvelopeInfoDetailedPage),
+                tabletView: typeof(EnvelopeInfoDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeEditPage, EnvelopeEditPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTransferPage, EnvelopeTransferPageViewModel>();
             containerRegistry.RegisterForNavigation<HiddenEnvelopesPage, HiddenEnvelopesPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>(desktopView: typeof(EnvelopeGroupsDetailedPage), tabletView: typeof(EnvelopeGroupsDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<EnvelopeGroupsPage, EnvelopeGroupsPageViewModel>(
+                desktopView: typeof(EnvelopeGroupsDetailedPage),
+                tabletView: typeof(EnvelopeGroupsDetailedPage));
             containerRegistry.RegisterForNavigation<EnvelopeGroupSelectionPage, EnvelopeGroupSelectionPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeGroupEditPage, EnvelopeGroupEditPageViewModel>();
             containerRegistry.RegisterForNavigation<HiddenEnvelopeGroupsPage, HiddenEnvelopeGroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionEditPage, TransactionEditPageViewModel>();
-            containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(desktopView: typeof(SplitTransactionDetailedPage), tabletView: typeof(SplitTransactionDetailedPage));
+            containerRegistry.RegisterForNavigationOnIdiom<SplitTransactionPage, SplitTransactionPageViewModel>(
+                desktopView: typeof(SplitTransactionDetailedPage),
+                tabletView: typeof(SplitTransactionDetailedPage));
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
+            containerRegistry.RegisterForNavigation<DropboxSetupPage, DropboxSetupPageViewModel>();
+            containerRegistry.RegisterForNavigation<WebDavSetupPage, WebDavSetupPageViewModel>();
             containerRegistry.RegisterForNavigation<ThirdPartyNoticesPage, ThirdPartyNoticesPageViewModel>();
             containerRegistry.RegisterForNavigation<LicensePage, LicensePageViewModel>();
             containerRegistry.RegisterForNavigation<ReportsPage, ReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<NetWorthReportPage, NetWorthReportPageViewModel>();
-            containerRegistry.RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportPageViewModel>();
+            containerRegistry
+                .RegisterForNavigation<EnvelopesSpendingReportPage, EnvelopesSpendingReportPageViewModel>();
             containerRegistry.RegisterForNavigation<EnvelopeTrendsReportPage, EnvelopeTrendsReportsPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeesSpendingReportPage, PayeesSpendingReportPageViewModel>();
             containerRegistry.RegisterForNavigation<PayeeTrendsReportPage, PayeeTrendsReportPageViewModel>();
@@ -235,13 +257,13 @@ namespace BudgetBadger.Forms
             timer.Stop();
         }
 
-        void SetAppTheme(OSAppTheme oSAppTheme)
+        private void SetAppTheme(OSAppTheme oSAppTheme)
         {
-            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
             if (mergedDictionaries != null)
             {
-                var dictsToRemove = mergedDictionaries.Where(m => (m is LightThemeResources)
-                                                               || (m is DarkThemeResources)).ToList();
+                var dictsToRemove = mergedDictionaries.Where(m => m is LightThemeResources || m is DarkThemeResources)
+                    .ToList();
 
                 foreach (var dict in dictsToRemove)
                 {
@@ -263,7 +285,7 @@ namespace BudgetBadger.Forms
             DynamicResourceProvider.Instance.Invalidate();
         }
 
-        async Task SetAppearanceSize()
+        private async Task SetAppearanceSize()
         {
             var settings = Container.Resolve<ISettings>();
 
@@ -271,12 +293,14 @@ namespace BudgetBadger.Forms
 
             if (Enum.TryParse(currentDimension, out DimensionSize selectedDimensionSize))
             {
-                ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+                var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
                 if (mergedDictionaries != null)
                 {
-                    var dictsToRemove = mergedDictionaries.Where(m => (m is LargeDimensionResources)
-                                                                   || (m is MediumDimensionResources)
-                                                                   || (m is SmallDimensionResources)).ToList();
+                    var dictsToRemove = mergedDictionaries.Where(m =>
+                            m is LargeDimensionResources ||
+                            m is MediumDimensionResources ||
+                            m is SmallDimensionResources)
+                        .ToList();
 
                     foreach (var dict in dictsToRemove)
                     {
@@ -303,7 +327,7 @@ namespace BudgetBadger.Forms
         }
 
 
-        async Task SetLocale()
+        private async Task SetLocale()
         {
             var localize = Container.Resolve<ILocalize>();
             var settings = Container.Resolve<ISettings>();
@@ -311,11 +335,10 @@ namespace BudgetBadger.Forms
             var currentLanguage = await settings.GetValueOrDefaultAsync(AppSettings.Language);
             CultureInfo currentCulture = null;
 
-            if (!String.IsNullOrEmpty(currentLanguage))
+            if (!string.IsNullOrEmpty(currentLanguage))
             {
                 try
                 {
-
                     currentCulture = new CultureInfo(currentLanguage);
                 }
                 catch (Exception)
@@ -328,17 +351,17 @@ namespace BudgetBadger.Forms
             {
                 currentCulture = (CultureInfo)localize.GetDeviceCultureInfo().Clone();
             }
-            
-            
+
+
             var currentCurrencyFormat = await settings.GetValueOrDefaultAsync(AppSettings.CurrencyFormat);
-            if (!String.IsNullOrEmpty(currentCurrencyFormat))
+            if (!string.IsNullOrEmpty(currentCurrencyFormat))
             {
                 try
                 {
                     var currencyCulture = new CultureInfo(currentCurrencyFormat);
                     currentCulture.NumberFormat = currencyCulture.NumberFormat;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // culture doesn't exist
                 }
@@ -370,7 +393,7 @@ namespace BudgetBadger.Forms
             var appMigrationVersionString = await settings.GetValueOrDefaultAsync(AppSettings.AppMigrationVersion);
 
             int.TryParse(appMigrationVersionString, out var appMigrationVersion);
-            
+
             switch (appMigrationVersion)
             {
                 case 0:
@@ -399,15 +422,17 @@ namespace BudgetBadger.Forms
                 {
                     if (setting.Key == "CurrentAppVersion")
                     {
-                        int.TryParse(setting.Value.ToString(), out int currentAppVersion);
+                        int.TryParse(setting.Value.ToString(), out var currentAppVersion);
                         var appMigrationVersion = currentAppVersion + 1;
-                        await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, appMigrationVersion.ToString());
+                        await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion,
+                            appMigrationVersion.ToString());
                     }
                     else
                     {
                         await settings.AddOrUpdateValueAsync(setting.Key, setting.Value.ToString());
                     }
                 }
+
                 appStore.Properties.Clear();
                 await appStore.SavePropertiesAsync();
             }
@@ -434,7 +459,7 @@ namespace BudgetBadger.Forms
         private async Task UpgradeAppFromV3ToV4()
         {
             var settings = Container.Resolve<ISettings>();
-            
+
             // Migrate from refresh token to dropbox settings refresh token
             var syncMode = await settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
             if (syncMode == SyncMode.Dropbox)
@@ -450,7 +475,9 @@ namespace BudgetBadger.Forms
             try
             {
                 // Cleanup old sync directory
-                var appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BudgetBadger");
+                var appDataDirectory =
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "BudgetBadger");
                 var syncDirectory = Path.Combine(appDataDirectory, "sync");
                 if (Directory.Exists(syncDirectory))
                 {
@@ -461,7 +488,7 @@ namespace BudgetBadger.Forms
             {
                 // Don't care if we can't cleanup the old directory
             }
-            
+
             await settings.AddOrUpdateValueAsync(AppSettings.AppMigrationVersion, "4");
         }
 
@@ -481,4 +508,3 @@ namespace BudgetBadger.Forms
         }
     }
 }
- 

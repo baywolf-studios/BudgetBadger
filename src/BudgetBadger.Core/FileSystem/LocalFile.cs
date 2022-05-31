@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BudgetBadger.Core.CloudSync
+namespace BudgetBadger.Core.FileSystem
 {
     public class LocalFile : IFile
     {
         public void SetAuthentication(IReadOnlyDictionary<string, string> keys)
         {
         }
-        
+
         public async Task<byte[]> ReadAllBytesAsync(string path)
         {
             return File.ReadAllBytes(path);

@@ -10,8 +10,6 @@ namespace BudgetBadger.Core.CloudSync
 
         Task<DateTime?> GetLastSyncDateTimeAsync();
 
-        Task<Result> EnableCloudSync(string syncMode);
-
         Task DisableCloudSync();
     }
 }

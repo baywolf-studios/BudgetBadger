@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<p:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+            xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+            xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+            x:Class="BudgetBadger.Forms.CloudSync.WebDavSetupPage">
+    <p:BasePage.Header>
+        <p:ChildHeader
+            BackCommand="{Binding BackCommand}"
+            PageTitle="{ext:Translate WebDavSetupPageTitle}"
+            ToolbarItemCommand="{Binding SaveCommand}"
+            ToolbarItemIcon="{StaticResource SaveIcon}" />
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}">
+            <ScrollView
+                Orientation="Vertical">
+                <uc:ResponsiveGrid
+                    x:Name="responsiveGrid"
+                    Margin="{ext:Thickness LeftKey=size_0, TopKey=size_160, RightKey=size_0, BottomKey=size_0}"
+                    RowSpacing="{Binding Gutter, Source={x:Reference responsiveGrid}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <uc:TextField
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate WebDavServerLabel}"
+                        Text="{Binding WebDavServer}" 
+                        Hint="{ext:Translate WebDavServerHint}"
+                        Error="{Binding WebDavServerError}"
+                        Keyboard="Url"/>
+                    <uc:TextField
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate WebDavDirectoryLabel}"
+                        Text="{Binding WebDavDirectory}" 
+                        Hint="{ext:Translate WebDavDirectoryHint}"
+                        Keyboard="Url"/>
+                    <uc:TextField
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate WebDavUsernameLabel}"
+                        Text="{Binding WebDavUsername}" />
+                    <uc:TextField
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        IsPassword="True"
+                        Label="{ext:Translate WebDavPasswordLabel}"
+                        Text="{Binding WebDavPassword}" />
+                    <uc:Checkbox
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                        Label="{ext:Translate SslLabel}"
+                        Caption="{ext:Translate AcceptInvalidCertificateLabel}"
+                        IsChecked="{Binding WebDavAcceptInvalidCertificate}"/>
+                </uc:ResponsiveGrid>
+            </ScrollView>
+        </uc:BusyIndicator>
+    </p:BasePage.Body>
+</p:BasePage>

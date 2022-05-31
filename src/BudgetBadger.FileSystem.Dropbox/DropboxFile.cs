@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using BudgetBadger.Core.CloudSync;
-using BudgetBadger.Core.Utilities;
+using BudgetBadger.Core.FileSystem;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
@@ -143,6 +142,7 @@ namespace BudgetBadger.FileSystem.Dropbox
             {
                 throw new UnauthorizedAccessException();
             }
+
             var dropBoxConfig = new DropboxClientConfig
             {
                 HttpClient = DropboxNetwork.StaticHttpClient,

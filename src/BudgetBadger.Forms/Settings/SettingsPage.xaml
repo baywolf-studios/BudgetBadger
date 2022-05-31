@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <p:BasePage
     x:Class="BudgetBadger.Forms.Settings.SettingsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -21,20 +22,35 @@
                     CompressedLayout.IsHeadless="true"
                     RowSpacing="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}"/>
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
-                        <RowDefinition Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_675,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_10,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
+                        <RowDefinition
+                            Height="{ext:DynamicResource Key=size_500,Converter={StaticResource DoubleToGridLengthConverter}}" />
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
@@ -46,7 +62,7 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource DividerStyle}"/>
+                        Style="{ext:DynamicResource DividerStyle}" />
                     <Label
                         Grid.Row="2"
                         Grid.ColumnSpan="12"
@@ -60,13 +76,33 @@
                         IsToggled="{Binding DropboxEnabled}"
                         OnColor="{ext:DynamicResource brand_600}"
                         VerticalOptions="Center"
-                        HorizontalOptions="End">
+                        HorizontalOptions="End"
+                        IsEnabled="{Binding WebDavEnabled, Converter={StaticResource InverseBooleanConverter}}">
                         <Switch.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding SyncToggleCommand}" EventName="Toggled" />
+                            <b:EventToCommandBehavior Command="{Binding DropboxToggleCommand}" EventName="Toggled" />
+                        </Switch.Behaviors>
+                    </Switch>
+                    <Label
+                        Grid.Row="3"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
+                        Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
+                        Text="{ext:Translate WebDavLabel}" />
+                    <Switch
+                        Grid.Row="3"
+                        Grid.ColumnSpan="12"
+                        Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
+                        IsToggled="{Binding WebDavEnabled}"
+                        OnColor="{ext:DynamicResource brand_600}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        IsEnabled="{Binding DropboxEnabled, Converter={StaticResource InverseBooleanConverter}}">
+                        <Switch.Behaviors>
+                            <b:EventToCommandBehavior Command="{Binding WebDavToggleCommand}" EventName="Toggled" />
                         </Switch.Behaviors>
                     </Switch>
                     <StackLayout
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftThicknessConverter}}"
@@ -77,17 +113,15 @@
                         <Label
                             VerticalOptions="EndAndExpand"
                             Style="{ext:DynamicResource ListDoubleLinePrimaryItemLabelStyle}"
-                            Text="{Binding LastSynced}">
-                        </Label>
+                            Text="{Binding LastSynced}" />
                         <Label
                             VerticalOptions="StartAndExpand"
                             HorizontalTextAlignment="Start"
                             Style="{ext:DynamicResource ListDoubleLineSecondaryItemLabelStyle}"
-                            Text="{ext:Translate LastSyncedLabel}">
-                        </Label>
+                            Text="{ext:Translate LastSyncedLabel}" />
                     </StackLayout>
                     <uc:Button2
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToRightThicknessConverter}}"
@@ -98,30 +132,31 @@
                         Style="{ext:DynamicResource SecondaryActionButtonStyle}"
                         Text="{ext:Translate SyncButton}" />
                     <Label
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate AppearanceLabel}" />
                     <BoxView
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource DividerStyle}"/>
+                        Style="{ext:DynamicResource DividerStyle}" />
                     <uc:Dropdown
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemsSource="{Binding DimensionList}"
                         Label="Size"
-                        SelectedIndex="{Binding SelectedDimensionSize, Converter={StaticResource IntEnumConverter}}" 
+                        SelectedIndex="{Binding SelectedDimensionSize, Converter={StaticResource IntEnumConverter}}"
                         VerticalOptions="Center">
                         <uc:Dropdown.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding DimensionSelectedCommand}" EventName="SelectedIndexChanged" />
+                            <b:EventToCommandBehavior Command="{Binding DimensionSelectedCommand}"
+                                                      EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <uc:Dropdown
-                        Grid.Row="7"
+                        Grid.Row="8"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -130,11 +165,12 @@
                         SelectedItem="{Binding SelectedLanguage}"
                         VerticalOptions="Center">
                         <uc:Dropdown.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}" EventName="SelectedIndexChanged" />
+                            <b:EventToCommandBehavior Command="{Binding LanguageSelectedCommand}"
+                                                      EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <uc:Dropdown
-                        Grid.Row="8"
+                        Grid.Row="9"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         ItemPropertyDescription="Key"
@@ -143,52 +179,50 @@
                         SelectedItem="{Binding SelectedCurrencyFormat}"
                         VerticalOptions="Center">
                         <uc:Dropdown.Behaviors>
-                            <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}" EventName="SelectedIndexChanged" />
+                            <b:EventToCommandBehavior Command="{Binding CurrencySelectedCommand}"
+                                                      EventName="SelectedIndexChanged" />
                         </uc:Dropdown.Behaviors>
                     </uc:Dropdown>
                     <Label
-                        Grid.Row="9"
+                        Grid.Row="10"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                         Style="{ext:DynamicResource ListGroupHeaderLabelStyle}"
                         Text="{ext:Translate AboutLabel}" />
                     <BoxView
-                        Grid.Row="10"
+                        Grid.Row="11"
                         Grid.ColumnSpan="12"
                         Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                        Style="{ext:DynamicResource DividerStyle}"/>
+                        Style="{ext:DynamicResource DividerStyle}" />
                     <uc:ContentButton
-                        Grid.Row="11"
+                        Grid.Row="12"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding HelpCommand}">
                         <Label
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="BudgetBadger.io">
-                        </Label>
+                            Text="BudgetBadger.io" />
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="12"
+                        Grid.Row="13"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding LicenseCommand}">
                         <Label
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="{ext:Translate LicenseLabel}">
-                        </Label>
+                            Text="{ext:Translate LicenseLabel}" />
                     </uc:ContentButton>
                     <uc:ContentButton
-                        Grid.Row="13"
+                        Grid.Row="14"
                         Grid.ColumnSpan="12"
                         Style="{ext:DynamicResource SettingsButtonStyle}"
                         Command="{Binding ThirdPartyNoticesCommand}">
                         <Label
                             Margin="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                             Style="{ext:DynamicResource ListSingleLineItemLabelStyle}"
-                            Text="{ext:Translate ThirdPartyNoticesLabel}">
-                        </Label>
+                            Text="{ext:Translate ThirdPartyNoticesLabel}" />
                     </uc:ContentButton>
                 </uc:ResponsiveGrid>
             </ScrollView>

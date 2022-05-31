@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<p:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
+            xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
+            xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+            x:Class="BudgetBadger.Forms.CloudSync.DropboxSetupPage">
+    <p:BasePage.Header>
+        <p:ChildHeader
+            BackCommand="{Binding BackCommand}"
+            PageTitle="{ext:Translate DropboxSetupPageTitle}" />
+    </p:BasePage.Header>
+    <p:BasePage.Body>
+        <uc:BusyIndicator BusyText="{Binding BusyText}" IsBusy="{Binding IsBusy}" />
+    </p:BasePage.Body>
+</p:BasePage>
