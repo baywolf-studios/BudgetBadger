@@ -46,6 +46,7 @@ namespace BudgetBadger.Forms
     public partial class App : PrismApplication
     {
         private Timer _syncTimer;
+        private static bool _isSyncing;
 
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
@@ -92,7 +93,7 @@ namespace BudgetBadger.Forms
                 }
             }
 
-            _syncTimer = new Timer(_ => Task.Run(async () => await Sync()).FireAndForget());
+            _syncTimer = new Timer(_ => Sync().FireAndForget(), null, Timeout.Infinite, Timeout.Infinite);
 
             SetAppTheme(Application.Current.RequestedTheme);
             await SetAppearanceSize();
@@ -121,7 +122,7 @@ namespace BudgetBadger.Forms
             eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(x => ResetSyncTimer());
             eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(x => ResetSyncTimer());
 
-            eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(ResetSyncTimer);
+            eventAggregator.GetEvent<SplitTransactionSavedEvent>().Subscribe(() => ResetSyncTimer());
             eventAggregator.GetEvent<SplitTransactionStatusUpdatedEvent>().Subscribe(x => ResetSyncTimer());
             eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(x => ResetSyncTimer());
             eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(x => ResetSyncTimer());
@@ -140,12 +141,12 @@ namespace BudgetBadger.Forms
             appOpenedCount++;
             await settings.AddOrUpdateValueAsync(AppSettings.AppOpenedCount, appOpenedCount.ToString());
 
-            ResetSyncTimerAtStartOrResume();
+            ResetSyncTimer(1);
         }
 
         protected override void OnResume()
         {
-            ResetSyncTimerAtStartOrResume();
+            ResetSyncTimer(10);
         }
 
         protected override Rules CreateContainerRules()
@@ -370,20 +371,29 @@ namespace BudgetBadger.Forms
             localize.SetLocale(currentCulture);
         }
 
-        private void ResetSyncTimerAtStartOrResume()
+        private void ResetSyncTimer(int seconds = 20)
         {
-            _syncTimer.Change(TimeSpan.FromMilliseconds(1), TimeSpan.FromMilliseconds(-1));
-        }
-
-        private void ResetSyncTimer()
-        {
-            _syncTimer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(-1));
+            var interval = (long)TimeSpan.FromSeconds(seconds).TotalMilliseconds;
+            _syncTimer.Change(interval, Timeout.Infinite);
         }
 
         private async Task Sync()
         {
-            var syncService = Container.Resolve<ICloudSync>();
-            await syncService.Sync();
+            if (_isSyncing)
+            {
+                return;
+            }
+
+            try
+            {
+                _isSyncing = true;
+                var syncService = Container.Resolve<ICloudSync>();
+                await syncService.Sync();
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
         }
 
         private async Task UpgradeApp()
