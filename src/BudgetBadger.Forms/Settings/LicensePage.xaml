@@ -7,7 +7,7 @@
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
-        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{Binding LicenseName}" />
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="{Binding LicensePageTitle}" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">

@@ -2,24 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.Files;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class TransactionSqliteDataAccess : SqliteDataAccess, ITransactionDataAccess
+    public partial class SqliteDataAccess
     {
-        public TransactionSqliteDataAccess(string connectionString) : base(connectionString)
-        {
-        }
-
         public async Task CreateTransactionAsync(Transaction transaction)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>

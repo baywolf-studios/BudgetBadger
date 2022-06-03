@@ -204,8 +204,8 @@
   <data name="AlertGeneralError" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="AlertMessageDropboxError" xml:space="preserve">
-    <value>Mit Dropbox nicht authentifiziert. Synchronisierung deaktiviert</value>
+  <data name="AlertMessageCloudSyncAuthenticationError" xml:space="preserve">
+    <value>Authentifizierung nicht möglich. Cloud Sync deaktiviert.</value>
   </data>
   <data name="AlertOk" xml:space="preserve">
     <value>OK</value>
@@ -1005,13 +1005,52 @@
   <data name="AlertActionNeeded" xml:space="preserve">
     <value>Handlungsbedarf</value>
   </data>
-  <data name="AlertDropboxUpgrade" xml:space="preserve">
-    <value>Aufgrund der jüngsten Dropbox-Änderungen müssen Sie Cloud Sync über die Einstellungsseite erneut aktivieren. Möchten Sie das jetzt tun?</value>
-  </data>
-  <data name="LicenseLabel" xml:space="preserve">
-      <value>Lizenz</value>
-  </data>
   <data name="ThirdPartyNoticesLabel" xml:space="preserve">
       <value>Hinweise Dritter</value>
+  </data>
+  <data name="LicensePageTitle" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="ThirdPartyNoticesPageTitle" xml:space="preserve">
+    <value>Hinweise Dritter</value>
+  </data>
+  <data name="DropboxSetupPageTitle" xml:space="preserve">
+    <value>Dropbox-Einrichtung</value>
+  </data>
+  <data name="LicenseLabel" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="WebDavSetupPageTitle" xml:space="preserve">
+    <value>WebDAV-Einrichtung</value>
+  </data>
+  <data name="WebDavLabel" xml:space="preserve">
+    <value>WebDAV</value>
+  </data>
+  <data name="WebDavServerHint" xml:space="preserve">
+    <value>https://example.com/remote.php/dav/files/User</value>
+  </data>
+  <data name="WebDavServerLabel" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="WebDavUsernameLabel" xml:space="preserve">
+    <value>Nutzername</value>
+  </data>
+  <data name="WebDavPasswordLabel" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="WebDavDirectoryLabel" xml:space="preserve">
+    <value>Verzeichnis</value>
+  </data>
+  <data name="WebDavDirectoryHint" xml:space="preserve">
+    <value>/BudgetBadger</value>
+  </data>
+  <data name="RequiredError" xml:space="preserve">
+    <value>Erforderlich</value>
+  </data>
+  <data name="AcceptInvalidCertificateLabel" xml:space="preserve">
+    <value>Ungültiges Zertifikat akzeptieren</value>
+  </data>
+  <data name="SslLabel" xml:space="preserve">
+    <value>SSL</value>
   </data>
 </root>

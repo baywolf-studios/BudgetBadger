@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetBadger.Core.CloudSync;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
@@ -18,118 +19,55 @@ namespace BudgetBadger.Forms.Settings
 {
     public class SettingsPageViewModel : BaseViewModel, INavigatedAware
     {
-        readonly IResourceContainer _resourceContainer;
-        readonly INavigationService _navigationService;
-        readonly IPageDialogService _dialogService;
-        readonly ISettings _settings;
-        readonly ISyncFactory _syncFactory;
-        readonly ILocalize _localize;
+        private readonly ICloudSync _cloudSync;
+        private readonly IPageDialogService _dialogService;
+        private readonly ILocalize _localize;
+        private readonly INavigationService _navigationService;
+        private readonly IResourceContainer _resourceContainer;
+        private readonly ISettings _settings;
 
-        string _detect;
+        private string _busyText;
 
-        public ICommand SyncToggleCommand { get; set; }
-        public ICommand SyncCommand { get; set; }
-        public ICommand HelpCommand { get => new Command(async () => await Browser.OpenAsync(new Uri("https://BudgetBadger.io"))); }
-        public ICommand CurrencySelectedCommand { get; set; }
-        public ICommand DateSelectedCommand { get; set; }
-        public ICommand LanguageSelectedCommand { get; set; }
-        public ICommand DimensionSelectedCommand { get; set; }
-        public ICommand LicenseCommand { get; set; }
-        public ICommand ThirdPartyNoticesCommand { get; set; }
+        private List<KeyValuePair<string, CultureInfo>> _currencyFormatList;
 
-        bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
-        }
+        private string _detect;
 
-        string _busyText;
-        public string BusyText
-        {
-            get => _busyText;
-            set => SetProperty(ref _busyText, value);
-        }
+        private bool _dropboxEnabled;
 
-        bool _dropboxEnabled;
-        public bool DropboxEnabled
-        {
-            get => _dropboxEnabled;
-            set => SetProperty(ref _dropboxEnabled, value);
-        }
+        private bool _isBusy;
 
-        bool _showSyncButton;
-        public bool ShowSync
-        {
-            get => _showSyncButton;
-            set => SetProperty(ref _showSyncButton, value);
-        }
+        private List<KeyValuePair<string, CultureInfo>> _languageList;
 
-        string _lastSynced;
-        public string LastSynced
-        {
-            get => _lastSynced;
-            set => SetProperty(ref _lastSynced, value);
-        }
+        private string _lastSynced;
 
-        List<KeyValuePair<string, CultureInfo>> _languageList;
-        public List<KeyValuePair<string, CultureInfo>> LanguageList
-        {
-            get => _languageList;
-            set => SetProperty(ref _languageList, value);
-        }
+        private KeyValuePair<string, CultureInfo> _selectedCurrencyFormat;
 
-        KeyValuePair<string, CultureInfo> _selectedLanguage;
-        public KeyValuePair<string, CultureInfo> SelectedLanguage
-        {
-            get => _selectedLanguage;
-            set => SetProperty(ref _selectedLanguage, value);
-        }
+        private DimensionSize _selectedDimensionSize;
 
-        List<KeyValuePair<string, CultureInfo>> _currencyFormatList;
-        public List<KeyValuePair<string, CultureInfo>> CurrencyFormatList
-        {
-            get => _currencyFormatList;
-            set => SetProperty(ref _currencyFormatList, value);
-        }
+        private KeyValuePair<string, CultureInfo> _selectedLanguage;
 
-        KeyValuePair<string, CultureInfo> _selectedCurrencyFormat;
-        public KeyValuePair<string, CultureInfo> SelectedCurrencyFormat
-        {
-            get => _selectedCurrencyFormat;
-            set => SetProperty(ref _selectedCurrencyFormat, value);
-        }
-
-        public IList<string> DimensionList
-        {
-            get => Enum.GetNames(typeof(DimensionSize)).Select(_resourceContainer.GetResourceString).ToList();
-        }
-
-        DimensionSize _selectedDimensionSize;
-        public DimensionSize SelectedDimensionSize
-        {
-            get => _selectedDimensionSize;
-            set => SetProperty(ref _selectedDimensionSize, value);
-        }
+        private bool _showSyncButton;
+        private bool _webDavEnabled;
 
         public SettingsPageViewModel(IResourceContainer resourceContainer,
-                                     INavigationService navigationService,
-                                     IPageDialogService dialogService,
-                                     ISettings settings,
-                                     ISyncFactory syncFactory,
-                                     ILocalize localize)
+            INavigationService navigationService,
+            IPageDialogService dialogService,
+            ISettings settings,
+            ICloudSync cloudSync,
+            ILocalize localize)
         {
             _resourceContainer = resourceContainer;
             _navigationService = navigationService;
             _settings = settings;
             _dialogService = dialogService;
-            _syncFactory = syncFactory;
+            _cloudSync = cloudSync;
             _localize = localize;
 
             IsBusy = false;
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
-            SyncToggleCommand = new Command(async () => await ExecuteSyncToggleCommand());
+            DropboxToggleCommand = new Command(async () => await ExecuteDropboxToggleCommand());
+            WebDavToggleCommand = new Command(async () => ExecuteWebDavToggleCommand());
             SyncCommand = new Command(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
@@ -139,6 +77,88 @@ namespace BudgetBadger.Forms.Settings
 
             ResetAppearance();
             ResetLocalization();
+        }
+
+        public ICommand DropboxToggleCommand { get; set; }
+        public ICommand SyncCommand { get; set; }
+
+        public ICommand HelpCommand =>
+            new Command(async () => await Browser.OpenAsync(new Uri("https://BudgetBadger.io")));
+
+        public ICommand CurrencySelectedCommand { get; set; }
+        public ICommand LanguageSelectedCommand { get; set; }
+        public ICommand DimensionSelectedCommand { get; set; }
+        public ICommand LicenseCommand { get; set; }
+        public ICommand ThirdPartyNoticesCommand { get; set; }
+        public ICommand WebDavToggleCommand { get; set; }
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        public string BusyText
+        {
+            get => _busyText;
+            set => SetProperty(ref _busyText, value);
+        }
+
+        public bool DropboxEnabled
+        {
+            get => _dropboxEnabled;
+            set => SetProperty(ref _dropboxEnabled, value);
+        }
+
+        public bool WebDavEnabled
+        {
+            get => _webDavEnabled;
+            set => SetProperty(ref _webDavEnabled, value);
+        }
+
+        public bool ShowSync
+        {
+            get => _showSyncButton;
+            set => SetProperty(ref _showSyncButton, value);
+        }
+
+        public string LastSynced
+        {
+            get => _lastSynced;
+            set => SetProperty(ref _lastSynced, value);
+        }
+
+        public List<KeyValuePair<string, CultureInfo>> LanguageList
+        {
+            get => _languageList;
+            set => SetProperty(ref _languageList, value);
+        }
+
+        public KeyValuePair<string, CultureInfo> SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set => SetProperty(ref _selectedLanguage, value);
+        }
+
+        public List<KeyValuePair<string, CultureInfo>> CurrencyFormatList
+        {
+            get => _currencyFormatList;
+            set => SetProperty(ref _currencyFormatList, value);
+        }
+
+        public KeyValuePair<string, CultureInfo> SelectedCurrencyFormat
+        {
+            get => _selectedCurrencyFormat;
+            set => SetProperty(ref _selectedCurrencyFormat, value);
+        }
+
+        public IList<string> DimensionList =>
+            Enum.GetNames(typeof(DimensionSize)).Select(_resourceContainer.GetResourceString).ToList();
+
+        public DimensionSize SelectedDimensionSize
+        {
+            get => _selectedDimensionSize;
+            set => SetProperty(ref _selectedDimensionSize, value);
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -154,18 +174,17 @@ namespace BudgetBadger.Forms.Settings
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
-            DropboxEnabled = (syncMode == SyncMode.DropboxSync);
-            ShowSync = (syncMode == SyncMode.DropboxSync);
+            DropboxEnabled = syncMode == SyncMode.Dropbox;
+            WebDavEnabled = syncMode == SyncMode.WebDav;
+            ShowSync = DropboxEnabled || WebDavEnabled;
 
-            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+            var lastSyncedDateTime = await _cloudSync.GetLastSyncDateTimeAsync();
+            LastSynced = _resourceContainer.GetFormattedString("{0:g}", lastSyncedDateTime);
         }
 
-        List<KeyValuePair<string, CultureInfo>> GetLanguages()
+        private List<KeyValuePair<string, CultureInfo>> GetLanguages()
         {
-            var result = new Dictionary<string, CultureInfo>
-            {
-                { _detect, CultureInfo.InvariantCulture }
-            };
+            var result = new Dictionary<string, CultureInfo> { { _detect, CultureInfo.InvariantCulture } };
 
             var english = new CultureInfo("en-US");
             result.Add(english.DisplayName, english);
@@ -182,12 +201,9 @@ namespace BudgetBadger.Forms.Settings
             return result.ToList();
         }
 
-        List<KeyValuePair<string, CultureInfo>> GetCurrencies()
+        private List<KeyValuePair<string, CultureInfo>> GetCurrencies()
         {
-            var result = new Dictionary<string, CultureInfo>
-            {
-                { _detect, CultureInfo.InvariantCulture }
-            };
+            var result = new Dictionary<string, CultureInfo> { { _detect, CultureInfo.InvariantCulture } };
 
             var allCultures = new List<CultureInfo>
             {
@@ -213,43 +229,49 @@ namespace BudgetBadger.Forms.Settings
                 try
                 {
                     var region = new RegionInfo(culture.LCID);
-                    var numberFormat = String.Join(" ", region.ISOCurrencySymbol, (-1234567.89).ToString("C", culture.NumberFormat));
+                    var numberFormat = string.Join(" ",
+                        region.ISOCurrencySymbol,
+                        (-1234567.89).ToString("C", culture.NumberFormat));
                     result[numberFormat] = culture;
                 }
                 catch (Exception)
                 {
-
                 }
             }
 
             return result.ToList();
         }
 
-        public async Task ExecuteSyncToggleCommand()
+        public async Task ExecuteDropboxToggleCommand()
         {
             var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
 
-            if (syncMode != SyncMode.DropboxSync && DropboxEnabled)
+            if (syncMode != SyncMode.Dropbox && DropboxEnabled)
             {
-                var enableDropboxResult = await _syncFactory.EnableDropboxCloudSync();
-
-                if (enableDropboxResult.Success)
-                {
-                    await ExecuteSyncCommand();
-                }
-                else
-                {
-                    DropboxEnabled = false;
-                }  
+                await _navigationService.NavigateAsync(PageName.DropboxSetupPage);
             }
-
-            if (!DropboxEnabled)
+            else if (syncMode == SyncMode.Dropbox && !DropboxEnabled)
             {
-                await _syncFactory.DisableDropboxCloudSync();
+                await _cloudSync.DisableCloudSync();
+                ShowSync = false;
+                LastSynced = string.Empty;
             }
+        }
 
-            ShowSync = DropboxEnabled;
-            LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+        public async Task ExecuteWebDavToggleCommand()
+        {
+            var syncMode = await _settings.GetValueOrDefaultAsync(AppSettings.SyncMode);
+
+            if (syncMode != SyncMode.WebDav && WebDavEnabled)
+            {
+                await _navigationService.NavigateAsync(PageName.WebDavSetupPage);
+            }
+            else if (syncMode == SyncMode.WebDav && !WebDavEnabled)
+            {
+                await _cloudSync.DisableCloudSync();
+                ShowSync = false;
+                LastSynced = string.Empty;
+            }
         }
 
         public async Task ExecuteSyncCommand()
@@ -264,21 +286,20 @@ namespace BudgetBadger.Forms.Settings
 
             try
             {
-                var syncService = await _syncFactory.GetSyncServiceAsync();
-                var syncResult = await syncService.FullSync();
+                var syncResult = await _cloudSync.Sync();
 
-                if (syncResult.Success)
+                if (syncResult.Failure)
                 {
-                    await _syncFactory.SetLastSyncDateTime(DateTime.Now);
-                }
-                else
-                {
-                    await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSyncUnsuccessful"),
+                    await _dialogService.DisplayAlertAsync(
+                        _resourceContainer.GetResourceString("AlertSyncUnsuccessful"),
                         syncResult.Message,
                         _resourceContainer.GetResourceString("AlertOk"));
                 }
 
-                LastSynced = await _syncFactory.GetLastSyncDateTimeAsync();
+                var lastSyncedDateTime = await _cloudSync.GetLastSyncDateTimeAsync();
+
+                LastSynced = _resourceContainer.GetFormattedString("{0:g}", lastSyncedDateTime);
+                ;
             }
             finally
             {
@@ -332,14 +353,17 @@ namespace BudgetBadger.Forms.Settings
         {
             if ((int)SelectedDimensionSize > -1)
             {
-                await _settings.AddOrUpdateValueAsync(AppSettings.AppearanceDimensionSize, Enum.GetName(typeof(DimensionSize), SelectedDimensionSize));
+                await _settings.AddOrUpdateValueAsync(AppSettings.AppearanceDimensionSize,
+                    Enum.GetName(typeof(DimensionSize), SelectedDimensionSize));
 
-                ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+                var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
                 if (mergedDictionaries != null)
                 {
-                    var otherDicts = mergedDictionaries.Where(m => !(m is LargeDimensionResources)
-                                                                && !(m is MediumDimensionResources)
-                                                                && !(m is SmallDimensionResources)).ToList();
+                    var otherDicts = mergedDictionaries.Where(m =>
+                            !(m is LargeDimensionResources) &&
+                            !(m is MediumDimensionResources) &&
+                            !(m is SmallDimensionResources))
+                        .ToList();
 
                     mergedDictionaries.Clear();
                     foreach (var dict in otherDicts)
@@ -370,18 +394,18 @@ namespace BudgetBadger.Forms.Settings
         {
             var assembly = typeof(ThirdPartyNoticesPageViewModel).Assembly;
             var assemblyName = assembly.GetName().Name;
-            Stream stream = assembly.GetManifestResourceStream($"{assemblyName}.LICENSE");
-            string text = "";
+            var stream = assembly.GetManifestResourceStream($"{assemblyName}.LICENSE");
+            var text = "";
             using (var reader = new StreamReader(stream))
             {
                 text = reader.ReadToEnd();
             }
 
             var parameters = new NavigationParameters
-                {
-                    { PageParameter.LicenseName, _resourceContainer.GetResourceString("BudgetBadger") },
-                    { PageParameter.LicenseText, text }
-                };
+            {
+                { PageParameter.LicenseName, _resourceContainer.GetResourceString("BudgetBadger") },
+                { PageParameter.LicenseText, text }
+            };
 
             await _navigationService.NavigateAsync(PageName.LicensePage, parameters);
         }
@@ -391,7 +415,7 @@ namespace BudgetBadger.Forms.Settings
             await _navigationService.NavigateAsync(PageName.ThirdPartyNoticesPage);
         }
 
-        async void ResetAppearance()
+        private async void ResetAppearance()
         {
             var currentDimension = await _settings.GetValueOrDefaultAsync(AppSettings.AppearanceDimensionSize);
 
@@ -405,7 +429,7 @@ namespace BudgetBadger.Forms.Settings
             }
         }
 
-        async void ResetLocalization()
+        private async void ResetLocalization()
         {
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
@@ -430,7 +454,8 @@ namespace BudgetBadger.Forms.Settings
             }
             else
             {
-                SelectedCurrencyFormat = CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
+                SelectedCurrencyFormat =
+                    CurrencyFormatList.FirstOrDefault(c => c.Value == CultureInfo.InvariantCulture);
             }
         }
     }

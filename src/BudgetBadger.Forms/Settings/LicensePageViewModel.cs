@@ -10,7 +10,7 @@ namespace BudgetBadger.Forms.Settings
 	{
         readonly INavigationService _navigationService;
 
-        public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
+        public ICommand BackCommand => new Command(async () => await _navigationService.GoBackAsync()); 
 
         string _licenseName;
         public string LicenseName

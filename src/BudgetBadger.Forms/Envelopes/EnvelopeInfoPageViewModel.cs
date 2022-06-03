@@ -100,7 +100,6 @@ namespace BudgetBadger.Forms.Envelopes
                                          Lazy<ITransactionLogic> transactionLogic,
                                          Lazy<IEnvelopeLogic> envelopeLogic,
                                          IPageDialogService dialogService,
-                                         Lazy<ISyncFactory> syncFactory,
                                          Lazy<IAccountLogic> accountLogic,
                                          Lazy<IPayeeLogic> payeeLogic,
                                          IEventAggregator eventAggregator)

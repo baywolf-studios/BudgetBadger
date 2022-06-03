@@ -3,28 +3,28 @@ namespace BudgetBadger.Forms.Enums
 {
     public static class PageParameter
     {
-        public static readonly string GoBack = nameof(GoBack);
-        public static readonly string Account = "account";
-        public static readonly string Budget = "budget";
-        public static readonly string Payee = "payee";
-        public static readonly string Transaction = "transaction";
-        public static readonly string SplitTransactionId = "splitTransactionId";
-        public static readonly string InitialSplitTransaction = "initialSplitTransaction";
-        public static readonly string SplitTransactionMode = "splitTransactionMode";
-        public static readonly string EnvelopeGroup = "envelopeGroup";
-        public static readonly string Envelope = "envelope";
-        public static readonly string BudgetSchedule = "budgetSchedule";
-        public static readonly string TransactionAmount = "transactionAmount";
-		public static readonly string TransactionServiceDate = "transactionServiceDate";
-        public static readonly string DeletedTransaction = "deletedTransaction";
-        public static readonly string ReportBeginDate = "reportBeginDate";
-        public static readonly string ReportEndDate = "reportEndDate";
-        public static readonly string ReconcileDate = "reconcileDate";
-        public static readonly string ReconcileAmount = "reconcileAmount";
-        public static readonly string ReconcileCompleted = "reconcileCompleted";
-        public static readonly string TransferEnvelopeSelection = "transferEnvelopeSelection";
-        public static readonly string LicenseName = "licenseName";
-        public static readonly string LicenseText = "licenseText";
-        public static readonly string PageName = "pageName";
+        public const string GoBack = nameof(GoBack);
+        public const string Account = "account";
+        public const string Budget = "budget";
+        public const string Payee = "payee";
+        public const string Transaction = "transaction";
+        public const string SplitTransactionId = "splitTransactionId";
+        public const string InitialSplitTransaction = "initialSplitTransaction";
+        public const string SplitTransactionMode = "splitTransactionMode";
+        public const string EnvelopeGroup = "envelopeGroup";
+        public const string Envelope = "envelope";
+        public const string BudgetSchedule = "budgetSchedule";
+        public const string TransactionAmount = "transactionAmount";
+		public const string TransactionServiceDate = "transactionServiceDate";
+        public const string DeletedTransaction = "deletedTransaction";
+        public const string ReportBeginDate = "reportBeginDate";
+        public const string ReportEndDate = "reportEndDate";
+        public const string ReconcileDate = "reconcileDate";
+        public const string ReconcileAmount = "reconcileAmount";
+        public const string ReconcileCompleted = "reconcileCompleted";
+        public const string TransferEnvelopeSelection = "transferEnvelopeSelection";
+        public const string LicenseName = "licenseName";
+        public const string LicenseText = "licenseText";
+        public const string PageName = "pageName";
     }
 }

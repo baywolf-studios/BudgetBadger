@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.Files;
+using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
-    public class AccountSqliteDataAccess : SqliteDataAccess, IAccountDataAccess
+    public partial class SqliteDataAccess
     {
-        public AccountSqliteDataAccess(string connectionString) : base(connectionString)
-        {
-        }
-
         public async Task CreateAccountAsync(Account account)
         {
             using (await MultiThreadLock.UseWaitAsync())

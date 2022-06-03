@@ -28,7 +28,8 @@
   <ItemGroup>
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
     <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
-    <ProjectReference Include="..\BudgetBadger.FileSyncProvider.Dropbox\BudgetBadger.FileSyncProvider.Dropbox.csproj" />
+    <ProjectReference Include="..\BudgetBadger.FileSystem.Dropbox\BudgetBadger.FileSystem.Dropbox.csproj" />
+    <ProjectReference Include="..\BudgetBadger.FileSystem.WebDav\BudgetBadger.FileSystem.WebDav.csproj" />
     <ProjectReference Include="..\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
     <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
   </ItemGroup>

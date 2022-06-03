@@ -7,7 +7,7 @@
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
     <p:BasePage.Header>
-        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="Third Party Notices" />
+        <p:ChildHeader BackCommand="{Binding BackCommand}" PageTitle="ThirdPartyNoticesPageTitle" />
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">

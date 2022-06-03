@@ -1,5 +1,6 @@
 ﻿using System;
 using BudgetBadger.Models;
+using NUnit.Framework.Internal;
 
 namespace BudgetBadger.UnitTests.TestModels
 {
@@ -14,6 +15,7 @@ namespace BudgetBadger.UnitTests.TestModels
         {
             Id = Guid.NewGuid(),
             Description = nameof(ActiveEnvelope),
+            Group = TestEnvelopeGroups.ActiveEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };
@@ -22,6 +24,7 @@ namespace BudgetBadger.UnitTests.TestModels
         {
             Id = Guid.NewGuid(),
             Description = nameof(HiddenEnvelope),
+            Group = TestEnvelopeGroups.HiddenEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now
@@ -31,6 +34,7 @@ namespace BudgetBadger.UnitTests.TestModels
         {
             Id = Guid.NewGuid(),
             Description = nameof(SoftDeletedEnvelope),
+            Group = TestEnvelopeGroups.SoftDeletedEnvelopeGroup,
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now,
             HiddenDateTime = DateTime.Now,

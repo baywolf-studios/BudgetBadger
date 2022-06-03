@@ -3,15 +3,12 @@ namespace BudgetBadger.Forms.Enums
 {
     public static class AppSettings
     {
-        public static readonly string SyncMode = "SyncMode";
-        public static readonly string LastSyncDateTime = "LastSyncDateTime";
-        public static readonly string Language = "Language";
-        public static readonly string CurrencyFormat = "CurrencyFormat";
-        public static readonly string AppOpenedCount = "AppOpenedCount";
-        public static readonly string AskedForReview = "AskedForReview";
-        public static readonly string CleanedUpAccountDebtEnvelopes = "CleanedUpAccountDebtEnvelopes";
-        public static readonly string CleanedUpBudgets = "CleanedUpBudgets";
-        public static readonly string AppearanceDimensionSize = "AppearanceDimensionSize";
-        public static readonly string AppMigrationVersion = "AppMigrationVersion";
+        public const string SyncMode = "SyncMode";
+        public const string LastSyncDateTime = "LastSyncDateTime";
+        public const string Language = "Language";
+        public const string CurrencyFormat = "CurrencyFormat";
+        public const string AppOpenedCount = "AppOpenedCount";
+        public const string AppearanceDimensionSize = "AppearanceDimensionSize";
+        public const string AppMigrationVersion = "AppMigrationVersion";
     }
 }
