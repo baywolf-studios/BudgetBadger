@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
@@ -544,28 +543,17 @@ namespace BudgetBadger.Forms.UserControls
             }
             else
             {
-                var filteredItems = new List<object>();
+                var filteredItems = ((IEnumerable<object>)Items).AsParallel();
 
                 // filtering
                 if (SearchFilter != null)
                 {
-                    foreach (var item in Items)
-                    {
-                        if (SearchFilter.Invoke(item))
-                        {
-                            filteredItems.Add(item);
-                        }
-                    }
-                }
-                else
-                {
-                    var itemSource = Items?.Cast<object>().ToList();
-                    filteredItems.AddRange(itemSource);
+                    filteredItems = filteredItems.Where(SearchFilter.Invoke);
                 }
 
                 if (IsSorted)
                 {
-                    filteredItems.Sort(SortComparer);
+                    filteredItems = filteredItems.OrderBy(f => f, SortComparer);
                 }
 
                 //grouping
