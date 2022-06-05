@@ -22,7 +22,6 @@
                 RowHeight="{ext:DynamicResource size_500}"
                 SearchFilter="{Binding Filter}"
                 SearchText="{Binding SearchText}"
-                HideSearchBar="True"
                 SelectedCommand="{Binding ReportCommand}"
                 SelectedItem="{Binding SelectedReport}"
                 SeparatorVisibility="None"

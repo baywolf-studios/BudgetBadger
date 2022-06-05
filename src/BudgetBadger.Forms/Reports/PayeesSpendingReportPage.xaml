@@ -105,7 +105,6 @@
                 ShowHelper="{Binding NoResults}">
                 <uc:ListView2
                     Items="{Binding Payees}"
-                    HideSearchBar="True"
                     SelectedCommand="{Binding SelectedCommand}"
                     SelectedItem="{Binding SelectedPayee}"
                     RowHeight="{ext:DynamicResource size_500}"

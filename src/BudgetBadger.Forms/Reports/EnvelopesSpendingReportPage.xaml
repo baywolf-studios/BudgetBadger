@@ -105,7 +105,6 @@
                 ShowHelper="{Binding NoResults}">
                 <uc:ListView2
                     Items="{Binding Envelopes}"
-                    HideSearchBar="True"
                     SelectedCommand="{Binding SelectedCommand}"
                     SelectedItem="{Binding SelectedEnvelope}"
                     RowHeight="{ext:DynamicResource size_675}"

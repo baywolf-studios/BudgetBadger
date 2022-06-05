@@ -9,7 +9,6 @@
     RowSpacing="0">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
@@ -17,12 +16,8 @@
         x:Name="stickyHeader"
         Grid.Row="0" 
         IsVisible="false"/>
-    <SearchBar
-        x:Name="SearchBar"
-        Grid.Row="1"
-        Text="{Binding SearchText}"/>
     <ListView x:Name="InternalListView"
-              Grid.Row="2"
+              Grid.Row="1"
               CachingStrategy="RecycleElement"
               BackgroundColor="{ext:DynamicResource gray_50}"
               SelectedItem="{Binding SelectedItem}"
@@ -38,11 +33,11 @@
               SelectionMode="None"/>
     <ContentView
         x:Name="stickyFooter"
-        Grid.Row="3"
+        Grid.Row="2"
         IsVisible="false"/>
     <StackLayout
         Grid.Row="0"
-        Grid.RowSpan="4"
+        Grid.RowSpan="3"
         x:Name="activityIndicator"
         Orientation="Vertical"
         Spacing="{ext:DynamicResource size_75}"

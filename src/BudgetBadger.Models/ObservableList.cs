@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 
 namespace BudgetBadger.Models
 {
@@ -17,7 +16,7 @@ namespace BudgetBadger.Models
         /// <summary> 
         /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
         /// </summary> 
-        public ObservableList() : base()
+        public ObservableList()
         {
         }
 
@@ -57,7 +56,7 @@ namespace BudgetBadger.Models
                 return;
             }
 
-            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
+            var changedItems = collection as List<T> ?? new List<T>(collection);
 
             RaiseChangeNotificationEvents(
                 action: NotifyCollectionChangedAction.Add,
@@ -92,7 +91,7 @@ namespace BudgetBadger.Models
                 return;
             }
 
-            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
+            var changedItems = collection as List<T> ?? new List<T>(collection);
             for (var i = 0; i < changedItems.Count; i++)
             {
                 if (!Items.Remove(changedItems[i]))
@@ -115,13 +114,8 @@ namespace BudgetBadger.Models
         /// </summary> 
         public void RemoveAll()
         {
-            RemoveRange(Items, NotifyCollectionChangedAction.Reset);
+            RemoveRange(Items);
         }
-
-        /// <summary> 
-        /// Clears the current collection and replaces it with the specified item. 
-        /// </summary> 
-        public void Replace(T item) => ReplaceRange(new T[] { item });
 
         /// <summary> 
         /// Clears the current collection and replaces it with the specified collection. 
@@ -149,6 +143,12 @@ namespace BudgetBadger.Models
 
         private bool AddArrangeCore(IEnumerable<T> collection)
         {
+            if (Items is List<T> list)
+            {
+                list.AddRange(collection);
+                return true;
+            }
+            
             var itemAdded = false;
             foreach (var item in collection)
             {
@@ -163,63 +163,11 @@ namespace BudgetBadger.Models
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
 
-            if (changedItems is null)
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(action));
-            else
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems: changedItems, startingIndex: startingIndex));
-        }
-
-        /// <summary> 
-        /// Sorts the current collection and replaces it with the specified collection. 
-        /// </summary>
-        public void Sort(IComparer<T> comparer)
-        {
-            List<T> sorted = Items.ToList();
-            if (comparer == null)
-            {
-                sorted.Sort();
-            }
-            else
-            {
-                sorted.Sort(comparer);
-            }
-
-            CheckReentrancy();
-
-            var previouslyEmpty = Items.Count == 0;
-
-            Items.Clear();
-
-            AddArrangeCore(sorted);
-
-            var currentlyEmpty = Items.Count == 0;
-
-            if (previouslyEmpty && currentlyEmpty)
-                return;
-
-            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+            OnCollectionChanged(changedItems is null
+                ? new NotifyCollectionChangedEventArgs(action)
+                : new NotifyCollectionChangedEventArgs(action,
+                    changedItems: changedItems,
+                    startingIndex: startingIndex));
         }
     }
 }
-
-//The MIT License(MIT)
-
-//Copyright(c) 2017 James Montemagno
-
-//Permission is hereby granted, free of charge, to any person obtaining a copy
-//of this software and associated documentation files (the "Software"), to deal
-//in the Software without restriction, including without limitation the rights
-//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//copies of the Software, and to permit persons to whom the Software is
-//furnished to do so, subject to the following conditions:
-
-//The above copyright notice and this permission notice shall be included in all
-//copies or substantial portions of the Software.
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.

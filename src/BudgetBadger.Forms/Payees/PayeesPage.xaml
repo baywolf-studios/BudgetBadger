@@ -37,7 +37,6 @@
                     IsSorted="True"
                     SearchFilter="{Binding Filter}"
                     SearchText="{Binding SearchText}"
-                    HideSearchBar="True"
                     SelectedCommand="{Binding SelectedCommand}"
                     SelectedItem="{Binding SelectedPayee}"
                     SeparatorVisibility="None"
