@@ -154,7 +154,6 @@
                     HasUnevenRows="True"
                     SearchFilter="{Binding Filter}"
                     SearchText="{Binding SearchText}"
-                    HideSearchBar="True"
                     SelectedCommand="{Binding TransactionSelectedCommand}"
                     SelectedItem="{Binding SelectedTransaction}"
                     SeparatorVisibility="None"

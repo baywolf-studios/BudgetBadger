@@ -3,6 +3,5 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Class="BudgetBadger.Forms.UserControls.DataTable"
-    HideSearchBar="True">
+    x:Class="BudgetBadger.Forms.UserControls.DataTable">
 </uc:ListView2>

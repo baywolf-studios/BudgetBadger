@@ -21,7 +21,6 @@
                 Grid.ColumnSpan="12"
                 Items="{Binding ThirdPartyNotices}"
                 RowHeight="{ext:DynamicResource size_500}"
-                HideSearchBar="True"
                 SelectedCommand="{Binding LicenseCommand}"
                 SelectedItem="{Binding SelectedThirdPartyNotice}"
                 SeparatorVisibility="None"

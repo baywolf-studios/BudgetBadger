@@ -13,26 +13,17 @@ namespace BudgetBadger.macOS.Renderers
         {
             base.OnElementChanged(e);
 
-            if (e.NewElement != null && Control != null && Control is NSScrollView scroller)
+            if (e.NewElement == null || Control == null || !(Control is NSScrollView scroller))
             {
-                if (NSProcessInfo.ProcessInfo.IsOperatingSystemAtLeastVersion(new NSOperatingSystemVersion(11, 0, 0)))
-                {
-                    NativeTableView.Style = NSTableViewStyle.Plain;
-                }
-                NativeTableView.IntercellSpacing = new CoreGraphics.CGSize(0, 0);
-                NativeTableView.BackgroundColor = e.NewElement.BackgroundColor.ToNSColor();
-
-                NSScrollView.Notifications.ObserveDidLiveScroll(scroller, (sender, args) => {
-                    if (e.NewElement != null && args.Notification.Object is NSScrollView nsScrollView)
-                    {
-                        if (nsScrollView.DocumentVisibleRect != null)
-                        {
-                            var scrolledArgs = new ScrolledEventArgs(nsScrollView.DocumentVisibleRect.X, nsScrollView.DocumentVisibleRect.Y);
-                            e.NewElement.SendScrolled(scrolledArgs);
-                        }
-                    }
-                });
+                return;
             }
+
+            if (NSProcessInfo.ProcessInfo.IsOperatingSystemAtLeastVersion(new NSOperatingSystemVersion(11, 0, 0)))
+            {
+                NativeTableView.Style = NSTableViewStyle.Plain;
+            }
+            NativeTableView.IntercellSpacing = new CoreGraphics.CGSize(0, 0);
+            NativeTableView.BackgroundColor = e.NewElement.BackgroundColor.ToNSColor();
         }
     }
 }

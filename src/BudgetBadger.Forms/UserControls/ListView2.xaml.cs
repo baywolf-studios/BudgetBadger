@@ -131,13 +131,6 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ItemTemplateProperty, value);
         }
 
-        public static readonly BindableProperty HideSearchBarProperty = BindableProperty.Create(nameof(HideSearchBar), typeof(bool), typeof(ListView2), false, propertyChanged: UpdateHideSearchBar);
-        public bool HideSearchBar
-        {
-            get { return (bool)GetValue(HideSearchBarProperty); }
-            set { SetValue(HideSearchBarProperty, value); }
-        }
-
         public static BindableProperty SearchFilterProperty = BindableProperty.Create(nameof(SearchFilter), typeof(Predicate<object>), typeof(ListView2), propertyChanged: UpdateItems);
         public Predicate<object> SearchFilter
         {
@@ -211,60 +204,50 @@ namespace BudgetBadger.Forms.UserControls
         public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
         public event EventHandler<ItemTappedEventArgs> ItemTapped;
 
-        private double previousY;
-        private double minY;
-        private double maxY;
-        private bool atStart = true;
-        private bool atEnd;
-        private bool scrollingToStart;
-        private DateTime lastSearchBarChange = DateTime.Now;
-
         public ListView2()
         {
             InitializeComponent();
-            SearchBar.BindingContext = this;
             InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
             InternalListView.ItemTapped += InternalListView_ItemTapped;
-            InternalListView.Scrolled += InternalListView_Scrolled;
         }
 
         private void UpdateMac()
         {
-            if (Device.RuntimePlatform == Device.macOS)
+            if (Device.RuntimePlatform != Device.macOS)
             {
-                if (IsGrouped)
-                {
-                    InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RetainElement)
-                    {
-                        SelectionMode = ListViewSelectionMode.None
-                    };
-                }
-                else
-                {
-                    InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
-                    {
-                        SelectionMode = ListViewSelectionMode.None
-                    };
-                }
-                SetRow(InternalListView, 2);
-                Children.Add(InternalListView);
-                InternalListView.BindingContext = this;
-                InternalListView.ItemsSource = new ObservableList<object>();
-                InternalListView.ItemTapped += InternalListView_ItemTapped;
-                InternalListView.Scrolled += InternalListView_Scrolled;
-                InternalListView.SetBinding(ListView.SelectedItemProperty, new Binding(nameof(SelectedItem)));
-                InternalListView.SetBinding(ListView.HasUnevenRowsProperty, new Binding(nameof(HasUnevenRows)));
-                InternalListView.SetBinding(ListView.RowHeightProperty, new Binding(nameof(RowHeight)));
-                InternalListView.SetBinding(ListView.SeparatorVisibilityProperty, new Binding(nameof(SeparatorVisibility)));
-                InternalListView.SetBinding(ListView.SeparatorColorProperty, new Binding(nameof(SeparatorColor)));
-                InternalListView.SetBinding(ListView.HorizontalScrollBarVisibilityProperty, new Binding(nameof(HorizontalScrollBarVisibility)));
-                InternalListView.SetBinding(ListView.VerticalScrollBarVisibilityProperty, new Binding(nameof(VerticalScrollBarVisibility)));
-
-                UpdateHeader();
-                UpdateFooter();
-                UpdateHideSearchBar();
+                return;
             }
+
+            if (IsGrouped)
+            {
+                InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RetainElement)
+                {
+                    SelectionMode = ListViewSelectionMode.None
+                };
+            }
+            else
+            {
+                InternalListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
+                {
+                    SelectionMode = ListViewSelectionMode.None
+                };
+            }
+            SetRow(InternalListView, 1);
+            Children.Add(InternalListView);
+            InternalListView.BindingContext = this;
+            InternalListView.ItemsSource = new ObservableList<object>();
+            InternalListView.ItemTapped += InternalListView_ItemTapped;
+            InternalListView.SetBinding(ListView.SelectedItemProperty, new Binding(nameof(SelectedItem)));
+            InternalListView.SetBinding(ListView.HasUnevenRowsProperty, new Binding(nameof(HasUnevenRows)));
+            InternalListView.SetBinding(ListView.RowHeightProperty, new Binding(nameof(RowHeight)));
+            InternalListView.SetBinding(ListView.SeparatorVisibilityProperty, new Binding(nameof(SeparatorVisibility)));
+            InternalListView.SetBinding(ListView.SeparatorColorProperty, new Binding(nameof(SeparatorColor)));
+            InternalListView.SetBinding(ListView.HorizontalScrollBarVisibilityProperty, new Binding(nameof(HorizontalScrollBarVisibility)));
+            InternalListView.SetBinding(ListView.VerticalScrollBarVisibilityProperty, new Binding(nameof(VerticalScrollBarVisibility)));
+
+            UpdateHeader();
+            UpdateFooter();
         }
 
         private void InternalListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -273,82 +256,7 @@ namespace BudgetBadger.Forms.UserControls
             
             if (SelectionMode == ListViewSelectionMode.Single)
             {
-                if (SelectedItem == e.Item)
-                {
-                    SelectedItem = null;
-                }
-                else
-                {
-                    SelectedItem = e.Item;
-                }
-            }
-        }
-
-        private void InternalListView_Scrolled(object sender, ScrolledEventArgs e)
-        {
-            //set the maxY and minY to determine the start and end
-            if (e.ScrollY > maxY)
-            {
-                maxY = e.ScrollY;
-            }
-            if (e.ScrollY < minY)
-            {
-                minY = Math.Max(e.ScrollY, 0);
-            }
-
-            //check if it's close enough to the end
-            if (e.ScrollY / maxY > 0.9)
-            {
-                atEnd = true;
-            }
-            else
-            {
-                atEnd = false;
-            }
-
-            //check if it's close enough to the beginning
-            if (e.ScrollY / maxY < 0.5)
-            {
-                atStart = true;
-            }
-            else
-            {
-                atStart = false;
-            }
-
-            // determine if we're scrolling to the top
-            if (previousY > e.ScrollY)
-            {
-                scrollingToStart = true;
-            }
-            else
-            {
-                scrollingToStart = false;
-            }
-            previousY = (previousY + e.ScrollY) / 2;
-
-            if (!HideSearchBar)
-            {
-                var newSearchBarIsVisible = !atEnd && (atStart || scrollingToStart);
-                var shouldChange = (SearchBar.IsVisible != newSearchBarIsVisible && lastSearchBarChange < DateTime.Now);
-
-                if (shouldChange)
-                {
-                    SearchBar.IsVisible = newSearchBarIsVisible;
-                    lastSearchBarChange = DateTime.Now.AddMilliseconds(250);
-                }
-            }
-        }
-
-        private void UpdateHideSearchBar()
-        {
-            SearchBar.IsVisible = !HideSearchBar;
-        }
-        private static void UpdateHideSearchBar(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is ListView2 listView && oldValue != newValue)
-            {
-                listView.UpdateHideSearchBar();
+                SelectedItem = SelectedItem == e.Item ? null : e.Item;
             }
         }
 
