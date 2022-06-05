@@ -67,7 +67,7 @@ namespace BudgetBadger.Forms.Settings
             _detect = _resourceContainer.GetResourceString("DetectLabel");
 
             DropboxToggleCommand = new Command(async () => await ExecuteDropboxToggleCommand());
-            WebDavToggleCommand = new Command(async () => ExecuteWebDavToggleCommand());
+            WebDavToggleCommand = new Command(async () => await ExecuteWebDavToggleCommand());
             SyncCommand = new Command(async () => await ExecuteSyncCommand());
             CurrencySelectedCommand = new Command(async () => await ExecuteCurrencySelectedCommand());
             LanguageSelectedCommand = new Command(async () => await ExecuteLanguageSelectedCommand());
