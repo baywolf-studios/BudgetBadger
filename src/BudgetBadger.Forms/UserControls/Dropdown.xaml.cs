@@ -67,28 +67,20 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(ItemPropertyDescriptionProperty, value);
         }
 
-        string GetPropertyValue(object src, string propertyName)
+        private static string GetPropertyValue(object src, string propertyName)
         {
             if (src == null)
             {
                 return string.Empty;
             }
-            else if (string.IsNullOrEmpty(propertyName))
+
+            if (string.IsNullOrEmpty(propertyName))
             {
                 return src.ToString();
             }
-            else
-            {
-                var propertyValue = src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
-                if (propertyValue == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return propertyValue.ToString();
-                }
-            }
+
+            var propertyValue = src.GetType().GetRuntimeProperty(propertyName)?.GetValue(src);
+            return propertyValue == null ? string.Empty : propertyValue.ToString();
         }
 
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(Dropdown), default(IList), propertyChanged: (bindable, oldVal, newVal) =>
@@ -101,7 +93,7 @@ namespace BudgetBadger.Forms.UserControls
                 {
                     foreach (var i in (IList)newVal)
                     {
-                        items2.Add(dropdown.GetPropertyValue(i, dropdown.ItemPropertyDescription));
+                        items2.Add(GetPropertyValue(i, dropdown.ItemPropertyDescription));
                     }
                 }
             }
@@ -135,7 +127,7 @@ namespace BudgetBadger.Forms.UserControls
             if (bindable is Dropdown dropdown && oldVal != newVal)
             {
                 var index = -1;
-                var stringItem = dropdown.GetPropertyValue(newVal, dropdown.ItemPropertyDescription);
+                var stringItem = GetPropertyValue(newVal, dropdown.ItemPropertyDescription);
 
                 dropdown.ReadOnlyPickerControl.Text = stringItem;
 
