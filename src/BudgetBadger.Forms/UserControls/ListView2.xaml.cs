@@ -450,8 +450,8 @@ namespace BudgetBadger.Forms.UserControls
                 }
             }
             else
-            {
-                var filteredItems = ((IEnumerable<object>)Items).AsParallel();
+            { 
+                var filteredItems = Items.Cast<object>().AsParallel();
 
                 // filtering
                 if (SearchFilter != null)
