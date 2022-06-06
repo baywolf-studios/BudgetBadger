@@ -58,7 +58,7 @@ If you see an error message or run into an issue, please [create bug report](htt
 
 If you have an idea, or you're missing a capability, please [Submit feature request](https://github.com/baywolf-studios/BudgetBadger/issues/new?assignees=&labels=&template=feature_request.md&title=).
 
-If a similar feature request already exists, don't forget to leave a "+1".
+If a similar feature request already exists, don't forget to leave a "+1"
 
 
 ## License
