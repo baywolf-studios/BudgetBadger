@@ -1005,9 +1005,6 @@
   <data name="AlertActionNeeded" xml:space="preserve">
     <value>Action Needed</value>
   </data>
-  <data name="LicensePageTitle" xml:space="preserve">
-      <value>License</value>
-  </data>
   <data name="ThirdPartyNoticesLabel" xml:space="preserve">
       <value>Third Party Notices</value>
   </data>

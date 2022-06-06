@@ -1821,12 +1821,6 @@ namespace BudgetBadger.Language {
             }
         }
         
-        public static string LicensePageTitle {
-            get {
-                return ResourceManager.GetString("LicensePageTitle", resourceCulture);
-            }
-        }
-        
         public static string ThirdPartyNoticesLabel {
             get {
                 return ResourceManager.GetString("ThirdPartyNoticesLabel", resourceCulture);

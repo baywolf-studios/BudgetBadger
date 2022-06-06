@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.Settings
 {
-	public class LicensePageViewModel : BaseViewModel, IInitialize
+	public class LicensePageViewModel : BaseViewModel, INavigatedAware
 	{
         readonly INavigationService _navigationService;
 
@@ -31,7 +31,11 @@ namespace BudgetBadger.Forms.Settings
             _navigationService = navigationService;
         }
 
-        public void Initialize(INavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
             LicenseName = parameters.GetValue<string>(PageParameter.LicenseName);
             LicenseText = parameters.GetValue<string>(PageParameter.LicenseText);

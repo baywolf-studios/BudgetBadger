@@ -1008,9 +1008,6 @@
   <data name="ThirdPartyNoticesLabel" xml:space="preserve">
       <value>Hinweise Dritter</value>
   </data>
-  <data name="LicensePageTitle" xml:space="preserve">
-    <value>Lizenz</value>
-  </data>
   <data name="ThirdPartyNoticesPageTitle" xml:space="preserve">
     <value>Hinweise Dritter</value>
   </data>
