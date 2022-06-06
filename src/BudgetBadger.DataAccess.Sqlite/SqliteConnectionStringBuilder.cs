@@ -2,6 +2,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 {
     public static class SqliteConnectionStringBuilder
     {
-        public static string Get(string path) => "Data Source=" + path;
+        public static string Get(string path) => "Data Source=" + path + ";Pooling=False";
     }
 }

@@ -504,16 +504,37 @@ namespace BudgetBadger.Forms
 
         private static async Task CleanupTempDirectory()
         {
-            var localFileSystem = new LocalFileSystem();
-            var tempPath = Path.GetTempPath();
-            foreach (var file in await localFileSystem.Directory.GetFilesAsync(tempPath))
+            try
             {
-                await localFileSystem.File.DeleteAsync(file);
-            }
+                var localFileSystem = new LocalFileSystem();
+                var tempPath = Path.GetTempPath();
+                foreach (var file in await localFileSystem.Directory.GetFilesAsync(tempPath))
+                {
+                    try
+                    {
+                        await localFileSystem.File.DeleteAsync(file);
+                    }
+                    catch (Exception)
+                    {
+                        // temp files, ignore if we can't delete.
+                    }
+                }
 
-            foreach (var directory in await localFileSystem.Directory.GetDirectoriesAsync(tempPath))
+                foreach (var directory in await localFileSystem.Directory.GetDirectoriesAsync(tempPath))
+                {
+                    try
+                    {
+                        await localFileSystem.Directory.DeleteAsync(directory, true);
+                    }
+                    catch (Exception)
+                    {
+                        // temp files, ignore if we can't delete.
+                    }
+                }
+            }
+            catch (Exception)
             {
-                await localFileSystem.Directory.DeleteAsync(directory, true);
+                // temp files, ignore if we can't delete.
             }
         }
     }

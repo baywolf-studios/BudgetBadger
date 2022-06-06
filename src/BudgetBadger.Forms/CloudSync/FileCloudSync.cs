@@ -67,7 +67,14 @@ namespace BudgetBadger.Forms.CloudSync
                         await SetLastSyncDateTime(DateTime.Now);
                     }
 
-                    await _localFileSystem.File.DeleteAsync(temp.path);
+                    try
+                    {
+                        await _localFileSystem.File.DeleteAsync(temp.path);
+                    }
+                    catch (Exception)
+                    {
+                        // it's a temp file, ignore
+                    }
                     break;
                 case SyncMode.WebDav:
                     var webDavServer = await _settings.GetValueOrDefaultAsync(WebDavSettings.Server);
@@ -99,7 +106,14 @@ namespace BudgetBadger.Forms.CloudSync
                         await SetLastSyncDateTime(DateTime.Now);
                     }
 
-                    await _localFileSystem.File.DeleteAsync(temp2.path);
+                    try
+                    {
+                        await _localFileSystem.File.DeleteAsync(temp2.path);
+                    }
+                    catch (Exception)
+                    {
+                        // it's a temp file, ignore
+                    }
                     break;
                 default:
                     result = Result.Ok();
