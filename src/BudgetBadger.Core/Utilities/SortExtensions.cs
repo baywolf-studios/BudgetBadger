@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BudgetBadger.Models.Extensions
+namespace BudgetBadger.Core.Utilities
 {
     public static class SortExtensions
     {
@@ -17,10 +17,9 @@ namespace BudgetBadger.Models.Extensions
             for (var i = 0; i < sortableList.Count; i++)
             {
                 var oldIndex = collection.IndexOf(sortableList[i]);
-                var newIndex = i;
-                if (oldIndex != newIndex)
+                if (oldIndex != i)
                 {
-                    collection.Move(oldIndex, newIndex);
+                    collection.Move(oldIndex, i);
                 }
             }
         }

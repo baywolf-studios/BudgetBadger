@@ -1,5 +1,6 @@
-﻿using System;
-namespace BudgetBadger.Models.Extensions
+﻿using BudgetBadger.Models;
+
+namespace BudgetBadger.Core.Utilities
 {
     public static class ResultExtensions
     {

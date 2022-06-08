@@ -1,6 +1,6 @@
 ﻿using System;
+using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.UnitTests.TestModels
 {

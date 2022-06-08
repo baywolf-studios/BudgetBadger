@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BudgetBadger.Models.Extensions;
 using BudgetBadger.Models.Interfaces;
 
 namespace BudgetBadger.Models

@@ -6,7 +6,6 @@ using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.LocalizedResources;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Models;
-using BudgetBadger.Models.Extensions;
 
 namespace BudgetBadger.Core.Logic
 {

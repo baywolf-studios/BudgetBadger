@@ -11,9 +11,9 @@ namespace BudgetBadger.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
+        protected bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
         {
-            if (Object.ReferenceEquals(property, value))
+            if (ReferenceEquals(property, value))
             {
                 return false;
             }

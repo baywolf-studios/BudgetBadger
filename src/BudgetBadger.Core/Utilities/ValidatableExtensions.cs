@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using BudgetBadger.Models.Interfaces;
-using System.Linq;
+﻿using BudgetBadger.Models.Interfaces;
 
-namespace BudgetBadger.Models.Extensions
+namespace BudgetBadger.Core.Utilities
 {
     public static class ValidatableExtensions
     {
