@@ -32,7 +32,7 @@ jobs:
 
   build_sign_android:
     needs: create_version_tag
-    runs-on: macos-latest
+    runs-on: macos-12
 
     steps:
       - name: Setup .NET 6.0.x

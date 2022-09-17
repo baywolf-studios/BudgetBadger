@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace BudgetBadger.Models
 {
@@ -114,7 +115,18 @@ namespace BudgetBadger.Models
         /// </summary> 
         public void RemoveAll()
         {
-            RemoveRange(Items);
+            CheckReentrancy();
+
+            var previouslyEmpty = Items.Count == 0;
+
+            Items.Clear();
+
+            var currentlyEmpty = Items.Count == 0;
+
+            if (previouslyEmpty && currentlyEmpty)
+                return;
+
+            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
         }
 
         /// <summary> 
