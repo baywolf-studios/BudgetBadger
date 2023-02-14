@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 
 namespace BudgetBadger.Forms.Style
 {

@@ -11,12 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
-        <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="Authentication\" />
         <None Remove="NETStandard.Library" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
     </ItemGroup>
 </Project>

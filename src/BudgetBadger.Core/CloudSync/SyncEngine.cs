@@ -5,7 +5,7 @@ using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.FileSystem;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Utilities;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Core.CloudSync
 {

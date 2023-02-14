@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Forms.Animation;
 using BudgetBadger.Forms.Effects;
 using BudgetBadger.Forms.Style;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls

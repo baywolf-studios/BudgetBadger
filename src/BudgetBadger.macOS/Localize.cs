@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.macOS;
 using Xamarin.Forms;
 

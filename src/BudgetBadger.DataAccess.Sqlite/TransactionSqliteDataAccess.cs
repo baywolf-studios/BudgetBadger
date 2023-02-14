@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BudgetBadger.DataAccess.Sqlite

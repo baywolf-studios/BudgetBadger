@@ -2,7 +2,7 @@
 <Grid
     x:Class="BudgetBadger.Forms.UserControls.TransactionStatusButton"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
-    xmlns:model="clr-namespace:BudgetBadger.Models;assembly=BudgetBadger.Models"
+    xmlns:model="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.CloudSync;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Style;

@@ -1,6 +1,6 @@
 using System;
 using BudgetBadger.Core.Utilities;
-using BudgetBadger.Models.Recurrence;
+using BudgetBadger.Core.Models.Recurrence;
 using NUnit.Framework;
 
 namespace BudgetBadger.UnitTests.Core.Utilities;

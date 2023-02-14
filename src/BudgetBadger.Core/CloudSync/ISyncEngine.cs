@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.FileSystem;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Core.CloudSync
 {

@@ -1,6 +1,6 @@
-﻿using BudgetBadger.Forms;
+using BudgetBadger.Forms;
 using BudgetBadger.Core.Authentication;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

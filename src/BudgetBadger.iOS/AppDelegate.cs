@@ -1,4 +1,4 @@
-﻿using BudgetBadger.Core.LocalizedResources;
+﻿using BudgetBadger.Core.Localization;
 using BudgetBadger.Forms;
 using BudgetBadger.iOS.Renderers;
 using Foundation;

@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Forms;
 using Prism;
 using Prism.Ioc;

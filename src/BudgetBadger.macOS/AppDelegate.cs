@@ -1,5 +1,5 @@
 ﻿using AppKit;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Forms;
 using BudgetBadger.macOS.Renderers;
 using Foundation;

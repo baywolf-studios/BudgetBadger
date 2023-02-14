@@ -1,4 +1,4 @@
-﻿using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.UWP;
 using System;
 using System.Collections.Generic;

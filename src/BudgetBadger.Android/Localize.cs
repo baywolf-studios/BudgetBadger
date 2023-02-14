@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Droid;
 using Xamarin.Forms;
 

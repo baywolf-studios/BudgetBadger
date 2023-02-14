@@ -1,4 +1,4 @@
-﻿using BudgetBadger.Models.Interfaces;
+﻿using BudgetBadger.Core.Models.Interfaces;
 
 namespace BudgetBadger.Core.Utilities
 {

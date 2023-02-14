@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Authentication;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Dropbox.Api;
 
 namespace BudgetBadger.FileSystem.Dropbox

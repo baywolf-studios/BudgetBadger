@@ -1,4 +1,4 @@
-﻿using BudgetBadger.Models;
+﻿using BudgetBadger.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -8,15 +8,34 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
-    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Utilities\" />
     <Folder Include="Authentication\" />
+    <Folder Include="Models\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Models\Interfaces\" />
+    <Folder Include="Models\Recurrence\" />
+    <Folder Include="LocalizedResources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Authentication\" />
     <None Remove="NETStandard.Library" />
+    <None Remove="Models\" />
+    <None Remove="Localization\" />
+    <None Remove="Models\Interfaces\" />
+    <None Remove="Models\Recurrence\" />
+    <None Remove="LocalizedResources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="Localization\AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Localization\AppResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

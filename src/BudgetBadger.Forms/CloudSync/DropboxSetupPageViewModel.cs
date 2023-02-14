@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.CloudSync;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.FileSystem.Dropbox;

@@ -1,5 +1,5 @@
-﻿using BudgetBadger.Core.Authentication;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Authentication;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.UWP.Renderers;
 using DryIoc;
 using Prism;

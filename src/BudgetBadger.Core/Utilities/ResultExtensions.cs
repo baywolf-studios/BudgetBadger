@@ -1,4 +1,4 @@
-﻿using BudgetBadger.Models;
+﻿using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Core.Utilities
 {

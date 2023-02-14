@@ -1,5 +1,5 @@
 ﻿using System;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Prism.Events;
 
 namespace BudgetBadger.Forms.Events

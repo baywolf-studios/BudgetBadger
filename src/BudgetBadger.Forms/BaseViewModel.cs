@@ -1,5 +1,5 @@
 ﻿using System;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Prism;
 using Prism.Mvvm;
 

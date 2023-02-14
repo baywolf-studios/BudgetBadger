@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Core.Logic
 {

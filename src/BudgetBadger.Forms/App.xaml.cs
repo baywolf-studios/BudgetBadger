@@ -9,7 +9,7 @@ using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.CloudSync;
 using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.FileSystem;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Settings;
 using BudgetBadger.Core.Utilities;

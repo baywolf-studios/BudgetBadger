@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BudgetBadger.Core.Utilities;
-using BudgetBadger.Models.Recurrence;
+using BudgetBadger.Core.Models.Recurrence;
 
 namespace BudgetBadger.Core.Recurrence
 {

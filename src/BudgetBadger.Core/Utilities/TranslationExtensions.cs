@@ -1,6 +1,6 @@
 ﻿using System;
-using BudgetBadger.Core.LocalizedResources;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Localization;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Core.Utilities
 {

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.FileSystem.Dropbox
 {

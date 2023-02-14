@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls

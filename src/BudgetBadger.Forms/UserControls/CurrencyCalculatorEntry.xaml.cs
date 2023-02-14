@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Forms.Animation;
 using BudgetBadger.Forms.Effects;
 using BudgetBadger.Forms.Style;

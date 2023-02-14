@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using BudgetBadger.Models.Recurrence;
+using BudgetBadger.Core.Models.Recurrence;
 
 namespace BudgetBadger.Core.Recurrence
 {

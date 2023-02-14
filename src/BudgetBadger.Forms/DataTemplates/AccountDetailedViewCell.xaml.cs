@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using BudgetBadger.Forms.UserControls;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.DataTemplates

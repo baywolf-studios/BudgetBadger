@@ -252,10 +252,6 @@
       <Project>{e00f9247-935f-40f4-a6c2-8d55d84afd9f}</Project>
       <Name>BudgetBadger.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BudgetBadger.Models\BudgetBadger.Models.csproj">
-      <Project>{685bdeec-970c-4ebd-a723-f316912d0594}</Project>
-      <Name>BudgetBadger.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

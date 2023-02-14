@@ -1,5 +1,5 @@
 using System;
-using BudgetBadger.Models.Recurrence;
+using BudgetBadger.Core.Models.Recurrence;
 
 namespace BudgetBadger.Core.Utilities
 {

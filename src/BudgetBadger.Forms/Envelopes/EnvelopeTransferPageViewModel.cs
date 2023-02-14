@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BudgetBadger.Core.LocalizedResources;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;

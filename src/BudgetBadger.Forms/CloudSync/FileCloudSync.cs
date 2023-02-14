@@ -10,7 +10,7 @@ using BudgetBadger.DataAccess.Sqlite;
 using BudgetBadger.FileSystem.Dropbox;
 using BudgetBadger.FileSystem.WebDav;
 using BudgetBadger.Forms.Enums;
-using BudgetBadger.Models;
+using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Forms.CloudSync
 {
