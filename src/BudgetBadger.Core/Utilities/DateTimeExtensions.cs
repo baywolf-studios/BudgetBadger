@@ -7,6 +7,11 @@ namespace BudgetBadger.Core.Utilities
 {
     public static class DateTimeExtensions
     {
+        public static bool IsEmpty(this DateTime dateTime)
+        {
+            return dateTime == DateTime.MinValue;
+        }
+
         public static Guid ToGuid(this DateTime dateTime)
         {
             using var hash = new SHA1CryptoServiceProvider();

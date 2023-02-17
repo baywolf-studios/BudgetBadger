@@ -1743,6 +1743,15 @@ namespace BudgetBadger.Core.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Hidden.
         /// </summary>
+        public static string GroupedHiddenPayeeModelDescription {
+            get {
+                return ResourceManager.GetString("GroupedHiddenPayeeModelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden.
+        /// </summary>
         public static string Hidden {
             get {
                 return ResourceManager.GetString("Hidden", resourceCulture);

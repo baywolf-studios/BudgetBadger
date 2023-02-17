@@ -34,15 +34,15 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeEditModel> _payees;
+        public ObservableList<PayeeEditModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        Payee _selectedPayee;
-        public Payee SelectedPayee
+        PayeeEditModel _selectedPayee;
+        public PayeeEditModel SelectedPayee
         {
             get => _selectedPayee;
             set => SetProperty(ref _selectedPayee, value);
@@ -77,10 +77,10 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Payees = new ObservableList<Payee>();
+            Payees = new ObservableList<PayeeEditModel>();
             SelectedPayee = null;
 
-            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            SelectedCommand = new Command<PayeeEditModel>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new Command(async () => await FullRefresh());
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
@@ -101,7 +101,7 @@ namespace BudgetBadger.Forms.Payees
             await FullRefresh();
         }
 
-        public async Task ExecuteSelectedCommand(Payee payee)
+        public async Task ExecuteSelectedCommand(PayeeEditModel payee)
         {
             if (payee == null)
             {
@@ -110,7 +110,7 @@ namespace BudgetBadger.Forms.Payees
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.Payee, payee }
+                { PageParameter.PayeeEditModel, payee }
             };
 
             await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
@@ -127,7 +127,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetHiddenPayeesAsync();
+                var result = await _payeeLogic.GetHiddenPayees2Async();
 
                 if (result.Success)
                 {
@@ -148,11 +148,11 @@ namespace BudgetBadger.Forms.Payees
 
         public void RefreshPayee(Payee payee)
         {
-            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
+            var payees = Payees.Where(a => a.Id != payee?.Id).ToList();
 
             if (payee != null && _payeeLogic.FilterPayee(payee, FilterType.Hidden))
             {
-                payees.Add(payee);
+                //payees.Add(payee);
             }
 
             Payees.ReplaceRange(payees);

@@ -1,12 +1,17 @@
 ﻿using System;
+using BudgetBadger.Core.Dtos;
+using BudgetBadger.Core.Localization;
+
 namespace BudgetBadger.Core.Models
 {
     public static class Constants
     {
+        public static readonly Guid StartingBalancePayeeId = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}");
+
         public static readonly Payee StartingBalancePayee = new Payee
         {
-            Id = new Guid("{5c5d6f16-c8c0-4f1b-bdc1-f75494a63e8b}"),
-            Description = nameof(StartingBalancePayee),
+            Id = StartingBalancePayeeId,
+            Description = nameof(AppResources.StartingBalancePayee),
             CreatedDateTime = DateTime.Now,
             ModifiedDateTime = DateTime.Now
         };

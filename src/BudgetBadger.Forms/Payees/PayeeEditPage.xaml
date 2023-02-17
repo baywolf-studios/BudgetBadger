@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Payees.PayeeEditPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    x:DataType="payees:PayeeEditPageViewModel">
     <p:BasePage.Header>
         <p:ChildHeader
             BackCommand="{Binding BackCommand}"

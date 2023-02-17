@@ -560,25 +560,6 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<int>> GetEnvelopesCountAsync()
-        {
-            var result = new Result<int>();
-
-            try
-            {
-                var count = await _dataAccess.GetEnvelopesCountAsync();
-                result.Success = true;
-                result.Data = count;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
         public async Task<Result<Envelope>> GetEnvelopeAsync(Guid id)
         {
             var result = new Result<Envelope>();
@@ -860,25 +841,6 @@ namespace BudgetBadger.Core.Logic
                 await _dataAccess.UpdateEnvelopeGroupAsync(groupToUpsert).ConfigureAwait(false);
                 result.Success = true;
                 result.Data = groupToUpsert;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<int>> GetEnvelopeGroupsCountAsync()
-        {
-            var result = new Result<int>();
-
-            try
-            {
-                var count = await _dataAccess.GetEnvelopeGroupsCountAsync();
-                result.Success = true;
-                result.Data = count;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
             }
 
             return result;

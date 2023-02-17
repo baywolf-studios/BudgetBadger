@@ -29,12 +29,12 @@ namespace BudgetBadger.Core.Localization
             {
 
 #if DEBUG
-                throw new ArgumentException(
-                    String.Format("Key '{0}' was not found in resources.", key),
-                    nameof(key));
-#else
-                translation = key; // returns the key, which GETS DISPLAYED TO THE USER
+                System.Diagnostics.Debug.WriteLine(String.Format("Key '{0}' was not found in resources.", key));
+                //throw new ArgumentException(
+                //    String.Format("Key '{0}' was not found in resources.", key),
+                //    nameof(key));
 #endif
+                translation = key; // returns the key, which GETS DISPLAYED TO THE USER
             }
 
             return translation;

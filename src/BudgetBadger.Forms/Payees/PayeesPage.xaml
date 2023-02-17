@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Payees.PayeesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this">
+    xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:Name="this"
+    x:DataType="payees:PayeesPageViewModel">
     <p:BasePage.Header>
         <p:RootSearchHeader
             PageTitle="{ext:Translate PayeesPageTitle}"
@@ -43,7 +45,8 @@
                     IsHeaderSticky="True"
                     IsPullToRefreshEnabled="True"
                     IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
+                    RefreshCommand="{Binding RefreshCommand}"
+                    Footer="{Binding .}">
                     <uc:ListView2.SortComparer>
                         <comparers:PayeeComparer/>
                     </uc:ListView2.SortComparer>
@@ -76,21 +79,21 @@
                         </ContentView>
                     </uc:ListView2.Header>
                     <uc:ListView2.GroupHeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="{x:Null}">
                             <uc:ViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}">
-                                <dt:GroupHeaderViewCell />
+                                <uc:SingleLineListSubheader Text="{Binding Key}" />
                             </uc:ViewCell>
                         </DataTemplate>
                     </uc:ListView2.GroupHeaderTemplate>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:Payee">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                <dt:PayeeViewCell/>
+                                <uc:SingleLineListItem Text="{Binding Description}" />
                                 <uc:SelectableViewCell.ContextActions>
                                     <MenuItem
                                         Text="{ext:Translate EditButton}"
@@ -100,9 +103,23 @@
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:ListView2.ItemTemplate>
-                    <uc:ListView2.Footer>
-                        <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
-                    </uc:ListView2.Footer>
+                    <uc:ListView2.FooterTemplate>
+                        <DataTemplate x:DataType="payees:PayeesPageViewModel">
+                            <StackLayout
+                                Orientation="Vertical"
+                                Spacing="0"
+                                CompressedLayout.IsHeadless="true">
+                                <uc:SingleLineListSubheader
+                                    Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                    ShowSeperator="False"
+                                    Text="{ext:Translate Hidden}"
+                                    Command="{Binding ViewHiddenCommand}"
+                                    IsVisible="{Binding HasHiddenPayees}">
+                                </uc:SingleLineListSubheader>
+                                <BoxView BackgroundColor="{ext:DynamicResource gray_50}" HeightRequest="{ext:DynamicResource size_600}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </uc:ListView2.FooterTemplate>
                 </uc:ListView2>
                 <uc:Button2
                     x:Name="NewTransactionButton"

@@ -47,13 +47,6 @@ namespace BudgetBadger.Forms.UserControls
             set { SetValue(FooterTemplateProperty, value); }
         }
 
-        public static BindableProperty IsFooterStickyProperty = BindableProperty.Create(nameof(IsFooterSticky), typeof(bool), typeof(ListView2), propertyChanged: UpdateFooter);
-        public bool IsFooterSticky
-        {
-            get => (bool)GetValue(IsFooterStickyProperty);
-            set => SetValue(IsFooterStickyProperty, value);
-        }
-
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(ListView), null, BindingMode.TwoWay, propertyChanged: UpdateSelectedItem);
         public object SelectedItem
         {
@@ -318,7 +311,7 @@ namespace BudgetBadger.Forms.UserControls
 
         private void UpdateFooter()
         {
-            if (IsFooterSticky || Device.RuntimePlatform == Device.macOS)
+            if (Device.RuntimePlatform == Device.macOS)
             {
                 InternalListView.Footer = null;
                 InternalListView.FooterTemplate = null;

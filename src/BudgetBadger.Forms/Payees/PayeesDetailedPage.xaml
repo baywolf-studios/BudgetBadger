@@ -70,16 +70,7 @@
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                 <dt:PayeeDetailedViewCell
                                     SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                    CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
-                                    <dt:PayeeDetailedViewCell.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsGenericHiddenPayee}"
-                                            Value="true"
-                                            TargetType="dt:PayeeDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                    </dt:PayeeDetailedViewCell.Triggers>
-                                </dt:PayeeDetailedViewCell>
+                                    CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}" />
                                 <uc:SelectableViewCell.ContextActions>
                                     <MenuItem
                                         Text="{ext:Translate EditButton}"

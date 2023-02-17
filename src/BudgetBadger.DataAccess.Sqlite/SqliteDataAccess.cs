@@ -6,6 +6,7 @@ using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
+using BudgetBadger.Core.Localization;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
@@ -286,8 +287,8 @@ namespace BudgetBadger.DataAccess.Sqlite
             command.Parameters.AddWithValue("@IncomeEnvelopeEnvelopeGroupId", Constants.IncomeEnvelope.Group?.Id.ToByteArray());
             command.Parameters.AddWithValue("@IncomeEnvelopeIgnoreOverspend", Constants.IncomeEnvelope.IgnoreOverspend);
 
-            command.Parameters.AddWithValue("@StartingBalancePayeeId", Constants.StartingBalancePayee.Id.ToByteArray());
-            command.Parameters.AddWithValue("@StartingBalancePayeeDescription", nameof(Constants.StartingBalancePayee));
+            command.Parameters.AddWithValue("@StartingBalancePayeeId", Constants.StartingBalancePayeeId.ToByteArray());
+            command.Parameters.AddWithValue("@StartingBalancePayeeDescription", nameof(AppResources.StartingBalancePayee));
 
             command.ExecuteNonQuery();
             db.Close();

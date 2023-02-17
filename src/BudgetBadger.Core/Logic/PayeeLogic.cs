@@ -6,6 +6,7 @@ using BudgetBadger.Core.DataAccess;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
+using BudgetBadger.Core.Converters;
 
 namespace BudgetBadger.Core.Logic
 {
@@ -70,15 +71,61 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<int>> GetPayeesCountAsync()
+        public async Task<Result<Guid>> SavePayeeAsync(PayeeEditModel payee)
+        {
+            try
+            {
+                var validationErrors = new List<string>();
+                if (string.IsNullOrEmpty(payee.Description))
+                {
+                    validationErrors.Add(AppResources.PayeeValidDescriptionError);
+                }
+                if (payee.Id == Constants.StartingBalancePayeeId)
+                {
+                    validationErrors.Add(AppResources.PayeeSaveSystemError);
+                }
+                var accounts = await _dataAccess.ReadAccountDtosAsync(new List<Guid> { payee.Id });
+                if (accounts.Any())
+                {
+                    validationErrors.Add(AppResources.PayeeSaveSystemError);
+                }
+                if (validationErrors.Any())
+                {
+                    return Result.Fail<Guid>(string.Join(Environment.NewLine, validationErrors));
+                }
+
+                var payeeDto = PayeeEditModelConverter.Convert(payee);
+
+                var existingPayeeDtos = await _dataAccess.ReadPayeeDtosAsync(new List<Guid> { payeeDto.Id });
+
+                if (existingPayeeDtos.Any())
+                {
+                    await _dataAccess.UpdatePayeeDtoAsync(payeeDto);
+                }
+                else
+                {
+                    await _dataAccess.CreatePayeeDtoAsync(payeeDto);
+                }
+
+                return Result.Ok<Guid>(payee.Id);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<Guid>(ex.Message);
+            }
+        }
+
+        public async Task<Result<int>> GetHiddenPayeesCountAsync()
         {
             var result = new Result<int>();
 
             try
             {
-                var count = await _dataAccess.GetPayeesCountAsync();
+                var payees = await _dataAccess.ReadPayeeDtosAsync();
+                var hiddenPayees = payees.Where(p => p.Hidden && !p.Deleted);
+                var hiddenAccountPayees = await _dataAccess.ReadAccountDtosAsync(hiddenPayees.Select(p => p.Id));
                 result.Success = true;
-                result.Data = count;
+                result.Data = hiddenPayees.Where(p => !hiddenAccountPayees.Any(a => a.Id == p.Id)).Count();
             }
             catch (Exception ex)
             {
@@ -122,11 +169,6 @@ namespace BudgetBadger.Core.Logic
                 var populatedPayees = await Task.WhenAll(tasks).ConfigureAwait(false);
                 var payeesToReturn = populatedPayees.Where(p => FilterPayee(p, FilterType.Standard)).ToList();
 
-                if (populatedPayees.Any(p => FilterPayee(p, FilterType.Hidden)))
-                {
-                    payeesToReturn.Add(GetGenericHiddenPayee());
-                }
-
                 result.Success = true;
                 result.Data = payeesToReturn;
             }
@@ -138,6 +180,28 @@ namespace BudgetBadger.Core.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<IReadOnlyList<PayeeEditModel>>> GetPayees2Async(IEnumerable<Guid> payeeIds = null)
+        {
+            try
+            {
+                var allPayees = await _dataAccess.ReadPayeeDtosAsync(payeeIds).ConfigureAwait(false);
+                var payeeAccounts = await _dataAccess.ReadAccountDtosAsync(allPayees.Select(p => p.Id));
+
+                var payeesToReturn = allPayees.AsParallel()
+                    .Where(p => !p.Hidden
+                             && !p.Deleted
+                             && p.Id != Constants.StartingBalancePayeeId
+                             && !payeeAccounts.Any(a => a.Id == p.Id))
+                    .Select(p => PayeeEditModelConverter.Convert(p));
+
+                return Result.Ok<IReadOnlyList<PayeeEditModel>>(payeesToReturn.ToList().AsReadOnly());
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<IReadOnlyList<PayeeEditModel>>(ex.Message);
+            }
         }
 
         public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForSelectionAsync()
@@ -163,6 +227,38 @@ namespace BudgetBadger.Core.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<IReadOnlyList<PayeeModel>>> GetPayeesForSelection2Async(IEnumerable<Guid> payeeIds = null)
+        {
+            try
+            {
+                var allPayees = await _dataAccess.ReadPayeeDtosAsync(payeeIds).ConfigureAwait(false);
+                var payeeAccounts = await _dataAccess.ReadAccountDtosAsync(allPayees.Select(p => p.Id));
+
+                var payeesToReturn = allPayees.AsParallel()
+                    .Where(p => !p.Hidden
+                             && !p.Deleted
+                             && p.Id != Constants.StartingBalancePayeeId)
+                    .Select(p =>
+                    {
+                        var account = payeeAccounts.FirstOrDefault(a => a.Id == p.Id);
+                        if (account is null)
+                        {
+                            return PayeeModelConverter.Convert(p);
+                        }
+                        else
+                        {
+                            return PayeeModelConverter.Convert(account);
+                        }
+                    });
+
+                return Result.Ok<IReadOnlyList<PayeeModel>>(payeesToReturn.ToList().AsReadOnly());
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<IReadOnlyList<PayeeModel>>(ex.Message);
+            }
         }
 
         public async Task<Result<IReadOnlyList<Payee>>> GetPayeesForReportAsync()
@@ -195,6 +291,29 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
+
+        public async Task<Result<IReadOnlyList<PayeeModel>>> GetPayeesForReport2Async(IEnumerable<Guid> payeeIds = null)
+        {
+            try
+            {
+                var allPayees = await _dataAccess.ReadPayeeDtosAsync(payeeIds).ConfigureAwait(false);
+                var payeeAccounts = await _dataAccess.ReadAccountDtosAsync(allPayees.Select(p => p.Id));
+
+                var payeesToReturn = allPayees.AsParallel()
+                    .Where(p => !p.Hidden
+                             && !p.Deleted
+                             && p.Id != Constants.StartingBalancePayeeId
+                             && !payeeAccounts.Any(a => a.Id == p.Id))
+                    .Select(p => PayeeModelConverter.Convert(p));
+
+                return Result.Ok<IReadOnlyList<PayeeModel>>(payeesToReturn.ToList().AsReadOnly());
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<IReadOnlyList<PayeeModel>>(ex.Message);
+            }
+        }
+
         public async Task<Result<IReadOnlyList<Payee>>> GetHiddenPayeesAsync()
         {
             var result = new Result<IReadOnlyList<Payee>>();
@@ -218,6 +337,28 @@ namespace BudgetBadger.Core.Logic
             }
 
             return result;
+        }
+
+        public async Task<Result<IReadOnlyList<PayeeEditModel>>> GetHiddenPayees2Async(IEnumerable<Guid> payeeIds)
+        {
+            try
+            {
+                var allPayees = await _dataAccess.ReadPayeeDtosAsync(payeeIds).ConfigureAwait(false);
+                var payeeAccounts = await _dataAccess.ReadAccountDtosAsync(allPayees.Select(p => p.Id));
+
+                var payeesToReturn = allPayees.AsParallel()
+                    .Where(p => p.Hidden
+                             && !p.Deleted
+                             && p.Id != Constants.StartingBalancePayeeId
+                             && !payeeAccounts.Any(a => a.Id == p.Id))
+                    .Select(p => PayeeEditModelConverter.Convert(p));
+
+                return Result.Ok<IReadOnlyList<PayeeEditModel>>(payeesToReturn.ToList().AsReadOnly());
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<IReadOnlyList<PayeeEditModel>>(ex.Message);
+            }
         }
 
         public async Task<Result<Payee>> SoftDeletePayeeAsync(Guid id)
@@ -272,6 +413,11 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
+        public Task<Result> SoftDeletePayee2Async(Guid payeeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Result<Payee>> HidePayeeAsync(Guid id)
         {
             var result = new Result<Payee>();
@@ -319,6 +465,11 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
+        public Task<Result> HidePayee2Async(Guid payeeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Result<Payee>> UnhidePayeeAsync(Guid id)
         {
             var result = new Result<Payee>();
@@ -364,6 +515,11 @@ namespace BudgetBadger.Core.Logic
             }
 
             return result;
+        }
+
+        public Task<Result> UnhidePayee2Async(Guid payeeId)
+        {
+            throw new NotImplementedException();
         }
 
         public bool FilterPayee(Payee payee, string searchText)

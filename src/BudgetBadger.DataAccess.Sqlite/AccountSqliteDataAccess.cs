@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
+using BudgetBadger.Core.DataAccess;
+using BudgetBadger.Core.Dtos;
+using System.Linq;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
@@ -53,27 +56,6 @@ namespace BudgetBadger.DataAccess.Sqlite
                 });
             }
             
-        }
-
-        public async Task DeleteAccountAsync(Guid id)
-        {
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE Account WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
         }
 
         public async Task<Account> ReadAccountAsync(Guid id)
@@ -209,27 +191,139 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task<int> GetAccountsCountAsync()
+        public async Task CreateAccountDtoAsync(AccountDto account)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
-                return await Task.Run(() =>
+                await Task.Run(() =>
                 {
-                    var count = 0;
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"SELECT COUNT(*)
-                                    FROM   Account";
+                        command.CommandText = @"INSERT INTO Account 
+                                                            (Id, 
+                                                             Description,
+                                                             OnBudget,
+                                                             Notes, 
+                                                             CreatedDateTime, 
+                                                             ModifiedDateTime, 
+                                                             DeletedDateTime,
+                                                             HiddenDateTime) 
+                                                VALUES     (@Id, 
+                                                            @Description,
+                                                            @OnBudget,
+                                                            @Notes, 
+                                                            @CreatedDateTime, 
+                                                            @ModifiedDateTime, 
+                                                            @DeletedDateTime,
+                                                            @HiddenDateTime)";
+                        command.AddParameter("@Id", account.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", account.Description, SqliteType.Text);
+                        command.AddParameter("@OnBudget", account.OnBudget, SqliteType.Integer);
+                        command.AddParameter("@Notes", account.Notes, SqliteType.Text);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", account.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", account.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", account.Hidden ? DateTime.Now : null, SqliteType.Text);
 
-                        object result = command.ExecuteScalar();
-                        result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task<IReadOnlyList<AccountDto>> ReadAccountDtosAsync(IEnumerable<Guid> accountIds)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var accounts = new List<AccountDto>();
+
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT A.Id, 
+                                                A.Description, 
+                                                A.OnBudget, 
+                                                A.Notes, 
+                                                A.CreatedDateTime, 
+                                                A.ModifiedDateTime, 
+                                                A.DeletedDateTime,
+                                                A.HiddenDateTime
+                                         FROM   Account AS A";
+
+                        if (accountIds != null)
+                        {
+                            var ids = accountIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@Id", ids, SqliteType.Blob);
+                                command.CommandText += $" WHERE Id IN ({parameters})";
+                            }
+                            else
+                            {
+                                return accounts.AsReadOnly();
+                            }
+                        }
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var account = new AccountDto
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Description = reader["Description"].ToString(),
+                                    OnBudget = Convert.ToBoolean(reader["OnBudget"], CultureInfo.InvariantCulture),
+                                    Notes = reader["Notes"] == DBNull.Value ? (string)null : reader["Notes"].ToString(),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    Deleted = reader["DeletedDateTime"] != DBNull.Value,
+                                    Hidden = reader["HiddenDateTime"] != DBNull.Value
+                                };
+                                accounts.Add(account);
+                            }
+                        }
                     }
 
-                    return count;
+                    return accounts.AsReadOnly();
+                });
+            }
+        }
+
+        public async Task UpdateAccountDtoAsync(AccountDto account)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"UPDATE Account 
+                                                SET    Description = @Description, 
+                                                       OnBudget = @OnBudget, 
+                                                       Notes = @Notes, 
+                                                       ModifiedDateTime = @ModifiedDateTime, 
+                                                       DeletedDateTime = @DeletedDateTime,
+                                                       HiddenDateTime = @HiddenDateTime
+                                                WHERE  Id = @Id ";
+                        command.AddParameter("@Id", account.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", account.Description, SqliteType.Text);
+                        command.AddParameter("@OnBudget", account.OnBudget, SqliteType.Integer);
+                        command.AddParameter("@Notes", account.Notes, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", account.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", account.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", account.Hidden ? DateTime.Now : null, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
                 });
             }
         }

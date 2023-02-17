@@ -114,25 +114,6 @@ namespace BudgetBadger.Core.Logic
             return new Result<Account> { Success = true, Data = await GetPopulatedAccount(accountToUpsert).ConfigureAwait(false) };
         }
 
-        public async Task<Result<int>> GetAccountsCountAsync()
-        {
-            var result = new Result<int>();
-
-            try
-            {
-                var count = await _dataAccess.GetAccountsCountAsync();
-                result.Success = true;
-                result.Data = count;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
         public async Task<Result<Account>> GetAccountAsync(Guid id)
         {
             var result = new Result<Account>();

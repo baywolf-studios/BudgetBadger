@@ -4,8 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:BudgetBadger.Forms.Converters"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
-    xmlns:local="clr-namespace:BudgetBadger.Forms"
     xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
@@ -28,6 +26,7 @@
             <converters:DoubleToLeftRightThicknessConverter x:Key="DoubleToLeftRightThicknessConverter"/>
             <converters:DoubleToLeftThicknessConverter x:Key="DoubleToLeftThicknessConverter"/>
             <converters:DoubleToRightThicknessConverter x:Key="DoubleToRightThicknessConverter"/>
+            <converters:TranslationConverter x:Key="TranslationConverter"/>
 
             <!--static colors-->
             <Color x:Key="static_white">#ffffff</Color>
@@ -380,10 +379,10 @@
             </Style>
 
             <Style x:Key="HiddenButtonStyle" TargetType="uc:Button2">
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="RestingBackgroundColor" Value="Transparent" />
-                <Setter Property="HoverBackgroundColor" Value="Transparent" />
-                <Setter Property="ActiveBackgroundColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource gray_50}" />
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_0}" />
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>

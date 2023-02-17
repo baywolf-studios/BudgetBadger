@@ -18,14 +18,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\BudgetBadger.Models\BudgetBadger.Models.csproj" />
     <ProjectReference Include="..\..\src\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
+    <ProjectReference Include="..\BudgetBadger.TestData\BudgetBadger.TestData.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="DataAccessSqlite\" />
     <None Remove="Logic\" />
     <None Remove="TestModels\" />
     <None Remove="FakeItEasy" />
+    <None Remove="Core\Converters\" />
+    <None Remove="Core\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestModels\" />
+    <Folder Include="Core\Converters\" />
+    <Folder Include="Core\Models\" />
   </ItemGroup>
 </Project>

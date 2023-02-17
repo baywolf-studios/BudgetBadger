@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace BudgetBadger.IntegrationTests.FileSystem.Dropbox;
 
+[Ignore("No credentials in GitHub")]
 [TestFixture]
 public class DropboxDirectoryIntegrationTests
 {

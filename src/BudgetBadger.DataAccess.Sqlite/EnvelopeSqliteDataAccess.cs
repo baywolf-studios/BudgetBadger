@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
+using BudgetBadger.Core.Dtos;
+using System.Linq;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
@@ -54,8 +56,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -92,8 +92,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeAsync(Envelope envelope)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -142,8 +140,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -181,109 +177,10 @@ namespace BudgetBadger.DataAccess.Sqlite
                     }
                 });
             }
-            
-        }
-
-        public async Task DeleteBudgetAsync(Guid id)
-        {
-            
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE FROM Budget WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-            
-        }
-
-        public async Task DeleteBudgetScheduleAsync(Guid id)
-        {
-            
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE BudgetSchedule WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-            
-        }
-
-        public async Task DeleteEnvelopeAsync(Guid id)
-        {
-            
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE Envelope WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-            
-        }
-
-        public async Task DeleteEnvelopeGroupAsync(Guid id)
-        {
-            
-
-            using (await MultiThreadLock.UseWaitAsync())
-            {
-                await Task.Run(() =>
-                {
-                    using (var db = new SqliteConnection(_connectionString))
-                    {
-                        db.Open();
-                        var command = db.CreateCommand();
-
-                        command.CommandText = @"DELETE EnvelopeGroup WHERE Id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", id.ToByteArray());
-
-                        command.ExecuteNonQuery();
-                    }
-                });
-            }
-            
         }
 
         public async Task<Budget> ReadBudgetAsync(Guid id)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -380,8 +277,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsAsync()
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -476,8 +371,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromScheduleAsync(Guid scheduleId)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -573,8 +466,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Budget>> ReadBudgetsFromEnvelopeAsync(Guid envelopeId)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -671,8 +562,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -769,8 +658,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -815,8 +702,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync()
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -858,8 +743,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<Envelope> ReadEnvelopeAsync(Guid id)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -929,8 +812,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -980,8 +861,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -1028,8 +907,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task<IReadOnlyList<Envelope>> ReadEnvelopesAsync()
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
@@ -1096,8 +973,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -1133,8 +1008,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -1166,8 +1039,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeAsync(Envelope envelope)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -1207,8 +1078,6 @@ namespace BudgetBadger.DataAccess.Sqlite
 
         public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 await Task.Run(() =>
@@ -1242,56 +1111,572 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task<int> GetEnvelopesCountAsync()
+        public async Task CreateEnvelopeGroupDtoAsync(EnvelopeGroupDto envelopeGroup)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
-                return await Task.Run(() =>
+                await Task.Run(() =>
                 {
-                    var count = 0;
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"SELECT COUNT(*)
-                                    FROM   Envelope";
+                        command.CommandText = @"INSERT INTO EnvelopeGroup
+                                                            (Id, 
+                                                             Description, 
+                                                             Notes, 
+                                                             CreatedDateTime, 
+                                                             ModifiedDateTime, 
+                                                             DeletedDateTime,
+                                                             HiddenDateTime) 
+                                                VALUES     (@Id, 
+                                                            @Description, 
+                                                            @Notes, 
+                                                            @CreatedDateTime, 
+                                                            @ModifiedDateTime, 
+                                                            @DeletedDateTime,
+                                                            @HiddenDateTime)";
 
-                        object result = command.ExecuteScalar();
-                        result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
+                        command.AddParameter("@Id", envelopeGroup.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", envelopeGroup.Description, SqliteType.Text);
+                        command.AddParameter("@Notes", envelopeGroup.Notes, SqliteType.Text);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", envelopeGroup.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", envelopeGroup.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", envelopeGroup.Hidden ? DateTime.Now : null, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
                     }
-
-                    return count;
                 });
             }
         }
 
-        public async Task<int> GetEnvelopeGroupsCountAsync()
+        public async Task<IReadOnlyList<EnvelopeGroupDto>> ReadEnvelopeGroupDtosAsync(IEnumerable<Guid> envelopeGroupIds)
         {
-            
-
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var count = 0;
+                    var envelopeGroups = new List<EnvelopeGroupDto>();
+
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
                         var command = db.CreateCommand();
 
-                        command.CommandText = @"SELECT COUNT(*)
-                                    FROM   EnvelopeGroup";
+                        command.CommandText = @"SELECT Id,
+                                               Description,
+                                               Notes, 
+                                               CreatedDateTime, 
+                                               ModifiedDateTime, 
+                                               DeletedDateTime,
+                                               HiddenDateTime
+                                        FROM   EnvelopeGroup";
 
-                        object result = command.ExecuteScalar();
-                        result = (result == DBNull.Value) ? null : result;
-                        count = Convert.ToInt32(result, CultureInfo.InvariantCulture);
+                        if (envelopeGroupIds != null)
+                        {
+                            var ids = envelopeGroupIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@Id", ids, SqliteType.Blob);
+                                command.CommandText += $" WHERE Id IN ({parameters})";
+                            }
+                            else
+                            {
+                                return envelopeGroups.AsReadOnly();
+                            }
+                        }
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                envelopeGroups.Add(new EnvelopeGroupDto
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Description = reader["Description"].ToString(),
+                                    Notes = reader["Notes"] == DBNull.Value ? (string)null : reader["Notes"].ToString(),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    Deleted = reader["DeletedDateTime"] != DBNull.Value,
+                                    Hidden = reader["HiddenDateTime"] != DBNull.Value
+                                });
+                            }
+                        }
                     }
 
-                    return count;
+                    return envelopeGroups.AsReadOnly();
+                });
+            }
+        }
+
+        public async Task UpdateEnvelopeGroupDtoAsync(EnvelopeGroupDto envelopeGroup)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"UPDATE EnvelopeGroup
+                                                SET    Description = @Description,
+                                                       Notes = @Notes,
+                                                       ModifiedDateTime = @ModifiedDateTime, 
+                                                       DeletedDateTime = @DeletedDateTime,
+                                                       HiddenDateTime = @HiddenDateTime
+                                                WHERE  Id = @Id ";
+
+                        command.AddParameter("@Id", envelopeGroup.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", envelopeGroup.Description, SqliteType.Text);
+                        command.AddParameter("@Notes", envelopeGroup.Notes, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", envelopeGroup.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", envelopeGroup.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", envelopeGroup.Hidden ? DateTime.Now : null, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task CreateEnvelopeDtoAsync(EnvelopeDto envelope)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"INSERT INTO Envelope 
+                                                            (Id, 
+                                                             Description, 
+                                                             EnvelopeGroupId, 
+                                                             Notes, 
+                                                             IgnoreOverspend,
+                                                             CreatedDateTime, 
+                                                             ModifiedDateTime, 
+                                                             DeletedDateTime,
+                                                             HiddenDateTime) 
+                                                VALUES     (@Id, 
+                                                            @Description, 
+                                                            @EnvelopeGroupId,
+                                                            @Notes, 
+                                                            @IgnoreOverspend,
+                                                            @CreatedDateTime, 
+                                                            @ModifiedDateTime, 
+                                                            @DeletedDateTime,
+                                                            @HiddenDateTime)";
+
+                        command.AddParameter("@Id", envelope.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", envelope.Description, SqliteType.Text);
+                        command.AddParameter("@Notes", envelope.Notes, SqliteType.Text);
+                        command.AddParameter("@EnvelopeGroupId", envelope.EnvelopGroupId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@IgnoreOverspend", envelope.IgnoreOverspend, SqliteType.Integer);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", envelope.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", envelope.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", envelope.Hidden ? DateTime.Now : null, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task<IReadOnlyList<EnvelopeDto>> ReadEnvelopeDtosAsync(IEnumerable<Guid> envelopeIds, IEnumerable<Guid> envelopeGroupIds)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var envelopes = new List<EnvelopeDto>();
+
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
+                                                       Description, 
+                                                       Notes, 
+                                                       IgnoreOverspend,
+                                                       CreatedDateTime, 
+                                                       ModifiedDateTime, 
+                                                       DeletedDateTime,
+                                                       HiddenDateTime,
+                                                       EnvelopeGroupId
+                                                FROM   Envelope
+                                                WHERE  1=1";
+
+                        if (envelopeIds != null)
+                        {
+                            var ids = envelopeIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@Id", ids, SqliteType.Blob);
+                                command.CommandText += $" AND Id IN ({parameters})";
+                            }
+                            else
+                            {
+                                return envelopes.AsReadOnly();
+                            }
+                        }
+
+                        if (envelopeGroupIds != null)
+                        {
+                            var ids = envelopeGroupIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@EnvelopeGroupId", ids, SqliteType.Blob);
+                                command.CommandText += $" AND EnvelopeGroupId IN ({parameters})";
+                            }
+                            else
+                            {
+                                return envelopes.AsReadOnly();
+                            }
+                        }
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                envelopes.Add(new EnvelopeDto
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Description = reader["Description"].ToString(),
+                                    Notes = reader["Notes"] == DBNull.Value ? (string)null : reader["Notes"].ToString(),
+                                    EnvelopGroupId = new Guid(reader["EnvelopeGroupId"] as byte[]),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    Deleted = reader["DeletedDateTime"] != DBNull.Value,
+                                    Hidden = reader["HiddenDateTime"] != DBNull.Value
+                                });
+                            }
+                        }
+                    }
+
+                    return envelopes.AsReadOnly();
+                });
+            }
+        }
+
+        public async Task UpdateEnvelopeDtoAsync(EnvelopeDto envelope)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"UPDATE Envelope 
+                                                SET    Description = @Description,
+                                                       EnvelopeGroupId = @EnvelopeGroupId,
+                                                       Notes = @Notes,
+                                                       IgnoreOverspend = @IgnoreOverspend,
+                                                       CreatedDateTime = @CreatedDateTime, 
+                                                       ModifiedDateTime = @ModifiedDateTime, 
+                                                       DeletedDateTime = @DeletedDateTime,
+                                                       HiddenDateTime = @HiddenDateTime
+                                                WHERE  Id = @Id ";
+
+                        command.AddParameter("@Id", envelope.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Description", envelope.Description, SqliteType.Text);
+                        command.AddParameter("@Notes", envelope.Notes, SqliteType.Text);
+                        command.AddParameter("@EnvelopeGroupId", envelope.EnvelopGroupId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@IgnoreOverspend", envelope.IgnoreOverspend, SqliteType.Integer);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", envelope.ModifiedDateTime, SqliteType.Text);
+                        command.AddParameter("@DeletedDateTime", envelope.Deleted ? DateTime.Now : null, SqliteType.Text);
+                        command.AddParameter("@HiddenDateTime", envelope.Hidden ? DateTime.Now : null, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task CreateBudgetPeriodDtoAsync(BudgetPeriodDto budgetPeriod)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"INSERT INTO BudgetSchedule
+                                                            (Id, 
+                                                             BeginDate,
+                                                             EndDate, 
+                                                             CreatedDateTime, 
+                                                             ModifiedDateTime) 
+                                                VALUES     (@Id, 
+                                                            @BeginDate, 
+                                                            @EndDate, 
+                                                            @CreatedDateTime, 
+                                                            @ModifiedDateTime)";
+
+                        command.AddParameter("@Id", budgetPeriod.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@BeginDate", budgetPeriod.BeginDate, SqliteType.Text);
+                        command.AddParameter("@EndDate", budgetPeriod.EndDate, SqliteType.Text);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", budgetPeriod.ModifiedDateTime, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task<IReadOnlyList<BudgetPeriodDto>> ReadBudgetPeriodDtosAsync(IEnumerable<Guid> budgetPeriodIds = null)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var budgetPeriods = new List<BudgetPeriodDto>();
+
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id,
+                                                       BeginDate, 
+                                                       EndDate,
+                                                       CreatedDateTime,
+                                                       ModifiedDateTime
+                                                FROM   BudgetSchedule";
+
+                        if (budgetPeriodIds != null)
+                        {
+                            var ids = budgetPeriodIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@Id", ids, SqliteType.Blob);
+                                command.CommandText += $" WHERE Id IN ({parameters})";
+                            }
+                            else
+                            {
+                                return budgetPeriods.AsReadOnly();
+                            }
+                        }
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                budgetPeriods.Add(new BudgetPeriodDto
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    BeginDate = Convert.ToDateTime(reader["BeginDate"], CultureInfo.InvariantCulture),
+                                    EndDate = Convert.ToDateTime(reader["EndDate"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture)
+                                });
+                            }
+                        }
+                    }
+
+                    return budgetPeriods.AsReadOnly();
+                });
+            }
+        }
+
+        public async Task UpdateBudgetPeriodDtoAsync(BudgetPeriodDto budgetPeriod)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"UPDATE BudgetSchedule
+                                                SET    BeginDate = @BeginDate, 
+                                                       EndDate = @EndDate,
+                                                       ModifiedDateTime = @ModifiedDateTime
+                                                WHERE  Id = @Id";
+
+                        command.AddParameter("@Id", budgetPeriod.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@BeginDate", budgetPeriod.BeginDate, SqliteType.Text);
+                        command.AddParameter("@EndDate", budgetPeriod.EndDate, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", budgetPeriod.ModifiedDateTime, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task CreateBudgetDtoAsync(BudgetDto budget)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"INSERT INTO Budget
+                                                            (Id, 
+                                                             Amount, 
+                                                             IgnoreOverspend,
+                                                             BudgetScheduleId, 
+                                                             EnvelopeId, 
+                                                             CreatedDateTime, 
+                                                             ModifiedDateTime)  
+                                                VALUES     (@Id, 
+                                                            @Amount,
+                                                            @IgnoreOverspend, 
+                                                            @BudgetScheduleId, 
+                                                            @EnvelopeId, 
+                                                            @CreatedDateTime, 
+                                                            @ModifiedDateTime)";
+
+                        command.AddParameter("@Id", budget.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Amount", budget.Amount, SqliteType.Text);
+                        command.AddParameter("@IgnoreOverspend", budget.IgnoreOverspend, SqliteType.Integer);
+                        command.AddParameter("@BudgetScheduleId", budget.BudgetPeriodId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@EnvelopeId", budget.EnvelopeId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@CreatedDateTime", DateTime.Now, SqliteType.Text);
+                        command.AddParameter("@ModifiedDateTime", budget.ModifiedDateTime, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
+                });
+            }
+        }
+
+        public async Task<IReadOnlyList<BudgetDto>> ReadBudgetDtosAsync(IEnumerable<Guid> budgetIds, IEnumerable<Guid> budgetPeriodIds, IEnumerable<Guid> envelopeIds)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                return await Task.Run(() =>
+                {
+                    var budgets = new List<BudgetDto>();
+
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"SELECT Id, 
+                                                       Amount, 
+                                                       IgnoreOverspend,
+                                                       CreatedDateTime, 
+                                                       ModifiedDateTime, 
+                                                       BudgetScheduleId,
+                                                       EnvelopeId
+                                                FROM   Budget
+                                                WHERE  1=1";
+
+                        if (budgetIds != null)
+                        {
+                            var ids = budgetIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@Id", ids, SqliteType.Blob);
+                                command.CommandText += $" AND Id IN ({parameters})";
+                            }
+                            else
+                            {
+                                return budgets.AsReadOnly();
+                            }
+                        }
+
+                        if (envelopeIds != null)
+                        {
+                            var ids = envelopeIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@EnvelopeId", ids, SqliteType.Blob);
+                                command.CommandText += $" AND EnvelopeId IN ({parameters})";
+                            }
+                            else
+                            {
+                                return budgets.AsReadOnly();
+                            }
+                        }
+
+                        if (budgetPeriodIds != null)
+                        {
+                            var ids = budgetPeriodIds.Select(p => p.ToByteArray()).ToList();
+                            if (ids.Any())
+                            {
+                                var parameters = command.AddParameters("@BudgetPeriodId", ids, SqliteType.Blob);
+                                command.CommandText += $" AND BudgetScheduleId IN ({parameters})";
+                            }
+                            else
+                            {
+                                return budgets.AsReadOnly();
+                            }
+                        }
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                budgets.Add(new BudgetDto
+                                {
+                                    Id = new Guid(reader["Id"] as byte[]),
+                                    Amount = Convert.ToDecimal(reader["Amount"], CultureInfo.InvariantCulture),
+                                    IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
+                                    ModifiedDateTime = Convert.ToDateTime(reader["ModifiedDateTime"], CultureInfo.InvariantCulture),
+                                    BudgetPeriodId = new Guid(reader["BudgetScheduleId"] as byte[]),
+                                    EnvelopeId = new Guid(reader["EnvelopeId"] as byte[])
+                                });
+                            }
+                        }
+                    }
+
+                    return budgets.AsReadOnly();
+                });
+            }
+        }
+
+        public async Task UpdateBudgetDtoAsync(BudgetDto budget)
+        {
+            using (await MultiThreadLock.UseWaitAsync())
+            {
+                await Task.Run(() =>
+                {
+                    using (var db = new SqliteConnection(_connectionString))
+                    {
+                        db.Open();
+                        var command = db.CreateCommand();
+
+                        command.CommandText = @"UPDATE Budget 
+                                                SET    Amount = @Amount, 
+                                                       IgnoreOverspend = @IgnoreOverspend,
+                                                       EnvelopeId = @EnvelopeId, 
+                                                       BudgetScheduleId = @BudgetScheduleId,
+                                                       ModifiedDateTime = @ModifiedDateTime
+                                                WHERE  Id = @Id";
+
+                        command.AddParameter("@Id", budget.Id.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@Amount", budget.Amount, SqliteType.Text);
+                        command.AddParameter("@IgnoreOverspend", budget.IgnoreOverspend, SqliteType.Integer);
+                        command.AddParameter("@BudgetScheduleId", budget.BudgetPeriodId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@EnvelopeId", budget.EnvelopeId.ToByteArray(), SqliteType.Blob);
+                        command.AddParameter("@ModifiedDateTime", budget.ModifiedDateTime, SqliteType.Text);
+
+                        command.ExecuteNonQuery();
+                    }
                 });
             }
         }

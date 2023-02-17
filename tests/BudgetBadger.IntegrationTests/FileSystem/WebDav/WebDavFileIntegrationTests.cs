@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace BudgetBadger.IntegrationTests.FileSystem.WebDav;
 
+[Ignore("No credentials in GitHub")]
 [TestFixture]
 public class WebDavFileIntegrationTests
 {

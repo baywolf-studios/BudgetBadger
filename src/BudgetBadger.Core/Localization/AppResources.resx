@@ -1050,4 +1050,7 @@
   <data name="SslLabel" xml:space="preserve">
     <value>SSL</value>
   </data>
+  <data name="GroupedHiddenPayeeModelDescription" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
 </root>

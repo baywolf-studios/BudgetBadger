@@ -36,5 +36,16 @@ namespace BudgetBadger.UnitTests.TestModels
             HiddenDateTime = DateTime.Now,
             DeletedDateTime = DateTime.Now
         };
+
+        public static readonly Payee AccountPayee = new Payee
+        {
+            Id = Guid.NewGuid(),
+            Description = nameof(AccountPayee),
+            CreatedDateTime = DateTime.Now,
+            ModifiedDateTime = DateTime.Now,
+            HiddenDateTime = DateTime.Now,
+            DeletedDateTime = DateTime.Now,
+            IsAccount = true
+        };
     }
 }

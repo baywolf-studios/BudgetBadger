@@ -26,5 +26,7 @@ namespace BudgetBadger.Forms.Enums
         public const string LicenseName = "licenseName";
         public const string LicenseText = "licenseText";
         public const string PageName = "pageName";
+
+        public const string PayeeEditModel = "payeeEditModel";
     }
 }

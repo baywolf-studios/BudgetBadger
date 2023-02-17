@@ -9,7 +9,6 @@ namespace BudgetBadger.Core.Logic
     public interface IAccountLogic
     {
         Task<Result<Account>> SaveAccountAsync(Account account);
-        Task<Result<int>> GetAccountsCountAsync();
         Task<Result<Account>> GetAccountAsync(Guid id);
         Task<Result<IReadOnlyList<Account>>> GetAccountsAsync();
         Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync();

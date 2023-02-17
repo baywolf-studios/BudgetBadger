@@ -10,7 +10,7 @@ using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
 
-namespace BudgetBadger.Forms.Payees
+namespace BudgetBadger.Forms.Envelopes
 {
     public class EnvelopeGroupEditPageViewModel : ObservableBase, INavigationAware, IInitialize
     {

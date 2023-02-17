@@ -15,7 +15,7 @@
     <Folder Include="Localization\" />
     <Folder Include="Models\Interfaces\" />
     <Folder Include="Models\Recurrence\" />
-    <Folder Include="Converters\" />
+    <Folder Include="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Authentication\" />
@@ -24,7 +24,7 @@
     <None Remove="Localization\" />
     <None Remove="Models\Interfaces\" />
     <None Remove="Models\Recurrence\" />
-    <None Remove="Converters\" />
+    <None Remove="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="Localization\AppResources.resx">

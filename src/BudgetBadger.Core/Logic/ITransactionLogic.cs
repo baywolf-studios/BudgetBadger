@@ -9,7 +9,6 @@ namespace BudgetBadger.Core.Logic
     public interface ITransactionLogic
     {
         Task<Result<Transaction>> SaveTransactionAsync(Transaction transaction);
-        Task<Result<int>> GetTransactionsCountAsync();
         Task<Result<Transaction>> GetTransactionAsync(Guid transactionId);
         Task<Result<IReadOnlyList<Transaction>>> GetTransactionsAsync();
         Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(Account account);

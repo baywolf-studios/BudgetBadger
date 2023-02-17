@@ -54,10 +54,6 @@ namespace BudgetBadger.Core.Utilities
             {
                 payee.Group = resourceContainer.GetResourceString("PayeeTransferGroup");
             }
-            else if (payee.IsHidden)
-            {
-                payee.Group = resourceContainer.GetResourceString("Hidden");
-            }
             else
             {
                 payee.Group = payee.Description[0].ToString().ToUpper();

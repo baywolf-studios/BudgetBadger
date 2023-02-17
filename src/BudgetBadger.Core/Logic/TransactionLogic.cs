@@ -115,25 +115,6 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<int>> GetTransactionsCountAsync()
-        {
-            var result = new Result<int>();
-
-            try
-            {
-                var count = await _dataAccess.GetTransactionsCountAsync();
-                result.Success = true;
-                result.Data = count;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
         public async Task<Result<Transaction>> GetTransactionAsync(Guid id)
         {
             var result = new Result<Transaction>();
