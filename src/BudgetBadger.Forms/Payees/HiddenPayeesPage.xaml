@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Payees.HiddenPayeesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -17,10 +17,9 @@
     </p:BasePage.Header>
     <p:BasePage.Body>
         <uc:EmptyState
-            Title="{ext:Translate EmptyPayeeHelperTitle}"
+            Title="{ext:Translate EmptyHiddenPayeesHelperTitle}"
             Icon="{ext:DynamicResource PayeeIcon}"
-            ShowHelper="{Binding NoPayees}"
-            Subtitle="{ext:Translate EmptyAccountHelperSubtitle}">
+            ShowHelper="{Binding NoPayees}">
             <uc:ResponsiveGrid x:Name="responsiveGrid" RowSpacing="0">
                 <uc:ListView2
                     Grid.ColumnSpan="12"
