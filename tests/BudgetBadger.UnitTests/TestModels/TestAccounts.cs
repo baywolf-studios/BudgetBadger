@@ -5,12 +5,12 @@ namespace BudgetBadger.UnitTests.TestModels
 {
     public static class TestAccounts
     {
-        public static readonly Account NewAccount = new Account
+        public static readonly AccountModel NewAccount = new AccountModel
         {
             Description = nameof(NewAccount)
         };
 
-        public static readonly Account ActiveAccount = new Account
+        public static readonly AccountModel ActiveAccount = new AccountModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(ActiveAccount),
@@ -18,7 +18,7 @@ namespace BudgetBadger.UnitTests.TestModels
             ModifiedDateTime = DateTime.Now
         };
 
-        public static readonly Account HiddenAccount = new Account
+        public static readonly AccountModel HiddenAccount = new AccountModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(HiddenAccount),
@@ -27,7 +27,7 @@ namespace BudgetBadger.UnitTests.TestModels
             HiddenDateTime = DateTime.Now
         };
 
-        public static readonly Account SoftDeletedAccount = new Account
+        public static readonly AccountModel SoftDeletedAccount = new AccountModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(SoftDeletedAccount),

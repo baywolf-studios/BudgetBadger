@@ -4,14 +4,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
+using BudgetBadger.Logic.Models;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
-using BudgetBadger.Core.Models;
 
 namespace BudgetBadger.Forms.Payees
 {
@@ -24,7 +26,6 @@ namespace BudgetBadger.Forms.Payees
         readonly IEventAggregator _eventAggregator;
 
         public ICommand SelectedCommand { get; set; }
-        public ICommand ViewHiddenCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand RefreshPayeeCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -32,7 +33,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand AddTransactionCommand { get; set; }
-        public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((Payee)payee, SearchText); }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.Value.FilterPayee((PayeeModel)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -41,25 +42,18 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        Payee _selectedPayee;
-        public Payee SelectedPayee
+        PayeeModel _selectedPayee;
+        public PayeeModel SelectedPayee
         {
             get => _selectedPayee;
             set => SetProperty(ref _selectedPayee, value);
-        }
-
-        bool _hasHiddenPayees;
-        public bool HasHiddenPayees
-        {
-            get => _hasHiddenPayees;
-            set => SetProperty(ref _hasHiddenPayees, value);
         }
 
         public bool HasSearchText { get => !string.IsNullOrWhiteSpace(SearchText); }
@@ -92,23 +86,22 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Payees = new ObservableList<Payee>();
+            Payees = new ObservableList<PayeeModel>();
             SelectedPayee = null;
 
-            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
-            ViewHiddenCommand = new Command(async () => await ExecuteViewHiddenCommand());
+            SelectedCommand = new Command<PayeeModel>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new Command(async () => await FullRefresh());
-            SaveCommand = new Command<Payee>(async p => await ExecuteSaveCommand(p));
+            SaveCommand = new Command<PayeeModel>(async p => await ExecuteSaveCommand(p));
             SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
             AddCommand = new Command(async () => await ExecuteAddCommand());
-            EditCommand = new Command<Payee>(async a => await ExecuteEditCommand(a));
+            EditCommand = new Command<PayeeModel>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
-            RefreshPayeeCommand = new Command<Payee>(async p => await RefreshPayee(p));
+            RefreshPayeeCommand = new Command<PayeeModel>(RefreshPayee);
 
-            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(async p => await RefreshPayee(p));
-            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(async p => await RefreshPayee(p));
-            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(async p => await RefreshPayee(p));
-            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(async p => await RefreshPayee(p));
+            _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeDeletedEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeHiddenEvent>().Subscribe(RefreshPayee);
+            _eventAggregator.GetEvent<PayeeUnhiddenEvent>().Subscribe(RefreshPayee);
             _eventAggregator.GetEvent<TransactionSavedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
             _eventAggregator.GetEvent<TransactionDeletedEvent>().Subscribe(async t => await RefreshPayeeFromTransaction(t));
         }
@@ -135,27 +128,29 @@ namespace BudgetBadger.Forms.Payees
         {
         }
 
-        public async Task ExecuteSelectedCommand(Payee payee)
+        public async Task ExecuteSelectedCommand(PayeeModel payee)
         {
             if (payee == null)
             {
                 return;
             }
 
-            var parameters = new NavigationParameters
+            if (payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
+                await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
+            }
+            else
+            {
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
 
-            await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+                await _navigationService.NavigateAsync(PageName.PayeeInfoPage, parameters);
+            }
         }
 
-        public async Task ExecuteViewHiddenCommand()
-        {
-            await _navigationService.NavigateAsync(PageName.HiddenPayeesPage);
-        }
-
-        public async Task ExecuteSaveCommand(Payee payee)
+        public async Task ExecuteSaveCommand(PayeeModel payee)
         {
             var result = await _payeeLogic.Value.SavePayeeAsync(payee);
 
@@ -171,7 +166,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveSearchCommand()
         {
-            var newPayee = new Payee
+            var newPayee = new PayeeModel
             {
                 Description = SearchText
             };
@@ -195,13 +190,16 @@ namespace BudgetBadger.Forms.Payees
             SelectedPayee = null;
         }
 
-        public async Task ExecuteEditCommand(Payee payee)
+        public async Task ExecuteEditCommand(PayeeModel payee)
         {
-            var parameters = new NavigationParameters
+            if (!payee.IsGenericHiddenPayee)
             {
-                { PageParameter.Payee, payee }
-            };
-            await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.Payee, payee }
+                };
+                await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
+            }
         }
 
         public async Task ExecuteAddTransactionCommand()
@@ -231,7 +229,7 @@ namespace BudgetBadger.Forms.Payees
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
 
-                await RefreshSummary();
+                RefreshSummary();
             }
             finally
             {
@@ -239,32 +237,22 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public async Task RefreshSummary()
+        public void RefreshSummary()
         {
             NoPayees = (Payees?.Count ?? 0) == 0;
-
-            var hiddenResult = await _payeeLogic.Value.GetHiddenPayeesCountAsync();
-            if (hiddenResult.Success)
-            {
-                HasHiddenPayees = hiddenResult.Data > 0;
-            }
-            else
-            {
-                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), hiddenResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
-            }
         }
 
-        public async Task RefreshPayee(Payee payee)
+        public void RefreshPayee(PayeeModel payee)
         {
             var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
-            if (payee != null && _payeeLogic.Value.FilterPayee(payee, FilterType.Standard))
+            if (payee != null && _payeeLogic.Value.FilterPayee(payee, FilterType.Editable))
             {
                 payees.Add(payee);
             }
 
             Payees.ReplaceRange(payees);
-            await RefreshSummary();
+            RefreshSummary();
         }
 
         public async Task RefreshPayeeFromTransaction(Transaction transaction)
@@ -274,7 +262,7 @@ namespace BudgetBadger.Forms.Payees
                 var updatedPayeeResult = await _payeeLogic.Value.GetPayeeAsync(transaction.Payee.Id);
                 if (updatedPayeeResult.Success)
                 {
-                    await RefreshPayee(updatedPayeeResult.Data);
+                    RefreshPayee(updatedPayeeResult.Data);
                 }
             }
         }

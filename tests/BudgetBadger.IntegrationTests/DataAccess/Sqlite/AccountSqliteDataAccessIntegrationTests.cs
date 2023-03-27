@@ -1,5 +1,5 @@
 ﻿using System;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.DataAccess.Sqlite;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -34,7 +34,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public void CreateAccount_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto() with { Description = null };
+            var testAccount = TestGen.AccountDto() with { Description = null };
 
             // act and assert
             Assert.ThrowsAsync<SqliteException>(() => sqliteDataAccess.CreateAccountDtoAsync(testAccount));
@@ -44,7 +44,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateAccount_ValidRequest_CreatesAccountDto()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
 
             // act
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
@@ -58,7 +58,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateAccount_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
 
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
 
@@ -72,13 +72,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateAccount_ValidRequest_UpdatesAccountDto()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
 
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
 
             var updatedAccount = testAccount with
             {
-                Description = TestDataGenerator.RandomName(),
+                Description = TestGen.RndString(),
                 ModifiedDateTime = DateTime.Now,
                 Deleted = false,
                 Hidden = false
@@ -97,9 +97,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadAccounts_NullAccountIds_ReturnsAll()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
-            var testAccount2 = TestDataGenerator.AccountDto();
+            var testAccount2 = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount2);
 
             // act
@@ -114,9 +114,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadAccounts_EmptyAccountIds_ReturnsNone()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
-            var testAccount2 = TestDataGenerator.AccountDto();
+            var testAccount2 = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount2);
 
             // act
@@ -130,11 +130,11 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadAccounts_AccountIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
-            var testAccount2 = TestDataGenerator.AccountDto();
+            var testAccount2 = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount2);
-            var testAccount3 = TestDataGenerator.AccountDto();
+            var testAccount3 = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount3);
 
             // act
@@ -150,9 +150,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadAccounts_NonExistentAccountIds_ReturnsNoAccounts()
         {
             // assemble
-            var testAccount = TestDataGenerator.AccountDto();
+            var testAccount = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount);
-            var testAccount2 = TestDataGenerator.AccountDto();
+            var testAccount2 = TestGen.AccountDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testAccount2);
 
             // act

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using BudgetBadger.Core.Dtos;
+using BudgetBadger.DataAccess.Dtos;
 using BudgetBadger.Core.Models;
 
-namespace BudgetBadger.Core.DataAccess
+namespace BudgetBadger.DataAccess
 {
 	public interface IDataAccess
 	{
 		Task Init();
 
-		Task CreateAccountAsync(Account account);
-        Task<Account> ReadAccountAsync(Guid id);
-		Task<IReadOnlyList<Account>> ReadAccountsAsync();
-        Task UpdateAccountAsync(Account account);
+		Task CreateAccountAsync(AccountModel account);
+        Task<AccountModel> ReadAccountAsync(Guid id);
+		Task<IReadOnlyList<AccountModel>> ReadAccountsAsync();
+        Task UpdateAccountAsync(AccountModel account);
 
         Task CreateEnvelopeAsync(Envelope envelope);
 		Task<Envelope> ReadEnvelopeAsync(Guid id);
@@ -29,20 +28,20 @@ namespace BudgetBadger.Core.DataAccess
 		Task<Budget> ReadBudgetFromScheduleAndEnvelopeAsync(Guid scheduleId, Guid envelopeId);
 		Task UpdateBudgetAsync(Budget budget);
 
-		Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
-		Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id);
-		Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync();
-		Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup);
+		Task CreateEnvelopeGroupAsync(EnvelopeGroupModel envelopeGroup);
+		Task<EnvelopeGroupModel> ReadEnvelopeGroupAsync(Guid id);
+		Task<IReadOnlyList<EnvelopeGroupModel>> ReadEnvelopeGroupsAsync();
+		Task UpdateEnvelopeGroupAsync(EnvelopeGroupModel envelopeGroup);
 
 		Task CreateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
 		Task<BudgetSchedule> ReadBudgetScheduleAsync(Guid id);
 		Task<IReadOnlyList<BudgetSchedule>> ReadBudgetSchedulesAsync();
 		Task UpdateBudgetScheduleAsync(BudgetSchedule budgetSchedule);
 		
-		Task CreatePayeeAsync(Payee payee);
-        Task<Payee> ReadPayeeAsync(Guid id);
-		Task<IReadOnlyList<Payee>> ReadPayeesAsync();
-        Task UpdatePayeeAsync(Payee payee);
+		Task CreatePayeeAsync(PayeeModel payee);
+        Task<PayeeModel> ReadPayeeAsync(Guid id);
+		Task<IReadOnlyList<PayeeModel>> ReadPayeesAsync();
+        Task UpdatePayeeAsync(PayeeModel payee);
 
         Task CreateTransactionAsync(Transaction transaction);
         Task<Transaction> ReadTransactionAsync(Guid id);

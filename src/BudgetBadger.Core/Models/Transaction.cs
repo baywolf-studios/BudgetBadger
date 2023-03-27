@@ -111,15 +111,15 @@ namespace BudgetBadger.Core.Models
             }
         }
 
-        Account account;
-        public Account Account
+        AccountModel account;
+        public AccountModel Account
         {
             get => account;
             set => SetProperty(ref account, value);
         }
 
-        Payee payee;
-        public Payee Payee
+        PayeeModel payee;
+        public PayeeModel Payee
         {
             get => payee;
             set { SetProperty(ref payee, value); RaisePropertyChanged(nameof(IsTransfer)); }
@@ -196,8 +196,8 @@ namespace BudgetBadger.Core.Models
         {
             Id = Guid.Empty;
             ServiceDate = DateTime.Now;
-            Account = new Account();
-            Payee = new Payee();
+            Account = new AccountModel();
+            Payee = new PayeeModel();
             Envelope = new Envelope();
         }
 

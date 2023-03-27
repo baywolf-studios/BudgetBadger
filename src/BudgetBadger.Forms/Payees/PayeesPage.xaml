@@ -45,8 +45,7 @@
                     IsHeaderSticky="True"
                     IsPullToRefreshEnabled="True"
                     IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}"
-                    Footer="{Binding .}">
+                    RefreshCommand="{Binding RefreshCommand}">
                     <uc:ListView2.SortComparer>
                         <comparers:PayeeComparer/>
                     </uc:ListView2.SortComparer>
@@ -88,7 +87,7 @@
                         </DataTemplate>
                     </uc:ListView2.GroupHeaderTemplate>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate x:DataType="models:Payee">
+                        <DataTemplate x:DataType="models:PayeeModel">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
@@ -103,23 +102,9 @@
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:ListView2.ItemTemplate>
-                    <uc:ListView2.FooterTemplate>
-                        <DataTemplate x:DataType="payees:PayeesPageViewModel">
-                            <StackLayout
-                                Orientation="Vertical"
-                                Spacing="0"
-                                CompressedLayout.IsHeadless="true">
-                                <uc:SingleLineListSubheader
-                                    Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
-                                    ShowSeperator="False"
-                                    Text="{ext:Translate Hidden}"
-                                    Command="{Binding ViewHiddenCommand}"
-                                    IsVisible="{Binding HasHiddenPayees}">
-                                </uc:SingleLineListSubheader>
-                                <BoxView BackgroundColor="{ext:DynamicResource gray_50}" HeightRequest="{ext:DynamicResource size_600}"/>
-                            </StackLayout>
-                        </DataTemplate>
-                    </uc:ListView2.FooterTemplate>
+                    <uc:ListView2.Footer>
+                        <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
+                    </uc:ListView2.Footer>
                 </uc:ListView2>
                 <uc:Button2
                     x:Name="NewTransactionButton"

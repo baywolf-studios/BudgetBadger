@@ -2,9 +2,11 @@
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
@@ -34,8 +36,8 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _busyText, value);
         }
 
-        Payee _payee;
-        public Payee Payee
+        PayeeModel _payee;
+        public PayeeModel Payee
         {
             get => _payee;
             set => SetProperty(ref _payee, value);
@@ -59,7 +61,7 @@ namespace BudgetBadger.Forms.Payees
             _payeeLogic = payeeLogic;
             _eventAggregator = eventAggregator;
 
-            Payee = new Payee();
+            Payee = new PayeeModel();
 
             SaveCommand = new Command(async () => await ExecuteSaveCommand());
             SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
@@ -69,7 +71,7 @@ namespace BudgetBadger.Forms.Payees
 
         public void Initialize(INavigationParameters parameters)
         {
-            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+            var payee = parameters.GetValue<PayeeModel>(PageParameter.Payee);
             if (payee != null)
             {
                 Payee = payee.DeepCopy();
@@ -105,7 +107,7 @@ namespace BudgetBadger.Forms.Payees
                 if (result.Success)
                 {
                     _eventAggregator.GetEvent<PayeeSavedEvent>().Publish(result.Data);
-          
+
                     await _navigationService.GoBackAsync();
                 }
                 else
@@ -121,7 +123,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSoftDeleteCommand()
         {
-			if (IsBusy)
+            if (IsBusy)
             {
                 return;
             }

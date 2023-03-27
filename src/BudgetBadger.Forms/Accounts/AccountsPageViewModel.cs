@@ -11,6 +11,8 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -30,7 +32,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand AddTransactionCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ReconcileCommand { get; set; }
-        public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((Account)ac, SearchText); }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.Value.FilterAccount((AccountModel)ac, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -39,15 +41,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        ObservableList<AccountModel> _accounts;
+        public ObservableList<AccountModel> Accounts
         {
             get => _accounts;
-            set => SetProperty(ref _accounts, value); 
+            set => SetProperty(ref _accounts, value);
         }
 
-        Account _selectedAccount;
-        public Account SelectedAccount
+        AccountModel _selectedAccount;
+        public AccountModel SelectedAccount
         {
             get => _selectedAccount;
             set => SetProperty(ref _selectedAccount, value);
@@ -75,7 +77,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public AccountsPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                      INavigationService navigationService,
-		                             IPageDialogService dialogService,
+                                     IPageDialogService dialogService,
                                      Lazy<IAccountLogic> accountLogic,
                                      IEventAggregator eventAggregator)
         {
@@ -85,17 +87,17 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Accounts = new ObservableList<Account>();
+            Accounts = new ObservableList<AccountModel>();
             SelectedAccount = null;
 
-            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            SelectedCommand = new Command<AccountModel>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new Command(async () => await FullRefresh());
             AddCommand = new Command(async () => await ExecuteAddCommand());
-            EditCommand = new Command<Account>(async a => await ExecuteEditCommand(a));
+            EditCommand = new Command<AccountModel>(async a => await ExecuteEditCommand(a));
             AddTransactionCommand = new Command(async () => await ExecuteAddTransactionCommand());
-            SaveCommand = new Command<Account>(async a => await ExecuteSaveCommand(a));
-            ReconcileCommand = new Command<Account>(async a => await ExecuteReconcileCommand(a));
-            RefreshAccountCommand = new Command<Account>(RefreshAccount);
+            SaveCommand = new Command<AccountModel>(async a => await ExecuteSaveCommand(a));
+            ReconcileCommand = new Command<AccountModel>(async a => await ExecuteReconcileCommand(a));
+            RefreshAccountCommand = new Command<AccountModel>(RefreshAccount);
 
             _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
             _eventAggregator.GetEvent<AccountDeletedEvent>().Subscribe(RefreshAccount);
@@ -123,14 +125,11 @@ namespace BudgetBadger.Forms.Accounts
         {
         }
 
-        // this gets hit before the OnActivated
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (!_fullRefresh)
-                RefreshSummary();
         }
 
-        public async Task ExecuteSelectedCommand(Account account)
+        public async Task ExecuteSelectedCommand(AccountModel account)
         {
             if (account == null)
             {
@@ -158,7 +157,7 @@ namespace BudgetBadger.Forms.Accounts
             SelectedAccount = null;
         }
 
-        public async Task ExecuteEditCommand(Account account)
+        public async Task ExecuteEditCommand(AccountModel account)
         {
             if (!account.IsGenericHiddenAccount)
             {
@@ -175,7 +174,7 @@ namespace BudgetBadger.Forms.Accounts
             await _navigationService.NavigateAsync(PageName.TransactionEditPage);
         }
 
-        public async Task ExecuteSaveCommand(Account account)
+        public async Task ExecuteSaveCommand(AccountModel account)
         {
             var result = await _accountLogic.Value.SaveAccountAsync(account);
 
@@ -189,7 +188,7 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public async Task ExecuteReconcileCommand(Account account)
+        public async Task ExecuteReconcileCommand(AccountModel account)
         {
             if (!account.IsGenericHiddenAccount)
             {
@@ -223,7 +222,7 @@ namespace BudgetBadger.Forms.Accounts
                 {
                     await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), result.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
                 }
-                
+
                 RefreshSummary();
             }
             finally
@@ -241,11 +240,11 @@ namespace BudgetBadger.Forms.Accounts
             RaisePropertyChanged(nameof(Debts));
         }
 
-        public void RefreshAccount(Account account)
+        public void RefreshAccount(AccountModel account)
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            if (account != null && _accountLogic.Value.FilterAccount(account, FilterType.Standard))
+            if (account != null && _accountLogic.Value.FilterAccount(account, FilterType.Editable))
             {
                 accounts.Add(account);
             }

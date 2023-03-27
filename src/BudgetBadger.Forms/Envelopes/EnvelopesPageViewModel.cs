@@ -11,6 +11,7 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -26,6 +27,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand PreviousCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand RefreshBudgetCommand { get; set; }
+        public ICommand ViewHiddenCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
@@ -82,6 +84,13 @@ namespace BudgetBadger.Forms.Envelopes
 
         bool _fullRefresh = true;
 
+        bool _hasHiddenBudgets;
+        public bool HasHiddenBudgets
+        {
+            get => _hasHiddenBudgets;
+            set => SetProperty(ref _hasHiddenBudgets, value);
+        }
+
         public EnvelopesPageViewModel(Lazy<IResourceContainer> resourceContainer,
                                       INavigationService navigationService,
                                       Lazy<IEnvelopeLogic> envelopeLogic,
@@ -100,6 +109,7 @@ namespace BudgetBadger.Forms.Envelopes
 
             RefreshCommand = new Command(async () => await FullRefresh());
             RefreshBudgetCommand = new Command<Budget>(async b => await RefreshBudget(b));
+            ViewHiddenCommand = new Command(async () => await ExecuteViewHiddenCommand());
             NextCommand = new Command(async () => await ExecuteNextCommand());
             PreviousCommand = new Command(async () => await ExecutePreviousCommand());
             SelectedCommand = new Command<Budget>(async b => await ExecuteSelectedCommand(b));
@@ -233,18 +243,16 @@ namespace BudgetBadger.Forms.Envelopes
                 return;
             }
 
-            if (budget.Envelope.IsGenericHiddenEnvelope)
+            var parameters = new NavigationParameters
             {
-                await _navigationService.NavigateAsync(PageName.HiddenEnvelopesPage);
-            }
-            else
-            {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Budget, budget }
-                };
-                await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
-            }
+                { PageParameter.Budget, budget }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeInfoPage, parameters);
+        }
+
+        public async Task ExecuteViewHiddenCommand()
+        {
+            await _navigationService.NavigateAsync(PageName.HiddenEnvelopesPage);
         }
 
         public async Task ExecuteAddCommand()
@@ -261,14 +269,11 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteEditCommand(Budget budget)
         {
-            if (!budget.Envelope.IsGenericHiddenEnvelope)
+            var parameters = new NavigationParameters
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Budget, budget }
-                };
-                await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
-            }
+                { PageParameter.Budget, budget }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeEditPage, parameters);
         }
 
         public async Task ExecuteAddTransactionCommand()
@@ -278,15 +283,12 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteTransferCommand(Budget budget)
         {
-            if (!budget.Envelope.IsGenericHiddenEnvelope)
+            var parameters = new NavigationParameters
             {
-                var parameters = new NavigationParameters
-                {
-                    { PageParameter.Envelope, budget.Envelope },
-                    { PageParameter.BudgetSchedule, Schedule }
-                };
-                await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
-            }
+                { PageParameter.Envelope, budget.Envelope },
+                { PageParameter.BudgetSchedule, Schedule }
+            };
+            await _navigationService.NavigateAsync(PageName.EnvelopeTransferPage, parameters);
         }
 
         public async Task ExecuteSaveCommand(Budget budget)
@@ -330,7 +332,17 @@ namespace BudgetBadger.Forms.Envelopes
                 budget.Schedule = Schedule;
             }
 
-            NoEnvelopes = (Budgets?.Count ?? 0) == 0;
+            var hiddenResult = await _envelopeLogic.Value.GetHiddenEnvelopeGroupsAsync();
+            if (hiddenResult.Success)
+            {
+                HasHiddenBudgets = hiddenResult.Data.Count > 0;
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertRefreshUnsuccessful"), hiddenResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
+            }
+
+            NoEnvelopes = (Budgets?.Count ?? 0) == 0 && !HasHiddenBudgets;
 
             RaisePropertyChanged(nameof(Schedule));
             RaisePropertyChanged(nameof(Schedule.Past));
@@ -343,7 +355,7 @@ namespace BudgetBadger.Forms.Envelopes
         {
             var budgets = Budgets.Where(a => a.Envelope.Id != budget.Envelope.Id).ToList();
 
-            if (budget != null && _envelopeLogic.Value.FilterBudget(budget, FilterType.Standard))
+            if (budget != null && _envelopeLogic.Value.FilterBudget(budget, Core.Logic.FilterType.Editable))
             {
                 budgets.Add(budget);
             }

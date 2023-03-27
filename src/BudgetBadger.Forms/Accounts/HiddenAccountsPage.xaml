@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Accounts.HiddenAccountsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
-    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls">
+    xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:accounts="clr-namespace:BudgetBadger.Forms.Accounts"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:Name="this"
+    x:DataType="accounts:HiddenAccountsPageViewModel">
     <p:BasePage.Header>
         <p:ChildSearchHeader
             BackCommand="{Binding BackCommand}"
@@ -40,21 +42,21 @@
                         <comparers:AccountComparer/>
                     </uc:ListView2.SortComparer>
                     <uc:ListView2.GroupHeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="{x:Null}">
                             <uc:ViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}">
-                                <dt:GroupHeaderViewCell />
+                                <uc:SingleLineListSubheader Text="{Binding Key}" />
                             </uc:ViewCell>
                         </DataTemplate>
                     </uc:ListView2.GroupHeaderTemplate>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:AccountModel">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                <dt:AccountViewCell/>
+                                <uc:SingleLineListItem Text="{Binding Description}" RightText="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:ListView2.ItemTemplate>

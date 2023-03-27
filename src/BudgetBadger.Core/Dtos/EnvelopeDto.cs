@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BudgetBadger.Core.Dtos
+namespace BudgetBadger.DataAccess.Dtos
 {
     public record EnvelopeDto
     {

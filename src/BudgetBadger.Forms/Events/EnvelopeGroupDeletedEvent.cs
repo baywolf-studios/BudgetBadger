@@ -4,7 +4,7 @@ using Prism.Events;
 
 namespace BudgetBadger.Forms.Events
 {
-    public class EnvelopeGroupDeletedEvent : PubSubEvent<EnvelopeGroup>
+    public class EnvelopeGroupDeletedEvent : PubSubEvent<EnvelopeGroupModel>
     {
     }
 }

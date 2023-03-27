@@ -12,6 +12,9 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Logic.Converters;
+using BudgetBadger.Logic;
+using BudgetBadger.Forms.Extensions;
 
 namespace BudgetBadger.Forms.Transactions
 {
@@ -54,15 +57,15 @@ namespace BudgetBadger.Forms.Transactions
             set => SetProperty(ref _selectedTransaction, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        ObservableList<AccountModel> _accounts;
+        public ObservableList<AccountModel> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -134,8 +137,8 @@ namespace BudgetBadger.Forms.Transactions
             _eventAggregator = eventAggregator;
 
             Transactions = new ObservableList<Transaction>();
-            Accounts = new ObservableList<Account>();
-            Payees = new ObservableList<Payee>();
+            Accounts = new ObservableList<AccountModel>();
+            Payees = new ObservableList<PayeeModel>();
             Envelopes = new ObservableList<Envelope>();
 
             AddNewCommand = new Command(async () => await ExecuteAddNewCommand());

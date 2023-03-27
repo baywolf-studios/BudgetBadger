@@ -5,12 +5,12 @@ namespace BudgetBadger.UnitTests.TestModels
 {
     public static class TestPayees
     {
-        public static readonly Payee NewPayee = new Payee
+        public static readonly PayeeModel NewPayee = new PayeeModel
         {
             Description = nameof(NewPayee)
         };
 
-        public static readonly Payee ActivePayee = new Payee
+        public static readonly PayeeModel ActivePayee = new PayeeModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(ActivePayee),
@@ -18,7 +18,7 @@ namespace BudgetBadger.UnitTests.TestModels
             ModifiedDateTime = DateTime.Now
         };
 
-        public static readonly Payee HiddenPayee = new Payee
+        public static readonly PayeeModel HiddenPayee = new PayeeModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(HiddenPayee),
@@ -27,7 +27,7 @@ namespace BudgetBadger.UnitTests.TestModels
             HiddenDateTime = DateTime.Now
         };
 
-        public static readonly Payee SoftDeletedPayee = new Payee
+        public static readonly PayeeModel SoftDeletedPayee = new PayeeModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(SoftDeletedPayee),
@@ -37,7 +37,7 @@ namespace BudgetBadger.UnitTests.TestModels
             DeletedDateTime = DateTime.Now
         };
 
-        public static readonly Payee AccountPayee = new Payee
+        public static readonly PayeeModel AccountPayee = new PayeeModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(AccountPayee),

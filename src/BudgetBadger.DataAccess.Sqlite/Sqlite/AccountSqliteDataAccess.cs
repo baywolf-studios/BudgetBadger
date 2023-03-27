@@ -5,15 +5,14 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
-using BudgetBadger.Core.DataAccess;
-using BudgetBadger.Core.Dtos;
+using BudgetBadger.DataAccess.Dtos;
 using System.Linq;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
     public partial class SqliteDataAccess
     {
-        public async Task CreateAccountAsync(Account account)
+        public async Task CreateAccountAsync(AccountModel account)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -58,13 +57,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task<Account> ReadAccountAsync(Guid id)
+        public async Task<AccountModel> ReadAccountAsync(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var account = new Account();
+                    var account = new AccountModel();
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -87,7 +86,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             if (reader.Read())
                             {
-                                account = new Account
+                                account = new AccountModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -108,13 +107,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task<IReadOnlyList<Account>> ReadAccountsAsync()
+        public async Task<IReadOnlyList<AccountModel>> ReadAccountsAsync()
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var accounts = new List<Account>();
+                    var accounts = new List<AccountModel>();
                     using (var db = new SqliteConnection(_connectionString))
                     {
                         db.Open();
@@ -134,7 +133,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             while (reader.Read())
                             {
-                                accounts.Add(new Account
+                                accounts.Add(new AccountModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -155,7 +154,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task UpdateAccountAsync(Account account)
+        public async Task UpdateAccountAsync(AccountModel account)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {

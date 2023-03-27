@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
+using BudgetBadger.Logic.Models;
+using BudgetBadger.DataAccess.Dtos;
+using BudgetBadger.Logic.Converters;
 
 namespace BudgetBadger.Core.Logic
 {
@@ -186,19 +189,10 @@ namespace BudgetBadger.Core.Logic
 
                 var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
 
-                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Standard));
+                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Editable));
                 var tasks = filteredBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
                 var budgetsToReturn = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
-
-                if (budgets.Any(b => FilterBudget(b, FilterType.Hidden)))
-                {
-                    var hiddenBudgets = budgets.Where(b => FilterBudget(b, FilterType.Hidden));
-                    var hiddenTasks = hiddenBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
-                    var populatedHiddenBudgets = (await Task.WhenAll(hiddenTasks).ConfigureAwait(false));
-
-                    budgetsToReturn.Add(GetGenericHiddenBudget(populatedSchedule, populatedHiddenBudgets));
-                }
 
                 budgetsToReturn.RemoveAll(b => b.Envelope.Group.IsDebt && b.Remaining == 0 && b.Amount == 0);
 
@@ -235,7 +229,7 @@ namespace BudgetBadger.Core.Logic
 
                 var populatedSchedule = await GetPopulatedBudgetSchedule(schedule).ConfigureAwait(false);
 
-                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Selection));
+                var filteredBudgets = budgets.Where(b => FilterBudget(b, FilterType.Selectable));
                 var tasks = filteredBudgets.Select(b => GetPopulatedBudget(b, populatedSchedule));
 
                 var budgetsToReturn = (await Task.WhenAll(tasks).ConfigureAwait(false)).ToList();
@@ -593,7 +587,7 @@ namespace BudgetBadger.Core.Logic
                 var tasks = envelopes.Select(GetPopulatedEnvelope);
                 var populatedEnvelopes = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Selection)).ToList();
+                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Selectable)).ToList();
 
                 envelopesToReturn.Add(GetGenericDebtEnvelope());
 
@@ -620,12 +614,7 @@ namespace BudgetBadger.Core.Logic
                 var tasks = envelopes.Select(GetPopulatedEnvelope);
                 var populatedEnvelopes = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Report)).ToList();
-
-                if (envelopes.Any(p => FilterEnvelope(p, FilterType.Hidden)))
-                {
-                    envelopesToReturn.Add(GetGenericHiddenEnvelope());
-                }
+                var envelopesToReturn = populatedEnvelopes.Where(e => FilterEnvelope(e, FilterType.Reportable)).ToList();
 
                 result.Success = true;
                 result.Data = envelopesToReturn;
@@ -681,7 +670,7 @@ namespace BudgetBadger.Core.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteNotHiddenError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeDeleteSystemError"));
                 }
@@ -738,7 +727,7 @@ namespace BudgetBadger.Core.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideInactiveError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeHideSystemError"));
                 }
@@ -783,7 +772,7 @@ namespace BudgetBadger.Core.Logic
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideNotHiddenError"));
                 }
 
-                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+                if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.Group.IsDebt || envelope.IsSystem)
                 {
                     errors.Add(_resourceContainer.GetResourceString("EnvelopeUnhideSystemError"));
                 }
@@ -812,15 +801,15 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<EnvelopeGroup>> SaveEnvelopeGroupAsync(EnvelopeGroup group)
+        public async Task<Result<EnvelopeGroupModel>> SaveEnvelopeGroupAsync(EnvelopeGroupModel group)
         {
             var validationResult = await ValidateEnvelopeGroupAsync(group).ConfigureAwait(false);
             if (!validationResult.Success)
             {
-                return validationResult.ToResult<EnvelopeGroup>();
+                return validationResult.ToResult<EnvelopeGroupModel>();
             }
 
-            var result = new Result<EnvelopeGroup>();
+            var result = new Result<EnvelopeGroupModel>();
             var groupToUpsert = group.DeepCopy();
             var dateTimeNow = DateTime.Now;
 
@@ -846,279 +835,6 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<EnvelopeGroup>> GetEnvelopeGroupAsync(Guid id)
-        {
-            var result = new Result<EnvelopeGroup>();
-
-            try
-            {
-                var envelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
-
-                result.Success = true;
-                result.Data = envelopeGroup;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsAsync()
-        {
-            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
-
-            try
-            {
-                var envelopeGroups = await _dataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Standard)).ToList();
-                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
-
-                if (envelopeGroups.Any(eg => FilterEnvelopeGroup(eg, FilterType.Hidden)))
-                {
-                    filteredEnvelopeGroups.Add(GetGenericHiddenEnvelopeGroup());
-                }
-
-                result.Success = true;
-                result.Data = filteredEnvelopeGroups;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetEnvelopeGroupsForSelectionAsync()
-        {
-            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
-
-            try
-            {
-                var envelopeGroups = await _dataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Selection)).ToList();
-                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
-                result.Success = true;
-                result.Data = filteredEnvelopeGroups;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<EnvelopeGroup>>> GetHiddenEnvelopeGroupsAsync()
-        {
-            var result = new Result<IReadOnlyList<EnvelopeGroup>>();
-
-            try
-            {
-                var envelopeGroups = await _dataAccess.ReadEnvelopeGroupsAsync().ConfigureAwait(false);
-                var filteredEnvelopeGroups = envelopeGroups.Where(e => FilterEnvelopeGroup(e, FilterType.Hidden)).ToList();
-                filteredEnvelopeGroups.ForEach(e => e.TranslateEnvelopeGroup(_resourceContainer));
-                result.Success = true;
-                result.Data = filteredEnvelopeGroups;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<EnvelopeGroup>> SoftDeleteEnvelopeGroupAsync(Guid id)
-        {
-            var result = new Result<EnvelopeGroup>();
-
-            try
-            {
-                var envelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
-
-                // check for validation to delete
-                var errors = new List<string>();
-
-                if (envelopeGroup.IsNew || envelopeGroup.IsDeleted || envelopeGroup.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteNotHiddenError"));
-                }
-
-                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteSystemError"));
-                }
-
-                var envelopes = await _dataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var envelopeGroupEnvelopes = envelopes.Where(e => e.Group.Id == id);
-
-                if (envelopeGroupEnvelopes.Any(t => t.IsActive))
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupDeleteActiveEnvelopesError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                envelopeGroup.DeletedDateTime = DateTime.Now;
-                envelopeGroup.ModifiedDateTime = DateTime.Now;
-
-                await _dataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
-
-                result.Success = true;
-                result.Data = envelopeGroup;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<EnvelopeGroup>> HideEnvelopeGroupAsync(Guid id)
-        {
-            var result = new Result<EnvelopeGroup>();
-
-            try
-            {
-                var envelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
-
-                // check for validation to Hide
-                var errors = new List<string>();
-
-                if (!envelopeGroup.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideInactiveError"));
-                }
-
-                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideSystemError"));
-                }
-
-                var envelopes = await _dataAccess.ReadEnvelopesAsync().ConfigureAwait(false);
-                var envelopeGroupEnvelopes = envelopes.Where(e => e.Group.Id == id);
-
-                if (envelopeGroupEnvelopes.Any(t => t.IsActive))
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupHideActiveEnvelopesError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                envelopeGroup.HiddenDateTime = DateTime.Now;
-                envelopeGroup.ModifiedDateTime = DateTime.Now;
-
-                await _dataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
-
-                result.Success = true;
-                result.Data = envelopeGroup;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<EnvelopeGroup>> UnhideEnvelopeGroupAsync(Guid id)
-        {
-            var result = new Result<EnvelopeGroup>();
-
-            try
-            {
-                var envelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(id).ConfigureAwait(false);
-
-                // check for validation to delete
-                var errors = new List<string>();
-
-                if (envelopeGroup.IsNew || envelopeGroup.IsActive || envelopeGroup.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideNotHiddenError"));
-                }
-
-                if (envelopeGroup.IsIncome || envelopeGroup.IsDebt || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupUnhideSystemError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                envelopeGroup.HiddenDateTime = null;
-                envelopeGroup.ModifiedDateTime = DateTime.Now;
-
-                await _dataAccess.UpdateEnvelopeGroupAsync(envelopeGroup);
-
-                result.Success = true;
-                result.Data = envelopeGroup;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return true;
-            }
-            if (envelopeGroup != null)
-            {
-                return envelopeGroup.Description.ToLower().Contains(searchText.ToLower());
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool FilterEnvelopeGroup(EnvelopeGroup envelopeGroup, FilterType filterType)
-        {
-            switch (filterType)
-            {
-                case FilterType.Standard:
-                    return envelopeGroup.IsActive && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt;
-                case FilterType.Report:
-                case FilterType.Selection:
-                    return envelopeGroup.IsActive && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt;
-                case FilterType.Hidden:
-                    return envelopeGroup.IsHidden && !envelopeGroup.IsDeleted && !envelopeGroup.IsSystem && !envelopeGroup.IsIncome && !envelopeGroup.IsDebt && !envelopeGroup.IsGenericHiddenEnvelopeGroup;
-                case FilterType.All:
-                default:
-                    return true;
-            }
-        }
-
         public bool FilterEnvelope(Envelope envelope, string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -1140,14 +856,14 @@ namespace BudgetBadger.Core.Logic
         {
             switch (filterType)
             {
-                case FilterType.Standard:
-                case FilterType.Report:
+                case FilterType.Editable:
+                case FilterType.Reportable:
                     return envelope.IsActive
                         && !envelope.IsSystem
                         && !envelope.IsGenericDebtEnvelope
                         && !envelope.Group.IsIncome
                         && !envelope.Group.IsSystem;
-                case FilterType.Selection:
+                case FilterType.Selectable:
                     return envelope.IsActive
                         && !envelope.IsSystem
                         && envelope.IsActive
@@ -1158,7 +874,7 @@ namespace BudgetBadger.Core.Logic
                     !envelope.Group.IsSystem &&
                     envelope.IsHidden &&
                     !envelope.IsDeleted;
-                case FilterType.All:
+                case FilterType.None:
                 default:
                     return true;
             }
@@ -1234,10 +950,6 @@ namespace BudgetBadger.Core.Logic
             {
                 envelope = GetGenericDebtEnvelope();
             }
-            else if (envelope.IsGenericHiddenEnvelope)
-            {
-                envelope = GetGenericHiddenEnvelope();
-            }
             else if (envelope.Group.IsDebt)
             {
                 envelope.Group = GetDebtEnvelopeGroup();
@@ -1249,7 +961,7 @@ namespace BudgetBadger.Core.Logic
         }
 
         protected BudgetSchedule PopulateBudgetSchedule(BudgetSchedule budgetSchedule,
-                                                       IEnumerable<Account> allAccounts,
+                                                       IEnumerable<AccountModel> allAccounts,
                                                        IEnumerable<Transaction> allTransactions,
                                                        IEnumerable<Envelope> envelopes,
                                                        IEnumerable<Budget> budgets)
@@ -1409,7 +1121,7 @@ namespace BudgetBadger.Core.Logic
         {
             var errors = new List<string>();
 
-            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.IsSystem || envelope.IsGenericHiddenEnvelope)
+            if (envelope.IsIncome || envelope.IsBuffer || envelope.Group.IsIncome || envelope.IsGenericDebtEnvelope || envelope.IsSystem)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeSaveSystemError"));
             }
@@ -1435,11 +1147,11 @@ namespace BudgetBadger.Core.Logic
             return new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) };
         }
 
-        Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        Task<Result> ValidateEnvelopeGroupAsync(EnvelopeGroupModel envelopeGroup)
         {
             var errors = new List<string>();
 
-            if (envelopeGroup.IsIncome || envelopeGroup.IsSystem || envelopeGroup.IsGenericHiddenEnvelopeGroup)
+            if (envelopeGroup.IsIncome || envelopeGroup.IsSystem)
             {
                 errors.Add(_resourceContainer.GetResourceString("EnvelopeGroupSaveSystemError"));
             }
@@ -1601,7 +1313,7 @@ namespace BudgetBadger.Core.Logic
             return currentSchedule.BeginDate.AddDays(-1);
         }
 
-        EnvelopeGroup GetDebtEnvelopeGroup()
+        EnvelopeGroupModel GetDebtEnvelopeGroup()
         {
             var debtEnvelopeGroup = Constants.DebtEnvelopeGroup.DeepCopy();
             debtEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
@@ -1635,7 +1347,7 @@ namespace BudgetBadger.Core.Logic
             return debtBudget;
         }
 
-        EnvelopeGroup GetIncomeEnvelopeGroup()
+        EnvelopeGroupModel GetIncomeEnvelopeGroup()
         {
             var incomeEnvelopeGroup = Constants.IncomeEnvelopeGroup.DeepCopy();
 
@@ -1660,7 +1372,7 @@ namespace BudgetBadger.Core.Logic
             return bufferEnvelope;
         }
 
-        EnvelopeGroup GetSystemEnvelopeGroup()
+        EnvelopeGroupModel GetSystemEnvelopeGroup()
         {
             var systemEnvelopeGroup = Constants.SystemEnvelopeGroup.DeepCopy();
             systemEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
@@ -1676,36 +1388,222 @@ namespace BudgetBadger.Core.Logic
             return ignoredEnvelope;
         }
 
-        EnvelopeGroup GetGenericHiddenEnvelopeGroup()
+        public async Task<ItemsResponse<EnvelopeGroup>> SearchEnvelopeGroupsAsync(bool? hidden = null,
+            bool? isSystem = null,
+            bool? isIncome = null,
+            bool? isDebt = null)
         {
-            var genericHiddenEnvelopeGroup = Constants.GenericHiddenEnvelopeGroup.DeepCopy();
-            genericHiddenEnvelopeGroup.TranslateEnvelopeGroup(_resourceContainer);
-            return genericHiddenEnvelopeGroup;
-        }
-
-        Envelope GetGenericHiddenEnvelope()
-        {
-            var genericHiddenEnvelope = Constants.GenericHiddenEnvelope.DeepCopy();
-            genericHiddenEnvelope.Group = GetGenericHiddenEnvelopeGroup();
-            genericHiddenEnvelope.TranslateEnvelope(_resourceContainer);
-            return genericHiddenEnvelope;
-        }
-
-        Budget GetGenericHiddenBudget(BudgetSchedule schedule, IEnumerable<Budget> hiddenBudgets = null)
-        {
-            var hiddenGenericBudget = new Budget();
-            hiddenGenericBudget.Envelope = GetGenericHiddenEnvelope();
-            hiddenGenericBudget.Schedule = schedule;
-
-            if (hiddenBudgets != null)
+            try
             {
-                hiddenGenericBudget.PastAmount = hiddenBudgets.Sum(b => b.PastAmount);
-                hiddenGenericBudget.PastActivity = hiddenBudgets.Sum(b => b.PastActivity);
-                hiddenGenericBudget.Activity = hiddenBudgets.Sum(b => b.Activity);
-                hiddenGenericBudget.Amount = hiddenBudgets.Sum(b => b.Amount);
+                // get all non-deleted envelopeGroupDtos
+                IEnumerable<EnvelopeGroupDto> envelopeGroupDtos = await _dataAccess.ReadEnvelopeGroupDtosAsync().ConfigureAwait(false);
+                envelopeGroupDtos = envelopeGroupDtos.Where(p => !p.Deleted).ToList().AsParallel();
+
+                if (hidden == true)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Hidden);
+                }
+                else if (hidden == false)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => !p.Hidden);
+                }
+
+                if (isSystem == true)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id == Constants.SystemEnvelopeGroupId);
+                }
+                else if (isSystem == false)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id != Constants.SystemEnvelopeGroupId);
+                }
+
+                if (isIncome == true)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id == Constants.IncomeEnvelopeGroupId);
+                }
+                else if (isIncome == false)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id != Constants.IncomeEnvelopeGroupId);
+                }
+
+                if (isDebt == true)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id == Constants.DebtEnvelopeGroupId);
+                }
+                else if (isDebt == false)
+                {
+                    envelopeGroupDtos = envelopeGroupDtos.Where(p => p.Id != Constants.DebtEnvelopeGroupId);
+                }
+
+                var accounts = envelopeGroupDtos
+                    .Select(p => EnvelopeGroupConverter.Convert(p))
+                    .ToList();
+
+                return ItemsResponse.OK(accounts, accounts.Count);
+            }
+            catch (Exception ex)
+            {
+                return ItemsResponse.InternalError<EnvelopeGroup>(ex.Message);
+            }
+        }
+
+        public async Task<DataResponse<EnvelopeGroupId>> CreateEnvelopeGroupAsync(string description, string notes, bool hidden)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(description))
+                {
+                    return DataResponse.BadRequest<EnvelopeGroupId>(AppResources.EnvelopeGroupValidDescriptionError);
+                }
+
+                var envelopeGroupId = new EnvelopeGroupId();
+                var envelopeGroupDto = new EnvelopeGroupDto()
+                {
+                    Id = envelopeGroupId,
+                    Description = description,
+                    Notes = string.IsNullOrWhiteSpace(notes) ? null : notes,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = DateTime.Now
+                };
+
+                await _dataAccess.CreateEnvelopeGroupDtoAsync(envelopeGroupDto).ConfigureAwait(false); ;
+
+                return DataResponse.OK(envelopeGroupId);
+            }
+            catch (Exception ex)
+            {
+                return DataResponse.InternalError<EnvelopeGroupId>(ex.Message);
+            }
+        }
+
+        public async Task<DataResponse<EnvelopeGroup>> ReadEnvelopeGroupAsync(EnvelopeGroupId envelopeGroupId)
+        {
+            var envelopeGroupDtos = await _dataAccess.ReadEnvelopeGroupDtosAsync(new List<Guid>() { envelopeGroupId }).ConfigureAwait(false);
+            var envelopeGroupDto = envelopeGroupDtos.FirstOrDefault();
+            if (envelopeGroupDto == null)
+            {
+                return DataResponse.NotFound<EnvelopeGroup>(AppResources.NotFoundError);
+            }
+            else if (envelopeGroupDto.Deleted)
+            {
+                return DataResponse.Gone<EnvelopeGroup>(AppResources.GoneError);
             }
 
-            return hiddenGenericBudget;
+            return DataResponse.OK(EnvelopeGroupConverter.Convert(envelopeGroupDto));
+        }
+
+        public async Task<Response> UpdateEnvelopeGroupAsync(EnvelopeGroupId envelopeGroupId, string description, string notes, bool hidden)
+        {
+            try
+            {
+                if (envelopeGroupId == Constants.SystemEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupSaveSystemError);
+                }
+
+                if (envelopeGroupId == Constants.IncomeEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupSaveSystemError);
+                }
+
+                if (envelopeGroupId == Constants.DebtEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupSaveSystemError);
+                }
+
+                if (envelopeGroupId == Guid.Empty)
+                {
+                    return Response.BadRequest(AppResources.EnvelopeGroupSaveSystemError);
+                }
+
+                if (string.IsNullOrEmpty(description))
+                {
+                    return Response.BadRequest(AppResources.EnvelopeGroupValidDescriptionError);
+                }
+
+                var envelopeGroupDtos = await _dataAccess.ReadEnvelopeGroupDtosAsync(new List<Guid>() { envelopeGroupId }).ConfigureAwait(false);
+                var envelopeGroupDto = envelopeGroupDtos.FirstOrDefault();
+                if (envelopeGroupDto == null)
+                {
+                    return Response.NotFound(AppResources.EnvelopeGroupSaveSystemError);
+                }
+                if (envelopeGroupDto.Deleted)
+                {
+                    return Response.Gone(AppResources.EnvelopeGroupSaveSystemError); // use better strings
+                }
+
+                await _dataAccess.UpdateEnvelopeGroupDtoAsync(new EnvelopeGroupDto()
+                {
+                    Id = envelopeGroupId,
+                    Description = description,
+                    Notes = string.IsNullOrWhiteSpace(notes) ? null : notes,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = DateTime.Now
+                }).ConfigureAwait(false); ;
+
+                return Response.OK();
+            }
+            catch (Exception ex)
+            {
+                return Response.InternalError(ex.Message);
+            }
+        }
+
+        public async Task<Response> DeleteEnvelopeGroupAsync(EnvelopeGroupId envelopeGroupId)
+        {
+            try
+            {
+                if (envelopeGroupId == Constants.SystemEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupDeleteSystemError);
+                }
+
+                if (envelopeGroupId == Constants.IncomeEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupDeleteSystemError);
+                }
+
+                if (envelopeGroupId == Constants.DebtEnvelopeGroupId)
+                {
+                    return Response.Forbidden(AppResources.EnvelopeGroupDeleteSystemError);
+                }
+
+                if (envelopeGroupId == Guid.Empty)
+                {
+                    return Response.BadRequest(AppResources.EnvelopeGroupSaveSystemError);
+                }
+
+                var envelopeGroups = await _dataAccess.ReadEnvelopeGroupDtosAsync(new List<Guid>() { envelopeGroupId }).ConfigureAwait(false);
+                var envelopeGroupDto = envelopeGroups.FirstOrDefault();
+                if (envelopeGroupDto == null)
+                {
+                    return Response.NotFound(AppResources.EnvelopeGroupDeleteNotHiddenError);
+                }
+                else if (envelopeGroupDto.Deleted)
+                {
+                    return Response.Gone(AppResources.EnvelopeGroupDeleteNotHiddenError);
+                }
+                else if (!envelopeGroupDto.Hidden)
+                {
+                    return Response.Conflict(AppResources.EnvelopeGroupDeleteNotHiddenError);
+                }
+
+                var envelopeDtos = await _dataAccess.ReadEnvelopeDtosAsync(envelopeGroupIds: new List<Guid>() { envelopeGroupId }).ConfigureAwait(false);
+                if (envelopeDtos.Any(t => !t.Deleted))
+                {
+                    return Response.Conflict(AppResources.EnvelopeGroupDeleteActiveEnvelopesError);
+                }
+
+                await _dataAccess.UpdateEnvelopeGroupDtoAsync(envelopeGroupDto with { Deleted = true, ModifiedDateTime = DateTime.Now }).ConfigureAwait(false);
+
+                return Response.OK();
+            }
+            catch (Exception ex)
+            {
+                return Response.InternalError(ex.Message);
+            }
         }
     }
 }

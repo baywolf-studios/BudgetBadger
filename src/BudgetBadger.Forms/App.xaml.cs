@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Authentication;
 using BudgetBadger.Core.CloudSync;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.FileSystem;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
@@ -38,6 +38,7 @@ using Prism.Ioc;
 using Prism.Navigation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using BudgetBadger.Logic;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 

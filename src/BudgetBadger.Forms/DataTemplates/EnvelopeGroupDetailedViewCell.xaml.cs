@@ -8,7 +8,7 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class EnvelopeGroupDetailedViewCell : Grid
     {
-        private EnvelopeGroup _group { get; set; }
+        private EnvelopeGroupModel _group { get; set; }
 
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(PayeeDetailedViewCell));
         public ICommand SaveCommand
@@ -38,7 +38,7 @@ namespace BudgetBadger.Forms.DataTemplates
 
         void Handle_EditClicked(object sender, EventArgs e)
         {
-            if (BindingContext is EnvelopeGroup g)
+            if (BindingContext is EnvelopeGroupModel g)
             {
                 _group = g.DeepCopy();
             }

@@ -26,8 +26,8 @@ namespace BudgetBadger.Core.Models
             set => SetProperty(ref notes, value);
         }
 
-        EnvelopeGroup group;
-        public EnvelopeGroup Group
+        EnvelopeGroupModel group;
+        public EnvelopeGroupModel Group
         {
             get => group;
             set => SetProperty(ref group, value);
@@ -96,11 +96,6 @@ namespace BudgetBadger.Core.Models
             get => Id == Constants.GenericDebtEnvelope.Id;
         }
 
-        public bool IsGenericHiddenEnvelope
-        {
-            get => Id == Constants.GenericHiddenEnvelope.Id;
-        }
-
         public string ExtendedDescription
         {
             get
@@ -122,7 +117,7 @@ namespace BudgetBadger.Core.Models
         public Envelope()
         {
             Id = Guid.Empty;
-            Group = new EnvelopeGroup();
+            Group = new EnvelopeGroupModel();
         }
 
         public Envelope DeepCopy()
@@ -191,26 +186,21 @@ namespace BudgetBadger.Core.Models
                 return 1;
             }
 
-            if (IsGenericHiddenEnvelope.Equals(envelope.IsGenericHiddenEnvelope))
+            if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
             {
-                if (IsGenericDebtEnvelope.Equals(envelope.IsGenericDebtEnvelope))
+                if (Group?.Id.Equals(envelope.Group?.Id) ?? false)
                 {
-                    if (Group?.Id.Equals(envelope.Group?.Id) ?? false)
+                    if (Description.Equals(envelope.Description))
                     {
-                        if (Description.Equals(envelope.Description))
-                        {
-                            return -1 * Nullable.Compare(CreatedDateTime, envelope.CreatedDateTime);
-                        }
-                        return String.Compare(Description, envelope.Description);
+                        return -1 * Nullable.Compare(CreatedDateTime, envelope.CreatedDateTime);
                     }
-
-                    return Group.CompareTo(envelope.Group);
+                    return string.Compare(Description, envelope.Description);
                 }
 
-                return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
+                return Group.CompareTo(envelope.Group);
             }
 
-            return IsGenericHiddenEnvelope.CompareTo(envelope.IsGenericHiddenEnvelope);
+            return IsGenericDebtEnvelope.CompareTo(envelope.IsGenericDebtEnvelope);
         }
     }
 }

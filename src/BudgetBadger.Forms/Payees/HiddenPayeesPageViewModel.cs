@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
+using BudgetBadger.Logic.Models;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
@@ -25,7 +28,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((PayeeModel)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -34,15 +37,15 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<PayeeEditModel> _payees;
-        public ObservableList<PayeeEditModel> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        PayeeEditModel _selectedPayee;
-        public PayeeEditModel SelectedPayee
+        PayeeModel _selectedPayee;
+        public PayeeModel SelectedPayee
         {
             get => _selectedPayee;
             set => SetProperty(ref _selectedPayee, value);
@@ -77,10 +80,10 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Payees = new ObservableList<PayeeEditModel>();
+            Payees = new ObservableList<PayeeModel>();
             SelectedPayee = null;
 
-            SelectedCommand = new Command<PayeeEditModel>(async p => await ExecuteSelectedCommand(p));
+            SelectedCommand = new Command<PayeeModel>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new Command(async () => await FullRefresh());
 
             _eventAggregator.GetEvent<PayeeSavedEvent>().Subscribe(RefreshPayee);
@@ -101,7 +104,7 @@ namespace BudgetBadger.Forms.Payees
             await FullRefresh();
         }
 
-        public async Task ExecuteSelectedCommand(PayeeEditModel payee)
+        public async Task ExecuteSelectedCommand(PayeeModel payee)
         {
             if (payee == null)
             {
@@ -110,7 +113,7 @@ namespace BudgetBadger.Forms.Payees
 
             var parameters = new NavigationParameters
             {
-                { PageParameter.PayeeEditModel, payee }
+                { PageParameter.Payee, payee }
             };
 
             await _navigationService.NavigateAsync(PageName.PayeeEditPage, parameters);
@@ -127,7 +130,7 @@ namespace BudgetBadger.Forms.Payees
 
             try
             {
-                var result = await _payeeLogic.GetHiddenPayees2Async();
+                var result = await _payeeLogic.GetHiddenPayeesAsync();
 
                 if (result.Success)
                 {
@@ -146,13 +149,13 @@ namespace BudgetBadger.Forms.Payees
             }
         }
 
-        public void RefreshPayee(Payee payee)
+        public void RefreshPayee(PayeeModel payee)
         {
-            var payees = Payees.Where(a => a.Id != payee?.Id).ToList();
+            var payees = Payees.Where(a => a.Id != payee.Id).ToList();
 
-            if (payee != null && _payeeLogic.FilterPayee(payee, FilterType.Hidden))
+            if (payee != null && _payeeLogic.FilterPayee(payee, Core.Logic.FilterType.Hidden))
             {
-                //payees.Add(payee);
+                payees.Add(payee);
             }
 
             Payees.ReplaceRange(payees);

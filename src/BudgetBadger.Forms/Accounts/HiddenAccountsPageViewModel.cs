@@ -11,6 +11,8 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -25,7 +27,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((AccountModel)ac, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -34,15 +36,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        ObservableList<AccountModel> _accounts;
+        public ObservableList<AccountModel> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
         }
 
-        Account _selectedAccount;
-        public Account SelectedAccount
+        AccountModel _selectedAccount;
+        public AccountModel SelectedAccount
         {
             get => _selectedAccount;
             set => SetProperty(ref _selectedAccount, value);
@@ -74,10 +76,10 @@ namespace BudgetBadger.Forms.Accounts
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Accounts = new ObservableList<Account>();
+            Accounts = new ObservableList<AccountModel>();
             SelectedAccount = null;
 
-            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            SelectedCommand = new Command<AccountModel>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new Command(async () => await FullRefresh());
 
             _eventAggregator.GetEvent<AccountSavedEvent>().Subscribe(RefreshAccount);
@@ -98,7 +100,7 @@ namespace BudgetBadger.Forms.Accounts
             await FullRefresh();
         }
 
-        public async Task ExecuteSelectedCommand(Account account)
+        public async Task ExecuteSelectedCommand(AccountModel account)
         {
             if (account == null)
             {
@@ -144,11 +146,11 @@ namespace BudgetBadger.Forms.Accounts
             }
         }
 
-        public void RefreshAccount(Account account)
+        public void RefreshAccount(AccountModel account)
         {
             var accounts = Accounts.Where(a => a.Id != account.Id).ToList();
 
-            if (account != null && _accountLogic.FilterAccount(account, FilterType.Hidden))
+            if (account != null && _accountLogic.FilterAccount(account, Core.Logic.FilterType.Hidden))
             {
                 accounts.Add(account);
             }

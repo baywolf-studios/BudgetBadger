@@ -1,36 +1,26 @@
 ﻿using System;
-using BudgetBadger.Core.Dtos;
+using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Models;
+using BudgetBadger.Logic.Models;
 
-namespace BudgetBadger.Core.Converters
+namespace BudgetBadger.Logic.Converters
 {
-	public static class PayeeModelConverter
-	{
-		public static PayeeModel Convert(PayeeDto payeeDto)
-		{
-			if (payeeDto.Id == Constants.StartingBalancePayee.Id)
-			{
-				return new StartingBalancePayeeModel();
-			}
-			else
-			{
-				return new PayeeModel()
-				{
-					Id = payeeDto.Id,
-					Description = payeeDto.Description,
-					Notes = payeeDto.Notes ?? string.Empty
-				};
-			}
-		}
-
-        public static PayeeModel Convert(AccountDto accountDto)
+    public static class PayeeModelConverter
+    {
+        public static PayeeModel Convert(Payee payee)
         {
-			return new AccountPayeeModel()
-			{
-				Id = accountDto.Id,
-				Description = accountDto.Description,
-				Notes = accountDto.Notes ?? string.Empty
-			};
+            return new PayeeModel()
+            {
+                Id = payee.Id,
+                Description = payee.Description,
+                Notes = payee.Notes,
+                Group = payee.Group,
+                IsAccount = payee.Group == AppResources.PayeeTransferGroup,
+                CreatedDateTime = DateTime.Now,
+                ModifiedDateTime = DateTime.Now,
+                HiddenDateTime = payee.Hidden ? DateTime.Now : null,
+                DeletedDateTime = null
+            };
         }
     }
 }

@@ -15,6 +15,10 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using SkiaSharp;
 using Xamarin.Forms;
+using BudgetBadger.Logic.Models;
+using BudgetBadger.Logic.Converters;
+using BudgetBadger.Logic;
+using BudgetBadger.Forms.Extensions;
 
 namespace BudgetBadger.Forms.Reports
 {
@@ -68,8 +72,8 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        Payee _selectedPayee;
-        public Payee SelectedPayee
+        PayeeModel _selectedPayee;
+        public PayeeModel SelectedPayee
         {
             get => _selectedPayee;
             set
@@ -81,8 +85,8 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        IReadOnlyList<Payee> _payees;
-        public IReadOnlyList<Payee> Payees
+        IReadOnlyList<PayeeModel> _payees;
+        public IReadOnlyList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -114,7 +118,7 @@ namespace BudgetBadger.Forms.Reports
 
             RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
 
-            Payees = new List<Payee>();
+            Payees = new List<PayeeModel>();
 
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
@@ -150,7 +154,7 @@ namespace BudgetBadger.Forms.Reports
                 Payees = payees;
             }
 
-            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+            var payee = parameters.GetValue<PayeeModel>(PageParameter.Payee);
             if (payee != null)
             {
                 SelectedPayee = Payees.FirstOrDefault(p => p.Id == payee.Id);

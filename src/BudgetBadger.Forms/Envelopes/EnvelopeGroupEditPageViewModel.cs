@@ -9,6 +9,7 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -34,8 +35,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _busyText, value);
         }
 
-		EnvelopeGroup _envelopeGroup;
-		public EnvelopeGroup EnvelopeGroup
+		EnvelopeGroupModel _envelopeGroup;
+		public EnvelopeGroupModel EnvelopeGroup
         {
             get => _envelopeGroup;
             set => SetProperty(ref _envelopeGroup, value);
@@ -59,7 +60,7 @@ namespace BudgetBadger.Forms.Envelopes
             _envelopeLogic = envelopeLogic;
             _eventAggregator = eventAggregator;
 
-			EnvelopeGroup = new EnvelopeGroup();
+			EnvelopeGroup = new EnvelopeGroupModel();
 
             SaveCommand = new Command(async () => await ExecuteSaveCommand());
             SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());
@@ -69,7 +70,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public void Initialize(INavigationParameters parameters)
         {
-            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
+            var envelopeGroup = parameters.GetValue<EnvelopeGroupModel>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)
             {
                 EnvelopeGroup = envelopeGroup.DeepCopy();

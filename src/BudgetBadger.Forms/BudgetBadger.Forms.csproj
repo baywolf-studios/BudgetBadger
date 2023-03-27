@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Configurations>Debug;Release;ProRelease</Configurations>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,6 +31,7 @@
     <ProjectReference Include="..\BudgetBadger.FileSystem.Dropbox\BudgetBadger.FileSystem.Dropbox.csproj" />
     <ProjectReference Include="..\BudgetBadger.FileSystem.WebDav\BudgetBadger.FileSystem.WebDav.csproj" />
     <ProjectReference Include="..\BudgetBadger.Core\BudgetBadger.Core.csproj" />
+    <ProjectReference Include="..\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

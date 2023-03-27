@@ -379,10 +379,10 @@
             </Style>
 
             <Style x:Key="HiddenButtonStyle" TargetType="uc:Button2">
-                <Setter Property="BackgroundColor" Value="{ext:DynamicResource gray_50}" />
-                <Setter Property="RestingBackgroundColor" Value="{ext:DynamicResource gray_50}" />
-                <Setter Property="HoverBackgroundColor" Value="{ext:DynamicResource gray_50}" />
-                <Setter Property="ActiveBackgroundColor" Value="{ext:DynamicResource gray_50}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="RestingBackgroundColor" Value="Transparent" />
+                <Setter Property="HoverBackgroundColor" Value="Transparent" />
+                <Setter Property="ActiveBackgroundColor" Value="Transparent" />
                 <Setter Property="BorderWidth" Value="{ext:DynamicResource size_0}" />
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>

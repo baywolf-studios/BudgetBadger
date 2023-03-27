@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BudgetBadger.Core.Models
 {
-    public enum AccountType
+    public enum AccountModelType
     {
         AccountTypeBudget,
         AccountTypeReporting,

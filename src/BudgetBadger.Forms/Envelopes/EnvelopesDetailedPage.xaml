@@ -5,10 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
-    xmlns:effects="clr-namespace:BudgetBadger.Forms.Effects"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:DataType="envelopes:EnvelopesPageViewModel"
     x:Name="this">
     <p:BaseDetailedPage.Header>
         <p:StepperHeader
@@ -203,7 +205,8 @@
                     SeparatorVisibility="None"
                     IsPullToRefreshEnabled="True"
                     IsBusy="{Binding IsBusy}"
-                    RefreshCommand="{Binding RefreshCommand}">
+                    RefreshCommand="{Binding RefreshCommand}"
+                    Footer="{Binding .}">
                     <uc:DataTable.SortComparer>
                         <comparers:BudgetComparer/>
                     </uc:DataTable.SortComparer>
@@ -223,7 +226,7 @@
                         </DataTemplate>
                     </uc:DataTable.GroupHeaderTemplate>
                     <uc:DataTable.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate  x:DataType="models:Budget">
                             <uc:SelectableViewCell
                                 x:Name="selectableViewCell"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
@@ -232,16 +235,7 @@
                                 <dt:EnvelopeDetailedViewCell
                                     HeightRequest="{ext:DynamicResource size_500}"
                                     SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                    CancelCommand="{Binding BindingContext.RefreshBudgetCommand, Source={x:Reference Name=this}}">
-                                    <dt:EnvelopeDetailedViewCell.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding Envelope.IsGenericHiddenEnvelope}"
-                                            Value="true"
-                                            TargetType="dt:EnvelopeDetailedViewCell">
-                                            <Setter Property="IsReadOnly" Value="true"/>
-                                        </DataTrigger>
-                                    </dt:EnvelopeDetailedViewCell.Triggers>
-                                </dt:EnvelopeDetailedViewCell>
+                                    CancelCommand="{Binding BindingContext.RefreshBudgetCommand, Source={x:Reference Name=this}}" />
                                 <uc:SelectableViewCell.ContextActions>
                                     <MenuItem
                                         Text="{ext:Translate EnvelopeTransferButton}"
@@ -255,9 +249,23 @@
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:DataTable.ItemTemplate>
-                    <uc:DataTable.Footer>
-                        <BoxView HeightRequest="{ext:DynamicResource size_600}"/>
-                    </uc:DataTable.Footer>
+                    <uc:DataTable.FooterTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                Orientation="Vertical"
+                                Spacing="0"
+                                CompressedLayout.IsHeadless="true">
+                                <uc:SingleLineListSubheader
+                                    Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                    ShowSeperator="False"
+                                    Text="{ext:Translate Hidden}"
+                                    Command="{Binding ViewHiddenCommand}"
+                                    IsVisible="{Binding HasHiddenBudgets}">
+                                </uc:SingleLineListSubheader>
+                                <BoxView BackgroundColor="{ext:DynamicResource gray_50}" HeightRequest="{ext:DynamicResource size_600}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </uc:DataTable.FooterTemplate>
                 </uc:DataTable>
                 <uc:Button2
                     x:Name="NewTransactionButton"

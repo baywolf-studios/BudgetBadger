@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
-using BudgetBadger.Core.Dtos;
+using BudgetBadger.DataAccess.Dtos;
 using System.Linq;
 
 namespace BudgetBadger.DataAccess.Sqlite
@@ -138,7 +138,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task CreateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        public async Task CreateEnvelopeGroupAsync(EnvelopeGroupModel envelopeGroup)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -253,7 +253,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
-                                        Group = new EnvelopeGroup
+                                        Group = new EnvelopeGroupModel
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -347,7 +347,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
-                                        Group = new EnvelopeGroup
+                                        Group = new EnvelopeGroupModel
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -443,7 +443,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
-                                        Group = new EnvelopeGroup
+                                        Group = new EnvelopeGroupModel
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -538,7 +538,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
-                                        Group = new EnvelopeGroup
+                                        Group = new EnvelopeGroupModel
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -635,7 +635,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                         ModifiedDateTime = Convert.ToDateTime(reader["EnvelopeModifiedDateTime"], CultureInfo.InvariantCulture),
                                         DeletedDateTime = reader["EnvelopeDeletedDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeDeletedDateTime"], CultureInfo.InvariantCulture),
                                         HiddenDateTime = reader["EnvelopeHiddenDateTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["EnvelopeHiddenDateTime"], CultureInfo.InvariantCulture),
-                                        Group = new EnvelopeGroup
+                                        Group = new EnvelopeGroupModel
                                         {
                                             Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                             Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -785,7 +785,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
                                     IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
-                                    Group = new EnvelopeGroup
+                                    Group = new EnvelopeGroupModel
                                     {
                                         Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                         Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -810,13 +810,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task<EnvelopeGroup> ReadEnvelopeGroupAsync(Guid id)
+        public async Task<EnvelopeGroupModel> ReadEnvelopeGroupAsync(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var envelopeGroup = new EnvelopeGroup();
+                    var envelopeGroup = new EnvelopeGroupModel();
 
                     using (var db = new SqliteConnection(_connectionString))
                     {
@@ -839,7 +839,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             if (reader.Read())
                             {
-                                envelopeGroup = new EnvelopeGroup
+                                envelopeGroup = new EnvelopeGroupModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -859,13 +859,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task<IReadOnlyList<EnvelopeGroup>> ReadEnvelopeGroupsAsync()
+        public async Task<IReadOnlyList<EnvelopeGroupModel>> ReadEnvelopeGroupsAsync()
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var envelopeGroups = new List<EnvelopeGroup>();
+                    var envelopeGroups = new List<EnvelopeGroupModel>();
 
                     using (var db = new SqliteConnection(_connectionString))
                     {
@@ -885,7 +885,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             while (reader.Read())
                             {
-                                envelopeGroups.Add(new EnvelopeGroup
+                                envelopeGroups.Add(new EnvelopeGroupModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -946,7 +946,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                                     Description = reader["Description"].ToString(),
                                     Notes = reader["Notes"].ToString(),
                                     IgnoreOverspend = Convert.ToBoolean(reader["IgnoreOverspend"], CultureInfo.InvariantCulture),
-                                    Group = new EnvelopeGroup
+                                    Group = new EnvelopeGroupModel
                                     {
                                         Id = new Guid(reader["EnvelopeGroupId"] as byte[]),
                                         Description = reader["EnvelopeGroupDescription"].ToString(),
@@ -1076,7 +1076,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             
         }
 
-        public async Task UpdateEnvelopeGroupAsync(EnvelopeGroup envelopeGroup)
+        public async Task UpdateEnvelopeGroupAsync(EnvelopeGroupModel envelopeGroup)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {

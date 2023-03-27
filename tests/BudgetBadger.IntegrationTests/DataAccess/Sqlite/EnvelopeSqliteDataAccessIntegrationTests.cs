@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.DataAccess.Sqlite;
 using BudgetBadger.TestData;
 using Microsoft.Data.Sqlite;
@@ -34,7 +34,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public void CreateEnvelopeGroup_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var EnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto() with { Description = null };
+            var EnvelopeGroupDto = TestGen.EnvelopeGroupDto() with { Description = null };
 
             // act and assert
             Assert.ThrowsAsync<SqliteException>(() => sqliteDataAccess.CreateEnvelopeGroupDtoAsync(EnvelopeGroupDto));
@@ -44,7 +44,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateEnvelopeGroup_ValidRequest_CreatesEnvelopeGroupDto()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
 
             // act
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
@@ -58,7 +58,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateEnvelopeGroup_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
 
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
 
@@ -72,13 +72,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateEnvelopeGroup_ValidRequest_UpdatesEnvelopeGroupDto()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
 
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
 
             var updatedEnvelopeGroupDto = testEnvelopeGroupDto with
             {
-                Description = TestDataGenerator.RandomName(),
+                Description = TestGen.RndString(),
                 ModifiedDateTime = DateTime.Now,
                 Deleted = false,
                 Hidden = false
@@ -97,9 +97,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopeGroups_NullEnvelopeGroupIds_ReturnsAll()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
-            var testEnvelopeGroupDto2 = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto2 = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto2);
 
             // act
@@ -114,9 +114,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopeGroups_EmptyEnvelopeGroupIds_ReturnsNone()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
-            var testEnvelopeGroupDto2 = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto2 = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto2);
 
             // act
@@ -130,11 +130,11 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopeGroups_EnvelopeGroupIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
-            var testEnvelopeGroupDto2 = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto2 = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto2);
-            var testEnvelopeGroupDto3 = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto3 = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto3);
 
             // act
@@ -150,9 +150,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopeGroups_NonExistentEnvelopeGroupIds_ReturnsNoEnvelopeGroups()
         {
             // assemble
-            var testEnvelopeGroupDto = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto);
-            var testEnvelopeGroupDto2 = TestDataGenerator.EnvelopeGroupDto();
+            var testEnvelopeGroupDto2 = TestGen.EnvelopeGroupDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testEnvelopeGroupDto2);
 
             // act
@@ -167,7 +167,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public void CreateEnvelope_EnvelopeGroupIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
 
             // act and assert
             Assert.ThrowsAsync<SqliteException>(() => sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto));
@@ -177,7 +177,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateEnvelope_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             var envelopeDto = testData.envelopeDto with { Description = null };
 
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -190,7 +190,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateEnvelope_ValidRequest_CreatesEnvelopeDto()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
 
             // act
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -205,7 +205,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateEnvelope_EnvelopeGroupIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
 
             // act
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -221,7 +221,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateEnvelope_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
 
             // act
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -237,7 +237,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateEnvelope_ValidRequest_UpdatesEnvelopeDto()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
 
             // act
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -245,7 +245,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
 
             var updatedEnvelopeDto = testData.envelopeDto with
             {
-                Description = TestDataGenerator.RandomName(),
+                Description = TestGen.RndString(),
                 ModifiedDateTime = DateTime.Now,
                 Deleted = false,
                 Hidden = false
@@ -264,10 +264,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_NullEnvelopeIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -283,10 +283,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_EmptyEnvelopeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -301,13 +301,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_EnvelopeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
-            var testData3 = TestDataGenerator.EnvelopeDto();
+            var testData3 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData3.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData3.envelopeDto);
 
@@ -324,10 +324,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_NonExistentEnvelopeIds_ReturnsNoEnvelopes()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -347,10 +347,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_NullEnvelopeGroupIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -366,10 +366,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_EmptyEnvelopeGroupIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -384,10 +384,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_EnvelopeGroupIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -403,10 +403,10 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_NonExistentEnvelopeGroupIds_ReturnsNoEnvelopes()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
 
@@ -422,13 +422,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadEnvelopes_EnvelopeIdsAndEnvelopeGroupIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.EnvelopeDto();
+            var testData = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
-            var testData2 = TestDataGenerator.EnvelopeDto();
+            var testData2 = TestGen.EnvelopeDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
-            var testData3 = TestDataGenerator.EnvelopeDto();
+            var testData3 = TestGen.EnvelopeDto();
             var testData3envelope = testData3.envelopeDto with { EnvelopGroupId = testData2.envelopeGroupDto.Id };
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData3envelope);
 
@@ -446,7 +446,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateBudgetPeriod_ValidRequest_CreatesBudgetPeriodDto()
         {
             // assemble
-            var testBudgetPeriod = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriod = TestGen.BudgetPeriodDto();
 
             // act
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriod);
@@ -460,7 +460,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateBudgetPeriod_ValidRequest_UpdatesBudgetPeriodDto()
         {
             // assemble
-            var testBudgetPeriod = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriod = TestGen.BudgetPeriodDto();
 
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriod);
 
@@ -483,9 +483,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgetPeriods_NullBudgetPeriodIds_ReturnsAll()
         {
             // assemble
-            var testBudgetPeriodDto = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto);
-            var testBudgetPeriodDto2 = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto2 = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto2);
 
             // act
@@ -500,9 +500,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgetPeriods_EmptyBudgetPeriodIds_ReturnsNone()
         {
             // assemble
-            var testBudgetPeriodDto = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto);
-            var testBudgetPeriodDto2 = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto2 = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto2);
 
             // act
@@ -516,9 +516,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgetPeriods_BudgetPeriodIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testBudgetPeriodDto = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto);
-            var testBudgetPeriodDto2 = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto2 = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto2);
 
             // act
@@ -533,9 +533,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgetPeriods_NonExistentBudgetPeriodIds_ReturnsNoBudgetPeriods()
         {
             // assemble
-            var testBudgetPeriodDto = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto);
-            var testBudgetPeriodDto2 = TestDataGenerator.BudgetPeriodDto();
+            var testBudgetPeriodDto2 = TestGen.BudgetPeriodDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testBudgetPeriodDto2);
 
             // act
@@ -550,7 +550,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateBudget_EnvelopeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
 
             // act and assert
@@ -561,7 +561,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateBudget_BudgetPeriodIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
 
@@ -573,7 +573,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateBudget_ValidRequest_CreatesBudgetDto()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
@@ -590,7 +590,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateBudget_BudgetPeriodIdAndEnvelopeIdAlreadyExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
@@ -606,7 +606,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateBudget_EnvelopeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
@@ -622,7 +622,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateBudget_BudgetPeriodIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
@@ -638,13 +638,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateBudget_ValidRequest_UpdatesBudgetDto()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
 
-            var updatedBudget = testData.budgetDto with { Amount = TestDataGenerator.RandomDecimal(), ModifiedDateTime = DateTime.Now };
+            var updatedBudget = testData.budgetDto with { Amount = TestGen.RndDecimal(), ModifiedDateTime = DateTime.Now };
 
             // act
             await sqliteDataAccess.UpdateBudgetDtoAsync(updatedBudget);
@@ -659,12 +659,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NullBudgetIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -682,12 +682,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_EmptyBudgetIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -704,12 +704,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_BudgetIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -727,12 +727,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NonExistentBudgetIds_ReturnsNoBudgets()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -750,12 +750,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NullEnvelopeIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -773,12 +773,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_EmptyEnvelopeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -795,12 +795,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_EnvelopeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -818,12 +818,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NonExistentEnvelopeIds_ReturnsNoBudgets()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -841,12 +841,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NullBudgetPeriodIdsIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -864,12 +864,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_EmptyBudgetPeriodIdsIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -886,12 +886,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_BudgetPeriodIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
@@ -909,17 +909,17 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_BudgetPeriodIdsAndEvelopeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData2.budgetDto);
-            var testData3 = TestDataGenerator.BudgetDto();
+            var testData3 = TestGen.BudgetDto();
             var testData3budget = testData3.budgetDto with { EnvelopeId = testData.budgetDto.EnvelopeId };
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData3.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData3budget);
@@ -939,17 +939,17 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_BudgetIdsAndEvelopeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData2.budgetDto);
-            var testData3 = TestDataGenerator.BudgetDto();
+            var testData3 = TestGen.BudgetDto();
             var testData3budget = testData3.budgetDto with { EnvelopeId = testData.budgetDto.EnvelopeId };
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData3.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData3budget);
@@ -969,17 +969,17 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_BudgetIdsAndBudgetPeriodIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData2.budgetDto);
-            var testData3 = TestDataGenerator.BudgetDto();
+            var testData3 = TestGen.BudgetDto();
             var testData3budget = testData3.budgetDto with { BudgetPeriodId = testData.budgetDto.BudgetPeriodId };
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData3.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData3.envelopeDto);
@@ -1000,12 +1000,12 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadBudgets_NonExistentBudgetPeriodIds_ReturnsNoBudgets()
         {
             // assemble
-            var testData = TestDataGenerator.BudgetDto();
+            var testData = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData.budgetPeriodDto);
             await sqliteDataAccess.CreateBudgetDtoAsync(testData.budgetDto);
-            var testData2 = TestDataGenerator.BudgetDto();
+            var testData2 = TestGen.BudgetDto();
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateBudgetPeriodDtoAsync(testData2.budgetPeriodDto);

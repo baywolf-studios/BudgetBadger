@@ -2,578 +2,370 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.Localization;
-using BudgetBadger.Core.Utilities;
+using BudgetBadger.Logic.Models;
+using BudgetBadger.Logic.Converters;
+using BudgetBadger.DataAccess.Dtos;
 using BudgetBadger.Core.Models;
 
-namespace BudgetBadger.Core.Logic
+namespace BudgetBadger.Logic
 {
+    public interface IAccountLogic
+    {
+        Task<ItemsResponse<Account>> SearchAccountsAsync(bool? hidden = null);
+        Task<DataResponse<AccountId>> CreateAccountAsync(string description, string notes, AccountType accountType, decimal balance, bool hidden);
+        Task<DataResponse<Account>> ReadAccountAsync(AccountId accountId);
+        Task<Response> UpdateAccountAsync(AccountId accountId, string description, string notes, bool hidden);
+        Task<Response> DeleteAccountAsync(AccountId accountId);
+        Task<Response> ReconcileAccountAsync(AccountId accountId, DateTime cutoffDate, decimal postedBalance);
+    }
+
     public class AccountLogic : IAccountLogic
     {
         private readonly IDataAccess _dataAccess;
-        private readonly IResourceContainer _resourceContainer;
 
-        public AccountLogic(IDataAccess dataAccess,
-                            IResourceContainer resourceContainer)
+        public AccountLogic(IDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
-            _resourceContainer = resourceContainer;
         }
 
-
-        public async Task<Result<Account>> SaveAccountAsync(Account account)
+        public async Task<ItemsResponse<Account>> SearchAccountsAsync(bool? hidden = null)
         {
-            var validationResult = await ValidateAccountAsync(account).ConfigureAwait(false);
-
-            if (!validationResult.Success)
+            try
             {
-                return validationResult.ToResult<Account>();
+                // get all non-deleted payeeDtos
+                IEnumerable<AccountDto> accountDtos = await _dataAccess.ReadAccountDtosAsync().ConfigureAwait(false);
+                accountDtos = accountDtos.Where(p => !p.Deleted).ToList();
+
+                if (hidden == true)
+                {
+                    accountDtos = accountDtos.AsParallel().Where(p => p.Hidden);
+                }
+                else if (hidden == false)
+                {
+                    accountDtos = accountDtos.AsParallel().Where(p => !p.Hidden);
+                }
+
+                accountDtos = accountDtos.ToList();
+                var accountIds = new HashSet<Guid>(accountDtos.Select(a => a.Id));
+                var accountTransactions = await _dataAccess.ReadTransactionDtosAsync(accountIds: accountIds).ConfigureAwait(false); ;
+                var payeeTransactions = await _dataAccess.ReadTransactionDtosAsync(payeeIds: accountIds).ConfigureAwait(false);
+                var envelopeTransactions = await _dataAccess.ReadTransactionDtosAsync(envelopeIds: accountIds).ConfigureAwait(false);
+                var debtBudgets = await _dataAccess.ReadBudgetDtosAsync(envelopeIds: accountIds).ConfigureAwait(false); ;
+                var debtBudgetPeriods = await _dataAccess.ReadBudgetPeriodDtosAsync(debtBudgets?.Select(b => b.BudgetPeriodId) ?? Enumerable.Empty<Guid>()).ConfigureAwait(false); ;
+
+                var accounts = accountDtos
+                    .AsParallel()
+                    .Select(p => AccountConverter.Convert(p,
+                        accountTransactions.Concat(payeeTransactions).Concat(envelopeTransactions),
+                        debtBudgets,
+                        debtBudgetPeriods))
+                    .ToList();
+
+                return ItemsResponse.OK(accounts, accounts.Count);
             }
-
-            var accountToUpsert = account.DeepCopy();
-            var dateTimeNow = DateTime.Now;
-
-            if (accountToUpsert.IsNew)
+            catch (Exception ex)
             {
-                accountToUpsert.Id = Guid.NewGuid();
-                accountToUpsert.CreatedDateTime = dateTimeNow;
-                accountToUpsert.ModifiedDateTime = dateTimeNow;
-                await _dataAccess.CreateAccountAsync(accountToUpsert).ConfigureAwait(false);
+                return ItemsResponse.InternalError<Account>(ex.Message);
+            }
+        }
 
-                var accountPayee = new Payee
+        public async Task<DataResponse<AccountId>> CreateAccountAsync(string description, string notes, AccountType accountType, decimal balance, bool hidden)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(description))
                 {
-                    Id = accountToUpsert.Id,
-                    Description = accountToUpsert.Description,
-                    CreatedDateTime = dateTimeNow,
-                    ModifiedDateTime = dateTimeNow
-                };
-                await _dataAccess.CreatePayeeAsync(accountPayee).ConfigureAwait(false);
+                    return DataResponse.BadRequest<AccountId>(AppResources.AccountValidDescriptionError);
+                }
 
-                //create a debt envelope for new accounts
-                var debtEnvelopeGroup = await _dataAccess.ReadEnvelopeGroupAsync(Constants.DebtEnvelopeGroup.Id);
-                var debtEnvelope = new Envelope
-                {
-                    Id = accountToUpsert.Id,
-                    Description = accountToUpsert.Description,
-                    IgnoreOverspend = true,
-                    Group = debtEnvelopeGroup,
-                    CreatedDateTime = dateTimeNow,
-                    ModifiedDateTime = dateTimeNow
-                };
-                await _dataAccess.CreateEnvelopeAsync(debtEnvelope).ConfigureAwait(false);
+                var accountId = new AccountId();
+                var dateTimeNow = DateTime.Now;
+                var dateNow = dateTimeNow.Date;
 
                 // determine which envelope should be used
-                Envelope startingBalanceEnvelope;
-                if (accountToUpsert.OffBudget)
+                Guid startingBalanceEnvelope;
+                if (accountType == AccountType.Reporting)
                 {
-                    startingBalanceEnvelope = await _dataAccess.ReadEnvelopeAsync(Constants.IgnoredEnvelope.Id);
+                    startingBalanceEnvelope = Constants.IgnoredEnvelopeId;
                 }
-                else if (accountToUpsert.Balance < 0) // on budget and negative
+                else if (balance < 0) // on budget and negative
                 {
-                    startingBalanceEnvelope = debtEnvelope;
+                    startingBalanceEnvelope = accountId;
                 }
                 else // on budget and positive
                 {
-                    startingBalanceEnvelope = await _dataAccess.ReadEnvelopeAsync(Constants.IncomeEnvelope.Id);
+                    startingBalanceEnvelope = Constants.IncomeEnvelopeId;
                 }
 
-                var startingBalance = new Transaction
+                await _dataAccess.CreateAccountDtoAsync(new AccountDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = string.IsNullOrWhiteSpace(notes) ? null : notes,
+                    OnBudget = accountType == AccountType.Budget,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                await _dataAccess.CreatePayeeDtoAsync(new PayeeDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = null,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                await _dataAccess.CreateEnvelopeDtoAsync(new EnvelopeDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = null,
+                    EnvelopGroupId = Constants.DebtEnvelopeGroupId,
+                    IgnoreOverspend = true,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                await _dataAccess.CreateTransactionDtoAsync(new TransactionDto
                 {
                     Id = Guid.NewGuid(),
-                    CreatedDateTime = dateTimeNow,
+                    AccountId = accountId,
+                    Amount = balance,
+                    Deleted = false,
+                    EnvelopeId = startingBalanceEnvelope,
                     ModifiedDateTime = dateTimeNow,
-                    Amount = accountToUpsert.Balance,
-                    ServiceDate = dateTimeNow,
+                    Notes = null,
+                    PayeeId = Constants.StartingBalancePayeeId,
                     Posted = true,
-                    Account = accountToUpsert,
-                    Payee = await _dataAccess.ReadPayeeAsync(Constants.StartingBalancePayee.Id),
-                    Envelope = startingBalanceEnvelope
-                };
+                    Reconciled = true,
+                    ServiceDate = dateNow,
+                    SplitId = null
+                }).ConfigureAwait(false);
 
-                await _dataAccess.CreateTransactionAsync(startingBalance).ConfigureAwait(false);
+                return DataResponse.OK(accountId);
+            }
+            catch (Exception ex)
+            {
+                return DataResponse.InternalError<AccountId>(ex.Message);
+            }
+        }
+
+        public async Task<DataResponse<Account>> ReadAccountAsync(AccountId accountId)
+        {
+            var accountDtos = await _dataAccess.ReadAccountDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false); ;
+            var accountDto = accountDtos.FirstOrDefault();
+            if (accountDto == null)
+            {
+                return DataResponse.NotFound<Account>(AppResources.NotFoundError);
+            }
+            else if (accountDto.Deleted)
+            {
+                return DataResponse.Gone<Account>(AppResources.GoneError);
+            }
+
+            var accountIds = new List<Guid>() { accountId };
+            var accountTransactions = await _dataAccess.ReadTransactionDtosAsync(accountIds: accountIds).ConfigureAwait(false); ;
+            var payeeTransactions = await _dataAccess.ReadTransactionDtosAsync(payeeIds: accountIds).ConfigureAwait(false);
+            var envelopeTransactions = await _dataAccess.ReadTransactionDtosAsync(envelopeIds: accountIds).ConfigureAwait(false);
+            var debtBudgets = await _dataAccess.ReadBudgetDtosAsync(envelopeIds: accountIds).ConfigureAwait(false); ;
+            var debtBudgetPeriods = await _dataAccess.ReadBudgetPeriodDtosAsync(debtBudgets?.Select(b => b.BudgetPeriodId) ?? Enumerable.Empty<Guid>()).ConfigureAwait(false); ;
+
+            var account = AccountConverter.Convert(accountDto,
+                accountTransactions.Concat(payeeTransactions).Concat(envelopeTransactions),
+                debtBudgets,
+                debtBudgetPeriods);
+
+            return DataResponse.OK(account);
+        }
+
+        public async Task<Response> UpdateAccountAsync(AccountId accountId, string description, string notes, bool hidden)
+        {
+            try
+            {
+                if (accountId == Guid.Empty)
+                {
+                    return Response.BadRequest(AppResources.AccountSaveSystemError);
+                }
+
+                if (string.IsNullOrEmpty(description))
+                {
+                    return Response.BadRequest(AppResources.AccountValidDescriptionError);
+                }
+
+                var existingAccountDtos = await _dataAccess.ReadAccountDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false);
+                var existingDto = existingAccountDtos.FirstOrDefault();
+                if (existingDto == null)
+                {
+                    return Response.NotFound(AppResources.TransactionValidAccountExistError);
+                }
+                if (existingDto.Deleted)
+                {
+                    return Response.Gone(AppResources.TransactionValidAccountDeletedError); //TODO use better strings
+                }
+
+                var dateTimeNow = DateTime.Now;
+
+                await _dataAccess.UpdateEnvelopeDtoAsync(new EnvelopeDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = null,
+                    EnvelopGroupId = Constants.DebtEnvelopeGroupId,
+                    IgnoreOverspend = true,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                await _dataAccess.UpdatePayeeDtoAsync(new PayeeDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = null,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                await _dataAccess.UpdateAccountDtoAsync(new AccountDto()
+                {
+                    Id = accountId,
+                    Description = description,
+                    Notes = string.IsNullOrWhiteSpace(notes) ? null : notes,
+                    OnBudget = existingDto.OnBudget,
+                    Hidden = hidden,
+                    Deleted = false,
+                    ModifiedDateTime = dateTimeNow
+                }).ConfigureAwait(false);
+
+                return Response.OK();
+            }
+            catch (Exception ex)
+            {
+                return Response.InternalError(ex.Message);
+            }
+        }
+
+        public async Task<Response> DeleteAccountAsync(AccountId accountId)
+        {
+            try
+            {
+                if (accountId == Guid.Empty)
+                {
+                    return Response.BadRequest(AppResources.AccountDeleteNotHiddenError);
+                }
+
+                var accounts = await _dataAccess.ReadAccountDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false);
+                var accountDto = accounts.FirstOrDefault();
+                if (accountDto == null)
+                {
+                    return Response.NotFound(AppResources.AccountDeleteNotHiddenError);
+                }
+                else if (accountDto.Deleted)
+                {
+                    return Response.Gone(AppResources.AccountDeleteNotHiddenError);
+                }
+                else if (!accountDto.Hidden)
+                {
+                    return Response.Conflict(AppResources.AccountDeleteInactiveError);
+                }
+
+                var accountTransactionDtos = await _dataAccess.ReadTransactionDtosAsync(accountIds: new List<Guid>() { accountId }).ConfigureAwait(false);
+                if (accountTransactionDtos.Any(t => !t.Deleted))
+                {
+                    return Response.Conflict(AppResources.AccountDeleteActiveTransactionsError);
+                }
+
+                var payeeTransactionDtos = await _dataAccess.ReadTransactionDtosAsync(payeeIds: new List<Guid>() { accountId }).ConfigureAwait(false);
+                if (payeeTransactionDtos.Any(t => !t.Deleted))
+                {
+                    return Response.Conflict(AppResources.AccountDeleteActiveTransactionsError);
+                }
+
+                var envelopeTransactionDtos = await _dataAccess.ReadTransactionDtosAsync(envelopeIds: new List<Guid>() { accountId }).ConfigureAwait(false);
+                if (envelopeTransactionDtos.Any(t => !t.Deleted))
+                {
+                    return Response.Conflict(AppResources.AccountDeleteActiveTransactionsError);
+                }
+
+                var budgets = await _dataAccess.ReadBudgetDtosAsync(envelopeIds: new List<Guid>() { accountId }).ConfigureAwait(false);
+                if (budgets.Any(b => b.Amount != 0))
+                {
+                    return Response.Conflict(AppResources.AccountDeleteSystemError); //TODO make better
+                }
+
+                await _dataAccess.UpdateAccountDtoAsync(accountDto with { Deleted = true, ModifiedDateTime = DateTime.Now }).ConfigureAwait(false);
+
+                var payeeDtos = await _dataAccess.ReadPayeeDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false);
+                var payeeDto = payeeDtos.FirstOrDefault();
+                await _dataAccess.UpdatePayeeDtoAsync(payeeDto with { Deleted = true, ModifiedDateTime = DateTime.Now }).ConfigureAwait(false);
+
+                var envelopeDtos = await _dataAccess.ReadEnvelopeDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false);
+                var envelopeDto = envelopeDtos.FirstOrDefault();
+                await _dataAccess.UpdateEnvelopeDtoAsync(envelopeDto with { Deleted = true, ModifiedDateTime = DateTime.Now }).ConfigureAwait(false);
+
+                return Response.OK();
+            }
+            catch (Exception ex)
+            {
+                return Response.InternalError(ex.Message);
+            }
+        }
+
+        public async Task<Response> ReconcileAccountAsync(AccountId accountId, DateTime cutoffDate, decimal postedBalance)
+        {
+            if (accountId == Guid.Empty)
+            {
+                return Response.BadRequest(AppResources.AccountSaveSystemError); //TODO
+            }
+
+            var accounts = await _dataAccess.ReadAccountDtosAsync(new List<Guid>() { accountId }).ConfigureAwait(false);
+            var accountDto = accounts.FirstOrDefault();
+            if (accountDto == null)
+            {
+                return Response.NotFound(AppResources.TransactionValidAccountExistError); //TODO
+            }
+            else if (accountDto.Deleted)
+            {
+                return Response.Gone(AppResources.TransactionValidAccountDeletedError); //TODO
+            }
+
+            var accountIds = new List<Guid>() { accountId };
+            var accountTransactions = await _dataAccess.ReadTransactionDtosAsync(accountIds: accountIds).ConfigureAwait(false);
+            var payeeTransactions = await _dataAccess.ReadTransactionDtosAsync(payeeIds: accountIds).ConfigureAwait(false);
+
+            var accountTransactionsToReconcile = accountTransactions.Where(t => !t.Deleted
+                                                                       && t.Posted
+                                                                       && t.ServiceDate.Date <= cutoffDate.Date).ToList();
+
+            var payeeTransactionsToReconcile = payeeTransactions.Where(t => !t.Deleted
+                                                                       && t.Posted
+                                                                       && t.ServiceDate <= cutoffDate.Date).ToList();
+
+            var actualPostedBalance = accountTransactionsToReconcile.Sum(t => t.Amount)
+                - payeeTransactionsToReconcile.Sum(t => t.Amount);
+
+            if (actualPostedBalance  == postedBalance)
+            {
+                var now = DateTime.Now;
+                var tasks = accountTransactionsToReconcile
+                    .Concat(payeeTransactionsToReconcile)
+                    .Select(transactionDto => _dataAccess.UpdateTransactionDtoAsync(transactionDto with { Reconciled = true, ModifiedDateTime = now }));
+
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                return Response.OK();
             }
             else
             {
-                // update linked payee
-                var accountPayee = await _dataAccess.ReadPayeeAsync(accountToUpsert.Id).ConfigureAwait(false);
-                accountPayee.ModifiedDateTime = dateTimeNow;
-                accountPayee.Description = accountToUpsert.Description;
-                await _dataAccess.UpdatePayeeAsync(accountPayee);
-
-                // update the debt envelope name
-                var debtEnvelope = await _dataAccess.ReadEnvelopeAsync(accountToUpsert.Id).ConfigureAwait(false);
-                debtEnvelope.ModifiedDateTime = dateTimeNow;
-                debtEnvelope.Description = accountToUpsert.Description;
-                await _dataAccess.UpdateEnvelopeAsync(debtEnvelope);
-
-                accountToUpsert.ModifiedDateTime = dateTimeNow;
-                await _dataAccess.UpdateAccountAsync(accountToUpsert).ConfigureAwait(false);
+                return Response.Conflict(AppResources.AccountReconcileAmountsDoNotMatchError);
             }
-
-            return new Result<Account> { Success = true, Data = await GetPopulatedAccount(accountToUpsert).ConfigureAwait(false) };
-        }
-
-        public async Task<Result<Account>> GetAccountAsync(Guid id)
-        {
-            var result = new Result<Account>();
-
-            try
-            {
-                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-                var populatedAccount = await GetPopulatedAccount(account).ConfigureAwait(false);
-                result.Success = true;
-                result.Data = populatedAccount;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Account>>> GetAccountsAsync()
-        {
-            var result = new Result<IReadOnlyList<Account>>();
-
-            try
-            {
-                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
-                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Standard));
-
-                var tasks = accounts.Select(GetPopulatedAccount);
-                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-
-                if (allAccounts.Any(a => FilterAccount(a, FilterType.Hidden)))
-                {
-                    var hiddenAccountTasks = allAccounts.Where(a => FilterAccount(a, FilterType.Hidden)).Select(GetPopulatedAccount);
-                    var hiddenAccounts = await Task.WhenAll(hiddenAccountTasks);
-
-                    var genericHiddenAccount = GetGenericHiddenAccount(hiddenAccounts);
-                    accountsToReturn.Add(genericHiddenAccount);
-                }
-
-                result.Success = true;
-                result.Data = accountsToReturn;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Account>>> GetAccountsForSelectionAsync()
-        {
-            var result = new Result<IReadOnlyList<Account>>();
-
-            try
-            {
-                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
-
-                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Selection));
-
-                var tasks = accounts.Select(GetPopulatedAccount);
-
-                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-
-                result.Success = true;
-                result.Data = accountsToReturn;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<IReadOnlyList<Account>>> GetHiddenAccountsAsync()
-        {
-            var result = new Result<IReadOnlyList<Account>>();
-
-            try
-            { 
-                var allAccounts = await _dataAccess.ReadAccountsAsync().ConfigureAwait(false);
-
-                var accounts = allAccounts.Where(a => FilterAccount(a, FilterType.Hidden));
-
-                var tasks = accounts.Select(GetPopulatedAccount);
-
-                var accountsToReturn = (await Task.WhenAll(tasks)).ToList();
-                accountsToReturn.Sort();
-
-                result.Success = true;
-                result.Data = accountsToReturn;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<Account>> SoftDeleteAccountAsync(Guid id)
-        {
-            var result = new Result<Account>();
-
-            try
-            {
-                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-
-                // check for validation to delete
-                var errors = new List<string>();
-
-                if (account.IsNew || account.IsDeleted || account.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteNotHiddenError"));
-                }
-
-                if (account.IsGenericHiddenAccount)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteSystemError"));
-                }
-
-                var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(id).ConfigureAwait(false);
-                var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(id).ConfigureAwait(false);
-
-                if (accountTransactions.Any(t => t.IsActive) || payeeTransactions.Any(t => t.IsActive))
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountDeleteActiveTransactionsError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                var now = DateTime.Now;
-
-                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
-                payee.DeletedDateTime = now;
-                payee.ModifiedDateTime = now;
-                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-
-                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
-                envelope.DeletedDateTime = now;
-                envelope.ModifiedDateTime = now;
-                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
-
-                account.DeletedDateTime = now;
-                account.ModifiedDateTime = now;
-                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
-
-                result.Success = true;
-                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<Account>> HideAccountAsync(Guid id)
-        {
-            var result = new Result<Account>();
-
-            try
-            {
-                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-
-                // check for validation to delete
-                var errors = new List<string>();
-
-                if (!account.IsActive)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountHideInactiveError"));
-                }
-
-                if (account.IsGenericHiddenAccount)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountHideSystemError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                var now = DateTime.Now;
-
-                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
-                payee.HiddenDateTime = now;
-                payee.ModifiedDateTime = now;
-                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-
-                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
-                envelope.HiddenDateTime = now;
-                envelope.ModifiedDateTime = now;
-                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
-
-                account.HiddenDateTime = now;
-                account.ModifiedDateTime = now;
-                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
-
-                result.Success = true;
-                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result<Account>> UnhideAccountAsync(Guid id)
-        {
-            var result = new Result<Account>();
-
-            try
-            {
-                var account = await _dataAccess.ReadAccountAsync(id).ConfigureAwait(false);
-
-                // check for validation to delete
-                var errors = new List<string>();
-
-                if (account.IsNew || account.IsActive || account.IsDeleted)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideNotHiddenError"));
-                }
-
-                if (account.IsGenericHiddenAccount)
-                {
-                    errors.Add(_resourceContainer.GetResourceString("AccountUnhideSystemError"));
-                }
-
-                if (errors.Any())
-                {
-                    result.Success = false;
-                    result.Message = string.Join(Environment.NewLine, errors);
-                    return result;
-                }
-
-                var now = DateTime.Now;
-
-                var payee = await _dataAccess.ReadPayeeAsync(account.Id).ConfigureAwait(false);
-                payee.HiddenDateTime = null;
-                payee.ModifiedDateTime = now;
-                await _dataAccess.UpdatePayeeAsync(payee).ConfigureAwait(false);
-
-                var envelope = await _dataAccess.ReadEnvelopeAsync(account.Id).ConfigureAwait(false);
-                envelope.HiddenDateTime = null;
-                envelope.ModifiedDateTime = now;
-                await _dataAccess.UpdateEnvelopeAsync(envelope).ConfigureAwait(false);
-
-                account.HiddenDateTime = null;
-                account.ModifiedDateTime = now;
-                await _dataAccess.UpdateAccountAsync(account).ConfigureAwait(false);
-
-                result.Success = true;
-                result.Data = await GetPopulatedAccount(account).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public async Task<Result> ReconcileAccount(Guid accountId, DateTime dateTime, decimal amount)
-        {
-            var now = DateTime.Now;
-            var result = new Result();
-
-            try
-            {
-                var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(accountId).ConfigureAwait(false);
-                var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(accountId).ConfigureAwait(false);
-                var accountTransactionsToReconcile = accountTransactions.Where(t => t.IsActive
-                                                                       && t.ServiceDate <= dateTime
-                                                                       && t.Posted);
-
-                var payeeTransactionsToReconcile = payeeTransactions.Where(t => t.IsActive
-                                                                           && t.ServiceDate <= dateTime
-                                                                           && t.Posted);
-
-                var accountTransactionsSum = accountTransactionsToReconcile.Sum(t => t.Amount ?? 0);
-                var payeeTransactionsSum = -1 * payeeTransactionsToReconcile.Sum(t => t.Amount ?? 0);
-
-                if ((accountTransactionsSum + payeeTransactionsSum) == amount)
-                {
-                    var tasks = new List<Task>();
-                    foreach (var transaction in accountTransactionsToReconcile)
-                    {
-                        transaction.Posted = true;
-                        transaction.ModifiedDateTime = now;
-                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
-                        tasks.Add(_dataAccess.UpdateTransactionAsync(transaction));
-                    }
-
-                    foreach (var transaction in payeeTransactionsToReconcile)
-                    {
-                        transaction.Posted = true;
-                        transaction.ModifiedDateTime = now;
-                        transaction.ReconciledDateTime = transaction.ReconciledDateTime ?? dateTime;
-                        tasks.Add(_dataAccess.UpdateTransactionAsync(transaction));
-                    }
-
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-
-                    result.Success = true;
-                }
-                else
-                {
-                    result.Success = false;
-                    result.Message = _resourceContainer.GetResourceString("AccountReconcileAmountsDoNotMatchError");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public bool FilterAccount(Account account, string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-            {
-                return true;
-            }
-
-            if (account != null)
-            {
-                return account.Description.ToLower().Contains(searchText.ToLower());
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool FilterAccount(Account account, FilterType filterType)
-        {
-            switch (filterType)
-            {
-                case FilterType.Standard:
-                case FilterType.Report:
-                case FilterType.Selection:
-                    return account.IsActive;
-                case FilterType.Hidden:
-                    return account.IsHidden && !account.IsDeleted && !account.IsGenericHiddenAccount;
-                case FilterType.All:
-                default:
-                    return true;
-            }
-        }
-
-        async Task<Account> GetPopulatedAccount(Account account)
-        {
-            var accountTransactions = await _dataAccess.ReadAccountTransactionsAsync(account.Id).ConfigureAwait(false);
-            var payeeTransactions = await _dataAccess.ReadPayeeTransactionsAsync(account.Id).ConfigureAwait(false);
-            var accountDebtBudgets = await _dataAccess.ReadBudgetsFromEnvelopeAsync(account.Id).ConfigureAwait(false);
-            var debtTransactions = await _dataAccess.ReadEnvelopeTransactionsAsync(account.Id).ConfigureAwait(false);
-
-            return await Task.Run(() => PopulateAccount(account, accountTransactions, payeeTransactions, accountDebtBudgets, debtTransactions));
-        }
-
-        Account PopulateAccount(Account account,
-                                IEnumerable<Transaction> accountTransactions,
-                                IEnumerable<Transaction> payeeTransactions,
-                                IEnumerable<Budget> accountDebtBudgets,
-                                IEnumerable<Transaction> accountDebtTransactions)
-        {
-            var activeAccountTransactions = accountTransactions.Where(t => t.IsActive);
-            var activePayeeTransactions = payeeTransactions.Where(t => t.IsActive);
-
-            // pending
-            account.Pending = activeAccountTransactions.Where(a => a.Pending).Sum(t => t.Amount ?? 0);
-            account.Pending -= activePayeeTransactions.Where(t => t.Pending).Sum(t => t.Amount ?? 0);
-
-            // posted
-            account.Posted = activeAccountTransactions.Where(a => a.Posted).Sum(t => t.Amount ?? 0);
-            account.Posted -= activePayeeTransactions.Where(t => t.Posted).Sum(t => t.Amount ?? 0);
-
-            // balance
-            account.Balance = activeAccountTransactions.Sum(t => t.Amount ?? 0);
-            account.Balance -= activePayeeTransactions.Sum(t => t.Amount ?? 0);
-
-            // payment 
-            var dateTimeNow = DateTime.Now;
-
-            var amountBudgetedToPayDownDebt = accountDebtBudgets
-                .Where(a => a.Schedule.BeginDate <= dateTimeNow)
-                .Sum(a => a.Amount);
-
-            var debtTransactionAmount = accountDebtTransactions
-                .Where(d => d.IsActive && d.ServiceDate <= dateTimeNow)
-                .Sum(d => d.Amount ?? 0);
-
-            account.Payment = amountBudgetedToPayDownDebt + debtTransactionAmount - account.Balance ?? 0;
-
-            account.TranslateAccount(_resourceContainer);
-
-            return account;
-        }
-
-        Task<Result> ValidateAccountAsync(Account account)
-        {
-            var errors = new List<string>();
-
-            if (account.IsGenericHiddenAccount)
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountSaveSystemError"));
-            }
-
-            if (account.IsNew && !account.Balance.HasValue)
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountValidBalanceError"));
-            }
-
-            if (string.IsNullOrEmpty(account.Description))
-            {
-                errors.Add(_resourceContainer.GetResourceString("AccountValidDescriptionError"));
-            }
-
-            return Task.FromResult<Result>(new Result { Success = !errors.Any(), Message = string.Join(Environment.NewLine, errors) });
-        }
-
-        Account GetGenericHiddenAccount(IEnumerable<Account> hiddenAccounts = null)
-        {
-            var genericHiddenAccount = Constants.GenericHiddenAccount.DeepCopy();
-
-            genericHiddenAccount.TranslateAccount(_resourceContainer);
-
-            if (hiddenAccounts != null)
-            {
-                genericHiddenAccount.Pending = hiddenAccounts.Sum(a => a.Pending);
-                genericHiddenAccount.Posted = hiddenAccounts.Sum(a => a.Posted);
-                genericHiddenAccount.Balance = hiddenAccounts.Sum(a => a.Balance);
-                genericHiddenAccount.Payment = hiddenAccounts.Sum(a => a.Payment);
-            }
-
-            return genericHiddenAccount;
         }
     }
 }

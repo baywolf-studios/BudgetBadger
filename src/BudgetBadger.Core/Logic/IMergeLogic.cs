@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 
 namespace BudgetBadger.Core.Logic
 {

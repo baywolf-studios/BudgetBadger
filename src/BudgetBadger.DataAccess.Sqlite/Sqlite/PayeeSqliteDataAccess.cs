@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
 using Microsoft.Data.Sqlite;
-using BudgetBadger.Core.Dtos;
+using BudgetBadger.DataAccess.Dtos;
 using System.Linq;
 using System.Text;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using System.Linq.Expressions;
 
 namespace BudgetBadger.DataAccess.Sqlite
 {
     public partial class SqliteDataAccess
     {
-        public async Task CreatePayeeAsync(Payee payee)
+        public async Task CreatePayeeAsync(PayeeModel payee)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
@@ -56,13 +56,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task<Payee> ReadPayeeAsync(Guid id)
+        public async Task<PayeeModel> ReadPayeeAsync(Guid id)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var payee = new Payee();
+                    var payee = new PayeeModel();
 
                     using (var db = new SqliteConnection(_connectionString))
                     {
@@ -85,7 +85,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             if (reader.Read())
                             {
-                                payee = new Payee
+                                payee = new PayeeModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -104,13 +104,13 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task<IReadOnlyList<Payee>> ReadPayeesAsync()
+        public async Task<IReadOnlyList<PayeeModel>> ReadPayeesAsync()
         {
             using (await MultiThreadLock.UseWaitAsync())
             {
                 return await Task.Run(() =>
                 {
-                    var payees = new List<Payee>();
+                    var payees = new List<PayeeModel>();
 
                     using (var db = new SqliteConnection(_connectionString))
                     {
@@ -130,7 +130,7 @@ namespace BudgetBadger.DataAccess.Sqlite
                         {
                             while (reader.Read())
                             {
-                                var payee = new Payee
+                                var payee = new PayeeModel
                                 {
                                     Id = new Guid(reader["Id"] as byte[]),
                                     Description = reader["Description"].ToString(),
@@ -150,7 +150,7 @@ namespace BudgetBadger.DataAccess.Sqlite
             }
         }
 
-        public async Task UpdatePayeeAsync(Payee payee)
+        public async Task UpdatePayeeAsync(PayeeModel payee)
         {
             using (await MultiThreadLock.UseWaitAsync())
             {

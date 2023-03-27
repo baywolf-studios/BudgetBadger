@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BudgetBadger.Core.Dtos
+namespace BudgetBadger.DataAccess.Dtos
 {
     public record TransactionDto
     {
@@ -8,6 +8,7 @@ namespace BudgetBadger.Core.Dtos
         public decimal Amount { get; init; }
         public bool Posted { get; init; }
         public bool Reconciled { get; init; }
+        public bool Pending => !Posted && !Reconciled;
         public Guid AccountId { get; init; }
         public Guid PayeeId { get; init; }
         public Guid EnvelopeId { get; init; }

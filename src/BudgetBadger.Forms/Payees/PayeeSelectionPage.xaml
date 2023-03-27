@@ -83,7 +83,7 @@
                         </DataTemplate>
                     </uc:ListView2.GroupHeaderTemplate>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate x:DataType="models:Payee">
+                        <DataTemplate x:DataType="models:PayeeModel">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"

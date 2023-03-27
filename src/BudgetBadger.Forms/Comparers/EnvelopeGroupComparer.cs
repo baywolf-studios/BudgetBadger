@@ -18,7 +18,7 @@ namespace BudgetBadger.Forms.Comparers
                 return Compare(osourceX, osourceY);
             }
 
-            if (x is EnvelopeGroup envelope)
+            if (x is EnvelopeGroupModel envelope)
             {
                 return envelope.CompareTo(y);
             }

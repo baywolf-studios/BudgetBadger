@@ -8,7 +8,7 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class PayeeDetailedViewCell : Grid
     {
-        private Payee _payee { get; set; }
+        private PayeeModel _payee { get; set; }
 
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(PayeeDetailedViewCell));
         public ICommand SaveCommand
@@ -38,7 +38,7 @@ namespace BudgetBadger.Forms.DataTemplates
 
         void Handle_EditClicked(object sender, EventArgs e)
         {
-            if (BindingContext is Payee p)
+            if (BindingContext is PayeeModel p)
             {
                 _payee = p.DeepCopy();
             }

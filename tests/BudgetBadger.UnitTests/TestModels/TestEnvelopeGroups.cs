@@ -5,12 +5,12 @@ namespace BudgetBadger.UnitTests.TestModels
 {
     public static class TestEnvelopeGroups
     {
-        public static readonly EnvelopeGroup NewEnvelopeGroup = new EnvelopeGroup
+        public static readonly EnvelopeGroupModel NewEnvelopeGroup = new EnvelopeGroupModel
         {
             Description = nameof(NewEnvelopeGroup)
         };
 
-        public static readonly EnvelopeGroup ActiveEnvelopeGroup = new EnvelopeGroup
+        public static readonly EnvelopeGroupModel ActiveEnvelopeGroup = new EnvelopeGroupModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(ActiveEnvelopeGroup),
@@ -18,7 +18,7 @@ namespace BudgetBadger.UnitTests.TestModels
             ModifiedDateTime = DateTime.Now
         };
 
-        public static readonly EnvelopeGroup HiddenEnvelopeGroup = new EnvelopeGroup
+        public static readonly EnvelopeGroupModel HiddenEnvelopeGroup = new EnvelopeGroupModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(HiddenEnvelopeGroup),
@@ -27,7 +27,7 @@ namespace BudgetBadger.UnitTests.TestModels
             HiddenDateTime = DateTime.Now
         };
 
-        public static readonly EnvelopeGroup SoftDeletedEnvelopeGroup = new EnvelopeGroup
+        public static readonly EnvelopeGroupModel SoftDeletedEnvelopeGroup = new EnvelopeGroupModel
         {
             Id = Guid.NewGuid(),
             Description = nameof(SoftDeletedEnvelopeGroup),

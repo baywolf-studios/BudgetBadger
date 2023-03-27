@@ -114,13 +114,13 @@ namespace BudgetBadger.Forms.Transactions
 				Transaction.ServiceDate = transactionServiceDate.Value;
 			}
 
-            var account = parameters.GetValue<Account>(PageParameter.Account);
+            var account = parameters.GetValue<AccountModel>(PageParameter.Account);
             if (account != null)
             {
                 Transaction.Account = account.DeepCopy();
             }
 
-            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+            var payee = parameters.GetValue<PayeeModel>(PageParameter.Payee);
             if (payee != null)
             {
                 Transaction.Payee = payee.DeepCopy();

@@ -18,7 +18,7 @@ namespace BudgetBadger.Forms.Comparers
                 return Compare(osourceX, osourceY);
             }
 
-            if (x is Payee payee)
+            if (x is PayeeModel payee)
             {
                 return payee.CompareTo(y);
             }

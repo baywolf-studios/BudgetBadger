@@ -12,6 +12,8 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -37,8 +39,8 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _busyText, value);
         }
 
-        Account _account;
-        public Account Account
+        AccountModel _account;
+        public AccountModel Account
         {
             get => _account;
             set => SetProperty(ref _account, value);
@@ -53,7 +55,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public IList<string> AccountTypes
         {
-            get => Enum.GetNames(typeof(AccountType)).Select(_resourceContainer.GetResourceString).ToList();
+            get => Enum.GetNames(typeof(AccountModelType)).Select(_resourceContainer.GetResourceString).ToList();
         }
 
         public ICommand BackCommand { get => new Command(async () => await _navigationService.GoBackAsync()); }
@@ -74,7 +76,7 @@ namespace BudgetBadger.Forms.Accounts
             _resourceContainer = resourceContainer;
             _eventAggregator = eventAggregator;
 
-            Account = new Account();
+            Account = new AccountModel();
 
             SaveCommand = new Command(async () => await ExecuteSaveCommand());
             HideCommand = new Command(async () => await ExecuteHideCommand());
@@ -96,16 +98,16 @@ namespace BudgetBadger.Forms.Accounts
 
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(PageParameter.Account);
+            var account = parameters.GetValue<AccountModel>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
             }
 
-            var accountCountResult = await _accountLogic.GetAccountsCountAsync();
+            var accountCountResult = await _accountLogic.GetAccountsAsync();
             if (accountCountResult.Success)
             {
-                NoAccounts = accountCountResult.Data == 0;
+                NoAccounts = accountCountResult.Data.Count == 0;
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.DataAccess.Sqlite;
 using BudgetBadger.TestData;
 using Microsoft.Data.Sqlite;
@@ -34,7 +34,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public void CreatePayee_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto() with
+            var testPayee = TestGen.PayeeDto() with
             {
                 Description = null
             };
@@ -47,7 +47,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreatePayee_ValidRequest_CreatesPayeeDto()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
 
             // act
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
@@ -62,7 +62,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdatePayee_NullDescription_ThrowsSqliteException()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
 
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
 
@@ -76,13 +76,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdatePayee_ValidRequest_UpdatesPayeeDto()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
 
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
 
             var updatedPayee = testPayee with
             {
-                Description = TestDataGenerator.RandomName(),
+                Description = TestGen.RndString(),
                 ModifiedDateTime = DateTime.Now,
                 Deleted = false,
                 Hidden = false
@@ -101,9 +101,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadPayees_NullPayeeIds_ReturnsAll()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
-            var testPayee2 = TestDataGenerator.PayeeDto();
+            var testPayee2 = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee2);
 
             // act
@@ -118,9 +118,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadPayees_EmptyPayeeIds_ReturnsNone()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
-            var testPayee2 = TestDataGenerator.PayeeDto();
+            var testPayee2 = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee2);
 
             // act
@@ -134,9 +134,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadPayees_PayeeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
-            var testPayee2 = TestDataGenerator.PayeeDto();
+            var testPayee2 = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee2);
 
             // act
@@ -151,9 +151,9 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadPayees_NonExistentPayeeIds_ReturnsNoPayees()
         {
             // assemble
-            var testPayee = TestDataGenerator.PayeeDto();
+            var testPayee = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee);
-            var testPayee2 = TestDataGenerator.PayeeDto();
+            var testPayee2 = TestGen.PayeeDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testPayee2);
 
             // act

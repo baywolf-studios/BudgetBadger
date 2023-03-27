@@ -1741,6 +1741,15 @@ namespace BudgetBadger.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gone.
+        /// </summary>
+        public static string GoneError {
+            get {
+                return ResourceManager.GetString("GoneError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden.
         /// </summary>
         public static string GroupedHiddenPayeeModelDescription {
@@ -1890,6 +1899,15 @@ namespace BudgetBadger.Core.Localization {
         public static string NextButton {
             get {
                 return ResourceManager.GetString("NextButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Found.
+        /// </summary>
+        public static string NotFoundError {
+            get {
+                return ResourceManager.GetString("NotFoundError", resourceCulture);
             }
         }
         

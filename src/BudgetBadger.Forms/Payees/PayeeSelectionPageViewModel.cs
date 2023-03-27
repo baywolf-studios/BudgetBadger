@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
@@ -26,7 +28,7 @@ namespace BudgetBadger.Forms.Payees
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveSearchCommand { get; set; }
         public ICommand AddCommand { get; set; }
-        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((Payee)payee, SearchText); }
+        public Predicate<object> Filter { get => (payee) => _payeeLogic.FilterPayee((PayeeModel)payee, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -35,15 +37,15 @@ namespace BudgetBadger.Forms.Payees
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        Payee _selectedPayee;
-        public Payee SelectedPayee
+        PayeeModel _selectedPayee;
+        public PayeeModel SelectedPayee
         {
             get => _selectedPayee;
             set => SetProperty(ref _selectedPayee, value);
@@ -77,10 +79,10 @@ namespace BudgetBadger.Forms.Payees
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            Payees = new ObservableList<Payee>();
+            Payees = new ObservableList<PayeeModel>();
             SelectedPayee = null;
 
-            SelectedCommand = new Command<Payee>(async p => await ExecuteSelectedCommand(p));
+            SelectedCommand = new Command<PayeeModel>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new Command(async () => await FullRefresh());
             SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
             AddCommand = new Command(async () => await ExecuteAddCommand());
@@ -93,7 +95,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            var payee = parameters.GetValue<Payee>(PageParameter.Payee);
+            var payee = parameters.GetValue<PayeeModel>(PageParameter.Payee);
             if (payee != null)
             {
                 await _navigationService.GoBackAsync(parameters);
@@ -108,7 +110,7 @@ namespace BudgetBadger.Forms.Payees
             await _navigationService.NavigateAsync(PageName.PayeeEditPage);
         }
 
-        public async Task ExecuteSelectedCommand(Payee payee)
+        public async Task ExecuteSelectedCommand(PayeeModel payee)
         {
             if (payee == null)
             {
@@ -125,7 +127,7 @@ namespace BudgetBadger.Forms.Payees
 
         public async Task ExecuteSaveSearchCommand()
         {
-            var newPayee = new Payee
+            var newPayee = new PayeeModel
             {
                 Description = SearchText
             };

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.DataAccess.Sqlite;
 using BudgetBadger.TestData;
 using Microsoft.Data.Sqlite;
@@ -35,7 +35,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateTransaction_EnvelopeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -48,7 +48,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateTransaction_AccountIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
@@ -61,7 +61,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateTransaction_PayeeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
@@ -74,7 +74,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task CreateTransaction_ValidRequest_CreatesTransactionDto()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -92,7 +92,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateTransaction_EnvelopeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -109,7 +109,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateTransaction_AccountIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -126,7 +126,7 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateTransaction_PayeeIdDoesNotExist_ThrowsSqliteException()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
@@ -143,13 +143,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task UpdateTransaction_ValidRequest_UpdatesTransactionDto()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var updatedTransaction = testData.transactionDto with { Amount = TestDataGenerator.RandomDecimal(), ModifiedDateTime = DateTime.Now };
+            var updatedTransaction = testData.transactionDto with { Amount = TestGen.RndDecimal(), ModifiedDateTime = DateTime.Now };
 
             // act
             await sqliteDataAccess.UpdateTransactionDtoAsync(updatedTransaction);
@@ -163,13 +163,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NullTransactionIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -188,13 +188,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EmptyTransactionIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -212,13 +212,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NonExistentTransactionIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -236,13 +236,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_TransactionIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -261,13 +261,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NullPayeeIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -286,13 +286,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EmptyPayeeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -310,13 +310,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NonExistentPayeeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -334,13 +334,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_PayeeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -359,13 +359,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NullAccountIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -384,13 +384,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EmptyAccountIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -408,13 +408,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NonExistentAccountIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -432,13 +432,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_AccountIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -457,13 +457,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NullEnvelopeIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -482,13 +482,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EmptyEnvelopeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -506,13 +506,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NonExistentEnvelopeIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -530,13 +530,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EnvelopeIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
@@ -555,21 +555,21 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NullSplitIds_ReturnsAll()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             var transaction1 = testData.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction1);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             var transaction2 = testData2.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction2);
-            var testData3 = TestDataGenerator.TransactionDto();
+            var testData3 = TestGen.TransactionDto();
             var transaction3 = testData3.transactionDto with { SplitId = transaction2.SplitId };
             await sqliteDataAccess.CreateAccountDtoAsync(testData3.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData3.payeeDto);
@@ -590,21 +590,21 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EmptySplitIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             var transaction1 = testData.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction1);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             var transaction2 = testData2.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction2);
-            var testData3 = TestDataGenerator.TransactionDto();
+            var testData3 = TestGen.TransactionDto();
             var transaction3 = testData3.transactionDto with { SplitId = transaction2.SplitId };
             await sqliteDataAccess.CreateAccountDtoAsync(testData3.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData3.payeeDto);
@@ -623,21 +623,21 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_NonExistentSplitIds_ReturnsNone()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             var transaction1 = testData.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction1);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             var transaction2 = testData2.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction2);
-            var testData3 = TestDataGenerator.TransactionDto();
+            var testData3 = TestGen.TransactionDto();
             var transaction3 = testData3.transactionDto with { SplitId = transaction2.SplitId };
             await sqliteDataAccess.CreateAccountDtoAsync(testData3.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData3.payeeDto);
@@ -656,21 +656,21 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_SplitIds_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             var transaction1 = testData.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction1);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             var transaction2 = testData2.transactionDto with { SplitId = Guid.NewGuid() };
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData2.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(transaction2);
-            var testData3 = TestDataGenerator.TransactionDto();
+            var testData3 = TestGen.TransactionDto();
             var transaction3 = testData3.transactionDto with { SplitId = transaction2.SplitId };
             await sqliteDataAccess.CreateAccountDtoAsync(testData3.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData3.payeeDto);
@@ -691,13 +691,13 @@ namespace BudgetBadger.IntegrationTests.DataAccess.Sqlite
         public async Task ReadTransactions_EvelopeIdAndPayeeIdAndAccountId_ReturnsOnlyRowsThatMatch()
         {
             // assemble
-            var testData = TestDataGenerator.TransactionDto();
+            var testData = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData.envelopeGroupDto);
             await sqliteDataAccess.CreateEnvelopeDtoAsync(testData.envelopeDto);
             await sqliteDataAccess.CreateTransactionDtoAsync(testData.transactionDto);
-            var testData2 = TestDataGenerator.TransactionDto();
+            var testData2 = TestGen.TransactionDto();
             await sqliteDataAccess.CreateAccountDtoAsync(testData2.accountDto);
             await sqliteDataAccess.CreatePayeeDtoAsync(testData2.payeeDto);
             await sqliteDataAccess.CreateEnvelopeGroupDtoAsync(testData2.envelopeGroupDto);

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
 using FakeItEasy;

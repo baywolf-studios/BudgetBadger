@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
+using BudgetBadger.Logic.Models;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
@@ -45,15 +48,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        Account _account;
-        public Account Account
+        AccountModel _account;
+        public AccountModel Account
         {
             get => _account;
             set => SetProperty(ref _account, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
@@ -117,9 +120,9 @@ namespace BudgetBadger.Forms.Accounts
             _payeeLogic = payeeLogic;
             _eventAggregator = eventAggregator;
 
-            Account = new Account();
+            Account = new AccountModel();
             Transactions = new ObservableList<Transaction>();
-            Payees = new ObservableList<Payee>();
+            Payees = new ObservableList<PayeeModel>();
             Envelopes = new ObservableList<Envelope>();
             SelectedTransaction = null;
 
@@ -161,7 +164,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public void Initialize(INavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(PageParameter.Account);
+            var account = parameters.GetValue<AccountModel>(PageParameter.Account);
             if (account != null)
             {
                 Account = account.DeepCopy();
@@ -413,9 +416,9 @@ namespace BudgetBadger.Forms.Accounts
             Transactions.ReplaceRange(transactions);
         }
 
-        public void RefreshPayee(Payee payee)
+        public void RefreshPayee(PayeeModel payee)
         {
-            foreach(var transaction in Transactions.Where(t => t.Payee.Id == payee.Id))
+            foreach (var transaction in Transactions.Where(t => t.Payee.Id == payee.Id))
             {
                 transaction.Payee = payee;
             }
@@ -447,7 +450,7 @@ namespace BudgetBadger.Forms.Accounts
             Envelopes.ReplaceRange(envelopes);
         }
 
-        public void RefreshAccount(Account account)
+        public void RefreshAccount(AccountModel account)
         {
             Account = account;
 

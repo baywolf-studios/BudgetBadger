@@ -8,5 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\BudgetBadger.Core\BudgetBadger.Core.csproj" />
+    <ProjectReference Include="..\..\src\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.csproj" />
+    <ProjectReference Include="..\..\src\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
   </ItemGroup>
 </Project>

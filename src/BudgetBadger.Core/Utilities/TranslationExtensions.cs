@@ -6,17 +6,11 @@ namespace BudgetBadger.Core.Utilities
 {
     public static class TranslationExtensions
     {
-        public static void TranslateAccount(this Account account, IResourceContainer resourceContainer)
+        public static void TranslateAccount(this AccountModel account, IResourceContainer resourceContainer)
         {
             if (account is null)
             {
                 return;
-            }
-
-            if (account.IsGenericHiddenAccount)
-            {
-                account.Description = resourceContainer.GetResourceString("Hidden");
-                account.Group = resourceContainer.GetResourceString("Hidden");
             }
 
             if (account.IsHidden)
@@ -25,30 +19,25 @@ namespace BudgetBadger.Core.Utilities
             }
             else
             {
-                account.Group = resourceContainer.GetResourceString(Enum.GetName(typeof(AccountType), account.Type));
+                account.Group = resourceContainer.GetResourceString(Enum.GetName(typeof(AccountModelType), account.Type));
             }
         }
 
-        public static void TranslatePayee(this Payee payee, IResourceContainer resourceContainer)
+        public static void TranslatePayee(this PayeeModel payee, IResourceContainer resourceContainer)
         {
             if (payee is null)
             {
                 return;
             }
 
-            if (payee.IsGenericHiddenPayee)
-            {
-                payee.Description = resourceContainer.GetResourceString("Hidden");
-                payee.Group = resourceContainer.GetResourceString("Hidden");
-            }
-            else if (payee.IsStartingBalance)
+            if (payee.IsStartingBalance)
             {
                 payee.Description = resourceContainer.GetResourceString(nameof(Constants.StartingBalancePayee));
-                payee.Group = String.Empty;
+                payee.Group = string.Empty;
             }
             else if (string.IsNullOrEmpty(payee.Description))
             {
-                payee.Group = String.Empty;
+                payee.Group = string.Empty;
             }
             else if (payee.IsAccount)
             {
@@ -60,16 +49,11 @@ namespace BudgetBadger.Core.Utilities
             }
         }
 
-        public static void TranslateEnvelopeGroup(this EnvelopeGroup envelopeGroup, IResourceContainer resourceContainer)
+        public static void TranslateEnvelopeGroup(this EnvelopeGroupModel envelopeGroup, IResourceContainer resourceContainer)
         {
             if (envelopeGroup is null)
             {
                 return;
-            }
-
-            if (envelopeGroup.IsGenericHiddenEnvelopeGroup)
-            {
-                envelopeGroup.Description = resourceContainer.GetResourceString("Hidden");
             }
 
             if (envelopeGroup.IsSystem)
@@ -89,15 +73,10 @@ namespace BudgetBadger.Core.Utilities
         }
 
         public static void TranslateEnvelope(this Envelope envelope, IResourceContainer resourceContainer)
-		{
+        {
             if (envelope is null)
             {
                 return;
-            }
-
-            if (envelope.IsGenericHiddenEnvelope)
-            {
-                envelope.Description = resourceContainer.GetResourceString("Hidden");
             }
 
             if (envelope.IsGenericDebtEnvelope)

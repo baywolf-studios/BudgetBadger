@@ -1053,4 +1053,10 @@
   <data name="GroupedHiddenPayeeModelDescription" xml:space="preserve">
     <value>Hidden</value>
   </data>
+  <data name="NotFoundError" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="GoneError" xml:space="preserve">
+    <value>Gone</value>
+  </data>
 </root>

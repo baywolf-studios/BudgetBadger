@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeSelectionPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -57,7 +57,7 @@
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                <dt:BudgetViewCell/>
+                                <uc:SingleLineListItem Text="{Binding Envelope.Description}" RightText="{Binding Remaining, Converter={StaticResource CurrencyConverter}}" />
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:ListView2.ItemTemplate>

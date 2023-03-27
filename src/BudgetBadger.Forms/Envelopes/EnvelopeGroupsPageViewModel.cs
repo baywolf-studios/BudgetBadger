@@ -11,6 +11,7 @@ using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
 
 namespace BudgetBadger.Forms.Envelopes
 {
@@ -30,7 +31,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SaveSearchCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
-        public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.Value.FilterEnvelopeGroup((EnvelopeGroup)envelopeGroup, SearchText); }
+        public Predicate<object> Filter { get => (envelopeGroup) => _envelopeGroupLogic.Value.FilterEnvelopeGroup((EnvelopeGroupModel)envelopeGroup, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -39,15 +40,15 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<EnvelopeGroup> _envelopeGroups;
-        public ObservableList<EnvelopeGroup> EnvelopeGroups
+        ObservableList<EnvelopeGroupModel> _envelopeGroups;
+        public ObservableList<EnvelopeGroupModel> EnvelopeGroups
         {
             get => _envelopeGroups;
             set => SetProperty(ref _envelopeGroups, value);
         }
 
-        EnvelopeGroup _selectedEnvelopeGroup;
-        public EnvelopeGroup SelectedEnvelopeGroup
+        EnvelopeGroupModel _selectedEnvelopeGroup;
+        public EnvelopeGroupModel SelectedEnvelopeGroup
         {
             get => _selectedEnvelopeGroup;
             set => SetProperty(ref _selectedEnvelopeGroup, value);
@@ -81,16 +82,16 @@ namespace BudgetBadger.Forms.Envelopes
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
 
-            EnvelopeGroups = new ObservableList<EnvelopeGroup>();
+            EnvelopeGroups = new ObservableList<EnvelopeGroupModel>();
             SelectedEnvelopeGroup = null;
 
-            SelectedCommand = new Command<EnvelopeGroup>(async p => await ExecuteSelectedCommand(p));
+            SelectedCommand = new Command<EnvelopeGroupModel>(async p => await ExecuteSelectedCommand(p));
             RefreshCommand = new Command(async () => await FullRefresh());
-            RefreshEnvelopeGroupCommand = new Command<EnvelopeGroup>(RefreshEnvelopeGroup);
+            RefreshEnvelopeGroupCommand = new Command<EnvelopeGroupModel>(RefreshEnvelopeGroup);
             SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
-            SaveCommand = new Command<EnvelopeGroup>(async p => await ExecuteSaveCommand(p));
+            SaveCommand = new Command<EnvelopeGroupModel>(async p => await ExecuteSaveCommand(p));
             AddCommand = new Command(async () => await ExecuteAddCommand());
-            EditCommand = new Command<EnvelopeGroup>(async a => await ExecuteEditCommand(a));
+            EditCommand = new Command<EnvelopeGroupModel>(async a => await ExecuteEditCommand(a));
 
             _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Subscribe(RefreshEnvelopeGroup);
             _eventAggregator.GetEvent<EnvelopeGroupDeletedEvent>().Subscribe(RefreshEnvelopeGroup);
@@ -115,7 +116,7 @@ namespace BudgetBadger.Forms.Envelopes
             await FullRefresh();
         }
 
-        public async Task ExecuteSelectedCommand(EnvelopeGroup envelopeGroup)
+        public async Task ExecuteSelectedCommand(EnvelopeGroupModel envelopeGroup)
         {
             if (envelopeGroup == null)
             {
@@ -127,7 +128,7 @@ namespace BudgetBadger.Forms.Envelopes
                 await _navigationService.NavigateAsync(PageName.HiddenEnvelopeGroupsPage);
             }
             else
-            { 
+            {
                 var parameters = new NavigationParameters
                 {
                     { PageParameter.EnvelopeGroup, envelopeGroup }
@@ -169,7 +170,7 @@ namespace BudgetBadger.Forms.Envelopes
 
         public async Task ExecuteSaveSearchCommand()
         {
-            var newEnvelopeGroup = new EnvelopeGroup
+            var newEnvelopeGroup = new EnvelopeGroupModel
             {
                 Description = SearchText
             };
@@ -186,7 +187,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public async Task ExecuteSaveCommand(EnvelopeGroup envelopeGroup)
+        public async Task ExecuteSaveCommand(EnvelopeGroupModel envelopeGroup)
         {
             var result = await _envelopeGroupLogic.Value.SaveEnvelopeGroupAsync(envelopeGroup);
 
@@ -206,20 +207,23 @@ namespace BudgetBadger.Forms.Envelopes
 
         }
 
-        public async Task ExecuteEditCommand(EnvelopeGroup envelopeGroup)
+        public async Task ExecuteEditCommand(EnvelopeGroupModel envelopeGroup)
         {
-            var parameters = new NavigationParameters
+            if (!envelopeGroup.IsGenericHiddenEnvelopeGroup)
             {
-                { PageParameter.EnvelopeGroup, envelopeGroup }
-            };
-            await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.EnvelopeGroup, envelopeGroup }
+                };
+                await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage, parameters);
+            }
         }
 
-        public void RefreshEnvelopeGroup(EnvelopeGroup envelopeGroup)
+        public void RefreshEnvelopeGroup(EnvelopeGroupModel envelopeGroup)
         {
             var envelopeGroups = EnvelopeGroups.Where(a => a.Id != envelopeGroup.Id).ToList();
 
-            if (envelopeGroup != null && _envelopeGroupLogic.Value.FilterEnvelopeGroup(envelopeGroup, FilterType.Standard))
+            if (envelopeGroup != null && _envelopeGroupLogic.Value.FilterEnvelopeGroup(envelopeGroup, FilterType.Editable))
             {
                 envelopeGroups.Add(envelopeGroup);
             }

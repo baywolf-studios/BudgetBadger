@@ -8,6 +8,9 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:DataType="envelopes:EnvelopeGroupsPageViewModel"
     x:Name="this">
     <p:BaseDetailedPage.Header>
         <p:ChildSearchHeader
@@ -50,7 +53,7 @@
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
                     </uc:DataTable.Header>
                     <uc:DataTable.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:EnvelopeGroupModel">
                             <uc:SelectableViewCell
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}"

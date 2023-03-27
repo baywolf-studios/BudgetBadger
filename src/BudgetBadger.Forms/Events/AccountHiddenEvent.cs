@@ -4,7 +4,7 @@ using Prism.Events;
 
 namespace BudgetBadger.Forms.Events
 {
-    public class AccountHiddenEvent : PubSubEvent<Account>
+    public class AccountHiddenEvent : PubSubEvent<AccountModel>
     {
     }
 }

@@ -62,15 +62,15 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        IReadOnlyList<DataPoint<Payee, decimal>> _payees;
-        public IReadOnlyList<DataPoint<Payee, decimal>> Payees
+        IReadOnlyList<DataPoint<PayeeModel, decimal>> _payees;
+        public IReadOnlyList<DataPoint<PayeeModel, decimal>> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        DataPoint<Payee, decimal> _selectedPayee;
-        public DataPoint<Payee, decimal> SelectedPayee
+        DataPoint<PayeeModel, decimal> _selectedPayee;
+        public DataPoint<PayeeModel, decimal> SelectedPayee
         {
             get => _selectedPayee;
             set => SetProperty(ref _selectedPayee, value);
@@ -94,9 +94,9 @@ namespace BudgetBadger.Forms.Reports
             _reportLogic = reportLogic;
 
             RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
-            SelectedCommand = new Command<DataPoint<Payee, decimal>>(async d => await ExecuteSelectedCommand(d));
+            SelectedCommand = new Command<DataPoint<PayeeModel, decimal>>(async d => await ExecuteSelectedCommand(d));
 
-            Payees = new List<DataPoint<Payee, decimal>>();
+            Payees = new List<DataPoint<PayeeModel, decimal>>();
 
             var now = DateTime.Now;
             _endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddTicks(-1);
@@ -152,7 +152,7 @@ namespace BudgetBadger.Forms.Reports
             }
         }
 
-        public async Task ExecuteSelectedCommand(DataPoint<Payee, decimal> dataPoint)
+        public async Task ExecuteSelectedCommand(DataPoint<PayeeModel, decimal> dataPoint)
         {
             if (dataPoint == null)
             {

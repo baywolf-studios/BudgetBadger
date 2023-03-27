@@ -9,7 +9,7 @@ namespace BudgetBadger.Forms.DataTemplates
 {
     public partial class AccountDetailedViewCell : Grid
     {
-        private Account _account { get; set; }
+        private AccountModel _account { get; set; }
 
         public static BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(AccountDetailedViewCell));
         public ICommand SaveCommand
@@ -39,7 +39,7 @@ namespace BudgetBadger.Forms.DataTemplates
 
         void Handle_EditClicked(object sender, EventArgs e)
         {
-            if (BindingContext is Account b)
+            if (BindingContext is AccountModel b)
             {
                 _account = b.DeepCopy();
             }

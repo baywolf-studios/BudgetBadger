@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Utilities;
 using BudgetBadger.Core.Models;
@@ -136,7 +136,7 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(Account account)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetAccountTransactionsAsync(AccountModel account)
         {
             var result = new Result<IReadOnlyList<Transaction>>();
             var transactions = new List<Transaction>();
@@ -175,7 +175,7 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<Transaction>>> GetPayeeTransactionsAsync(Payee payee)
+        public async Task<Result<IReadOnlyList<Transaction>>> GetPayeeTransactionsAsync(PayeeModel payee)
         {
             var result = new Result<IReadOnlyList<Transaction>>();
 
@@ -464,7 +464,7 @@ namespace BudgetBadger.Core.Logic
 
                     if (!transactionGroup.All(t => t.Account.Id == combinedTransaction.Account.Id))
                     {
-                        combinedTransaction.Account = new Account() { Description = _resourceContainer.GetResourceString("Split") };
+                        combinedTransaction.Account = new AccountModel() { Description = _resourceContainer.GetResourceString("Split") };
                     }
 
                     if (!transactionGroup.All(t => t.Envelope.Id == combinedTransaction.Envelope.Id))
@@ -474,7 +474,7 @@ namespace BudgetBadger.Core.Logic
 
                     if (!transactionGroup.All(t => t.Payee.Id == combinedTransaction.Payee.Id))
                     {
-                        combinedTransaction.Payee = new Payee() { Description = _resourceContainer.GetResourceString("Split") };
+                        combinedTransaction.Payee = new PayeeModel() { Description = _resourceContainer.GetResourceString("Split") };
                     }
 
                     if (transactionGroup.All(t => t.Posted))

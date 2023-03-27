@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BudgetBadger.Core.DataAccess;
+using BudgetBadger.DataAccess;
 using BudgetBadger.Core.Logic;
 using BudgetBadger.Core.Models;
 using BudgetBadger.UnitTests.TestModels;
@@ -31,8 +31,8 @@ public class MergeLogicUnitTests
         // arrange
         var sourceAccount = TestAccounts.ActiveAccount.DeepCopy();
 
-        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<Account> { sourceAccount });
-        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<Account>());
+        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { sourceAccount });
+        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel>());
 
         // act
         await _mergeLogic.MergeAccountsAsync(_sourceDataAccess, _targetDataAccess);
@@ -49,8 +49,8 @@ public class MergeLogicUnitTests
         var targetAccount = TestAccounts.ActiveAccount.DeepCopy();
         targetAccount.ModifiedDateTime = sourceAccount.ModifiedDateTime.GetValueOrDefault().AddDays(-10);
 
-        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<Account> { sourceAccount });
-        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<Account> { targetAccount });
+        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { sourceAccount });
+        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { targetAccount });
 
         // act
         await _mergeLogic.MergeAccountsAsync(_sourceDataAccess, _targetDataAccess);
@@ -67,8 +67,8 @@ public class MergeLogicUnitTests
         var targetAccount = TestAccounts.ActiveAccount.DeepCopy();
         targetAccount.ModifiedDateTime = sourceAccount.ModifiedDateTime.GetValueOrDefault().AddDays(10);
 
-        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<Account> { sourceAccount });
-        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<Account> { targetAccount });
+        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { sourceAccount });
+        A.CallTo(() => _targetDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { targetAccount });
 
         // act
         await _mergeLogic.MergeAccountsAsync(_sourceDataAccess, _targetDataAccess);
@@ -84,7 +84,7 @@ public class MergeLogicUnitTests
         var sourceAccount = TestAccounts.ActiveAccount.DeepCopy();
         sourceAccount.Id = Guid.Empty;
 
-        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<Account> { sourceAccount });
+        A.CallTo(() => _sourceDataAccess.ReadAccountsAsync()).Returns(new List<AccountModel> { sourceAccount });
       
         // act and assert
         Assert.ThrowsAsync<Exception>(() => _mergeLogic.MergeAccountsAsync(_sourceDataAccess, _targetDataAccess));
@@ -96,8 +96,8 @@ public class MergeLogicUnitTests
         // arrange
         var sourcePayee = TestPayees.ActivePayee.DeepCopy();
 
-        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { sourcePayee });
-        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<Payee>());
+        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { sourcePayee });
+        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel>());
 
         // act
         await _mergeLogic.MergePayeesAsync(_sourceDataAccess, _targetDataAccess);
@@ -114,8 +114,8 @@ public class MergeLogicUnitTests
         var targetPayee = TestPayees.ActivePayee.DeepCopy();
         targetPayee.ModifiedDateTime = sourcePayee.ModifiedDateTime.GetValueOrDefault().AddDays(-10);
 
-        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { sourcePayee });
-        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { targetPayee });
+        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { sourcePayee });
+        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { targetPayee });
 
         // act
         await _mergeLogic.MergePayeesAsync(_sourceDataAccess, _targetDataAccess);
@@ -132,8 +132,8 @@ public class MergeLogicUnitTests
         var targetPayee = TestPayees.ActivePayee.DeepCopy();
         targetPayee.ModifiedDateTime = sourcePayee.ModifiedDateTime.GetValueOrDefault().AddDays(10);
 
-        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { sourcePayee });
-        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { targetPayee });
+        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { sourcePayee });
+        A.CallTo(() => _targetDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { targetPayee });
 
         // act
         await _mergeLogic.MergePayeesAsync(_sourceDataAccess, _targetDataAccess);
@@ -149,7 +149,7 @@ public class MergeLogicUnitTests
         var sourcePayee = TestPayees.ActivePayee.DeepCopy();
         sourcePayee.Id = Guid.Empty;
 
-        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<Payee> { sourcePayee });
+        A.CallTo(() => _sourceDataAccess.ReadPayeesAsync()).Returns(new List<PayeeModel> { sourcePayee });
       
         // act and assert
         Assert.ThrowsAsync<Exception>(() => _mergeLogic.MergePayeesAsync(_sourceDataAccess, _targetDataAccess));
@@ -161,8 +161,8 @@ public class MergeLogicUnitTests
         // arrange
         var sourceEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
 
-        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { sourceEnvelopeGroup });
-        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup>());
+        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { sourceEnvelopeGroup });
+        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel>());
 
         // act
         await _mergeLogic.MergeEnvelopeGroupsAsync(_sourceDataAccess, _targetDataAccess);
@@ -179,8 +179,8 @@ public class MergeLogicUnitTests
         var targetEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
         targetEnvelopeGroup.ModifiedDateTime = sourceEnvelopeGroup.ModifiedDateTime.GetValueOrDefault().AddDays(-10);
 
-        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { sourceEnvelopeGroup });
-        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { targetEnvelopeGroup });
+        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { sourceEnvelopeGroup });
+        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { targetEnvelopeGroup });
 
         // act
         await _mergeLogic.MergeEnvelopeGroupsAsync(_sourceDataAccess, _targetDataAccess);
@@ -197,8 +197,8 @@ public class MergeLogicUnitTests
         var targetEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
         targetEnvelopeGroup.ModifiedDateTime = sourceEnvelopeGroup.ModifiedDateTime.GetValueOrDefault().AddDays(10);
 
-        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { sourceEnvelopeGroup });
-        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { targetEnvelopeGroup });
+        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { sourceEnvelopeGroup });
+        A.CallTo(() => _targetDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { targetEnvelopeGroup });
 
         // act
         await _mergeLogic.MergeEnvelopeGroupsAsync(_sourceDataAccess, _targetDataAccess);
@@ -214,7 +214,7 @@ public class MergeLogicUnitTests
         var sourceEnvelopeGroup = TestEnvelopeGroups.ActiveEnvelopeGroup.DeepCopy();
         sourceEnvelopeGroup.Id = Guid.Empty;
 
-        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroup> { sourceEnvelopeGroup });
+        A.CallTo(() => _sourceDataAccess.ReadEnvelopeGroupsAsync()).Returns(new List<EnvelopeGroupModel> { sourceEnvelopeGroup });
       
         // act and assert
         Assert.ThrowsAsync<Exception>(() => _mergeLogic.MergeEnvelopeGroupsAsync(_sourceDataAccess, _targetDataAccess));

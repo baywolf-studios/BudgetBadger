@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Logic;
+using BudgetBadger.Core.Models;
 using BudgetBadger.Forms.Enums;
 using BudgetBadger.Forms.Events;
-using BudgetBadger.Core.Models;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
+using BudgetBadger.Logic.Models;
 using Prism.Events;
 using Prism.Navigation;
 using Prism.Services;
@@ -51,15 +54,15 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _budget, value);
         }
 
-        ObservableList<Payee> _payees;
-        public ObservableList<Payee> Payees
+        ObservableList<PayeeModel> _payees;
+        public ObservableList<PayeeModel> Payees
         {
             get => _payees;
             set => SetProperty(ref _payees, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        ObservableList<AccountModel> _accounts;
+        public ObservableList<AccountModel> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
@@ -115,8 +118,8 @@ namespace BudgetBadger.Forms.Envelopes
 
             Budget = new Budget();
             Transactions = new ObservableList<Transaction>();
-            Accounts = new ObservableList<Account>();
-            Payees = new ObservableList<Payee>();
+            Accounts = new ObservableList<AccountModel>();
+            Payees = new ObservableList<PayeeModel>();
             SelectedTransaction = null;
 
             EditCommand = new Command(async () => await ExecuteEditCommand());
@@ -378,7 +381,7 @@ namespace BudgetBadger.Forms.Envelopes
                     {
                         budgetResult = await _envelopeLogic.Value.GetBudgetAsync(Budget.Envelope.Id, Budget.Schedule);
                     }
-                    
+
                     if (budgetResult.Success)
                     {
                         Budget = budgetResult.Data;
@@ -398,7 +401,7 @@ namespace BudgetBadger.Forms.Envelopes
                 await _dialogService.DisplayAlertAsync(_resourceContainer.Value.GetResourceString("AlertSaveUnsuccessful"), correctedTransactionResult.Message, _resourceContainer.Value.GetResourceString("AlertOk"));
             }
         }
-        
+
         public async Task RefreshSummary()
         {
             Result<BudgetSchedule> scheduleResult;
@@ -449,9 +452,9 @@ namespace BudgetBadger.Forms.Envelopes
             Transactions.ReplaceRange(transactions);
         }
 
-        public void RefreshPayee(Payee payee)
+        public void RefreshPayee(PayeeModel payee)
         {
-            foreach(var transaction in Transactions.Where(t => t.Payee.Id == payee.Id))
+            foreach (var transaction in Transactions.Where(t => t.Payee.Id == payee.Id))
             {
                 transaction.Payee = payee;
             }
@@ -489,7 +492,7 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-        public void RefreshAccount(Account account)
+        public void RefreshAccount(AccountModel account)
         {
             foreach (var transaction in Transactions.Where(t => t.Account.Id == account.Id))
             {

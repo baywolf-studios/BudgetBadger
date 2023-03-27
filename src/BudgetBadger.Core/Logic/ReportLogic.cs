@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BudgetBadger.Core.Localization;
 using BudgetBadger.Core.Models;
+using BudgetBadger.Logic;
+using BudgetBadger.Logic.Converters;
+using BudgetBadger.Logic.Models;
 
 namespace BudgetBadger.Core.Logic
 {
@@ -116,18 +119,18 @@ namespace BudgetBadger.Core.Logic
             return result;
         }
 
-        public async Task<Result<IReadOnlyList<DataPoint<Payee, decimal>>>> GetPayeesSpendingReport(DateTime beginDate, DateTime endDate)
+        public async Task<Result<IReadOnlyList<DataPoint<PayeeModel, decimal>>>> GetPayeesSpendingReport(DateTime beginDate, DateTime endDate)
         {
-            var result = new Result<IReadOnlyList<DataPoint<Payee, decimal>>>();
-            var dataPoints = new List<DataPoint<Payee, decimal>>();
+            var result = new Result<IReadOnlyList<DataPoint<PayeeModel, decimal>>>();
+            var dataPoints = new List<DataPoint<PayeeModel, decimal>>();
 
             try
             {
-                var payeeResult = await _payeeLogic.GetPayeesForReportAsync().ConfigureAwait(false);
+                var payeeResult = await _payeeLogic.SearchPayeesAsync(hidden: false, isAccount: false, isStartingBalance: false).ConfigureAwait(false);
 
                 if (payeeResult.Success)
                 {
-                    foreach (var payee in payeeResult.Data)
+                    foreach (var payee in payeeResult.Items.Select(p => PayeeModelConverter.Convert(p)))
                     {
                         var payeeTransactions = await _transactionLogic.GetPayeeTransactionsAsync(payee).ConfigureAwait(false);
                         var activePayeeTransactions = payeeTransactions.Data.Where(t => t.IsActive);
@@ -135,7 +138,7 @@ namespace BudgetBadger.Core.Logic
                         activePayeeTransactions = activePayeeTransactions.Where(t => t.ServiceDate >= beginDate && t.ServiceDate <= endDate);
 
                         var payeeTransactionsSum = activePayeeTransactions.Sum(t => t.Amount ?? 0);
-                        dataPoints.Add(new DataPoint<Payee, decimal>
+                        dataPoints.Add(new DataPoint<PayeeModel, decimal>
                         {
                             XValue = payee,
                             XLabel = payee.Description,
@@ -170,29 +173,12 @@ namespace BudgetBadger.Core.Logic
             try
             {
                 var transactions = new List<Transaction>();
-                if (envelopeId == Constants.GenericHiddenEnvelope.Id)
+                var transactionResult = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }).ConfigureAwait(false);
+                if (transactionResult.Success)
                 {
-                    var hiddenEnvelopes = await _envelopeLogic.GetHiddenEnvelopesAsync().ConfigureAwait(false);
-                    if (hiddenEnvelopes.Success)
-                    {
-                        foreach(var hiddenEnvelope in hiddenEnvelopes.Data)
-                        {
-                            var transactionResult = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = hiddenEnvelope.Id }).ConfigureAwait(false);
-                            if (transactionResult.Success)
-                            {
-                                transactions.AddRange(transactionResult.Data);
-                            }
-                        }
-                    }
+                    transactions.AddRange(transactionResult.Data);
                 }
-                else
-                {
-                    var transactionResult = await _transactionLogic.GetEnvelopeTransactionsAsync(new Envelope { Id = envelopeId }).ConfigureAwait(false);
-                    if (transactionResult.Success)
-                    {
-                        transactions.AddRange(transactionResult.Data);
-                    }
-                }
+
                 var activeTransactions = transactions.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);
@@ -218,7 +204,7 @@ namespace BudgetBadger.Core.Logic
 
                 result.Data = dataPoints.OrderBy(d => d.XValue).ToList();
                 result.Success = true;
-                
+
             }
             catch (Exception ex)
             {
@@ -237,29 +223,13 @@ namespace BudgetBadger.Core.Logic
             try
             {
                 var transactions = new List<Transaction>();
-                if (payeeId == Constants.GenericHiddenPayee.Id)
+
+                var transactionResult = await _transactionLogic.GetPayeeTransactionsAsync(new PayeeModel { Id = payeeId }).ConfigureAwait(false);
+                if (transactionResult.Success)
                 {
-                    var hiddenPayees = await _payeeLogic.GetHiddenPayeesAsync().ConfigureAwait(false);
-                    if (hiddenPayees.Success)
-                    {
-                        foreach (var hiddenPayee in hiddenPayees.Data)
-                        {
-                            var transactionResult = await _transactionLogic.GetPayeeTransactionsAsync(new Payee { Id = hiddenPayee.Id }).ConfigureAwait(false);
-                            if (transactionResult.Success)
-                            {
-                                transactions.AddRange(transactionResult.Data);
-                            }
-                        }
-                    }
+                    transactions.AddRange(transactionResult.Data);
                 }
-                else
-                {
-                    var transactionResult = await _transactionLogic.GetPayeeTransactionsAsync(new Payee { Id = payeeId }).ConfigureAwait(false);
-                    if (transactionResult.Success)
-                    {
-                        transactions.AddRange(transactionResult.Data);
-                    }
-                }
+
                 var activeTransactions = transactions.Where(t => t.IsActive && !t.IsTransfer); //maybe not need the transfer portion?
 
                 var startMonth = new DateTime(beginDate.Year, beginDate.Month, 1).AddMonths(1).AddTicks(-1);

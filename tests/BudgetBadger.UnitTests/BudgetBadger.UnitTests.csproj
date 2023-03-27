@@ -8,29 +8,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0" />
-    <PackageReference Include="FakeItEasy" Version="7.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+<PrivateAssets>all</PrivateAssets>
+</PackageReference>
+    <PackageReference Include="FakeItEasy" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\BudgetBadger.Models\BudgetBadger.Models.csproj" />
     <ProjectReference Include="..\..\src\BudgetBadger.DataAccess.Sqlite\BudgetBadger.DataAccess.Sqlite.csproj" />
     <ProjectReference Include="..\BudgetBadger.TestData\BudgetBadger.TestData.csproj" />
+    <ProjectReference Include="..\..\src\BudgetBadger.Logic\BudgetBadger.Logic.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="DataAccessSqlite\" />
     <None Remove="Logic\" />
     <None Remove="TestModels\" />
     <None Remove="FakeItEasy" />
-    <None Remove="Core\Converters\" />
-    <None Remove="Core\Models\" />
+    <None Remove="Logic\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestModels\" />
-    <Folder Include="Core\Converters\" />
-    <Folder Include="Core\Models\" />
+    <Folder Include="Logic\" />
+    <Folder Include="Logic\Converters\" />
   </ItemGroup>
 </Project>

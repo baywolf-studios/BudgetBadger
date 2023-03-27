@@ -8,7 +8,10 @@
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this">
+    xmlns:payees="clr-namespace:BudgetBadger.Forms.Payees"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:Name="this"
+    x:DataType="payees:PayeesPageViewModel">
     <p:BaseDetailedPage.Header>
         <p:RootSearchHeader
             PageTitle="{ext:Translate PayeesPageTitle}"
@@ -54,23 +57,32 @@
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"/>
                     </uc:DataTable.Header>
                     <uc:DataTable.GroupHeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="{x:Null}">
                             <uc:ViewCell
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
-                                <dt:GroupHeaderViewCell />
+                                <uc:SingleLineListSubheader Text="{Binding Key}" />
                             </uc:ViewCell>
                         </DataTemplate>
                     </uc:DataTable.GroupHeaderTemplate>
                     <uc:DataTable.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:PayeeModel">
                             <uc:SelectableViewCell
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}"
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}">
                                 <dt:PayeeDetailedViewCell
                                     SaveCommand="{Binding BindingContext.SaveCommand, Source={x:Reference Name=this}}"
-                                    CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}" />
+                                    CancelCommand="{Binding BindingContext.RefreshPayeeCommand, Source={x:Reference Name=this}}">
+                                    <dt:PayeeDetailedViewCell.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsGenericHiddenPayee}"
+                                            Value="true"
+                                            TargetType="dt:PayeeDetailedViewCell">
+                                            <Setter Property="IsReadOnly" Value="true"/>
+                                        </DataTrigger>
+                                    </dt:PayeeDetailedViewCell.Triggers>
+                                </dt:PayeeDetailedViewCell>
                                 <uc:SelectableViewCell.ContextActions>
                                     <MenuItem
                                         Text="{ext:Translate EditButton}"

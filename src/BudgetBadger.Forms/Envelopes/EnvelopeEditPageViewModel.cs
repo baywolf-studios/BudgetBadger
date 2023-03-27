@@ -121,7 +121,7 @@ namespace BudgetBadger.Forms.Envelopes
                 Budget = budget.DeepCopy();
             }
 
-            var envelopeGroup = parameters.GetValue<EnvelopeGroup>(PageParameter.EnvelopeGroup);
+            var envelopeGroup = parameters.GetValue<EnvelopeGroupModel>(PageParameter.EnvelopeGroup);
             if (envelopeGroup != null)
             {
                 Budget.Envelope.Group = envelopeGroup.DeepCopy();

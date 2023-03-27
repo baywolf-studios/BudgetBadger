@@ -3,12 +3,14 @@
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:dt="clr-namespace:BudgetBadger.Forms.DataTemplates"
     xmlns:ext="clr-namespace:BudgetBadger.Forms.Extensions"
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this">
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:Name="this"
+    x:DataType="envelopes:EnvelopeGroupsPageViewModel">
     <p:BasePage.Header>
         <p:ChildSearchHeader
             PageTitle="{ext:Translate EnvelopeGroupsPageTitle}"
@@ -72,12 +74,12 @@
                         </ContentView>
                     </uc:ListView2.Header>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:EnvelopeGroupModel">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                <dt:EnvelopeGroupViewCell/>
+                                <uc:SingleLineListItem Text="{Binding Description}" />
                                 <uc:SelectableViewCell.ContextActions>
                                     <MenuItem
                                         Text="{ext:Translate EditButton}"

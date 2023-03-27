@@ -8,6 +8,8 @@ using BudgetBadger.Core.Models;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using BudgetBadger.Forms.Extensions;
+using BudgetBadger.Logic;
 
 namespace BudgetBadger.Forms.Accounts
 {
@@ -22,7 +24,7 @@ namespace BudgetBadger.Forms.Accounts
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
 		public ICommand AddCommand { get; set; }
-        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((Account)ac, SearchText); }
+        public Predicate<object> Filter { get => (ac) => _accountLogic.FilterAccount((AccountModel)ac, SearchText); }
 
         bool _isBusy;
         public bool IsBusy
@@ -31,15 +33,15 @@ namespace BudgetBadger.Forms.Accounts
             set => SetProperty(ref _isBusy, value);
         }
 
-        ObservableList<Account> _accounts;
-        public ObservableList<Account> Accounts
+        ObservableList<AccountModel> _accounts;
+        public ObservableList<AccountModel> Accounts
         {
             get => _accounts;
             set => SetProperty(ref _accounts, value);
         }
 
-        Account _selectedAccount;
-        public Account SelectedAccount
+        AccountModel _selectedAccount;
+        public AccountModel SelectedAccount
         {
             get => _selectedAccount;
             set => SetProperty(ref _selectedAccount, value);
@@ -70,10 +72,10 @@ namespace BudgetBadger.Forms.Accounts
             _navigationService = navigationService;
             _dialogService = dialogService;
 
-            Accounts = new ObservableList<Account>();
+            Accounts = new ObservableList<AccountModel>();
             SelectedAccount = null;
 
-            SelectedCommand = new Command<Account>(async a => await ExecuteSelectedCommand(a));
+            SelectedCommand = new Command<AccountModel>(async a => await ExecuteSelectedCommand(a));
             RefreshCommand = new Command(async () => await FullRefresh());
             AddCommand = new Command(async () => await ExecuteAddCommand());
         }
@@ -85,7 +87,7 @@ namespace BudgetBadger.Forms.Accounts
 
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
-            var account = parameters.GetValue<Account>(PageParameter.Account);
+            var account = parameters.GetValue<AccountModel>(PageParameter.Account);
             if (account != null)
             {
                 await _navigationService.GoBackAsync(parameters);
@@ -95,7 +97,7 @@ namespace BudgetBadger.Forms.Accounts
             await FullRefresh();
         }
 
-        public async Task ExecuteSelectedCommand(Account account)
+        public async Task ExecuteSelectedCommand(AccountModel account)
         {
             if (account == null)
             {
