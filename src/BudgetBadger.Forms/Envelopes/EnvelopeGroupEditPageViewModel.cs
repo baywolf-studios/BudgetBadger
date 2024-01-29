@@ -35,8 +35,8 @@ namespace BudgetBadger.Forms.Envelopes
             set => SetProperty(ref _busyText, value);
         }
 
-		EnvelopeGroupModel _envelopeGroup;
-		public EnvelopeGroupModel EnvelopeGroup
+        EnvelopeGroupModel _envelopeGroup;
+        public EnvelopeGroupModel EnvelopeGroup
         {
             get => _envelopeGroup;
             set => SetProperty(ref _envelopeGroup, value);
@@ -48,10 +48,10 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand HideCommand { get; set; }
         public ICommand UnhideCommand { get; set; }
 
-		public EnvelopeGroupEditPageViewModel(IResourceContainer resourceContainer,
+        public EnvelopeGroupEditPageViewModel(IResourceContainer resourceContainer,
                                               INavigationService navigationService,
                                               IPageDialogService dialogService,
-		                                      IEnvelopeLogic envelopeLogic,
+                                                IEnvelopeLogic envelopeLogic,
                                               IEventAggregator eventAggregator)
         {
             _resourceContainer = resourceContainer;
@@ -60,7 +60,7 @@ namespace BudgetBadger.Forms.Envelopes
             _envelopeLogic = envelopeLogic;
             _eventAggregator = eventAggregator;
 
-			EnvelopeGroup = new EnvelopeGroupModel();
+            EnvelopeGroup = new EnvelopeGroupModel();
 
             SaveCommand = new Command(async () => await ExecuteSaveCommand());
             SoftDeleteCommand = new Command(async () => await ExecuteSoftDeleteCommand());

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <p:BasePage
     x:Class="BudgetBadger.Forms.Envelopes.EnvelopeGroupSelectionPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -8,7 +8,10 @@
     xmlns:p="clr-namespace:BudgetBadger.Forms.Pages"
     xmlns:comparers="clr-namespace:BudgetBadger.Forms.Comparers"
     xmlns:uc="clr-namespace:BudgetBadger.Forms.UserControls"
-    x:Name="this">
+    xmlns:envelopes="clr-namespace:BudgetBadger.Forms.Envelopes"
+    xmlns:models="clr-namespace:BudgetBadger.Core.Models;assembly=BudgetBadger.Core"
+    x:Name="this"
+    x:DataType="envelopes:EnvelopeGroupSelectionPageViewModel">
     <p:BasePage.Header>
         <p:ChildSearchHeader
             BackCommand="{Binding BackCommand}"
@@ -75,12 +78,12 @@
                         </ContentView>
                     </uc:ListView2.Header>
                     <uc:ListView2.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate  x:DataType="models:EnvelopeGroupModel">
                             <uc:SelectableViewCell
                                 Padding="{Binding Gutter, Source={x:Reference responsiveGrid}, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                 BackgroundColor="{ext:DynamicResource gray_50}"
                                 SelectedBackgroundColor="{ext:DynamicResource brand_100}">
-                                <dt:EnvelopeGroupViewCell/>
+                                <uc:SingleLineListItem Text="{Binding Description}" />
                             </uc:SelectableViewCell>
                         </DataTemplate>
                     </uc:ListView2.ItemTemplate>

@@ -26,6 +26,7 @@ namespace BudgetBadger.Forms.Envelopes
         public ICommand SelectedCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand SaveSearchCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand ManageGroupsCommand { get => new Command(async () => await _navigationService.NavigateAsync(PageName.EnvelopeGroupsPage)); }
         public Predicate<object> Filter { get => (env) => _envelopeLogic.FilterEnvelopeGroup((EnvelopeGroupModel)env, SearchText); }
@@ -85,6 +86,7 @@ namespace BudgetBadger.Forms.Envelopes
             SelectedCommand = new Command<EnvelopeGroupModel>(async eg => await ExecuteSelectedCommand(eg));
             RefreshCommand = new Command(async () => await FullRefresh());
             SaveCommand = new Command(async () => await ExecuteSaveCommand());
+            SaveSearchCommand = new Command(async () => await ExecuteSaveSearchCommand());
             AddCommand = new Command(async () => await ExecuteAddCommand());
         }
 
@@ -213,7 +215,32 @@ namespace BudgetBadger.Forms.Envelopes
             }
         }
 
-		public async Task ExecuteAddCommand()
+        public async Task ExecuteSaveSearchCommand()
+        {
+            var newEnvelopeGroup = new EnvelopeGroupModel
+            {
+                Description = SearchText
+            };
+
+            var result = await _envelopeLogic.SaveEnvelopeGroupAsync(newEnvelopeGroup);
+
+            if (result.Success)
+            {
+                _eventAggregator.GetEvent<EnvelopeGroupSavedEvent>().Publish(result.Data);
+                var parameters = new NavigationParameters
+                {
+                    { PageParameter.EnvelopeGroup, result.Data }
+                };
+
+                await _navigationService.GoBackAsync(parameters);
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(_resourceContainer.GetResourceString("AlertSaveUnsuccessful"), result.Message, _resourceContainer.GetResourceString("AlertOk"));
+            }
+        }
+
+        public async Task ExecuteAddCommand()
         {
             await _navigationService.NavigateAsync(PageName.EnvelopeGroupEditPage);
         }
