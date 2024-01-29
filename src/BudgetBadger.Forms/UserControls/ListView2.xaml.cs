@@ -6,12 +6,15 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
 using BudgetBadger.Core.Models;
+using BudgetBadger.Core.Utilities;
 using Xamarin.Forms;
 
 namespace BudgetBadger.Forms.UserControls
 {
     public partial class ListView2 : Grid
     {
+        private readonly Action _debouncedUpdateItems;
+
         public static readonly BindableProperty HeaderProperty = BindableProperty.Create(nameof(Header), typeof(object), typeof(ListView), null, propertyChanged: UpdateHeader);
         public object Header
         {
@@ -131,7 +134,7 @@ namespace BudgetBadger.Forms.UserControls
             set => SetValue(SearchFilterProperty, value);
         }
 
-        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ListView2), defaultBindingMode: BindingMode.TwoWay, propertyChanged: UpdateItems);
+        public static BindableProperty SearchTextProperty = BindableProperty.Create(nameof(SearchText), typeof(string), typeof(ListView2), defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSearchTextChanged);
         public string SearchText
         {
             get => (string)GetValue(SearchTextProperty);
@@ -167,9 +170,9 @@ namespace BudgetBadger.Forms.UserControls
         }
 
         public static BindableProperty SortComparerProperty = BindableProperty.Create(nameof(SortComparer), typeof(IComparer<Object>), typeof(ListView2));
-        public IComparer<Object> SortComparer
+        public IComparer<object> SortComparer
         {
-            get => (IComparer<Object>)GetValue(SortComparerProperty);
+            get => (IComparer<object>)GetValue(SortComparerProperty);
             set => SetValue(SortComparerProperty, value);
         }
 
@@ -203,6 +206,7 @@ namespace BudgetBadger.Forms.UserControls
             InternalListView.BindingContext = this;
             InternalListView.ItemsSource = new ObservableList<object>();
             InternalListView.ItemTapped += InternalListView_ItemTapped;
+            _debouncedUpdateItems = ActionExtensions.Debounce(UpdateItems, 400);
         }
 
         private void UpdateMac()
@@ -246,7 +250,7 @@ namespace BudgetBadger.Forms.UserControls
         private void InternalListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             ItemTapped?.Invoke(this, e);
-            
+
             if (SelectionMode == ListViewSelectionMode.Single)
             {
                 SelectedItem = SelectedItem == e.Item ? null : e.Item;
@@ -265,6 +269,7 @@ namespace BudgetBadger.Forms.UserControls
                 activityIndicator.IsVisible = true;
             }
         }
+
         private static void UpdateIsBusy(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
@@ -352,6 +357,14 @@ namespace BudgetBadger.Forms.UserControls
             }
         }
 
+        private static void OnSearchTextChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is ListView2 listView && oldValue != newValue)
+            {
+                listView._debouncedUpdateItems();
+            }
+        }
+
         private static void OnGroupHeaderTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is ListView2 listView && oldValue != newValue)
@@ -393,7 +406,7 @@ namespace BudgetBadger.Forms.UserControls
                     listView.InternalListView.IsGroupingEnabled = listView.IsGrouped;
                     listView.InternalListView.GroupDisplayBinding = null;
                 }
-                
+
                 listView.UpdateItems();
             }
         }
@@ -443,7 +456,7 @@ namespace BudgetBadger.Forms.UserControls
                 }
             }
             else
-            { 
+            {
                 var filteredItems = Items.Cast<object>().AsParallel();
 
                 // filtering
